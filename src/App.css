@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Pridi:wght@200;300;400;500;600;700&display=swap");
+@import "./styles/colors.css";
+
+* {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+}
+
+.app-container {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-main);
+}
+
+/* .app-container > div:last-child {
+  flex: 1;
+  overflow: auto;
+  background-color: var(--bg-main);
+  color: var(--content-text);
+} */
+
+/* .app-container > div:last-child h1,
+.app-container > div:last-child h2,
+.app-container > div:last-child h3,
+.app-container > div:last-child h4,
+.app-container > div:last-child h5,
+.app-container > div:last-child h6 {
+  color: var(--content-heading);
+}
+
+.app-container > div:last-child p,
+.app-container > div:last-child a,
+.app-container > div:last-child div {
+  color: var(--content-text);
+} */
