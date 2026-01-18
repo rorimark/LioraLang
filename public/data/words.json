@@ -1,0 +1,921 @@
+[
+  {
+    "id": "w1",
+    "eng": "hello",
+    "ru": "привет",
+    "pl": "cześć",
+    "level": "A1",
+    "tags": ["greeting"],
+    "examples": ["Hello! Nice to meet you."]
+  },
+  {
+    "id": "w2",
+    "eng": "goodbye",
+    "ru": "пока",
+    "pl": "do widzenia",
+    "level": "A1",
+    "tags": ["greeting"],
+    "examples": ["Goodbye! See you soon."]
+  },
+  {
+    "id": "w3",
+    "eng": "please",
+    "ru": "пожалуйста",
+    "pl": "proszę",
+    "level": "A1",
+    "tags": ["polite"],
+    "examples": ["Please help me."]
+  },
+  {
+    "id": "w4",
+    "eng": "thank you",
+    "ru": "спасибо",
+    "pl": "dziękuję",
+    "level": "A1",
+    "tags": ["polite"],
+    "examples": ["Thank you for your time."]
+  },
+  {
+    "id": "w5",
+    "eng": "friend",
+    "ru": "друг",
+    "pl": "przyjaciel",
+    "level": "A1",
+    "tags": ["people"],
+    "examples": ["She is my friend."]
+  },
+
+  {
+    "id": "w6",
+    "eng": "work",
+    "ru": "работать",
+    "pl": "pracować",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["I work every day."]
+  },
+  {
+    "id": "w7",
+    "eng": "study",
+    "ru": "учиться",
+    "pl": "uczyć się",
+    "level": "A1",
+    "tags": ["education"],
+    "examples": ["I study English."]
+  },
+  {
+    "id": "w8",
+    "eng": "family",
+    "ru": "семья",
+    "pl": "rodzina",
+    "level": "A1",
+    "tags": ["people"],
+    "examples": ["My family is big."]
+  },
+  {
+    "id": "w9",
+    "eng": "food",
+    "ru": "еда",
+    "pl": "jedzenie",
+    "level": "A1",
+    "tags": ["daily"],
+    "examples": ["I like this food."]
+  },
+  {
+    "id": "w10",
+    "eng": "house",
+    "ru": "дом",
+    "pl": "dom",
+    "level": "A1",
+    "tags": ["noun"],
+    "examples": ["This is my house."]
+  },
+
+  {
+    "id": "w11",
+    "eng": "eager",
+    "ru": "жаждущий",
+    "pl": "chętny",
+    "level": "B1",
+    "tags": ["adjective"],
+    "examples": ["He is eager to learn."]
+  },
+  {
+    "id": "w12",
+    "eng": "oath",
+    "ru": "клятва",
+    "pl": "przysięga",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["He took an oath."]
+  },
+  {
+    "id": "w13",
+    "eng": "aye",
+    "ru": "да (устар.)",
+    "pl": "tak",
+    "level": "B2",
+    "tags": ["archaic"],
+    "examples": ["Aye, sir."]
+  },
+  {
+    "id": "w14",
+    "eng": "kindergarten",
+    "ru": "детский сад",
+    "pl": "przedszkole",
+    "level": "A1",
+    "tags": ["education"],
+    "examples": ["She works in a kindergarten."]
+  },
+  {
+    "id": "w15",
+    "eng": "mischief",
+    "ru": "шалость",
+    "pl": "psota",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["The kids caused mischief."]
+  },
+
+  {
+    "id": "w16",
+    "eng": "exaggerate",
+    "ru": "преувеличивать",
+    "pl": "przesadzać",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["He tends to exaggerate."]
+  },
+  {
+    "id": "w17",
+    "eng": "species",
+    "ru": "вид",
+    "pl": "gatunek",
+    "level": "B2",
+    "tags": ["science"],
+    "examples": ["This species is rare."]
+  },
+  {
+    "id": "w18",
+    "eng": "interbreed",
+    "ru": "скрещиваться",
+    "pl": "krzyżować się",
+    "level": "C1",
+    "tags": ["science"],
+    "examples": ["The animals can interbreed."]
+  },
+  {
+    "id": "w19",
+    "eng": "coherence",
+    "ru": "связность",
+    "pl": "spójność",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["The argument lacks coherence."]
+  },
+  {
+    "id": "w20",
+    "eng": "convinced",
+    "ru": "убеждённый",
+    "pl": "przekonany",
+    "level": "B1",
+    "tags": ["adjective"],
+    "examples": ["I was convinced he was right."]
+  },
+
+  {
+    "id": "w21",
+    "eng": "incorporate",
+    "ru": "включать",
+    "pl": "włączać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["We should incorporate feedback."]
+  },
+  {
+    "id": "w22",
+    "eng": "jittery",
+    "ru": "нервный",
+    "pl": "nerwowy",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["She felt jittery."]
+  },
+  {
+    "id": "w23",
+    "eng": "accustomed to",
+    "ru": "привыкший к",
+    "pl": "przyzwyczajony do",
+    "level": "B1",
+    "tags": ["phrase"],
+    "examples": ["I am accustomed to the cold."]
+  },
+  {
+    "id": "w24",
+    "eng": "carve",
+    "ru": "вырезать",
+    "pl": "rzeźbić",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["He carved the wood."]
+  },
+  {
+    "id": "w25",
+    "eng": "thrive on",
+    "ru": "процветать благодаря",
+    "pl": "rozwijać się dzięki",
+    "level": "B2",
+    "tags": ["phrase"],
+    "examples": ["She thrives on challenges."]
+  },
+
+  {
+    "id": "w26",
+    "eng": "fall into a rut",
+    "ru": "застрять в рутине",
+    "pl": "wpaść w rutynę",
+    "level": "B2",
+    "tags": ["idiom"],
+    "examples": ["I fell into a rut."]
+  },
+  {
+    "id": "w27",
+    "eng": "particularly",
+    "ru": "особенно",
+    "pl": "szczególnie",
+    "level": "B1",
+    "tags": ["adverb"],
+    "examples": ["I like it particularly."]
+  },
+  {
+    "id": "w28",
+    "eng": "inducing",
+    "ru": "вызывающий",
+    "pl": "wywołujący",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["Stress-inducing work."]
+  },
+  {
+    "id": "w29",
+    "eng": "blasting",
+    "ru": "взрывной",
+    "pl": "wybuchowy",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["Blasting noise."]
+  },
+  {
+    "id": "w30",
+    "eng": "it takes a village",
+    "ru": "нужна поддержка общества",
+    "pl": "potrzeba całej społeczności",
+    "level": "C1",
+    "tags": ["idiom"],
+    "examples": ["It takes a village to raise a child."]
+  },
+
+  {
+    "id": "w31",
+    "eng": "go hand in hand",
+    "ru": "идти рука об руку",
+    "pl": "iść w parze",
+    "level": "B2",
+    "tags": ["idiom"],
+    "examples": ["Success and effort go hand in hand."]
+  },
+  {
+    "id": "w32",
+    "eng": "ring a bell",
+    "ru": "звучать знакомо",
+    "pl": "brzmieć znajomo",
+    "level": "B2",
+    "tags": ["idiom"],
+    "examples": ["Does this ring a bell?"]
+  },
+  {
+    "id": "w33",
+    "eng": "unforeseen",
+    "ru": "непредвиденный",
+    "pl": "nieprzewidziany",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["Unforeseen events."]
+  },
+  {
+    "id": "w34",
+    "eng": "circumstances",
+    "ru": "обстоятельства",
+    "pl": "okoliczności",
+    "level": "B2",
+    "tags": ["abstract"],
+    "examples": ["Under these circumstances."]
+  },
+  {
+    "id": "w35",
+    "eng": "reprimand",
+    "ru": "выговор",
+    "pl": "nagana",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["He was reprimanded."]
+  },
+
+  {
+    "id": "w36",
+    "eng": "leisure",
+    "ru": "досуг",
+    "pl": "wypoczynek",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["Leisure time is important."]
+  },
+  {
+    "id": "w37",
+    "eng": "whiz",
+    "ru": "ас",
+    "pl": "as",
+    "level": "B2",
+    "tags": ["slang"],
+    "examples": ["He is a math whiz."]
+  },
+  {
+    "id": "w38",
+    "eng": "heinous",
+    "ru": "чудовищный",
+    "pl": "odrażający",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["A heinous crime."]
+  },
+  {
+    "id": "w39",
+    "eng": "ridge",
+    "ru": "хребет",
+    "pl": "grzbiet",
+    "level": "B2",
+    "tags": ["nature"],
+    "examples": ["A mountain ridge."]
+  },
+  {
+    "id": "w40",
+    "eng": "mitigate",
+    "ru": "смягчать",
+    "pl": "łagodzić",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Mitigate the risks."]
+  },
+
+  {
+    "id": "w41",
+    "eng": "sew",
+    "ru": "шить",
+    "pl": "szyć",
+    "level": "A2",
+    "tags": ["verb"],
+    "examples": ["She can sew well."]
+  },
+  {
+    "id": "w42",
+    "eng": "pledge fealty",
+    "ru": "присягать на верность",
+    "pl": "złożyć hołd",
+    "level": "C1",
+    "tags": ["phrase"],
+    "examples": ["He pledged fealty to the king."]
+  },
+  {
+    "id": "w43",
+    "eng": "scullion",
+    "ru": "кухонный слуга",
+    "pl": "pomoc kuchenna",
+    "level": "C2",
+    "tags": ["archaic"],
+    "examples": ["A castle scullion."]
+  },
+  {
+    "id": "w44",
+    "eng": "feast",
+    "ru": "пир",
+    "pl": "uczta",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["A royal feast."]
+  },
+  {
+    "id": "w45",
+    "eng": "snigger",
+    "ru": "хихикать",
+    "pl": "chichotać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["They sniggered quietly."]
+  },
+
+  {
+    "id": "w46",
+    "eng": "bride",
+    "ru": "невеста",
+    "pl": "panna młoda",
+    "level": "A2",
+    "tags": ["people"],
+    "examples": ["The bride smiled."]
+  },
+  {
+    "id": "w47",
+    "eng": "gown",
+    "ru": "платье",
+    "pl": "suknia",
+    "level": "A2",
+    "tags": ["clothes"],
+    "examples": ["A wedding gown."]
+  },
+  {
+    "id": "w48",
+    "eng": "smuggler",
+    "ru": "контрабандист",
+    "pl": "przemytnik",
+    "level": "B2",
+    "tags": ["crime"],
+    "examples": ["A smuggler was arrested."]
+  },
+  {
+    "id": "w49",
+    "eng": "courage",
+    "ru": "мужество",
+    "pl": "odwaga",
+    "level": "B1",
+    "tags": ["abstract"],
+    "examples": ["It takes courage."]
+  },
+  {
+    "id": "w50",
+    "eng": "warlock",
+    "ru": "колдун",
+    "pl": "czarnoksiężnik",
+    "level": "C1",
+    "tags": ["fantasy"],
+    "examples": ["A powerful warlock."]
+  },
+
+  {
+    "id": "w51",
+    "eng": "succumb",
+    "ru": "поддаваться",
+    "pl": "ulec",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["He succumbed to pressure."]
+  },
+  {
+    "id": "w52",
+    "eng": "shrewd",
+    "ru": "проницательный",
+    "pl": "przebiegły",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["A shrewd decision."]
+  },
+  {
+    "id": "w53",
+    "eng": "distinction",
+    "ru": "различие",
+    "pl": "rozróżnienie",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["Make a clear distinction."]
+  },
+  {
+    "id": "w54",
+    "eng": "shove",
+    "ru": "толкать",
+    "pl": "pchać",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["He shoved the door."]
+  },
+  {
+    "id": "w55",
+    "eng": "spear",
+    "ru": "копьё",
+    "pl": "włócznia",
+    "level": "B2",
+    "tags": ["weapon"],
+    "examples": ["He held a spear."]
+  },
+
+  {
+    "id": "w56",
+    "eng": "dove",
+    "ru": "голубь",
+    "pl": "gołąb",
+    "level": "A2",
+    "tags": ["animal"],
+    "examples": ["A white dove."]
+  },
+  {
+    "id": "w57",
+    "eng": "squire",
+    "ru": "оруженосец",
+    "pl": "giermek",
+    "level": "C1",
+    "tags": ["archaic"],
+    "examples": ["A knight and his squire."]
+  },
+  {
+    "id": "w58",
+    "eng": "constraint",
+    "ru": "ограничение",
+    "pl": "ograniczenie",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["Time constraints."]
+  },
+  {
+    "id": "w59",
+    "eng": "endure",
+    "ru": "выдерживать",
+    "pl": "znosić",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["Endure the pain."]
+  },
+  {
+    "id": "w60",
+    "eng": "grieve",
+    "ru": "скорбеть",
+    "pl": "opłakiwać",
+    "level": "B2",
+    "tags": ["emotion"],
+    "examples": ["She grieved deeply."]
+  },
+
+  {
+    "id": "w61",
+    "eng": "parentheses",
+    "ru": "скобки",
+    "pl": "nawiasy",
+    "level": "B1",
+    "tags": ["grammar"],
+    "examples": ["Use parentheses correctly."]
+  },
+  {
+    "id": "w62",
+    "eng": "adapt",
+    "ru": "адаптироваться",
+    "pl": "dostosować się",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["You must adapt quickly."]
+  },
+  {
+    "id": "w63",
+    "eng": "anxious",
+    "ru": "тревожный",
+    "pl": "zaniepokojony",
+    "level": "B1",
+    "tags": ["emotion"],
+    "examples": ["She feels anxious."]
+  },
+  {
+    "id": "w64",
+    "eng": "boost",
+    "ru": "повышать",
+    "pl": "zwiększać",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["This will boost productivity."]
+  },
+  {
+    "id": "w65",
+    "eng": "collapse",
+    "ru": "обрушиться",
+    "pl": "zawalić się",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["The building collapsed."]
+  },
+  {
+    "id": "w66",
+    "eng": "commitment",
+    "ru": "обязательство",
+    "pl": "zobowiązanie",
+    "level": "B2",
+    "tags": ["abstract"],
+    "examples": ["It requires commitment."]
+  },
+
+  {
+    "id": "w67",
+    "eng": "contemplate",
+    "ru": "обдумывать",
+    "pl": "rozważać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["She contemplated leaving."]
+  },
+  {
+    "id": "w68",
+    "eng": "controversy",
+    "ru": "спор",
+    "pl": "kontrowersja",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["The issue caused controversy."]
+  },
+  {
+    "id": "w69",
+    "eng": "devastate",
+    "ru": "разрушать",
+    "pl": "dewastować",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["The storm devastated the town."]
+  },
+  {
+    "id": "w70",
+    "eng": "diligent",
+    "ru": "усердный",
+    "pl": "sumienny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["She is diligent at work."]
+  },
+  {
+    "id": "w71",
+    "eng": "embarrassed",
+    "ru": "смущённый",
+    "pl": "zawstydzony",
+    "level": "B1",
+    "tags": ["emotion"],
+    "examples": ["He felt embarrassed."]
+  },
+
+  {
+    "id": "w72",
+    "eng": "enhance",
+    "ru": "улучшать",
+    "pl": "ulepszać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["This will enhance quality."]
+  },
+  {
+    "id": "w73",
+    "eng": "frustrated",
+    "ru": "разочарованный",
+    "pl": "sfrustrowany",
+    "level": "B1",
+    "tags": ["emotion"],
+    "examples": ["She was frustrated."]
+  },
+  {
+    "id": "w74",
+    "eng": "inevitable",
+    "ru": "неизбежный",
+    "pl": "nieunikniony",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["Change is inevitable."]
+  },
+  {
+    "id": "w75",
+    "eng": "justify",
+    "ru": "оправдывать",
+    "pl": "uzasadniać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["How do you justify this?"]
+  },
+  {
+    "id": "w76",
+    "eng": "linger",
+    "ru": "задерживаться",
+    "pl": "pozostawać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["The smell lingered."]
+  },
+
+  {
+    "id": "w77",
+    "eng": "notion",
+    "ru": "понятие",
+    "pl": "pojęcie",
+    "level": "B2",
+    "tags": ["abstract"],
+    "examples": ["A strange notion."]
+  },
+  {
+    "id": "w78",
+    "eng": "overwhelm",
+    "ru": "переполнять",
+    "pl": "przytłaczać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["The task overwhelmed him."]
+  },
+  {
+    "id": "w79",
+    "eng": "persist",
+    "ru": "упорствовать",
+    "pl": "trwać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["The problem persists."]
+  },
+  {
+    "id": "w80",
+    "eng": "reluctant",
+    "ru": "неохотный",
+    "pl": "niechętny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["He was reluctant to agree."]
+  },
+  {
+    "id": "w81",
+    "eng": "resilient",
+    "ru": "устойчивый",
+    "pl": "odporny",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["She is very resilient."]
+  },
+
+  {
+    "id": "w82",
+    "eng": "scarce",
+    "ru": "редкий",
+    "pl": "rzadki",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["Resources are scarce."]
+  },
+  {
+    "id": "w83",
+    "eng": "scrutinize",
+    "ru": "тщательно изучать",
+    "pl": "analizować",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Scrutinize the details."]
+  },
+  {
+    "id": "w84",
+    "eng": "subtle",
+    "ru": "тонкий",
+    "pl": "subtelny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["A subtle difference."]
+  },
+  {
+    "id": "w85",
+    "eng": "sustain",
+    "ru": "поддерживать",
+    "pl": "utrzymywać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Sustain the effort."]
+  },
+  {
+    "id": "w86",
+    "eng": "tension",
+    "ru": "напряжение",
+    "pl": "napięcie",
+    "level": "B1",
+    "tags": ["abstract"],
+    "examples": ["There is tension in the room."]
+  },
+
+  {
+    "id": "w87",
+    "eng": "thorough",
+    "ru": "тщательный",
+    "pl": "dokładny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["A thorough check."]
+  },
+  {
+    "id": "w88",
+    "eng": "uncertain",
+    "ru": "неуверенный",
+    "pl": "niepewny",
+    "level": "B1",
+    "tags": ["adjective"],
+    "examples": ["The future is uncertain."]
+  },
+  {
+    "id": "w89",
+    "eng": "vital",
+    "ru": "жизненно важный",
+    "pl": "istotny",
+    "level": "B1",
+    "tags": ["adjective"],
+    "examples": ["This is vital information."]
+  },
+  {
+    "id": "w90",
+    "eng": "withdraw",
+    "ru": "отступать",
+    "pl": "wycofać się",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["He withdrew from the deal."]
+  },
+
+  {
+    "id": "w91",
+    "eng": "yield",
+    "ru": "уступать",
+    "pl": "ustępować",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Yield to pressure."]
+  },
+  {
+    "id": "w92",
+    "eng": "zeal",
+    "ru": "рвение",
+    "pl": "zapał",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["He worked with zeal."]
+  },
+  {
+    "id": "w93",
+    "eng": "accountable",
+    "ru": "ответственный",
+    "pl": "odpowiedzialny",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["Hold them accountable."]
+  },
+  {
+    "id": "w94",
+    "eng": "bias",
+    "ru": "предвзятость",
+    "pl": "stronniczość",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["Media bias exists."]
+  },
+  {
+    "id": "w95",
+    "eng": "clarify",
+    "ru": "прояснять",
+    "pl": "wyjaśniać",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["Let me clarify this."]
+  },
+
+  {
+    "id": "w96",
+    "eng": "dismiss",
+    "ru": "отклонять",
+    "pl": "odrzucać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["The case was dismissed."]
+  },
+  {
+    "id": "w97",
+    "eng": "exploit",
+    "ru": "использовать",
+    "pl": "wykorzystywać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Exploit the opportunity."]
+  },
+  {
+    "id": "w98",
+    "eng": "noteworthy",
+    "ru": "примечательный",
+    "pl": "godny uwagi",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["A noteworthy achievement."]
+  },
+  {
+    "id": "w99",
+    "eng": "prevail",
+    "ru": "восторжествовать",
+    "pl": "zwyciężyć",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Justice will prevail."]
+  },
+  {
+    "id": "w100",
+    "eng": "withstand",
+    "ru": "выдерживать",
+    "pl": "wytrzymać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Withstand the pressure."]
+  }
+]
