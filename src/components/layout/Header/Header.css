@@ -1,0 +1,19 @@
+@import url("../../../styles/colors.css");
+
+.page-header {
+  display: flex;
+  background-color: var(--bg-panel);
+  width: 100%;
+  border: var(--border-dark) 1px solid;
+  border-left: none;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.page-header__title {
+  color: var(--content-heading);
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
