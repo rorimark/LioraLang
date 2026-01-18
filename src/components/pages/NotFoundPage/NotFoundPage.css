@@ -1,0 +1,12 @@
+@import url("../../../styles/colors.css");
+
+.page-not-found {
+  background-color: var(--bg-main);
+  color: var(--text-white);
+  font-family: "Poppins", sans-serif;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
