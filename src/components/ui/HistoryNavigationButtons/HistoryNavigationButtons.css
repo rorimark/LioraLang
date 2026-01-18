@@ -1,0 +1,54 @@
+@import "../../../styles/colors.css";
+
+.navigation-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--nav-button-bg);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.nav-button:hover {
+  background-color: var(--tab-hover);
+  color: var(--text-accent);
+  box-shadow: 0 0 12px rgba(212, 255, 0, 0.15);
+}
+
+.nav-button:active {
+  transform: scale(0.95);
+}
+
+.nav-button--back::before {
+  content: "‹";
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.nav-button--forward::before {
+  content: "›";
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.nav-button--back:disabled,
+.nav-button--forward:disabled {
+  background-color: var(--tab-disabled);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
