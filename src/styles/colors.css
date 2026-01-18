@@ -1,10 +1,7 @@
 :root {
-  /* Sidebar */
-  --sidebar-bg: #0d0d0d;
-  --sidebar-border: #2a2a2a;
-
   /* Text colors */
   --text-white: #ffffff;
+  --text-dark: #1a1a1a;
   --text-light: #e0e0e0;
   --text-muted: #888888;
   --text-accent: #d4ff00;
@@ -13,14 +10,22 @@
 
   /* Tab/Button states */
   --tab-default: #1a1a1a;
+  --tab-disabled: #1e1e1e;
   --tab-hover: #2a2a2a;
   --tab-active: #2d2d2d;
   --tab-active-shadow: rgba(212, 255, 0, 0.2);
   --tab-hover-shadow: rgba(212, 255, 0, 0.1);
+  --nav-button-bg: #252525;
 
   /* Background */
   --bg-main: #0f0f0f;
+  --bg-darker: #0d0d0d;
+  --bg-panel: #1a1a1a;
+  --bg-logo: #d4ff00;
+  --border-dark: #2a2a2a;
+  --border-accent: #d4ff00;
 
   /* Transition */
   --transition: all 0.2s ease;
+  --transition-quick: all 0.1s ease;
 }
