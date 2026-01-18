@@ -1,4 +1,4 @@
-import HomePage from "../components/pages/HomePage";
+import HomePage from "../components/pages/HomePage/HomePage";
 import FlashcardsPage from "../components/pages/FlashcardsPage";
 import LearnPage from "../components/pages/LearnPage";
 import TestPage from "../components/pages/TestPage";
