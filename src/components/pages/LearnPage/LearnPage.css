@@ -1,0 +1,5 @@
+@import url("../../../styles/colors.css");
+
+.learn-page-content {
+  background-color: var(--bg-main);
+}

@@ -1,16 +1,18 @@
+import Header from "../../layout/Header/Header";
+import "./TestPage.css";
+
 export default function TestPage() {
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         height: "100%",
         color: "#ffffff",
       }}
     >
-      <h1 style={{ color: "#d4ff00" }}>Test</h1>
+      <Header headerTitle="Test" />
+      <main className="test-page-content" style={{ height: "90%" }}></main>
     </div>
   );
 }
