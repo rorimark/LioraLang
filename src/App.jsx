@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="app-container">
       <Sidebar />
-      <main style={{ flex: 1, padding: 16 }}>
+      <main style={{ flex: 1 }}>
         <RoutesComponent />
       </main>
     </div>
