@@ -1,0 +1,19 @@
+@import url("../../../styles/colors.css");
+
+.app-logo {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  background-color: var(--bg-logo);
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-dark);
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+a {
+  text-decoration: none;
+}
