@@ -1,4 +1,4 @@
-@import url("../../../styles/colors.css");
+@import url("../../../styles/variables.css");
 
 .home-page-header {
   background-color: var(--bg-darker);
@@ -8,4 +8,6 @@
 
 .home-page-content {
   background-color: var(--bg-main);
+  display: grid;
+  grid-template: auto / auto auto auto;
 }

@@ -1,5 +1,97 @@
-@import url("../../../styles/colors.css");
+@import url("../../../styles/variables.css");
 
 .settings-page-content {
   background-color: var(--bg-main);
+  overflow-y: auto;
+}
+
+.settings-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.settings-section {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.settings-section h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.settings-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--border-dark);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--bg-panel);
+  color: var(--text-light);
+}
+
+.settings-button:hover:not(:disabled) {
+  background: var(--tab-hover);
+  color: var(--text-accent);
+  box-shadow: 0 0 0 2px var(--tab-hover-shadow);
+}
+
+.settings-button:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.settings-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.settings-button--primary {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: var(--text-white);
+}
+
+.settings-button--primary:hover:not(:disabled) {
+  background: #45a049;
+  border-color: #45a049;
+  box-shadow: 0 0 0 2px var(--tab-hover-shadow);
+}
+
+.settings-button--danger {
+  background: rgba(255, 107, 107, 0.2);
+  border: 2px solid rgba(255, 107, 107, 0.5);
+  color: #ff6b6b;
+}
+
+.settings-button--danger:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.3);
+  border-color: rgba(255, 107, 107, 0.6);
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+}
+
+.custom-words-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.custom-words-info p {
+  margin: 0;
+  color: var(--content-text);
 }

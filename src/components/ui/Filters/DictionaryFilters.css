@@ -1,0 +1,171 @@
+@import url("../../../styles/variables.css");
+
+.dictionary-table-filters h3 {
+  /* padding: 0 8px; */
+  margin: 0;
+
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+.dictionary-page-search-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+#dictionary-page-search,
+#dictionary-page-sort,
+#dictionary-page-filter {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--text-light);
+  appearance: none;
+}
+
+#dictionary-page-search::placeholder {
+  color: var(--text-muted);
+}
+
+.dictionary-table-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  padding: 16px;
+  height: fit-content;
+
+  background: var(--bg-panel);
+  color: var(--content-text);
+  border-radius: 16px;
+  border: none;
+}
+
+.sorting-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sorting-fields input[type="text"],
+.sorting-fields select {
+  background: var(--bg-lighter);
+  border: 2px solid var(--border-dark);
+  border-radius: 16px;
+  padding: 8px 12px;
+  color: var(--text-white);
+  transition: var(--transition);
+}
+
+.sorting-fields input::placeholder {
+  color: var(--text-muted);
+}
+
+.sorting-fields input:focus,
+.sorting-fields select:focus {
+  outline: none;
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 2px var(--tab-hover-shadow);
+}
+
+#clear-filter-btn {
+  background: var(--bg-panel);
+  border: 2px solid var(--border-dark);
+  border-radius: 12px;
+  padding: 8px 14px;
+
+  color: var(--text-light);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+#clear-filter-btn:hover {
+  background: var(--tab-hover);
+  color: var(--text-accent);
+  box-shadow: 0 0 0 2px var(--tab-hover-shadow);
+}
+
+#clear-filter-btn:active {
+  transform: scale(0.985);
+}
+
+.dictionary-table-filters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dictionary-table-filters > ul {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dictionary-table-filters > ul > li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-width: 220px;
+  padding: 12px;
+
+  background: var(--bg-lighter);
+  border: 2px solid var(--border-dark);
+  border-radius: 12px;
+
+  color: var(--content-heading);
+  font-weight: 600;
+
+  width: 100%;
+}
+
+.dictionary-table-filters > ul > li > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dictionary-table-filters li ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 4px 0;
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+.dictionary-table-filters input[type="radio"],
+.dictionary-table-filters input[type="checkbox"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+
+  background: var(--bg-main);
+  border: 2px solid var(--border-light);
+  border-radius: 4px;
+
+  cursor: pointer;
+  transition: var(--transition-quick);
+}
+
+.dictionary-table-filters input[type="radio"] {
+  border-radius: 50%;
+}
+
+.dictionary-table-filters input:hover {
+  border-color: var(--border-accent);
+}
+
+.dictionary-table-filters input:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.dictionary-table-filters label {
+  cursor: pointer;
+  user-select: none;
+}

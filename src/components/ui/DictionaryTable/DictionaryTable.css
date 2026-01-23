@@ -1,0 +1,48 @@
+@import url("../../../styles/variables.css");
+
+.dictionary-page-table {
+  width: 100%;
+  border-collapse: separate;
+  table-layout: fixed;
+  text-align: left;
+  table-layout: fixed;
+  overflow: hidden;
+  border-radius: 16px;
+  border-spacing: 0;
+  border: 2px solid var(--border-dark);
+  border-radius: 16px;
+}
+
+.dictionary-page-table > thead > tr > th {
+  border: 2px solid var(--border-dark);
+  padding: 12px;
+  background-color: var(--bg-panel);
+  /* text-align: center; */
+}
+
+.dictionary-page-table > tbody > tr {
+  width: 100%;
+}
+
+.dictionary-page-table > tbody > tr > td {
+  border: 2px solid var(--border-dark);
+  padding: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: wrap;
+  max-lines: 3;
+}
+
+.dictionary-word-level {
+  width: 50px;
+  text-align: center;
+}
+
+.dictionary-word-item:nth-child(even) {
+  background-color: var(--bg-lighter);
+}
+
+.dictionary-page-table > thead tr th,
+.dictionary-page-table > tbody tr td {
+  border: none;
+}

@@ -1,7 +1,6 @@
-// import { useState } from "react";
 import "./App.css";
 import Sidebar from "./components/layout/Sidebar/Sidebar";
-import RoutesComponent from "./router/router.jsx";
+import RoutesComponent from "./router/router";
 
 function App() {
   return (

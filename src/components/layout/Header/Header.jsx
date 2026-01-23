@@ -16,7 +16,7 @@ export default function Header({ headerTitle }) {
   return (
     <header className="page-header">
       <HistoryNavigationButtons onPrev={handlePrev} onNext={handleNext} />
-      <h1 className="page-header__title">{headerTitle}</h1>
+      <h1 className="page-header__title">{headerTitle || "Page"}</h1>
     </header>
   );
 }

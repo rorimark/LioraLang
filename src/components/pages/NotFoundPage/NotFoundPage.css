@@ -1,4 +1,4 @@
-@import url("../../../styles/colors.css");
+@import url("../../../styles/variables.css");
 
 .page-not-found {
   background-color: var(--bg-main);

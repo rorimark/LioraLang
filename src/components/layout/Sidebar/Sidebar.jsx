@@ -1,18 +1,22 @@
 import "./Sidebar.css";
-import { ROUTES } from "../../../router/routes.jsx";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../../router/routes";
 import SidebarTab from "../../ui/SidebarTab/SidebarTab";
-import Logo from "../../ui/Logo/Logo.jsx";
+import Logo from "../../ui/Logo/Logo";
+
+const NAVIGABLE_ROUTES = ROUTES.filter((route) => route.path !== "*");
 
 export default function Sidebar() {
   return (
-    <nav className="sidebar">
+    <nav className="sidebar" aria-label="Main navigation">
       <header>
-        <Logo />
+        <Link to="/" aria-label="Home">
+          <Logo />
+        </Link>
         <h1 className="sidebar-title">LioraLang</h1>
-        {/* <hr /> */}
       </header>
       <ul className="sidebar-list">
-        {ROUTES.slice(1).map((route) => (
+        {NAVIGABLE_ROUTES.map((route) => (
           <li key={route.label}>
             <SidebarTab
               label={route.label}
