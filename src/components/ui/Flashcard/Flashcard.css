@@ -1,0 +1,33 @@
+@import url("../../../styles/variables.css");
+
+.flashcard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  width: 690px;
+  height: 500px;
+  border-radius: 16px;
+  font-size: 32px;
+  transition: var(--transition-quick);
+  transition: transform 0.4s ease-in-out;
+}
+
+.flashcard:hover {
+  cursor: pointer;
+  color: var(--text-accent);
+  box-shadow: 0 0 12px rgba(212, 255, 0, 0.15);
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg) scaleX(-1);
+}
+
+/* .flash-card .front {
+  background-color: var(--bg-card-front);
+}
+
+.flash-card .back {
+  background-color: var(--bg-card-back);
+} */

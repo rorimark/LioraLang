@@ -6,7 +6,8 @@
     "pl": "cześć",
     "level": "A1",
     "tags": ["greeting"],
-    "examples": ["Hello! Nice to meet you."]
+    "examples": ["Hello! Nice to meet you."],
+    "part_of_speech": "interjection"
   },
   {
     "id": "w2",
@@ -15,7 +16,8 @@
     "pl": "do widzenia",
     "level": "A1",
     "tags": ["greeting"],
-    "examples": ["Goodbye! See you soon."]
+    "examples": ["Goodbye! See you soon."],
+    "part_of_speech": "interjection"
   },
   {
     "id": "w3",
@@ -24,7 +26,8 @@
     "pl": "proszę",
     "level": "A1",
     "tags": ["polite"],
-    "examples": ["Please help me."]
+    "examples": ["Please help me."],
+    "part_of_speech": "interjection"
   },
   {
     "id": "w4",
@@ -33,7 +36,8 @@
     "pl": "dziękuję",
     "level": "A1",
     "tags": ["polite"],
-    "examples": ["Thank you for your time."]
+    "examples": ["Thank you for your time."],
+    "part_of_speech": "interjection"
   },
   {
     "id": "w5",
@@ -42,9 +46,9 @@
     "pl": "przyjaciel",
     "level": "A1",
     "tags": ["people"],
-    "examples": ["She is my friend."]
+    "examples": ["She is my friend."],
+    "part_of_speech": "noun"
   },
-
   {
     "id": "w6",
     "eng": "work",
@@ -52,7 +56,8 @@
     "pl": "pracować",
     "level": "A1",
     "tags": ["verb"],
-    "examples": ["I work every day."]
+    "examples": ["I work every day."],
+    "part_of_speech": "verb"
   },
   {
     "id": "w7",
@@ -61,7 +66,8 @@
     "pl": "uczyć się",
     "level": "A1",
     "tags": ["education"],
-    "examples": ["I study English."]
+    "examples": ["I study English."],
+    "part_of_speech": "verb"
   },
   {
     "id": "w8",
@@ -70,7 +76,8 @@
     "pl": "rodzina",
     "level": "A1",
     "tags": ["people"],
-    "examples": ["My family is big."]
+    "examples": ["My family is big."],
+    "part_of_speech": "noun"
   },
   {
     "id": "w9",
@@ -79,7 +86,8 @@
     "pl": "jedzenie",
     "level": "A1",
     "tags": ["daily"],
-    "examples": ["I like this food."]
+    "examples": ["I like this food."],
+    "part_of_speech": "noun"
   },
   {
     "id": "w10",
@@ -88,834 +96,4907 @@
     "pl": "dom",
     "level": "A1",
     "tags": ["noun"],
-    "examples": ["This is my house."]
+    "examples": ["This is my house."],
+    "part_of_speech": "noun"
   },
-
   {
     "id": "w11",
-    "eng": "eager",
-    "ru": "жаждущий",
-    "pl": "chętny",
-    "level": "B1",
-    "tags": ["adjective"],
-    "examples": ["He is eager to learn."]
-  },
-  {
-    "id": "w12",
-    "eng": "oath",
-    "ru": "клятва",
-    "pl": "przysięga",
-    "level": "B1",
-    "tags": ["noun"],
-    "examples": ["He took an oath."]
-  },
-  {
-    "id": "w13",
-    "eng": "aye",
-    "ru": "да (устар.)",
-    "pl": "tak",
-    "level": "B2",
-    "tags": ["archaic"],
-    "examples": ["Aye, sir."]
-  },
-  {
-    "id": "w14",
     "eng": "kindergarten",
     "ru": "детский сад",
     "pl": "przedszkole",
     "level": "A1",
     "tags": ["education"],
-    "examples": ["She works in a kindergarten."]
+    "examples": ["She works in a kindergarten."],
+    "part_of_speech": "noun"
   },
   {
-    "id": "w15",
-    "eng": "mischief",
-    "ru": "шалость",
-    "pl": "psota",
-    "level": "B1",
-    "tags": ["noun"],
-    "examples": ["The kids caused mischief."]
-  },
-
-  {
-    "id": "w16",
-    "eng": "exaggerate",
-    "ru": "преувеличивать",
-    "pl": "przesadzać",
-    "level": "B1",
-    "tags": ["verb"],
-    "examples": ["He tends to exaggerate."]
-  },
-  {
-    "id": "w17",
-    "eng": "species",
-    "ru": "вид",
-    "pl": "gatunek",
-    "level": "B2",
-    "tags": ["science"],
-    "examples": ["This species is rare."]
-  },
-  {
-    "id": "w18",
-    "eng": "interbreed",
-    "ru": "скрещиваться",
-    "pl": "krzyżować się",
-    "level": "C1",
-    "tags": ["science"],
-    "examples": ["The animals can interbreed."]
-  },
-  {
-    "id": "w19",
-    "eng": "coherence",
-    "ru": "связность",
-    "pl": "spójność",
-    "level": "C1",
-    "tags": ["abstract"],
-    "examples": ["The argument lacks coherence."]
-  },
-  {
-    "id": "w20",
-    "eng": "convinced",
-    "ru": "убеждённый",
-    "pl": "przekonany",
-    "level": "B1",
-    "tags": ["adjective"],
-    "examples": ["I was convinced he was right."]
-  },
-
-  {
-    "id": "w21",
-    "eng": "incorporate",
-    "ru": "включать",
-    "pl": "włączać",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["We should incorporate feedback."]
-  },
-  {
-    "id": "w22",
-    "eng": "jittery",
-    "ru": "нервный",
-    "pl": "nerwowy",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["She felt jittery."]
-  },
-  {
-    "id": "w23",
-    "eng": "accustomed to",
-    "ru": "привыкший к",
-    "pl": "przyzwyczajony do",
-    "level": "B1",
-    "tags": ["phrase"],
-    "examples": ["I am accustomed to the cold."]
-  },
-  {
-    "id": "w24",
-    "eng": "carve",
-    "ru": "вырезать",
-    "pl": "rzeźbić",
-    "level": "B1",
-    "tags": ["verb"],
-    "examples": ["He carved the wood."]
-  },
-  {
-    "id": "w25",
-    "eng": "thrive on",
-    "ru": "процветать благодаря",
-    "pl": "rozwijać się dzięki",
-    "level": "B2",
-    "tags": ["phrase"],
-    "examples": ["She thrives on challenges."]
-  },
-
-  {
-    "id": "w26",
-    "eng": "fall into a rut",
-    "ru": "застрять в рутине",
-    "pl": "wpaść w rutynę",
-    "level": "B2",
-    "tags": ["idiom"],
-    "examples": ["I fell into a rut."]
-  },
-  {
-    "id": "w27",
-    "eng": "particularly",
-    "ru": "особенно",
-    "pl": "szczególnie",
-    "level": "B1",
-    "tags": ["adverb"],
-    "examples": ["I like it particularly."]
-  },
-  {
-    "id": "w28",
-    "eng": "inducing",
-    "ru": "вызывающий",
-    "pl": "wywołujący",
-    "level": "C1",
-    "tags": ["adjective"],
-    "examples": ["Stress-inducing work."]
-  },
-  {
-    "id": "w29",
-    "eng": "blasting",
-    "ru": "взрывной",
-    "pl": "wybuchowy",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["Blasting noise."]
-  },
-  {
-    "id": "w30",
-    "eng": "it takes a village",
-    "ru": "нужна поддержка общества",
-    "pl": "potrzeba całej społeczności",
-    "level": "C1",
-    "tags": ["idiom"],
-    "examples": ["It takes a village to raise a child."]
-  },
-
-  {
-    "id": "w31",
-    "eng": "go hand in hand",
-    "ru": "идти рука об руку",
-    "pl": "iść w parze",
-    "level": "B2",
-    "tags": ["idiom"],
-    "examples": ["Success and effort go hand in hand."]
-  },
-  {
-    "id": "w32",
-    "eng": "ring a bell",
-    "ru": "звучать знакомо",
-    "pl": "brzmieć znajomo",
-    "level": "B2",
-    "tags": ["idiom"],
-    "examples": ["Does this ring a bell?"]
-  },
-  {
-    "id": "w33",
-    "eng": "unforeseen",
-    "ru": "непредвиденный",
-    "pl": "nieprzewidziany",
-    "level": "C1",
-    "tags": ["adjective"],
-    "examples": ["Unforeseen events."]
-  },
-  {
-    "id": "w34",
-    "eng": "circumstances",
-    "ru": "обстоятельства",
-    "pl": "okoliczności",
-    "level": "B2",
-    "tags": ["abstract"],
-    "examples": ["Under these circumstances."]
-  },
-  {
-    "id": "w35",
-    "eng": "reprimand",
-    "ru": "выговор",
-    "pl": "nagana",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["He was reprimanded."]
-  },
-
-  {
-    "id": "w36",
-    "eng": "leisure",
-    "ru": "досуг",
-    "pl": "wypoczynek",
-    "level": "B1",
-    "tags": ["noun"],
-    "examples": ["Leisure time is important."]
-  },
-  {
-    "id": "w37",
-    "eng": "whiz",
-    "ru": "ас",
-    "pl": "as",
-    "level": "B2",
-    "tags": ["slang"],
-    "examples": ["He is a math whiz."]
-  },
-  {
-    "id": "w38",
-    "eng": "heinous",
-    "ru": "чудовищный",
-    "pl": "odrażający",
-    "level": "C1",
-    "tags": ["adjective"],
-    "examples": ["A heinous crime."]
-  },
-  {
-    "id": "w39",
-    "eng": "ridge",
-    "ru": "хребет",
-    "pl": "grzbiet",
-    "level": "B2",
-    "tags": ["nature"],
-    "examples": ["A mountain ridge."]
-  },
-  {
-    "id": "w40",
-    "eng": "mitigate",
-    "ru": "смягчать",
-    "pl": "łagodzić",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["Mitigate the risks."]
-  },
-
-  {
-    "id": "w41",
+    "id": "w12",
     "eng": "sew",
     "ru": "шить",
     "pl": "szyć",
     "level": "A2",
     "tags": ["verb"],
-    "examples": ["She can sew well."]
+    "examples": ["She can sew well."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w42",
-    "eng": "pledge fealty",
-    "ru": "присягать на верность",
-    "pl": "złożyć hołd",
-    "level": "C1",
-    "tags": ["phrase"],
-    "examples": ["He pledged fealty to the king."]
-  },
-  {
-    "id": "w43",
-    "eng": "scullion",
-    "ru": "кухонный слуга",
-    "pl": "pomoc kuchenna",
-    "level": "C2",
-    "tags": ["archaic"],
-    "examples": ["A castle scullion."]
-  },
-  {
-    "id": "w44",
-    "eng": "feast",
-    "ru": "пир",
-    "pl": "uczta",
-    "level": "B1",
-    "tags": ["noun"],
-    "examples": ["A royal feast."]
-  },
-  {
-    "id": "w45",
-    "eng": "snigger",
-    "ru": "хихикать",
-    "pl": "chichotać",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["They sniggered quietly."]
-  },
-
-  {
-    "id": "w46",
+    "id": "w13",
     "eng": "bride",
     "ru": "невеста",
     "pl": "panna młoda",
     "level": "A2",
     "tags": ["people"],
-    "examples": ["The bride smiled."]
+    "examples": ["The bride smiled."],
+    "part_of_speech": "noun"
   },
   {
-    "id": "w47",
-    "eng": "gown",
-    "ru": "платье",
-    "pl": "suknia",
-    "level": "A2",
-    "tags": ["clothes"],
-    "examples": ["A wedding gown."]
-  },
-  {
-    "id": "w48",
-    "eng": "smuggler",
-    "ru": "контрабандист",
-    "pl": "przemytnik",
-    "level": "B2",
-    "tags": ["crime"],
-    "examples": ["A smuggler was arrested."]
-  },
-  {
-    "id": "w49",
-    "eng": "courage",
-    "ru": "мужество",
-    "pl": "odwaga",
-    "level": "B1",
-    "tags": ["abstract"],
-    "examples": ["It takes courage."]
-  },
-  {
-    "id": "w50",
-    "eng": "warlock",
-    "ru": "колдун",
-    "pl": "czarnoksiężnik",
-    "level": "C1",
-    "tags": ["fantasy"],
-    "examples": ["A powerful warlock."]
-  },
-
-  {
-    "id": "w51",
-    "eng": "succumb",
-    "ru": "поддаваться",
-    "pl": "ulec",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["He succumbed to pressure."]
-  },
-  {
-    "id": "w52",
-    "eng": "shrewd",
-    "ru": "проницательный",
-    "pl": "przebiegły",
-    "level": "C1",
-    "tags": ["adjective"],
-    "examples": ["A shrewd decision."]
-  },
-  {
-    "id": "w53",
-    "eng": "distinction",
-    "ru": "различие",
-    "pl": "rozróżnienie",
-    "level": "C1",
-    "tags": ["abstract"],
-    "examples": ["Make a clear distinction."]
-  },
-  {
-    "id": "w54",
-    "eng": "shove",
-    "ru": "толкать",
-    "pl": "pchać",
-    "level": "B1",
-    "tags": ["verb"],
-    "examples": ["He shoved the door."]
-  },
-  {
-    "id": "w55",
-    "eng": "spear",
-    "ru": "копьё",
-    "pl": "włócznia",
-    "level": "B2",
-    "tags": ["weapon"],
-    "examples": ["He held a spear."]
-  },
-
-  {
-    "id": "w56",
+    "id": "w14",
     "eng": "dove",
     "ru": "голубь",
     "pl": "gołąb",
     "level": "A2",
     "tags": ["animal"],
-    "examples": ["A white dove."]
+    "examples": ["A white dove."],
+    "part_of_speech": "noun"
   },
   {
-    "id": "w57",
-    "eng": "squire",
-    "ru": "оруженосец",
-    "pl": "giermek",
-    "level": "C1",
-    "tags": ["archaic"],
-    "examples": ["A knight and his squire."]
+    "id": "w15",
+    "eng": "eager",
+    "ru": "жаждущий",
+    "pl": "chętny",
+    "level": "B1",
+    "tags": ["adjective"],
+    "examples": ["He is eager to learn."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w58",
-    "eng": "constraint",
-    "ru": "ограничение",
-    "pl": "ograniczenie",
-    "level": "C1",
-    "tags": ["abstract"],
-    "examples": ["Time constraints."]
+    "id": "w16",
+    "eng": "oath",
+    "ru": "клятва",
+    "pl": "przysięga",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["He took an oath."],
+    "part_of_speech": "noun"
   },
   {
-    "id": "w59",
-    "eng": "endure",
-    "ru": "выдерживать",
-    "pl": "znosić",
-    "level": "B2",
+    "id": "w17",
+    "eng": "mischief",
+    "ru": "шалость",
+    "pl": "psota",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["The kids caused mischief."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w18",
+    "eng": "exaggerate",
+    "ru": "преувеличивать",
+    "pl": "przesadzać",
+    "level": "B1",
     "tags": ["verb"],
-    "examples": ["Endure the pain."]
+    "examples": ["He tends to exaggerate."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w60",
-    "eng": "grieve",
-    "ru": "скорбеть",
-    "pl": "opłakiwać",
-    "level": "B2",
-    "tags": ["emotion"],
-    "examples": ["She grieved deeply."]
+    "id": "w19",
+    "eng": "convinced",
+    "ru": "убеждённый",
+    "pl": "przekonany",
+    "level": "B1",
+    "tags": ["adjective"],
+    "examples": ["I was convinced he was right."],
+    "part_of_speech": "adjective"
   },
-
   {
-    "id": "w61",
+    "id": "w20",
+    "eng": "accustomed to",
+    "ru": "привыкший к",
+    "pl": "przyzwyczajony do",
+    "level": "B1",
+    "tags": ["phrase"],
+    "examples": ["I am accustomed to the cold."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w21",
+    "eng": "carve",
+    "ru": "вырезать",
+    "pl": "rzeźbić",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["He carved the wood."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w22",
+    "eng": "particularly",
+    "ru": "особенно",
+    "pl": "szczególnie",
+    "level": "B1",
+    "tags": ["adverb"],
+    "examples": ["I like it particularly."],
+    "part_of_speech": "adverb"
+  },
+  {
+    "id": "w23",
+    "eng": "leisure",
+    "ru": "досуг",
+    "pl": "wypoczynek",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["Leisure time is important."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w24",
+    "eng": "feast",
+    "ru": "пир",
+    "pl": "uczta",
+    "level": "B1",
+    "tags": ["noun"],
+    "examples": ["A royal feast."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w25",
+    "eng": "courage",
+    "ru": "мужество",
+    "pl": "odwaga",
+    "level": "B1",
+    "tags": ["abstract"],
+    "examples": ["It takes courage."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w26",
+    "eng": "shove",
+    "ru": "толкать",
+    "pl": "pchać",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["He shoved the door."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w27",
     "eng": "parentheses",
     "ru": "скобки",
     "pl": "nawiasy",
     "level": "B1",
     "tags": ["grammar"],
-    "examples": ["Use parentheses correctly."]
+    "examples": ["Use parentheses correctly."],
+    "part_of_speech": "noun"
   },
   {
-    "id": "w62",
+    "id": "w28",
     "eng": "adapt",
     "ru": "адаптироваться",
     "pl": "dostosować się",
     "level": "B1",
     "tags": ["verb"],
-    "examples": ["You must adapt quickly."]
+    "examples": ["You must adapt quickly."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w63",
+    "id": "w29",
     "eng": "anxious",
     "ru": "тревожный",
     "pl": "zaniepokojony",
     "level": "B1",
     "tags": ["emotion"],
-    "examples": ["She feels anxious."]
+    "examples": ["She feels anxious."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w64",
+    "id": "w30",
     "eng": "boost",
     "ru": "повышать",
     "pl": "zwiększać",
     "level": "B1",
     "tags": ["verb"],
-    "examples": ["This will boost productivity."]
+    "examples": ["This will boost productivity."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w65",
-    "eng": "collapse",
-    "ru": "обрушиться",
-    "pl": "zawalić się",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["The building collapsed."]
-  },
-  {
-    "id": "w66",
-    "eng": "commitment",
-    "ru": "обязательство",
-    "pl": "zobowiązanie",
-    "level": "B2",
-    "tags": ["abstract"],
-    "examples": ["It requires commitment."]
-  },
-
-  {
-    "id": "w67",
-    "eng": "contemplate",
-    "ru": "обдумывать",
-    "pl": "rozważać",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["She contemplated leaving."]
-  },
-  {
-    "id": "w68",
-    "eng": "controversy",
-    "ru": "спор",
-    "pl": "kontrowersja",
-    "level": "C1",
-    "tags": ["abstract"],
-    "examples": ["The issue caused controversy."]
-  },
-  {
-    "id": "w69",
-    "eng": "devastate",
-    "ru": "разрушать",
-    "pl": "dewastować",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["The storm devastated the town."]
-  },
-  {
-    "id": "w70",
-    "eng": "diligent",
-    "ru": "усердный",
-    "pl": "sumienny",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["She is diligent at work."]
-  },
-  {
-    "id": "w71",
+    "id": "w31",
     "eng": "embarrassed",
     "ru": "смущённый",
     "pl": "zawstydzony",
     "level": "B1",
     "tags": ["emotion"],
-    "examples": ["He felt embarrassed."]
-  },
-
-  {
-    "id": "w72",
-    "eng": "enhance",
-    "ru": "улучшать",
-    "pl": "ulepszać",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["This will enhance quality."]
+    "examples": ["He felt embarrassed."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w73",
+    "id": "w32",
     "eng": "frustrated",
     "ru": "разочарованный",
     "pl": "sfrustrowany",
     "level": "B1",
     "tags": ["emotion"],
-    "examples": ["She was frustrated."]
+    "examples": ["She was frustrated."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w74",
-    "eng": "inevitable",
-    "ru": "неизбежный",
-    "pl": "nieunikniony",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["Change is inevitable."]
-  },
-  {
-    "id": "w75",
-    "eng": "justify",
-    "ru": "оправдывать",
-    "pl": "uzasadniać",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["How do you justify this?"]
-  },
-  {
-    "id": "w76",
-    "eng": "linger",
-    "ru": "задерживаться",
-    "pl": "pozostawać",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["The smell lingered."]
-  },
-
-  {
-    "id": "w77",
-    "eng": "notion",
-    "ru": "понятие",
-    "pl": "pojęcie",
-    "level": "B2",
-    "tags": ["abstract"],
-    "examples": ["A strange notion."]
-  },
-  {
-    "id": "w78",
-    "eng": "overwhelm",
-    "ru": "переполнять",
-    "pl": "przytłaczać",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["The task overwhelmed him."]
-  },
-  {
-    "id": "w79",
-    "eng": "persist",
-    "ru": "упорствовать",
-    "pl": "trwać",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["The problem persists."]
-  },
-  {
-    "id": "w80",
-    "eng": "reluctant",
-    "ru": "неохотный",
-    "pl": "niechętny",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["He was reluctant to agree."]
-  },
-  {
-    "id": "w81",
-    "eng": "resilient",
-    "ru": "устойчивый",
-    "pl": "odporny",
-    "level": "C1",
-    "tags": ["adjective"],
-    "examples": ["She is very resilient."]
-  },
-
-  {
-    "id": "w82",
-    "eng": "scarce",
-    "ru": "редкий",
-    "pl": "rzadki",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["Resources are scarce."]
-  },
-  {
-    "id": "w83",
-    "eng": "scrutinize",
-    "ru": "тщательно изучать",
-    "pl": "analizować",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["Scrutinize the details."]
-  },
-  {
-    "id": "w84",
-    "eng": "subtle",
-    "ru": "тонкий",
-    "pl": "subtelny",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["A subtle difference."]
-  },
-  {
-    "id": "w85",
-    "eng": "sustain",
-    "ru": "поддерживать",
-    "pl": "utrzymywać",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["Sustain the effort."]
-  },
-  {
-    "id": "w86",
+    "id": "w33",
     "eng": "tension",
     "ru": "напряжение",
     "pl": "napięcie",
     "level": "B1",
     "tags": ["abstract"],
-    "examples": ["There is tension in the room."]
-  },
-
-  {
-    "id": "w87",
-    "eng": "thorough",
-    "ru": "тщательный",
-    "pl": "dokładny",
-    "level": "B2",
-    "tags": ["adjective"],
-    "examples": ["A thorough check."]
+    "examples": ["There is tension in the room."],
+    "part_of_speech": "noun"
   },
   {
-    "id": "w88",
+    "id": "w34",
     "eng": "uncertain",
     "ru": "неуверенный",
     "pl": "niepewny",
     "level": "B1",
     "tags": ["adjective"],
-    "examples": ["The future is uncertain."]
+    "examples": ["The future is uncertain."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w89",
+    "id": "w35",
     "eng": "vital",
     "ru": "жизненно важный",
     "pl": "istotny",
     "level": "B1",
     "tags": ["adjective"],
-    "examples": ["This is vital information."]
+    "examples": ["This is vital information."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w90",
-    "eng": "withdraw",
-    "ru": "отступать",
-    "pl": "wycofać się",
-    "level": "B2",
-    "tags": ["verb"],
-    "examples": ["He withdrew from the deal."]
-  },
-
-  {
-    "id": "w91",
-    "eng": "yield",
-    "ru": "уступать",
-    "pl": "ustępować",
-    "level": "C1",
-    "tags": ["verb"],
-    "examples": ["Yield to pressure."]
-  },
-  {
-    "id": "w92",
-    "eng": "zeal",
-    "ru": "рвение",
-    "pl": "zapał",
-    "level": "C1",
-    "tags": ["abstract"],
-    "examples": ["He worked with zeal."]
-  },
-  {
-    "id": "w93",
-    "eng": "accountable",
-    "ru": "ответственный",
-    "pl": "odpowiedzialny",
-    "level": "C1",
-    "tags": ["adjective"],
-    "examples": ["Hold them accountable."]
-  },
-  {
-    "id": "w94",
-    "eng": "bias",
-    "ru": "предвзятость",
-    "pl": "stronniczość",
-    "level": "C1",
-    "tags": ["abstract"],
-    "examples": ["Media bias exists."]
-  },
-  {
-    "id": "w95",
+    "id": "w36",
     "eng": "clarify",
     "ru": "прояснять",
     "pl": "wyjaśniać",
     "level": "B1",
     "tags": ["verb"],
-    "examples": ["Let me clarify this."]
+    "examples": ["Let me clarify this."],
+    "part_of_speech": "verb"
   },
-
   {
-    "id": "w96",
+    "id": "w37",
+    "eng": "aye",
+    "ru": "да (устар.)",
+    "pl": "tak",
+    "level": "B2",
+    "tags": ["archaic"],
+    "examples": ["Aye, sir."],
+    "part_of_speech": "interjection"
+  },
+  {
+    "id": "w38",
+    "eng": "species",
+    "ru": "вид",
+    "pl": "gatunek",
+    "level": "B2",
+    "tags": ["science"],
+    "examples": ["This species is rare."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w39",
+    "eng": "incorporate",
+    "ru": "включать",
+    "pl": "włączać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["We should incorporate feedback."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w40",
+    "eng": "jittery",
+    "ru": "нервный",
+    "pl": "nerwowy",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["She felt jittery."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w41",
+    "eng": "thrive on",
+    "ru": "процветать благодаря",
+    "pl": "rozwijać się dzięki",
+    "level": "B2",
+    "tags": ["phrase"],
+    "examples": ["She thrives on challenges."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w42",
+    "eng": "fall into a rut",
+    "ru": "застрять в рутине",
+    "pl": "wpaść w rutynę",
+    "level": "B2",
+    "tags": ["idiom"],
+    "examples": ["I fell into a rut."],
+    "part_of_speech": "idiom"
+  },
+  {
+    "id": "w43",
+    "eng": "blasting",
+    "ru": "взрывной",
+    "pl": "wybuchowy",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["Blasting noise."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w44",
+    "eng": "go hand in hand",
+    "ru": "идти рука об руку",
+    "pl": "iść w parze",
+    "level": "B2",
+    "tags": ["idiom"],
+    "examples": ["Success and effort go hand in hand."],
+    "part_of_speech": "idiom"
+  },
+  {
+    "id": "w45",
+    "eng": "ring a bell",
+    "ru": "звучать знакомо",
+    "pl": "brzmieć znajomo",
+    "level": "B2",
+    "tags": ["idiom"],
+    "examples": ["Does this ring a bell?"],
+    "part_of_speech": "idiom"
+  },
+  {
+    "id": "w46",
+    "eng": "circumstances",
+    "ru": "обстоятельства",
+    "pl": "okoliczności",
+    "level": "B2",
+    "tags": ["abstract"],
+    "examples": ["Under these circumstances."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w47",
+    "eng": "whiz",
+    "ru": "ас",
+    "pl": "as",
+    "level": "B2",
+    "tags": ["slang"],
+    "examples": ["He is a math whiz."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w48",
+    "eng": "ridge",
+    "ru": "хребет",
+    "pl": "grzbiet",
+    "level": "B2",
+    "tags": ["nature"],
+    "examples": ["A mountain ridge."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w49",
+    "eng": "snigger",
+    "ru": "хихикать",
+    "pl": "chichotać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["They sniggered quietly."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w50",
+    "eng": "smuggler",
+    "ru": "контрабандист",
+    "pl": "przemytnik",
+    "level": "B2",
+    "tags": ["crime"],
+    "examples": ["A smuggler was arrested."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w51",
+    "eng": "spear",
+    "ru": "копьё",
+    "pl": "włócznia",
+    "level": "B2",
+    "tags": ["weapon"],
+    "examples": ["He held a spear."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w52",
+    "eng": "endure",
+    "ru": "выдерживать",
+    "pl": "znosić",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["Endure the pain."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w53",
+    "eng": "grieve",
+    "ru": "скорбеть",
+    "pl": "opłakiwać",
+    "level": "B2",
+    "tags": ["emotion"],
+    "examples": ["She grieved deeply."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w54",
+    "eng": "collapse",
+    "ru": "обрушиться",
+    "pl": "zawalić się",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["The building collapsed."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w55",
+    "eng": "commitment",
+    "ru": "обязательство",
+    "pl": "zobowiązanie",
+    "level": "B2",
+    "tags": ["abstract"],
+    "examples": ["It requires commitment."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w56",
+    "eng": "diligent",
+    "ru": "усердный",
+    "pl": "sumienny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["She is diligent at work."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w57",
+    "eng": "enhance",
+    "ru": "улучшать",
+    "pl": "ulepszać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["This will enhance quality."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w58",
+    "eng": "inevitable",
+    "ru": "неизбежный",
+    "pl": "nieunikniony",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["Change is inevitable."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w59",
+    "eng": "justify",
+    "ru": "оправдывать",
+    "pl": "uzasadniać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["How do you justify this?"],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w60",
+    "eng": "notion",
+    "ru": "понятие",
+    "pl": "pojęcie",
+    "level": "B2",
+    "tags": ["abstract"],
+    "examples": ["A strange notion."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w61",
+    "eng": "overwhelm",
+    "ru": "переполнять",
+    "pl": "przytłaczać",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["The task overwhelmed him."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w62",
+    "eng": "reluctant",
+    "ru": "неохотный",
+    "pl": "niechętny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["He was reluctant to agree."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w63",
+    "eng": "scarce",
+    "ru": "редкий",
+    "pl": "rzadki",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["Resources are scarce."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w64",
+    "eng": "subtle",
+    "ru": "тонкий",
+    "pl": "subtelny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["A subtle difference."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w65",
+    "eng": "thorough",
+    "ru": "тщательный",
+    "pl": "dokładny",
+    "level": "B2",
+    "tags": ["adjective"],
+    "examples": ["A thorough check."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w66",
+    "eng": "withdraw",
+    "ru": "отступать",
+    "pl": "wycofać się",
+    "level": "B2",
+    "tags": ["verb"],
+    "examples": ["He withdrew from the deal."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w67",
     "eng": "dismiss",
     "ru": "отклонять",
     "pl": "odrzucać",
     "level": "B2",
     "tags": ["verb"],
-    "examples": ["The case was dismissed."]
+    "examples": ["The case was dismissed."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w97",
+    "id": "w68",
+    "eng": "interbreed",
+    "ru": "скрещиваться",
+    "pl": "krzyżować się",
+    "level": "C1",
+    "tags": ["science"],
+    "examples": ["The animals can interbreed."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w69",
+    "eng": "coherence",
+    "ru": "связность",
+    "pl": "spójność",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["The argument lacks coherence."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w70",
+    "eng": "inducing",
+    "ru": "вызывающий",
+    "pl": "wywołujący",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["Stress-inducing work."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w71",
+    "eng": "backlash",
+    "ru": "резкая негативная реакция",
+    "pl": "sprzeciw / reakcja negatywna",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["The decision caused a public backlash."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w72",
+    "eng": "it takes a village",
+    "ru": "нужна поддержка общества",
+    "pl": "potrzeba całej społeczności",
+    "level": "C1",
+    "tags": ["idiom"],
+    "examples": ["It takes a village to raise a child."],
+    "part_of_speech": "idiom"
+  },
+  {
+    "id": "w73",
+    "eng": "unforeseen",
+    "ru": "непредвиденный",
+    "pl": "nieprzewidziany",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["Unforeseen events."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w74",
+    "eng": "reprimand",
+    "ru": "выговор",
+    "pl": "nagana",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["He was reprimanded."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w75",
+    "eng": "heinous",
+    "ru": "чудовищный",
+    "pl": "odrażający",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["A heinous crime."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w76",
+    "eng": "mitigate",
+    "ru": "смягчать",
+    "pl": "łagodzić",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Mitigate the risks."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w77",
+    "eng": "pledge fealty",
+    "ru": "присягать на верность",
+    "pl": "złożyć hołd",
+    "level": "C1",
+    "tags": ["phrase"],
+    "examples": ["He pledged fealty to the king."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w78",
+    "eng": "warlock",
+    "ru": "колдун",
+    "pl": "czarnoksiężnik",
+    "level": "C1",
+    "tags": ["fantasy"],
+    "examples": ["A powerful warlock."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w79",
+    "eng": "succumb",
+    "ru": "поддаваться",
+    "pl": "ulec",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["He succumbed to pressure."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w80",
+    "eng": "shrewd",
+    "ru": "проницательный",
+    "pl": "przebiegły",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["A shrewd decision."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w81",
+    "eng": "distinction",
+    "ru": "различие",
+    "pl": "rozróżnienie",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["Make a clear distinction."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w82",
+    "eng": "squire",
+    "ru": "оруженосец",
+    "pl": "giermek",
+    "level": "C1",
+    "tags": ["archaic"],
+    "examples": ["A knight and his squire."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w83",
+    "eng": "constraint",
+    "ru": "ограничение",
+    "pl": "ograniczenie",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["Time constraints."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w84",
+    "eng": "contemplate",
+    "ru": "обдумывать",
+    "pl": "rozważać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["She contemplated leaving."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w85",
+    "eng": "controversy",
+    "ru": "спор",
+    "pl": "kontrowersja",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["The issue caused controversy."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w86",
+    "eng": "devastate",
+    "ru": "разрушать",
+    "pl": "dewastować",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["The storm devastated the town."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w87",
+    "eng": "linger",
+    "ru": "задерживаться",
+    "pl": "pozostawać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["The smell lingered."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w88",
+    "eng": "persist",
+    "ru": "упорствовать",
+    "pl": "trwać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["The problem persists."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w89",
+    "eng": "resilient",
+    "ru": "устойчивый",
+    "pl": "odporny",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["She is very resilient."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w90",
+    "eng": "scrutinize",
+    "ru": "тщательно изучать",
+    "pl": "analizować",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Scrutinize the details."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w91",
+    "eng": "sustain",
+    "ru": "поддерживать",
+    "pl": "utrzymywać",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Sustain the effort."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w92",
+    "eng": "yield",
+    "ru": "уступать",
+    "pl": "ustępować",
+    "level": "C1",
+    "tags": ["verb"],
+    "examples": ["Yield to pressure."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w93",
+    "eng": "zeal",
+    "ru": "рвение",
+    "pl": "zapał",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["He worked with zeal."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w94",
+    "eng": "accountable",
+    "ru": "ответственный",
+    "pl": "odpowiedzialny",
+    "level": "C1",
+    "tags": ["adjective"],
+    "examples": ["Hold them accountable."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w95",
+    "eng": "bias",
+    "ru": "предвзятость",
+    "pl": "stronniczość",
+    "level": "C1",
+    "tags": ["abstract"],
+    "examples": ["Media bias exists."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w96",
     "eng": "exploit",
     "ru": "использовать",
     "pl": "wykorzystywać",
     "level": "C1",
     "tags": ["verb"],
-    "examples": ["Exploit the opportunity."]
+    "examples": ["Exploit the opportunity."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w98",
+    "id": "w97",
     "eng": "noteworthy",
     "ru": "примечательный",
     "pl": "godny uwagi",
     "level": "C1",
     "tags": ["adjective"],
-    "examples": ["A noteworthy achievement."]
+    "examples": ["A noteworthy achievement."],
+    "part_of_speech": "adjective"
   },
   {
-    "id": "w99",
+    "id": "w98",
     "eng": "prevail",
     "ru": "восторжествовать",
     "pl": "zwyciężyć",
     "level": "C1",
     "tags": ["verb"],
-    "examples": ["Justice will prevail."]
+    "examples": ["Justice will prevail."],
+    "part_of_speech": "verb"
   },
   {
-    "id": "w100",
+    "id": "w99",
     "eng": "withstand",
     "ru": "выдерживать",
     "pl": "wytrzymać",
     "level": "C1",
     "tags": ["verb"],
-    "examples": ["Withstand the pressure."]
+    "examples": ["Withstand the pressure."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w100",
+    "eng": "scullion",
+    "ru": "кухонный слуга",
+    "pl": "pomoc kuchenna",
+    "level": "C2",
+    "tags": ["archaic"],
+    "examples": ["A castle scullion."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w101",
+    "eng": "book",
+    "ru": "книга",
+    "pl": "książka",
+    "level": "A1",
+    "tags": ["noun", "object"],
+    "examples": ["I read a book."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w102",
+    "eng": "pen",
+    "ru": "ручка",
+    "pl": "długopis",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["I have a pen."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w103",
+    "eng": "table",
+    "ru": "стол",
+    "pl": "stół",
+    "level": "A1",
+    "tags": ["furniture"],
+    "examples": ["The book is on the table."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w104",
+    "eng": "chair",
+    "ru": "стул",
+    "pl": "krzesło",
+    "level": "A1",
+    "tags": ["furniture"],
+    "examples": ["Please sit on the chair."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w105",
+    "eng": "door",
+    "ru": "дверь",
+    "pl": "drzwi",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["Close the door."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w106",
+    "eng": "window",
+    "ru": "окно",
+    "pl": "okno",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["Open the window."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w107",
+    "eng": "school",
+    "ru": "школа",
+    "pl": "szkoła",
+    "level": "A1",
+    "tags": ["education"],
+    "examples": ["The children go to school."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w108",
+    "eng": "teacher",
+    "ru": "учитель",
+    "pl": "nauczyciel",
+    "level": "A1",
+    "tags": ["people", "education"],
+    "examples": ["The teacher is kind."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w109",
+    "eng": "student",
+    "ru": "студент",
+    "pl": "student",
+    "level": "A1",
+    "tags": ["people", "education"],
+    "examples": ["The student studies hard."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w110",
+    "eng": "city",
+    "ru": "город",
+    "pl": "miasto",
+    "level": "A1",
+    "tags": ["place"],
+    "examples": ["He lives in the city."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w111",
+    "eng": "country",
+    "ru": "страна",
+    "pl": "kraj",
+    "level": "A1",
+    "tags": ["place"],
+    "examples": ["My country is beautiful."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w112",
+    "eng": "car",
+    "ru": "машина",
+    "pl": "samochód",
+    "level": "A1",
+    "tags": ["transport"],
+    "examples": ["I drive a car."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w113",
+    "eng": "bus",
+    "ru": "автобус",
+    "pl": "autobus",
+    "level": "A1",
+    "tags": ["transport"],
+    "examples": ["Take the bus to work."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w114",
+    "eng": "train",
+    "ru": "поезд",
+    "pl": "pociąg",
+    "level": "A1",
+    "tags": ["transport"],
+    "examples": ["The train is late."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w115",
+    "eng": "airport",
+    "ru": "аэропорт",
+    "pl": "lotnisko",
+    "level": "A1",
+    "tags": ["place", "travel"],
+    "examples": ["We arrive at the airport."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w116",
+    "eng": "ticket",
+    "ru": "билет",
+    "pl": "bilet",
+    "level": "A1",
+    "tags": ["travel"],
+    "examples": ["Buy a ticket."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w117",
+    "eng": "eat",
+    "ru": "есть",
+    "pl": "jeść",
+    "level": "A1",
+    "tags": ["verb", "daily"],
+    "examples": ["I eat breakfast."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w118",
+    "eng": "drink",
+    "ru": "пить",
+    "pl": "pić",
+    "level": "A1",
+    "tags": ["verb", "daily"],
+    "examples": ["I drink water."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w119",
+    "eng": "sleep",
+    "ru": "спать",
+    "pl": "spać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["I sleep eight hours."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w120",
+    "eng": "wake up",
+    "ru": "просыпаться",
+    "pl": "budzić się",
+    "level": "A1",
+    "tags": ["phrasal verb"],
+    "examples": ["I wake up at seven."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w121",
+    "eng": "run",
+    "ru": "бегать",
+    "pl": "biegać",
+    "level": "A1",
+    "tags": ["verb", "sport"],
+    "examples": ["He runs every morning."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w122",
+    "eng": "walk",
+    "ru": "ходить",
+    "pl": "chodzić",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["We walk to school."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w123",
+    "eng": "swim",
+    "ru": "плавать",
+    "pl": "pływać",
+    "level": "A1",
+    "tags": ["verb", "sport"],
+    "examples": ["She can swim well."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w124",
+    "eng": "cook",
+    "ru": "готовить",
+    "pl": "gotować",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["I cook dinner."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w125",
+    "eng": "clean",
+    "ru": "чистить",
+    "pl": "sprzątać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["They clean the house."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w126",
+    "eng": "buy",
+    "ru": "покупать",
+    "pl": "kupić",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["I buy groceries."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w127",
+    "eng": "sell",
+    "ru": "продавать",
+    "pl": "sprzedawać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["She sells fruit."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w128",
+    "eng": "open",
+    "ru": "открывать",
+    "pl": "otwierać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["Open the box."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w129",
+    "eng": "close",
+    "ru": "закрывать",
+    "pl": "zamykać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["Close the window."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w130",
+    "eng": "read",
+    "ru": "читать",
+    "pl": "czytać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["I read the news."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w131",
+    "eng": "write",
+    "ru": "писать",
+    "pl": "pisać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["Write your name."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w132",
+    "eng": "listen",
+    "ru": "слушать",
+    "pl": "słuchać",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["Listen to the teacher."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w133",
+    "eng": "speak",
+    "ru": "говорить",
+    "pl": "mówić",
+    "level": "A1",
+    "tags": ["verb"],
+    "examples": ["Speak slowly."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w134",
+    "eng": "big",
+    "ru": "большой",
+    "pl": "duży",
+    "level": "A1",
+    "tags": ["adjective"],
+    "examples": ["This house is big."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w135",
+    "eng": "small",
+    "ru": "маленький",
+    "pl": "mały",
+    "level": "A1",
+    "tags": ["adjective"],
+    "examples": ["A small dog."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w136",
+    "eng": "hot",
+    "ru": "горячий",
+    "pl": "gorący",
+    "level": "A1",
+    "tags": ["adjective"],
+    "examples": ["The soup is hot."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w137",
+    "eng": "cold",
+    "ru": "холодный",
+    "pl": "zimny",
+    "level": "A1",
+    "tags": ["adjective"],
+    "examples": ["It is cold today."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w138",
+    "eng": "good",
+    "ru": "хороший",
+    "pl": "dobry",
+    "level": "A1",
+    "tags": ["adjective"],
+    "examples": ["This is a good idea."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w139",
+    "eng": "bad",
+    "ru": "плохой",
+    "pl": "zły",
+    "level": "A1",
+    "tags": ["adjective"],
+    "examples": ["That was a bad mistake."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w140",
+    "eng": "happy",
+    "ru": "счастливый",
+    "pl": "szczęśliwy",
+    "level": "A1",
+    "tags": ["adjective", "emotion"],
+    "examples": ["She is happy."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w141",
+    "eng": "sad",
+    "ru": "грустный",
+    "pl": "smutny",
+    "level": "A1",
+    "tags": ["adjective", "emotion"],
+    "examples": ["He feels sad."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w142",
+    "eng": "money",
+    "ru": "деньги",
+    "pl": "pieniądze",
+    "level": "A1",
+    "tags": ["noun", "finance"],
+    "examples": ["I need money."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w143",
+    "eng": "time",
+    "ru": "время",
+    "pl": "czas",
+    "level": "A1",
+    "tags": ["noun", "abstract"],
+    "examples": ["Time flies."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w144",
+    "eng": "day",
+    "ru": "день",
+    "pl": "dzień",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["Have a nice day."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w145",
+    "eng": "night",
+    "ru": "ночь",
+    "pl": "noc",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["Good night."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w146",
+    "eng": "morning",
+    "ru": "утро",
+    "pl": "poranek",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["Good morning."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w147",
+    "eng": "evening",
+    "ru": "вечер",
+    "pl": "wieczór",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["Good evening."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w148",
+    "eng": "week",
+    "ru": "неделя",
+    "pl": "tydzień",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["There are seven days in a week."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w149",
+    "eng": "month",
+    "ru": "месяц",
+    "pl": "miesiąc",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["I visit every month."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w150",
+    "eng": "year",
+    "ru": "год",
+    "pl": "rok",
+    "level": "A1",
+    "tags": ["noun", "time"],
+    "examples": ["Happy New Year!"],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w151",
+    "eng": "weather",
+    "ru": "погода",
+    "pl": "pogoda",
+    "level": "A1",
+    "tags": ["noun", "nature"],
+    "examples": ["The weather is nice."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w152",
+    "eng": "phone",
+    "ru": "телефон",
+    "pl": "telefon",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["Call me on my phone."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w153",
+    "eng": "computer",
+    "ru": "компьютер",
+    "pl": "komputer",
+    "level": "A1",
+    "tags": ["object", "tech"],
+    "examples": ["I use a computer."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w154",
+    "eng": "internet",
+    "ru": "интернет",
+    "pl": "internet",
+    "level": "A1",
+    "tags": ["tech"],
+    "examples": ["I browse the internet."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w155",
+    "eng": "email",
+    "ru": "электронная почта",
+    "pl": "e-mail",
+    "level": "A1",
+    "tags": ["tech"],
+    "examples": ["Send an email."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w156",
+    "eng": "password",
+    "ru": "пароль",
+    "pl": "hasło",
+    "level": "A1",
+    "tags": ["tech", "security"],
+    "examples": ["Enter your password."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w157",
+    "eng": "username",
+    "ru": "имя пользователя",
+    "pl": "nazwa użytkownika",
+    "level": "A1",
+    "tags": ["tech"],
+    "examples": ["Type your username."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w158",
+    "eng": "account",
+    "ru": "аккаунт",
+    "pl": "konto",
+    "level": "A1",
+    "tags": ["tech"],
+    "examples": ["Create an account."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w159",
+    "eng": "family member",
+    "ru": "член семьи",
+    "pl": "członek rodziny",
+    "level": "A2",
+    "tags": ["people", "family"],
+    "examples": ["She is a family member."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w160",
+    "eng": "child",
+    "ru": "ребёнок",
+    "pl": "dziecko",
+    "level": "A1",
+    "tags": ["people"],
+    "examples": ["The child is playing."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w161",
+    "eng": "baby",
+    "ru": "младенец",
+    "pl": "niemowlę",
+    "level": "A1",
+    "tags": ["people"],
+    "examples": ["The baby is sleeping."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w162",
+    "eng": "mother",
+    "ru": "мать",
+    "pl": "matka",
+    "level": "A1",
+    "tags": ["people", "family"],
+    "examples": ["My mother cooks well."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w163",
+    "eng": "father",
+    "ru": "отец",
+    "pl": "ojciec",
+    "level": "A1",
+    "tags": ["people", "family"],
+    "examples": ["My father works hard."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w164",
+    "eng": "sister",
+    "ru": "сестра",
+    "pl": "siostra",
+    "level": "A1",
+    "tags": ["people", "family"],
+    "examples": ["My sister studies law."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w165",
+    "eng": "brother",
+    "ru": "брат",
+    "pl": "brat",
+    "level": "A1",
+    "tags": ["people", "family"],
+    "examples": ["My brother is older."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w166",
+    "eng": "mother-in-law",
+    "ru": "тёща / свекровь",
+    "pl": "teściowa",
+    "level": "A2",
+    "tags": ["family"],
+    "examples": ["My mother-in-law visits."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w167",
+    "eng": "father-in-law",
+    "ru": "тесть / свёкор",
+    "pl": "teść",
+    "level": "A2",
+    "tags": ["family"],
+    "examples": ["His father-in-law is kind."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w168",
+    "eng": "uncle",
+    "ru": "дядя",
+    "pl": "wujek",
+    "level": "A1",
+    "tags": ["family"],
+    "examples": ["My uncle told a story."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w169",
+    "eng": "aunt",
+    "ru": "тётя",
+    "pl": "ciotka",
+    "level": "A1",
+    "tags": ["family"],
+    "examples": ["My aunt lives nearby."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w170",
+    "eng": "cousin",
+    "ru": "двоюродный брат/сестра",
+    "pl": "kuzyn/kuzynka",
+    "level": "A1",
+    "tags": ["family"],
+    "examples": ["My cousin is visiting."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w171",
+    "eng": "friendship",
+    "ru": "дружба",
+    "pl": "przyjaźń",
+    "level": "A2",
+    "tags": ["abstract", "people"],
+    "examples": ["Their friendship is strong."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w172",
+    "eng": "neighbor",
+    "ru": "сосед",
+    "pl": "sąsiad",
+    "level": "A1",
+    "tags": ["people"],
+    "examples": ["Our neighbor is helpful."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w173",
+    "eng": "garden",
+    "ru": "сад",
+    "pl": "ogród",
+    "level": "A1",
+    "tags": ["place", "nature"],
+    "examples": ["She waters the garden."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w174",
+    "eng": "kitchen",
+    "ru": "кухня",
+    "pl": "kuchnia",
+    "level": "A1",
+    "tags": ["place"],
+    "examples": ["The kitchen is clean."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w175",
+    "eng": "bathroom",
+    "ru": "ванная",
+    "pl": "łazienka",
+    "level": "A1",
+    "tags": ["place"],
+    "examples": ["The bathroom is upstairs."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w176",
+    "eng": "bedroom",
+    "ru": "спальня",
+    "pl": "sypialnia",
+    "level": "A1",
+    "tags": ["place"],
+    "examples": ["My bedroom is small."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w177",
+    "eng": "living room",
+    "ru": "гостиная",
+    "pl": "salon",
+    "level": "A1",
+    "tags": ["place"],
+    "examples": ["We watch TV in the living room."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w178",
+    "eng": "garage",
+    "ru": "гараж",
+    "pl": "garaż",
+    "level": "A2",
+    "tags": ["place"],
+    "examples": ["Park the car in the garage."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w179",
+    "eng": "balcony",
+    "ru": "балкон",
+    "pl": "balkon",
+    "level": "A2",
+    "tags": ["place"],
+    "examples": ["They sit on the balcony."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w180",
+    "eng": "roof",
+    "ru": "крыша",
+    "pl": "dach",
+    "level": "A2",
+    "tags": ["place", "object"],
+    "examples": ["The roof is red."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w181",
+    "eng": "floor",
+    "ru": "пол",
+    "pl": "podłoga",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["Wipe the floor."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w182",
+    "eng": "ceiling",
+    "ru": "потолок",
+    "pl": "sufit",
+    "level": "A2",
+    "tags": ["object"],
+    "examples": ["The ceiling is high."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w183",
+    "eng": "lamp",
+    "ru": "лампа",
+    "pl": "lampa",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["Turn on the lamp."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w184",
+    "eng": "mirror",
+    "ru": "зеркало",
+    "pl": "lustro",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["Look in the mirror."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w185",
+    "eng": "photo",
+    "ru": "фото",
+    "pl": "zdjęcie",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["This is a family photo."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w186",
+    "eng": "music",
+    "ru": "музыка",
+    "pl": "muzyka",
+    "level": "A1",
+    "tags": ["noun", "art"],
+    "examples": ["I like this music."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w187",
+    "eng": "song",
+    "ru": "песня",
+    "pl": "piosenka",
+    "level": "A1",
+    "tags": ["noun", "art"],
+    "examples": ["That song is popular."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w188",
+    "eng": "dance",
+    "ru": "танцевать",
+    "pl": "tańczyć",
+    "level": "A1",
+    "tags": ["verb", "art"],
+    "examples": ["They dance together."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w189",
+    "eng": "movie",
+    "ru": "фильм",
+    "pl": "film",
+    "level": "A1",
+    "tags": ["noun", "entertainment"],
+    "examples": ["We watch a movie."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w190",
+    "eng": "theater",
+    "ru": "театр",
+    "pl": "teatr",
+    "level": "A1",
+    "tags": ["place", "entertainment"],
+    "examples": ["Go to the theater."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w191",
+    "eng": "museum",
+    "ru": "музей",
+    "pl": "muzeum",
+    "level": "A1",
+    "tags": ["place", "culture"],
+    "examples": ["Visit the museum."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w192",
+    "eng": "library",
+    "ru": "библиотека",
+    "pl": "biblioteka",
+    "level": "A1",
+    "tags": ["place", "education"],
+    "examples": ["The library is quiet."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w193",
+    "eng": "park",
+    "ru": "парк",
+    "pl": "park",
+    "level": "A1",
+    "tags": ["place", "nature"],
+    "examples": ["Let's go to the park."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w194",
+    "eng": "beach",
+    "ru": "пляж",
+    "pl": "plaża",
+    "level": "A1",
+    "tags": ["place", "nature"],
+    "examples": ["The beach is crowded."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w195",
+    "eng": "mountain",
+    "ru": "гора",
+    "pl": "góra",
+    "level": "A1",
+    "tags": ["nature"],
+    "examples": ["They climbed the mountain."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w196",
+    "eng": "river",
+    "ru": "река",
+    "pl": "rzeka",
+    "level": "A1",
+    "tags": ["nature"],
+    "examples": ["The river is wide."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w197",
+    "eng": "lake",
+    "ru": "озеро",
+    "pl": "jezioro",
+    "level": "A1",
+    "tags": ["nature"],
+    "examples": ["We swim in the lake."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w198",
+    "eng": "forest",
+    "ru": "лес",
+    "pl": "las",
+    "level": "A1",
+    "tags": ["nature"],
+    "examples": ["The forest is dense."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w199",
+    "eng": "tree",
+    "ru": "дерево",
+    "pl": "drzewo",
+    "level": "A1",
+    "tags": ["nature"],
+    "examples": ["The tree is tall."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w200",
+    "eng": "flower",
+    "ru": "цветок",
+    "pl": "kwiat",
+    "level": "A1",
+    "tags": ["nature"],
+    "examples": ["This flower smells nice."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w201",
+    "eng": "apple",
+    "ru": "яблоко",
+    "pl": "jabłko",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["I eat an apple."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w202",
+    "eng": "bread",
+    "ru": "хлеб",
+    "pl": "chleb",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["Buy some bread."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w203",
+    "eng": "milk",
+    "ru": "молоко",
+    "pl": "mleko",
+    "level": "A1",
+    "tags": ["food", "drink"],
+    "examples": ["Pour the milk."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w204",
+    "eng": "cheese",
+    "ru": "сыр",
+    "pl": "ser",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["I like cheese."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w205",
+    "eng": "meat",
+    "ru": "мясо",
+    "pl": "mięso",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["We eat meat sometimes."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w206",
+    "eng": "fish",
+    "ru": "рыба",
+    "pl": "ryba",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["He catches a fish."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w207",
+    "eng": "egg",
+    "ru": "яйцо",
+    "pl": "jajko",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["Boil an egg."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w208",
+    "eng": "salt",
+    "ru": "соль",
+    "pl": "sól",
+    "level": "A1",
+    "tags": ["food", "ingredient"],
+    "examples": ["Add a pinch of salt."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w209",
+    "eng": "sugar",
+    "ru": "сахар",
+    "pl": "cukier",
+    "level": "A1",
+    "tags": ["food", "ingredient"],
+    "examples": ["Too much sugar is unhealthy."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w210",
+    "eng": "butter",
+    "ru": "масло",
+    "pl": "masło",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["Spread butter on bread."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w211",
+    "eng": "rice",
+    "ru": "рис",
+    "pl": "ryż",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["Cook the rice."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w212",
+    "eng": "pasta",
+    "ru": "паста",
+    "pl": "makaron",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["I love pasta."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w213",
+    "eng": "soup",
+    "ru": "суп",
+    "pl": "zupa",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["Tomato soup is warm."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w214",
+    "eng": "salad",
+    "ru": "салат",
+    "pl": "sałatka",
+    "level": "A1",
+    "tags": ["food"],
+    "examples": ["Eat the salad."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w215",
+    "eng": "coffee",
+    "ru": "кофе",
+    "pl": "kawa",
+    "level": "A1",
+    "tags": ["drink"],
+    "examples": ["I drink coffee every morning."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w216",
+    "eng": "tea",
+    "ru": "чай",
+    "pl": "herbata",
+    "level": "A1",
+    "tags": ["drink"],
+    "examples": ["Would you like some tea?"],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w217",
+    "eng": "juice",
+    "ru": "сок",
+    "pl": "sok",
+    "level": "A1",
+    "tags": ["drink"],
+    "examples": ["Orange juice is tasty."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w218",
+    "eng": "breakfast",
+    "ru": "завтрак",
+    "pl": "śniadanie",
+    "level": "A1",
+    "tags": ["meal"],
+    "examples": ["I eat breakfast at seven."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w219",
+    "eng": "lunch",
+    "ru": "обед",
+    "pl": "obiad",
+    "level": "A1",
+    "tags": ["meal"],
+    "examples": ["Lunch is at noon."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w220",
+    "eng": "dinner",
+    "ru": "ужин",
+    "pl": "kolacja",
+    "level": "A1",
+    "tags": ["meal"],
+    "examples": ["We have dinner together."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w221",
+    "eng": "bicycle",
+    "ru": "велосипед",
+    "pl": "rower",
+    "level": "A1",
+    "tags": ["transport"],
+    "examples": ["She rides a bicycle."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w222",
+    "eng": "motorcycle",
+    "ru": "мотоцикл",
+    "pl": "motocykl",
+    "level": "A2",
+    "tags": ["transport"],
+    "examples": ["He owns a motorcycle."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w223",
+    "eng": "taxi",
+    "ru": "такси",
+    "pl": "taksówka",
+    "level": "A1",
+    "tags": ["transport"],
+    "examples": ["Call a taxi."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w224",
+    "eng": "map",
+    "ru": "карта",
+    "pl": "mapa",
+    "level": "A1",
+    "tags": ["object", "travel"],
+    "examples": ["Look at the map."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w225",
+    "eng": "route",
+    "ru": "маршрут",
+    "pl": "trasa",
+    "level": "A2",
+    "tags": ["travel"],
+    "examples": ["Plan the route."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w226",
+    "eng": "holiday",
+    "ru": "отпуск",
+    "pl": "wakacje",
+    "level": "A1",
+    "tags": ["travel"],
+    "examples": ["We go on holiday in July."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w227",
+    "eng": "trip",
+    "ru": "поездка",
+    "pl": "wycieczka",
+    "level": "A1",
+    "tags": ["travel"],
+    "examples": ["The trip was fun."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w228",
+    "eng": "ticket office",
+    "ru": "касса",
+    "pl": "kasa",
+    "level": "A2",
+    "tags": ["travel"],
+    "examples": ["Buy tickets at the ticket office."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w229",
+    "eng": "passport",
+    "ru": "паспорт",
+    "pl": "paszport",
+    "level": "A1",
+    "tags": ["travel", "document"],
+    "examples": ["Don't forget your passport."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w230",
+    "eng": "luggage",
+    "ru": "багаж",
+    "pl": "bagaż",
+    "level": "A1",
+    "tags": ["travel"],
+    "examples": ["Pack your luggage."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w231",
+    "eng": "ticket machine",
+    "ru": "автомат с билетами",
+    "pl": "biletomat",
+    "level": "A2",
+    "tags": ["travel", "object"],
+    "examples": ["Use the ticket machine."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w232",
+    "eng": "platform",
+    "ru": "платформа",
+    "pl": "peron",
+    "level": "A2",
+    "tags": ["travel"],
+    "examples": ["Wait on the platform."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w233",
+    "eng": "departure",
+    "ru": "отправление",
+    "pl": "odlot / odjazd",
+    "level": "A2",
+    "tags": ["travel", "time"],
+    "examples": ["Check the departure time."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w234",
+    "eng": "arrival",
+    "ru": "прибытие",
+    "pl": "przyjazd / przylot",
+    "level": "A2",
+    "tags": ["travel", "time"],
+    "examples": ["Arrival is at 10:00."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w235",
+    "eng": "delay",
+    "ru": "задержка",
+    "pl": "opóźnienie",
+    "level": "A2",
+    "tags": ["travel"],
+    "examples": ["There is a delay of one hour."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w236",
+    "eng": "reservation",
+    "ru": "бронирование",
+    "pl": "rezerwacja",
+    "level": "A2",
+    "tags": ["travel", "booking"],
+    "examples": ["Make a reservation."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w237",
+    "eng": "hotel",
+    "ru": "отель",
+    "pl": "hotel",
+    "level": "A1",
+    "tags": ["place", "travel"],
+    "examples": ["The hotel has a pool."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w238",
+    "eng": "hostel",
+    "ru": "хостел",
+    "pl": "hostel",
+    "level": "A2",
+    "tags": ["place", "travel"],
+    "examples": ["We stayed in a hostel."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w239",
+    "eng": "bed and breakfast",
+    "ru": "гостевой дом",
+    "pl": "pensjonat",
+    "level": "A2",
+    "tags": ["place", "travel"],
+    "examples": ["We booked a bed and breakfast."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w240",
+    "eng": "reception",
+    "ru": "рецепция",
+    "pl": "recepcja",
+    "level": "A2",
+    "tags": ["place", "service"],
+    "examples": ["Ask at reception."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w241",
+    "eng": "check in",
+    "ru": "регистрироваться",
+    "pl": "zameldować się",
+    "level": "A2",
+    "tags": ["phrasal verb", "travel"],
+    "examples": ["We checked in online."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w242",
+    "eng": "check out",
+    "ru": "выселяться",
+    "pl": "wymeldować się",
+    "level": "A2",
+    "tags": ["phrasal verb", "travel"],
+    "examples": ["Check out before noon."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w243",
+    "eng": "key",
+    "ru": "ключ",
+    "pl": "klucz",
+    "level": "A1",
+    "tags": ["object"],
+    "examples": ["The key is on the table."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w244",
+    "eng": "locker",
+    "ru": "шкафчик",
+    "pl": "szafka",
+    "level": "A2",
+    "tags": ["object"],
+    "examples": ["Put your bag in the locker."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w245",
+    "eng": "guide",
+    "ru": "гид",
+    "pl": "przewodnik",
+    "level": "A2",
+    "tags": ["people", "travel"],
+    "examples": ["The guide explained the history."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w246",
+    "eng": "tour",
+    "ru": "тур",
+    "pl": "wycieczka",
+    "level": "A2",
+    "tags": ["travel"],
+    "examples": ["Join the city tour."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w247",
+    "eng": "souvenir",
+    "ru": "сувенир",
+    "pl": "pamiątka",
+    "level": "A2",
+    "tags": ["object"],
+    "examples": ["Buy a souvenir."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w248",
+    "eng": "currency",
+    "ru": "валюта",
+    "pl": "waluta",
+    "level": "A2",
+    "tags": ["finance", "travel"],
+    "examples": ["Exchange your currency."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w249",
+    "eng": "exchange",
+    "ru": "обменивать",
+    "pl": "wymieniać",
+    "level": "A2",
+    "tags": ["verb", "finance"],
+    "examples": ["Exchange money at the bank."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w250",
+    "eng": "bank",
+    "ru": "банк",
+    "pl": "bank",
+    "level": "A1",
+    "tags": ["place", "finance"],
+    "examples": ["I need to go to the bank."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w251",
+    "eng": "cash",
+    "ru": "наличные",
+    "pl": "gotówka",
+    "level": "A1",
+    "tags": ["finance"],
+    "examples": ["Do you accept cash?"],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w252",
+    "eng": "card",
+    "ru": "карта",
+    "pl": "karta",
+    "level": "A1",
+    "tags": ["finance", "object"],
+    "examples": ["Pay by card."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w253",
+    "eng": "ticket collector",
+    "ru": "контролёр",
+    "pl": "konduktor",
+    "level": "A2",
+    "tags": ["people", "travel"],
+    "examples": ["The ticket collector checked tickets."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w254",
+    "eng": "driver",
+    "ru": "водитель",
+    "pl": "kierowca",
+    "level": "A1",
+    "tags": ["people"],
+    "examples": ["The driver stopped the bus."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w255",
+    "eng": "crew",
+    "ru": "экипаж",
+    "pl": "załoga",
+    "level": "A2",
+    "tags": ["people"],
+    "examples": ["The plane crew welcomed us."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w256",
+    "eng": "pilot",
+    "ru": "пилот",
+    "pl": "pilot",
+    "level": "A2",
+    "tags": ["people"],
+    "examples": ["The pilot announced the flight."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w257",
+    "eng": "passport control",
+    "ru": "пограничный контроль",
+    "pl": "kontrola paszportowa",
+    "level": "A2",
+    "tags": ["travel", "place"],
+    "examples": ["Go through passport control."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w258",
+    "eng": "customs",
+    "ru": "таможня",
+    "pl": "celnica",
+    "level": "A2",
+    "tags": ["travel", "place"],
+    "examples": ["Declare goods at customs."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w259",
+    "eng": "security",
+    "ru": "безопасность",
+    "pl": "bezpieczeństwo",
+    "level": "A2",
+    "tags": ["place", "service"],
+    "examples": ["Security checks your bag."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w260",
+    "eng": "baggage claim",
+    "ru": "получение багажа",
+    "pl": "odbiór bagażu",
+    "level": "A2",
+    "tags": ["travel", "place"],
+    "examples": ["Find your luggage at baggage claim."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w261",
+    "eng": "first aid",
+    "ru": "первая помощь",
+    "pl": "pierwsza pomoc",
+    "level": "A2",
+    "tags": ["health", "service"],
+    "examples": ["The hotel has first aid supplies."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w262",
+    "eng": "pharmacy",
+    "ru": "аптека",
+    "pl": "apteka",
+    "level": "A1",
+    "tags": ["place", "health"],
+    "examples": ["Buy medicine at the pharmacy."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w263",
+    "eng": "doctor",
+    "ru": "врач",
+    "pl": "lekarz",
+    "level": "A1",
+    "tags": ["people", "health"],
+    "examples": ["See the doctor if you are ill."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w264",
+    "eng": "nurse",
+    "ru": "медсестра",
+    "pl": "pielęgniarka",
+    "level": "A1",
+    "tags": ["people", "health"],
+    "examples": ["The nurse took my temperature."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w265",
+    "eng": "hospital",
+    "ru": "больница",
+    "pl": "szpital",
+    "level": "A1",
+    "tags": ["place", "health"],
+    "examples": ["He was taken to the hospital."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w266",
+    "eng": "clinic",
+    "ru": "клиника",
+    "pl": "klinika",
+    "level": "A2",
+    "tags": ["place", "health"],
+    "examples": ["She visited the clinic."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w267",
+    "eng": "appointment",
+    "ru": "приём",
+    "pl": "wizyta / umówione spotkanie",
+    "level": "A2",
+    "tags": ["health", "time"],
+    "examples": ["I have a doctor's appointment."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w268",
+    "eng": "prescription",
+    "ru": "рецепт",
+    "pl": "recepta",
+    "level": "A2",
+    "tags": ["health", "document"],
+    "examples": ["The doctor wrote a prescription."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w269",
+    "eng": "symptom",
+    "ru": "симптом",
+    "pl": "objaw",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["Tell the doctor your symptoms."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w270",
+    "eng": "fever",
+    "ru": "лихорадка",
+    "pl": "gorączka",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["He has a fever."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w271",
+    "eng": "cough",
+    "ru": "кашель",
+    "pl": "kaszel",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["The patient has a cough."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w272",
+    "eng": "cold (illness)",
+    "ru": "простуда",
+    "pl": "przeziębienie",
+    "level": "A1",
+    "tags": ["health"],
+    "examples": ["She has a cold."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w273",
+    "eng": "injury",
+    "ru": "травма",
+    "pl": "uraz",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["He suffered an injury."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w274",
+    "eng": "pain",
+    "ru": "боль",
+    "pl": "ból",
+    "level": "A1",
+    "tags": ["health", "emotion"],
+    "examples": ["He feels pain in his leg."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w275",
+    "eng": "medicine",
+    "ru": "лекарство",
+    "pl": "lek",
+    "level": "A1",
+    "tags": ["health"],
+    "examples": ["Take your medicine."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w276",
+    "eng": "healthy",
+    "ru": "здоровый",
+    "pl": "zdrowy",
+    "level": "A1",
+    "tags": ["adjective", "health"],
+    "examples": ["Eat healthy food."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w277",
+    "eng": "exercise",
+    "ru": "упражнение",
+    "pl": "ćwiczenie",
+    "level": "A1",
+    "tags": ["health", "verb"],
+    "examples": ["Exercise regularly."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w278",
+    "eng": "gym",
+    "ru": "спортзал",
+    "pl": "siłownia",
+    "level": "A1",
+    "tags": ["place", "health"],
+    "examples": ["I go to the gym."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w279",
+    "eng": "runny nose",
+    "ru": "насморк",
+    "pl": "katar",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["He has a runny nose."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w280",
+    "eng": "allergy",
+    "ru": "аллергия",
+    "pl": "alergia",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["She has a pollen allergy."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w281",
+    "eng": "appointment book",
+    "ru": "журнал приёма",
+    "pl": "książka wizyt",
+    "level": "A2",
+    "tags": ["health", "object"],
+    "examples": ["Check the appointment book."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w282",
+    "eng": "dentist",
+    "ru": "стоматолог",
+    "pl": "dentysta",
+    "level": "A1",
+    "tags": ["people", "health"],
+    "examples": ["Visit the dentist."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w283",
+    "eng": "toothache",
+    "ru": "зубная боль",
+    "pl": "ból zęba",
+    "level": "A2",
+    "tags": ["health"],
+    "examples": ["He has a toothache."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w284",
+    "eng": "phobia",
+    "ru": "фобия",
+    "pl": "fobia",
+    "level": "B2",
+    "tags": ["abstract", "psychology"],
+    "examples": ["He has a phobia of heights."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w285",
+    "eng": "stress",
+    "ru": "стресс",
+    "pl": "stres",
+    "level": "B1",
+    "tags": ["abstract", "health"],
+    "examples": ["Work causes stress."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w286",
+    "eng": "relax",
+    "ru": "расслабляться",
+    "pl": "relaksować się",
+    "level": "A2",
+    "tags": ["verb", "health"],
+    "examples": ["Relax after work."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w287",
+    "eng": "sleep well",
+    "ru": "хорошо спать",
+    "pl": "dobrze spać",
+    "level": "A2",
+    "tags": ["phrase", "health"],
+    "examples": ["Try to sleep well."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w288",
+    "eng": "diet",
+    "ru": "диета",
+    "pl": "dieta",
+    "level": "A2",
+    "tags": ["health", "food"],
+    "examples": ["Follow a balanced diet."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w289",
+    "eng": "vitamin",
+    "ru": "витамин",
+    "pl": "witamina",
+    "level": "A2",
+    "tags": ["health", "nutrition"],
+    "examples": ["Take vitamin C."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w290",
+    "eng": "calorie",
+    "ru": "калория",
+    "pl": "kaloria",
+    "level": "B1",
+    "tags": ["nutrition"],
+    "examples": ["Count the calories."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w291",
+    "eng": "protein",
+    "ru": "белок",
+    "pl": "białko",
+    "level": "B1",
+    "tags": ["nutrition"],
+    "examples": ["Eat enough protein."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w292",
+    "eng": "carbohydrate",
+    "ru": "углевод",
+    "pl": "węglowodan",
+    "level": "B1",
+    "tags": ["nutrition"],
+    "examples": ["Bread has carbohydrates."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w293",
+    "eng": "fat (nutrition)",
+    "ru": "жир",
+    "pl": "tłuszcz",
+    "level": "B1",
+    "tags": ["nutrition"],
+    "examples": ["Avoid too much fat."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w294",
+    "eng": "organic",
+    "ru": "органический",
+    "pl": "organiczny",
+    "level": "B1",
+    "tags": ["adjective", "food"],
+    "examples": ["Buy organic vegetables."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w295",
+    "eng": "vegan",
+    "ru": "веган",
+    "pl": "weganin",
+    "level": "B1",
+    "tags": ["food", "diet"],
+    "examples": ["She is vegan."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w296",
+    "eng": "vegetarian",
+    "ru": "вегетарианец",
+    "pl": "wegetarianin",
+    "level": "B1",
+    "tags": ["food", "diet"],
+    "examples": ["He is a vegetarian."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w297",
+    "eng": "spicy",
+    "ru": "острый",
+    "pl": "pikantny",
+    "level": "A2",
+    "tags": ["adjective", "food"],
+    "examples": ["This curry is spicy."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w298",
+    "eng": "bland",
+    "ru": "пресный",
+    "pl": "mdły",
+    "level": "B2",
+    "tags": ["adjective", "food"],
+    "examples": ["The soup tastes bland."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w299",
+    "eng": "delicious",
+    "ru": "вкусный",
+    "pl": "pyszny",
+    "level": "A1",
+    "tags": ["adjective", "food"],
+    "examples": ["This cake is delicious."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w300",
+    "eng": "tasty",
+    "ru": "вкусный",
+    "pl": "smaczny",
+    "level": "A1",
+    "tags": ["adjective", "food"],
+    "examples": ["The pizza is tasty."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w301",
+    "eng": "appointment reminder",
+    "ru": "напоминание о приёме",
+    "pl": "przypomnienie o wizycie",
+    "level": "B1",
+    "tags": ["health", "service"],
+    "examples": ["Set an appointment reminder."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w302",
+    "eng": "preserve",
+    "ru": "сохранять",
+    "pl": "zachować",
+    "level": "B1",
+    "tags": ["verb"],
+    "examples": ["We must preserve nature."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w303",
+    "eng": "pollution",
+    "ru": "загрязнение",
+    "pl": "zanieczyszczenie",
+    "level": "B1",
+    "tags": ["environment"],
+    "examples": ["Pollution affects the city."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w304",
+    "eng": "recycle",
+    "ru": "перерабатывать",
+    "pl": "recyklingować",
+    "level": "B1",
+    "tags": ["verb", "environment"],
+    "examples": ["Please recycle paper."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w305",
+    "eng": "trash",
+    "ru": "мусор",
+    "pl": "śmieci",
+    "level": "A1",
+    "tags": ["noun", "environment"],
+    "examples": ["Don't throw trash here."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w306",
+    "eng": "compost",
+    "ru": "компост",
+    "pl": "kompost",
+    "level": "B2",
+    "tags": ["environment"],
+    "examples": ["Compost food scraps."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w307",
+    "eng": "climate",
+    "ru": "климат",
+    "pl": "klimat",
+    "level": "B1",
+    "tags": ["environment"],
+    "examples": ["Climate change is real."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w308",
+    "eng": "global warming",
+    "ru": "глобальное потепление",
+    "pl": "globalne ocieplenie",
+    "level": "B1",
+    "tags": ["environment"],
+    "examples": ["Global warming affects sea levels."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w309",
+    "eng": "solar",
+    "ru": "солнечный",
+    "pl": "słoneczny",
+    "level": "B2",
+    "tags": ["adjective", "energy"],
+    "examples": ["Solar panels generate electricity."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w310",
+    "eng": "wind (energy)",
+    "ru": "ветер (энергия)",
+    "pl": "wiatr (energia)",
+    "level": "B2",
+    "tags": ["energy", "noun"],
+    "examples": ["Wind turbines produce power."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w311",
+    "eng": "electricity",
+    "ru": "электричество",
+    "pl": "elektryczność",
+    "level": "A2",
+    "tags": ["noun", "energy"],
+    "examples": ["The electricity is out."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w312",
+    "eng": "battery",
+    "ru": "батарея",
+    "pl": "bateria",
+    "level": "A2",
+    "tags": ["object", "tech"],
+    "examples": ["Charge the battery."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w313",
+    "eng": "plug",
+    "ru": "вилка / розетка",
+    "pl": "wtyczka / gniazdko",
+    "level": "A2",
+    "tags": ["object", "tech"],
+    "examples": ["Insert the plug."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w314",
+    "eng": "socket",
+    "ru": "розетка",
+    "pl": "gniazdo",
+    "level": "A2",
+    "tags": ["object", "tech"],
+    "examples": ["The socket is broken."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w315",
+    "eng": "adapter",
+    "ru": "адаптер",
+    "pl": "adapter",
+    "level": "A2",
+    "tags": ["object", "travel"],
+    "examples": ["Bring a power adapter."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w316",
+    "eng": "wireless",
+    "ru": "беспроводной",
+    "pl": "bezprzewodowy",
+    "level": "B1",
+    "tags": ["adjective", "tech"],
+    "examples": ["Connect via wireless network."],
+    "part_of_speech": "adjective"
+  },
+  {
+    "id": "w317",
+    "eng": "signal",
+    "ru": "сигнал",
+    "pl": "sygnał",
+    "level": "B1",
+    "tags": ["tech"],
+    "examples": ["The signal is weak."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w318",
+    "eng": "download",
+    "ru": "скачивать",
+    "pl": "pobierać",
+    "level": "A2",
+    "tags": ["verb", "tech"],
+    "examples": ["Download the file."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w319",
+    "eng": "upload",
+    "ru": "загружать",
+    "pl": "wysyłać",
+    "level": "A2",
+    "tags": ["verb", "tech"],
+    "examples": ["Upload your photo."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w320",
+    "eng": "stream",
+    "ru": "транслировать",
+    "pl": "streamować",
+    "level": "B1",
+    "tags": ["verb", "tech"],
+    "examples": ["They stream videos online."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w321",
+    "eng": "password reset",
+    "ru": "сброс пароля",
+    "pl": "reset hasła",
+    "level": "B1",
+    "tags": ["tech", "security"],
+    "examples": ["Request a password reset."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w322",
+    "eng": "backup",
+    "ru": "резервная копия",
+    "pl": "kopię zapasową",
+    "level": "B1",
+    "tags": ["tech"],
+    "examples": ["Create a backup of files."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w323",
+    "eng": "virus (computer)",
+    "ru": "вирус (компьютер)",
+    "pl": "wirus (komputerowy)",
+    "level": "B1",
+    "tags": ["tech", "security"],
+    "examples": ["Install antivirus to prevent viruses."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w324",
+    "eng": "hacker",
+    "ru": "хакер",
+    "pl": "haker",
+    "level": "B2",
+    "tags": ["tech", "people"],
+    "examples": ["The hacker accessed the account."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w325",
+    "eng": "firewall",
+    "ru": "межсетевой экран",
+    "pl": "zapora sieciowa",
+    "level": "B2",
+    "tags": ["tech", "security"],
+    "examples": ["Enable the firewall."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w326",
+    "eng": "update",
+    "ru": "обновление",
+    "pl": "aktualizacja",
+    "level": "A2",
+    "tags": ["tech"],
+    "examples": ["Install the update."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w327",
+    "eng": "install",
+    "ru": "устанавливать",
+    "pl": "instalować",
+    "level": "A2",
+    "tags": ["verb", "tech"],
+    "examples": ["Install the software."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w328",
+    "eng": "uninstall",
+    "ru": "удалять",
+    "pl": "odinstalować",
+    "level": "B1",
+    "tags": ["verb", "tech"],
+    "examples": ["Uninstall the old app."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w329",
+    "eng": "browser",
+    "ru": "браузер",
+    "pl": "przeglądarka",
+    "level": "A2",
+    "tags": ["tech"],
+    "examples": ["Open the browser."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w330",
+    "eng": "homepage",
+    "ru": "домашняя страница",
+    "pl": "strona główna",
+    "level": "A2",
+    "tags": ["tech"],
+    "examples": ["Set your homepage."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w331",
+    "eng": "search engine",
+    "ru": "поисковая система",
+    "pl": "wyszukiwarka",
+    "level": "A2",
+    "tags": ["tech"],
+    "examples": ["Use a search engine to find answers."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w332",
+    "eng": "link",
+    "ru": "ссылка",
+    "pl": "link",
+    "level": "A1",
+    "tags": ["tech", "web"],
+    "examples": ["Click the link."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w333",
+    "eng": "homepage",
+    "ru": "домашняя страница",
+    "pl": "strona główna",
+    "level": "A2",
+    "tags": ["tech"],
+    "examples": ["Open the homepage."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w334",
+    "eng": "profile",
+    "ru": "профиль",
+    "pl": "profil",
+    "level": "A2",
+    "tags": ["tech", "social"],
+    "examples": ["Update your profile."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w335",
+    "eng": "post (online)",
+    "ru": "публикация",
+    "pl": "post",
+    "level": "A2",
+    "tags": ["tech", "social"],
+    "examples": ["Write a post."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w336",
+    "eng": "comment",
+    "ru": "комментарий",
+    "pl": "komentarz",
+    "level": "A1",
+    "tags": ["tech", "social"],
+    "examples": ["Leave a comment."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w337",
+    "eng": "like (social)",
+    "ru": "лайк",
+    "pl": "lajk",
+    "level": "A1",
+    "tags": ["tech", "social"],
+    "examples": ["Like the photo."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w338",
+    "eng": "share",
+    "ru": "делиться",
+    "pl": "udostępniać",
+    "level": "A1",
+    "tags": ["tech", "social"],
+    "examples": ["Share this link."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w339",
+    "eng": "follow",
+    "ru": "подписываться",
+    "pl": "obserwować",
+    "level": "A1",
+    "tags": ["tech", "social"],
+    "examples": ["Follow the account."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w340",
+    "eng": "unfollow",
+    "ru": "отписаться",
+    "pl": "przestać obserwować",
+    "level": "B1",
+    "tags": ["tech", "social"],
+    "examples": ["He unfollowed the page."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w341",
+    "eng": "notification",
+    "ru": "уведомление",
+    "pl": "powiadomienie",
+    "level": "A2",
+    "tags": ["tech"],
+    "examples": ["Turn off notifications."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w342",
+    "eng": "privacy",
+    "ru": "конфиденциальность",
+    "pl": "prywatność",
+    "level": "B1",
+    "tags": ["tech", "security"],
+    "examples": ["Adjust your privacy settings."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w343",
+    "eng": "terms and conditions",
+    "ru": "условия и положения",
+    "pl": "regulamin",
+    "level": "B1",
+    "tags": ["legal", "tech"],
+    "examples": ["Read the terms and conditions."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w344",
+    "eng": "download speed",
+    "ru": "скорость загрузки",
+    "pl": "prędkość pobierania",
+    "level": "B1",
+    "tags": ["tech"],
+    "examples": ["The download speed is slow."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w345",
+    "eng": "upload speed",
+    "ru": "скорость выгрузки",
+    "pl": "prędkość wysyłania",
+    "level": "B1",
+    "tags": ["tech"],
+    "examples": ["Check your upload speed."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w346",
+    "eng": "streaming quality",
+    "ru": "качество трансляции",
+    "pl": "jakość streamingu",
+    "level": "B2",
+    "tags": ["tech"],
+    "examples": ["Lower the streaming quality."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w347",
+    "eng": "subscription",
+    "ru": "подписка",
+    "pl": "subskrypcja",
+    "level": "B1",
+    "tags": ["tech", "service"],
+    "examples": ["Renew your subscription."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w348",
+    "eng": "trial period",
+    "ru": "период пробного использования",
+    "pl": "okres próbny",
+    "level": "B1",
+    "tags": ["service"],
+    "examples": ["The trial period ends soon."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w349",
+    "eng": "refund",
+    "ru": "возврат денег",
+    "pl": "zwrot pieniędzy",
+    "level": "B1",
+    "tags": ["finance", "service"],
+    "examples": ["Request a refund."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w350",
+    "eng": "warranty",
+    "ru": "гарантия",
+    "pl": "gwarancja",
+    "level": "B2",
+    "tags": ["service", "legal"],
+    "examples": ["The product has a two-year warranty."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w351",
+    "eng": "customer service",
+    "ru": "обслуживание клиентов",
+    "pl": "obsługa klienta",
+    "level": "A2",
+    "tags": ["service"],
+    "examples": ["Contact customer service."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w352",
+    "eng": "complaint",
+    "ru": "жалоба",
+    "pl": "reklamacja",
+    "level": "B1",
+    "tags": ["service"],
+    "examples": ["File a complaint."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w353",
+    "eng": "refund policy",
+    "ru": "политика возврата",
+    "pl": "polityka zwrotów",
+    "level": "B2",
+    "tags": ["service", "legal"],
+    "examples": ["Read the refund policy."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w354",
+    "eng": "terms of service",
+    "ru": "условия обслуживания",
+    "pl": "warunki świadczenia usług",
+    "level": "B2",
+    "tags": ["legal", "service"],
+    "examples": ["Agree to the terms of service."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w355",
+    "eng": "FAQ",
+    "ru": "часто задаваемые вопросы",
+    "pl": "najczęściej zadawane pytania",
+    "level": "A2",
+    "tags": ["service"],
+    "examples": ["Check the FAQ section."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w356",
+    "eng": "manual",
+    "ru": "руководство",
+    "pl": "instrukcja",
+    "level": "A2",
+    "tags": ["document"],
+    "examples": ["Read the manual."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w357",
+    "eng": "guidebook",
+    "ru": "путеводитель",
+    "pl": "przewodnik",
+    "level": "A2",
+    "tags": ["document", "travel"],
+    "examples": ["Use a guidebook for sightseeing."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w358",
+    "eng": "instruction",
+    "ru": "инструкция",
+    "pl": "instrukcja",
+    "level": "A2",
+    "tags": ["document"],
+    "examples": ["Follow the instructions."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w359",
+    "eng": "warranty card",
+    "ru": "гарантийный талон",
+    "pl": "karta gwarancyjna",
+    "level": "B2",
+    "tags": ["document"],
+    "examples": ["Keep the warranty card."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w360",
+    "eng": "receipt",
+    "ru": "чек",
+    "pl": "paragon",
+    "level": "A1",
+    "tags": ["document", "finance"],
+    "examples": ["Keep the receipt."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w361",
+    "eng": "invoice",
+    "ru": "счёт-фактура",
+    "pl": "faktura",
+    "level": "B2",
+    "tags": ["finance", "document"],
+    "examples": ["Send the invoice by email."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w362",
+    "eng": "contract",
+    "ru": "контракт",
+    "pl": "kontrakt",
+    "level": "B2",
+    "tags": ["legal", "document"],
+    "examples": ["Sign the contract."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w363",
+    "eng": "signature",
+    "ru": "подпись",
+    "pl": "podpis",
+    "level": "A2",
+    "tags": ["document"],
+    "examples": ["Please write your signature."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w364",
+    "eng": "ID card",
+    "ru": "удостоверение личности",
+    "pl": "dowód osobisty",
+    "level": "A1",
+    "tags": ["document"],
+    "examples": ["Show your ID card."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w365",
+    "eng": "driver's license",
+    "ru": "водительское удостоверение",
+    "pl": "prawo jazdy",
+    "level": "A1",
+    "tags": ["document"],
+    "examples": ["Carry your driver's license."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w366",
+    "eng": "birth certificate",
+    "ru": "свидетельство о рождении",
+    "pl": "akt urodzenia",
+    "level": "B1",
+    "tags": ["document"],
+    "examples": ["We need the birth certificate."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w367",
+    "eng": "marriage certificate",
+    "ru": "свидетельство о браке",
+    "pl": "akta małżeństwa",
+    "level": "B1",
+    "tags": ["document"],
+    "examples": ["Show the marriage certificate."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w368",
+    "eng": "ID number",
+    "ru": "идентификационный номер",
+    "pl": "numer ID",
+    "level": "B1",
+    "tags": ["document", "identifier"],
+    "examples": ["Enter your ID number."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w369",
+    "eng": "social security",
+    "ru": "социальное обеспечение",
+    "pl": "ubezpieczenie społeczne",
+    "level": "B2",
+    "tags": ["finance", "legal"],
+    "examples": ["Apply for social security benefits."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w370",
+    "eng": "tax",
+    "ru": "налог",
+    "pl": "podatek",
+    "level": "B1",
+    "tags": ["finance", "legal"],
+    "examples": ["Pay your taxes on time."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w371",
+    "eng": "income",
+    "ru": "доход",
+    "pl": "dochód",
+    "level": "B1",
+    "tags": ["finance"],
+    "examples": ["Declare your income."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w372",
+    "eng": "expense",
+    "ru": "расход",
+    "pl": "wydatek",
+    "level": "B1",
+    "tags": ["finance"],
+    "examples": ["Track your expenses."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w373",
+    "eng": "budget",
+    "ru": "бюджет",
+    "pl": "budżet",
+    "level": "B1",
+    "tags": ["finance"],
+    "examples": ["Set a monthly budget."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w374",
+    "eng": "salary",
+    "ru": "зарплата",
+    "pl": "pensja",
+    "level": "B1",
+    "tags": ["finance"],
+    "examples": ["Her salary increased."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w375",
+    "eng": "pension",
+    "ru": "пенсия",
+    "pl": "emerytura",
+    "level": "B2",
+    "tags": ["finance"],
+    "examples": ["He receives a pension."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w376",
+    "eng": "loan",
+    "ru": "заём",
+    "pl": "pożyczka",
+    "level": "B1",
+    "tags": ["finance"],
+    "examples": ["Apply for a loan."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w377",
+    "eng": "interest (finance)",
+    "ru": "процент (по займу)",
+    "pl": "odsetki",
+    "level": "B1",
+    "tags": ["finance"],
+    "examples": ["The loan has high interest."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w378",
+    "eng": "mortgage",
+    "ru": "ипотека",
+    "pl": "hipoteka",
+    "level": "B2",
+    "tags": ["finance"],
+    "examples": ["They applied for a mortgage."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w379",
+    "eng": "investment",
+    "ru": "инвестиция",
+    "pl": "inwestycja",
+    "level": "B2",
+    "tags": ["finance"],
+    "examples": ["Make a safe investment."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w380",
+    "eng": "stock",
+    "ru": "акция",
+    "pl": "akcja",
+    "level": "B2",
+    "tags": ["finance"],
+    "examples": ["Buy a stock in the company."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w381",
+    "eng": "market",
+    "ru": "рынок",
+    "pl": "rynek",
+    "level": "B1",
+    "tags": ["finance", "place"],
+    "examples": ["The market is open."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w382",
+    "eng": "economy",
+    "ru": "экономика",
+    "pl": "gospodarka",
+    "level": "B2",
+    "tags": ["abstract", "finance"],
+    "examples": ["The economy is growing."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w383",
+    "eng": "inflation",
+    "ru": "инфляция",
+    "pl": "inflacja",
+    "level": "B2",
+    "tags": ["finance"],
+    "examples": ["Inflation affects prices."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w384",
+    "eng": "deficit",
+    "ru": "дефицит",
+    "pl": "deficyt",
+    "level": "C1",
+    "tags": ["finance"],
+    "examples": ["The budget shows a deficit."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w385",
+    "eng": "surplus",
+    "ru": "профицит",
+    "pl": "nadwyżka",
+    "level": "C1",
+    "tags": ["finance"],
+    "examples": ["The country has a trade surplus."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w386",
+    "eng": "donation",
+    "ru": "пожертвование",
+    "pl": "darowizna",
+    "level": "B1",
+    "tags": ["charity"],
+    "examples": ["Make a donation to charity."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w387",
+    "eng": "charity",
+    "ru": "благотворительность",
+    "pl": "charytatywność",
+    "level": "B1",
+    "tags": ["abstract"],
+    "examples": ["They support a charity."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w388",
+    "eng": "volunteer",
+    "ru": "доброволец",
+    "pl": "wolontariusz",
+    "level": "B1",
+    "tags": ["people", "service"],
+    "examples": ["She volunteers at the shelter."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w389",
+    "eng": "shelter",
+    "ru": "приют",
+    "pl": "schronisko",
+    "level": "B1",
+    "tags": ["place", "charity"],
+    "examples": ["The shelter helps animals."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w390",
+    "eng": "fundraiser",
+    "ru": "сбор средств",
+    "pl": "zbiórka funduszy",
+    "level": "B2",
+    "tags": ["charity"],
+    "examples": ["Attend the fundraiser event."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w391",
+    "eng": "donor",
+    "ru": "донор",
+    "pl": "dawca",
+    "level": "B2",
+    "tags": ["people", "charity"],
+    "examples": ["The donor gave generously."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w392",
+    "eng": "grant",
+    "ru": "грант",
+    "pl": "grant",
+    "level": "B2",
+    "tags": ["finance", "education"],
+    "examples": ["Apply for a research grant."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w393",
+    "eng": "scholarship",
+    "ru": "стипендия",
+    "pl": "stypendium",
+    "level": "B2",
+    "tags": ["education", "finance"],
+    "examples": ["She received a scholarship."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w394",
+    "eng": "tuition",
+    "ru": "обучение (плата)",
+    "pl": "czesne",
+    "level": "B2",
+    "tags": ["education", "finance"],
+    "examples": ["Tuition fees are high."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w395",
+    "eng": "degree",
+    "ru": "степень",
+    "pl": "stopień",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["He earned a degree."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w396",
+    "eng": "graduate",
+    "ru": "выпускник / выпускаться",
+    "pl": "ukończyć studia",
+    "level": "B1",
+    "tags": ["education", "verb"],
+    "examples": ["She will graduate next year."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w397",
+    "eng": "undergraduate",
+    "ru": "бакалавр (студент)",
+    "pl": "studiujący licencjat",
+    "level": "B2",
+    "tags": ["education"],
+    "examples": ["He is an undergraduate student."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w398",
+    "eng": "postgraduate",
+    "ru": "аспирант / последипломный",
+    "pl": "podyplomowy",
+    "level": "C1",
+    "tags": ["education"],
+    "examples": ["She is a postgraduate researcher."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w399",
+    "eng": "lecture",
+    "ru": "лекция",
+    "pl": "wykład",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["Attend the lecture."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w400",
+    "eng": "seminar",
+    "ru": "семинар",
+    "pl": "seminarium",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["The seminar starts at 2 pm."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w401",
+    "eng": "tutorial",
+    "ru": "учебное занятие",
+    "pl": "ćwiczenia",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["I have a tutorial tomorrow."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w402",
+    "eng": "assignment",
+    "ru": "задание",
+    "pl": "zadanie",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["Finish the assignment by Friday."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w403",
+    "eng": "essay",
+    "ru": "эссе",
+    "pl": "esej",
+    "level": "B1",
+    "tags": ["education", "writing"],
+    "examples": ["Write a 1000-word essay."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w404",
+    "eng": "exam",
+    "ru": "экзамен",
+    "pl": "egzamin",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["Study for the exam."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w405",
+    "eng": "grade",
+    "ru": "оценка",
+    "pl": "ocena",
+    "level": "B1",
+    "tags": ["education"],
+    "examples": ["She got a good grade."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w406",
+    "eng": "transcript",
+    "ru": "выписка оценок",
+    "pl": "transkrypt",
+    "level": "B2",
+    "tags": ["education", "document"],
+    "examples": ["Request your transcript."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w407",
+    "eng": "faculty",
+    "ru": "факультет",
+    "pl": "wydział",
+    "level": "B2",
+    "tags": ["education"],
+    "examples": ["He teaches in the faculty of science."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w408",
+    "eng": "department",
+    "ru": "департамент / кафедра",
+    "pl": "katedra / dział",
+    "level": "B2",
+    "tags": ["education", "organization"],
+    "examples": ["The department has new staff."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w409",
+    "eng": "tuition fee",
+    "ru": "плата за обучение",
+    "pl": "opłata za czesne",
+    "level": "B2",
+    "tags": ["education", "finance"],
+    "examples": ["Tuition fees must be paid."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w410",
+    "eng": "scholar",
+    "ru": "учёный / стипендиат",
+    "pl": "uczony / stypendysta",
+    "level": "C1",
+    "tags": ["people", "education"],
+    "examples": ["The scholar published a paper."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w411",
+    "eng": "research",
+    "ru": "исследование",
+    "pl": "badania",
+    "level": "B2",
+    "tags": ["education", "science"],
+    "examples": ["Research takes time."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w412",
+    "eng": "experiment",
+    "ru": "эксперимент",
+    "pl": "eksperyment",
+    "level": "B2",
+    "tags": ["science"],
+    "examples": ["The experiment was successful."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w413",
+    "eng": "laboratory",
+    "ru": "лаборатория",
+    "pl": "laboratorium",
+    "level": "B2",
+    "tags": ["place", "science"],
+    "examples": ["Work in the laboratory."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w414",
+    "eng": "data",
+    "ru": "данные",
+    "pl": "dane",
+    "level": "B2",
+    "tags": ["science", "tech"],
+    "examples": ["Analyze the data."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w415",
+    "eng": "theory",
+    "ru": "теория",
+    "pl": "teoria",
+    "level": "C1",
+    "tags": ["science", "abstract"],
+    "examples": ["The theory explains the results."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w416",
+    "eng": "hypothesis",
+    "ru": "гипотеза",
+    "pl": "hipoteza",
+    "level": "C1",
+    "tags": ["science"],
+    "examples": ["Test the hypothesis."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w417",
+    "eng": "variable",
+    "ru": "переменная",
+    "pl": "zmienna",
+    "level": "B2",
+    "tags": ["science", "math"],
+    "examples": ["Control the variables."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w418",
+    "eng": "control group",
+    "ru": "контрольная группа",
+    "pl": "grupa kontrolna",
+    "level": "C1",
+    "tags": ["science"],
+    "examples": ["Compare with the control group."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w419",
+    "eng": "sample",
+    "ru": "образец",
+    "pl": "próbka",
+    "level": "B2",
+    "tags": ["science"],
+    "examples": ["Collect a sample."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w420",
+    "eng": "survey",
+    "ru": "опрос",
+    "pl": "ankieta",
+    "level": "B2",
+    "tags": ["research"],
+    "examples": ["Conduct a survey."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w421",
+    "eng": "analysis",
+    "ru": "анализ",
+    "pl": "analiza",
+    "level": "C1",
+    "tags": ["science"],
+    "examples": ["Run a data analysis."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w422",
+    "eng": "conclusion",
+    "ru": "вывод",
+    "pl": "wniosek",
+    "level": "C1",
+    "tags": ["science"],
+    "examples": ["Draw a conclusion."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w423",
+    "eng": "publish",
+    "ru": "публиковать",
+    "pl": "publikować",
+    "level": "C1",
+    "tags": ["verb", "science"],
+    "examples": ["They publish in journals."],
+    "part_of_speech": "verb"
+  },
+  {
+    "id": "w424",
+    "eng": "citation",
+    "ru": "цитирование",
+    "pl": "cytowanie",
+    "level": "C1",
+    "tags": ["academic"],
+    "examples": ["Add proper citations."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w425",
+    "eng": "peer review",
+    "ru": "рецензирование",
+    "pl": "recenzja naukowa",
+    "level": "C1",
+    "tags": ["academic"],
+    "examples": ["The paper passed peer review."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w426",
+    "eng": "grant proposal",
+    "ru": "заявка на грант",
+    "pl": "wniosek o grant",
+    "level": "C1",
+    "tags": ["academic", "finance"],
+    "examples": ["Write a grant proposal."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w427",
+    "eng": "conference",
+    "ru": "конференция",
+    "pl": "konferencja",
+    "level": "B2",
+    "tags": ["academic"],
+    "examples": ["Present at the conference."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w428",
+    "eng": "abstract",
+    "ru": "аннотация",
+    "pl": "abstrakt",
+    "level": "C1",
+    "tags": ["academic", "document"],
+    "examples": ["Write an abstract for the paper."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w429",
+    "eng": "methodology",
+    "ru": "методология",
+    "pl": "metodologia",
+    "level": "C1",
+    "tags": ["academic"],
+    "examples": ["Describe your methodology."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w430",
+    "eng": "literature review",
+    "ru": "обзор литературы",
+    "pl": "przegląd literatury",
+    "level": "C1",
+    "tags": ["academic"],
+    "examples": ["Complete the literature review."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w431",
+    "eng": "citation index",
+    "ru": "индекс цитирования",
+    "pl": "indeks cytowań",
+    "level": "C2",
+    "tags": ["academic"],
+    "examples": ["Check the citation index."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w432",
+    "eng": "peer",
+    "ru": "коллега",
+    "pl": "rówieśnik / kolega",
+    "level": "B2",
+    "tags": ["people", "academic"],
+    "examples": ["Discuss with your peers."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w433",
+    "eng": "mentor",
+    "ru": "наставник",
+    "pl": "mentor",
+    "level": "B2",
+    "tags": ["people"],
+    "examples": ["Find a mentor."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w434",
+    "eng": "supervisor",
+    "ru": "руководитель",
+    "pl": "promotor / opiekun",
+    "level": "B2",
+    "tags": ["people", "academic"],
+    "examples": ["Contact your supervisor."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w435",
+    "eng": "colleague",
+    "ru": "коллега",
+    "pl": "kolega z pracy",
+    "level": "B1",
+    "tags": ["people"],
+    "examples": ["My colleague helped me."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w436",
+    "eng": "teamwork",
+    "ru": "командная работа",
+    "pl": "praca zespołowa",
+    "level": "B1",
+    "tags": ["work"],
+    "examples": ["Teamwork improves results."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w437",
+    "eng": "meeting",
+    "ru": "встреча",
+    "pl": "spotkanie",
+    "level": "A2",
+    "tags": ["work"],
+    "examples": ["We have a meeting today."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w438",
+    "eng": "deadline",
+    "ru": "срок",
+    "pl": "termin",
+    "level": "B1",
+    "tags": ["work", "time"],
+    "examples": ["The deadline is Monday."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w439",
+    "eng": "task",
+    "ru": "задание",
+    "pl": "zadanie",
+    "level": "A2",
+    "tags": ["work"],
+    "examples": ["Complete the task."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w440",
+    "eng": "project",
+    "ru": "проект",
+    "pl": "projekt",
+    "level": "A2",
+    "tags": ["work"],
+    "examples": ["Our project starts now."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w441",
+    "eng": "deadline extension",
+    "ru": "продление срока",
+    "pl": "wydłużenie terminu",
+    "level": "B2",
+    "tags": ["work"],
+    "examples": ["Request a deadline extension."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w442",
+    "eng": "report",
+    "ru": "отчёт",
+    "pl": "raport",
+    "level": "B1",
+    "tags": ["work", "document"],
+    "examples": ["Submit the report."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w443",
+    "eng": "presentation",
+    "ru": "презентация",
+    "pl": "prezentacja",
+    "level": "B1",
+    "tags": ["work", "communication"],
+    "examples": ["Prepare the presentation."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w444",
+    "eng": "resume",
+    "ru": "резюме",
+    "pl": "CV",
+    "level": "B1",
+    "tags": ["job"],
+    "examples": ["Update your resume."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w445",
+    "eng": "cover letter",
+    "ru": "сопроводительное письмо",
+    "pl": "list motywacyjny",
+    "level": "B2",
+    "tags": ["job", "document"],
+    "examples": ["Write a cover letter."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w446",
+    "eng": "interview",
+    "ru": "собеседование",
+    "pl": "rozmowa kwalifikacyjna",
+    "level": "B1",
+    "tags": ["job"],
+    "examples": ["Prepare for the interview."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w447",
+    "eng": "candidate",
+    "ru": "кандидат",
+    "pl": "kandydat",
+    "level": "B2",
+    "tags": ["job", "people"],
+    "examples": ["The candidate is qualified."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w448",
+    "eng": "offer (job)",
+    "ru": "предложение о работе",
+    "pl": "oferta pracy",
+    "level": "B2",
+    "tags": ["job"],
+    "examples": ["He accepted the job offer."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w449",
+    "eng": "contractor",
+    "ru": "подрядчик",
+    "pl": "kontrahent",
+    "level": "B2",
+    "tags": ["work", "people"],
+    "examples": ["Hire a contractor."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w450",
+    "eng": "freelancer",
+    "ru": "фрилансер",
+    "pl": "freelancer",
+    "level": "B2",
+    "tags": ["work"],
+    "examples": ["She works as a freelancer."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w451",
+    "eng": "startup",
+    "ru": "стартап",
+    "pl": "startup",
+    "level": "B2",
+    "tags": ["business"],
+    "examples": ["They launched a startup."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w452",
+    "eng": "entrepreneur",
+    "ru": "предприниматель",
+    "pl": "przedsiębiorca",
+    "level": "C1",
+    "tags": ["people", "business"],
+    "examples": ["The entrepreneur found investors."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w453",
+    "eng": "investment round",
+    "ru": "раунд инвестиций",
+    "pl": "runda inwestycyjna",
+    "level": "C1",
+    "tags": ["business", "finance"],
+    "examples": ["They closed an investment round."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w454",
+    "eng": "pitch",
+    "ru": "презентация идеи",
+    "pl": "pitch",
+    "level": "B2",
+    "tags": ["business"],
+    "examples": ["Prepare a pitch for investors."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w455",
+    "eng": "equity",
+    "ru": "капитал",
+    "pl": "kapitał własny",
+    "level": "C1",
+    "tags": ["finance", "business"],
+    "examples": ["Offer equity to co-founders."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w456",
+    "eng": "stakeholder",
+    "ru": "заинтересованная сторона",
+    "pl": "interesariusz",
+    "level": "C1",
+    "tags": ["business"],
+    "examples": ["Consult the stakeholders."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w457",
+    "eng": "board of directors",
+    "ru": "совет директоров",
+    "pl": "rada dyrektorów",
+    "level": "C1",
+    "tags": ["business", "organization"],
+    "examples": ["The board of directors met."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w458",
+    "eng": "shareholder",
+    "ru": "акционер",
+    "pl": "akcjonariusz",
+    "level": "C1",
+    "tags": ["finance", "business"],
+    "examples": ["Inform the shareholders."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w459",
+    "eng": "merger",
+    "ru": "слияние",
+    "pl": "fuzja",
+    "level": "C1",
+    "tags": ["business"],
+    "examples": ["The merger was announced."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w460",
+    "eng": "acquisition",
+    "ru": "поглощение",
+    "pl": "przejęcie",
+    "level": "C1",
+    "tags": ["business"],
+    "examples": ["The acquisition increased market share."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w461",
+    "eng": "regulation",
+    "ru": "регулирование",
+    "pl": "regulacja",
+    "level": "C1",
+    "tags": ["legal"],
+    "examples": ["New regulation affects the industry."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w462",
+    "eng": "compliance",
+    "ru": "соответствие",
+    "pl": "zgodność",
+    "level": "C1",
+    "tags": ["legal", "business"],
+    "examples": ["Ensure regulatory compliance."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w463",
+    "eng": "audit",
+    "ru": "аудит",
+    "pl": "audyt",
+    "level": "C1",
+    "tags": ["finance", "business"],
+    "examples": ["Schedule an audit."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w464",
+    "eng": "invoice number",
+    "ru": "номер счёта",
+    "pl": "numer faktury",
+    "level": "B2",
+    "tags": ["finance", "document"],
+    "examples": ["Include the invoice number."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w465",
+    "eng": "supplier",
+    "ru": "поставщик",
+    "pl": "dostawca",
+    "level": "B2",
+    "tags": ["business"],
+    "examples": ["Contact the supplier."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w466",
+    "eng": "logistics",
+    "ru": "логистика",
+    "pl": "logistyka",
+    "level": "B2",
+    "tags": ["business"],
+    "examples": ["Logistics manages shipping."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w467",
+    "eng": "warehouse",
+    "ru": "склад",
+    "pl": "magazyn",
+    "level": "B2",
+    "tags": ["business", "place"],
+    "examples": ["Store goods in the warehouse."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w468",
+    "eng": "inventory",
+    "ru": "инвентарь / запас",
+    "pl": "inwentarz / zapasy",
+    "level": "B2",
+    "tags": ["business"],
+    "examples": ["Count the inventory."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w469",
+    "eng": "shipment",
+    "ru": "груз",
+    "pl": "wysyłka",
+    "level": "B2",
+    "tags": ["logistics"],
+    "examples": ["Track the shipment."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w470",
+    "eng": "customs declaration",
+    "ru": "таможенная декларация",
+    "pl": "deklaracja celna",
+    "level": "C1",
+    "tags": ["travel", "legal"],
+    "examples": ["Complete the customs declaration."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w471",
+    "eng": "freight",
+    "ru": "грузоперевозка",
+    "pl": "ładunek",
+    "level": "C1",
+    "tags": ["logistics"],
+    "examples": ["Freight costs are high."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w472",
+    "eng": "consignment",
+    "ru": "партия товаров",
+    "pl": "konosament / przesyłka",
+    "level": "C1",
+    "tags": ["logistics"],
+    "examples": ["The consignment arrived."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w473",
+    "eng": "certificate of origin",
+    "ru": "сертификат происхождения",
+    "pl": "świadectwo pochodzenia",
+    "level": "C1",
+    "tags": ["document", "trade"],
+    "examples": ["Provide a certificate of origin."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w474",
+    "eng": "bill of lading",
+    "ru": "коносамент",
+    "pl": "konosament",
+    "level": "C1",
+    "tags": ["document", "logistics"],
+    "examples": ["Sign the bill of lading."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w475",
+    "eng": "invoice due date",
+    "ru": "срок платежа по счёту",
+    "pl": "termin płatności faktury",
+    "level": "C1",
+    "tags": ["finance", "document"],
+    "examples": ["Check the invoice due date."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w476",
+    "eng": "overdraft",
+    "ru": "овердрафт",
+    "pl": "debety",
+    "level": "C1",
+    "tags": ["finance"],
+    "examples": ["The bank charged for overdraft."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w477",
+    "eng": "credit score",
+    "ru": "кредитный рейтинг",
+    "pl": "ocena kredytowa",
+    "level": "C1",
+    "tags": ["finance"],
+    "examples": ["Improve your credit score."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w478",
+    "eng": "collateral",
+    "ru": "залог",
+    "pl": "zabezpieczenie",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Provide collateral for the loan."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w479",
+    "eng": "liability",
+    "ru": "обязательство",
+    "pl": "zobowiązanie",
+    "level": "C2",
+    "tags": ["finance", "legal"],
+    "examples": ["The company has liabilities."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w480",
+    "eng": "asset",
+    "ru": "актив",
+    "pl": "aktywo",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Assets exceed liabilities."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w481",
+    "eng": "dividend",
+    "ru": "дивиденд",
+    "pl": "dywidenda",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Shareholders receive a dividend."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w482",
+    "eng": "bond",
+    "ru": "облигация",
+    "pl": "obligacja",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Invest in government bonds."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w483",
+    "eng": "mutual fund",
+    "ru": "паевой инвестиционный фонд",
+    "pl": "fundusz inwestycyjny",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Invest in a mutual fund."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w484",
+    "eng": "portfolio",
+    "ru": "портфель (инвестиций)",
+    "pl": "portfel",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Diversify your portfolio."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w485",
+    "eng": "diversification",
+    "ru": "диверсификация",
+    "pl": "dywersyfikacja",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Diversification reduces risk."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w486",
+    "eng": "risk appetite",
+    "ru": "склонность к риску",
+    "pl": "skłonność do ryzyka",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Assess your risk appetite."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w487",
+    "eng": "return on investment",
+    "ru": "рентабельность инвестиций",
+    "pl": "zwrot z inwestycji",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Calculate the return on investment."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w488",
+    "eng": "liquidity",
+    "ru": "ликвидность",
+    "pl": "płynność",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Maintain sufficient liquidity."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w489",
+    "eng": "cash flow",
+    "ru": "денежный поток",
+    "pl": "przepływ gotówki",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Monitor your cash flow."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w490",
+    "eng": "break even",
+    "ru": "выйти в ноль",
+    "pl": "wyjść na zero",
+    "level": "C2",
+    "tags": ["finance", "phrase"],
+    "examples": ["The business will break even next year."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w491",
+    "eng": "profit margin",
+    "ru": "рентабельность",
+    "pl": "marża zysku",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Increase the profit margin."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w492",
+    "eng": "net profit",
+    "ru": "чистая прибыль",
+    "pl": "zysk netto",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Net profit rose this quarter."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w493",
+    "eng": "gross profit",
+    "ru": "валовая прибыль",
+    "pl": "zysk brutto",
+    "level": "C2",
+    "tags": ["finance"],
+    "examples": ["Calculate the gross profit."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w494",
+    "eng": "stake",
+    "ru": "доля / доля в деле",
+    "pl": "udział",
+    "level": "C2",
+    "tags": ["business", "finance"],
+    "examples": ["They hold a large stake in the company."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w495",
+    "eng": "due diligence",
+    "ru": "должная проверка",
+    "pl": "należyta staranność",
+    "level": "C2",
+    "tags": ["business", "legal"],
+    "examples": ["Conduct due diligence before acquiring."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w496",
+    "eng": "confidentiality",
+    "ru": "конфиденциальность",
+    "pl": "poufność",
+    "level": "C2",
+    "tags": ["legal", "business"],
+    "examples": ["Sign a confidentiality agreement."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w497",
+    "eng": "non-disclosure agreement",
+    "ru": "соглашение о неразглашении",
+    "pl": "umowa o poufności",
+    "level": "C2",
+    "tags": ["legal", "business"],
+    "examples": ["They signed a non-disclosure agreement."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w498",
+    "eng": "intellectual property",
+    "ru": "интеллектуальная собственность",
+    "pl": "własność intelektualna",
+    "level": "C2",
+    "tags": ["legal", "business"],
+    "examples": ["Protect your intellectual property."],
+    "part_of_speech": "phrase"
+  },
+  {
+    "id": "w499",
+    "eng": "patent",
+    "ru": "патент",
+    "pl": "patent",
+    "level": "C2",
+    "tags": ["legal", "business"],
+    "examples": ["File a patent application."],
+    "part_of_speech": "noun"
+  },
+  {
+    "id": "w500",
+    "eng": "trademark",
+    "ru": "торговая марка",
+    "pl": "znak towarowy",
+    "level": "C2",
+    "tags": ["legal", "business"],
+    "examples": ["Register a trademark."],
+    "part_of_speech": "noun"
   }
 ]

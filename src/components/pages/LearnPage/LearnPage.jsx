@@ -1,18 +1,12 @@
-import Header from "../../layout/Header/Header";
 import "./LearnPage.css";
+import { pageContainerStyle, mainContentStyle } from "../../../styles/commonStyles";
+import Header from "../../layout/Header/Header";
 
 export default function LearnPage() {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        color: "#ffffff",
-      }}
-    >
+    <div style={pageContainerStyle}>
       <Header headerTitle="Learn" />
-      <main className="learn-page-content" style={{ height: "90%" }}></main>
+      <main className="learn-page-content" style={mainContentStyle}></main>
     </div>
   );
 }

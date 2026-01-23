@@ -1,0 +1,54 @@
+@import "../../../styles/variables.css";
+
+.flashcard-nav-buttons-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.flashcard-nav-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--nav-button-bg);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.flashcard-nav-button:hover {
+  background-color: var(--tab-hover);
+  color: var(--text-accent);
+  box-shadow: 0 0 12px rgba(212, 255, 0, 0.15);
+}
+
+.flashcard-nav-button:active {
+  transform: scale(0.95);
+}
+
+.flashcard-nav-button--back::before {
+  content: "‹";
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.flashcard-nav-button--forward::before {
+  content: "›";
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.flashcard-nav-button--back:disabled,
+.flashcard-nav-button--forward:disabled {
+  background-color: var(--tab-disabled);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}

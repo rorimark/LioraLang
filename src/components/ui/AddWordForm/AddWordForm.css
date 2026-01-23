@@ -1,0 +1,133 @@
+@import url("../../../styles/variables.css");
+
+.add-word-form {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-word-form h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.add-word-form__error {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ff6b6b;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.add-word-form__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.add-word-form__field {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-word-form__field label {
+  margin-bottom: 0.5rem;
+  color: var(--content-text);
+  font-size: 0.9rem;
+}
+
+.add-word-form__field .required {
+  color: #ff6b6b;
+}
+
+.add-word-form__field input,
+.add-word-form__field select,
+.add-word-form__field textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
+  background: var(--bg-main);
+  color: var(--content-text);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.add-word-form__field input:focus,
+.add-word-form__field select:focus,
+.add-word-form__field textarea:focus {
+  outline: none;
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 2px var(--tab-active-shadow);
+}
+
+.add-word-form__field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.add-word-form__field input::placeholder,
+.add-word-form__field textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.add-word-form__actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.add-word-form__actions button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--border-dark);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-word-form__actions button[type="submit"] {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: var(--text-white);
+  flex: 1;
+}
+
+.add-word-form__actions button[type="submit"]:hover:not(:disabled) {
+  background: #45a049;
+  border-color: #45a049;
+  box-shadow: 0 0 0 2px var(--tab-hover-shadow);
+}
+
+.add-word-form__actions button[type="submit"]:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.add-word-form__actions button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.add-word-form__actions button[type="button"] {
+  background: var(--bg-panel);
+  border: 2px solid var(--border-dark);
+  color: var(--text-light);
+}
+
+.add-word-form__actions button[type="button"]:hover {
+  background: var(--tab-hover);
+  color: var(--text-accent);
+  box-shadow: 0 0 0 2px var(--tab-hover-shadow);
+}
+
+.add-word-form__actions button[type="button"]:active {
+  transform: scale(0.985);
+}

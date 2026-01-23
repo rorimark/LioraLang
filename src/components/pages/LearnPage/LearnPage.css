@@ -1,4 +1,4 @@
-@import url("../../../styles/colors.css");
+@import url("../../../styles/variables.css");
 
 .learn-page-content {
   background-color: var(--bg-main);

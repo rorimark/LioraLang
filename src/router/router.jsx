@@ -1,8 +1,5 @@
-// import { createBrowserRouter } from "react-router-dom";
-import { ROUTES } from "./routes.jsx";
 import { Routes, Route } from "react-router-dom";
-
-// export const router = createBrowserRouter(ROUTES);
+import { ROUTES } from "./routes";
 
 export default function RoutesComponent() {
   return (

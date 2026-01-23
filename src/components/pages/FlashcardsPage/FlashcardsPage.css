@@ -1,4 +1,4 @@
-@import url("../../../styles/colors.css");
+@import url("../../../styles/variables.css");
 
 .flashcards-page {
   background-color: var(--bg-main);
