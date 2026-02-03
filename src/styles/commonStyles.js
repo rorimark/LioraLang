@@ -1,10 +1,10 @@
-export const pageContainerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  color: "#ffffff",
-};
+// export const pageContainerStyle = {
+//   display: "flex",
+//   flexDirection: "column",
+//   height: "87%",
+//   color: "#ffffff",
+// };
 
-export const mainContentStyle = {
-  height: "90%",
-};
+// export const mainContentStyle = {
+//   height: "90%",
+// };

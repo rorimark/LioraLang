@@ -1,22 +1,31 @@
 import "./Header.css";
-import { useNavigate } from "react-router-dom";
 import HistoryNavigationButtons from "../../ui/HistoryNavigationButtons/HistoryNavigationButtons";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ headerTitle }) {
   const navigate = useNavigate();
-
-  const handlePrev = () => {
-    navigate(-1);
-  };
-
-  const handleNext = () => {
-    navigate(1);
-  };
-
   return (
     <header className="page-header">
-      <HistoryNavigationButtons onPrev={handlePrev} onNext={handleNext} />
-      <h1 className="page-header__title">{headerTitle || "Page"}</h1>
+      <div className="page-header__content">
+        <HistoryNavigationButtons
+          onPrev={() => {
+            navigate(-1);
+          }}
+          onNext={() => {
+            navigate(1);
+          }}
+        />
+        {/* {isMobile && (
+          <button
+            className="header-menu-button"
+            onClick={onMenuClick}
+            aria-label="Открыть меню"
+          >
+            <Menu size={24} />
+          </button>
+        )} */}
+        <h1 className="page-header__title">{headerTitle}</h1>
+      </div>
     </header>
   );
 }

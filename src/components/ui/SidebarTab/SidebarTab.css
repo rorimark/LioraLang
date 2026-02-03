@@ -7,20 +7,23 @@
   background-color: transparent;
   width: auto;
   padding: 10px 16px;
-  margin-bottom: 0;
   margin: 0;
   text-decoration: none;
   border-radius: 0;
   color: var(--text-light);
   transition: var(--transition);
   border-left: 3px solid transparent;
+  position: relative;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  justify-content: flex-start;
 }
 
 .sidebar-tab:hover {
   color: var(--text-white);
   text-decoration: none;
   background-color: var(--tab-hover);
-  transform: none;
   border-left-color: var(--text-accent);
 }
 
@@ -36,19 +39,39 @@
   background-color: var(--tab-active);
   font-weight: 500;
   color: var(--text-light);
-  box-shadow: none;
   border-left-color: var(--text-accent);
+}
+
+/* Свернутое состояние - ВАЖНО: justify-content: center */
+.sidebar-tab--collapsed {
+  justify-content: center;
+  /* padding: 12px; */
+  width: 100%;
+}
+
+.sidebar-tab--collapsed .sidebar-tab__label {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  display: none;
 }
 
 .sidebar-tab__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   filter: brightness(0) invert(1);
   flex-shrink: 0;
+  min-width: 20px; /* Важно для свернутого состояния */
+}
+
+.sidebar-tab__icon--collapsed {
+  width: 25px;
+  height: 25px;
 }
 
 .sidebar-tab__label {
@@ -56,4 +79,53 @@
   text-align: left;
   font-size: 14px;
   white-space: nowrap;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+/* Tooltip для свернутого состояния */
+.sidebar-tab__tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--bg-darker);
+  color: var(--text-white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+.sidebar-tab--collapsed:hover .sidebar-tab__tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-tab__tooltip::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent var(--bg-darker) transparent transparent;
+}
+
+/* На мобильных не показываем тултипы */
+@media (max-width: 768px) {
+  .sidebar-tab__tooltip {
+    display: none;
+  }
 }

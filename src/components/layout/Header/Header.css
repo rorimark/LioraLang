@@ -1,14 +1,21 @@
 @import url("../../../styles/variables.css");
 
 .page-header {
-  display: flex;
+  /* justify-content: center; */
+  align-items: center;
   background-color: var(--bg-panel);
   width: 100%;
   border-bottom: var(--border-dark) 1px solid;
   border-left: none;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 32px;
   gap: 16px;
+}
+
+.page-header__content {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
 }
 
 .page-header__title {
@@ -16,4 +23,25 @@
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-style: normal;
+}
+
+@media (max-width: 650px) {
+  .page-header__content > .header-menu-button {
+    visibility: hidden;
+  }
+
+  .page-header {
+    padding: 0 16px;
+  }
+
+  h1 {
+    margin: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-height: 750px) {
+  h1 {
+    margin: 8px;
+  }
 }

@@ -1,13 +1,46 @@
 @import url("../../../styles/variables.css");
 
-.home-page-header {
-  background-color: var(--bg-darker);
-  border-bottom: 1px solid var(--border);
-  padding: 16px;
-}
-
 .home-page-content {
   background-color: var(--bg-main);
-  display: grid;
-  grid-template: auto / auto auto auto;
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* gap: 8px; */
+}
+
+.block {
+  padding: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--bg-panel);
+  border-radius: 16px;
+  border: 1px solid #ffffff;
+
+  min-height: 250px;
+
+  /* ключевая строка */
+  flex: 1 1 300px;
+}
+
+@media (min-width: 1600px) {
+  .block {
+    flex: 1 1 350px;
+  }
+}
+
+@media (min-width: 651px) and (max-width: 768px) {
+  .block {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 650px) {
+  .block {
+    flex: 1 1 100%;
+  }
 }
