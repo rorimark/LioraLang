@@ -1,10 +1,5 @@
 import { useState } from "react";
 import "./SettingsPage.css";
-import {
-  pageContainerStyle,
-  mainContentStyle,
-} from "../../../styles/commonStyles";
-import Header from "../../layout/Header/Header";
 import AddWordForm from "../../ui/AddWordForm/AddWordForm";
 import { useWords } from "../../../hooks/useWords";
 import {
@@ -39,55 +34,52 @@ export default function SettingsPage() {
   };
 
   return (
-    <div style={pageContainerStyle}>
-      <Header headerTitle="Settings" />
-      <main className="settings-page-content" style={mainContentStyle}>
-        <div className="settings-container">
-          <section className="settings-section">
-            <h2>Word Management</h2>
+    <main className="settings-page-content">
+      <div className="settings-container">
+        <section className="settings-section">
+          <h2>Word Management</h2>
 
-            {!showAddForm ? (
-              <div className="settings-actions">
+          {!showAddForm ? (
+            <div className="settings-actions">
+              <button
+                className="settings-button settings-button--primary"
+                onClick={() => setShowAddForm(true)}
+              >
+                Add New Word
+              </button>
+              <button
+                className="settings-button"
+                onClick={handleExport}
+                disabled={!words.length}
+              >
+                Export All Words (JSON)
+              </button>
+              {customWords.length > 0 && (
                 <button
-                  className="settings-button settings-button--primary"
-                  onClick={() => setShowAddForm(true)}
+                  className="settings-button settings-button--danger"
+                  onClick={handleClearCustom}
                 >
-                  Add New Word
+                  Clear Custom Words ({customWords.length})
                 </button>
-                <button
-                  className="settings-button"
-                  onClick={handleExport}
-                  disabled={!words.length}
-                >
-                  Export All Words (JSON)
-                </button>
-                {customWords.length > 0 && (
-                  <button
-                    className="settings-button settings-button--danger"
-                    onClick={handleClearCustom}
-                  >
-                    Clear Custom Words ({customWords.length})
-                  </button>
-                )}
-              </div>
-            ) : (
-              <AddWordForm
-                onWordAdded={handleWordAdded}
-                onCancel={() => setShowAddForm(false)}
-              />
-            )}
+              )}
+            </div>
+          ) : (
+            <AddWordForm
+              onWordAdded={handleWordAdded}
+              onCancel={() => setShowAddForm(false)}
+            />
+          )}
 
-            {customWords.length > 0 && (
-              <div className="custom-words-info">
-                <p>
-                  You have {customWords.length} custom word
-                  {customWords.length !== 1 ? "s" : ""} stored locally.
-                </p>
-              </div>
-            )}
-          </section>
-        </div>
-      </main>
-    </div>
+          {customWords.length > 0 && (
+            <div className="custom-words-info">
+              <p>
+                You have {customWords.length} custom word
+                {customWords.length !== 1 ? "s" : ""} stored locally.
+              </p>
+            </div>
+          )}
+        </section>
+      </div>
+    </main>
   );
 }

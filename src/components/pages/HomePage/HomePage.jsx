@@ -1,12 +1,15 @@
 import "./HomePage.css";
-import { pageContainerStyle, mainContentStyle } from "../../../styles/commonStyles";
-import Header from "../../layout/Header/Header";
 
 export default function HomePage() {
   return (
-    <div style={pageContainerStyle}>
-      <Header headerTitle="Home" />
-      <main className="home-page-content" style={mainContentStyle}></main>
-    </div>
+    <main className="home-page-content">
+      <p>Personalize your content</p>
+      <div className="block">Continue learning</div>
+      {/*<div className="block">Start new session</div>
+      <div className="block">My progress</div>
+      <div className="block">Word of today</div>
+      <div className="block">5</div>
+      <div className="block">6</div> */}
+    </main>
   );
 }

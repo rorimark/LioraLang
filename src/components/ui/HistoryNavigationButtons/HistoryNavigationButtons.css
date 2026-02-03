@@ -6,6 +6,14 @@
   align-items: center;
 }
 
+@media (max-width: 650px) {
+  .navigation-buttons {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+}
+
 .nav-button {
   width: 32px;
   height: 32px;

@@ -31,3 +31,55 @@
 .flash-card .back {
   background-color: var(--bg-card-back);
 } */
+
+@media (max-width: 985px) {
+  .flashcard {
+    width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .flashcard {
+    height: 350px;
+  }
+}
+
+@media (max-width: 450px) {
+  .flashcard {
+    height: 350px;
+    width: 90%;
+  }
+}
+
+@media (max-height: 750px) {
+  .flashcard {
+    height: 350px;
+    width: 85%;
+    transform: translateY(-8px);
+    margin-bottom: -8px;
+  }
+
+  .flashcard.flipped {
+    transform: rotateY(180deg) scaleX(-1) translateY(-8px);
+  }
+}
+
+@media (max-height: 510px) {
+  .flashcard {
+    height: 250px;
+    width: 60%;
+  }
+}
+
+@media (max-height: 400px) {
+  .flashcard {
+    height: 200px;
+    width: 60%;
+    transform: translateY(-32px);
+    margin-bottom: -32px;
+  }
+
+  .flashcard.flipped {
+    transform: rotateY(180deg) scaleX(-1) translateY(-32px);
+  }
+}

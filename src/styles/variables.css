@@ -20,6 +20,9 @@
   --tab-active-shadow: rgba(212, 255, 0, 0.2);
   --tab-hover-shadow: rgba(212, 255, 0, 0.1);
   --nav-button-bg: #252525;
+  --sidebar-width: 280px;
+  --sidebar-tablet-width: 230px;
+  --sidebar-collapsed-width: 80px;
 
   /* Background */
   --bg-main: var(--main);
