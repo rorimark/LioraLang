@@ -1,0 +1,233 @@
+.cards-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.cards-panel__header {
+  display: grid;
+  gap: 6px;
+}
+
+.cards-panel__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.cards-panel__header p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+.cards-panel__count {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+}
+
+.cards-panel__status {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+}
+
+.cards-panel__status--error {
+  color: var(--color-danger);
+}
+
+.cards-panel__retry {
+  width: fit-content;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+}
+
+.decks-page-panel__message {
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  font-size: 0.82rem;
+  padding: 8px 10px;
+}
+
+.decks-page-panel__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.decks-page-panel__actions button {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 7px 10px;
+}
+
+.decks-page-panel__actions button:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+}
+
+.decks-page-panel__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.dictionary-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 14px;
+  min-width: 0;
+  align-items: start;
+}
+
+.dictionary-table-area {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dictionary-table-scroll {
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 14px;
+}
+
+.dictionary-filters-aside {
+  position: sticky;
+  top: 84px;
+  display: grid;
+  gap: 8px;
+}
+
+.dictionary-filters-toggle {
+  display: none;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 9px 12px;
+  text-align: left;
+}
+
+.dictionary-filters-toggle:hover {
+  background: var(--color-surface-muted);
+}
+
+.cards-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  padding: 10px 12px;
+}
+
+.cards-pagination__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.cards-pagination__size {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cards-pagination__size select {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.cards-pagination__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cards-pagination__controls button {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+}
+
+.cards-pagination__controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.cards-pagination__controls button:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+}
+
+.cards-pagination__page.is-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-strong);
+}
+
+.cards-pagination__ellipsis {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  padding: 0 2px;
+}
+
+@media (max-width: 1200px) {
+  .dictionary-workspace {
+    grid-template-columns: minmax(0, 1fr) 290px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .dictionary-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .dictionary-filters-aside {
+    position: static;
+    order: -1;
+  }
+
+  .dictionary-filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

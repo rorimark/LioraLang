@@ -1,0 +1,8 @@
+.delete-deck-modal__warning {
+  margin: 0;
+  border: 1px dashed var(--color-danger);
+  border-radius: 9px;
+  color: var(--color-danger);
+  font-size: 0.82rem;
+  padding: 8px 10px;
+}
