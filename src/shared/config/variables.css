@@ -1,0 +1,62 @@
+:root {
+  --color-bg: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eef2f6;
+
+  --color-text: #111827;
+  --color-text-muted: #4b5563;
+
+  --color-border: #d6dee8;
+
+  --color-primary: #2563eb;
+  --color-primary-strong: #1d4ed8;
+  --color-primary-soft: #dbeafe;
+
+  --color-accent: #f59e0b;
+  --color-accent-soft: #fef3c7;
+  --color-accent-strong: #92400e;
+
+  --color-danger: #dc2626;
+
+  --flashcard-front-bg: #ffffff;
+  --flashcard-back-bg: #eef2f6;
+  --flashcard-label-bg: #f8fafc;
+
+  --shadow-sm: 0 6px 20px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 20px 48px rgba(15, 23, 42, 0.16);
+
+  /* Backward-compatible aliases for existing components. */
+  --bg-main: var(--color-bg);
+  --bg-dark: var(--color-surface-muted);
+  --bg-light: var(--color-surface);
+  --primary: var(--color-primary);
+  --text-main: var(--color-text);
+}
+
+:root[theme="dark"] {
+  --color-bg: #0f1115;
+  --color-surface: #151922;
+  --color-surface-muted: #1d2430;
+
+  --color-text: #e5e7eb;
+  --color-text-muted: #94a3b8;
+
+  --color-border: #2b3444;
+
+  --color-primary: #60a5fa;
+  --color-primary-strong: #3b82f6;
+  --color-primary-soft: rgba(96, 165, 250, 0.18);
+
+  --color-accent: #fbbf24;
+  --color-accent-soft: rgba(251, 191, 36, 0.18);
+  --color-accent-strong: #fcd34d;
+
+  --color-danger: #f87171;
+
+  --flashcard-front-bg: #0f172a;
+  --flashcard-back-bg: #1f2937;
+  --flashcard-label-bg: #111827;
+
+  --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.28);
+  --shadow-md: 0 24px 52px rgba(0, 0, 0, 0.42);
+}

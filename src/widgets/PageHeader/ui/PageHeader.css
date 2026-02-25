@@ -1,0 +1,58 @@
+@import url("@shared/config/variables.css");
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: 400;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.page-header__left > h1 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.page-header__eyebrow {
+  margin: 0 0 6px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.page-header__subtitle {
+  margin: 8px 0 0;
+  max-width: 680px;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.page-header__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+  .page-header {
+    padding: 14px 16px 12px;
+    gap: 12px;
+  }
+
+  .page-header__meta {
+    display: none;
+  }
+}

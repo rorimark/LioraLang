@@ -1,0 +1,1 @@
+export { DeleteDeckModal } from "./ui";

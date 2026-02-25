@@ -1,0 +1,50 @@
+.decks-page-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.decks-page-panel__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.decks-page-panel__header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+.decks-page-panel__message {
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  font-size: 0.82rem;
+  padding: 8px 10px;
+}
+
+.decks-page-panel__message--error {
+  border-color: rgba(190, 61, 46, 0.35);
+  color: var(--color-danger);
+}
+
+.decks-page-panel__loading {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+.decks-page-panel__refresh {
+  width: fit-content;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 7px 10px;
+}
+
+.decks-page-panel__refresh:hover {
+  background: var(--color-surface-muted);
+}

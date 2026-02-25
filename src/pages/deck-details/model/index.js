@@ -1,0 +1,1 @@
+export { useDeckDetailsPage } from "./useDeckDetailsPage";
