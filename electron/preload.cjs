@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   exportDeckToJson: (deckId) => ipcRenderer.invoke("decks:export-json", deckId),
   renameDeck: (payload) => ipcRenderer.invoke("decks:rename", payload),
   deleteDeck: (payload) => ipcRenderer.invoke("decks:delete", payload),
+  saveDeck: (payload) => ipcRenderer.invoke("decks:save", payload),
 
   getDbPath: () => ipcRenderer.invoke("app:get-db-path"),
   openDbFolder: () => ipcRenderer.invoke("app:open-db-folder"),

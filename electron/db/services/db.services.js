@@ -29,6 +29,48 @@ const toCleanArray = (value) => {
   return value.filter((item) => typeof item === "string" && item.trim().length > 0);
 };
 
+const buildDeckDescription = ({
+  sourceLanguage,
+  targetLanguage,
+  tertiaryLanguage,
+}) => {
+  const source = toCleanString(sourceLanguage);
+  const target = toCleanString(targetLanguage);
+  const tertiary = toCleanString(tertiaryLanguage);
+
+  if (!source || !target) {
+    return "";
+  }
+
+  return tertiary ? `${source} -> ${target} -> ${tertiary}` : `${source} -> ${target}`;
+};
+
+const normalizeEditableWord = (word, index) => {
+  const eng = toCleanString(word?.eng);
+
+  if (!eng) {
+    return null;
+  }
+
+  const level = toCleanString(word?.level).toUpperCase();
+  const parsedId = Number(word?.id);
+  const resolvedExamples = toCleanArray(word?.examples);
+  const singleExample = toCleanString(word?.example);
+  const examples = singleExample ? [singleExample] : resolvedExamples;
+
+  return {
+    id: Number.isInteger(parsedId) && parsedId > 0 ? parsedId : null,
+    externalId: toCleanString(String(word?.externalId ?? `manual-${index + 1}`)),
+    eng,
+    ru: toCleanString(word?.ru),
+    pl: toCleanString(word?.pl),
+    level: ALLOWED_LEVELS.has(level) ? level : null,
+    partOfSpeech: toCleanString(word?.part_of_speech),
+    tags: toCleanArray(word?.tags),
+    examples,
+  };
+};
+
 const normalizeWord = (word, index) => {
   const eng = toCleanString(word?.eng);
 
@@ -131,6 +173,10 @@ export const listDecks = () => {
           decks.id,
           decks.name,
           decks.description,
+          decks.source_language AS sourceLanguage,
+          decks.target_language AS targetLanguage,
+          decks.tertiary_language AS tertiaryLanguage,
+          decks.tags_json AS tagsJson,
           decks.created_at AS createdAt,
           COUNT(words.id) AS wordsCount
         FROM decks
@@ -153,6 +199,10 @@ export const getDeckById = (deckId) => {
             decks.id,
             decks.name,
             decks.description,
+            decks.source_language AS sourceLanguage,
+            decks.target_language AS targetLanguage,
+            decks.tertiary_language AS tertiaryLanguage,
+            decks.tags_json AS tagsJson,
             decks.created_at AS createdAt,
             COUNT(words.id) AS wordsCount
           FROM decks
@@ -221,7 +271,16 @@ export const importDeckFromJsonFile = (filePath, preferredDeckName = "") => {
   );
 
   const insertDeck = db.prepare(
-    "INSERT INTO decks (name, description) VALUES (?, ?)",
+    `
+      INSERT INTO decks (
+        name,
+        description,
+        source_language,
+        target_language,
+        tertiary_language,
+        tags_json
+      ) VALUES (?, ?, ?, ?, ?, ?)
+    `,
   );
   const insertWord = db.prepare(
     `
@@ -243,6 +302,10 @@ export const importDeckFromJsonFile = (filePath, preferredDeckName = "") => {
     const deckResult = insertDeck.run(
       deckName,
       `Imported from ${path.basename(filePath)}`,
+      "English",
+      "Russian",
+      "Polish",
+      JSON.stringify([]),
     );
 
     const deckId = Number(deckResult.lastInsertRowid);
@@ -301,5 +364,201 @@ export const exportDeckToJsonFile = (deckId, filePath) => {
     deckName: deck.name,
     filePath,
     exportedCount: jsonPayload.length,
+  };
+};
+
+export const saveDeck = (payload = {}) => {
+  const db = getDatabase();
+  const providedDeckId = Number(payload?.deckId);
+  const hasDeckId = Number.isInteger(providedDeckId) && providedDeckId > 0;
+  const cleanedName = toCleanString(payload?.name);
+  const sourceLanguage = toCleanString(payload?.sourceLanguage);
+  const targetLanguage = toCleanString(payload?.targetLanguage);
+  const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
+  const tags = toCleanArray(payload?.tags);
+  const description =
+    toCleanString(payload?.description) ||
+    buildDeckDescription({
+      sourceLanguage,
+      targetLanguage,
+      tertiaryLanguage,
+    });
+  const normalizedWords = Array.isArray(payload?.words)
+    ? payload.words
+        .map((word, index) => normalizeEditableWord(word, index))
+        .filter(Boolean)
+    : [];
+
+  if (!cleanedName) {
+    throw new Error("Deck name cannot be empty");
+  }
+
+  if (!sourceLanguage || !targetLanguage) {
+    throw new Error("Source and target languages are required");
+  }
+
+  const duplicateDeck = hasDeckId
+    ? db
+        .prepare("SELECT id FROM decks WHERE name = ? AND id <> ?")
+        .get(cleanedName, providedDeckId)
+    : db.prepare("SELECT id FROM decks WHERE name = ?").get(cleanedName);
+
+  if (duplicateDeck) {
+    throw new Error("Deck with this name already exists");
+  }
+
+  const insertDeck = db.prepare(
+    `
+      INSERT INTO decks (
+        name,
+        description,
+        source_language,
+        target_language,
+        tertiary_language,
+        tags_json
+      ) VALUES (?, ?, ?, ?, ?, ?)
+    `,
+  );
+  const updateDeck = db.prepare(
+    `
+      UPDATE decks
+      SET
+        name = ?,
+        description = ?,
+        source_language = ?,
+        target_language = ?,
+        tertiary_language = ?,
+        tags_json = ?,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `,
+  );
+  const existingWordIdsQuery = db.prepare(
+    "SELECT id FROM words WHERE deck_id = ?",
+  );
+  const updateWord = db.prepare(
+    `
+      UPDATE words
+      SET
+        external_id = ?,
+        eng = ?,
+        ru = ?,
+        pl = ?,
+        level = ?,
+        part_of_speech = ?,
+        tags_json = ?,
+        examples_json = ?
+      WHERE id = ? AND deck_id = ?
+    `,
+  );
+  const insertWord = db.prepare(
+    `
+      INSERT INTO words (
+        external_id,
+        deck_id,
+        eng,
+        ru,
+        pl,
+        level,
+        part_of_speech,
+        tags_json,
+        examples_json
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+  );
+  const deleteWordsByDeck = db.prepare("DELETE FROM words WHERE deck_id = ?");
+
+  const saveDeckTransaction = db.transaction(() => {
+    let resolvedDeckId = providedDeckId;
+
+    if (hasDeckId) {
+      const updateResult = updateDeck.run(
+        cleanedName,
+        description || null,
+        sourceLanguage,
+        targetLanguage,
+        tertiaryLanguage || null,
+        JSON.stringify(tags),
+        providedDeckId,
+      );
+
+      if (updateResult.changes === 0) {
+        throw new Error("Deck not found");
+      }
+    } else {
+      const insertResult = insertDeck.run(
+        cleanedName,
+        description || null,
+        sourceLanguage,
+        targetLanguage,
+        tertiaryLanguage || null,
+        JSON.stringify(tags),
+      );
+      resolvedDeckId = Number(insertResult.lastInsertRowid);
+    }
+
+    const existingWordIds = new Set(
+      existingWordIdsQuery.all(resolvedDeckId).map((row) => Number(row.id)),
+    );
+    const persistedWordIds = [];
+
+    normalizedWords.forEach((word) => {
+      const tagsJson = JSON.stringify(word.tags);
+      const examplesJson = JSON.stringify(word.examples);
+
+      if (word.id && existingWordIds.has(word.id)) {
+        updateWord.run(
+          word.externalId || null,
+          word.eng,
+          word.ru || null,
+          word.pl || null,
+          word.level,
+          word.partOfSpeech || null,
+          tagsJson,
+          examplesJson,
+          word.id,
+          resolvedDeckId,
+        );
+        persistedWordIds.push(word.id);
+        return;
+      }
+
+      const insertResult = insertWord.run(
+        word.externalId || null,
+        resolvedDeckId,
+        word.eng,
+        word.ru || null,
+        word.pl || null,
+        word.level,
+        word.partOfSpeech || null,
+        tagsJson,
+        examplesJson,
+      );
+      persistedWordIds.push(Number(insertResult.lastInsertRowid));
+    });
+
+    if (persistedWordIds.length === 0) {
+      deleteWordsByDeck.run(resolvedDeckId);
+    } else {
+      const placeholders = persistedWordIds.map(() => "?").join(", ");
+      db.prepare(
+        `
+          DELETE FROM words
+          WHERE deck_id = ?
+          AND id NOT IN (${placeholders})
+        `,
+      ).run(resolvedDeckId, ...persistedWordIds);
+    }
+
+    return {
+      deckId: resolvedDeckId,
+    };
+  });
+
+  const { deckId } = saveDeckTransaction();
+
+  return {
+    deck: getDeckById(deckId),
+    words: getDeckWords(deckId),
   };
 };

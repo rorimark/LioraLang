@@ -48,6 +48,10 @@ export const desktopApi = {
         id: FALLBACK_DECK_ID,
         name: "Starter Deck",
         description: "Fallback deck from public/data/words.json",
+        sourceLanguage: "English",
+        targetLanguage: "Russian",
+        tertiaryLanguage: "Polish",
+        tagsJson: JSON.stringify(["starter"]),
         wordsCount: words.length,
         createdAt: null,
       },
@@ -69,6 +73,10 @@ export const desktopApi = {
       id: FALLBACK_DECK_ID,
       name: "Starter Deck",
       description: "Fallback deck from public/data/words.json",
+      sourceLanguage: "English",
+      targetLanguage: "Russian",
+      tertiaryLanguage: "Polish",
+      tagsJson: JSON.stringify(["starter"]),
       wordsCount: words.length,
       createdAt: null,
     };
@@ -158,6 +166,23 @@ export const desktopApi = {
     }
 
     return getElectronApi().deleteDeck({ deckId });
+  },
+
+  async saveDeck(payload) {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().saveDeck !== "function"
+    ) {
+      if (isElectronRuntime()) {
+        throw new Error(
+          "Desktop API is unavailable in this window. Restart the app.",
+        );
+      }
+
+      throw new Error("Deck editing is available only in desktop mode");
+    }
+
+    return getElectronApi().saveDeck(payload || {});
   },
 
   async getDbPath() {

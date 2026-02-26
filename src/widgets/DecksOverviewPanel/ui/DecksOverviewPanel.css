@@ -48,3 +48,9 @@
 .decks-page-panel__refresh:hover {
   background: var(--color-surface-muted);
 }
+
+.decks-page-panel__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -1,16 +1,37 @@
 import { useCallback, useMemo, useState } from "react";
 import { useDecks, useDeckWords } from "@entities/deck";
 
-const buildCardFront = (word) => word.eng || "-";
-const buildCardBack = (word) => {
-  const parts = [word.ru, word.pl, word.part_of_speech, word.level]
-    .filter(Boolean)
-    .join(" • ");
+const buildCardFrontText = (word) => word?.eng || "-";
+
+const buildCardBackText = (word) => {
+  const parts = [word?.ru, word?.pl].filter(Boolean).join(" • ");
 
   return parts || "No translation";
 };
 
-export const useLearnPage = () => {
+const buildCardMetaBadges = (word) => {
+  if (!word) {
+    return [];
+  }
+
+  const badges = [];
+
+  if (word.level) {
+    badges.push({ key: "level", text: `Level ${word.level}`, accent: false });
+  }
+
+  if (word.part_of_speech) {
+    badges.push({
+      key: "partOfSpeech",
+      text: word.part_of_speech,
+      accent: false,
+    });
+  }
+
+  return badges;
+};
+
+export const useLearnFlashcardsPanel = () => {
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const [selectedDeckIdState, setSelectedDeckIdState] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -45,6 +66,18 @@ export const useLearnPage = () => {
     ? Math.min(currentIndex, safeWords.length - 1)
     : 0;
   const currentWord = hasCards ? safeWords[resolvedIndex] : null;
+  const cardFrontText = useMemo(
+    () => buildCardFrontText(currentWord),
+    [currentWord],
+  );
+  const cardBackText = useMemo(
+    () => buildCardBackText(currentWord),
+    [currentWord],
+  );
+  const cardMetaBadges = useMemo(
+    () => buildCardMetaBadges(currentWord),
+    [currentWord],
+  );
 
   const handleDeckChange = useCallback((deckId) => {
     setSelectedDeckIdState(deckId);
@@ -84,19 +117,20 @@ export const useLearnPage = () => {
   }, [hasCards, safeWords.length]);
 
   return {
-    decks,
     deck,
+    decks,
     decksError,
     wordsError,
     isDecksLoading,
     isWordsLoading,
     selectedDeckId,
     currentWord,
+    cardFrontText,
+    cardBackText,
+    cardMetaBadges,
     currentCardIndex: Math.min(resolvedIndex + 1, safeWords.length),
     cardsCount: safeWords.length,
     isBackVisible,
-    buildCardFront,
-    buildCardBack,
     handleDeckSelectChange,
     handlePrevCard,
     handleNextCard,
