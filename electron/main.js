@@ -13,6 +13,7 @@ import {
   exportDeckToJsonFile,
   renameDeck,
   deleteDeck,
+  saveDeck,
 } from "./db/services/db.services.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -201,6 +202,12 @@ const setupIpcHandlers = () => {
     const deletionResult = deleteDeck(payload?.deckId);
     sendDecksUpdated();
     return deletionResult;
+  });
+
+  ipcMain.handle("decks:save", (_, payload) => {
+    const saveResult = saveDeck(payload || {});
+    sendDecksUpdated();
+    return saveResult;
   });
 
   ipcMain.handle("app:get-db-path", () => {

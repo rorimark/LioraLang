@@ -1,0 +1,348 @@
+.deck-editor-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.deck-editor-panel__header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.deck-editor-panel__header h2 {
+  margin: 0;
+  font-size: 1.14rem;
+  color: var(--color-text);
+}
+
+.deck-editor-panel__header p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+.deck-editor-panel__toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.deck-editor-panel__toolbar button,
+.deck-editor-panel__word-actions button {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 7px 11px;
+}
+
+.deck-editor-panel__toolbar button:hover,
+.deck-editor-panel__word-actions button:hover {
+  background: var(--color-surface-muted);
+}
+
+.deck-editor-panel__toolbar button:disabled,
+.deck-editor-panel__word-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.deck-editor-panel__button--secondary {
+  background: transparent;
+}
+
+.deck-editor-panel__button--danger {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.deck-editor-panel__section {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.deck-editor-panel__section-header h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.deck-editor-panel__section-header p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.deck-editor-panel__section-meta {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.deck-editor-panel__settings-grid,
+.deck-editor-panel__word-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.deck-editor-panel__field {
+  display: grid;
+  gap: 6px;
+}
+
+.deck-editor-panel__field span {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.deck-editor-panel__field input,
+.deck-editor-panel__field select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.84rem;
+  padding: 8px 10px;
+}
+
+.deck-editor-panel__field--wide {
+  grid-column: 1 / -1;
+}
+
+.deck-editor-panel__word-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.deck-editor-panel__empty {
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.deck-editor-panel__table-wrap {
+  overflow: auto;
+}
+
+.deck-editor-panel__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.deck-editor-panel__table th,
+.deck-editor-panel__table td {
+  border-bottom: 1px solid var(--color-border);
+  padding: 10px;
+  text-align: left;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  vertical-align: top;
+}
+
+.deck-editor-panel__table th {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.deck-editor-panel__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.deck-editor-panel__table-row--active {
+  background: var(--color-primary-soft);
+}
+
+.deck-editor-panel__table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.deck-editor-panel__table-actions button {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.74rem;
+  padding: 5px 8px;
+}
+
+.deck-editor-panel__table-actions button:hover {
+  background: var(--color-surface-muted);
+}
+
+.deck-editor-panel__preview {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.deck-editor-panel__preview h4 {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.deck-editor-panel__preview p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+
+.cards-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  padding: 10px 12px;
+}
+
+.cards-pagination__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.cards-pagination__size {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cards-pagination__size select {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.cards-pagination__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cards-pagination__controls button {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+}
+
+.cards-pagination__controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.cards-pagination__controls button:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+}
+
+.cards-pagination__page.is-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-strong);
+}
+
+.cards-pagination__ellipsis {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  padding: 0 2px;
+}
+
+.deck-editor-panel__error {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1080px) {
+  .deck-editor-panel__settings-grid,
+  .deck-editor-panel__word-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .cards-pagination {
+    align-items: stretch;
+  }
+
+  .cards-pagination__controls {
+    flex-wrap: wrap;
+  }
+
+  .deck-editor-panel__table {
+    border: none;
+  }
+
+  .deck-editor-panel__table thead {
+    display: none;
+  }
+
+  .deck-editor-panel__table tbody {
+    display: grid;
+    gap: 8px;
+  }
+
+  .deck-editor-panel__table tr {
+    display: block;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+  }
+
+  .deck-editor-panel__table td {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 8px;
+    border-bottom: 1px solid var(--color-border);
+    padding: 9px 10px;
+  }
+
+  .deck-editor-panel__table td::before {
+    content: attr(data-label);
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}

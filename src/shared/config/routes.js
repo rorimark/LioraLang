@@ -2,6 +2,8 @@ export const ROUTE_PATHS = {
   root: "/",
   learn: "/learn",
   decks: "/decks",
+  deckCreate: "/decks/new",
+  deckEdit: "/decks/:deckId/edit",
   deckDetails: "/decks/:deckId",
   progress: "/progress",
   settings: "/settings",
@@ -47,6 +49,10 @@ export const PAGE_META = {
     title: "Deck Details",
     subtitle: "Browse words, filter entries, and review deck content.",
   },
+  [ROUTE_PATHS.deckEdit]: {
+    title: "Deck Editor",
+    subtitle: "Configure deck languages, add words, and keep your base updated.",
+  },
   [ROUTE_PATHS.progress]: {
     title: "Learning Progress",
     subtitle: "Track retention, streaks, and spaced-repetition efficiency.",
@@ -62,6 +68,14 @@ export const PAGE_META = {
 };
 
 export const resolvePageMeta = (pathname) => {
+  if (pathname === ROUTE_PATHS.deckCreate) {
+    return PAGE_META[ROUTE_PATHS.deckEdit];
+  }
+
+  if (/^\/decks\/[^/]+\/edit$/.test(pathname)) {
+    return PAGE_META[ROUTE_PATHS.deckEdit];
+  }
+
   if (pathname.startsWith("/decks/")) {
     return PAGE_META[ROUTE_PATHS.deckDetails];
   }

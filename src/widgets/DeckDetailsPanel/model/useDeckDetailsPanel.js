@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { useDeckWords } from "@entities/deck";
 import { useCardCatalog } from "@features/card-catalog";
 import { desktopApi } from "@shared/api";
@@ -13,7 +14,9 @@ const isNarrowViewport = () => {
   return window.matchMedia(`(max-width: ${FILTERS_BREAKPOINT}px)`).matches;
 };
 
-export const useDeckDetailsPage = (deckId) => {
+export const useDeckDetailsPanel = () => {
+  const navigate = useNavigate();
+  const { deckId } = useParams();
   const { deck, words, isLoading, error, refreshDeckWords } = useDeckWords(deckId);
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
@@ -26,6 +29,17 @@ export const useDeckDetailsPage = (deckId) => {
   );
 
   const cardCatalog = useCardCatalog(words);
+  const languageLabels = useMemo(() => {
+    const sourceLanguage = deck?.sourceLanguage?.trim() || "English";
+    const targetLanguage = deck?.targetLanguage?.trim() || "Russian";
+    const tertiaryLanguage = deck?.tertiaryLanguage?.trim() || "";
+
+    return {
+      sourceLanguage,
+      targetLanguage,
+      tertiaryLanguage,
+    };
+  }, [deck?.sourceLanguage, deck?.targetLanguage, deck?.tertiaryLanguage]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -87,6 +101,14 @@ export const useDeckDetailsPage = (deckId) => {
     setIsFiltersExpanded((currentState) => !currentState);
   }, []);
 
+  const openEditDeck = useCallback(() => {
+    if (!deckId) {
+      return;
+    }
+
+    navigate(`/decks/${deckId}/edit`);
+  }, [deckId, navigate]);
+
   return {
     deck,
     isLoading,
@@ -96,10 +118,12 @@ export const useDeckDetailsPage = (deckId) => {
     messageVariant,
     isExporting,
     exportDeck,
+    openEditDeck,
     clearMessage,
     isNarrowFiltersViewport,
     isFiltersExpanded,
     toggleFilters,
+    languageLabels,
     ...cardCatalog,
   };
 };

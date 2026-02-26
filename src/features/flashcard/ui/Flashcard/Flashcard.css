@@ -45,6 +45,13 @@
   background: var(--flashcard-back-bg);
 }
 
+.flashcard__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .flashcard__label {
   display: inline-flex;
   width: fit-content;
@@ -56,6 +63,26 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 5px 10px;
+}
+
+.flashcard__meta-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.flashcard__meta-badge {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.flashcard__meta-badge--accent {
+  border-color: var(--color-border);
+  background: var(--flashcard-label-bg);
+  color: var(--color-text);
 }
 
 .flashcard__text {

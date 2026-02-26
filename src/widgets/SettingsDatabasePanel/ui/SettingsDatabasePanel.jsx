@@ -2,10 +2,11 @@ import { memo } from "react";
 import { ImportDeckModal } from "@features/deck-import";
 import { ThemeSwitch } from "@features/theme-switch";
 import { InlineAlert } from "@shared/ui";
+import { useSettingsDatabasePanel } from "../model";
 import "./SettingsDatabasePanel.css";
 
-export const SettingsDatabasePanel = memo(
-  ({
+export const SettingsDatabasePanel = memo(() => {
+  const {
     dbPath,
     statusMessage,
     statusVariant,
@@ -14,30 +15,31 @@ export const SettingsDatabasePanel = memo(
     importDeckNameDraft,
     isImportConfirmOpen,
     isDarkTheme,
-    onOpenImportConfirm,
-    onCloseImportConfirm,
-    onConfirmImportDeck,
-    onOpenDbFolder,
-    onToggleTheme,
-    onCloseStatus,
-    onImportDeckNameDraftChange,
-  }) => {
+    openImportConfirm,
+    closeImportConfirm,
+    confirmImportDeck,
+    openDbFolder,
+    toggleTheme,
+    clearStatusMessage,
+    handleImportDeckNameDraftChange,
+  } = useSettingsDatabasePanel();
+
     return (
       <article className="panel settings-page-panel">
         <div className="settings-page-panel__theme">
-          <ThemeSwitch isDarkTheme={isDarkTheme} onToggle={onToggleTheme} />
+          <ThemeSwitch isDarkTheme={isDarkTheme} onToggle={toggleTheme} />
         </div>
 
         <div className="settings-page-panel__actions">
           <button
             type="button"
-            onClick={onOpenImportConfirm}
+            onClick={openImportConfirm}
             disabled={isImporting}
           >
             {isImporting ? "Importing..." : "Import deck from JSON"}
           </button>
 
-          <button type="button" onClick={onOpenDbFolder}>
+          <button type="button" onClick={openDbFolder}>
             Open database folder
           </button>
         </div>
@@ -49,7 +51,7 @@ export const SettingsDatabasePanel = memo(
         <InlineAlert
           text={statusMessage}
           variant={statusVariant}
-          onClose={onCloseStatus}
+          onClose={clearStatusMessage}
         />
 
         <ImportDeckModal
@@ -57,13 +59,12 @@ export const SettingsDatabasePanel = memo(
           isImporting={isImporting}
           selectedFileName={selectedImportFileName}
           deckNameDraft={importDeckNameDraft}
-          onDeckNameChange={onImportDeckNameDraftChange}
-          onConfirm={onConfirmImportDeck}
-          onClose={onCloseImportConfirm}
+          onDeckNameChange={handleImportDeckNameDraftChange}
+          onConfirm={confirmImportDeck}
+          onClose={closeImportConfirm}
         />
       </article>
     );
-  },
-);
+});
 
 SettingsDatabasePanel.displayName = "SettingsDatabasePanel";

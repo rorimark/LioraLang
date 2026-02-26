@@ -1,13 +1,14 @@
 import { Navigate } from "react-router";
 import { AppLayout } from "@app/layouts/AppLayout";
 import { ROUTE_PATHS } from "@shared/config/routes";
-import { RouteHydrateFallback } from "@shared/ui";
+import { RouteErrorBoundary, RouteHydrateFallback } from "@shared/ui";
 
 const toChildPath = (path) => path.replace(/^\//, "");
 export const routes = [
   {
     path: ROUTE_PATHS.root,
     element: <AppLayout />,
+    errorElement: <RouteErrorBoundary />,
     hydrateFallbackElement: <RouteHydrateFallback />,
     children: [
       { index: true, element: <Navigate to={ROUTE_PATHS.learn} replace /> },
@@ -23,6 +24,20 @@ export const routes = [
         lazy: async () => {
           const module = await import("@pages/decks");
           return { Component: module.DecksPage };
+        },
+      },
+      {
+        path: toChildPath(ROUTE_PATHS.deckCreate),
+        lazy: async () => {
+          const module = await import("@pages/deck-editor");
+          return { Component: module.DeckEditorPage };
+        },
+      },
+      {
+        path: toChildPath(ROUTE_PATHS.deckEdit),
+        lazy: async () => {
+          const module = await import("@pages/deck-editor");
+          return { Component: module.DeckEditorPage };
         },
       },
       {

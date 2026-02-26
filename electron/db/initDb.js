@@ -1,5 +1,16 @@
 import { getDatabase } from "./db.js";
 
+const ensureColumn = (db, tableName, columnName, columnDefinition) => {
+  const columns = db.prepare(`PRAGMA table_info(${tableName})`).all();
+  const hasColumn = columns.some((column) => column.name === columnName);
+
+  if (!hasColumn) {
+    db.prepare(
+      `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`,
+    ).run();
+  }
+};
+
 export const initDb = () => {
   const db = getDatabase();
 
@@ -17,6 +28,10 @@ export const initDb = () => {
       folder_id INTEGER,
       name TEXT NOT NULL UNIQUE,
       description TEXT,
+      source_language TEXT,
+      target_language TEXT,
+      tertiary_language TEXT,
+      tags_json TEXT DEFAULT '[]',
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (folder_id) REFERENCES deck_folders(id) ON DELETE SET NULL
@@ -52,4 +67,9 @@ export const initDb = () => {
       FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
     );
   `);
+
+  ensureColumn(db, "decks", "source_language", "TEXT");
+  ensureColumn(db, "decks", "target_language", "TEXT");
+  ensureColumn(db, "decks", "tertiary_language", "TEXT");
+  ensureColumn(db, "decks", "tags_json", "TEXT DEFAULT '[]'");
 };

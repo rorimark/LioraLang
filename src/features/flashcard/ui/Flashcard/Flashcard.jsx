@@ -7,6 +7,7 @@ export const Flashcard = memo(
     frontText,
     backLabel = "Back",
     backText,
+    backMetaBadges = [],
     isFlipped = false,
     onFlip,
     disabled = false,
@@ -27,7 +28,25 @@ export const Flashcard = memo(
           </span>
 
           <span className="flashcard__face flashcard__face--back">
-            <span className="flashcard__label">{backLabel}</span>
+            <span className="flashcard__head">
+              <span className="flashcard__label">{backLabel}</span>
+              {backMetaBadges.length > 0 && (
+                <span className="flashcard__meta-badges">
+                  {backMetaBadges.map((badge) => (
+                    <span
+                      key={badge.key}
+                      className={
+                        badge.accent
+                          ? "flashcard__label flashcard__meta-badge flashcard__meta-badge--accent"
+                          : "flashcard__label flashcard__meta-badge"
+                      }
+                    >
+                      {badge.text}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </span>
             <strong className="flashcard__text">{backText || "-"}</strong>
             <span className="flashcard__hint">Tap to see front side</span>
           </span>

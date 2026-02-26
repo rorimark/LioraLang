@@ -5,7 +5,7 @@
   border-spacing: 0;
   border: 1px solid var(--color-border);
   border-radius: 14px;
-  overflow: hidden;
+  overflow: visible;
   background: var(--color-surface);
 }
 
@@ -27,8 +27,24 @@
   background: var(--color-surface-muted);
 }
 
+.decks-table thead th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.decks-table thead th:last-child {
+  border-top-right-radius: 14px;
+}
+
 .decks-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.decks-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 14px;
+}
+
+.decks-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 14px;
 }
 
 .decks-table tbody tr:nth-child(even) {
@@ -43,6 +59,85 @@
   text-align: center;
   color: var(--color-text-muted);
   padding: 20px;
+}
+
+.decks-table__tags-cell {
+  position: relative;
+  vertical-align: top;
+}
+
+.decks-table__tags-wrap {
+  display: grid;
+  gap: 6px;
+}
+
+.decks-table__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.decks-table__tags .meta-badge {
+  padding: 4px 8px;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.decks-table__tags-more-wrap {
+  position: relative;
+  display: inline-flex;
+  z-index: 2;
+}
+
+.decks-table__tags-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  border: 1px dashed var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 8px;
+  cursor: help;
+  user-select: none;
+}
+
+.decks-table__tags-more:hover {
+  background: var(--color-surface);
+}
+
+.decks-table__tags-tooltip {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  right: 0;
+  width: min(320px, 52vw);
+  max-height: 180px;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.74rem;
+  line-height: 1.35;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  padding: 8px 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-2px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
+  pointer-events: none;
+}
+
+.decks-table__tags-more-wrap:hover .decks-table__tags-tooltip,
+.decks-table__tags-more-wrap:focus-within .decks-table__tags-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .decks-table__actions {
@@ -99,7 +194,7 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     background: var(--color-surface);
-    overflow: hidden;
+    overflow: visible;
   }
 
   .decks-table td {
@@ -136,6 +231,12 @@
   .decks-table__actions button {
     padding: 7px 10px;
     font-size: 0.78rem;
+  }
+
+  .decks-table__tags-tooltip {
+    left: 0;
+    right: auto;
+    width: min(300px, 80vw);
   }
 
   .decks-table__empty {
