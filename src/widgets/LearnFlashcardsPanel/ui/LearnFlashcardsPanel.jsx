@@ -19,6 +19,8 @@ export const LearnFlashcardsPanel = memo(() => {
     currentCardIndex,
     cardsCount,
     isBackVisible,
+    flipShortcutHint,
+    navigationShortcutHint,
     handleDeckSelectChange,
     handlePrevCard,
     handleNextCard,
@@ -80,6 +82,9 @@ export const LearnFlashcardsPanel = memo(() => {
               Card {currentCardIndex} of {cardsCount}
             </span>
             <span>{deck?.name || "Deck"}</span>
+            <span>
+              {flipShortcutHint}: Flip • {navigationShortcutHint}: Navigate
+            </span>
           </div>
 
           <div className="learn-page-panel__actions">

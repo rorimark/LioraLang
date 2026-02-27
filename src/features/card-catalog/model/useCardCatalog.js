@@ -1,4 +1,5 @@
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
+import { normalizeWord } from "@shared/lib/word";
 
 const LEVEL_ORDER = {
   A1: 1,
@@ -20,17 +21,8 @@ export const PAGE_SIZE_OPTIONS = [10, 20, 50];
 
 const INITIAL_FILTERS = { level: [], partOfSpeech: [] };
 
-const normalizeWord = (word, fallbackId) => ({
-  id: word.id ?? fallbackId,
-  eng: word.eng ?? "",
-  ru: word.ru ?? "",
-  pl: word.pl ?? "",
-  level: word.level ?? "A1",
-  part_of_speech: word.part_of_speech ?? "other",
-});
-
 const searchBlob = (word) =>
-  `${word.eng} ${word.ru} ${word.pl} ${word.part_of_speech}`.toLowerCase();
+  `${word.source} ${word.target} ${word.tertiary} ${word.part_of_speech}`.toLowerCase();
 
 const compareByLevelValue = (leftLevel, rightLevel) => {
   const leftValue = LEVEL_ORDER[leftLevel] ?? Number.MAX_SAFE_INTEGER;
@@ -125,20 +117,20 @@ export const useCardCatalog = (words) => {
 
     matched.sort((left, right) => {
       if (sort === "alpha-desc") {
-        return right.eng.localeCompare(left.eng);
+        return right.source.localeCompare(left.source);
       }
 
       if (sort === "level-asc") {
         const byLevel = compareByWordLevel(left, right);
-        return byLevel !== 0 ? byLevel : left.eng.localeCompare(right.eng);
+        return byLevel !== 0 ? byLevel : left.source.localeCompare(right.source);
       }
 
       if (sort === "level-desc") {
         const byLevel = compareByWordLevel(right, left);
-        return byLevel !== 0 ? byLevel : left.eng.localeCompare(right.eng);
+        return byLevel !== 0 ? byLevel : left.source.localeCompare(right.source);
       }
 
-      return left.eng.localeCompare(right.eng);
+      return left.source.localeCompare(right.source);
     });
 
     return matched;
