@@ -2,7 +2,7 @@
   height: 100%;
   min-height: 0;
   display: flex;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .learn-page-panel {
@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  overflow: visible;
 }
 
 .learn-page-panel__controls {
@@ -58,18 +59,47 @@
 .learn-page-panel__card-stage {
   flex: 1;
   min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(6px, 1vw, 12px);
+  overflow: visible;
+}
+
+.learn-page-panel__card-viewport {
+  width: min(100%, 980px);
+  height: 100%;
+  min-height: 0;
+  contain: layout;
 }
 
 .learn-page-panel__meta {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 10px;
+  align-items: center;
   color: var(--color-text-muted);
   font-size: 0.82rem;
 }
 
+.learn-page-panel__meta-item {
+  min-width: 0;
+}
+
+.learn-page-panel__meta-item--deck {
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.learn-page-panel__meta-item--shortcuts {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+}
+
 .learn-page-panel__actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -81,6 +111,7 @@
   cursor: pointer;
   font-family: inherit;
   font-size: 0.82rem;
+  min-height: 40px;
   padding: 8px 14px;
 }
 
@@ -90,6 +121,56 @@
 
 @media (max-width: 960px) {
   .learn-page-panel {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .learn-page-panel__controls select {
+    max-width: none;
+  }
+
+  .learn-page-panel__card-stage {
+    min-height: clamp(260px, 48dvh, 420px);
+    padding: clamp(4px, 1vw, 8px);
+  }
+
+  .learn-page-panel__card-viewport {
+    width: 100%;
+  }
+
+  .learn-page-panel__meta-item--shortcuts {
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .learn-page-panel {
+    padding: 12px;
     gap: 12px;
+  }
+
+  .learn-page-panel__controls label {
+    font-size: 0.8rem;
+  }
+
+  .learn-page-panel__controls select {
+    font-size: 0.84rem;
+    padding: 9px 11px;
+  }
+
+  .learn-page-panel__card-stage {
+    min-height: clamp(240px, 44dvh, 360px);
+  }
+
+  .learn-page-panel__actions button {
+    font-size: 0.8rem;
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 420px), (max-height: 740px) {
+  .learn-page-panel__meta-item--shortcuts {
+    display: none;
   }
 }
