@@ -1,5 +1,14 @@
 import { Navigate } from "react-router";
 import { AppLayout } from "@app/layouts/AppLayout";
+import {
+  BrowsePage,
+  DeckDetailsPage,
+  DeckEditorPage,
+  DecksPage,
+  LearnPage,
+  ProgressPage,
+  SettingsPage,
+} from "@pages";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { RouteErrorBoundary, RouteHydrateFallback } from "@shared/ui";
 
@@ -14,59 +23,35 @@ export const routes = [
       { index: true, element: <Navigate to={ROUTE_PATHS.learn} replace /> },
       {
         path: toChildPath(ROUTE_PATHS.learn),
-        lazy: async () => {
-          const module = await import("@pages/learn");
-          return { Component: module.LearnPage };
-        },
+        element: <LearnPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.browse),
-        lazy: async () => {
-          const module = await import("@pages/browse");
-          return { Component: module.BrowsePage };
-        },
+        element: <BrowsePage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.decks),
-        lazy: async () => {
-          const module = await import("@pages/decks");
-          return { Component: module.DecksPage };
-        },
+        element: <DecksPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.deckCreate),
-        lazy: async () => {
-          const module = await import("@pages/deck-editor");
-          return { Component: module.DeckEditorPage };
-        },
+        element: <DeckEditorPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.deckEdit),
-        lazy: async () => {
-          const module = await import("@pages/deck-editor");
-          return { Component: module.DeckEditorPage };
-        },
+        element: <DeckEditorPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.deckDetails),
-        lazy: async () => {
-          const module = await import("@pages/deck-details");
-          return { Component: module.DeckDetailsPage };
-        },
+        element: <DeckDetailsPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.progress),
-        lazy: async () => {
-          const module = await import("@pages/progress");
-          return { Component: module.ProgressPage };
-        },
+        element: <ProgressPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.settings),
-        lazy: async () => {
-          const module = await import("@pages/settings");
-          return { Component: module.SettingsPage };
-        },
+        element: <SettingsPage />,
       },
       { path: "*", element: <Navigate to={ROUTE_PATHS.learn} replace /> },
     ],
