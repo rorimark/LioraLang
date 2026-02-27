@@ -9,8 +9,8 @@
 
 html,
 body {
+  height: 100%;
   min-height: 100%;
-  /* overflow: hidden; */
 }
 
 body {
@@ -21,11 +21,48 @@ body {
   background-color: var(--color-bg);
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) var(--color-bg);
-  overflow: auto;
+  overflow: hidden;
+}
+
+:root[ui-font-scale="small"] {
+  font-size: 14px;
+}
+
+:root[ui-font-scale="normal"] {
+  font-size: 16px;
+}
+
+:root[ui-font-scale="large"] {
+  font-size: 18px;
+}
+
+:root[ui-compact="true"] .panel {
+  padding: 14px;
+}
+
+:root[ui-compact="true"] .page {
+  gap: 12px;
+}
+
+:root[ui-high-contrast="true"] {
+  --color-border: color-mix(in srgb, var(--color-text) 35%, transparent);
+  --shadow-sm: none;
+  --shadow-md: none;
+}
+
+:root[ui-reduced-motion="true"] *,
+:root[ui-reduced-motion="true"] *::before,
+:root[ui-reduced-motion="true"] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
 }
 
 #root {
+  height: 100dvh;
   min-height: 100dvh;
+  overflow: hidden;
 }
 
 .page {

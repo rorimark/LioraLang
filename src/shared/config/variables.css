@@ -2,6 +2,7 @@
   --color-bg: #f4f6f8;
   --color-surface: #ffffff;
   --color-surface-muted: #eef2f6;
+  --color-titlebar: #d5deea;
 
   --color-text: #111827;
   --color-text-muted: #4b5563;
@@ -17,6 +18,7 @@
   --color-accent-strong: #92400e;
 
   --color-danger: #dc2626;
+  --color-success: #15803d;
 
   --flashcard-front-bg: #ffffff;
   --flashcard-back-bg: #eef2f6;
@@ -37,6 +39,7 @@
   --color-bg: #0f1115;
   --color-surface: #151922;
   --color-surface-muted: #1d2430;
+  --color-titlebar: #070c14;
 
   --color-text: #e5e7eb;
   --color-text-muted: #94a3b8;
@@ -52,6 +55,7 @@
   --color-accent-strong: #fcd34d;
 
   --color-danger: #f87171;
+  --color-success: #4ade80;
 
   --flashcard-front-bg: #0f172a;
   --flashcard-back-bg: #1f2937;
