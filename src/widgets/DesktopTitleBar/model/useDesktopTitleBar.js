@@ -140,12 +140,12 @@ export const useDesktopTitleBar = () => {
         return;
       }
 
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+      if (event.code !== "ArrowLeft" && event.code !== "ArrowRight") {
         return;
       }
 
-      const isBackAction = event.key === "ArrowLeft";
-      const isForwardAction = event.key === "ArrowRight";
+      const isBackAction = event.code === "ArrowLeft";
+      const isForwardAction = event.code === "ArrowRight";
       const isDarwin = platformClassName === "desktop-title-bar--darwin";
       const usesSystemMode =
         shortcutSettings.historyNavigation === HISTORY_SHORTCUT_MODES.system;

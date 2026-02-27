@@ -67,7 +67,7 @@ const matchesFlipShortcut = (event, mode) => {
   }
 
   if (mode === LEARN_FLIP_SHORTCUT_MODES.enter) {
-    return event.key === "Enter" || event.code === "Enter";
+    return event.code === "Enter";
   }
 
   return event.code === "Space";
@@ -79,14 +79,14 @@ const matchesNextShortcut = (event, mode) => {
   }
 
   if (mode === LEARN_NAV_SHORTCUT_MODES.ad) {
-    return event.key.toLowerCase() === "d";
+    return event.code === "KeyD";
   }
 
   if (mode === LEARN_NAV_SHORTCUT_MODES.jl) {
-    return event.key.toLowerCase() === "l";
+    return event.code === "KeyL";
   }
 
-  return event.key === "ArrowRight";
+  return event.code === "ArrowRight";
 };
 
 const matchesPrevShortcut = (event, mode) => {
@@ -95,14 +95,14 @@ const matchesPrevShortcut = (event, mode) => {
   }
 
   if (mode === LEARN_NAV_SHORTCUT_MODES.ad) {
-    return event.key.toLowerCase() === "a";
+    return event.code === "KeyA";
   }
 
   if (mode === LEARN_NAV_SHORTCUT_MODES.jl) {
-    return event.key.toLowerCase() === "j";
+    return event.code === "KeyJ";
   }
 
-  return event.key === "ArrowLeft";
+  return event.code === "ArrowLeft";
 };
 
 const resolveFlipShortcutHint = (mode) => {
