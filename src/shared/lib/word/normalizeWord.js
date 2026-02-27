@@ -1,0 +1,24 @@
+const toCleanString = (value) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value;
+};
+
+export const normalizeWord = (word, fallbackId = "") => {
+  const resolvedId = word?.id ?? fallbackId;
+
+  return {
+    id: resolvedId,
+    externalId: word?.externalId ?? "",
+    source: toCleanString(word?.source),
+    target: toCleanString(word?.target),
+    tertiary: toCleanString(word?.tertiary),
+    level: word?.level ?? "A1",
+    part_of_speech: word?.part_of_speech ?? "other",
+    tags: Array.isArray(word?.tags) ? word.tags : [],
+    examples: Array.isArray(word?.examples) ? word.examples : [],
+  };
+};
+

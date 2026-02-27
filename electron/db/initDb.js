@@ -41,9 +41,9 @@ export const initDb = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       external_id TEXT,
       deck_id INTEGER NOT NULL,
-      eng TEXT NOT NULL,
-      ru TEXT,
-      pl TEXT,
+      source_text TEXT NOT NULL,
+      target_text TEXT,
+      tertiary_text TEXT,
       level TEXT,
       part_of_speech TEXT,
       tags_json TEXT DEFAULT '[]',
@@ -53,7 +53,12 @@ export const initDb = () => {
     );
 
     CREATE INDEX IF NOT EXISTS idx_words_deck_id ON words(deck_id);
-    CREATE INDEX IF NOT EXISTS idx_words_eng ON words(eng);
+
+    CREATE TABLE IF NOT EXISTS app_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
 
     CREATE TABLE IF NOT EXISTS review_cards (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,4 +77,39 @@ export const initDb = () => {
   ensureColumn(db, "decks", "target_language", "TEXT");
   ensureColumn(db, "decks", "tertiary_language", "TEXT");
   ensureColumn(db, "decks", "tags_json", "TEXT DEFAULT '[]'");
+  ensureColumn(db, "words", "source_text", "TEXT");
+  ensureColumn(db, "words", "target_text", "TEXT");
+  ensureColumn(db, "words", "tertiary_text", "TEXT");
+  const wordColumns = db.prepare("PRAGMA table_info(words)").all();
+  const hasLegacySource = wordColumns.some((column) => column.name === "eng");
+  const hasLegacyTarget = wordColumns.some((column) => column.name === "ru");
+  const hasLegacyTertiary = wordColumns.some((column) => column.name === "pl");
+
+  if (hasLegacySource) {
+    db.exec(`
+      UPDATE words
+      SET source_text = COALESCE(source_text, eng)
+      WHERE source_text IS NULL
+    `);
+  }
+
+  if (hasLegacyTarget) {
+    db.exec(`
+      UPDATE words
+      SET target_text = COALESCE(target_text, ru)
+      WHERE target_text IS NULL
+    `);
+  }
+
+  if (hasLegacyTertiary) {
+    db.exec(`
+      UPDATE words
+      SET tertiary_text = COALESCE(tertiary_text, pl)
+      WHERE tertiary_text IS NULL
+    `);
+  }
+
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_words_source_text ON words(source_text)
+  `);
 };

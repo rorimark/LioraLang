@@ -45,3 +45,12 @@ export const getDatabase = () => {
 };
 
 export const getDatabasePath = () => databasePath;
+
+export const closeDatabaseConnection = () => {
+  if (!database) {
+    return;
+  }
+
+  database.close();
+  database = null;
+};
