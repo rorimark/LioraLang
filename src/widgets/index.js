@@ -1,6 +1,7 @@
 export { NavBar } from "./NavbBar";
 export { DesktopTitleBar } from "./DesktopTitleBar";
 export { PageHeader } from "./PageHeader";
+export { BrowseDecksPanel } from "./BrowseDecksPanel";
 export { DecksOverviewPanel } from "./DecksOverviewPanel";
 export { DeckEditorPanel } from "./DeckEditorPanel";
 export { DeckDetailsPanel } from "./DeckDetailsPanel";
