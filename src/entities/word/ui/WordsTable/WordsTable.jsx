@@ -41,14 +41,14 @@ export const WordsTable = memo(({ words, languageLabels }) => {
         ) : (
           words.map((word) => (
             <tr key={word.id} className="words-table__row">
-              <td data-label={labels.sourceLanguage}>{word.eng || "-"}</td>
+              <td data-label={labels.sourceLanguage}>{word.source || "-"}</td>
               <td className="words-table__level" data-label="Level">
                 {word.level || "-"}
               </td>
               <td data-label="Part of speech">{word.part_of_speech || "-"}</td>
-              <td data-label={labels.targetLanguage}>{word.ru || "-"}</td>
+              <td data-label={labels.targetLanguage}>{word.target || "-"}</td>
               {labels.hasTertiaryLanguage && (
-                <td data-label={labels.tertiaryLanguage}>{word.pl || "-"}</td>
+                <td data-label={labels.tertiaryLanguage}>{word.tertiary || "-"}</td>
               )}
             </tr>
           ))

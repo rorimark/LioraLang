@@ -25,8 +25,8 @@ export const DeckEditorWordFormSection = memo(() => {
           <span>{languageLabels.sourceLanguage}</span>
           <input
             type="text"
-            name="eng"
-            value={wordDraft.eng}
+            name="source"
+            value={wordDraft.source}
             onChange={handleWordDraftChange}
             placeholder={`Word in ${languageLabels.sourceLanguage}`}
           />
@@ -36,8 +36,8 @@ export const DeckEditorWordFormSection = memo(() => {
           <span>{languageLabels.targetLanguage}</span>
           <input
             type="text"
-            name="ru"
-            value={wordDraft.ru}
+            name="target"
+            value={wordDraft.target}
             onChange={handleWordDraftChange}
             placeholder={`Translation in ${languageLabels.targetLanguage}`}
           />
@@ -48,8 +48,8 @@ export const DeckEditorWordFormSection = memo(() => {
             <span>{languageLabels.tertiaryLanguage}</span>
             <input
               type="text"
-              name="pl"
-              value={wordDraft.pl}
+              name="tertiary"
+              value={wordDraft.tertiary}
               onChange={handleWordDraftChange}
               placeholder={`Optional in ${languageLabels.tertiaryLanguage}`}
             />

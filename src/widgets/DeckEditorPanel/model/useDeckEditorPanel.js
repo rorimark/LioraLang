@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { desktopApi } from "@shared/api";
+import {
+  DEFAULT_SOURCE_LANGUAGE,
+  DEFAULT_TARGET_LANGUAGE,
+  LANGUAGE_OPTIONS,
+} from "@shared/config/languages";
 import { ROUTE_PATHS } from "@shared/config/routes";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"];
@@ -15,20 +20,6 @@ const PART_OF_SPEECH_OPTIONS = [
   "phrase",
   "other",
 ];
-const LANGUAGE_OPTIONS = [
-  "English",
-  "Ukrainian",
-  "Russian",
-  "Polish",
-  "German",
-  "Spanish",
-  "French",
-  "Italian",
-  "Portuguese",
-  "Turkish",
-  "Czech",
-  "Japanese",
-];
 const WORDS_PAGE_SIZE_OPTIONS = [10, 20, 50];
 const DEFAULT_WORDS_PAGE_SIZE = WORDS_PAGE_SIZE_OPTIONS[0];
 const MAX_TOTAL_TAGS = 10;
@@ -36,16 +27,16 @@ const MAX_TOTAL_TAGS = 10;
 const createDefaultDeckForm = () => ({
   name: "",
   description: "",
-  sourceLanguage: "English",
-  targetLanguage: "Ukrainian",
+  sourceLanguage: DEFAULT_SOURCE_LANGUAGE,
+  targetLanguage: DEFAULT_TARGET_LANGUAGE,
   tertiaryLanguage: "",
   tagsInput: "",
 });
 
 const createDefaultWordDraft = () => ({
-  eng: "",
-  ru: "",
-  pl: "",
+  source: "",
+  target: "",
+  tertiary: "",
   level: "A1",
   part_of_speech: "noun",
   example: "",
@@ -54,18 +45,18 @@ const createDefaultWordDraft = () => ({
 const toEditableWord = (word, fallbackIndex) => ({
   id: word?.id ?? `tmp-${fallbackIndex}`,
   externalId: word?.externalId ?? "",
-  eng: word?.eng ?? "",
-  ru: word?.ru ?? "",
-  pl: word?.pl ?? "",
+  source: word?.source ?? "",
+  target: word?.target ?? "",
+  tertiary: word?.tertiary ?? "",
   level: word?.level || "A1",
   part_of_speech: word?.part_of_speech || "other",
   example: Array.isArray(word?.examples) ? word.examples[0] || "" : "",
 });
 
 const toWordDraft = (word) => ({
-  eng: word?.eng ?? "",
-  ru: word?.ru ?? "",
-  pl: word?.pl ?? "",
+  source: word?.source ?? "",
+  target: word?.target ?? "",
+  tertiary: word?.tertiary ?? "",
   level: word?.level || "A1",
   part_of_speech: word?.part_of_speech || "noun",
   example: word?.example ?? "",
@@ -77,28 +68,43 @@ const parseNumericId = (value) => {
 };
 
 const parseTagsJson = (value) => {
-  if (Array.isArray(value)) {
-    return value
-      .filter((item) => typeof item === "string" && item.trim())
-      .map((item) => item.trim());
-  }
+  const rawTags = (() => {
+    if (Array.isArray(value)) {
+      return value;
+    }
 
-  if (typeof value !== "string" || !value.trim()) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(value);
-    if (!Array.isArray(parsed)) {
+    if (typeof value !== "string" || !value.trim()) {
       return [];
     }
 
-    return parsed
-      .filter((item) => typeof item === "string" && item.trim())
-      .map((item) => item.trim());
-  } catch {
-    return [];
-  }
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  })();
+
+  const seen = new Set();
+  const uniqueTags = [];
+
+  rawTags.forEach((item) => {
+    if (typeof item !== "string") {
+      return;
+    }
+
+    const tag = item.trim();
+    const normalizedTag = tag.toLowerCase();
+
+    if (!tag || seen.has(normalizedTag)) {
+      return;
+    }
+
+    seen.add(normalizedTag);
+    uniqueTags.push(tag);
+  });
+
+  return uniqueTags;
 };
 
 const parseTagsInput = (value) => {
@@ -106,12 +112,25 @@ const parseTagsInput = (value) => {
     return [];
   }
 
-  return [...new Set(
-    value
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean),
-  )];
+  const seen = new Set();
+  const uniqueTags = [];
+
+  value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .forEach((tag) => {
+      const normalizedTag = tag.toLowerCase();
+
+      if (seen.has(normalizedTag)) {
+        return;
+      }
+
+      seen.add(normalizedTag);
+      uniqueTags.push(tag);
+    });
+
+  return uniqueTags;
 };
 
 export const useDeckEditorPanel = () => {
@@ -149,8 +168,8 @@ export const useDeckEditorPanel = () => {
     setDeckForm({
       name: deck?.name || "",
       description: deck?.description || "",
-      sourceLanguage: deck?.sourceLanguage || "English",
-      targetLanguage: deck?.targetLanguage || "Ukrainian",
+      sourceLanguage: deck?.sourceLanguage || DEFAULT_SOURCE_LANGUAGE,
+      targetLanguage: deck?.targetLanguage || DEFAULT_TARGET_LANGUAGE,
       tertiaryLanguage: deck?.tertiaryLanguage || "",
       tagsInput: deckTags.join(", "),
     });
@@ -216,18 +235,18 @@ export const useDeckEditorPanel = () => {
   }, []);
 
   const handleUpsertWordDraft = useCallback(() => {
-    const cleanedEng = wordDraft.eng.trim();
+    const cleanedSource = wordDraft.source.trim();
 
-    if (!cleanedEng) {
+    if (!cleanedSource) {
       reportStatus("Source word cannot be empty", "error");
       return;
     }
 
     const nextWord = {
       id: editingWordId ?? `tmp-${nextTempIdRef.current++}`,
-      eng: cleanedEng,
-      ru: wordDraft.ru.trim(),
-      pl: wordDraft.pl.trim(),
+      source: cleanedSource,
+      target: wordDraft.target.trim(),
+      tertiary: wordDraft.tertiary.trim(),
       level: wordDraft.level || "A1",
       part_of_speech: wordDraft.part_of_speech || "other",
       example: wordDraft.example.trim(),
@@ -287,10 +306,6 @@ export const useDeckEditorPanel = () => {
     },
     [editingWordId, previewWordId, resetWordDraft],
   );
-
-  const handleViewWord = useCallback((wordId) => {
-    setPreviewWordId(wordId);
-  }, []);
 
   const wordsTotalPages = useMemo(() => {
     return Math.max(1, Math.ceil(words.length / wordsPageSize));
@@ -415,9 +430,9 @@ export const useDeckEditorPanel = () => {
         words: words.map((word, index) => ({
           id: parseNumericId(word.id),
           externalId: word.externalId || `manual-${index + 1}`,
-          eng: word.eng,
-          ru: word.ru,
-          pl: hasTertiaryLanguage ? word.pl : "",
+          source: word.source,
+          target: word.target,
+          tertiary: hasTertiaryLanguage ? word.tertiary : "",
           level: word.level,
           part_of_speech: word.part_of_speech,
           example: word.example,
@@ -514,7 +529,6 @@ export const useDeckEditorPanel = () => {
     handleUpsertWordDraft,
     handleEditWord,
     handleDeleteWord,
-    handleViewWord,
     handleWordsPageChange,
     handleWordsPageSizeChange,
     handleSaveDeck,

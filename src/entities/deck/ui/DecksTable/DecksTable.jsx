@@ -1,9 +1,12 @@
 import { memo, useCallback } from "react";
+import { formatDeckCreatedAt } from "@shared/lib/date";
 import { MetaBadge } from "@shared/ui";
 import "./DecksTable.css";
 
 const MAX_VISIBLE_TAGS = 5;
 const MAX_TOTAL_TAGS = 10;
+const normalizeTagKey = (value) =>
+  typeof value === "string" ? value.trim().toLowerCase() : "";
 
 const parseTagsJson = (value) => {
   if (!value) {
@@ -36,14 +39,39 @@ const parseTagsJson = (value) => {
 
 const buildDeckTags = (deck) => {
   const tags = [];
-  const languages = [...new Set(
-    [
-      deck?.sourceLanguage?.trim(),
-      deck?.targetLanguage?.trim(),
-      deck?.tertiaryLanguage?.trim(),
-    ].filter(Boolean),
-  )];
-  const customTags = [...new Set(parseTagsJson(deck?.tagsJson))];
+  const languages = [];
+  const seenLanguageKeys = new Set();
+  const rawLanguages = [
+    deck?.sourceLanguage?.trim(),
+    deck?.targetLanguage?.trim(),
+    deck?.tertiaryLanguage?.trim(),
+  ].filter(Boolean);
+
+  rawLanguages.forEach((language) => {
+    const languageKey = normalizeTagKey(language);
+
+    if (!languageKey || seenLanguageKeys.has(languageKey)) {
+      return;
+    }
+
+    seenLanguageKeys.add(languageKey);
+    languages.push(language);
+  });
+
+  const customTags = [];
+  const seenCustomTagKeys = new Set();
+
+  parseTagsJson(deck?.tagsJson).forEach((tag) => {
+    const tagKey = normalizeTagKey(tag);
+
+    if (!tagKey || seenCustomTagKeys.has(tagKey) || seenLanguageKeys.has(tagKey)) {
+      return;
+    }
+
+    seenCustomTagKeys.add(tagKey);
+    customTags.push(tag.trim());
+  });
+
   const customTagsLimit = Math.max(0, MAX_TOTAL_TAGS - languages.length);
 
   languages.forEach((language) => {
@@ -85,24 +113,6 @@ const splitDeckTags = (tags, limit = MAX_VISIBLE_TAGS) => {
     visibleTags: tags.slice(0, limit),
     hiddenTags: tags.slice(limit),
   };
-};
-
-const formatDate = (value) => {
-  if (!value) {
-    return "-";
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "-";
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
 };
 
 export const DecksTable = memo(
@@ -153,7 +163,7 @@ export const DecksTable = memo(
             <th>Deck</th>
             <th>Tags</th>
             <th>Words</th>
-            <th>Added on</th>
+            <th>Date added</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -208,7 +218,7 @@ export const DecksTable = memo(
                   </div>
                 </td>
                 <td data-label="Words">{deck.wordsCount ?? 0}</td>
-                <td data-label="Added on">{formatDate(deck.createdAt)}</td>
+                <td data-label="Date added">{formatDeckCreatedAt(deck.createdAt)}</td>
                 <td data-label="Actions" className="decks-table__actions-cell">
                   <div className="decks-table__actions">
                     <button
