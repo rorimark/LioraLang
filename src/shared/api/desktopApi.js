@@ -1,5 +1,10 @@
 const FALLBACK_DECK_ID = "local-json";
 let fallbackWordsPromise = null;
+const pendingImportFileRequests = [];
+const importFileRequestListeners = new Set();
+const appSettingsUpdatedListeners = new Set();
+let isImportFileBridgeInitialized = false;
+let isAppSettingsBridgeInitialized = false;
 
 const getElectronApi = () =>
   typeof window !== "undefined" ? window.electronAPI : undefined;
@@ -16,6 +21,76 @@ const isDesktopMode = () =>
       typeof getElectronApi().importDeckFromJson === "function" &&
       typeof getElectronApi().exportDeckToJson === "function",
   );
+
+const normalizeFallbackWord = (word, index) => ({
+  id: word?.id ?? `fallback-${index + 1}`,
+  externalId: word?.externalId ?? "",
+  source: word?.source ?? "",
+  target: word?.target ?? "",
+  tertiary: word?.tertiary ?? "",
+  level: word?.level ?? "A1",
+  part_of_speech: word?.part_of_speech ?? "other",
+  tags: Array.isArray(word?.tags) ? word.tags : [],
+  examples: Array.isArray(word?.examples) ? word.examples : [],
+});
+
+const normalizeImportFilePayload = (payload) => {
+  if (!payload || typeof payload !== "object") {
+    return null;
+  }
+
+  const filePath = typeof payload.filePath === "string" ? payload.filePath : "";
+
+  if (!filePath) {
+    return null;
+  }
+
+  return payload;
+};
+
+const initImportFileBridge = () => {
+  if (isImportFileBridgeInitialized || !isDesktopMode()) {
+    return;
+  }
+
+  const electronApi = getElectronApi();
+
+  if (!electronApi || typeof electronApi.onImportDeckFileRequested !== "function") {
+    return;
+  }
+
+  electronApi.onImportDeckFileRequested((payload) => {
+    const normalizedPayload = normalizeImportFilePayload(payload);
+
+    if (!normalizedPayload) {
+      return;
+    }
+
+    pendingImportFileRequests.push(normalizedPayload);
+
+    importFileRequestListeners.forEach((listener) => listener(normalizedPayload));
+  });
+
+  isImportFileBridgeInitialized = true;
+};
+
+const initAppSettingsBridge = () => {
+  if (isAppSettingsBridgeInitialized || !isDesktopMode()) {
+    return;
+  }
+
+  const electronApi = getElectronApi();
+
+  if (!electronApi || typeof electronApi.onAppSettingsUpdated !== "function") {
+    return;
+  }
+
+  electronApi.onAppSettingsUpdated((settings) => {
+    appSettingsUpdatedListeners.forEach((listener) => listener(settings || {}));
+  });
+
+  isAppSettingsBridgeInitialized = true;
+};
 
 const loadFallbackWords = async () => {
   if (!fallbackWordsPromise) {
@@ -91,7 +166,8 @@ export const desktopApi = {
       return [];
     }
 
-    return loadFallbackWords();
+    const words = await loadFallbackWords();
+    return words.map((word, index) => normalizeFallbackWord(word, index));
   },
 
   async pickImportDeckJson() {
@@ -193,6 +269,30 @@ export const desktopApi = {
     return getElectronApi().getDbPath();
   },
 
+  async getAppSettings() {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().getAppSettings !== "function"
+    ) {
+      return {};
+    }
+
+    return getElectronApi().getAppSettings();
+  },
+
+  async updateAppSettings(settings = {}) {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().updateAppSettings !== "function"
+    ) {
+      return {};
+    }
+
+    return getElectronApi().updateAppSettings({
+      settings: settings || {},
+    });
+  },
+
   async openDbFolder() {
     if (!isDesktopMode()) {
       return null;
@@ -201,11 +301,136 @@ export const desktopApi = {
     return getElectronApi().openDbFolder();
   },
 
+  async changeDbLocation() {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().changeDbLocation !== "function"
+    ) {
+      if (isElectronRuntime()) {
+        throw new Error(
+          "Desktop API is unavailable in this window. Restart the app.",
+        );
+      }
+
+      throw new Error("Database path update is available only in desktop mode");
+    }
+
+    return getElectronApi().changeDbLocation();
+  },
+
+  async verifyIntegrity(options = {}) {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().verifyIntegrity !== "function"
+    ) {
+      if (isElectronRuntime()) {
+        throw new Error(
+          "Desktop API is unavailable in this window. Restart the app.",
+        );
+      }
+
+      throw new Error("Integrity check is available only in desktop mode");
+    }
+
+    return getElectronApi().verifyIntegrity({
+      repair: Boolean(options?.repair),
+    });
+  },
+
+  async getWindowHistoryState() {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().getWindowHistoryState !== "function"
+    ) {
+      return {
+        canGoBack: false,
+        canGoForward: false,
+      };
+    }
+
+    return getElectronApi().getWindowHistoryState();
+  },
+
+  async navigateWindowBack() {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().navigateWindowBack !== "function"
+    ) {
+      return {
+        canGoBack: false,
+        canGoForward: false,
+      };
+    }
+
+    return getElectronApi().navigateWindowBack();
+  },
+
+  async navigateWindowForward() {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().navigateWindowForward !== "function"
+    ) {
+      return {
+        canGoBack: false,
+        canGoForward: false,
+      };
+    }
+
+    return getElectronApi().navigateWindowForward();
+  },
+
+  async applyWindowTheme(theme) {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().applyWindowTheme !== "function"
+    ) {
+      return { applied: false };
+    }
+
+    return getElectronApi().applyWindowTheme({ theme });
+  },
+
   subscribeDecksUpdated(callback) {
     if (!isDesktopMode() || typeof callback !== "function") {
       return () => {};
     }
 
     return getElectronApi().onDecksUpdated(callback);
+  },
+
+  consumePendingImportDeckFileRequest() {
+    initImportFileBridge();
+    return pendingImportFileRequests.shift() || null;
+  },
+
+  hasPendingImportDeckFileRequest() {
+    initImportFileBridge();
+    return pendingImportFileRequests.length > 0;
+  },
+
+  subscribeImportDeckFileRequested(callback) {
+    if (!isDesktopMode() || typeof callback !== "function") {
+      return () => {};
+    }
+
+    initImportFileBridge();
+    importFileRequestListeners.add(callback);
+
+    return () => {
+      importFileRequestListeners.delete(callback);
+    };
+  },
+
+  subscribeAppSettingsUpdated(callback) {
+    if (!isDesktopMode() || typeof callback !== "function") {
+      return () => {};
+    }
+
+    initAppSettingsBridge();
+    appSettingsUpdatedListeners.add(callback);
+
+    return () => {
+      appSettingsUpdatedListeners.delete(callback);
+    };
   },
 };

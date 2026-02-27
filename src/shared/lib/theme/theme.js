@@ -1,3 +1,5 @@
+import { desktopApi } from "@shared/api";
+
 const THEME_STORAGE_KEY = "lioralang-theme";
 
 export const APP_THEMES = {
@@ -38,8 +40,10 @@ export const applyTheme = (theme) => {
 
   if (theme === APP_THEMES.dark) {
     root.setAttribute("theme", APP_THEMES.dark);
+    void desktopApi.applyWindowTheme(APP_THEMES.dark).catch(() => {});
     return;
   }
 
   root.removeAttribute("theme");
+  void desktopApi.applyWindowTheme(APP_THEMES.light).catch(() => {});
 };

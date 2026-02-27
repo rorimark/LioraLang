@@ -1,4 +1,5 @@
 export { NavBar } from "./NavbBar";
+export { DesktopTitleBar } from "./DesktopTitleBar";
 export { PageHeader } from "./PageHeader";
 export { DecksOverviewPanel } from "./DecksOverviewPanel";
 export { DeckEditorPanel } from "./DeckEditorPanel";
