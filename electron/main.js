@@ -42,6 +42,7 @@ const WINDOW_TITLE_BAR_THEME = {
 
 let mainWindow = null;
 let pendingImportFilePaths = [];
+let pendingRuntimeErrorEvents = [];
 const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck"];
 const DB_FILE_NAME = "lioralang.db";
 
@@ -172,6 +173,188 @@ const flushPendingImportFileRequests = () => {
     }
 
     mainWindow?.webContents.send("decks:open-import-file", payload);
+  });
+};
+
+const normalizeRuntimeErrorText = (value, fallback = "Unknown error") => {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const normalizedValue = value.trim();
+  return normalizedValue || fallback;
+};
+
+const buildRuntimeErrorPayload = ({
+  title,
+  message,
+  details = "",
+  source = "main",
+} = {}) => {
+  const createdAt = new Date().toISOString();
+
+  return {
+    id: `${source}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+    title: normalizeRuntimeErrorText(title, "Application error"),
+    message: normalizeRuntimeErrorText(message),
+    details: normalizeRuntimeErrorText(details, ""),
+    source,
+    createdAt,
+  };
+};
+
+const flushPendingRuntimeErrorEvents = () => {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+
+  if (mainWindow.webContents.isLoadingMainFrame()) {
+    return;
+  }
+
+  if (pendingRuntimeErrorEvents.length === 0) {
+    return;
+  }
+
+  const eventsToSend = pendingRuntimeErrorEvents;
+  pendingRuntimeErrorEvents = [];
+
+  eventsToSend.forEach((payload) => {
+    mainWindow?.webContents.send("app:runtime-error", payload);
+  });
+};
+
+const queueRuntimeErrorEvent = (payload) => {
+  if (!payload || typeof payload !== "object") {
+    return;
+  }
+
+  pendingRuntimeErrorEvents.push(payload);
+
+  if (pendingRuntimeErrorEvents.length > 20) {
+    pendingRuntimeErrorEvents = pendingRuntimeErrorEvents.slice(-20);
+  }
+
+  flushPendingRuntimeErrorEvents();
+};
+
+const reportRuntimeError = (error, source = "main") => {
+  const errorMessage =
+    typeof error?.message === "string"
+      ? error.message
+      : normalizeRuntimeErrorText(String(error || "Unknown error"));
+  const errorStack = typeof error?.stack === "string" ? error.stack : "";
+  const payload = buildRuntimeErrorPayload({
+    title: "LioraLang Error",
+    message: errorMessage,
+    details: errorStack,
+    source,
+  });
+
+  queueRuntimeErrorEvent(payload);
+};
+
+const escapeHtml = (value) =>
+  String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+const buildFatalStartupErrorHtml = (payload) => {
+  const title = escapeHtml(payload?.title || "LioraLang Startup Error");
+  const message = escapeHtml(payload?.message || "Unknown startup error");
+  const details = escapeHtml(payload?.details || "");
+
+  return `
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>${title}</title>
+        <style>
+          :root {
+            color-scheme: dark;
+          }
+          body {
+            margin: 0;
+            background: #0f1115;
+            color: #e5e7eb;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            padding: 24px;
+          }
+          .error-card {
+            width: min(560px, 100%);
+            border: 1px solid #2b3444;
+            border-radius: 14px;
+            background: #151922;
+            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.45);
+            padding: 18px;
+          }
+          .error-card h1 {
+            margin: 0 0 10px;
+            font-size: 22px;
+          }
+          .error-card p {
+            margin: 0;
+            color: #cbd5e1;
+            line-height: 1.4;
+          }
+          .error-card pre {
+            margin: 12px 0 0;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: #0b1220;
+            color: #cbd5e1;
+            padding: 10px;
+            max-height: 220px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 12px;
+          }
+        </style>
+      </head>
+      <body>
+        <article class="error-card">
+          <h1>${title}</h1>
+          <p>${message}</p>
+          ${details ? `<pre>${details}</pre>` : ""}
+        </article>
+      </body>
+    </html>
+  `;
+};
+
+const openFatalStartupErrorWindow = async (payload) => {
+  const fatalWindow = new BrowserWindow({
+    width: 620,
+    height: 420,
+    minWidth: 620,
+    minHeight: 420,
+    resizable: false,
+    maximizable: false,
+    minimizable: false,
+    autoHideMenuBar: true,
+    show: false,
+    icon: APP_ICON_PATH,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+  const html = buildFatalStartupErrorHtml(payload);
+  await fatalWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`);
+  fatalWindow.once("ready-to-show", () => {
+    fatalWindow.show();
+  });
+  fatalWindow.on("closed", () => {
+    app.quit();
   });
 };
 
@@ -474,6 +657,7 @@ const createWindow = async () => {
   mainWindow.once("ready-to-show", () => {
     mainWindow?.show();
     flushPendingImportFileRequests();
+    flushPendingRuntimeErrorEvents();
 
     if (!app.isPackaged) {
       mainWindow?.webContents.openDevTools({ mode: "detach" });
@@ -482,6 +666,7 @@ const createWindow = async () => {
 
   mainWindow.webContents.on("did-finish-load", () => {
     flushPendingImportFileRequests();
+    flushPendingRuntimeErrorEvents();
   });
 
   if (!app.isPackaged) {
@@ -693,6 +878,18 @@ const setupIpcHandlers = () => {
     return nextSettings;
   });
 
+  ipcMain.handle("app:debug-show-runtime-error", () => {
+    const payload = buildRuntimeErrorPayload({
+      title: "Temporary Runtime Error",
+      message: "This is a temporary preview of the custom error modal.",
+      details: "Temporary button is enabled. Remove it after QA.",
+      source: "renderer-debug",
+    });
+    queueRuntimeErrorEvent(payload);
+
+    return { ok: true };
+  });
+
   ipcMain.handle("window:get-history-state", () => {
     const activeWindow = getActiveWindow();
 
@@ -767,70 +964,88 @@ const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
 if (!hasSingleInstanceLock) {
   app.quit();
-}
-
-app.on("second-instance", (_, commandLine, workingDirectory) => {
-  const filePathFromArgs = resolveDeckImportFilePathFromArgs(
-    commandLine,
-    workingDirectory,
-  );
-
-  if (filePathFromArgs) {
-    queueImportFileOpenRequest(filePathFromArgs);
-  }
-
-  if (!mainWindow || mainWindow.isDestroyed()) {
-    return;
-  }
-
-  if (mainWindow.isMinimized()) {
-    mainWindow.restore();
-  }
-
-  mainWindow.focus();
-});
-
-app.on("open-file", (event, filePath) => {
-  event.preventDefault();
-  queueImportFileOpenRequest(filePath);
-});
-
-app
-  .whenReady()
-  .then(async () => {
-    const dbPath = resolveActiveDbPath();
-
-    initDatabaseConnection(dbPath);
-    initDb();
-    setupContentSecurityPolicy();
-    setupIpcHandlers();
-    await createWindow();
-    queueImportFileOpenRequest(
-      resolveDeckImportFilePathFromArgs(process.argv, process.cwd()),
-    );
-
-    app.on("activate", async () => {
-      if (BrowserWindow.getAllWindows().length === 0) {
-        await createWindow();
-        queueImportFileOpenRequest(
-          resolveDeckImportFilePathFromArgs(process.argv, process.cwd()),
-        );
-      }
-    });
-  })
-  .catch((startupError) => {
-    console.error("Failed to start Electron app:", startupError);
-
-    dialog.showErrorBox(
-      "LioraLang Startup Error",
-      `${startupError.message}\n\nRun: pnpm rebuild:native`,
-    );
-
-    app.quit();
+} else {
+  process.on("uncaughtException", (error) => {
+    console.error("Uncaught Electron error:", error);
+    reportRuntimeError(error, "uncaughtException");
   });
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
+  process.on("unhandledRejection", (reason) => {
+    console.error("Unhandled Electron rejection:", reason);
+    reportRuntimeError(reason, "unhandledRejection");
+  });
+
+  app.on("second-instance", (_, commandLine, workingDirectory) => {
+    const filePathFromArgs = resolveDeckImportFilePathFromArgs(
+      commandLine,
+      workingDirectory,
+    );
+
+    if (filePathFromArgs) {
+      queueImportFileOpenRequest(filePathFromArgs);
+    }
+
+    if (!mainWindow || mainWindow.isDestroyed()) {
+      return;
+    }
+
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+
+    mainWindow.focus();
+  });
+
+  app.on("open-file", (event, filePath) => {
+    event.preventDefault();
+    queueImportFileOpenRequest(filePath);
+  });
+
+  app
+    .whenReady()
+    .then(async () => {
+      const dbPath = resolveActiveDbPath();
+
+      initDatabaseConnection(dbPath);
+      initDb();
+      setupContentSecurityPolicy();
+      setupIpcHandlers();
+      await createWindow();
+      queueImportFileOpenRequest(
+        resolveDeckImportFilePathFromArgs(process.argv, process.cwd()),
+      );
+
+      app.on("activate", async () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+          await createWindow();
+          queueImportFileOpenRequest(
+            resolveDeckImportFilePathFromArgs(process.argv, process.cwd()),
+          );
+        }
+      });
+    })
+    .catch(async (startupError) => {
+      console.error("Failed to start Electron app:", startupError);
+      const startupPayload = buildRuntimeErrorPayload({
+        title: "LioraLang Startup Error",
+        message: startupError?.message || "Failed to start application",
+        details:
+          startupError?.stack || "Run: pnpm rebuild:native",
+        source: "startup",
+      });
+      queueRuntimeErrorEvent(startupPayload);
+
+      try {
+        await openFatalStartupErrorWindow(startupPayload);
+      } catch (fatalWindowError) {
+        console.error("Failed to render custom startup error window:", fatalWindowError);
+        app.quit();
+      }
+    });
+
+  app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+      app.quit();
+    }
+  });
+}

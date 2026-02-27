@@ -82,22 +82,19 @@ const toSinglePragmaValue = (rows = []) => {
 
 const checkCoreFiles = () => {
   const checks = [];
-  const requiredFiles = [
-    path.join(ELECTRON_DIR, "main.js"),
-    path.join(ELECTRON_DIR, "preload.cjs"),
-  ];
+  const requiredFiles = app.isPackaged
+    ? [{ filePath: path.join(process.resourcesPath, "app.asar"), checkRead: false }]
+    : [
+        { filePath: path.join(ELECTRON_DIR, "main.js"), checkRead: true },
+        { filePath: path.join(ELECTRON_DIR, "preload.cjs"), checkRead: true },
+        { filePath: path.join(PROJECT_DIR, "package.json"), checkRead: true },
+      ];
 
-  if (app.isPackaged) {
-    requiredFiles.push(path.join(process.resourcesPath, "app.asar"));
-  } else {
-    requiredFiles.push(path.join(PROJECT_DIR, "package.json"));
-  }
-
-  requiredFiles.forEach((filePath) => {
+  requiredFiles.forEach(({ filePath, checkRead }) => {
     const exists = fs.existsSync(filePath);
-    let isReadable = false;
+    let isReadable = exists;
 
-    if (exists) {
+    if (exists && checkRead) {
       try {
         fs.accessSync(filePath, fs.constants.R_OK);
         isReadable = true;

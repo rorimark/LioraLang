@@ -131,6 +131,12 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   }, [applyImportSelection, reportMessage]);
 
   useEffect(() => {
+    const unsubscribe = desktopApi.subscribeImportDeckFileRequested((payload) => {
+      reportMessage("", "info");
+      applyImportSelection(payload);
+      desktopApi.acknowledgeImportDeckFileRequest(payload?.filePath);
+    });
+
     let pendingRequest = desktopApi.consumePendingImportDeckFileRequest();
 
     while (pendingRequest) {
@@ -138,10 +144,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       pendingRequest = desktopApi.consumePendingImportDeckFileRequest();
     }
 
-    return desktopApi.subscribeImportDeckFileRequested((payload) => {
-      reportMessage("", "info");
-      applyImportSelection(payload);
-    });
+    return unsubscribe;
   }, [applyImportSelection, reportMessage]);
 
   const closeImportConfirm = useCallback(() => {
@@ -224,10 +227,38 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         return;
       }
 
-      reportMessage(
-        `Imported "${result.deckName}": ${result.importedCount} words (${result.skippedCount} skipped)`,
-        "info",
-      );
+      const importedCount = Number.isInteger(result?.importedCount)
+        ? result.importedCount
+        : 0;
+      const skippedCount = Number.isInteger(result?.skippedCount)
+        ? result.skippedCount
+        : 0;
+      const importedDeckName =
+        typeof result?.deckName === "string" && result.deckName.trim()
+          ? result.deckName
+          : "Deck";
+
+      if (importedCount > 0 && skippedCount === 0) {
+        reportMessage(
+          `Imported "${importedDeckName}": ${importedCount} words`,
+          "success",
+        );
+      } else if (importedCount > 0 && skippedCount > 0) {
+        reportMessage(
+          `Imported "${importedDeckName}" with warnings: ${importedCount} added, ${skippedCount} skipped`,
+          "warning",
+        );
+      } else if (importedCount === 0 && skippedCount > 0) {
+        reportMessage(
+          `Import completed with no new words: ${skippedCount} skipped`,
+          "danger",
+        );
+      } else {
+        reportMessage(
+          `Imported "${importedDeckName}": ${importedCount} words`,
+          "success",
+        );
+      }
 
       resetImportState();
 
