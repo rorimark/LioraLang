@@ -3,8 +3,10 @@ let fallbackWordsPromise = null;
 const pendingImportFileRequests = [];
 const importFileRequestListeners = new Set();
 const appSettingsUpdatedListeners = new Set();
+const runtimeErrorListeners = new Set();
 let isImportFileBridgeInitialized = false;
 let isAppSettingsBridgeInitialized = false;
+let isRuntimeErrorBridgeInitialized = false;
 
 const getElectronApi = () =>
   typeof window !== "undefined" ? window.electronAPI : undefined;
@@ -48,6 +50,38 @@ const normalizeImportFilePayload = (payload) => {
   return payload;
 };
 
+const normalizeRuntimeErrorPayload = (payload) => {
+  if (!payload || typeof payload !== "object") {
+    return null;
+  }
+
+  const message = typeof payload.message === "string"
+    ? payload.message.trim()
+    : "";
+
+  if (!message) {
+    return null;
+  }
+
+  return {
+    id:
+      typeof payload.id === "string" && payload.id.trim()
+        ? payload.id
+        : `runtime-error-${Date.now()}`,
+    title:
+      typeof payload.title === "string" && payload.title.trim()
+        ? payload.title
+        : "Application Error",
+    message,
+    details:
+      typeof payload.details === "string" ? payload.details : "",
+    createdAt:
+      typeof payload.createdAt === "string" ? payload.createdAt : "",
+    source:
+      typeof payload.source === "string" ? payload.source : "",
+  };
+};
+
 const initImportFileBridge = () => {
   if (isImportFileBridgeInitialized || !isDesktopMode()) {
     return;
@@ -66,7 +100,15 @@ const initImportFileBridge = () => {
       return;
     }
 
-    pendingImportFileRequests.push(normalizedPayload);
+    if (importFileRequestListeners.size === 0) {
+      const hasSameRequest = pendingImportFileRequests.some(
+        (request) => request?.filePath === normalizedPayload.filePath,
+      );
+
+      if (!hasSameRequest) {
+        pendingImportFileRequests.push(normalizedPayload);
+      }
+    }
 
     importFileRequestListeners.forEach((listener) => listener(normalizedPayload));
   });
@@ -90,6 +132,30 @@ const initAppSettingsBridge = () => {
   });
 
   isAppSettingsBridgeInitialized = true;
+};
+
+const initRuntimeErrorBridge = () => {
+  if (isRuntimeErrorBridgeInitialized || !isDesktopMode()) {
+    return;
+  }
+
+  const electronApi = getElectronApi();
+
+  if (!electronApi || typeof electronApi.onRuntimeError !== "function") {
+    return;
+  }
+
+  electronApi.onRuntimeError((payload) => {
+    const normalizedPayload = normalizeRuntimeErrorPayload(payload);
+
+    if (!normalizedPayload) {
+      return;
+    }
+
+    runtimeErrorListeners.forEach((listener) => listener(normalizedPayload));
+  });
+
+  isRuntimeErrorBridgeInitialized = true;
 };
 
 const loadFallbackWords = async () => {
@@ -337,6 +403,23 @@ export const desktopApi = {
     });
   },
 
+  async showRuntimeErrorPreview() {
+    if (
+      !isDesktopMode() ||
+      typeof getElectronApi().showRuntimeErrorPreview !== "function"
+    ) {
+      if (isElectronRuntime()) {
+        throw new Error(
+          "Desktop API is unavailable in this window. Restart the app.",
+        );
+      }
+
+      throw new Error("Runtime error preview is available only in desktop mode");
+    }
+
+    return getElectronApi().showRuntimeErrorPreview();
+  },
+
   async getWindowHistoryState() {
     if (
       !isDesktopMode() ||
@@ -403,6 +486,24 @@ export const desktopApi = {
     return pendingImportFileRequests.shift() || null;
   },
 
+  acknowledgeImportDeckFileRequest(filePath) {
+    initImportFileBridge();
+
+    if (typeof filePath !== "string" || !filePath) {
+      return;
+    }
+
+    const requestIndex = pendingImportFileRequests.findIndex(
+      (request) => request?.filePath === filePath,
+    );
+
+    if (requestIndex < 0) {
+      return;
+    }
+
+    pendingImportFileRequests.splice(requestIndex, 1);
+  },
+
   hasPendingImportDeckFileRequest() {
     initImportFileBridge();
     return pendingImportFileRequests.length > 0;
@@ -431,6 +532,19 @@ export const desktopApi = {
 
     return () => {
       appSettingsUpdatedListeners.delete(callback);
+    };
+  },
+
+  subscribeRuntimeErrors(callback) {
+    if (!isDesktopMode() || typeof callback !== "function") {
+      return () => {};
+    }
+
+    initRuntimeErrorBridge();
+    runtimeErrorListeners.add(callback);
+
+    return () => {
+      runtimeErrorListeners.delete(callback);
     };
   },
 };

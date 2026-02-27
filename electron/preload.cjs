@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   openDbFolder: () => ipcRenderer.invoke("app:open-db-folder"),
   changeDbLocation: () => ipcRenderer.invoke("app:change-db-location"),
   verifyIntegrity: (payload) => ipcRenderer.invoke("app:verify-integrity", payload),
+  showRuntimeErrorPreview: () => ipcRenderer.invoke("app:debug-show-runtime-error"),
   getWindowHistoryState: () => ipcRenderer.invoke("window:get-history-state"),
   navigateWindowBack: () => ipcRenderer.invoke("window:navigate-back"),
   navigateWindowForward: () => ipcRenderer.invoke("window:navigate-forward"),
@@ -44,6 +45,14 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
     return () => {
       ipcRenderer.removeListener("app-settings-updated", listener);
+    };
+  },
+  onRuntimeError: (callback) => {
+    const listener = (_, payload) => callback(payload);
+    ipcRenderer.on("app:runtime-error", listener);
+
+    return () => {
+      ipcRenderer.removeListener("app:runtime-error", listener);
     };
   },
 });

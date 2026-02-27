@@ -1,7 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -97,6 +97,11 @@
           ]
         }
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": true
     }
   }
 }
