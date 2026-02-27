@@ -66,23 +66,27 @@ export const LearnFlashcardsPanel = memo(() => {
       ) : (
         <>
           <div className="learn-page-panel__card-stage">
-            <Flashcard
-              frontLabel="Front"
-              backLabel="Back"
-              frontText={cardFrontText}
-              backText={cardBackText}
-              backMetaBadges={cardMetaBadges}
-              isFlipped={isBackVisible}
-              onFlip={toggleBackVisibility}
-            />
+            <div className="learn-page-panel__card-viewport">
+              <Flashcard
+                frontLabel="Front"
+                backLabel="Back"
+                frontText={cardFrontText}
+                backText={cardBackText}
+                backMetaBadges={cardMetaBadges}
+                isFlipped={isBackVisible}
+                onFlip={toggleBackVisibility}
+              />
+            </div>
           </div>
 
           <div className="learn-page-panel__meta">
-            <span>
+            <span className="learn-page-panel__meta-item">
               Card {currentCardIndex} of {cardsCount}
             </span>
-            <span>{deck?.name || "Deck"}</span>
-            <span>
+            <span className="learn-page-panel__meta-item learn-page-panel__meta-item--deck">
+              {deck?.name || "Deck"}
+            </span>
+            <span className="learn-page-panel__meta-item learn-page-panel__meta-item--shortcuts">
               {flipShortcutHint}: Flip • {navigationShortcutHint}: Navigate
             </span>
           </div>

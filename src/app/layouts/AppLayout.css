@@ -39,7 +39,8 @@
 }
 
 .app-shell__content--learn {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .app-shell__mobile-nav {
