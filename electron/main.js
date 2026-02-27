@@ -217,6 +217,38 @@ const getDefaultDbPath = () => {
   return path.join(app.getPath("userData"), "data", DB_FILE_NAME);
 };
 
+const canNavigateBack = (webContents) => {
+  if (!webContents || typeof webContents.navigationHistory?.canGoBack !== "function") {
+    return false;
+  }
+
+  return webContents.navigationHistory.canGoBack();
+};
+
+const canNavigateForward = (webContents) => {
+  if (!webContents || typeof webContents.navigationHistory?.canGoForward !== "function") {
+    return false;
+  }
+
+  return webContents.navigationHistory.canGoForward();
+};
+
+const navigateBack = (webContents) => {
+  if (!webContents || typeof webContents.navigationHistory?.goBack !== "function") {
+    return;
+  }
+
+  webContents.navigationHistory.goBack();
+};
+
+const navigateForward = (webContents) => {
+  if (!webContents || typeof webContents.navigationHistory?.goForward !== "function") {
+    return;
+  }
+
+  webContents.navigationHistory.goForward();
+};
+
 const resolveActiveDbPath = () => {
   const storedDbPath = readStoredDbPath(app.getPath("userData"));
   return storedDbPath || getDefaultDbPath();
@@ -674,8 +706,8 @@ const setupIpcHandlers = () => {
     const webContents = activeWindow.webContents;
 
     return {
-      canGoBack: webContents.canGoBack(),
-      canGoForward: webContents.canGoForward(),
+      canGoBack: canNavigateBack(webContents),
+      canGoForward: canNavigateForward(webContents),
     };
   });
 
@@ -691,13 +723,13 @@ const setupIpcHandlers = () => {
 
     const webContents = activeWindow.webContents;
 
-    if (webContents.canGoBack()) {
-      webContents.goBack();
+    if (canNavigateBack(webContents)) {
+      navigateBack(webContents);
     }
 
     return {
-      canGoBack: webContents.canGoBack(),
-      canGoForward: webContents.canGoForward(),
+      canGoBack: canNavigateBack(webContents),
+      canGoForward: canNavigateForward(webContents),
     };
   });
 
@@ -713,13 +745,13 @@ const setupIpcHandlers = () => {
 
     const webContents = activeWindow.webContents;
 
-    if (webContents.canGoForward()) {
-      webContents.goForward();
+    if (canNavigateForward(webContents)) {
+      navigateForward(webContents);
     }
 
     return {
-      canGoBack: webContents.canGoBack(),
-      canGoForward: webContents.canGoForward(),
+      canGoBack: canNavigateBack(webContents),
+      canGoForward: canNavigateForward(webContents),
     };
   });
 
