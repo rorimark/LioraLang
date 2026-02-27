@@ -1,0 +1,2421 @@
+{
+  "format": "lioralang.deck",
+  "version": 1,
+  "exportedAt": "2026-02-27T18:15:00.000Z",
+  "deck": {
+    "name": "Travel & Tourism (EN-PL-RU)",
+    "description": "A trilingual vocabulary deck for travelers, covering everything from booking flights to describing landscapes and handling emergencies.",
+    "sourceLanguage": "English",
+    "targetLanguage": "Polish",
+    "tertiaryLanguage": "Russian",
+    "tags": [
+      "travel",
+      "tourism",
+      "vacation",
+      "phrases",
+      "a2-c1"
+    ]
+  },
+  "words": [
+    {
+      "id": "trav-001",
+      "source": "journey",
+      "target": "podróż",
+      "tertiary": "путешествие",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "The journey from London to Paris was very comfortable."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-002",
+      "source": "trip",
+      "target": "wycieczka",
+      "tertiary": "поездка",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "We are planning a short trip to the mountains."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-003",
+      "source": "holiday",
+      "target": "wakacje, urlop",
+      "tertiary": "отпуск, каникулы",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "Where are you going for your summer holiday?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-004",
+      "source": "vacation",
+      "target": "wakacje, urlop",
+      "tertiary": "отпуск, каникулы",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "I need a vacation to relax."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-005",
+      "source": "travel",
+      "target": "podróżować",
+      "tertiary": "путешествовать",
+      "level": "A2",
+      "tags": ["travel", "verbs"],
+      "examples": [
+        "I love to travel and see new places."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-006",
+      "source": "to book",
+      "target": "rezerwować",
+      "tertiary": "бронировать",
+      "level": "B1",
+      "tags": ["travel", "verbs", "booking"],
+      "examples": [
+        "We need to book a hotel room."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-007",
+      "source": "reservation",
+      "target": "rezerwacja",
+      "tertiary": "бронирование",
+      "level": "B1",
+      "tags": ["travel", "booking"],
+      "examples": [
+        "I have a reservation under the name Smith."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-008",
+      "source": "to cancel",
+      "target": "anulować",
+      "tertiary": "отменять",
+      "level": "B1",
+      "tags": ["travel", "verbs", "booking"],
+      "examples": [
+        "We had to cancel our flight due to bad weather."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-009",
+      "source": "cancellation",
+      "target": "anulowanie",
+      "tertiary": "отмена",
+      "level": "B1",
+      "tags": ["travel", "booking"],
+      "examples": [
+        "Please note our cancellation policy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-010",
+      "source": "to confirm",
+      "target": "potwierdzać",
+      "tertiary": "подтверждать",
+      "level": "B1",
+      "tags": ["travel", "verbs", "booking"],
+      "examples": [
+        "Can you please confirm our booking by email?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-011",
+      "source": "confirmation",
+      "target": "potwierdzenie",
+      "tertiary": "подтверждение",
+      "level": "B1",
+      "tags": ["travel", "booking"],
+      "examples": [
+        "We received the confirmation of our flight."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-012",
+      "source": "ticket",
+      "target": "bilet",
+      "tertiary": "билет",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "I bought a one-way ticket to Berlin."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-013",
+      "source": "single ticket",
+      "target": "bilet w jedną stronę",
+      "tertiary": "билет в один конец",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "A single ticket to Oxford, please."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-014",
+      "source": "return ticket",
+      "target": "bilet powrotny",
+      "tertiary": "билет туда и обратно",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "A return ticket is usually cheaper than two singles."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-015",
+      "source": "passport",
+      "target": "paszport",
+      "tertiary": "паспорт",
+      "level": "A2",
+      "tags": ["travel", "documents"],
+      "examples": [
+        "Don't forget your passport!"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-016",
+      "source": "visa",
+      "target": "wiza",
+      "tertiary": "виза",
+      "level": "B1",
+      "tags": ["travel", "documents"],
+      "examples": [
+        "Do I need a visa to travel to the USA?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-017",
+      "source": "boarding pass",
+      "target": "karta pokładowa",
+      "tertiary": "посадочный талон",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Please have your boarding pass ready."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-018",
+      "source": "luggage",
+      "target": "bagaż",
+      "tertiary": "багаж",
+      "level": "A2",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "How many pieces of luggage do you have?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-019",
+      "source": "suitcase",
+      "target": "walizka",
+      "tertiary": "чемодан",
+      "level": "A2",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "My suitcase is too heavy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-020",
+      "source": "hand luggage",
+      "target": "bagaż podręczny",
+      "tertiary": "ручная кладь",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "You can take one piece of hand luggage on the plane."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-021",
+      "source": "checked luggage",
+      "target": "bagaż rejestrowany",
+      "tertiary": "сдаваемый багаж",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Checked luggage is put in the hold of the plane."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-022",
+      "source": "customs",
+      "target": "odprawa celna",
+      "tertiary": "таможня",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Do you have anything to declare at customs?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-023",
+      "source": "baggage claim",
+      "target": "odbiór bagażu",
+      "tertiary": "получение багажа",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "We'll meet you at baggage claim."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-024",
+      "source": "departure",
+      "target": "odlot",
+      "tertiary": "вылет, отправление",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Check the departure board for your flight."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-025",
+      "source": "arrival",
+      "target": "przylot",
+      "tertiary": "прибытие",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "The arrival time is 10:30 AM."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-026",
+      "source": "gate",
+      "target": "bramka",
+      "tertiary": "выход на посадку",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Please proceed to gate number 15."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-027",
+      "source": "delay",
+      "target": "opóźnienie",
+      "tertiary": "задержка",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "We apologize for the delay."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-028",
+      "source": "flight",
+      "target": "lot",
+      "tertiary": "рейс, полёт",
+      "level": "A2",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Our flight was smooth and comfortable."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-029",
+      "source": "direct flight",
+      "target": "lot bezpośredni",
+      "tertiary": "прямой рейс",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "Is there a direct flight to Krakow?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-030",
+      "source": "connecting flight",
+      "target": "lot z przesiadką",
+      "tertiary": "стыковочный рейс",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "We have a connecting flight in Frankfurt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-031",
+      "source": "layover",
+      "target": "międzylądowanie",
+      "tertiary": "пересадка",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "We had a three-hour layover in Amsterdam."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-032",
+      "source": "stopover",
+      "target": "postój, przerwa w podróży",
+      "tertiary": "остановка в пути",
+      "level": "B1",
+      "tags": ["travel", "airport"],
+      "examples": [
+        "We planned a short stopover in Singapore."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-033",
+      "source": "destination",
+      "target": "cel podróży",
+      "tertiary": "пункт назначения",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "Our final destination is Lisbon."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-034",
+      "source": "tourist",
+      "target": "turysta",
+      "tertiary": "турист",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "The city is full of tourists in summer."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-035",
+      "source": "tourism",
+      "target": "turystyka",
+      "tertiary": "туризм",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "Tourism is very important for the local economy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-036",
+      "source": "sightseeing",
+      "target": "zwiedzanie",
+      "tertiary": "осмотр достопримечательностей",
+      "level": "B1",
+      "tags": ["travel", "activities"],
+      "examples": [
+        "We spent the day sightseeing in the old town."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-037",
+      "source": "tourist attraction",
+      "target": "atrakcja turystyczna",
+      "tertiary": "туристическая достопримечательность",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "The Eiffel Tower is a major tourist attraction."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-038",
+      "source": "landmark",
+      "target": "punkt orientacyjny",
+      "tertiary": "ориентир, памятник",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "The Colosseum is Rome's most famous landmark."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-039",
+      "source": "monument",
+      "target": "pomnik",
+      "tertiary": "памятник",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "They visited the ancient monument."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-040",
+      "source": "museum",
+      "target": "muzeum",
+      "tertiary": "музей",
+      "level": "A2",
+      "tags": ["travel", "places"],
+      "examples": [
+        "The museum is closed on Mondays."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-041",
+      "source": "art gallery",
+      "target": "galeria sztuki",
+      "tertiary": "художественная галерея",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "There is a new exhibition at the art gallery."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-042",
+      "source": "cathedral",
+      "target": "katedra",
+      "tertiary": "собор",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "The cathedral has stunning stained-glass windows."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-043",
+      "source": "castle",
+      "target": "zamek",
+      "tertiary": "замок",
+      "level": "A2",
+      "tags": ["travel", "places"],
+      "examples": [
+        "We explored the old castle on the hill."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-044",
+      "source": "palace",
+      "target": "pałac",
+      "tertiary": "дворец",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "The royal palace is open to visitors."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-045",
+      "source": "ruins",
+      "target": "ruiny",
+      "tertiary": "руины",
+      "level": "B1",
+      "tags": ["travel", "places"],
+      "examples": [
+        "We walked among the ancient ruins."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-046",
+      "source": "square",
+      "target": "rynek, plac",
+      "tertiary": "площадь",
+      "level": "A2",
+      "tags": ["travel", "city"],
+      "examples": [
+        "The main square is the heart of the city."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-047",
+      "source": "market",
+      "target": "targ, rynek",
+      "tertiary": "рынок",
+      "level": "A2",
+      "tags": ["travel", "city"],
+      "examples": [
+        "We bought fresh fruit at the local market."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-048",
+      "source": "bridge",
+      "target": "most",
+      "tertiary": "мост",
+      "level": "A2",
+      "tags": ["travel", "city"],
+      "examples": [
+        "There are beautiful views from the bridge."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-049",
+      "source": "river",
+      "target": "rzeka",
+      "tertiary": "река",
+      "level": "A2",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We took a boat trip along the river."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-050",
+      "source": "lake",
+      "target": "jezioro",
+      "tertiary": "озеро",
+      "level": "A2",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We went swimming in the lake."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-051",
+      "source": "mountain",
+      "target": "góra",
+      "tertiary": "гора",
+      "level": "A2",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We went hiking in the mountains."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-052",
+      "source": "hill",
+      "target": "wzgórze",
+      "tertiary": "холм",
+      "level": "B1",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "The village is on a hill."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-053",
+      "source": "forest",
+      "target": "las",
+      "tertiary": "лес",
+      "level": "A2",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We walked through the dense forest."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-054",
+      "source": "beach",
+      "target": "plaża",
+      "tertiary": "пляж",
+      "level": "A2",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We spent the day relaxing on the beach."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-055",
+      "source": "coast",
+      "target": "wybrzeże",
+      "tertiary": "побережье",
+      "level": "B1",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "The coast is rocky and dramatic."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-056",
+      "source": "island",
+      "target": "wyspa",
+      "tertiary": "остров",
+      "level": "A2",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We took a ferry to the island."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-057",
+      "source": "desert",
+      "target": "pustynia",
+      "tertiary": "пустыня",
+      "level": "B1",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "We crossed the desert by jeep."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-058",
+      "source": "waterfall",
+      "target": "wodospad",
+      "tertiary": "водопад",
+      "level": "B1",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "The waterfall was breathtaking."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-059",
+      "source": "scenery",
+      "target": "krajobraz, sceneria",
+      "tertiary": "пейзаж",
+      "level": "B1",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "The scenery in Switzerland is amazing."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-060",
+      "source": "landscape",
+      "target": "krajobraz",
+      "tertiary": "ландшафт",
+      "level": "B1",
+      "tags": ["travel", "nature"],
+      "examples": [
+        "The landscape is very varied."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-061",
+      "source": "view",
+      "target": "widok",
+      "tertiary": "вид",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "The hotel room has a beautiful view of the sea."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-062",
+      "source": "panorama",
+      "target": "panorama",
+      "tertiary": "панорама",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "From the top, you can see a stunning panorama."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-063",
+      "source": "guidebook",
+      "target": "przewodnik (książka)",
+      "tertiary": "путеводитель",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "I bought a guidebook to plan our trip."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-064",
+      "source": "tour guide",
+      "target": "przewodnik (osoba)",
+      "tertiary": "гид",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "The tour guide spoke several languages."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-065",
+      "source": "guided tour",
+      "target": "wycieczka z przewodnikiem",
+      "tertiary": "экскурсия с гидом",
+      "level": "B1",
+      "tags": ["travel", "activities"],
+      "examples": [
+        "We took a guided tour of the palace."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-066",
+      "source": "map",
+      "target": "mapa",
+      "tertiary": "карта",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "We used a map to find our way around."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-067",
+      "source": "accommodation",
+      "target": "zakwaterowanie",
+      "tertiary": "размещение, жильё",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We need to find accommodation for the night."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-068",
+      "source": "hotel",
+      "target": "hotel",
+      "tertiary": "отель",
+      "level": "A2",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We stayed in a nice hotel near the station."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-069",
+      "source": "hostel",
+      "target": "hostel, schronisko",
+      "tertiary": "хостел",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Hostels are a cheap option for backpackers."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-070",
+      "source": "bed and breakfast",
+      "target": "nocleg ze śniadaniem",
+      "tertiary": "постель и завтрак",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We prefer to stay in small bed and breakfasts."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-071",
+      "source": "guesthouse",
+      "target": "pensjonat",
+      "tertiary": "гостевой дом",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "The guesthouse was run by a friendly family."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-072",
+      "source": "resort",
+      "target": "kurort, ośrodek wypoczynkowy",
+      "tertiary": "курорт",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We spent a week at an all-inclusive resort."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-073",
+      "source": "room",
+      "target": "pokój",
+      "tertiary": "комната, номер",
+      "level": "A2",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Our room was spacious and clean."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-074",
+      "source": "single room",
+      "target": "pokój jednoosobowy",
+      "tertiary": "одноместный номер",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "I would like to book a single room."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-075",
+      "source": "double room",
+      "target": "pokój dwuosobowy",
+      "tertiary": "двухместный номер",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We need a double room with a double bed."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-076",
+      "source": "twin room",
+      "target": "pokój z dwoma łóżkami",
+      "tertiary": "номер с двумя кроватями",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "A twin room is fine for us."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-077",
+      "source": "en-suite bathroom",
+      "target": "łazienka z prysznicem",
+      "tertiary": "отдельная ванная комната",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "All rooms have an en-suite bathroom."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-078",
+      "source": "reception",
+      "target": "recepcja",
+      "tertiary": "стойка регистрации",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Please check in at the reception."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-079",
+      "source": "check-in",
+      "target": "zameldowanie",
+      "tertiary": "регистрация (в отеле)",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Check-in is from 2 PM."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-080",
+      "source": "check-out",
+      "target": "wymeldowanie",
+      "tertiary": "выезд (из отеля)",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Check-out is at 11 AM."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-081",
+      "source": "key card",
+      "target": "karta magnetyczna",
+      "tertiary": "ключ-карта",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Use your key card to enter the room."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-082",
+      "source": "room service",
+      "target": "obsługa pokoju",
+      "tertiary": "обслуживание в номере",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We ordered breakfast from room service."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-083",
+      "source": "transportation",
+      "target": "transport",
+      "tertiary": "транспорт",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We need to arrange transportation to the airport."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-084",
+      "source": "public transport",
+      "target": "transport publiczny",
+      "tertiary": "общественный транспорт",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "It's easy to get around using public transport."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-085",
+      "source": "bus",
+      "target": "autobus",
+      "tertiary": "автобус",
+      "level": "A2",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "The bus to the city center leaves every 10 minutes."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-086",
+      "source": "train",
+      "target": "pociąg",
+      "tertiary": "поезд",
+      "level": "A2",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We traveled from Paris to Amsterdam by train."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-087",
+      "source": "subway",
+      "target": "metro",
+      "tertiary": "метро",
+      "level": "A2",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "The subway is the fastest way to get around."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-088",
+      "source": "tram",
+      "target": "tramwaj",
+      "tertiary": "трамвай",
+      "level": "A2",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We took the tram to the beach."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-089",
+      "source": "ferry",
+      "target": "prom",
+      "tertiary": "паром",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We took the ferry across the channel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-090",
+      "source": "taxi",
+      "target": "taksówka",
+      "tertiary": "такси",
+      "level": "A2",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We took a taxi to the hotel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-091",
+      "source": "rental car",
+      "target": "wynajęty samochód",
+      "tertiary": "арендованная машина",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We picked up our rental car at the airport."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-092",
+      "source": "bike rental",
+      "target": "wypożyczalnia rowerów",
+      "tertiary": "прокат велосипедов",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "There's a bike rental shop near the park."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-093",
+      "source": "journey",
+      "target": "podróż",
+      "tertiary": "путешествие",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "The journey was long but comfortable."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-094",
+      "source": "to explore",
+      "target": "zwiedzać, odkrywać",
+      "tertiary": "исследовать, осматривать",
+      "level": "B1",
+      "tags": ["travel", "verbs"],
+      "examples": [
+        "We want to explore the old part of the city."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-095",
+      "source": "to wander",
+      "target": "wędrować, spacerować",
+      "tertiary": "бродить",
+      "level": "B1",
+      "tags": ["travel", "verbs"],
+      "examples": [
+        "We spent the afternoon wandering through the streets."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-096",
+      "source": "to get lost",
+      "target": "zgubić się",
+      "tertiary": "заблудиться",
+      "level": "B1",
+      "tags": ["travel", "verbs", "problems"],
+      "examples": [
+        "It's easy to get lost in a new city."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-097",
+      "source": "to ask for directions",
+      "target": "pytać o drogę",
+      "tertiary": "спрашивать дорогу",
+      "level": "B1",
+      "tags": ["travel", "verbs", "communication"],
+      "examples": [
+        "Don't be afraid to ask for directions."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-098",
+      "source": "to take a picture",
+      "target": "robić zdjęcie",
+      "tertiary": "фотографировать",
+      "level": "A2",
+      "tags": ["travel", "verbs"],
+      "examples": [
+        "Can you take a picture of us, please?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-099",
+      "source": "souvenir",
+      "target": "pamiątka",
+      "tertiary": "сувенир",
+      "level": "B1",
+      "tags": ["travel", "shopping"],
+      "examples": [
+        "I bought a souvenir for my friend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-100",
+      "source": "gift shop",
+      "target": "sklep z pamiątkami",
+      "tertiary": "сувенирный магазин",
+      "level": "B1",
+      "tags": ["travel", "shopping"],
+      "examples": [
+        "There's a gift shop in the museum."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-101",
+      "source": "local cuisine",
+      "target": "lokalna kuchnia",
+      "tertiary": "местная кухня",
+      "level": "B1",
+      "tags": ["travel", "food"],
+      "examples": [
+        "We want to try the local cuisine."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-102",
+      "source": "specialty",
+      "target": "specjał",
+      "tertiary": "фирменное блюдо",
+      "level": "B1",
+      "tags": ["travel", "food"],
+      "examples": [
+        "Paella is a local specialty in Valencia."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-103",
+      "source": "restaurant",
+      "target": "restauracja",
+      "tertiary": "ресторан",
+      "level": "A2",
+      "tags": ["travel", "food"],
+      "examples": [
+        "We ate at a lovely restaurant by the river."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-104",
+      "source": "cafe",
+      "target": "kawiarnia",
+      "tertiary": "кафе",
+      "level": "A2",
+      "tags": ["travel", "food"],
+      "examples": [
+        "Let's have a coffee at that cafe."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-105",
+      "source": "street food",
+      "target": "street food, jedzenie uliczne",
+      "tertiary": "уличная еда",
+      "level": "B1",
+      "tags": ["travel", "food"],
+      "examples": [
+        "We tried some delicious street food."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-106",
+      "source": "menu",
+      "target": "menu",
+      "tertiary": "меню",
+      "level": "A2",
+      "tags": ["travel", "food"],
+      "examples": [
+        "Can we see the menu, please?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-107",
+      "source": "bill",
+      "target": "rachunek",
+      "tertiary": "счёт",
+      "level": "B1",
+      "tags": ["travel", "food"],
+      "examples": [
+        "Could we have the bill, please?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-108",
+      "source": "tip",
+      "target": "napiwek",
+      "tertiary": "чаевые",
+      "level": "B1",
+      "tags": ["travel", "food"],
+      "examples": [
+        "It's customary to leave a tip."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-109",
+      "source": "service charge",
+      "target": "opłata za obsługę",
+      "tertiary": "плата за обслуживание",
+      "level": "B1",
+      "tags": ["travel", "food"],
+      "examples": [
+        "A service charge is included in the bill."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-110",
+      "source": "itinerary",
+      "target": "plan podróży",
+      "tertiary": "маршрут, план",
+      "level": "B1",
+      "tags": ["travel", "planning"],
+      "examples": [
+        "Our itinerary includes visits to three cities."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-111",
+      "source": "travel insurance",
+      "target": "ubezpieczenie podróżne",
+      "tertiary": "туристическая страховка",
+      "level": "B1",
+      "tags": ["travel", "planning"],
+      "examples": [
+        "It's a good idea to buy travel insurance."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-112",
+      "source": "embassy",
+      "target": "ambasada",
+      "tertiary": "посольство",
+      "level": "B1",
+      "tags": ["travel", "emergency"],
+      "examples": [
+        "Contact your embassy in case of emergency."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-113",
+      "source": "consulate",
+      "target": "konsulat",
+      "tertiary": "консульство",
+      "level": "B1",
+      "tags": ["travel", "emergency"],
+      "examples": [
+        "The consulate can help with lost passports."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-114",
+      "source": "emergency exit",
+      "target": "wyjście awaryjne",
+      "tertiary": "аварийный выход",
+      "level": "B1",
+      "tags": ["travel", "emergency"],
+      "examples": [
+        "Please locate the nearest emergency exit."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-115",
+      "source": "first aid kit",
+      "target": "apteczka",
+      "tertiary": "аптечка",
+      "level": "B1",
+      "tags": ["travel", "emergency"],
+      "examples": [
+        "Always carry a first aid kit when hiking."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-116",
+      "source": "lost property",
+      "target": "biuro rzeczy znalezionych",
+      "tertiary": "бюро находок",
+      "level": "B1",
+      "tags": ["travel", "emergency"],
+      "examples": [
+        "I left my bag on the train. Where is the lost property office?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-117",
+      "source": "traveler's check",
+      "target": "czek podróżny",
+      "tertiary": "дорожный чек",
+      "level": "B1",
+      "tags": ["travel", "money"],
+      "examples": [
+        "Traveler's checks are not as common as they used to be."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-118",
+      "source": "credit card",
+      "target": "karta kredytowa",
+      "tertiary": "кредитная карта",
+      "level": "A2",
+      "tags": ["travel", "money"],
+      "examples": [
+        "Do you accept credit cards?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-119",
+      "source": "debit card",
+      "target": "karta debetowa",
+      "tertiary": "дебетовая карта",
+      "level": "B1",
+      "tags": ["travel", "money"],
+      "examples": [
+        "I paid with my debit card."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-120",
+      "source": "cash",
+      "target": "gotówka",
+      "tertiary": "наличные",
+      "level": "A2",
+      "tags": ["travel", "money"],
+      "examples": [
+        "It's a good idea to carry some cash."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-121",
+      "source": "currency",
+      "target": "waluta",
+      "tertiary": "валюта",
+      "level": "B1",
+      "tags": ["travel", "money"],
+      "examples": [
+        "What is the local currency?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-122",
+      "source": "exchange rate",
+      "target": "kurs wymiany",
+      "tertiary": "обменный курс",
+      "level": "B1",
+      "tags": ["travel", "money"],
+      "examples": [
+        "What is the current exchange rate?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-123",
+      "source": "currency exchange",
+      "target": "kantor",
+      "tertiary": "обмен валюты",
+      "level": "B1",
+      "tags": ["travel", "money"],
+      "examples": [
+        "Where can I find a currency exchange?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-124",
+      "source": "ATM",
+      "target": "bankomat",
+      "tertiary": "банкомат",
+      "level": "B1",
+      "tags": ["travel", "money"],
+      "examples": [
+        "Is there an ATM near here?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-125",
+      "source": "to withdraw money",
+      "target": "wypłacać pieniądze",
+      "tertiary": "снимать деньги",
+      "level": "B1",
+      "tags": ["travel", "verbs", "money"],
+      "examples": [
+        "I need to withdraw some money."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-126",
+      "source": "language barrier",
+      "target": "bariera językowa",
+      "tertiary": "языковой барьер",
+      "level": "B1",
+      "tags": ["travel", "communication"],
+      "examples": [
+        "We had a slight language barrier, but we managed."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-127",
+      "source": "phrasebook",
+      "target": "rozmówki",
+      "tertiary": "разговорник",
+      "level": "B1",
+      "tags": ["travel", "communication"],
+      "examples": [
+        "I always take a phrasebook with me."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-128",
+      "source": "interpreter",
+      "target": "tłumacz",
+      "tertiary": "переводчик",
+      "level": "B1",
+      "tags": ["travel", "communication"],
+      "examples": [
+        "We needed an interpreter for the meeting."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-129",
+      "source": "to gesture",
+      "target": "gestykulować",
+      "tertiary": "жестикулировать",
+      "level": "B1",
+      "tags": ["travel", "verbs", "communication"],
+      "examples": [
+        "We had to gesture to make ourselves understood."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-130",
+      "source": "culture shock",
+      "target": "szok kulturowy",
+      "tertiary": "культурный шок",
+      "level": "B1",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "I experienced a bit of a culture shock when I arrived."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-131",
+      "source": "customs (traditions)",
+      "target": "zwyczaje",
+      "tertiary": "обычаи",
+      "level": "B1",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "It's important to respect local customs."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-132",
+      "source": "tradition",
+      "target": "tradycja",
+      "tertiary": "традиция",
+      "level": "B1",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "We watched a traditional dance."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-133",
+      "source": "festival",
+      "target": "festiwal",
+      "tertiary": "фестиваль",
+      "level": "B1",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "We visited during the local wine festival."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-134",
+      "source": "pilgrimage",
+      "target": "pielgrzymka",
+      "tertiary": "паломничество",
+      "level": "B1",
+      "tags": ["travel", "religion"],
+      "examples": [
+        "Many people make a pilgrimage to this holy site."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-135",
+      "source": "off the beaten track",
+      "target": "z dala od utartych szlaków",
+      "tertiary": "вдали от проторенных путей",
+      "level": "C1",
+      "tags": ["travel", "phrases"],
+      "examples": [
+        "We prefer to travel off the beaten track."
+      ],
+      "part_of_speech": "phrase"
+    },
+    {
+      "id": "trav-136",
+      "source": "backpacking",
+      "target": "backpacking, turystyka piesza z plecakiem",
+      "tertiary": "поход с рюкзаком",
+      "level": "B1",
+      "tags": ["travel", "activities"],
+      "examples": [
+        "Backpacking is a popular way to travel for young people."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-137",
+      "source": "hitchhiking",
+      "target": "autostop",
+      "tertiary": "автостоп",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "Hitchhiking is risky but can be an adventure."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-138",
+      "source": "road trip",
+      "target": "podróż samochodowa",
+      "tertiary": "поездка на машине",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "We're planning a road trip along the coast."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-139",
+      "source": "cruise",
+      "target": "rejs",
+      "tertiary": "круиз",
+      "level": "B1",
+      "tags": ["travel", "transport"],
+      "examples": [
+        "They went on a cruise around the Mediterranean."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-140",
+      "source": "expedition",
+      "target": "wyprawa",
+      "tertiary": "экспедиция",
+      "level": "B2",
+      "tags": ["travel", "adventure"],
+      "examples": [
+        "They joined an expedition to the Antarctic."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-141",
+      "source": "safari",
+      "target": "safari",
+      "tertiary": "сафари",
+      "level": "B1",
+      "tags": ["travel", "adventure"],
+      "examples": [
+        "We went on a safari to see wild animals."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-142",
+      "source": "trekking",
+      "target": "trekking",
+      "tertiary": "треккинг",
+      "level": "B1",
+      "tags": ["travel", "adventure"],
+      "examples": [
+        "Trekking in the Himalayas is a challenge."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-143",
+      "source": "hiking",
+      "target": "wędrówki",
+      "tertiary": "пеший туризм",
+      "level": "B1",
+      "tags": ["travel", "adventure"],
+      "examples": [
+        "We went hiking in the national park."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-144",
+      "source": "camping",
+      "target": "kemping",
+      "tertiary": "кемпинг",
+      "level": "A2",
+      "tags": ["travel", "accommodation"],
+      "examples": [
+        "We went camping in the woods."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-145",
+      "source": "tent",
+      "target": "namiot",
+      "tertiary": "палатка",
+      "level": "B1",
+      "tags": ["travel", "camping"],
+      "examples": [
+        "We pitched our tent by the river."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-146",
+      "source": "sleeping bag",
+      "target": "śpiwór",
+      "tertiary": "спальный мешок",
+      "level": "B1",
+      "tags": ["travel", "camping"],
+      "examples": [
+        "It gets cold at night, so bring a warm sleeping bag."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-147",
+      "source": "camper van",
+      "target": "kamper",
+      "tertiary": "автодом",
+      "level": "B1",
+      "tags": ["travel", "camping"],
+      "examples": [
+        "They traveled around Europe in a camper van."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-148",
+      "source": "adventure",
+      "target": "przygoda",
+      "tertiary": "приключение",
+      "level": "A2",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "Travel is an adventure."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-149",
+      "source": "experience",
+      "target": "doświadczenie",
+      "tertiary": "опыт",
+      "level": "B1",
+      "tags": ["travel", "basics"],
+      "examples": [
+        "Traveling is a valuable life experience."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-150",
+      "source": "memorable",
+      "target": "niezapomniany",
+      "tertiary": "запоминающийся",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We had a truly memorable holiday."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-151",
+      "source": "unforgettable",
+      "target": "niezapomniany",
+      "tertiary": "незабываемый",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "It was an unforgettable experience."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-152",
+      "source": "picturesque",
+      "target": "malowniczy",
+      "tertiary": "живописный",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We visited a picturesque village."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-153",
+      "source": "breathtaking",
+      "target": "zapierający dech w piersiach",
+      "tertiary": "захватывающий дух",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "The view from the top was breathtaking."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-154",
+      "source": "stunning",
+      "target": "oszałamiający",
+      "tertiary": "потрясающий",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "The scenery is absolutely stunning."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-155",
+      "source": "spectacular",
+      "target": "spektakularny",
+      "tertiary": "спектакулярный",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We watched a spectacular sunset."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-156",
+      "source": "lively",
+      "target": "żywy, ożywiony",
+      "tertiary": "оживлённый",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "city"],
+      "examples": [
+        "The city is lively and full of energy."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-157",
+      "source": "bustling",
+      "target": "tętniący życiem",
+      "tertiary": "шумный, оживлённый",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "city"],
+      "examples": [
+        "The market was bustling with people."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-158",
+      "source": "crowded",
+      "target": "zatłoczony",
+      "tertiary": "переполненный",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "city"],
+      "examples": [
+        "The train was very crowded."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-159",
+      "source": "peaceful",
+      "target": "spokojny",
+      "tertiary": "мирный, спокойный",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "nature"],
+      "examples": [
+        "We found a peaceful spot by the lake."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-160",
+      "source": "quiet",
+      "target": "cichy",
+      "tertiary": "тихий",
+      "level": "A2",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "Our hotel room was very quiet."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-161",
+      "source": "remote",
+      "target": "odległy, odosobniony",
+      "tertiary": "отдаленный",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "They live in a remote village in the mountains."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-162",
+      "source": "isolated",
+      "target": "odosobniony",
+      "tertiary": "изолированный",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "The cottage is quite isolated."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-163",
+      "source": "luxurious",
+      "target": "luksusowy",
+      "tertiary": "роскошный",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We stayed in a luxurious hotel."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-164",
+      "source": "budget-friendly",
+      "target": "przyjazny dla budżetu",
+      "tertiary": "бюджетный",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We are looking for budget-friendly accommodation."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-165",
+      "source": "all-inclusive",
+      "target": "all inclusive",
+      "tertiary": "всё включено",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We booked an all-inclusive package."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-166",
+      "source": "half-board",
+      "target": "half board (śniadanie i obiadokolacja)",
+      "tertiary": "полупансион",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We chose half-board, so breakfast and dinner are included."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-167",
+      "source": "full-board",
+      "target": "full board (trzy posiłki)",
+      "tertiary": "полный пансион",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Full-board means all meals are included."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-168",
+      "source": "self-catering",
+      "target": "z możliwością samodzielnego wyżywienia",
+      "tertiary": "с самостоятельным приготовлением пищи",
+      "level": "B1",
+      "tags": ["travel", "accommodation"],
+      "examples": [
+        "We rented a self-catering apartment."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-169",
+      "source": "amenities",
+      "target": "udogodnienia",
+      "tertiary": "удобства",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "The hotel has great amenities, like a pool and a gym."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-170",
+      "source": "facilities",
+      "target": "obiekty, udogodnienia",
+      "tertiary": "объекты, сооружения",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "The campsite has good facilities."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-171",
+      "source": "swimming pool",
+      "target": "basen",
+      "tertiary": "бассейн",
+      "level": "A2",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "The hotel has an outdoor swimming pool."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-172",
+      "source": "spa",
+      "target": "spa",
+      "tertiary": "спа",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We relaxed in the hotel spa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-173",
+      "source": "gym",
+      "target": "siłownia",
+      "tertiary": "спортзал",
+      "level": "A2",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "There's a small gym in the hotel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-174",
+      "source": "restaurant",
+      "target": "restauracja",
+      "tertiary": "ресторан",
+      "level": "A2",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "The hotel has a very good restaurant."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-175",
+      "source": "bar",
+      "target": "bar",
+      "tertiary": "бар",
+      "level": "A2",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "Let's have a drink at the bar."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-176",
+      "source": "lounge",
+      "target": "hol, salon",
+      "tertiary": "холл, лаунж",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "We waited for our taxi in the hotel lounge."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-177",
+      "source": "concierge",
+      "target": "konsjerż",
+      "tertiary": "консьерж",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "The concierge can help you book tours and tickets."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-178",
+      "source": "porter",
+      "target": "bagażowy",
+      "tertiary": "носильщик",
+      "level": "B1",
+      "tags": ["travel", "hotel"],
+      "examples": [
+        "A porter helped us with our luggage."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-179",
+      "source": "hospitality",
+      "target": "gościnność",
+      "tertiary": "гостеприимство",
+      "level": "B1",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "We were touched by the local hospitality."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-180",
+      "source": "welcome",
+      "target": "powitanie",
+      "tertiary": "приветствие",
+      "level": "A2",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "We received a warm welcome."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-181",
+      "source": "farewell",
+      "target": "pożegnanie",
+      "tertiary": "прощание",
+      "level": "B1",
+      "tags": ["travel", "culture"],
+      "examples": [
+        "It was a sad farewell."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "trav-182",
+      "source": "to say goodbye",
+      "target": "pożegnać się",
+      "tertiary": "попрощаться",
+      "level": "A2",
+      "tags": ["travel", "verbs"],
+      "examples": [
+        "We said goodbye to our new friends."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-183",
+      "source": "to meet",
+      "target": "poznać, spotkać",
+      "tertiary": "встречать",
+      "level": "A2",
+      "tags": ["travel", "verbs"],
+      "examples": [
+        "We met some interesting people on our trip."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "trav-184",
+      "source": "local",
+      "target": "miejscowy, lokalny",
+      "tertiary": "местный",
+      "level": "A2",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We prefer to eat in local restaurants."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-185",
+      "source": "foreign",
+      "target": "zagraniczny",
+      "tertiary": "иностранный",
+      "level": "A2",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "It's my first time in a foreign country."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-186",
+      "source": "exotic",
+      "target": "egzotyczny",
+      "tertiary": "экзотический",
+      "level": "B1",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "We want to go somewhere exotic for our honeymoon."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-187",
+      "source": "tropical",
+      "target": "tropikalny",
+      "tertiary": "тропический",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "climate"],
+      "examples": [
+        "We visited a tropical island."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-188",
+      "source": "subtropical",
+      "target": "subtropikalny",
+      "tertiary": "субтропический",
+      "level": "B2",
+      "tags": ["travel", "adjectives", "climate"],
+      "examples": [
+        "The region has a subtropical climate."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-189",
+      "source": "Mediterranean",
+      "target": "śródziemnomorski",
+      "tertiary": "средиземноморский",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "region"],
+      "examples": [
+        "We love Mediterranean food."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-190",
+      "source": "Scandinavian",
+      "target": "skandynawski",
+      "tertiary": "скандинавский",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "region"],
+      "examples": [
+        "We're going on a cruise of the Scandinavian fjords."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-191",
+      "source": "alpine",
+      "target": "alpejski",
+      "tertiary": "альпийский",
+      "level": "B2",
+      "tags": ["travel", "adjectives", "region"],
+      "examples": [
+        "We went hiking in the alpine meadows."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-192",
+      "source": "coastal",
+      "target": "przybrzeżny",
+      "tertiary": "прибрежный",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "region"],
+      "examples": [
+        "We drove along the coastal road."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-193",
+      "source": "rural",
+      "target": "wiejski",
+      "tertiary": "сельский",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "region"],
+      "examples": [
+        "We stayed in a rural bed and breakfast."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-194",
+      "source": "urban",
+      "target": "miejski",
+      "tertiary": "городской",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "region"],
+      "examples": [
+        "I prefer urban travel to rural."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-195",
+      "source": "cosmopolitan",
+      "target": "kosmopolityczny",
+      "tertiary": "космополитичный",
+      "level": "B2",
+      "tags": ["travel", "adjectives", "city"],
+      "examples": [
+        "London is a very cosmopolitan city."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-196",
+      "source": "multicultural",
+      "target": "wielokulturowy",
+      "tertiary": "многокультурный",
+      "level": "B2",
+      "tags": ["travel", "adjectives", "city"],
+      "examples": [
+        "It's a vibrant, multicultural neighborhood."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-197",
+      "source": "historic",
+      "target": "historyczny",
+      "tertiary": "исторический",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "city"],
+      "examples": [
+        "The city has a beautiful historic center."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-198",
+      "source": "modern",
+      "target": "nowoczesny",
+      "tertiary": "современный",
+      "level": "A2",
+      "tags": ["travel", "adjectives"],
+      "examples": [
+        "The architecture is a mix of modern and classic."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-199",
+      "source": "ancient",
+      "target": "starożytny",
+      "tertiary": "древний",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "history"],
+      "examples": [
+        "We explored the ruins of an ancient city."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "trav-200",
+      "source": "medieval",
+      "target": "średniowieczny",
+      "tertiary": "средневековый",
+      "level": "B1",
+      "tags": ["travel", "adjectives", "history"],
+      "examples": [
+        "The town has a well-preserved medieval wall."
+      ],
+      "part_of_speech": "adjective"
+    }
+  ]
+}

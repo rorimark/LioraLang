@@ -1,0 +1,2062 @@
+{
+  "format": "lioralang.deck",
+  "version": 1,
+  "exportedAt": "2026-02-27T18:20:00.000Z",
+  "deck": {
+    "name": "Classical Music & Arts (RU-DE)",
+    "description": "A specialized vocabulary list for discussing classical music, opera, ballet, and fine arts, drawing from the rich traditions of both cultures.",
+    "sourceLanguage": "Russian",
+    "targetLanguage": "German",
+    "tertiaryLanguage": null,
+    "tags": [
+      "music",
+      "classical-music",
+      "opera",
+      "ballet",
+      "art",
+      "b1-c2"
+    ]
+  },
+  "words": [
+    {
+      "id": "art-001",
+      "source": "музыка",
+      "target": "die Musik",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["music", "basics"],
+      "examples": [
+        "Klassische Musik ist sehr entspannend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-002",
+      "source": "классическая музыка",
+      "target": "die klassische Musik",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "genre"],
+      "examples": [
+        "Ich höre sehr gerne klassische Musik."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-003",
+      "source": "композитор",
+      "target": "der Komponist",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "people"],
+      "examples": [
+        "Tschaikowski ist mein Lieblingskomponist."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-004",
+      "source": "дирижёр",
+      "target": "der Dirigent",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "people"],
+      "examples": [
+        "Der Dirigent führte das Orchester mit großer Leidenschaft."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-005",
+      "source": "оркестр",
+      "target": "das Orchester",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "groups"],
+      "examples": [
+        "Das Berliner Philharmonische Orchester ist weltberühmt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-006",
+      "source": "симфонический оркестр",
+      "target": "das Sinfonieorchester",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "groups"],
+      "examples": [
+        "Ein Sinfonieorchester besteht aus vielen verschiedenen Instrumenten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-007",
+      "source": "камерный оркестр",
+      "target": "das Kammerorchester",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "groups"],
+      "examples": [
+        "Das Kammerorchester spielt Werke von Mozart."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-008",
+      "source": "струнный квартет",
+      "target": "das Streichquartett",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "groups"],
+      "examples": [
+        "Ein Streichquartett besteht aus zwei Violinen, einer Bratsche und einem Cello."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-009",
+      "source": "опера",
+      "target": "die Oper",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["opera", "basics"],
+      "examples": [
+        "Wir gehen morgen Abend in die Oper."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-010",
+      "source": "оперный театр",
+      "target": "das Opernhaus",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["opera", "places"],
+      "examples": [
+        "Das Opernhaus ist ein prächtiges Gebäude."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-011",
+      "source": "оперный певец",
+      "target": "der Opernsänger",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["opera", "people"],
+      "examples": [
+        "Der Opernsänger hat eine fantastische Stimme."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-012",
+      "source": "оперная певица",
+      "target": "die Opernsängerin",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["opera", "people"],
+      "examples": [
+        "Anna Netrebko ist eine berühmte Opernsängerin."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-013",
+      "source": "сопрано",
+      "target": "der Sopran",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["opera", "voices"],
+      "examples": [
+        "Sie singt Sopran."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-014",
+      "source": "тенор",
+      "target": "der Tenor",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["opera", "voices"],
+      "examples": [
+        "Er ist ein berühmter Tenor."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-015",
+      "source": "баритон",
+      "target": "der Bariton",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["opera", "voices"],
+      "examples": [
+        "Seine Bariton-Stimme ist sehr angenehm."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-016",
+      "source": "бас",
+      "target": "der Bass",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["opera", "voices"],
+      "examples": [
+        "Die Bass-Partie in dieser Oper ist sehr anspruchsvoll."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-017",
+      "source": "либретто",
+      "target": "das Libretto",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["opera", "basics"],
+      "examples": [
+        "Das Libretto wurde von einem berühmten Dichter geschrieben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-018",
+      "source": "ария",
+      "target": "die Arie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["opera", "music"],
+      "examples": [
+        "Diese Arie ist sehr bekannt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-019",
+      "source": "дуэт",
+      "target": "das Duett",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["opera", "music"],
+      "examples": [
+        "Das Liebesduett im ersten Akt ist wunderschön."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-020",
+      "source": "хор",
+      "target": "der Chor",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "groups"],
+      "examples": [
+        "Der Chor sang aus voller Kehle."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-021",
+      "source": "увертюра",
+      "target": "die Ouvertüre",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["opera", "music"],
+      "examples": [
+        "Die Ouvertüre gibt einen Vorgeschmack auf die Oper."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-022",
+      "source": "акт",
+      "target": "der Akt",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["theatre", "opera"],
+      "examples": [
+        "Das Stück hat drei Akte."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-023",
+      "source": "сцена",
+      "target": "die Szene",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["theatre", "opera"],
+      "examples": [
+        "Die letzte Szene war sehr dramatisch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-024",
+      "source": "антракт",
+      "target": "die Pause",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["theatre", "basics"],
+      "examples": [
+        "In der Pause können wir etwas trinken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-025",
+      "source": "балет",
+      "target": "das Ballett",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["ballet", "basics"],
+      "examples": [
+        "Sie tanzt seit ihrer Kindheit Ballett."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-026",
+      "source": "балерина",
+      "target": "die Ballerina",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["ballet", "people"],
+      "examples": [
+        "Die Primaballerina tanzte die Hauptrolle."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-027",
+      "source": "танцовщик",
+      "target": "der Tänzer",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["ballet", "people"],
+      "examples": [
+        "Die Tänzer des Bolschoi-Balletts sind weltberühmt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-028",
+      "source": "хореограф",
+      "target": "der Choreograf",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["ballet", "people"],
+      "examples": [
+        "Der Choreograf entwickelte neue, innovative Bewegungen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-029",
+      "source": "па-де-де",
+      "target": "das Pas de deux",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["ballet", "dance"],
+      "examples": [
+        "Der Höhepunkt des Balletts war das große Pas de deux."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-030",
+      "source": "пуанты",
+      "target": "die Spitzenschuhe",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["ballet", "equipment"],
+      "examples": [
+        "Auf Spitzenschuhen zu tanzen erfordert viel Training."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-031",
+      "source": "пачка",
+      "target": "das Tutu",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["ballet", "clothing"],
+      "examples": [
+        "Die Ballerina trug ein weißes Tutu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-032",
+      "source": "живопись",
+      "target": "die Malerei",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Die italienische Malerei der Renaissance ist weltberühmt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-033",
+      "source": "скульптура",
+      "target": "die Skulptur",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "sculpture"],
+      "examples": [
+        "Michelangelos David ist eine berühmte Skulptur."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-034",
+      "source": "архитектура",
+      "target": "die Architektur",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "architecture"],
+      "examples": [
+        "Die barocke Architektur ist sehr prunkvoll."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-035",
+      "source": "графика",
+      "target": "die Grafik",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "graphics"],
+      "examples": [
+        "Die Ausstellung zeigt Grafiken von Dürer."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-036",
+      "source": "художник",
+      "target": "der Künstler / der Maler",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["art", "people"],
+      "examples": [
+        "Picasso war ein berühmter Maler."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-037",
+      "source": "картина",
+      "target": "das Bild / das Gemälde",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Dieses Gemälde hängt in der Eremitage."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-038",
+      "source": "пейзаж",
+      "target": "die Landschaft",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting", "genre"],
+      "examples": [
+        "Er malt vor allem Landschaften."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-039",
+      "source": "портрет",
+      "target": "das Porträt",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting", "genre"],
+      "examples": [
+        "Das Porträt zeigt eine junge Frau."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-040",
+      "source": "натюрморт",
+      "target": "das Stillleben",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "painting", "genre"],
+      "examples": [
+        "Auf dem Stillleben sind Blumen und Früchte zu sehen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-041",
+      "source": "икона",
+      "target": "die Ikone",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "religion"],
+      "examples": [
+        "Altrussische Ikonen sind sehr wertvoll."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-042",
+      "source": "фреска",
+      "target": "das Fresko",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "technique"],
+      "examples": [
+        "Die Fresken in der Sixtinischen Kapelle sind von Michelangelo."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-043",
+      "source": "мозаика",
+      "target": "das Mosaik",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "technique"],
+      "examples": [
+        "Die byzantinischen Mosaiken glitzern im Licht."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-044",
+      "source": "витраж",
+      "target": "das Glasfenster / die Glasmalerei",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "technique"],
+      "examples": [
+        "Die Kathedrale hat wunderschöne Glasfenster."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-045",
+      "source": "палитра",
+      "target": "die Palette",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "tools"],
+      "examples": [
+        "Der Künstler mischt die Farben auf seiner Palette."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-046",
+      "source": "кисть",
+      "target": "der Pinsel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "tools"],
+      "examples": [
+        "Er malt mit einem feinen Pinsel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-047",
+      "source": "краска",
+      "target": "die Farbe",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "materials"],
+      "examples": [
+        "Ölfarben trocknen langsam."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-048",
+      "source": "масло",
+      "target": "das Öl",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "materials"],
+      "examples": [
+        "Er malt mit Öl auf Leinwand."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-049",
+      "source": "акварель",
+      "target": "das Aquarell",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "materials"],
+      "examples": [
+        "Aquarellfarben sind wasserlöslich."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-050",
+      "source": "пастель",
+      "target": "die Pastellkreide / das Pastell",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "materials"],
+      "examples": [
+        "Sie zeichnet gerne mit Pastellkreide."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-051",
+      "source": "уголь",
+      "target": "die Kohle",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "materials"],
+      "examples": [
+        "Kohlezeichnungen haben einen besonderen Charme."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-052",
+      "source": "холст",
+      "target": "die Leinwand",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "materials"],
+      "examples": [
+        "Der Künstler spannte die Leinwand auf den Keilrahmen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-053",
+      "source": "мрамор",
+      "target": "der Marmor",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "sculpture", "materials"],
+      "examples": [
+        "Die Statue ist aus weißem Marmor."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-054",
+      "source": "бронза",
+      "target": "die Bronze",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "sculpture", "materials"],
+      "examples": [
+        "Die Bronzestatue ist grün patiniert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-055",
+      "source": "гипс",
+      "target": "der Gips",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "sculpture", "materials"],
+      "examples": [
+        "Zuerst macht der Bildhauer ein Modell aus Gips."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-056",
+      "source": "глина",
+      "target": "der Ton",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "sculpture", "materials"],
+      "examples": [
+        "Aus Ton formt man Töpfe und Figuren."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-057",
+      "source": "дерево",
+      "target": "das Holz",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["art", "sculpture", "materials"],
+      "examples": [
+        "Er schnitzt gerne Figuren aus Holz."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-058",
+      "source": "симфония",
+      "target": "die Sinfonie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Beethoven schrieb neun Sinfonien."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-059",
+      "source": "концерт",
+      "target": "das Konzert",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Tschaikowskis Klavierkonzert Nr. 1 ist sehr berühmt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-060",
+      "source": "соната",
+      "target": "die Sonate",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Mozart schrieb viele Klaviersonaten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-061",
+      "source": "квартет",
+      "target": "das Quartett",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Schuberts Streichquartett 'Der Tod und das Mädchen' ist sehr bekannt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-062",
+      "source": "трио",
+      "target": "das Trio",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Das Klaviertrio besteht aus Klavier, Violine und Cello."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-063",
+      "source": "ноктюрн",
+      "target": "das Nocturne",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Chopins Nocturnes sind sehr lyrisch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-064",
+      "source": "этюд",
+      "target": "die Etüde",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Chopins Etüden sind nicht nur technisch anspruchsvoll, sondern auch musikalisch wertvoll."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-065",
+      "source": "прелюдия",
+      "target": "das Präludium",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Bachs Präludien und Fugen sind ein Meisterwerk."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-066",
+      "source": "фуга",
+      "target": "die Fuge",
+      "tertiary": null,
+      "level": "C2",
+      "tags": ["music", "forms"],
+      "examples": [
+        "Die Fuge ist eine komplexe musikalische Form."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-067",
+      "source": "мелодия",
+      "target": "die Melodie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "elements"],
+      "examples": [
+        "Die Melodie ist eingängig und leicht zu merken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-068",
+      "source": "гармония",
+      "target": "die Harmonie",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "elements"],
+      "examples": [
+        "Die Harmonien in diesem Stück sind sehr ungewöhnlich."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-069",
+      "source": "ритм",
+      "target": "der Rhythmus",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "elements"],
+      "examples": [
+        "Der Rhythmus des Bolero ist mitreißend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-070",
+      "source": "темп",
+      "target": "das Tempo",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "elements"],
+      "examples": [
+        "Das Tempo des Stücks ist sehr schnell (presto)."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-071",
+      "source": "динамика",
+      "target": "die Dynamik",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "elements"],
+      "examples": [
+        "Die Dynamik reicht von ganz leise (piano) bis sehr laut (forte)."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-072",
+      "source": "тональность",
+      "target": "die Tonart",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "theory"],
+      "examples": [
+        "Die Sinfonie steht in der Tonart c-Moll."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-073",
+      "source": "мажор",
+      "target": "das Dur",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "theory"],
+      "examples": [
+        "Die Sonate ist in C-Dur geschrieben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-074",
+      "source": "минор",
+      "target": "das Moll",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "theory"],
+      "examples": [
+        "Viele traurige Stücke sind in Moll geschrieben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-075",
+      "source": "инструмент",
+      "target": "das Instrument",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["music", "instruments"],
+      "examples": [
+        "Welches Instrument spielst du?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-076",
+      "source": "скрипка",
+      "target": "die Geige / die Violine",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["music", "instruments", "strings"],
+      "examples": [
+        "Sie spielt Geige in einem Orchester."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-077",
+      "source": "альт",
+      "target": "die Bratsche",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "strings"],
+      "examples": [
+        "Die Bratsche ist etwas größer als die Geige."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-078",
+      "source": "виолончель",
+      "target": "das Cello / das Violoncello",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "strings"],
+      "examples": [
+        "Das Cello hat einen warmen, tiefen Klang."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-079",
+      "source": "контрабас",
+      "target": "der Kontrabass",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "strings"],
+      "examples": [
+        "Der Kontrabass ist das größte Streichinstrument."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-080",
+      "source": "арфа",
+      "target": "die Harfe",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "strings"],
+      "examples": [
+        "Die Harfe hat einen zauberhaften Klang."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-081",
+      "source": "фортепиано",
+      "target": "das Klavier",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["music", "instruments", "keyboard"],
+      "examples": [
+        "Er übt jeden Tag Klavier."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-082",
+      "source": "рояль",
+      "target": "der Flügel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "keyboard"],
+      "examples": [
+        "Im Konzertsaal steht ein großer Konzertflügel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-083",
+      "source": "орган",
+      "target": "die Orgel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "keyboard"],
+      "examples": [
+        "Die Orgel im Dom hat viele Pfeifen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-084",
+      "source": "клавесин",
+      "target": "das Cembalo",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "instruments", "keyboard"],
+      "examples": [
+        "Cembalos wurden vor allem in der Barockzeit gespielt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-085",
+      "source": "флейта",
+      "target": "die Flöte",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "woodwind"],
+      "examples": [
+        "Die Querflöte gehört zur Familie der Holzblasinstrumente."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-086",
+      "source": "гобой",
+      "target": "die Oboe",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "woodwind"],
+      "examples": [
+        "Die Oboe hat einen leicht näselnden Klang."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-087",
+      "source": "кларнет",
+      "target": "die Klarinette",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "woodwind"],
+      "examples": [
+        "Die Klarinette hat einen sehr flexiblen Klang."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-088",
+      "source": "фагот",
+      "target": "das Fagott",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "woodwind"],
+      "examples": [
+        "Das Fagott ist das Bassinstrument der Holzbläser."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-089",
+      "source": "валторна",
+      "target": "das Waldhorn",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "brass"],
+      "examples": [
+        "Das Waldhorn hat einen weichen, runden Klang."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-090",
+      "source": "труба",
+      "target": "die Trompete",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "brass"],
+      "examples": [
+        "Die Trompete ist ein sehr hohes Blechblasinstrument."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-091",
+      "source": "тромбон",
+      "target": "die Posaune",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "brass"],
+      "examples": [
+        "Die Posaune hat einen Zug, mit dem man die Tonhöhe verändert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-092",
+      "source": "туба",
+      "target": "die Tuba",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "brass"],
+      "examples": [
+        "Die Tuba ist das tiefste Blechblasinstrument."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-093",
+      "source": "литавры",
+      "target": "die Pauken",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "instruments", "percussion"],
+      "examples": [
+        "Die Pauken werden mit Schlägeln geschlagen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-094",
+      "source": "барабан",
+      "target": "die Trommel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "percussion"],
+      "examples": [
+        "In der Marschmusik spielen Trommeln eine wichtige Rolle."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-095",
+      "source": "тарелки",
+      "target": "die Becken",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "instruments", "percussion"],
+      "examples": [
+        "Die Becken erzeugen einen lauten, scheppernden Klang."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-096",
+      "source": "треугольник",
+      "target": "das Triangel",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "instruments", "percussion"],
+      "examples": [
+        "Das Triangel wird mit einem Metallstab angeschlagen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-097",
+      "source": "ксилофон",
+      "target": "das Xylophon",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "percussion"],
+      "examples": [
+        "Das Xylophon besteht aus Holzstäben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-098",
+      "source": "челеста",
+      "target": "die Celesta",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "instruments", "percussion"],
+      "examples": [
+        "Die Celesta klingt wie ein zartes Glockenspiel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-099",
+      "source": "смычок",
+      "target": "der Bogen",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "parts"],
+      "examples": [
+        "Der Geiger streicht mit dem Bogen über die Saiten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-100",
+      "source": "струна",
+      "target": "die Saite",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "parts"],
+      "examples": [
+        "Eine Saite ist gerissen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-101",
+      "source": "клавиша",
+      "target": "die Taste",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "parts"],
+      "examples": [
+        "Die schwarzen Tasten sind erhöht."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-102",
+      "source": "педаль",
+      "target": "das Pedal",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "instruments", "parts"],
+      "examples": [
+        "Das rechte Pedal am Klavier ist das Haltepedal."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-103",
+      "source": "нота",
+      "target": "die Note",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Er kann Noten lesen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-104",
+      "source": "нотный стан",
+      "target": "das Notensystem",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Die Noten werden auf dem Notensystem notiert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-105",
+      "source": "ключ",
+      "target": "der Schlüssel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Der Violinschlüssel wird für hohe Lagen verwendet."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-106",
+      "source": "скрипичный ключ",
+      "target": "der Violinschlüssel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Der Violinschlüssel sieht aus wie ein geschwungenes 'G'."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-107",
+      "source": "басовый ключ",
+      "target": "der Bassschlüssel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Der Bassschlüssel wird für tiefe Lagen verwendet."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-108",
+      "source": "диез",
+      "target": "das Kreuz",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Ein Kreuz erhöht den Ton um einen Halbton."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-109",
+      "source": "бемоль",
+      "target": "das Be",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Ein Be erniedrigt den Ton um einen Halbton."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-110",
+      "source": "бекар",
+      "target": "das Auflösungszeichen",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Das Auflösungszeichen hebt ein Vorzeichen auf."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-111",
+      "source": "пауза",
+      "target": "die Pause",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "In der Musik gibt es Noten und Pausen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-112",
+      "source": "такт",
+      "target": "der Takt",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Der Walzer hat einen Dreivierteltakt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-113",
+      "source": "размер",
+      "target": "die Taktart",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "notation"],
+      "examples": [
+        "Die Taktart wird zu Beginn des Stückes angegeben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-114",
+      "source": "композиция",
+      "target": "die Komposition",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "basics"],
+      "examples": [
+        "Das ist eine sehr komplexe Komposition."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-115",
+      "source": "произведение",
+      "target": "das Werk",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "basics"],
+      "examples": [
+        "Dieses Werk stammt aus der Romantik."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-116",
+      "source": "исполнение",
+      "target": "die Aufführung / die Darbietung",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Die Aufführung war ein großer Erfolg."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-117",
+      "source": "репетиция",
+      "target": "die Probe",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Morgen ist die letzte Probe vor dem Konzert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-118",
+      "source": "генеральная репетиция",
+      "target": "die Generalprobe",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Die Generalprobe ist oft öffentlich."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-119",
+      "source": "концерт",
+      "target": "das Konzert",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Das Konzert war ausverkauft."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-120",
+      "source": "фестиваль",
+      "target": "das Festival",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Wir fahren zu einem Klassik-Festival."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-121",
+      "source": "аплодисменты",
+      "target": "der Applaus",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Nach der Arie gab es großen Applaus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-122",
+      "source": "овация",
+      "target": "die Ovation",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Die Zuschauer spendeten stehende Ovationen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-123",
+      "source": "бис",
+      "target": "die Zugabe",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Das Publikum forderte lauthals eine Zugabe."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-124",
+      "source": "гастроли",
+      "target": "die Tournee",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "performance"],
+      "examples": [
+        "Das Orchester geht auf Europa-Tournee."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-125",
+      "source": "эпоха",
+      "target": "die Epoche",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "history"],
+      "examples": [
+        "Die Barockepoche dauerte etwa von 1600 bis 1750."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-126",
+      "source": "средневековье",
+      "target": "das Mittelalter",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "history"],
+      "examples": [
+        "Im Mittelalter war die Kirchenmusik vorherrschend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-127",
+      "source": "ренессанс",
+      "target": "die Renaissance",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "history"],
+      "examples": [
+        "In der Renaissance entstand die Mehrstimmigkeit."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-128",
+      "source": "барокко",
+      "target": "der Barock",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "history"],
+      "examples": [
+        "Bach und Händel sind die bekanntesten Komponisten des Barock."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-129",
+      "source": "классицизм",
+      "target": "die Klassik",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "history"],
+      "examples": [
+        "Die Wiener Klassik wird durch Haydn, Mozart und Beethoven repräsentiert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-130",
+      "source": "романтизм",
+      "target": "die Romantik",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "history"],
+      "examples": [
+        "In der Romantik standen Gefühle und Individualität im Vordergrund."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-131",
+      "source": "модернизм",
+      "target": "die Moderne",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "history"],
+      "examples": [
+        "Die Musik der Moderne experimentierte mit neuen Klängen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-132",
+      "source": "импрессионизм",
+      "target": "der Impressionismus",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "history"],
+      "examples": [
+        "Debussy ist ein Hauptvertreter des musikalischen Impressionismus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-133",
+      "source": "экспрессионизм",
+      "target": "der Expressionismus",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "history"],
+      "examples": [
+        "Schönbergs Musik wird dem Expressionismus zugerechnet."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-134",
+      "source": "авангард",
+      "target": "die Avantgarde",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["music", "history"],
+      "examples": [
+        "Die Avantgarde sucht nach neuen Ausdrucksformen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-135",
+      "source": "наследие",
+      "target": "das Erbe",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "history"],
+      "examples": [
+        "Das musikalische Erbe der Bach-Familie ist unermesslich."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-136",
+      "source": "шедевр",
+      "target": "das Meisterwerk",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "art"],
+      "examples": [
+        "Die Matthäuspassion von Bach gilt als ein Meisterwerk."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-137",
+      "source": "вдохновение",
+      "target": "die Inspiration",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "art", "creativity"],
+      "examples": [
+        "Der Komponist schöpfte seine Inspiration aus der Natur."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-138",
+      "source": "творчество",
+      "target": "das Schaffen / das Werk",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "art", "creativity"],
+      "examples": [
+        "Sein gesamtes Schaffen umfasst über 600 Werke."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-139",
+      "source": "интерпретация",
+      "target": "die Interpretation",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["music", "art", "performance"],
+      "examples": [
+        "Jeder Dirigent hat seine eigene Interpretation des Stücks."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-140",
+      "source": "стиль",
+      "target": "der Stil",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "art"],
+      "examples": [
+        "Ihr Stil ist unverwechselbar."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-141",
+      "source": "жанр",
+      "target": "das Genre / die Gattung",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["music", "art"],
+      "examples": [
+        "Die Oper ist eine Gattung des Musiktheaters."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-142",
+      "source": "выставка",
+      "target": "die Ausstellung",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "events"],
+      "examples": [
+        "Die Ausstellungseröffnung ist am Freitag."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-143",
+      "source": "вернисаж",
+      "target": "die Vernissage",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "events"],
+      "examples": [
+        "Auf der Vernissage traf man viele Künstler."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-144",
+      "source": "галерея",
+      "target": "die Galerie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "places"],
+      "examples": [
+        "Die Tretjakow-Galerie in Moskau zeigt russische Kunst."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-145",
+      "source": "музей",
+      "target": "das Museum",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["art", "places"],
+      "examples": [
+        "Das Puschkin-Museum besitzt eine bedeutende Sammlung."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-146",
+      "source": "коллекция",
+      "target": "die Sammlung",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "basics"],
+      "examples": [
+        "Die Sammlung umfasst Gemälde vom Mittelalter bis zur Gegenwart."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-147",
+      "source": "скульптор",
+      "target": "der Bildhauer",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "sculpture", "people"],
+      "examples": [
+        "Rodin war ein berühmter französischer Bildhauer."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-148",
+      "source": "гравюра",
+      "target": "der Kupferstich / die Radierung",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "graphics", "technique"],
+      "examples": [
+        "Dürers Kupferstiche sind weltberühmt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-149",
+      "source": "офорт",
+      "target": "die Radierung",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "graphics", "technique"],
+      "examples": [
+        "Rembrandt schuf viele Radierungen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-150",
+      "source": "литография",
+      "target": "die Lithografie",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "graphics", "technique"],
+      "examples": [
+        "Die Lithografie wurde im 19. Jahrhundert erfunden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-151",
+      "source": "акт",
+      "target": "der Akt",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "painting", "genre"],
+      "examples": [
+        "Der Künstler malte viele Akte."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-152",
+      "source": "обнаженная натура",
+      "target": "der Akt (Modell)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "painting", "genre"],
+      "examples": [
+        "Er zeichnete nach der lebenden Aktmodell."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-153",
+      "source": "реализм",
+      "target": "der Realismus",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "style"],
+      "examples": [
+        "Der Realismus versuchte, die Wirklichkeit möglichst genau abzubilden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-154",
+      "source": "абстракционизм",
+      "target": "die abstrakte Kunst",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "style"],
+      "examples": [
+        "Kandinsky war ein Pionier der abstrakten Kunst."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-155",
+      "source": "сюрреализм",
+      "target": "der Surrealismus",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "style"],
+      "examples": [
+        "Salvador Dalí ist der bekannteste Vertreter des Surrealismus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-156",
+      "source": "кубизм",
+      "target": "der Kubismus",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "style"],
+      "examples": [
+        "Picasso und Braque begründeten den Kubismus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-157",
+      "source": "фовизм",
+      "target": "der Fauvismus",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "style"],
+      "examples": [
+        "Der Fauvismus zeichnet sich durch kräftige, leuchtende Farben aus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-158",
+      "source": "экспрессионизм",
+      "target": "der Expressionismus",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "style"],
+      "examples": [
+        "Die Brücke und Der Blaue Reiter sind Gruppen des deutschen Expressionismus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-159",
+      "source": "импрессионизм",
+      "target": "der Impressionismus",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "style"],
+      "examples": [
+        "Monets Gemälde 'Impression, Sonnenaufgang' gab dem Impressionismus seinen Namen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-160",
+      "source": "пуантилизм",
+      "target": "der Pointillismus",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "style", "technique"],
+      "examples": [
+        "Im Pointillismus werden die Farben in kleinen Punkten aufgetragen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-161",
+      "source": "колорит",
+      "target": "das Kolorit",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Die Gemälde der venezianischen Schule zeichnen sich durch ein warmes Kolorit aus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-162",
+      "source": "светотень",
+      "target": "das Helldunkel / das Chiaroscuro",
+      "tertiary": null,
+      "level": "C2",
+      "tags": ["art", "painting", "technique"],
+      "examples": [
+        "Caravaggio war ein Meister des Helldunkels."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-163",
+      "source": "перспектива",
+      "target": "die Perspektive",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["art", "painting", "technique"],
+      "examples": [
+        "Die Erfindung der Zentralperspektive in der Renaissance revolutionierte die Malerei."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-164",
+      "source": "композиция",
+      "target": "die Komposition",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Die Komposition des Bildes ist sehr ausgewogen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-165",
+      "source": "фон",
+      "target": "der Hintergrund",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Vor einem dunklen Hintergrund heben sich die hellen Figuren gut ab."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-166",
+      "source": "передний план",
+      "target": "der Vordergrund",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Im Vordergrund des Gemäldes sind Blumen zu sehen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-167",
+      "source": "рамка",
+      "target": "der Rahmen",
+      "tertiary": null,
+      "level": "A2",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Das Bild hat einen goldenen Rahmen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-168",
+      "source": "подрамник",
+      "target": "der Keilrahmen",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["art", "painting", "materials"],
+      "examples": [
+        "Die Leinwand ist auf einen Keilrahmen gespannt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-169",
+      "source": "эскиз",
+      "target": "die Skizze",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting", "drawing"],
+      "examples": [
+        "Der Künstler fertigte zunächst eine Skizze an."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "art-170",
+      "source": "подготовка",
+      "target": "die Bereitstellung",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["art", "painting"],
+      "examples": [
+        "Die Bildbearbeitung ist eine wichtige Teil der Gestaltung."
+      ],
+      "part_of_speech": "noun"
+    }
+  ]
+}

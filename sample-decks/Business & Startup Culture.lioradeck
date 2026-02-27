@@ -1,0 +1,2421 @@
+{
+  "format": "lioralang.deck",
+  "version": 1,
+  "exportedAt": "2026-02-27T18:10:00.000Z",
+  "deck": {
+    "name": "Business & Startup Culture (DE-PL)",
+    "description": "A vocabulary set for the modern business world, covering meetings, negotiations, digital marketing, and startup life.",
+    "sourceLanguage": "German",
+    "targetLanguage": "Polish",
+    "tertiaryLanguage": null,
+    "tags": [
+      "business",
+      "startup",
+      "economy",
+      "marketing",
+      "b1-c2"
+    ]
+  },
+  "words": [
+    {
+      "id": "biz-001",
+      "source": "das Meeting",
+      "target": "spotkanie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "meetings"],
+      "examples": [
+        "Das Meeting findet um 10 Uhr statt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-002",
+      "source": "die Besprechung",
+      "target": "narada, omówienie",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "meetings"],
+      "examples": [
+        "Wir haben eine wichtige Besprechung mit dem Kunden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-003",
+      "source": "der Termin",
+      "target": "termin",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Haben Sie morgen einen Termin frei?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-004",
+      "source": "die Frist",
+      "target": "termin ostateczny, deadline",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "deadlines"],
+      "examples": [
+        "Die Frist für die Bewerbung endet am Freitag."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-005",
+      "source": "die Deadline",
+      "target": "ostateczny termin",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "deadlines"],
+      "examples": [
+        "Wir müssen die Deadline unbedingt einhalten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-006",
+      "source": "die Fristverlängerung",
+      "target": "przedłużenie terminu",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "deadlines"],
+      "examples": [
+        "Der Kunde hat eine Fristverlängerung beantragt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-007",
+      "source": "der Aufschub",
+      "target": "odroczenie, zwłoka",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "deadlines"],
+      "examples": [
+        "Ohne Aufschub müssen wir das Projekt starten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-008",
+      "source": "die Tagesordnung",
+      "target": "porządek obrad, agenda",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "meetings"],
+      "examples": [
+        "Punkt 1 der Tagesordnung ist die Budgetplanung."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-009",
+      "source": "der Tagesordnungspunkt",
+      "target": "punkt porządku obrad",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "meetings"],
+      "examples": [
+        "Wir kommen nun zum nächsten Tagesordnungspunkt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-010",
+      "source": "das Protokoll",
+      "target": "protokół",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "meetings"],
+      "examples": [
+        "Wer schreibt heute das Protokoll?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-011",
+      "source": "die Präsentation",
+      "target": "prezentacja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "presentations"],
+      "examples": [
+        "Seine Präsentation war sehr überzeugend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-012",
+      "source": "das Handout",
+      "target": "materiały informacyjne",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "presentations"],
+      "examples": [
+        "Bitte verteilen Sie die Handouts."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-013",
+      "source": "die Folie",
+      "target": "slajd",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "presentations"],
+      "examples": [
+        "Auf der nächsten Folie sehen Sie die Grafik."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-014",
+      "source": "das Diagramm",
+      "target": "diagram, wykres",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "data"],
+      "examples": [
+        "Das Diagramm zeigt den Umsatzanstieg."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-015",
+      "source": "die Grafik",
+      "target": "grafika, wykres",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "data"],
+      "examples": [
+        "Können Sie diese Grafik erklären?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-016",
+      "source": "die Tabelle",
+      "target": "tabela",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "data"],
+      "examples": [
+        "Die Tabelle enthält alle wichtigen Daten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-017",
+      "source": "das Unternehmen",
+      "target": "przedsiębiorstwo, firma",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "company"],
+      "examples": [
+        "Unser Unternehmen expandiert nach Polen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-018",
+      "source": "die Firma",
+      "target": "firma",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "company"],
+      "examples": [
+        "Er arbeitet bei einer großen Firma."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-019",
+      "source": "der Konzern",
+      "target": "koncern",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "company"],
+      "examples": [
+        "Der internationale Konzern hat viele Tochterfirmen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-020",
+      "source": "der Betrieb",
+      "target": "zakład, przedsiębiorstwo",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "company"],
+      "examples": [
+        "Der Betrieb läuft auf Hochtouren."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-021",
+      "source": "der Standort",
+      "target": "lokalizacja, siedziba",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "company"],
+      "examples": [
+        "Wir suchen einen neuen Standort für die Fabrik."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-022",
+      "source": "die Niederlassung",
+      "target": "oddział, filia",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "company"],
+      "examples": [
+        "Die Niederlassung in Krakau wurde eröffnet."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-023",
+      "source": "die Tochtergesellschaft",
+      "target": "spółka zależna",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "company"],
+      "examples": [
+        "Die Tochtergesellschaft ist eigenständig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-024",
+      "source": "das Startup",
+      "target": "startup",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "company"],
+      "examples": [
+        "Viele Startups scheitern in den ersten Jahren."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-025",
+      "source": "der Gründer",
+      "target": "założyciel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "roles"],
+      "examples": [
+        "Der Gründer des Unternehmens ist ein Visionär."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-026",
+      "source": "die Gründerin",
+      "target": "założycielka",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "roles"],
+      "examples": [
+        "Sie ist die erfolgreiche Gründerin eines Tech-Startups."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-027",
+      "source": "das Teammitglied",
+      "target": "członek zespołu",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "roles"],
+      "examples": [
+        "Alle Teammitglieder arbeiten hart."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-028",
+      "source": "der Mitarbeiter",
+      "target": "pracownik",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Wir suchen neue Mitarbeiter."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-029",
+      "source": "die Führungskraft",
+      "target": "kadra kierownicza",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Gute Führungskräfte motivieren ihr Team."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-030",
+      "source": "der Geschäftsführer",
+      "target": "dyrektor zarządzający",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Der Geschäftsführer trifft die endgültige Entscheidung."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-031",
+      "source": "der Vorstand",
+      "target": "zarząd",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Der Vorstand tagt einmal im Monat."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-032",
+      "source": "der Aufsichtsrat",
+      "target": "rada nadzorcza",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Der Aufsichtsrat kontrolliert den Vorstand."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-033",
+      "source": "der Investor",
+      "target": "inwestor",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "finance"],
+      "examples": [
+        "Wir suchen einen Investor für unsere Idee."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-034",
+      "source": "der Risikokapitalgeber",
+      "target": "inwestor venture capital",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["startup", "finance"],
+      "examples": [
+        "Risikokapitalgeber finanzieren junge, wachstumsstarke Unternehmen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-035",
+      "source": "der Business Angel",
+      "target": "anioł biznesu",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["startup", "finance"],
+      "examples": [
+        "Ein Business Angel investiert nicht nur Geld, sondern auch Know-how."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-036",
+      "source": "die Finanzierung",
+      "target": "finansowanie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Finanzierung des Projekts ist gesichert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-037",
+      "source": "das Budget",
+      "target": "budżet",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Wir müssen unser Budget einhalten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-038",
+      "source": "die Kosten",
+      "target": "koszty",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Kosten sind gestiegen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-039",
+      "source": "die Ausgaben",
+      "target": "wydatki",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Wir müssen die Ausgaben reduzieren."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-040",
+      "source": "die Einnahmen",
+      "target": "przychody",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Einnahmen übertreffen die Erwartungen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-041",
+      "source": "der Gewinn",
+      "target": "zysk",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Das Unternehmen erwirtschaftet hohe Gewinne."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-042",
+      "source": "der Umsatz",
+      "target": "obrót",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Der Jahresumsatz beträgt eine Million Euro."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-043",
+      "source": "der Verlust",
+      "target": "strata",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Firma schreibt rote Zahlen, sie macht Verlust."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-044",
+      "source": "die Investition",
+      "target": "inwestycja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Investition in neue Technologien lohnt sich."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-045",
+      "source": "der Return on Investment",
+      "target": "zwrot z inwestycji (ROI)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Wir erwarten einen hohen Return on Investment."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-046",
+      "source": "die Liquidität",
+      "target": "płynność finansowa",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Liquidität des Unternehmens ist gefährdet."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-047",
+      "source": "das Eigenkapital",
+      "target": "kapitał własny",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Das Eigenkapital dient als Sicherheit."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-048",
+      "source": "das Fremdkapital",
+      "target": "kapitał obcy",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Bankdarlehen sind eine Form von Fremdkapital."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-049",
+      "source": "der Kredit",
+      "target": "kredyt, pożyczka",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Bank hat uns einen Kredit gewährt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-050",
+      "source": "das Darlehen",
+      "target": "pożyczka",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Ein langfristiges Darlehen aufnehmen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-051",
+      "source": "die Zinsen",
+      "target": "odsetki",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Die Zinsen für das Darlehen sind niedrig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-052",
+      "source": "die Abschreibung",
+      "target": "amortyzacja",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "accounting"],
+      "examples": [
+        "Die Abschreibung von Maschinen mindert den Gewinn."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-053",
+      "source": "die Bilanz",
+      "target": "bilans",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "accounting"],
+      "examples": [
+        "Die Bilanz des letzten Jahres ist positiv."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-054",
+      "source": "die Gewinn- und Verlustrechnung",
+      "target": "rachunek zysków i strat",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "accounting"],
+      "examples": [
+        "Die Gewinn- und Verlustrechnung zeigt das operative Ergebnis."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-055",
+      "source": "der Jahresabschluss",
+      "target": "sprawozdanie roczne",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "accounting"],
+      "examples": [
+        "Der Jahresabschluss muss bis Ende März vorliegen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-056",
+      "source": "die Steuer",
+      "target": "podatek",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "taxes"],
+      "examples": [
+        "Das Unternehmen muss Steuern zahlen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-057",
+      "source": "die Umsatzsteuer",
+      "target": "podatek VAT",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "taxes"],
+      "examples": [
+        "Die Umsatzsteuer wird auf den Nettopreis aufgeschlagen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-058",
+      "source": "der Gewerbesteuer",
+      "target": "podatek od działalności gospodarczej",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "taxes"],
+      "examples": [
+        "Die Gewerbesteuer wird von den Gemeinden erhoben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-059",
+      "source": "der Markt",
+      "target": "rynek",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Wir wollen in den polnischen Markt eintreten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-060",
+      "source": "die Zielgruppe",
+      "target": "grupa docelowa",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Unsere Zielgruppe sind junge Leute zwischen 20 und 30."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-061",
+      "source": "die Konkurrenz",
+      "target": "konkurencja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Wir müssen die Konkurrenz im Auge behalten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-062",
+      "source": "der Wettbewerber",
+      "target": "konkurent",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Unsere Wettbewerber haben ein ähnliches Produkt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-063",
+      "source": "der Kunde",
+      "target": "klient",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "sales"],
+      "examples": [
+        "Der Kunde ist König."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-064",
+      "source": "der Auftrag",
+      "target": "zlecenie, zamówienie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "sales"],
+      "examples": [
+        "Wir haben einen neuen Auftrag erhalten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-065",
+      "source": "die Bestellung",
+      "target": "zamówienie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "sales"],
+      "examples": [
+        "Ihre Bestellung ist bei uns eingegangen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-066",
+      "source": "die Lieferung",
+      "target": "dostawa",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "logistics"],
+      "examples": [
+        "Die Lieferung erfolgt morgen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-067",
+      "source": "die Rechnung",
+      "target": "faktura, rachunek",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Wir bezahlen die Rechnung innerhalb von 14 Tagen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-068",
+      "source": "das Angebot",
+      "target": "oferta",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "sales"],
+      "examples": [
+        "Können Sie mir ein Angebot schicken?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-069",
+      "source": "die Verhandlung",
+      "target": "negocjacja",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "negotiation"],
+      "examples": [
+        "Die Verhandlungen mit dem Lieferanten waren schwierig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-070",
+      "source": "der Vertrag",
+      "target": "umowa, kontrakt",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Bitte lesen Sie den Vertrag sorgfältig durch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-071",
+      "source": "die Vereinbarung",
+      "target": "porozumienie, ustalenie",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Wir haben eine mündliche Vereinbarung getroffen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-072",
+      "source": "die Klausel",
+      "target": "klauzula",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Im Vertrag gibt es eine Klausel zur Vertragsstrafe."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-073",
+      "source": "das Kleingedruckte",
+      "target": "drobny druk",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Achten Sie immer auf das Kleingedruckte."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-074",
+      "source": "die Kündigung",
+      "target": "wypowiedzenie",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Die Kündigung des Vertrags muss schriftlich erfolgen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-075",
+      "source": "das Marketing",
+      "target": "marketing",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Wir brauchen eine neue Marketingstrategie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-076",
+      "source": "die Werbung",
+      "target": "reklama",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Die Werbung im Fernsehen ist teuer."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-077",
+      "source": "die Online-Werbung",
+      "target": "reklama online",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["digital-marketing", "marketing"],
+      "examples": [
+        "Online-Werbung kann genau zielgerichtet werden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-078",
+      "source": "die Suchmaschinenoptimierung",
+      "target": "optymalizacja dla wyszukiwarek (SEO)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "seo"],
+      "examples": [
+        "Suchmaschinenoptimierung verbessert die Sichtbarkeit der Webseite."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-079",
+      "source": "die Suchmaschinenwerbung",
+      "target": "reklama w wyszukiwarkach (SEA)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "seo"],
+      "examples": [
+        "Suchmaschinenwerbung umfasst bezahlte Anzeigen wie Google Ads."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-080",
+      "source": "der Algorithmus",
+      "target": "algorytm",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["digital-marketing", "tech"],
+      "examples": [
+        "Der Algorithmus von Google ändert sich ständig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-081",
+      "source": "die Reichweite",
+      "target": "zasięg",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "social-media"],
+      "examples": [
+        "Unser Post hatte eine hohe organische Reichweite."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-082",
+      "source": "das Engagement",
+      "target": "zaangażowanie (użytkowników)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "social-media"],
+      "examples": [
+        "Das Engagement der Follower ist uns sehr wichtig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-083",
+      "source": "die Interaktion",
+      "target": "interakcja",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "social-media"],
+      "examples": [
+        "Wir messen die Anzahl der Interaktionen pro Beitrag."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-084",
+      "source": "der Follower",
+      "target": "obserwujący",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["digital-marketing", "social-media"],
+      "examples": [
+        "Unser Konto hat 10.000 Follower."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-085",
+      "source": "der Influencer",
+      "target": "influencer",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["digital-marketing", "social-media"],
+      "examples": [
+        "Wir arbeiten mit bekannten Influencern zusammen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-086",
+      "source": "die Zielgruppenansprache",
+      "target": "dotarcie do grupy docelowej",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["digital-marketing", "strategy"],
+      "examples": [
+        "Eine präzise Zielgruppenansprache ist das A und O im Online-Marketing."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-087",
+      "source": "die Konversionsrate",
+      "target": "współczynnik konwersji",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["digital-marketing", "analytics"],
+      "examples": [
+        "Wir müssen die Konversionsrate unserer Webseite verbessern."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-088",
+      "source": "der Traffic",
+      "target": "ruch (na stronie)",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["digital-marketing", "analytics"],
+      "examples": [
+        "Der Traffic auf unserer Seite ist stark angestiegen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-089",
+      "source": "die Klickrate",
+      "target": "współczynnik klikalności (CTR)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "analytics"],
+      "examples": [
+        "Die Klickrate dieser Anzeige ist niedrig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-090",
+      "source": "die Absprungrate",
+      "target": "współczynnik odrzuceń",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["digital-marketing", "analytics"],
+      "examples": [
+        "Eine hohe Absprungrate deutet auf Probleme mit der Webseite hin."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-091",
+      "source": "der Newsletter",
+      "target": "newsletter",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["digital-marketing", "email"],
+      "examples": [
+        "Unser Newsletter erscheint einmal im Monat."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-092",
+      "source": "die E-Mail-Marketing-Kampagne",
+      "target": "kampania e-mail marketingowa",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "email"],
+      "examples": [
+        "Die E-Mail-Marketing-Kampagne war ein voller Erfolg."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-093",
+      "source": "der Call-to-Action",
+      "target": "wezwanie do działania (CTA)",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["digital-marketing", "copywriting"],
+      "examples": [
+        "Ein klarer Call-to-Action ist wichtig für die Konversion."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-094",
+      "source": "die Marke",
+      "target": "marka",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "branding"],
+      "examples": [
+        "Wir bauen eine starke Marke auf."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-095",
+      "source": "das Branding",
+      "target": "branding, budowanie marki",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "branding"],
+      "examples": [
+        "Gutes Branding schafft Vertrauen beim Kunden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-096",
+      "source": "die Markenbekanntheit",
+      "target": "świadomość marki",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "branding"],
+      "examples": [
+        "Unsere Marketingkampagne zielt auf die Steigerung der Markenbekanntheit ab."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-097",
+      "source": "der Markenwert",
+      "target": "wartość marki",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "branding"],
+      "examples": [
+        "Der Markenwert von Apple ist enorm hoch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-098",
+      "source": "das Produkt",
+      "target": "produkt",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "product"],
+      "examples": [
+        "Unser neues Produkt kommt im Herbst auf den Markt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-099",
+      "source": "die Dienstleistung",
+      "target": "usługa",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "service"],
+      "examples": [
+        "Wir bieten verschiedene Dienstleistungen an."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-100",
+      "source": "die Innovation",
+      "target": "innowacja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "innovation"],
+      "examples": [
+        "Innovation ist der Schlüssel zum Erfolg."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-101",
+      "source": "die disruptive Technologie",
+      "target": "technologia przełomowa",
+      "tertiary": null,
+      "level": "C2",
+      "tags": ["startup", "tech"],
+      "examples": [
+        "Disruptive Technologien verändern ganze Branchen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-102",
+      "source": "das Geschäftsmodell",
+      "target": "model biznesowy",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Wir müssen unser Geschäftsmodell überdenken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-103",
+      "source": "die Skalierbarkeit",
+      "target": "skalowalność",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["startup", "growth"],
+      "examples": [
+        "Die Skalierbarkeit des Geschäftsmodells ist für Investoren entscheidend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-104",
+      "source": "das Wachstum",
+      "target": "wzrost",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "growth"],
+      "examples": [
+        "Das Unternehmen verzeichnet ein starkes Wachstum."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-105",
+      "source": "die Wachstumsrate",
+      "target": "stopa wzrostu",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "growth"],
+      "examples": [
+        "Die jährliche Wachstumsrate beträgt 15 Prozent."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-106",
+      "source": "der Marktanteil",
+      "target": "udział w rynku",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Wir wollen unseren Marktanteil ausbauen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-107",
+      "source": "die Kundenakquise",
+      "target": "pozyskiwanie klientów",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "sales"],
+      "examples": [
+        "Die Kosten für die Kundenakquise sind hoch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-108",
+      "source": "die Kundenbindung",
+      "target": "lojalność klientów",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "sales"],
+      "examples": [
+        "Kundenbindungsprogramme erhöhen die Kundenzufriedenheit."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-109",
+      "source": "das Empfehlungsmarketing",
+      "target": "marketing szeptany",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Empfehlungsmarketing ist eine sehr effektive Werbeform."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-110",
+      "source": "die SWOT-Analyse",
+      "target": "analiza SWOT",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "In der SWOT-Analyse betrachten wir Stärken, Schwächen, Chancen und Risiken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-111",
+      "source": "der Businessplan",
+      "target": "plan biznesowy",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["startup", "planning"],
+      "examples": [
+        "Für die Bank müssen wir einen Businessplan vorlegen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-112",
+      "source": "der Pitch",
+      "target": "prezentacja, pitch",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["startup", "presentations"],
+      "examples": [
+        "Der Pitch vor den Investoren muss überzeugend sein."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-113",
+      "source": "das Elevator Pitch",
+      "target": "elevator pitch",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["startup", "presentations"],
+      "examples": [
+        "In 60 Sekunden muss das Elevator Pitch die Idee erklären."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-114",
+      "source": "das Minimum Viable Product",
+      "target": "minimalnie opłacalny produkt (MVP)",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["startup", "product"],
+      "examples": [
+        "Mit einem Minimum Viable Product testen wir den Markt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-115",
+      "source": "das Feedback",
+      "target": "informacja zwrotna",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "communication"],
+      "examples": [
+        "Wir freuen uns über Ihr Feedback."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-116",
+      "source": "die Kundenrezension",
+      "target": "recenzja klienta",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Positive Kundenrezensionen sind Gold wert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-117",
+      "source": "die Bewertung",
+      "target": "ocena",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Die Bewertung unseres Shops ist sehr gut."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-118",
+      "source": "die Analyse",
+      "target": "analiza",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "data"],
+      "examples": [
+        "Eine gründliche Analyse der Daten ist notwendig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-119",
+      "source": "die Strategie",
+      "target": "strategia",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Wir entwickeln eine neue Strategie für den Markteintritt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-120",
+      "source": "das Ziel",
+      "target": "cel",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Unser Ziel ist es, den Umsatz zu verdoppeln."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-121",
+      "source": "das Langzeitziel",
+      "target": "cel długoterminowy",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Unsere Langzeitziele sind ambitioniert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-122",
+      "source": "das Kurzziel",
+      "target": "cel krótkoterminowy",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Zuerst müssen wir unsere Kurzziele erreichen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-123",
+      "source": "die Meilenstein",
+      "target": "kamień milowy",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Der nächste Meilenstein ist der Markteintritt in Polen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-124",
+      "source": "der Zeitplan",
+      "target": "harmonogram",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Halten wir uns an den Zeitplan."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-125",
+      "source": "der Projektplan",
+      "target": "plan projektu",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Der Projektplan wurde aktualisiert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-126",
+      "source": "das Brainstorming",
+      "target": "burza mózgów",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "creativity"],
+      "examples": [
+        "Im Brainstorming sammeln wir kreative Ideen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-127",
+      "source": "die Kreativität",
+      "target": "kreatywność",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "creativity"],
+      "examples": [
+        "Kreativität ist in der Werbebranche unerlässlich."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-128",
+      "source": "die Problemlösung",
+      "target": "rozwiązywanie problemów",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Gute Mitarbeiter zeichnen sich durch Problemlösungskompetenz aus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-129",
+      "source": "die Entscheidungsfindung",
+      "target": "podejmowanie decyzji",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Die Entscheidungsfindung kann manchmal lange dauern."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-130",
+      "source": "das Teamwork",
+      "target": "praca zespołowa",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Teamwork ist in unserem Startup sehr wichtig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-131",
+      "source": "die Zusammenarbeit",
+      "target": "współpraca",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Die Zusammenarbeit mit den Kollegen klappt gut."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-132",
+      "source": "die Führung",
+      "target": "przywództwo",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Gute Führung motiviert die Mitarbeiter."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-133",
+      "source": "die Kommunikation",
+      "target": "komunikacja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Offene Kommunikation ist das A und O."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-134",
+      "source": "das Netzwerken",
+      "target": "networkowanie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Auf der Konferenz kann man gut netzwerken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-135",
+      "source": "die Konferenz",
+      "target": "konferencja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "events"],
+      "examples": [
+        "Wir besuchen nächste Woche eine Fachkonferenz."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-136",
+      "source": "die Messe",
+      "target": "targi",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "events"],
+      "examples": [
+        "Unser Stand auf der Messe war gut besucht."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-137",
+      "source": "das Webinar",
+      "target": "webinar",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "events"],
+      "examples": [
+        "Das Webinar fand online statt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-138",
+      "source": "der Workshop",
+      "target": "warsztaty",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "events"],
+      "examples": [
+        "Im Workshop haben wir neue Methoden kennengelernt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-139",
+      "source": "die Fortbildung",
+      "target": "szkolenie, doskonalenie zawodowe",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Das Unternehmen bietet regelmäßige Fortbildungen an."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-140",
+      "source": "das Personal",
+      "target": "personel, kadra",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Wir suchen qualifiziertes Personal."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-141",
+      "source": "die Personalabteilung",
+      "target": "dział kadr (HR)",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Die Personalabteilung kümmert sich um die Mitarbeiter."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-142",
+      "source": "die Stellenausschreibung",
+      "target": "ogłoszenie o pracę",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Die Stellenausschreibung wurde online veröffentlicht."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-143",
+      "source": "die Bewerbung",
+      "target": "aplikacja, podanie o pracę",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Viele Bewerbungen sind eingegangen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-144",
+      "source": "das Vorstellungsgespräch",
+      "target": "rozmowa kwalifikacyjna",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Morgen habe ich ein Vorstellungsgespräch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-145",
+      "source": "der Arbeitsvertrag",
+      "target": "umowa o pracę",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Der Arbeitsvertrag wurde unterschrieben."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-146",
+      "source": "das Gehalt",
+      "target": "wynagrodzenie, pensja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Das Gehalt wird monatlich überwiesen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-147",
+      "source": "die Zulage",
+      "target": "dodatek do pensji",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Für Überstunden gibt es eine Zulage."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-148",
+      "source": "der Bonus",
+      "target": "premia",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Am Jahresende erhalten wir einen Bonus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-149",
+      "source": "die Kündigungsfrist",
+      "target": "okres wypowiedzenia",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Die Kündigungsfrist beträgt drei Monate."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-150",
+      "source": "der Urlaub",
+      "target": "urlop",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Ich habe 30 Tage Urlaub im Jahr."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-151",
+      "source": "die Arbeitszeit",
+      "target": "czas pracy",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Unsere flexible Arbeitszeit ist sehr beliebt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-152",
+      "source": "die Überstunden",
+      "target": "nadgodziny",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Diese Woche musste ich Überstunden machen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-153",
+      "source": "das Homeoffice",
+      "target": "praca zdalna z domu",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Im Homeoffice kann ich konzentrierter arbeiten."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-154",
+      "source": "die Work-Life-Balance",
+      "target": "równowaga między życiem zawodowym a prywatnym",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Eine gute Work-Life-Balance ist mir wichtig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-155",
+      "source": "das Burnout",
+      "target": "wypalenie zawodowe",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Ständiger Stress kann zum Burnout führen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-156",
+      "source": "der Unternehmenskultur",
+      "target": "kultura organizacyjna",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Eine positive Unternehmenskultur fördert die Motivation."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-157",
+      "source": "die Hierarchie",
+      "target": "hierarchia",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "structure"],
+      "examples": [
+        "In flachen Hierarchien können Mitarbeiter mehr Verantwortung übernehmen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-158",
+      "source": "die Abteilung",
+      "target": "dział, wydział",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "structure"],
+      "examples": [
+        "In welcher Abteilung arbeitest du?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-159",
+      "source": "der Bereich",
+      "target": "obszar, sektor",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "structure"],
+      "examples": [
+        "Ich bin für den Bereich Marketing zuständig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-160",
+      "source": "die Schnittstelle",
+      "target": "interfejs, punkt styku",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "structure"],
+      "examples": [
+        "An der Schnittstelle zwischen Vertrieb und Produktion gibt es oft Probleme."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-161",
+      "source": "die Zuständigkeit",
+      "target": "zakres odpowiedzialności",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Klare Zuständigkeiten sind wichtig."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-162",
+      "source": "die Verantwortung",
+      "target": "odpowiedzialność",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "roles"],
+      "examples": [
+        "Er trägt viel Verantwortung im Projekt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-163",
+      "source": "die Kompetenz",
+      "target": "kompetencja",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Fachliche Kompetenz ist nicht alles."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-164",
+      "source": "die Qualifikation",
+      "target": "kwalifikacja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Welche Qualifikationen bringen Sie mit?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-165",
+      "source": "die Erfahrung",
+      "target": "doświadczenie",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "hr"],
+      "examples": [
+        "Berufliche Erfahrung ist von Vorteil."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-166",
+      "source": "das Know-how",
+      "target": "wiedza specjalistyczna",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Unser technisches Know-how ist entscheidend."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-167",
+      "source": "die Expertise",
+      "target": "ekspertyza, fachowa wiedza",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "skills"],
+      "examples": [
+        "Er ist für seine Expertise im Bereich KI bekannt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-168",
+      "source": "der Wettbewerbsvorteil",
+      "target": "przewaga konkurencyjna",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Unser einzigartiges Produkt ist unser Wettbewerbsvorteil."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-169",
+      "source": "das Alleinstellungsmerkmal",
+      "target": "unikalna cecha (USP)",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Das Alleinstellungsmerkmal unseres Produkts ist seine Langlebigkeit."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-170",
+      "source": "die Nische",
+      "target": "nisza",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Wir haben uns auf eine Marktnische spezialisiert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-171",
+      "source": "die Globalisierung",
+      "target": "globalizacja",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "economy"],
+      "examples": [
+        "Die Globalisierung bietet Chancen und Risiken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-172",
+      "source": "die Digitalisierung",
+      "target": "cyfryzacja",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "tech"],
+      "examples": [
+        "Die Digitalisierung verändert die Arbeitswelt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-173",
+      "source": "die Automatisierung",
+      "target": "automatyzacja",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "tech"],
+      "examples": [
+        "Automatisierung kann Kosten senken."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-174",
+      "source": "die Künstliche Intelligenz",
+      "target": "sztuczna inteligencja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "tech"],
+      "examples": [
+        "Künstliche Intelligenz wird in vielen Branchen eingesetzt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-175",
+      "source": "die Blockchain",
+      "target": "blockchain",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "tech"],
+      "examples": [
+        "Die Blockchain-Technologie ermöglicht sichere Transaktionen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-176",
+      "source": "die Cloud",
+      "target": "chmura",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "tech"],
+      "examples": [
+        "Unsere Daten sind in der Cloud gespeichert."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-177",
+      "source": "die Datensicherheit",
+      "target": "bezpieczeństwo danych",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "tech"],
+      "examples": [
+        "Datensicherheit hat höchste Priorität."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-178",
+      "source": "der Datenschutz",
+      "target": "ochrona danych",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Die DSGVO regelt den Datenschutz."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-179",
+      "source": "die Compliance",
+      "target": "zgodność z przepisami",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "legal"],
+      "examples": [
+        "Compliance-Richtlinien müssen eingehalten werden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-180",
+      "source": "die Due Diligence",
+      "target": "due diligence, badanie spółki",
+      "tertiary": null,
+      "level": "C2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Vor der Übernahme wird eine Due Diligence durchgeführt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-181",
+      "source": "die Fusion",
+      "target": "fuzja",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Die Fusion der beiden Unternehmen steht bevor."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-182",
+      "source": "die Übernahme",
+      "target": "przejęcie",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Die Übernahme des Konkurrenten wurde genehmigt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-183",
+      "source": "die Insolvenz",
+      "target": "niewypłacalność, upadłość",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Das Unternehmen musste Insolvenz anmelden."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-184",
+      "source": "die Pleite",
+      "target": "bankructwo",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "finance"],
+      "examples": [
+        "Viele Startups gehen pleite."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-185",
+      "source": "der Exit",
+      "target": "wyjście (z inwestycji)",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["startup", "finance"],
+      "examples": [
+        "Der Exit des Investors brachte hohe Renditen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-186",
+      "source": "das Joint Venture",
+      "target": "wspólne przedsięwzięcie",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Das Joint Venture erschließt neue Märkte."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-187",
+      "source": "die Partnerschaft",
+      "target": "partnerstwo",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Eine strategische Partnerschaft wurde geschlossen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-188",
+      "source": "die Kooperation",
+      "target": "kooperacja",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "strategy"],
+      "examples": [
+        "Die Kooperation mit der Uni ist sehr fruchtbar."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-189",
+      "source": "das Benchmarking",
+      "target": "benchmarking",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "analysis"],
+      "examples": [
+        "Beim Benchmarking vergleichen wir uns mit den Besten der Branche."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-190",
+      "source": "die Kennzahl",
+      "target": "wskaźnik",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "analysis"],
+      "examples": [
+        "Wichtige Kennzahlen werden im Quartalsbericht veröffentlicht."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-191",
+      "source": "der Key Performance Indicator",
+      "target": "kluczowy wskaźnik efektywności (KPI)",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "analysis"],
+      "examples": [
+        "Unser wichtigster Key Performance Indicator ist die Kundenzufriedenheit."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-192",
+      "source": "die Marktforschung",
+      "target": "badanie rynku",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Laut Marktforschung wächst der Markt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-193",
+      "source": "die Umfrage",
+      "target": "ankieta",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "In einer Umfrage haben wir Kunden befragt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-194",
+      "source": "der Trend",
+      "target": "trend",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "marketing"],
+      "examples": [
+        "Wir beobachten aktuelle Trends im Bereich Mode."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-195",
+      "source": "die Prognose",
+      "target": "prognoza",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "analysis"],
+      "examples": [
+        "Die Umsatzprognose für das nächste Jahr ist optimistisch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-196",
+      "source": "das Szenario",
+      "target": "scenariusz",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Für den Notfall haben wir verschiedene Szenarien durchgespielt."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-197",
+      "source": "das Risiko",
+      "target": "ryzyko",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Jede Investition birgt ein Risiko."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-198",
+      "source": "die Chance",
+      "target": "szansa",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "planning"],
+      "examples": [
+        "Der Markteintritt bietet große Chancen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-199",
+      "source": "die Krise",
+      "target": "kryzys",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["business", "economy"],
+      "examples": [
+        "Die Wirtschaftskrise hat viele Unternehmen getroffen."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "biz-200",
+      "source": "das Krisenmanagement",
+      "target": "zarządzanie kryzysowe",
+      "tertiary": null,
+      "level": "C1",
+      "tags": ["business", "management"],
+      "examples": [
+        "Gutes Krisenmanagement kann Schlimmeres verhindern."
+      ],
+      "part_of_speech": "noun"
+    }
+  ]
+}
