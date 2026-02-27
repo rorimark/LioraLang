@@ -1,0 +1,41 @@
+.shortcut-settings-section {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  padding: 12px;
+}
+
+.shortcut-settings-section__head h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  color: var(--color-text);
+}
+
+.shortcut-settings-section__head p {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.shortcut-settings-section__field {
+  display: grid;
+  gap: 6px;
+}
+
+.shortcut-settings-section__label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.shortcut-settings-section__field select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: 8px 10px;
+}

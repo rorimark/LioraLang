@@ -7,6 +7,13 @@ export const useSettingsDatabasePanel = () => {
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
   const [dbPath, setDbPath] = useState("");
+  const [isChangingDbLocation, setIsChangingDbLocation] = useState(false);
+  const [isVerifyingIntegrity, setIsVerifyingIntegrity] = useState(false);
+  const [isRepairingIntegrity, setIsRepairingIntegrity] = useState(false);
+  const [integrityRepairConfirmState, setIntegrityRepairConfirmState] = useState({
+    isOpen: false,
+    issues: [],
+  });
   const { isDarkTheme, toggleTheme } = useThemeSwitch();
 
   const reportMessage = useCallback((text, variant = "info") => {
@@ -17,12 +24,20 @@ export const useSettingsDatabasePanel = () => {
   const {
     isImporting,
     selectedImportFileName,
+    selectedImportWordsCount,
     importDeckNameDraft,
+    importLanguages,
+    languageOptions,
     isImportConfirmOpen,
+    isLanguageReviewOpen,
     openImportConfirm,
     closeImportConfirm,
+    openLanguageReview,
+    closeLanguageReview,
+    toggleLanguageReview,
     confirmImportDeck,
     handleImportDeckNameDraftChange,
+    handleImportLanguageChange,
   } = useDeckImportFlow({
     onMessage: reportMessage,
   });
@@ -56,6 +71,132 @@ export const useSettingsDatabasePanel = () => {
     }
   }, [reportMessage]);
 
+  const changeDbLocation = useCallback(async () => {
+    setIsChangingDbLocation(true);
+
+    try {
+      const changeResult = await desktopApi.changeDbLocation();
+
+      if (changeResult?.canceled) {
+        return;
+      }
+
+      const nextDbPath =
+        typeof changeResult?.dbPath === "string" ? changeResult.dbPath : "";
+      const migrated = Boolean(changeResult?.migrated);
+
+      if (nextDbPath) {
+        setDbPath(nextDbPath);
+      }
+
+      reportMessage(
+        migrated
+          ? "Database location updated. Existing data was moved."
+          : "Database location updated.",
+        "success",
+      );
+    } catch (changeError) {
+      reportMessage(
+        changeError.message || "Failed to change database location",
+        "error",
+      );
+    } finally {
+      setIsChangingDbLocation(false);
+    }
+  }, [reportMessage]);
+
+  const closeIntegrityRepairConfirm = useCallback(() => {
+    setIntegrityRepairConfirmState({
+      isOpen: false,
+      issues: [],
+    });
+  }, []);
+
+  const verifyIntegrity = useCallback(async () => {
+    setIsVerifyingIntegrity(true);
+
+    try {
+      const report = await desktopApi.verifyIntegrity({ repair: false });
+      const isHealthy = Boolean(report?.ok);
+      const needsRepair = Boolean(report?.database?.needsRepair);
+      const databaseIssues = Array.isArray(report?.database?.issues)
+        ? report.database.issues
+        : [];
+      const coreFilesIssues = Array.isArray(report?.coreFiles?.issues)
+        ? report.coreFiles.issues
+        : [];
+
+      closeIntegrityRepairConfirm();
+
+      if (isHealthy) {
+        reportMessage("Integrity check passed. No issues found.", "success");
+        return;
+      }
+
+      if (needsRepair) {
+        setIntegrityRepairConfirmState({
+          isOpen: true,
+          issues: databaseIssues,
+        });
+        reportMessage(
+          "Integrity issues found. Confirm database restore to continue.",
+          "info",
+        );
+        return;
+      }
+
+      const allIssues = [...databaseIssues, ...coreFilesIssues];
+      const issuesSummary = allIssues.length > 0 ? allIssues[0] : "Unknown issue";
+      reportMessage(`Integrity check failed: ${issuesSummary}`, "error");
+    } catch (verifyError) {
+      reportMessage(
+        verifyError.message || "Failed to run integrity check",
+        "error",
+      );
+    } finally {
+      setIsVerifyingIntegrity(false);
+    }
+  }, [closeIntegrityRepairConfirm, reportMessage]);
+
+  const confirmIntegrityRepair = useCallback(async () => {
+    setIsRepairingIntegrity(true);
+
+    try {
+      const report = await desktopApi.verifyIntegrity({ repair: true });
+      const isHealthy = Boolean(report?.ok);
+      const backupPaths = Array.isArray(report?.database?.backupPaths)
+        ? report.database.backupPaths
+        : [];
+      const backupHint =
+        backupPaths.length > 0 ? ` Backup: ${backupPaths[0]}` : "";
+
+      if (isHealthy) {
+        reportMessage(
+          `Database restore completed successfully.${backupHint}`,
+          "success",
+        );
+      } else {
+        const databaseIssues = Array.isArray(report?.database?.issues)
+          ? report.database.issues
+          : [];
+        const coreFilesIssues = Array.isArray(report?.coreFiles?.issues)
+          ? report.coreFiles.issues
+          : [];
+        const allIssues = [...databaseIssues, ...coreFilesIssues];
+        const issuesSummary = allIssues.length > 0 ? allIssues[0] : "Unknown issue";
+        reportMessage(`Restore failed: ${issuesSummary}`, "error");
+      }
+    } catch (repairError) {
+      reportMessage(
+        repairError.message || "Failed to restore database",
+        "error",
+      );
+    } finally {
+      setIsRepairingIntegrity(false);
+      closeIntegrityRepairConfirm();
+    }
+  }, [closeIntegrityRepairConfirm, reportMessage]);
+
   const clearStatusMessage = useCallback(() => {
     setStatusMessage("");
   }, []);
@@ -64,17 +205,34 @@ export const useSettingsDatabasePanel = () => {
     dbPath,
     statusMessage,
     statusVariant,
+    isChangingDbLocation,
+    isVerifyingIntegrity,
+    isRepairingIntegrity,
     isImporting,
     selectedImportFileName,
+    selectedImportWordsCount,
     importDeckNameDraft,
+    importLanguages,
+    languageOptions,
     isImportConfirmOpen,
+    isLanguageReviewOpen,
+    isIntegrityRepairConfirmOpen: integrityRepairConfirmState.isOpen,
+    integrityRepairIssues: integrityRepairConfirmState.issues,
     isDarkTheme,
     openImportConfirm,
     closeImportConfirm,
+    openLanguageReview,
+    closeLanguageReview,
+    toggleLanguageReview,
     confirmImportDeck,
     openDbFolder,
+    changeDbLocation,
+    verifyIntegrity,
+    confirmIntegrityRepair,
+    closeIntegrityRepairConfirm,
     toggleTheme,
     clearStatusMessage,
     handleImportDeckNameDraftChange,
+    handleImportLanguageChange,
   };
 };

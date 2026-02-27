@@ -1,33 +1,58 @@
 .settings-page-panel {
   display: grid;
   gap: 12px;
-  /* max-width: 720px; */
   width: 100%;
 }
 
-.settings-page-panel > h2 {
-  margin: 0;
-  font-size: 1.1rem;
+.settings-page-panel__layout {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  align-items: start;
 }
 
-.settings-page-panel > p {
+.settings-page-panel__column {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.settings-page-panel__column--wide {
+  align-content: start;
+}
+
+.settings-page-panel__section {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.settings-page-panel__section h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.98rem;
+}
+
+.settings-page-panel__section > p {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .settings-page-panel__theme {
-  max-width: 320px;
+  max-width: 100%;
 }
 
 .settings-page-panel__actions {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 8px;
-  align-items: flex-start;
 }
 
-.settings-page-panel__actions button {
+.settings-page-panel__actions button,
+.settings-page-panel__path-action {
   border: 1px solid var(--color-border);
   border-radius: 9px;
   background: var(--color-surface);
@@ -38,11 +63,13 @@
   padding: 8px 12px;
 }
 
-.settings-page-panel__actions button:hover:not(:disabled) {
+.settings-page-panel__actions button:hover:not(:disabled),
+.settings-page-panel__path-action:hover:not(:disabled) {
   background: var(--color-surface-muted);
 }
 
-.settings-page-panel__actions button:disabled {
+.settings-page-panel__actions button:disabled,
+.settings-page-panel__path-action:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -54,4 +81,20 @@
   font-size: 0.8rem;
   padding: 8px 10px;
   word-break: break-all;
+}
+
+.settings-page-panel__path-action {
+  white-space: nowrap;
+}
+
+@media (max-width: 1120px) {
+  .settings-page-panel__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .settings-page-panel__path-action {
+    width: 100%;
+  }
 }
