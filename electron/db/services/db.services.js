@@ -3,6 +3,26 @@ import path from "node:path";
 import { getDatabase } from "../db.js";
 
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
+const DECK_PACKAGE_FORMAT = "lioralang.deck";
+const DECK_PACKAGE_VERSION = 1;
+const MAX_DECK_TAGS = 10;
+const LANGUAGE_VALUE_ALIASES = {
+  english: ["en", "english"],
+  ukrainian: ["uk", "ua", "ukrainian"],
+  russian: ["ru", "russian"],
+  polish: ["pl", "polish"],
+  german: ["de", "german"],
+  spanish: ["es", "spanish"],
+  french: ["fr", "french"],
+  italian: ["it", "italian"],
+  portuguese: ["pt", "portuguese"],
+  turkish: ["tr", "turkish"],
+  czech: ["cs", "czech"],
+  japanese: ["ja", "japanese"],
+};
+const DEFAULT_IMPORT_SOURCE_LANGUAGE = "English";
+const DEFAULT_IMPORT_TARGET_LANGUAGE = "Ukrainian";
+const DEFAULT_IMPORT_TERTIARY_LANGUAGE = "";
 
 const parseArray = (value) => {
   try {
@@ -29,6 +49,308 @@ const toCleanArray = (value) => {
   return value.filter((item) => typeof item === "string" && item.trim().length > 0);
 };
 
+const toUniqueArray = (value) => {
+  const uniqueValues = [];
+  const seen = new Set();
+
+  toCleanArray(value).forEach((item) => {
+    const normalizedKey = item.trim().toLowerCase();
+
+    if (!normalizedKey || seen.has(normalizedKey)) {
+      return;
+    }
+
+    seen.add(normalizedKey);
+    uniqueValues.push(item.trim());
+  });
+
+  return uniqueValues;
+};
+
+const normalizeDeckTags = (value) => {
+  return toUniqueArray(value).slice(0, MAX_DECK_TAGS);
+};
+
+const getWordSchemaCompatibility = (db) => {
+  const wordColumns = db.prepare("PRAGMA table_info(words)").all();
+
+  return {
+    hasLegacySource: wordColumns.some((column) => column.name === "eng"),
+    hasLegacyTarget: wordColumns.some((column) => column.name === "ru"),
+    hasLegacyTertiary: wordColumns.some((column) => column.name === "pl"),
+  };
+};
+
+const buildInsertWordStatement = (db, schemaCompatibility) => {
+  const columns = [
+    "external_id",
+    "deck_id",
+    "source_text",
+    "target_text",
+    "tertiary_text",
+    "level",
+    "part_of_speech",
+    "tags_json",
+    "examples_json",
+  ];
+
+  if (schemaCompatibility.hasLegacySource) {
+    columns.push("eng");
+  }
+
+  if (schemaCompatibility.hasLegacyTarget) {
+    columns.push("ru");
+  }
+
+  if (schemaCompatibility.hasLegacyTertiary) {
+    columns.push("pl");
+  }
+
+  const placeholders = columns.map(() => "?").join(", ");
+
+  return db.prepare(`
+      INSERT INTO words (
+        ${columns.join(", ")}
+      ) VALUES (${placeholders})
+    `);
+};
+
+const buildUpdateWordStatement = (db, schemaCompatibility) => {
+  const updates = [
+    "external_id = ?",
+    "source_text = ?",
+    "target_text = ?",
+    "tertiary_text = ?",
+    "level = ?",
+    "part_of_speech = ?",
+    "tags_json = ?",
+    "examples_json = ?",
+  ];
+
+  if (schemaCompatibility.hasLegacySource) {
+    updates.push("eng = ?");
+  }
+
+  if (schemaCompatibility.hasLegacyTarget) {
+    updates.push("ru = ?");
+  }
+
+  if (schemaCompatibility.hasLegacyTertiary) {
+    updates.push("pl = ?");
+  }
+
+  return db.prepare(`
+      UPDATE words
+      SET
+        ${updates.join(", ")}
+      WHERE id = ? AND deck_id = ?
+    `);
+};
+
+const buildWordMutationParams = (
+  schemaCompatibility,
+  {
+    externalId,
+    source,
+    target,
+    tertiary,
+    level,
+    partOfSpeech,
+    tagsJson,
+    examplesJson,
+  },
+) => {
+  const params = [
+    externalId || null,
+    source,
+    target || null,
+    tertiary || null,
+    level,
+    partOfSpeech || null,
+    tagsJson,
+    examplesJson,
+  ];
+
+  if (schemaCompatibility.hasLegacySource) {
+    params.push(source);
+  }
+
+  if (schemaCompatibility.hasLegacyTarget) {
+    params.push(target || null);
+  }
+
+  if (schemaCompatibility.hasLegacyTertiary) {
+    params.push(tertiary || null);
+  }
+
+  return params;
+};
+
+const buildInsertWordRunParams = (
+  schemaCompatibility,
+  {
+    deckId,
+    externalId,
+    source,
+    target,
+    tertiary,
+    level,
+    partOfSpeech,
+    tagsJson,
+    examplesJson,
+  },
+) => {
+  return [
+    externalId || null,
+    deckId,
+    source,
+    target || null,
+    tertiary || null,
+    level,
+    partOfSpeech || null,
+    tagsJson,
+    examplesJson,
+    ...(schemaCompatibility.hasLegacySource ? [source] : []),
+    ...(schemaCompatibility.hasLegacyTarget ? [target || null] : []),
+    ...(schemaCompatibility.hasLegacyTertiary ? [tertiary || null] : []),
+  ];
+};
+
+const buildUpdateWordRunParams = (
+  schemaCompatibility,
+  {
+    wordId,
+    deckId,
+    externalId,
+    source,
+    target,
+    tertiary,
+    level,
+    partOfSpeech,
+    tagsJson,
+    examplesJson,
+  },
+) => {
+  return [
+    ...buildWordMutationParams(schemaCompatibility, {
+      externalId,
+      source,
+      target,
+      tertiary,
+      level,
+      partOfSpeech,
+      tagsJson,
+      examplesJson,
+    }),
+    wordId,
+    deckId,
+  ];
+};
+
+const normalizeLanguageName = (value) => {
+  return toCleanString(value).toLowerCase();
+};
+
+const sanitizeFieldKey = (value) => {
+  return value.replace(/\s+/g, "_");
+};
+
+const resolveValueByAliases = (word, aliases) => {
+  if (!word || typeof word !== "object" || Array.isArray(word)) {
+    return "";
+  }
+
+  const normalizedWord = new Map(
+    Object.entries(word).map(([key, value]) => [key.toLowerCase(), value]),
+  );
+
+  for (const alias of aliases) {
+    const aliasKey = alias.toLowerCase();
+
+    if (!normalizedWord.has(aliasKey)) {
+      continue;
+    }
+
+    const resolved = toCleanString(normalizedWord.get(aliasKey));
+
+    if (resolved) {
+      return resolved;
+    }
+  }
+
+  return "";
+};
+
+const buildLanguageAliases = (language, fallbackAliases = []) => {
+  const normalizedLanguage = normalizeLanguageName(language);
+  const configuredAliases = LANGUAGE_VALUE_ALIASES[normalizedLanguage] || [];
+  const languageDerivedAliases = normalizedLanguage
+    ? [
+        normalizedLanguage,
+        sanitizeFieldKey(normalizedLanguage),
+      ]
+    : [];
+
+  return [...new Set([...configuredAliases, ...languageDerivedAliases, ...fallbackAliases])];
+};
+
+const resolveImportLanguageConfig = (importOptions = {}) => {
+  if (typeof importOptions === "string") {
+    return {
+      deckName: toCleanString(importOptions),
+      sourceLanguage: "",
+      targetLanguage: "",
+      tertiaryLanguage: "",
+    };
+  }
+
+  return {
+    deckName: toCleanString(importOptions?.deckName),
+    sourceLanguage: toCleanString(importOptions?.sourceLanguage),
+    targetLanguage: toCleanString(importOptions?.targetLanguage),
+    tertiaryLanguage: toCleanString(importOptions?.tertiaryLanguage),
+  };
+};
+
+const parseDeckImportPayload = (value) => {
+  if (Array.isArray(value)) {
+    return {
+      words: value,
+      deck: null,
+      format: "",
+      version: null,
+    };
+  }
+
+  if (!value || typeof value !== "object") {
+    throw new Error("JSON must contain an array of words or a deck package object");
+  }
+
+  if (!Array.isArray(value.words)) {
+    throw new Error("Deck package must include a words array");
+  }
+
+  const deck = value.deck && typeof value.deck === "object"
+    ? {
+        name: toCleanString(value.deck.name),
+        description: toCleanString(value.deck.description),
+        sourceLanguage: toCleanString(value.deck.sourceLanguage),
+        targetLanguage: toCleanString(value.deck.targetLanguage),
+        tertiaryLanguage: toCleanString(value.deck.tertiaryLanguage),
+        tags: normalizeDeckTags(value.deck.tags),
+      }
+    : null;
+
+  const version = Number(value.version);
+
+  return {
+    words: value.words,
+    deck,
+    format: toCleanString(value.format),
+    version: Number.isFinite(version) ? version : null,
+  };
+};
+
 const buildDeckDescription = ({
   sourceLanguage,
   targetLanguage,
@@ -46,9 +368,9 @@ const buildDeckDescription = ({
 };
 
 const normalizeEditableWord = (word, index) => {
-  const eng = toCleanString(word?.eng);
+  const source = toCleanString(word?.source);
 
-  if (!eng) {
+  if (!source) {
     return null;
   }
 
@@ -61,9 +383,9 @@ const normalizeEditableWord = (word, index) => {
   return {
     id: Number.isInteger(parsedId) && parsedId > 0 ? parsedId : null,
     externalId: toCleanString(String(word?.externalId ?? `manual-${index + 1}`)),
-    eng,
-    ru: toCleanString(word?.ru),
-    pl: toCleanString(word?.pl),
+    source,
+    target: toCleanString(word?.target),
+    tertiary: toCleanString(word?.tertiary),
     level: ALLOWED_LEVELS.has(level) ? level : null,
     partOfSpeech: toCleanString(word?.part_of_speech),
     tags: toCleanArray(word?.tags),
@@ -71,20 +393,41 @@ const normalizeEditableWord = (word, index) => {
   };
 };
 
-const normalizeWord = (word, index) => {
-  const eng = toCleanString(word?.eng);
+const normalizeWord = (
+  word,
+  index,
+  {
+    sourceLanguage,
+    targetLanguage,
+    tertiaryLanguage,
+  },
+) => {
+  const sourceValue = resolveValueByAliases(
+    word,
+    buildLanguageAliases(sourceLanguage, ["source"]),
+  );
 
-  if (!eng) {
+  if (!sourceValue) {
     return null;
   }
 
+  const targetValue = resolveValueByAliases(
+    word,
+    buildLanguageAliases(targetLanguage, ["target"]),
+  );
+  const tertiaryValue = tertiaryLanguage
+    ? resolveValueByAliases(
+        word,
+        buildLanguageAliases(tertiaryLanguage, ["tertiary"]),
+      )
+    : "";
   const level = toCleanString(word?.level).toUpperCase();
 
   return {
     externalId: toCleanString(String(word?.id ?? `imported-${index + 1}`)),
-    eng,
-    ru: toCleanString(word?.ru),
-    pl: toCleanString(word?.pl),
+    source: sourceValue,
+    target: targetValue,
+    tertiary: tertiaryValue,
     level: ALLOWED_LEVELS.has(level) ? level : null,
     partOfSpeech: toCleanString(word?.part_of_speech),
     tags: toCleanArray(word?.tags),
@@ -224,16 +567,16 @@ export const getDeckWords = (deckId) => {
         SELECT
           id,
           external_id AS externalId,
-          eng,
-          ru,
-          pl,
+          source_text AS source,
+          target_text AS target,
+          tertiary_text AS tertiary,
           level,
           part_of_speech,
           tags_json AS tagsJson,
           examples_json AS examplesJson
         FROM words
         WHERE deck_id = ?
-        ORDER BY eng COLLATE NOCASE ASC
+        ORDER BY source_text COLLATE NOCASE ASC
       `,
     )
     .all(deckId);
@@ -241,9 +584,9 @@ export const getDeckWords = (deckId) => {
   return rows.map((row) => ({
     id: row.id,
     externalId: row.externalId,
-    eng: row.eng,
-    ru: row.ru,
-    pl: row.pl,
+    source: row.source,
+    target: row.target,
+    tertiary: row.tertiary,
     level: row.level,
     part_of_speech: row.part_of_speech,
     tags: parseArray(row.tagsJson),
@@ -251,24 +594,85 @@ export const getDeckWords = (deckId) => {
   }));
 };
 
-export const importDeckFromJsonFile = (filePath, preferredDeckName = "") => {
-  const db = getDatabase();
+export const readDeckImportMetadataFromJsonFile = (filePath) => {
   const raw = fs.readFileSync(filePath, "utf8");
   const parsed = JSON.parse(raw);
+  const payload = parseDeckImportPayload(parsed);
 
-  if (!Array.isArray(parsed)) {
-    throw new Error("JSON must contain an array of words");
+  if (!payload.deck) {
+    return {
+      format: payload.format,
+      version: payload.version,
+      wordsCount: payload.words.length,
+    };
+  }
+
+  return {
+    format: payload.format,
+    version: payload.version,
+    wordsCount: payload.words.length,
+    ...payload.deck,
+  };
+};
+
+export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
+  const db = getDatabase();
+  const wordSchemaCompatibility = getWordSchemaCompatibility(db);
+  const raw = fs.readFileSync(filePath, "utf8");
+  const parsed = JSON.parse(raw);
+  const parsedPayload = parseDeckImportPayload(parsed);
+  const importConfig = resolveImportLanguageConfig(importOptions);
+  const sourceLanguage = toCleanString(
+    importConfig.sourceLanguage ||
+      parsedPayload.deck?.sourceLanguage ||
+      DEFAULT_IMPORT_SOURCE_LANGUAGE,
+  );
+  const targetLanguage = toCleanString(
+    importConfig.targetLanguage ||
+      parsedPayload.deck?.targetLanguage ||
+      DEFAULT_IMPORT_TARGET_LANGUAGE,
+  );
+  const tertiaryLanguage = toCleanString(importConfig.tertiaryLanguage);
+  const resolvedTertiaryLanguage = toCleanString(
+    tertiaryLanguage || parsedPayload.deck?.tertiaryLanguage || DEFAULT_IMPORT_TERTIARY_LANGUAGE,
+  );
+  const sourceLanguageKey = normalizeLanguageName(sourceLanguage);
+  const targetLanguageKey = normalizeLanguageName(targetLanguage);
+  const tertiaryLanguageKey = normalizeLanguageName(resolvedTertiaryLanguage);
+  const importedDeckDescription = toCleanString(parsedPayload.deck?.description);
+  const importedDeckTags = normalizeDeckTags(parsedPayload.deck?.tags);
+
+  if (!sourceLanguage || !targetLanguage) {
+    throw new Error("Source and target languages are required for import");
+  }
+
+  if (sourceLanguageKey === targetLanguageKey) {
+    throw new Error("Source and target languages should be different");
+  }
+
+  if (
+    tertiaryLanguageKey &&
+    (tertiaryLanguageKey === sourceLanguageKey || tertiaryLanguageKey === targetLanguageKey)
+  ) {
+    throw new Error("Optional language should be different from source and target");
   }
 
   const fileName = path.basename(filePath, path.extname(filePath));
-  const normalizedWords = parsed
-    .map((word, index) => normalizeWord(word, index))
+  const normalizedWords = parsedPayload.words
+    .map((word, index) =>
+      normalizeWord(word, index, {
+        sourceLanguage,
+        targetLanguage,
+        tertiaryLanguage: resolvedTertiaryLanguage,
+      }),
+    )
     .filter(Boolean);
 
-  const skippedCount = parsed.length - normalizedWords.length;
+  const skippedCount = parsedPayload.words.length - normalizedWords.length;
   const deckName = getUniqueDeckName(
-    toCleanString(preferredDeckName) || fileName || "Imported Deck",
+    importConfig.deckName || parsedPayload.deck?.name || fileName || "Imported Deck",
   );
+  const deckDescription = importedDeckDescription || `Imported from ${path.basename(filePath)}`;
 
   const insertDeck = db.prepare(
     `
@@ -282,45 +686,33 @@ export const importDeckFromJsonFile = (filePath, preferredDeckName = "") => {
       ) VALUES (?, ?, ?, ?, ?, ?)
     `,
   );
-  const insertWord = db.prepare(
-    `
-      INSERT INTO words (
-        external_id,
-        deck_id,
-        eng,
-        ru,
-        pl,
-        level,
-        part_of_speech,
-        tags_json,
-        examples_json
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `,
-  );
+  const insertWord = buildInsertWordStatement(db, wordSchemaCompatibility);
 
   const insertMany = db.transaction(() => {
     const deckResult = insertDeck.run(
       deckName,
-      `Imported from ${path.basename(filePath)}`,
-      "English",
-      "Russian",
-      "Polish",
-      JSON.stringify([]),
+      deckDescription,
+      sourceLanguage,
+      targetLanguage,
+      resolvedTertiaryLanguage || null,
+      JSON.stringify(importedDeckTags),
     );
 
     const deckId = Number(deckResult.lastInsertRowid);
 
     normalizedWords.forEach((word) => {
       insertWord.run(
-        word.externalId,
-        deckId,
-        word.eng,
-        word.ru || null,
-        word.pl || null,
-        word.level,
-        word.partOfSpeech || null,
-        JSON.stringify(word.tags),
-        JSON.stringify(word.examples),
+        ...buildInsertWordRunParams(wordSchemaCompatibility, {
+          deckId,
+          externalId: word.externalId,
+          source: word.source,
+          target: word.target,
+          tertiary: word.tertiary,
+          level: word.level,
+          partOfSpeech: word.partOfSpeech,
+          tagsJson: JSON.stringify(word.tags),
+          examplesJson: JSON.stringify(word.examples),
+        }),
       );
     });
 
@@ -345,17 +737,32 @@ export const exportDeckToJsonFile = (deckId, filePath) => {
   }
 
   const words = getDeckWords(deckId);
-
-  const jsonPayload = words.map((word) => ({
+  const hasTertiaryLanguage = Boolean(toCleanString(deck?.tertiaryLanguage));
+  const deckTags = normalizeDeckTags(parseArray(deck?.tagsJson));
+  const wordsPayload = words.map((word) => ({
     id: word.externalId || `w${word.id}`,
-    eng: word.eng,
-    ru: word.ru,
-    pl: word.pl,
+    source: word.source,
+    target: word.target,
+    ...(hasTertiaryLanguage ? { tertiary: word.tertiary } : {}),
     level: word.level,
     tags: word.tags,
     examples: word.examples,
     part_of_speech: word.part_of_speech,
   }));
+  const jsonPayload = {
+    format: DECK_PACKAGE_FORMAT,
+    version: DECK_PACKAGE_VERSION,
+    exportedAt: new Date().toISOString(),
+    deck: {
+      name: deck.name,
+      description: deck.description || "",
+      sourceLanguage: deck.sourceLanguage || "",
+      targetLanguage: deck.targetLanguage || "",
+      tertiaryLanguage: deck.tertiaryLanguage || "",
+      tags: deckTags,
+    },
+    words: wordsPayload,
+  };
 
   fs.writeFileSync(filePath, JSON.stringify(jsonPayload, null, 2), "utf8");
 
@@ -363,18 +770,22 @@ export const exportDeckToJsonFile = (deckId, filePath) => {
     deckId,
     deckName: deck.name,
     filePath,
-    exportedCount: jsonPayload.length,
+    exportedCount: wordsPayload.length,
   };
 };
 
 export const saveDeck = (payload = {}) => {
   const db = getDatabase();
+  const wordSchemaCompatibility = getWordSchemaCompatibility(db);
   const providedDeckId = Number(payload?.deckId);
   const hasDeckId = Number.isInteger(providedDeckId) && providedDeckId > 0;
   const cleanedName = toCleanString(payload?.name);
   const sourceLanguage = toCleanString(payload?.sourceLanguage);
   const targetLanguage = toCleanString(payload?.targetLanguage);
   const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
+  const sourceLanguageKey = normalizeLanguageName(sourceLanguage);
+  const targetLanguageKey = normalizeLanguageName(targetLanguage);
+  const tertiaryLanguageKey = normalizeLanguageName(tertiaryLanguage);
   const tags = toCleanArray(payload?.tags);
   const description =
     toCleanString(payload?.description) ||
@@ -395,6 +806,17 @@ export const saveDeck = (payload = {}) => {
 
   if (!sourceLanguage || !targetLanguage) {
     throw new Error("Source and target languages are required");
+  }
+
+  if (sourceLanguageKey === targetLanguageKey) {
+    throw new Error("Source and target languages should be different");
+  }
+
+  if (
+    tertiaryLanguageKey &&
+    (tertiaryLanguageKey === sourceLanguageKey || tertiaryLanguageKey === targetLanguageKey)
+  ) {
+    throw new Error("Optional language should be different from source and target");
   }
 
   const duplicateDeck = hasDeckId
@@ -436,36 +858,8 @@ export const saveDeck = (payload = {}) => {
   const existingWordIdsQuery = db.prepare(
     "SELECT id FROM words WHERE deck_id = ?",
   );
-  const updateWord = db.prepare(
-    `
-      UPDATE words
-      SET
-        external_id = ?,
-        eng = ?,
-        ru = ?,
-        pl = ?,
-        level = ?,
-        part_of_speech = ?,
-        tags_json = ?,
-        examples_json = ?
-      WHERE id = ? AND deck_id = ?
-    `,
-  );
-  const insertWord = db.prepare(
-    `
-      INSERT INTO words (
-        external_id,
-        deck_id,
-        eng,
-        ru,
-        pl,
-        level,
-        part_of_speech,
-        tags_json,
-        examples_json
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `,
-  );
+  const updateWord = buildUpdateWordStatement(db, wordSchemaCompatibility);
+  const insertWord = buildInsertWordStatement(db, wordSchemaCompatibility);
   const deleteWordsByDeck = db.prepare("DELETE FROM words WHERE deck_id = ?");
 
   const saveDeckTransaction = db.transaction(() => {
@@ -508,31 +902,35 @@ export const saveDeck = (payload = {}) => {
 
       if (word.id && existingWordIds.has(word.id)) {
         updateWord.run(
-          word.externalId || null,
-          word.eng,
-          word.ru || null,
-          word.pl || null,
-          word.level,
-          word.partOfSpeech || null,
-          tagsJson,
-          examplesJson,
-          word.id,
-          resolvedDeckId,
+          ...buildUpdateWordRunParams(wordSchemaCompatibility, {
+            wordId: word.id,
+            deckId: resolvedDeckId,
+            externalId: word.externalId,
+            source: word.source,
+            target: word.target,
+            tertiary: word.tertiary,
+            level: word.level,
+            partOfSpeech: word.partOfSpeech,
+            tagsJson,
+            examplesJson,
+          }),
         );
         persistedWordIds.push(word.id);
         return;
       }
 
       const insertResult = insertWord.run(
-        word.externalId || null,
-        resolvedDeckId,
-        word.eng,
-        word.ru || null,
-        word.pl || null,
-        word.level,
-        word.partOfSpeech || null,
-        tagsJson,
-        examplesJson,
+        ...buildInsertWordRunParams(wordSchemaCompatibility, {
+          deckId: resolvedDeckId,
+          externalId: word.externalId,
+          source: word.source,
+          target: word.target,
+          tertiary: word.tertiary,
+          level: word.level,
+          partOfSpeech: word.partOfSpeech,
+          tagsJson,
+          examplesJson,
+        }),
       );
       persistedWordIds.push(Number(insertResult.lastInsertRowid));
     });

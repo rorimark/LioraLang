@@ -1,0 +1,2 @@
+export { normalizeWord } from "./normalizeWord";
+
