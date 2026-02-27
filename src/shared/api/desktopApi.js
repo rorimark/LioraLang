@@ -178,7 +178,7 @@ export const desktopApi = {
         );
       }
 
-      throw new Error("JSON import is available only in desktop mode");
+      throw new Error("Deck file import is available only in desktop mode");
     }
 
     return getElectronApi().pickImportDeckJson();
@@ -192,7 +192,7 @@ export const desktopApi = {
         );
       }
 
-      throw new Error("JSON import is available only in desktop mode");
+      throw new Error("Deck file import is available only in desktop mode");
     }
 
     if (typeof payloadOrDeckName === "string") {

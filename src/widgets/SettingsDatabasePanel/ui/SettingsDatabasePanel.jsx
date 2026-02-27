@@ -80,7 +80,7 @@ export const SettingsDatabasePanel = memo(() => {
                 onClick={openImportConfirm}
                 disabled={isImporting}
               >
-                {isImporting ? "Importing..." : "Import deck package"}
+                {isImporting ? "Importing..." : "Import deck file"}
               </button>
             </div>
 

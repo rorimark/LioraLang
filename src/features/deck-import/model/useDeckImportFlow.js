@@ -182,7 +182,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     const tertiaryLanguage = importLanguages.tertiaryLanguage.trim();
 
     if (!selectedImportFilePath) {
-      reportMessage("Select a JSON file before confirming import", "error");
+      reportMessage("Select a .lioradeck or .json file before confirming import", "error");
       return;
     }
 

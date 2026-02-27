@@ -61,7 +61,7 @@ export const DecksOverviewPanel = memo(() => {
             onClick={openImportConfirm}
             disabled={isImporting}
           >
-            {isImporting ? "Importing..." : "Import deck package"}
+            {isImporting ? "Importing..." : "Import deck file"}
           </button>
           <button
             type="button"

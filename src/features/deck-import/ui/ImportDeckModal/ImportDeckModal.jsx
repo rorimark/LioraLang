@@ -33,8 +33,8 @@ export const ImportDeckModal = memo(
     return (
       <ActionModal
         isOpen={isOpen}
-        title="Import deck package"
-        description="Review import details. Language mapping is pre-filled from the package and usually does not need changes."
+        title="Import deck file"
+        description="Supports .lioradeck and .json. Review import details and confirm language mapping."
         confirmLabel="Import"
         isConfirming={isImporting}
         onConfirm={onConfirm}
