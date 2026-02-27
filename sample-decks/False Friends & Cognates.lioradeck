@@ -1,0 +1,3020 @@
+{
+  "format": "lioralang.deck",
+  "version": 1,
+  "exportedAt": "2026-02-27T18:05:00.000Z",
+  "deck": {
+    "name": "False Friends & Cognates (PL-UK)",
+    "description": "A crucial list for Polish speakers learning Ukrainian, focusing on words that look similar but have different meanings (false friends) and true cognates.",
+    "sourceLanguage": "Polish",
+    "targetLanguage": "Ukrainian",
+    "tertiaryLanguage": null,
+    "tags": [
+      "false-friends",
+      "cognates",
+      "slavic-languages",
+      "b1-c2"
+    ]
+  },
+  "words": [
+    {
+      "id": "pluk-ff-001",
+      "source": "owoce",
+      "target": "фрукти",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Na targu kupujemy świeże owoce."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-002",
+      "source": "warzywa",
+      "target": "овочі",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Warzywa są zdrowe, szczególnie brokuły."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-003",
+      "source": "sklep",
+      "target": "магазин",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "shopping"],
+      "examples": [
+        "Idę do sklepu po chleb."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-004",
+      "source": "tydzień",
+      "target": "тиждень",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "time"],
+      "examples": [
+        "W tym tygodniu mam dużo pracy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-005",
+      "source": "miesiąc",
+      "target": "місяць",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "time"],
+      "examples": [
+        "Kwiecień to mój ulubiony miesiąc."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-006",
+      "source": "rok",
+      "target": "рік",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "time"],
+      "examples": [
+        "Nowy rok zaczyna się 1 stycznia."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-007",
+      "source": "czas",
+      "target": "час",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "time"],
+      "examples": [
+        "Nie mam czasu na oglądanie telewizji."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-008",
+      "source": "praca",
+      "target": "робота",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "daily-life"],
+      "examples": [
+        "Szukam nowej pracy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-009",
+      "source": "rzeka",
+      "target": "річка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Wisła to najdłuższa rzeka w Polsce."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-010",
+      "source": "morze",
+      "target": "море",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Wyjechaliśmy nad morze w sierpniu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-011",
+      "source": "dziecko",
+      "target": "дитина",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "family"],
+      "examples": [
+        "Małe dziecko potrzebuje dużo snu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-012",
+      "source": "rodzina",
+      "target": "родина",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "family"],
+      "examples": [
+        "Moja rodzina mieszka w Krakowie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-013",
+      "source": "ojciec",
+      "target": "батько",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "family"],
+      "examples": [
+        "Mój ojciec jest lekarzem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-014",
+      "source": "matka",
+      "target": "мати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "family"],
+      "examples": [
+        "Moja matka uwielbia czytać książki."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-015",
+      "source": "brat",
+      "target": "брат",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "family"],
+      "examples": [
+        "Mam starszego brata."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-016",
+      "source": "siostra",
+      "target": "сестра",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "family"],
+      "examples": [
+        "Moja siostra studiuje medycynę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-017",
+      "source": "stół",
+      "target": "стіл",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "furniture"],
+      "examples": [
+        "Stół w jadalni jest z drewna."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-018",
+      "source": "krzesło",
+      "target": "стілець",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "furniture"],
+      "examples": [
+        "To krzesło jest bardzo wygodne."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-019",
+      "source": "drzwi",
+      "target": "двері",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "house"],
+      "examples": [
+        "Proszę zamknąć drzwi."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-020",
+      "source": "okno",
+      "target": "вікно",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "house"],
+      "examples": [
+        "Otwórz okno, proszę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-021",
+      "source": "ogień",
+      "target": "вогонь",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Uważaj na ogień!"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-022",
+      "source": "woda",
+      "target": "вода",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Pij dużo wody."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-023",
+      "source": "powietrze",
+      "target": "повітря",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Świeże powietrze jest zdrowe."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-024",
+      "source": "ziemia",
+      "target": "земля",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Ziemia jest okrągła."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-025",
+      "source": "niebo",
+      "target": "небо",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Niebo jest bezchmurne."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-026",
+      "source": "słońce",
+      "target": "сонце",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Słońce świeci jasno."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-027",
+      "source": "księżyc",
+      "target": "місяць",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nature"],
+      "examples": [
+        "Księżyc krąży wokół Ziemi."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-028",
+      "source": "gwiazda",
+      "target": "зірка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nature"],
+      "examples": [
+        "Wieczorem widzimy na niebie gwiazdy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-029",
+      "source": "miasto",
+      "target": "місто",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "places"],
+      "examples": [
+        "Warszawa to duże miasto."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-030",
+      "source": "wieś",
+      "target": "село",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "places"],
+      "examples": [
+        "Moi dziadkowie mieszkają na wsi."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-031",
+      "source": "ulica",
+      "target": "вулиця",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "places"],
+      "examples": [
+        "Na tej ulicy jest duży ruch."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-032",
+      "source": "dom",
+      "target": "дім, будинок",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "places"],
+      "examples": [
+        "Mój dom jest niedaleko szkoły."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-033",
+      "source": "mieszkanie",
+      "target": "квартира",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "places"],
+      "examples": [
+        "Wynajmujemy małe mieszkanie w centrum."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-034",
+      "source": "szkoła",
+      "target": "школа",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Dzieci idą dziś do szkoły."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-035",
+      "source": "uniwersytet",
+      "target": "університет",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Mój brat studiuje na uniwersytecie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-036",
+      "source": "nauczyciel",
+      "target": "вчитель",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Nasz nauczyciel jest bardzo wymagający."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-037",
+      "source": "uczeń",
+      "target": "учень",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Uczniowie piszą test."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-038",
+      "source": "książka",
+      "target": "книга",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Czytam ciekawą książkę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-039",
+      "source": "długopis",
+      "target": "ручка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Czy masz niebieski długopis?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-040",
+      "source": "zeszyt",
+      "target": "зошит",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "education"],
+      "examples": [
+        "Zapisz to w zeszycie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-041",
+      "source": "jabłko",
+      "target": "яблуко",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "To jabłko jest słodkie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-042",
+      "source": "chleb",
+      "target": "хліб",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Kupię świeży chleb."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-043",
+      "source": "masło",
+      "target": "масло",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Kanapka z masłem i dżemem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-044",
+      "source": "ser",
+      "target": "сир",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Lubisz żółty ser?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-045",
+      "source": "mleko",
+      "target": "молоко",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Piję mleko na śniadanie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-046",
+      "source": "herbata",
+      "target": "чай",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Zapraszam na herbatę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-047",
+      "source": "kawa",
+      "target": "кава",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Poranna kawa to przyjemność."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-048",
+      "source": "zupa",
+      "target": "суп",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Na obiad była pomidorowa zupa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-049",
+      "source": "mięso",
+      "target": "м'ясо",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Nie jem mięsa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-050",
+      "source": "ryba",
+      "target": "риба",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "food"],
+      "examples": [
+        "Ryba jest zdrowa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-051",
+      "source": "pić",
+      "target": "пити",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Lubię pić sok pomarańczowy."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-052",
+      "source": "jeść",
+      "target": "їсти",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Co chcesz jeść na kolację?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-053",
+      "source": "spać",
+      "target": "спати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Dziecko śpi w łóżeczku."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-054",
+      "source": "iść",
+      "target": "йти",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Idę do kina."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-055",
+      "source": "jechać",
+      "target": "їхати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Jutro jadę do Warszawy."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-056",
+      "source": "mówić",
+      "target": "говорити",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Mówisz po polsku?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-057",
+      "source": "czytać",
+      "target": "читати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Lubię czytać książki."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-058",
+      "source": "pisać",
+      "target": "писати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Piszę list do przyjaciela."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-059",
+      "source": "słuchać",
+      "target": "слухати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Słucham muzyki."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-060",
+      "source": "widzieć",
+      "target": "бачити",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "verbs"],
+      "examples": [
+        "Czy widzisz ten samochód?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-061",
+      "source": "robić",
+      "target": "робити",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Co robisz w wolnym czasie?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-062",
+      "source": "myśleć",
+      "target": "думати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Myślę, że to dobry pomysł."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-063",
+      "source": "wiedzieć",
+      "target": "знати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "verbs"],
+      "examples": [
+        "Nie wiem, która jest godzina."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-064",
+      "source": "mieć",
+      "target": "мати",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Mam psa."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-065",
+      "source": "być",
+      "target": "бути",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Jestem w domu."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-066",
+      "source": "chcieć",
+      "target": "хотіти",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Chcę iść do parku."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-067",
+      "source": "móc",
+      "target": "могти",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Czy mogę wejść?"
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-068",
+      "source": "trzeba",
+      "target": "треба",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "verbs"],
+      "examples": [
+        "Trzeba iść do lekarza."
+      ],
+      "part_of_speech": "verb"
+    },
+    {
+      "id": "pluk-ff-069",
+      "source": "duży",
+      "target": "великий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "adjectives"],
+      "examples": [
+        "To jest duży dom."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-070",
+      "source": "mały",
+      "target": "малий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Mam mały problem."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-071",
+      "source": "gorący",
+      "target": "гарячий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Uważaj, to jest gorące!"
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-072",
+      "source": "zimny",
+      "target": "холодний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Lubię zimne napoje."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-073",
+      "source": "nowy",
+      "target": "новий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Kupiłem nowy samochód."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-074",
+      "source": "stary",
+      "target": "старий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest stary zamek."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-075",
+      "source": "dobry",
+      "target": "добрий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To był dobry film."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-076",
+      "source": "zły",
+      "target": "поганий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "adjectives"],
+      "examples": [
+        "Mam zły humor."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-077",
+      "source": "drogi",
+      "target": "дорогий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Ten samochód jest bardzo drogi."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-078",
+      "source": "tani",
+      "target": "дешевий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Znalazłem tani bilet."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-079",
+      "source": "ładny",
+      "target": "гарний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest ładny obraz."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-080",
+      "source": "brzydki",
+      "target": "поганий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "adjectives"],
+      "examples": [
+        "To brzydkie zachowanie."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-081",
+      "source": "młody",
+      "target": "молодий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest młody człowiek."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-082",
+      "source": "ciepły",
+      "target": "теплий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Dziś jest ciepły dzień."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-083",
+      "source": "szybki",
+      "target": "швидкий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest szybki samochód."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-084",
+      "source": "wolny",
+      "target": "вільний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Mam wolny czas."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-085",
+      "source": "głupi",
+      "target": "дурний",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To był głupi pomysł."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-086",
+      "source": "mądry",
+      "target": "мудрий",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To mądry człowiek."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-087",
+      "source": "bogaty",
+      "target": "багатий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To bogaty kraj."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-088",
+      "source": "biedny",
+      "target": "бідний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Pomaga biednym ludziom."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-089",
+      "source": "ważny",
+      "target": "важливий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To bardzo ważna sprawa."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-090",
+      "source": "nieważny",
+      "target": "неважливий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest nieważne."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-091",
+      "source": "ciekawy",
+      "target": "цікавий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To ciekawa książka."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-092",
+      "source": "nudny",
+      "target": "нудний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To był nudny film."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-093",
+      "source": "silny",
+      "target": "сильний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Jest bardzo silny."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-094",
+      "source": "słaby",
+      "target": "слабкий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Czuję się słaby."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-095",
+      "source": "wysoki",
+      "target": "високий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To wysoki budynek."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-096",
+      "source": "niski",
+      "target": "низький",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Niski stół."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-097",
+      "source": "gruby",
+      "target": "грубий",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["false-friend", "adjectives"],
+      "examples": [
+        "To jest gruba książka."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-098",
+      "source": "chudy",
+      "target": "худий",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Jest wysoki i chudy."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-099",
+      "source": "lekki",
+      "target": "легкий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest lekkie pudełko."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-100",
+      "source": "ciężki",
+      "target": "важкий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "To jest ciężki bagaż."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-101",
+      "source": "jasny",
+      "target": "ясний",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "Jasne niebo."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-102",
+      "source": "ciemny",
+      "target": "темний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "adjectives"],
+      "examples": [
+        "W pokoju jest ciemno."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-103",
+      "source": "czerwony",
+      "target": "червоний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Czerwone wino."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-104",
+      "source": "zielony",
+      "target": "зелений",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Zielona trawa."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-105",
+      "source": "niebieski",
+      "target": "синій",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "colors"],
+      "examples": [
+        "Niebieskie niebo."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-106",
+      "source": "żółty",
+      "target": "жовтий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Żółty ser."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-107",
+      "source": "biały",
+      "target": "білий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Biały śnieg."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-108",
+      "source": "czarny",
+      "target": "чорний",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Czarny kot."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-109",
+      "source": "szary",
+      "target": "сірий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Szary płaszcz."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-110",
+      "source": "brązowy",
+      "target": "коричневий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "colors"],
+      "examples": [
+        "Brązowe buty."
+      ],
+      "part_of_speech": "adjective"
+    },
+    {
+      "id": "pluk-ff-111",
+      "source": "prawda",
+      "target": "правда",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To jest prawda."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-112",
+      "source": "fałsz",
+      "target": "фальш",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wykrył fałsz w jej głosie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-113",
+      "source": "miłość",
+      "target": "любов",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Miłość jest piękna."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-114",
+      "source": "nienawiść",
+      "target": "ненависть",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Nienawiść jest destrukcyjna."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-115",
+      "source": "radość",
+      "target": "радість",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Dzieci skakały z radości."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-116",
+      "source": "smutek",
+      "target": "смуток",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Ogarnął go smutek."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-117",
+      "source": "strach",
+      "target": "страх",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Czuję strach."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-118",
+      "source": "nadzieja",
+      "target": "надія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mam nadzieję, że wyzdrowiejesz."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-119",
+      "source": "siła",
+      "target": "сила",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Potrzebuję dużo siły."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-120",
+      "source": "słabość",
+      "target": "слабкість",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Każdy ma swoje słabości."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-121",
+      "source": "wolność",
+      "target": "воля, свобода",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Walka o wolność."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-122",
+      "source": "pokój",
+      "target": "мир, кімната",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Marzymy o pokoju na świecie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-123",
+      "source": "wojna",
+      "target": "війна",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wojna przynosi zniszczenie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-124",
+      "source": "kraj",
+      "target": "край, країна",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Polska to piękny kraj."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-125",
+      "source": "świat",
+      "target": "світ",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Podróżuję po całym świecie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-126",
+      "source": "język",
+      "target": "мова, язик",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Uczę się języka polskiego."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-127",
+      "source": "litera",
+      "target": "літера",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Duża litera na początku zdania."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-128",
+      "source": "słowo",
+      "target": "слово",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Proszę powtórzyć to słowo."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-129",
+      "source": "zdanie",
+      "target": "речення, думка",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "To zdanie jest za długie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-130",
+      "source": "historia",
+      "target": "історія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Opowiem ci ciekawą historię."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-131",
+      "source": "opowieść",
+      "target": "повість",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To długa opowieść."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-132",
+      "source": "powieść",
+      "target": "роман",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Czytam nową powieść."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-133",
+      "source": "poezja",
+      "target": "поезія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Lubię czytać poezję."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-134",
+      "source": "dramat",
+      "target": "драма",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To był prawdziwy dramat."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-135",
+      "source": "komedia",
+      "target": "комедія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Oglądamy zabawną komedię."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-136",
+      "source": "film",
+      "target": "фільм",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jaki film dzisiaj leci?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-137",
+      "source": "telewizja",
+      "target": "телебачення",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Oglądam telewizję wieczorem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-138",
+      "source": "radio",
+      "target": "радіо",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Słucham radia w samochodzie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-139",
+      "source": "muzyka",
+      "target": "музика",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jaka muzyka ci się podoba?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-140",
+      "source": "piosenka",
+      "target": "пісня",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To moja ulubiona piosenka."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-141",
+      "source": "taniec",
+      "target": "танець",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Lubię taniec towarzyski."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-142",
+      "source": "sztuka",
+      "target": "мистецтво",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Sztuka współczesna."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-143",
+      "source": "nauka",
+      "target": "наука, навчання",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Nauka języków jest ciekawa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-144",
+      "source": "technologia",
+      "target": "технологія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Nowoczesne technologie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-145",
+      "source": "komputer",
+      "target": "комп'ютер",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Pracuję przy komputerze."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-146",
+      "source": "internet",
+      "target": "інтернет",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Szukam informacji w internecie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-147",
+      "source": "strona",
+      "target": "сторінка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Otwórz stronę 10."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-148",
+      "source": "klawiatura",
+      "target": "клавіатура",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Kupię nową klawiaturę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-149",
+      "source": "mysz",
+      "target": "миша",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Potrzebuję bezprzewodową mysz."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-150",
+      "source": "ekran",
+      "target": "екран",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Ekran telefonu jest zepsuty."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-151",
+      "source": "telefon",
+      "target": "телефон",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Zadzwonię z telefonu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-152",
+      "source": "aparat",
+      "target": "апарат",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Aparat fotograficzny."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-153",
+      "source": "zdjęcie",
+      "target": "фото, знімок",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Robię zdjęcie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-154",
+      "source": "obraz",
+      "target": "образ",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Piękny obraz wisi na ścianie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-155",
+      "source": "rysunek",
+      "target": "рисунок",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Dziecko zrobiło ładny rysunek."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-156",
+      "source": "kolor",
+      "target": "колір",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jaki to kolor?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-157",
+      "source": "kształt",
+      "target": "форма",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Ciekawy kształt chmury."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-158",
+      "source": "linia",
+      "target": "лінія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Narysuj prostą linię."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-159",
+      "source": "punkt",
+      "target": "пункт",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Omówimy punkt po punkcie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-160",
+      "source": "miejsce",
+      "target": "місце",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To jest moje miejsce."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-161",
+      "source": "przestrzeń",
+      "target": "простір",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Potrzebuję więcej przestrzeni."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-162",
+      "source": "kierunek",
+      "target": "напрямок",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "W którym kierunku iść?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-163",
+      "source": "odległość",
+      "target": "відстань",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Duża odległość do przebycia."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-164",
+      "source": "bliskość",
+      "target": "близькість",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Cenię sobie bliskość rodziny."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-165",
+      "source": "część",
+      "target": "частина",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To jest ważna część maszyny."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-166",
+      "source": "całość",
+      "target": "цілісність",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Stanowi to harmonijną całość."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-167",
+      "source": "rodzaj",
+      "target": "рід, тип",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Jaki to rodzaj muzyki?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-168",
+      "source": "typ",
+      "target": "тип",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To mój typ faceta."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-169",
+      "source": "sposób",
+      "target": "спосіб",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Znajdę sposób, żeby to zrobić."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-170",
+      "source": "metoda",
+      "target": "метод",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Skuteczna metoda nauki."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-171",
+      "source": "cel",
+      "target": "мета",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Mój cel to nauczyć się ukraińskiego."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-172",
+      "source": "problem",
+      "target": "проблема",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mam problem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-173",
+      "source": "rozwiązanie",
+      "target": "рішення",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Szukam rozwiązania."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-174",
+      "source": "pytanie",
+      "target": "питання",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mam pytanie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-175",
+      "source": "odpowiedź",
+      "target": "відповідь",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Czekam na odpowiedź."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-176",
+      "source": "rozmowa",
+      "target": "розмова",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Przyjemna rozmowa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-177",
+      "source": "dyskusja",
+      "target": "дискусія",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Gorąca dyskusja."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-178",
+      "source": "zgoda",
+      "target": "згода",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wyrazili zgodę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-179",
+      "source": "spór",
+      "target": "суперечка",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mieli ostry spór."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-180",
+      "source": "walka",
+      "target": "боротьба",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Walka o lepsze jutro."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-181",
+      "source": "zwycięstwo",
+      "target": "перемога",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Pewne zwycięstwo."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-182",
+      "source": "porażka",
+      "target": "поразка",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Gorzka porażka."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-183",
+      "source": "gra",
+      "target": "гра",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Ciekawa gra planszowa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-184",
+      "source": "zabawa",
+      "target": "забава",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Dobra zabawa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-185",
+      "source": "impreza",
+      "target": "вечірка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Idziemy na imprezę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-186",
+      "source": "urodziny",
+      "target": "день народження",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wszystkiego najlepszego z okazji urodzin!"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-187",
+      "source": "ślub",
+      "target": "весілля",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Byliśmy na ślubie przyjaciół."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-188",
+      "source": "pogrzeb",
+      "target": "похорон",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Uczestniczyliśmy w pogrzebie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-189",
+      "source": "święto",
+      "target": "свято",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wszystkim świętym."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-190",
+      "source": "wakacje",
+      "target": "канікули",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Gdzie spędzasz wakacje?"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-191",
+      "source": "urlop",
+      "target": "відпустка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Biorę urlop w lipcu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-192",
+      "source": "podróż",
+      "target": "подорож",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Daleka podróż."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-193",
+      "source": "wycieczka",
+      "target": "екскурсія",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Klasowa wycieczka."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-194",
+      "source": "samolot",
+      "target": "літак",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Lecę samolotem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-195",
+      "source": "pociąg",
+      "target": "поїзд",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jadę pociągiem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-196",
+      "source": "autobus",
+      "target": "автобус",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Czekam na autobus."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-197",
+      "source": "tramwaj",
+      "target": "трамвай",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wsiadam do tramwaju."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-198",
+      "source": "metro",
+      "target": "метро",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jadę metrem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-199",
+      "source": "bilet",
+      "target": "квиток",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Kupuję bilet."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-200",
+      "source": "dworzec",
+      "target": "вокзал",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Spotkamy się na dworcu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-201",
+      "source": "lotnisko",
+      "target": "аеропорт",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jadę na lotnisko."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-202",
+      "source": "hote",
+      "target": "готель",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Zarezerwowałem hotel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-203",
+      "source": "restauracja",
+      "target": "ресторан",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Kolacja w restauracji."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-204",
+      "source": "kawiarnia",
+      "target": "кав'ярня",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Spotkajmy się w kawiarni."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-205",
+      "source": "bar",
+      "target": "бар",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Idziemy do baru."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-206",
+      "source": "sklep",
+      "target": "магазин",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Idę do sklepu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-207",
+      "source": "rynek",
+      "target": "ринок",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Na rynku kupię warzywa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-208",
+      "source": "apteka",
+      "target": "аптека",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Muszę iść do apteki."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-209",
+      "source": "szpital",
+      "target": "лікарня",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Pracuje w szpitalu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-210",
+      "source": "lekarz",
+      "target": "лікар",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Idę do lekarza."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-211",
+      "source": "pielęgniarka",
+      "target": "медсестра",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Pielęgniarka podała lek."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-212",
+      "source": "chory",
+      "target": "хворий",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Odwiedzam chorego kolegę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-213",
+      "source": "zdrowie",
+      "target": "здоров'я",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Twoje zdrowie!"
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-214",
+      "source": "choroba",
+      "target": "хвороба",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Ciężka choroba."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-215",
+      "source": "ból",
+      "target": "біль",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mam ból głowy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-216",
+      "source": "gorączka",
+      "target": "гарячка",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["false-friend", "nouns"],
+      "examples": [
+        "Mam wysoką gorączkę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-217",
+      "source": "kaszel",
+      "target": "кашель",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Dokucza mi kaszel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-218",
+      "source": "katar",
+      "target": "нежить",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mam katar."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-219",
+      "source": "grypa",
+      "target": "грип",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Choruję na grypę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-220",
+      "source": "przeziębienie",
+      "target": "застуда",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "To tylko przeziębienie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-221",
+      "source": "lekarstwo",
+      "target": "ліки",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Biorę lekarstwo."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-222",
+      "source": "witamina",
+      "target": "вітамін",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Biorę witaminy."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-223",
+      "source": "sport",
+      "target": "спорт",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Uprawiam sport."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-224",
+      "source": "piłka",
+      "target": "м'яч",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Gram w piłkę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-225",
+      "source": "mecz",
+      "target": "матч",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Oglądam mecz."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-226",
+      "source": "zawody",
+      "target": "змагання",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Bierze udział w zawodach."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-227",
+      "source": "bieg",
+      "target": "біг",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Lubię bieg."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-228",
+      "source": "skok",
+      "target": "стрибок",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Daleki skok."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-229",
+      "source": "rzut",
+      "target": "кидок",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Celny rzut."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-230",
+      "source": "pływanie",
+      "target": "плавання",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Lubię pływanie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-231",
+      "source": "rower",
+      "target": "велосипед",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Jadę rowerem."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-232",
+      "source": "samochód",
+      "target": "автомобіль",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Myję samochód."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-233",
+      "source": "motocykl",
+      "target": "мотоцикл",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Szybki motocykl."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-234",
+      "source": "ulica",
+      "target": "вулиця",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Przechodzę przez ulicę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-235",
+      "source": "most",
+      "target": "міст",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Przejechaliśmy przez most."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-236",
+      "source": "tunel",
+      "target": "тунель",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Długi tunel."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-237",
+      "source": "las",
+      "target": "ліс",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Spacer po lesie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-238",
+      "source": "góra",
+      "target": "гора",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wspinaczka na górę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-239",
+      "source": "morze",
+      "target": "море",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Kąpię się w morzu."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-240",
+      "source": "jezioro",
+      "target": "озеро",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Piękne jezioro."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-241",
+      "source": "rzeka",
+      "target": "річка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Płyniemy rzeką."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-242",
+      "source": "ogród",
+      "target": "сад",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Pracuję w ogrodzie."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-243",
+      "source": "pole",
+      "target": "поле",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Szerokie pole."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-244",
+      "source": "łąka",
+      "target": "лука",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Zielona łąka."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-245",
+      "source": "zwierzę",
+      "target": "тварина",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Dzikie zwierzę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-246",
+      "source": "ptak",
+      "target": "птах",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Ptak śpiewa."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-247",
+      "source": "ryba",
+      "target": "риба",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Złowiłem rybę."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-248",
+      "source": "owad",
+      "target": "комаха",
+      "tertiary": null,
+      "level": "B2",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Mały owad."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-249",
+      "source": "kwiat",
+      "target": "квітка",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Piękny kwiat."
+      ],
+      "part_of_speech": "noun"
+    },
+    {
+      "id": "pluk-ff-250",
+      "source": "drzewo",
+      "target": "дерево",
+      "tertiary": null,
+      "level": "B1",
+      "tags": ["cognate", "nouns"],
+      "examples": [
+        "Wysokie drzewo."
+      ],
+      "part_of_speech": "noun"
+    }
+  ]
+}
