@@ -2,7 +2,7 @@ import { LearnFlashcardsPanel } from "@widgets";
 
 export const LearnPage = () => {
   return (
-    <section className="page">
+    <section className="page learn-page">
       <LearnFlashcardsPanel />
     </section>
   );
