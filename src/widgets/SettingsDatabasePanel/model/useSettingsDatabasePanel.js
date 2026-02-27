@@ -158,6 +158,17 @@ export const useSettingsDatabasePanel = () => {
     }
   }, [closeIntegrityRepairConfirm, reportMessage]);
 
+  const showRuntimeErrorPreview = useCallback(async () => {
+    try {
+      await desktopApi.showRuntimeErrorPreview();
+    } catch (previewError) {
+      reportMessage(
+        previewError.message || "Failed to open runtime error preview",
+        "error",
+      );
+    }
+  }, [reportMessage]);
+
   const confirmIntegrityRepair = useCallback(async () => {
     setIsRepairingIntegrity(true);
 
@@ -228,6 +239,7 @@ export const useSettingsDatabasePanel = () => {
     openDbFolder,
     changeDbLocation,
     verifyIntegrity,
+    showRuntimeErrorPreview,
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     toggleTheme,
