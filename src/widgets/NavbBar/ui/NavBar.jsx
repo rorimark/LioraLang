@@ -4,6 +4,7 @@ import { NavTab } from "@shared/ui";
 import { NAV_ITEMS } from "@shared/config/routes";
 import {
   IoLayersOutline,
+  IoGlobeOutline,
   IoBookOutline,
   IoStatsChartOutline,
   IoSettingsOutline,
@@ -11,6 +12,7 @@ import {
 
 const ICONS_BY_NAME = {
   learn: IoLayersOutline,
+  browse: IoGlobeOutline,
   decks: IoBookOutline,
   progress: IoStatsChartOutline,
   settings: IoSettingsOutline,

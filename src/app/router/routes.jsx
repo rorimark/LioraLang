@@ -20,6 +20,13 @@ export const routes = [
         },
       },
       {
+        path: toChildPath(ROUTE_PATHS.browse),
+        lazy: async () => {
+          const module = await import("@pages/browse");
+          return { Component: module.BrowsePage };
+        },
+      },
+      {
         path: toChildPath(ROUTE_PATHS.decks),
         lazy: async () => {
           const module = await import("@pages/decks");

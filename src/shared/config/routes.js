@@ -1,6 +1,7 @@
 export const ROUTE_PATHS = {
   root: "/",
   learn: "/learn",
+  browse: "/browse",
   decks: "/decks",
   deckCreate: "/decks/new",
   deckEdit: "/decks/:deckId/edit",
@@ -23,6 +24,12 @@ export const NAV_ITEMS = [
     icon: "decks",
   },
   {
+    key: "browse",
+    to: ROUTE_PATHS.browse,
+    title: "Browse",
+    icon: "browse",
+  },
+  {
     key: "progress",
     to: ROUTE_PATHS.progress,
     title: "Progress",
@@ -40,6 +47,10 @@ export const PAGE_META = {
   [ROUTE_PATHS.learn]: {
     title: "Flashcards",
     subtitle: "Pick a deck and review cards in a focused study session.",
+  },
+  [ROUTE_PATHS.browse]: {
+    title: "Browse Decks",
+    subtitle: "Discover community deck packages and import them in one click.",
   },
   [ROUTE_PATHS.decks]: {
     title: "Deck Library",
