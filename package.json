@@ -1,7 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.4",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -65,6 +65,17 @@
       "main": "electron/main.js"
     },
     "asar": true,
+    "fileAssociations": [
+      {
+        "ext": [
+          "lioradeck",
+          "leioradeck"
+        ],
+        "name": "LioraLang Deck Package",
+        "description": "LioraLang importable deck package",
+        "role": "Editor"
+      }
+    ],
     "mac": {
       "icon": "electron/assets/icon@2x.icns",
       "target": [

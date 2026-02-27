@@ -3,11 +3,10 @@
 }
 
 .nav-bar--desktop {
-  position: sticky;
-  top: 16px;
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 32px);
+  min-height: 0;
+  height: 100%;
   gap: 20px;
   padding: 16px;
   border-radius: 18px;

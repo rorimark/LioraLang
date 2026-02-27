@@ -12,7 +12,15 @@ contextBridge.exposeInMainWorld("electronAPI", {
   saveDeck: (payload) => ipcRenderer.invoke("decks:save", payload),
 
   getDbPath: () => ipcRenderer.invoke("app:get-db-path"),
+  getAppSettings: () => ipcRenderer.invoke("app:get-settings"),
+  updateAppSettings: (payload) => ipcRenderer.invoke("app:update-settings", payload),
   openDbFolder: () => ipcRenderer.invoke("app:open-db-folder"),
+  changeDbLocation: () => ipcRenderer.invoke("app:change-db-location"),
+  verifyIntegrity: (payload) => ipcRenderer.invoke("app:verify-integrity", payload),
+  getWindowHistoryState: () => ipcRenderer.invoke("window:get-history-state"),
+  navigateWindowBack: () => ipcRenderer.invoke("window:navigate-back"),
+  navigateWindowForward: () => ipcRenderer.invoke("window:navigate-forward"),
+  applyWindowTheme: (payload) => ipcRenderer.invoke("window:apply-theme", payload),
 
   onDecksUpdated: (callback) => {
     const listener = () => callback();
@@ -20,6 +28,22 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
     return () => {
       ipcRenderer.removeListener("decks-updated", listener);
+    };
+  },
+  onImportDeckFileRequested: (callback) => {
+    const listener = (_, payload) => callback(payload);
+    ipcRenderer.on("decks:open-import-file", listener);
+
+    return () => {
+      ipcRenderer.removeListener("decks:open-import-file", listener);
+    };
+  },
+  onAppSettingsUpdated: (callback) => {
+    const listener = (_, payload) => callback(payload);
+    ipcRenderer.on("app-settings-updated", listener);
+
+    return () => {
+      ipcRenderer.removeListener("app-settings-updated", listener);
     };
   },
 });
