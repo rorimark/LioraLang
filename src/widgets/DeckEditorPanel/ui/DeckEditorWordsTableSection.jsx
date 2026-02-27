@@ -18,19 +18,11 @@ export const DeckEditorWordsTableSection = memo(() => {
     wordsTotalPages,
     wordsRangeStart,
     wordsRangeEnd,
-    handleViewWord,
     handleEditWord,
     handleDeleteWord,
     handleWordsPageChange,
     handleWordsPageSizeChange,
   } = useDeckEditorPanelContext();
-
-  const onViewClick = useCallback(
-    (event) => {
-      handleViewWord(event.currentTarget.dataset.wordId);
-    },
-    [handleViewWord],
-  );
 
   const onEditClick = useCallback(
     (event) => {
@@ -85,14 +77,14 @@ export const DeckEditorWordsTableSection = memo(() => {
                     }
                   >
                     <td data-label={languageLabels.sourceLanguage}>
-                      {renderWordCell(word.eng)}
+                      {renderWordCell(word.source)}
                     </td>
                     <td data-label={languageLabels.targetLanguage}>
-                      {renderWordCell(word.ru)}
+                      {renderWordCell(word.target)}
                     </td>
                     {languageLabels.hasTertiaryLanguage && (
                       <td data-label={languageLabels.tertiaryLanguage}>
-                        {renderWordCell(word.pl)}
+                        {renderWordCell(word.tertiary)}
                       </td>
                     )}
                     <td data-label="Level">{renderWordCell(word.level)}</td>
@@ -100,13 +92,6 @@ export const DeckEditorWordsTableSection = memo(() => {
                     <td data-label="Example">{renderWordCell(word.example)}</td>
                     <td data-label="Actions">
                       <div className="deck-editor-panel__table-actions">
-                        <button
-                          type="button"
-                          data-word-id={word.id}
-                          onClick={onViewClick}
-                        >
-                          View
-                        </button>
                         <button
                           type="button"
                           data-word-id={word.id}
@@ -147,16 +132,16 @@ export const DeckEditorWordsTableSection = memo(() => {
               <h4>Preview</h4>
               <p>
                 <strong>{languageLabels.sourceLanguage}:</strong>{" "}
-                {renderWordCell(previewWord.eng)}
+                {renderWordCell(previewWord.source)}
               </p>
               <p>
                 <strong>{languageLabels.targetLanguage}:</strong>{" "}
-                {renderWordCell(previewWord.ru)}
+                {renderWordCell(previewWord.target)}
               </p>
               {languageLabels.hasTertiaryLanguage && (
                 <p>
                   <strong>{languageLabels.tertiaryLanguage}:</strong>{" "}
-                  {renderWordCell(previewWord.pl)}
+                  {renderWordCell(previewWord.tertiary)}
                 </p>
               )}
               <p>

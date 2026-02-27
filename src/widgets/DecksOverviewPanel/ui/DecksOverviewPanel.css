@@ -3,6 +3,13 @@
   gap: 14px;
 }
 
+.decks-page-panel__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .decks-page-panel__header h2 {
   margin: 0;
   font-size: 1.1rem;

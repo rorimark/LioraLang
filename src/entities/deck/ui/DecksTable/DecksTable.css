@@ -167,11 +167,15 @@
 
 .decks-table__actions .decks-table__button--danger {
   border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
   color: var(--color-danger);
+  font-size: 0.76rem;
+  padding: 6px 10px;
 }
 
 .decks-table__actions .decks-table__button--danger:hover:not(:disabled) {
   border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
 }
 
 @media (max-width: 1024px) {

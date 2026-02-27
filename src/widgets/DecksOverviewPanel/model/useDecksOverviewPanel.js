@@ -26,12 +26,20 @@ export const useDecksOverviewPanel = () => {
   const {
     isImporting,
     selectedImportFileName,
+    selectedImportWordsCount,
     importDeckNameDraft,
+    importLanguages,
+    languageOptions,
     isImportConfirmOpen,
+    isLanguageReviewOpen,
     openImportConfirm,
     closeImportConfirm,
+    openLanguageReview,
+    closeLanguageReview,
+    toggleLanguageReview,
     confirmImportDeck,
     handleImportDeckNameDraftChange,
+    handleImportLanguageChange,
   } = useDeckImportFlow({
     onMessage: reportMessage,
     onImportSuccess: refreshDecks,
@@ -103,7 +111,7 @@ export const useDecksOverviewPanel = () => {
     try {
       await desktopApi.deleteDeck(deleteState.deckId);
       const deletedName = deleteState.deckName?.trim() || "Deck";
-      reportMessage(`Deck deleted: ${deletedName}`, "info");
+      reportMessage(`Deck deleted: ${deletedName}`, "danger");
       setDeleteState(() => ({
         isOpen: false,
         deckId: null,
@@ -131,8 +139,12 @@ export const useDecksOverviewPanel = () => {
     deletingDeckId,
     isImporting,
     selectedImportFileName,
+    selectedImportWordsCount,
     importDeckNameDraft,
+    importLanguages,
+    languageOptions,
     isImportConfirmOpen,
+    isLanguageReviewOpen,
     deleteState,
     refreshDecks,
     openDeck,
@@ -144,8 +156,12 @@ export const useDecksOverviewPanel = () => {
     confirmDeleteDeck,
     openImportConfirm,
     closeImportConfirm,
+    openLanguageReview,
+    closeLanguageReview,
+    toggleLanguageReview,
     confirmImportDeck,
     handleImportDeckNameDraftChange,
+    handleImportLanguageChange,
     clearMessage,
   };
 };

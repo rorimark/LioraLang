@@ -17,8 +17,12 @@ export const DecksOverviewPanel = memo(() => {
     deletingDeckId,
     isImporting,
     selectedImportFileName,
+    selectedImportWordsCount,
     importDeckNameDraft,
+    importLanguages,
+    languageOptions,
     isImportConfirmOpen,
+    isLanguageReviewOpen,
     deleteState,
     openDeck,
     openCreateDeck,
@@ -29,8 +33,12 @@ export const DecksOverviewPanel = memo(() => {
     confirmDeleteDeck,
     openImportConfirm,
     closeImportConfirm,
+    openLanguageReview,
+    closeLanguageReview,
+    toggleLanguageReview,
     confirmImportDeck,
     handleImportDeckNameDraftChange,
+    handleImportLanguageChange,
     refreshDecks,
     clearMessage,
   } = useDecksOverviewPanel();
@@ -39,7 +47,30 @@ export const DecksOverviewPanel = memo(() => {
     <article className="panel decks-page-panel">
       <div className="decks-page-panel__header">
         <h2>Your Decks</h2>
-        <p>Create, import, export, and browse local SQLite decks.</p>
+        <div className="decks-page-panel__controls">
+          <button
+            type="button"
+            className="decks-page-panel__refresh"
+            onClick={openCreateDeck}
+          >
+            Create deck
+          </button>
+          <button
+            type="button"
+            className="decks-page-panel__refresh"
+            onClick={openImportConfirm}
+            disabled={isImporting}
+          >
+            {isImporting ? "Importing..." : "Import deck package"}
+          </button>
+          <button
+            type="button"
+            className="decks-page-panel__refresh"
+            onClick={refreshDecks}
+          >
+            Refresh decks
+          </button>
+        </div>
       </div>
 
       <InlineAlert
@@ -68,31 +99,6 @@ export const DecksOverviewPanel = memo(() => {
         />
       )}
 
-      <div className="decks-page-panel__controls">
-        <button
-          type="button"
-          className="decks-page-panel__refresh"
-          onClick={openCreateDeck}
-        >
-          Create deck
-        </button>
-        <button
-          type="button"
-          className="decks-page-panel__refresh"
-          onClick={openImportConfirm}
-          disabled={isImporting}
-        >
-          {isImporting ? "Importing..." : "Import deck from JSON"}
-        </button>
-        <button
-          type="button"
-          className="decks-page-panel__refresh"
-          onClick={refreshDecks}
-        >
-          Refresh decks
-        </button>
-      </div>
-
       <DeleteDeckModal
         isOpen={deleteState?.isOpen}
         deckName={deleteState?.deckName || ""}
@@ -105,8 +111,16 @@ export const DecksOverviewPanel = memo(() => {
         isOpen={isImportConfirmOpen}
         isImporting={isImporting}
         selectedFileName={selectedImportFileName}
+        selectedWordsCount={selectedImportWordsCount}
         deckNameDraft={importDeckNameDraft}
+        importLanguages={importLanguages}
+        languageOptions={languageOptions}
+        isLanguageReviewOpen={isLanguageReviewOpen}
         onDeckNameChange={handleImportDeckNameDraftChange}
+        onLanguageChange={handleImportLanguageChange}
+        onOpenLanguageReview={openLanguageReview}
+        onCloseLanguageReview={closeLanguageReview}
+        onToggleLanguageReview={toggleLanguageReview}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
       />
