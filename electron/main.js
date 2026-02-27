@@ -42,7 +42,7 @@ const WINDOW_TITLE_BAR_THEME = {
 
 let mainWindow = null;
 let pendingImportFilePaths = [];
-const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck", ".leioradeck"];
+const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck"];
 const DB_FILE_NAME = "lioralang.db";
 
 const getDevServerUrl = () => {
@@ -487,12 +487,12 @@ const setupIpcHandlers = () => {
 
   ipcMain.handle("decks:pick-import-json", async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
-      title: "Import deck package",
+      title: "Import deck file",
       properties: ["openFile"],
       filters: [
-        { name: "Liora deck", extensions: ["lioradeck"] },
-        { name: "Legacy Liora deck", extensions: ["leioradeck"] },
-        { name: "JSON", extensions: ["json"] },
+        { name: "Deck files", extensions: ["lioradeck", "json"] },
+        { name: "Liora deck package (.lioradeck)", extensions: ["lioradeck"] },
+        { name: "JSON deck (.json)", extensions: ["json"] },
       ],
     });
 
@@ -563,7 +563,6 @@ const setupIpcHandlers = () => {
       defaultPath: `${deck.name}.lioradeck`,
       filters: [
         { name: "Liora deck", extensions: ["lioradeck"] },
-        { name: "Legacy Liora deck", extensions: ["leioradeck"] },
         { name: "JSON", extensions: ["json"] },
       ],
     });

@@ -68,8 +68,7 @@
     "fileAssociations": [
       {
         "ext": [
-          "lioradeck",
-          "leioradeck"
+          "lioradeck"
         ],
         "name": "LioraLang Deck Package",
         "description": "LioraLang importable deck package",
