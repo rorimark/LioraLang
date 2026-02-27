@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useShortcutSettingsSection } from "../../model";
 import "./ShortcutSettingsSection.css";
 
-export const ShortcutSettingsSection = memo(() => {
+export const ShortcutSettingsSection = memo(({ compact = false }) => {
   const {
     historyShortcutMode,
     learnFlipShortcutMode,
@@ -16,11 +16,19 @@ export const ShortcutSettingsSection = memo(() => {
   } = useShortcutSettingsSection();
 
   return (
-    <section className="shortcut-settings-section">
-      <div className="shortcut-settings-section__head">
-        <h3>Shortcuts</h3>
-        <p>Saved automatically and applied instantly.</p>
-      </div>
+    <section
+      className={
+        compact
+          ? "shortcut-settings-section shortcut-settings-section--compact"
+          : "shortcut-settings-section"
+      }
+    >
+      {!compact && (
+        <div className="shortcut-settings-section__head">
+          <h3>Shortcuts</h3>
+          <p>Saved automatically and applied instantly.</p>
+        </div>
+      )}
 
       <label className="shortcut-settings-section__field">
         <span className="shortcut-settings-section__label">History navigation</span>

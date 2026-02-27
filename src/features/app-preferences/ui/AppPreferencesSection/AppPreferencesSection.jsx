@@ -51,12 +51,17 @@ export const AppPreferencesSection = memo(() => {
         <p>Core behavior, defaults, and safety settings for this workspace.</p>
       </div>
 
-      <section className="app-preferences-section__group">
-        <div className="app-preferences-section__group-head">
-          <h4>Learning Core</h4>
-          <p>Session flow and spaced repetition tuning.</p>
-        </div>
-        <div className="app-preferences-section__grid">
+      <details className="app-preferences-section__group" open>
+        <summary className="app-preferences-section__group-summary">
+          <span className="app-preferences-section__group-title">
+            Learning Core
+          </span>
+          <span className="app-preferences-section__group-description">
+            Session flow and spaced repetition tuning.
+          </span>
+        </summary>
+        <div className="app-preferences-section__group-content">
+          <div className="app-preferences-section__grid">
           <fieldset className="app-preferences-section__card">
             <legend>Study session</legend>
             <label>
@@ -162,15 +167,21 @@ export const AppPreferencesSection = memo(() => {
               />
             </label>
           </fieldset>
+          </div>
         </div>
-      </section>
+      </details>
 
-      <section className="app-preferences-section__group">
-        <div className="app-preferences-section__group-head">
-          <h4>Content Defaults</h4>
-          <p>Default values for deck creation and package operations.</p>
-        </div>
-        <div className="app-preferences-section__grid">
+      <details className="app-preferences-section__group">
+        <summary className="app-preferences-section__group-summary">
+          <span className="app-preferences-section__group-title">
+            Deck Defaults
+          </span>
+          <span className="app-preferences-section__group-description">
+            Default values for deck creation.
+          </span>
+        </summary>
+        <div className="app-preferences-section__group-content">
+          <div className="app-preferences-section__grid">
           <fieldset className="app-preferences-section__card">
             <legend>Deck defaults</legend>
             <label>
@@ -223,69 +234,21 @@ export const AppPreferencesSection = memo(() => {
               />
             </label>
           </fieldset>
-
-          <fieldset className="app-preferences-section__card">
-            <legend>Import and export</legend>
-            <label className="app-preferences-section__check">
-              <input
-                type="checkbox"
-                name="importExport.autoOpenLanguageReview"
-                checked={appPreferences.importExport.autoOpenLanguageReview}
-                onChange={handleBooleanFieldChange}
-              />
-              <span>Auto-open language check on import</span>
-            </label>
-            <label>
-              <span>Duplicate strategy</span>
-              <select
-                name="importExport.duplicateStrategy"
-                value={appPreferences.importExport.duplicateStrategy}
-                onChange={handleSelectFieldChange}
-              >
-                <option value="skip">Skip duplicates</option>
-                <option value="update">Update existing</option>
-                <option value="keep_both">Keep both</option>
-              </select>
-            </label>
-            <label>
-              <span>Default export format</span>
-              <select
-                name="importExport.exportFormat"
-                value={appPreferences.importExport.exportFormat}
-                onChange={handleSelectFieldChange}
-              >
-                <option value="lioradeck">.lioradeck</option>
-                <option value="json">.json</option>
-              </select>
-            </label>
-            <label className="app-preferences-section__check">
-              <input
-                type="checkbox"
-                name="importExport.includeExamples"
-                checked={appPreferences.importExport.includeExamples}
-                onChange={handleBooleanFieldChange}
-              />
-              <span>Include examples by default</span>
-            </label>
-            <label className="app-preferences-section__check">
-              <input
-                type="checkbox"
-                name="importExport.includeTags"
-                checked={appPreferences.importExport.includeTags}
-                onChange={handleBooleanFieldChange}
-              />
-              <span>Include tags by default</span>
-            </label>
-          </fieldset>
+          </div>
         </div>
-      </section>
+      </details>
 
-      <section className="app-preferences-section__group">
-        <div className="app-preferences-section__group-head">
-          <h4>Workspace and Safety</h4>
-          <p>Accessibility, backups, and destructive action guards.</p>
-        </div>
-        <div className="app-preferences-section__grid">
+      <details className="app-preferences-section__group">
+        <summary className="app-preferences-section__group-summary">
+          <span className="app-preferences-section__group-title">
+            Workspace and Safety
+          </span>
+          <span className="app-preferences-section__group-description">
+            Accessibility, backups, and destructive action guards.
+          </span>
+        </summary>
+        <div className="app-preferences-section__group-content">
+          <div className="app-preferences-section__grid">
           <fieldset className="app-preferences-section__card">
             <legend>UI and accessibility</legend>
             <label>
@@ -365,11 +328,19 @@ export const AppPreferencesSection = memo(() => {
               <span>Confirm destructive actions</span>
             </label>
           </fieldset>
+          </div>
         </div>
-      </section>
+      </details>
 
-      <details className="app-preferences-section__advanced">
-        <summary>Advanced Desktop and Privacy</summary>
+      <details className="app-preferences-section__group app-preferences-section__advanced">
+        <summary className="app-preferences-section__group-summary">
+          <span className="app-preferences-section__group-title">
+            Advanced Desktop and Privacy
+          </span>
+          <span className="app-preferences-section__group-description">
+            Launch behavior, telemetry preferences, and diagnostics.
+          </span>
+        </summary>
         <div className="app-preferences-section__grid">
           <fieldset className="app-preferences-section__card">
             <legend>Desktop</legend>

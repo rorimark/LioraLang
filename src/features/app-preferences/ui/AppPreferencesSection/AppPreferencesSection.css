@@ -20,25 +20,66 @@
 }
 
 .app-preferences-section__group {
-  display: grid;
-  gap: 10px;
+  margin: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted));
+  overflow: hidden;
 }
 
 .app-preferences-section__group + .app-preferences-section__group {
-  padding-top: 12px;
-  border-top: 1px solid var(--color-border);
+  margin-top: 4px;
 }
 
-.app-preferences-section__group-head h4 {
-  margin: 0;
+.app-preferences-section__group-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  display: grid;
+  gap: 2px;
+}
+
+.app-preferences-section__group-summary::-webkit-details-marker {
+  display: none;
+}
+
+.app-preferences-section__group-summary::after {
+  content: "Show";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.app-preferences-section__group[open] .app-preferences-section__group-summary::after {
+  content: "Hide";
+}
+
+.app-preferences-section__group-summary {
+  position: relative;
+  padding-right: 66px;
+}
+
+.app-preferences-section__group-title {
   color: var(--color-text);
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
-.app-preferences-section__group-head p {
-  margin: 4px 0 0;
+.app-preferences-section__group-description {
   color: var(--color-text-muted);
   font-size: 0.78rem;
+}
+
+.app-preferences-section__group-content {
+  padding: 0 10px 10px;
+  display: grid;
+  gap: 10px;
 }
 
 .app-preferences-section__grid {
@@ -103,10 +144,11 @@
 }
 
 .app-preferences-section__advanced {
-  display: grid;
-  gap: 10px;
-  border-top: 1px solid var(--color-border);
-  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.app-preferences-section__advanced .app-preferences-section__grid {
+  padding: 0 10px 10px;
 }
 
 .app-preferences-section__advanced summary {

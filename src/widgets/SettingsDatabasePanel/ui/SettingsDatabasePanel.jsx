@@ -1,5 +1,8 @@
 import { memo } from "react";
-import { AppPreferencesSection } from "@features/app-preferences";
+import {
+  AppPreferencesSection,
+  ImportExportSettingsSection,
+} from "@features/app-preferences";
 import { ImportDeckModal } from "@features/deck-import";
 import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
@@ -59,18 +62,17 @@ export const SettingsDatabasePanel = memo(() => {
 
         <div className="settings-page-panel__column">
           <section className="settings-page-panel__section">
-            <h3>Interface</h3>
-            <p>Theme behavior for your workspace.</p>
+            <h3>General</h3>
+            <p>Theme and shortcuts for everyday navigation.</p>
             <div className="settings-page-panel__theme">
               <ThemeSwitch isDarkTheme={isDarkTheme} onToggle={toggleTheme} />
             </div>
+            <ShortcutSettingsSection compact />
           </section>
 
-          <ShortcutSettingsSection />
-
           <section className="settings-page-panel__section">
-            <h3>Import and Packages</h3>
-            <p>Bring external decks into your local library.</p>
+            <h3>Deck Import and Export</h3>
+            <p>Bring external decks into your local library and set defaults.</p>
 
             <div className="settings-page-panel__actions">
               <button
@@ -81,10 +83,12 @@ export const SettingsDatabasePanel = memo(() => {
                 {isImporting ? "Importing..." : "Import deck package"}
               </button>
             </div>
+
+            <ImportExportSettingsSection />
           </section>
 
           <section className="settings-page-panel__section">
-            <h3>Local Database</h3>
+            <h3>Storage and Integrity</h3>
             <p>Control storage location and integrity checks.</p>
 
             <div className="settings-page-panel__path">

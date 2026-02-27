@@ -1,0 +1,43 @@
+.import-export-settings {
+  display: grid;
+  gap: 8px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+}
+
+.import-export-settings__field {
+  display: grid;
+  gap: 4px;
+}
+
+.import-export-settings__field > span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+}
+
+.import-export-settings__field > select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 7px 9px;
+}
+
+.import-export-settings__check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.import-export-settings__check input[type="checkbox"] {
+  margin: 0;
+}
+
+.import-export-settings__check > span {
+  color: var(--color-text);
+  font-size: 0.8rem;
+}
