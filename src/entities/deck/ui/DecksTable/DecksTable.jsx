@@ -172,7 +172,7 @@ export const DecksTable = memo(
           {decks.length === 0 ? (
             <tr>
               <td colSpan={5} className="decks-table__empty">
-                No decks found. Create one or import a JSON deck.
+                No decks found. Create one or import a deck file.
               </td>
             </tr>
           ) : decks.map((deck) => {
