@@ -1,7 +1,7 @@
 .desktop-title-bar {
   position: relative;
-  height: env(titlebar-area-height, 36px);
-  min-height: 36px;
+  height: env(titlebar-area-height, 37px);
+  min-height: 37px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -29,29 +29,45 @@
 
 .desktop-title-bar__history {
   display: inline-flex;
-  gap: 4px;
+  gap: 3px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
   -webkit-app-region: no-drag;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.desktop-title-bar__history:hover {
+  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 28%, transparent);
 }
 
 .desktop-title-bar__history button {
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
-  color: var(--color-text);
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 78%, var(--color-text-muted));
   display: grid;
   place-items: center;
   cursor: pointer;
   padding: 0;
+  transition: background-color 120ms ease, color 120ms ease;
 }
 
 .desktop-title-bar__history button:hover:not(:disabled) {
-  background: var(--color-surface-muted);
+  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  color: var(--color-text);
+}
+
+.desktop-title-bar__history button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--color-surface-muted) 78%, transparent);
 }
 
 .desktop-title-bar__history button:disabled {
-  opacity: 0.45;
+  opacity: 0.38;
   cursor: not-allowed;
 }
 
