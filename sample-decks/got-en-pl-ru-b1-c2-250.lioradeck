@@ -1,0 +1,4270 @@
+{
+  "format": "lioralang.deck",
+  "version": 1,
+  "exportedAt": "2026-02-26T23:50:40.358Z",
+  "deck": {
+    "name": "Game of Thrones B1-C2 (EN-PL-RU) - 250",
+    "description": "Test deck with advanced Game of Thrones themed vocabulary and collocations.",
+    "sourceLanguage": "English",
+    "targetLanguage": "Polish",
+    "tertiaryLanguage": "Russian",
+    "tags": [
+      "game-of-thrones",
+      "westeros",
+      "b1-c2",
+      "test-pack"
+    ]
+  },
+  "words": [
+    {
+      "id": "got-1",
+      "source": "northern throne",
+      "target": "północny tron",
+      "tertiary": "северный трон",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"northern throne\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-2",
+      "source": "northern banner",
+      "target": "północny sztandar",
+      "tertiary": "северный знамя",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"northern banner\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-3",
+      "source": "northern oath",
+      "target": "północny przysięga",
+      "tertiary": "северный клятва",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"northern oath\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-4",
+      "source": "northern council",
+      "target": "północny rada",
+      "tertiary": "северный совет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"northern council\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-5",
+      "source": "northern alliance",
+      "target": "północny sojusz",
+      "tertiary": "северный союз",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"northern alliance\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-6",
+      "source": "northern siege",
+      "target": "północny oblężenie",
+      "tertiary": "северный осада",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"northern siege\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-7",
+      "source": "northern fortress",
+      "target": "północny forteca",
+      "tertiary": "северный крепость",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"northern fortress\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-8",
+      "source": "northern watch",
+      "target": "północny straż",
+      "tertiary": "северный дозор",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"northern watch\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-9",
+      "source": "northern vow",
+      "target": "północny ślubowanie",
+      "tertiary": "северный обет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"northern vow\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-10",
+      "source": "northern legacy",
+      "target": "północny dziedzictwo",
+      "tertiary": "северный наследие",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"northern legacy\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-11",
+      "source": "northern bloodline",
+      "target": "północny linia krwi",
+      "tertiary": "северный кровная линия",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"northern bloodline\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-12",
+      "source": "northern kingdom",
+      "target": "północny królestwo",
+      "tertiary": "северный королевство",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"northern kingdom\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-13",
+      "source": "northern regent",
+      "target": "północny regent",
+      "tertiary": "северный регент",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"northern regent\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-14",
+      "source": "northern heir",
+      "target": "północny dziedzic",
+      "tertiary": "северный наследник",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"northern heir\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-15",
+      "source": "northern rebellion",
+      "target": "północny bunt",
+      "tertiary": "северный восстание",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"northern rebellion\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-16",
+      "source": "northern intrigue",
+      "target": "północny intryga",
+      "tertiary": "северный интрига",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"northern intrigue\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-17",
+      "source": "northern betrayal",
+      "target": "północny zdrada",
+      "tertiary": "северный предательство",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"northern betrayal\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-18",
+      "source": "northern destiny",
+      "target": "północny przeznaczenie",
+      "tertiary": "северный судьба",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"northern destiny\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-19",
+      "source": "northern prophecy",
+      "target": "północny proroctwo",
+      "tertiary": "северный пророчество",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"northern prophecy\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-20",
+      "source": "northern trial",
+      "target": "północny sąd",
+      "tertiary": "северный суд",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"northern trial\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-21",
+      "source": "northern citadel",
+      "target": "północny cytadela",
+      "tertiary": "северный цитадель",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"northern citadel\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-22",
+      "source": "northern raven",
+      "target": "północny kruk",
+      "tertiary": "северный ворон",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"northern raven\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-23",
+      "source": "northern dragon",
+      "target": "północny smok",
+      "tertiary": "северный дракон",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"northern dragon\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-24",
+      "source": "northern wildfire",
+      "target": "północny dziki ogień",
+      "tertiary": "северный дикий огонь",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"northern wildfire\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-25",
+      "source": "northern night",
+      "target": "północny noc",
+      "tertiary": "северный ночь",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"northern night\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-26",
+      "source": "royal throne",
+      "target": "królewski tron",
+      "tertiary": "королевский трон",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"royal throne\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-27",
+      "source": "royal banner",
+      "target": "królewski sztandar",
+      "tertiary": "королевский знамя",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"royal banner\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-28",
+      "source": "royal oath",
+      "target": "królewski przysięga",
+      "tertiary": "королевский клятва",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"royal oath\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-29",
+      "source": "royal council",
+      "target": "królewski rada",
+      "tertiary": "королевский совет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"royal council\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-30",
+      "source": "royal alliance",
+      "target": "królewski sojusz",
+      "tertiary": "королевский союз",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"royal alliance\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-31",
+      "source": "royal siege",
+      "target": "królewski oblężenie",
+      "tertiary": "королевский осада",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"royal siege\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-32",
+      "source": "royal fortress",
+      "target": "królewski forteca",
+      "tertiary": "королевский крепость",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"royal fortress\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-33",
+      "source": "royal watch",
+      "target": "królewski straż",
+      "tertiary": "королевский дозор",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"royal watch\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-34",
+      "source": "royal vow",
+      "target": "królewski ślubowanie",
+      "tertiary": "королевский обет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"royal vow\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-35",
+      "source": "royal legacy",
+      "target": "królewski dziedzictwo",
+      "tertiary": "королевский наследие",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"royal legacy\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-36",
+      "source": "royal bloodline",
+      "target": "królewski linia krwi",
+      "tertiary": "королевский кровная линия",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"royal bloodline\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-37",
+      "source": "royal kingdom",
+      "target": "królewski królestwo",
+      "tertiary": "королевский королевство",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"royal kingdom\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-38",
+      "source": "royal regent",
+      "target": "królewski regent",
+      "tertiary": "королевский регент",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"royal regent\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-39",
+      "source": "royal heir",
+      "target": "królewski dziedzic",
+      "tertiary": "королевский наследник",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"royal heir\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-40",
+      "source": "royal rebellion",
+      "target": "królewski bunt",
+      "tertiary": "королевский восстание",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"royal rebellion\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-41",
+      "source": "royal intrigue",
+      "target": "królewski intryga",
+      "tertiary": "королевский интрига",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"royal intrigue\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-42",
+      "source": "royal betrayal",
+      "target": "królewski zdrada",
+      "tertiary": "королевский предательство",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"royal betrayal\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-43",
+      "source": "royal destiny",
+      "target": "królewski przeznaczenie",
+      "tertiary": "королевский судьба",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"royal destiny\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-44",
+      "source": "royal prophecy",
+      "target": "królewski proroctwo",
+      "tertiary": "королевский пророчество",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"royal prophecy\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-45",
+      "source": "royal trial",
+      "target": "królewski sąd",
+      "tertiary": "королевский суд",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"royal trial\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-46",
+      "source": "royal citadel",
+      "target": "królewski cytadela",
+      "tertiary": "королевский цитадель",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"royal citadel\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-47",
+      "source": "royal raven",
+      "target": "królewski kruk",
+      "tertiary": "королевский ворон",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"royal raven\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-48",
+      "source": "royal dragon",
+      "target": "królewski smok",
+      "tertiary": "королевский дракон",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"royal dragon\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-49",
+      "source": "royal wildfire",
+      "target": "królewski dziki ogień",
+      "tertiary": "королевский дикий огонь",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"royal wildfire\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-50",
+      "source": "royal night",
+      "target": "królewski noc",
+      "tertiary": "королевский ночь",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"royal night\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-51",
+      "source": "ancient throne",
+      "target": "starożytny tron",
+      "tertiary": "древний трон",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"ancient throne\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-52",
+      "source": "ancient banner",
+      "target": "starożytny sztandar",
+      "tertiary": "древний знамя",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"ancient banner\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-53",
+      "source": "ancient oath",
+      "target": "starożytny przysięga",
+      "tertiary": "древний клятва",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"ancient oath\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-54",
+      "source": "ancient council",
+      "target": "starożytny rada",
+      "tertiary": "древний совет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"ancient council\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-55",
+      "source": "ancient alliance",
+      "target": "starożytny sojusz",
+      "tertiary": "древний союз",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"ancient alliance\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-56",
+      "source": "ancient siege",
+      "target": "starożytny oblężenie",
+      "tertiary": "древний осада",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"ancient siege\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-57",
+      "source": "ancient fortress",
+      "target": "starożytny forteca",
+      "tertiary": "древний крепость",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"ancient fortress\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-58",
+      "source": "ancient watch",
+      "target": "starożytny straż",
+      "tertiary": "древний дозор",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"ancient watch\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-59",
+      "source": "ancient vow",
+      "target": "starożytny ślubowanie",
+      "tertiary": "древний обет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"ancient vow\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-60",
+      "source": "ancient legacy",
+      "target": "starożytny dziedzictwo",
+      "tertiary": "древний наследие",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"ancient legacy\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-61",
+      "source": "ancient bloodline",
+      "target": "starożytny linia krwi",
+      "tertiary": "древний кровная линия",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"ancient bloodline\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-62",
+      "source": "ancient kingdom",
+      "target": "starożytny królestwo",
+      "tertiary": "древний королевство",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"ancient kingdom\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-63",
+      "source": "ancient regent",
+      "target": "starożytny regent",
+      "tertiary": "древний регент",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"ancient regent\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-64",
+      "source": "ancient heir",
+      "target": "starożytny dziedzic",
+      "tertiary": "древний наследник",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"ancient heir\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-65",
+      "source": "ancient rebellion",
+      "target": "starożytny bunt",
+      "tertiary": "древний восстание",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"ancient rebellion\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-66",
+      "source": "ancient intrigue",
+      "target": "starożytny intryga",
+      "tertiary": "древний интрига",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"ancient intrigue\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-67",
+      "source": "ancient betrayal",
+      "target": "starożytny zdrada",
+      "tertiary": "древний предательство",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"ancient betrayal\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-68",
+      "source": "ancient destiny",
+      "target": "starożytny przeznaczenie",
+      "tertiary": "древний судьба",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"ancient destiny\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-69",
+      "source": "ancient prophecy",
+      "target": "starożytny proroctwo",
+      "tertiary": "древний пророчество",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"ancient prophecy\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-70",
+      "source": "ancient trial",
+      "target": "starożytny sąd",
+      "tertiary": "древний суд",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"ancient trial\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-71",
+      "source": "ancient citadel",
+      "target": "starożytny cytadela",
+      "tertiary": "древний цитадель",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"ancient citadel\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-72",
+      "source": "ancient raven",
+      "target": "starożytny kruk",
+      "tertiary": "древний ворон",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"ancient raven\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-73",
+      "source": "ancient dragon",
+      "target": "starożytny smok",
+      "tertiary": "древний дракон",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"ancient dragon\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-74",
+      "source": "ancient wildfire",
+      "target": "starożytny dziki ogień",
+      "tertiary": "древний дикий огонь",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"ancient wildfire\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-75",
+      "source": "ancient night",
+      "target": "starożytny noc",
+      "tertiary": "древний ночь",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"ancient night\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-76",
+      "source": "sacred throne",
+      "target": "święty tron",
+      "tertiary": "священный трон",
+      "level": "B1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"sacred throne\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-77",
+      "source": "sacred banner",
+      "target": "święty sztandar",
+      "tertiary": "священный знамя",
+      "level": "B1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"sacred banner\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-78",
+      "source": "sacred oath",
+      "target": "święty przysięga",
+      "tertiary": "священный клятва",
+      "level": "B1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"sacred oath\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-79",
+      "source": "sacred council",
+      "target": "święty rada",
+      "tertiary": "священный совет",
+      "level": "B1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"sacred council\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-80",
+      "source": "sacred alliance",
+      "target": "święty sojusz",
+      "tertiary": "священный союз",
+      "level": "B1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"sacred alliance\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-81",
+      "source": "sacred siege",
+      "target": "święty oblężenie",
+      "tertiary": "священный осада",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"sacred siege\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-82",
+      "source": "sacred fortress",
+      "target": "święty forteca",
+      "tertiary": "священный крепость",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"sacred fortress\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-83",
+      "source": "sacred watch",
+      "target": "święty straż",
+      "tertiary": "священный дозор",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"sacred watch\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-84",
+      "source": "sacred vow",
+      "target": "święty ślubowanie",
+      "tertiary": "священный обет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"sacred vow\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-85",
+      "source": "sacred legacy",
+      "target": "święty dziedzictwo",
+      "tertiary": "священный наследие",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"sacred legacy\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-86",
+      "source": "sacred bloodline",
+      "target": "święty linia krwi",
+      "tertiary": "священный кровная линия",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"sacred bloodline\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-87",
+      "source": "sacred kingdom",
+      "target": "święty królestwo",
+      "tertiary": "священный королевство",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"sacred kingdom\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-88",
+      "source": "sacred regent",
+      "target": "święty regent",
+      "tertiary": "священный регент",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"sacred regent\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-89",
+      "source": "sacred heir",
+      "target": "święty dziedzic",
+      "tertiary": "священный наследник",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"sacred heir\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-90",
+      "source": "sacred rebellion",
+      "target": "święty bunt",
+      "tertiary": "священный восстание",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"sacred rebellion\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-91",
+      "source": "sacred intrigue",
+      "target": "święty intryga",
+      "tertiary": "священный интрига",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"sacred intrigue\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-92",
+      "source": "sacred betrayal",
+      "target": "święty zdrada",
+      "tertiary": "священный предательство",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"sacred betrayal\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-93",
+      "source": "sacred destiny",
+      "target": "święty przeznaczenie",
+      "tertiary": "священный судьба",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"sacred destiny\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-94",
+      "source": "sacred prophecy",
+      "target": "święty proroctwo",
+      "tertiary": "священный пророчество",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"sacred prophecy\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-95",
+      "source": "sacred trial",
+      "target": "święty sąd",
+      "tertiary": "священный суд",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"sacred trial\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-96",
+      "source": "sacred citadel",
+      "target": "święty cytadela",
+      "tertiary": "священный цитадель",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"sacred citadel\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-97",
+      "source": "sacred raven",
+      "target": "święty kruk",
+      "tertiary": "священный ворон",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"sacred raven\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-98",
+      "source": "sacred dragon",
+      "target": "święty smok",
+      "tertiary": "священный дракон",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"sacred dragon\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-99",
+      "source": "sacred wildfire",
+      "target": "święty dziki ogień",
+      "tertiary": "священный дикий огонь",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"sacred wildfire\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-100",
+      "source": "sacred night",
+      "target": "święty noc",
+      "tertiary": "священный ночь",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"sacred night\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-101",
+      "source": "forbidden throne",
+      "target": "zakazany tron",
+      "tertiary": "запретный трон",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"forbidden throne\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-102",
+      "source": "forbidden banner",
+      "target": "zakazany sztandar",
+      "tertiary": "запретный знамя",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"forbidden banner\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-103",
+      "source": "forbidden oath",
+      "target": "zakazany przysięga",
+      "tertiary": "запретный клятва",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"forbidden oath\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-104",
+      "source": "forbidden council",
+      "target": "zakazany rada",
+      "tertiary": "запретный совет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"forbidden council\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-105",
+      "source": "forbidden alliance",
+      "target": "zakazany sojusz",
+      "tertiary": "запретный союз",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"forbidden alliance\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-106",
+      "source": "forbidden siege",
+      "target": "zakazany oblężenie",
+      "tertiary": "запретный осада",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"forbidden siege\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-107",
+      "source": "forbidden fortress",
+      "target": "zakazany forteca",
+      "tertiary": "запретный крепость",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"forbidden fortress\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-108",
+      "source": "forbidden watch",
+      "target": "zakazany straż",
+      "tertiary": "запретный дозор",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"forbidden watch\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-109",
+      "source": "forbidden vow",
+      "target": "zakazany ślubowanie",
+      "tertiary": "запретный обет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"forbidden vow\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-110",
+      "source": "forbidden legacy",
+      "target": "zakazany dziedzictwo",
+      "tertiary": "запретный наследие",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"forbidden legacy\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-111",
+      "source": "forbidden bloodline",
+      "target": "zakazany linia krwi",
+      "tertiary": "запретный кровная линия",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"forbidden bloodline\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-112",
+      "source": "forbidden kingdom",
+      "target": "zakazany królestwo",
+      "tertiary": "запретный королевство",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"forbidden kingdom\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-113",
+      "source": "forbidden regent",
+      "target": "zakazany regent",
+      "tertiary": "запретный регент",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"forbidden regent\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-114",
+      "source": "forbidden heir",
+      "target": "zakazany dziedzic",
+      "tertiary": "запретный наследник",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"forbidden heir\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-115",
+      "source": "forbidden rebellion",
+      "target": "zakazany bunt",
+      "tertiary": "запретный восстание",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"forbidden rebellion\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-116",
+      "source": "forbidden intrigue",
+      "target": "zakazany intryga",
+      "tertiary": "запретный интрига",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"forbidden intrigue\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-117",
+      "source": "forbidden betrayal",
+      "target": "zakazany zdrada",
+      "tertiary": "запретный предательство",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"forbidden betrayal\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-118",
+      "source": "forbidden destiny",
+      "target": "zakazany przeznaczenie",
+      "tertiary": "запретный судьба",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"forbidden destiny\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-119",
+      "source": "forbidden prophecy",
+      "target": "zakazany proroctwo",
+      "tertiary": "запретный пророчество",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"forbidden prophecy\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-120",
+      "source": "forbidden trial",
+      "target": "zakazany sąd",
+      "tertiary": "запретный суд",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"forbidden trial\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-121",
+      "source": "forbidden citadel",
+      "target": "zakazany cytadela",
+      "tertiary": "запретный цитадель",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"forbidden citadel\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-122",
+      "source": "forbidden raven",
+      "target": "zakazany kruk",
+      "tertiary": "запретный ворон",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"forbidden raven\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-123",
+      "source": "forbidden dragon",
+      "target": "zakazany smok",
+      "tertiary": "запретный дракон",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"forbidden dragon\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-124",
+      "source": "forbidden wildfire",
+      "target": "zakazany dziki ogień",
+      "tertiary": "запретный дикий огонь",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"forbidden wildfire\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-125",
+      "source": "forbidden night",
+      "target": "zakazany noc",
+      "tertiary": "запретный ночь",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"forbidden night\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-126",
+      "source": "hidden throne",
+      "target": "ukryty tron",
+      "tertiary": "скрытый трон",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"hidden throne\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-127",
+      "source": "hidden banner",
+      "target": "ukryty sztandar",
+      "tertiary": "скрытый знамя",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"hidden banner\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-128",
+      "source": "hidden oath",
+      "target": "ukryty przysięga",
+      "tertiary": "скрытый клятва",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"hidden oath\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-129",
+      "source": "hidden council",
+      "target": "ukryty rada",
+      "tertiary": "скрытый совет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"hidden council\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-130",
+      "source": "hidden alliance",
+      "target": "ukryty sojusz",
+      "tertiary": "скрытый союз",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"hidden alliance\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-131",
+      "source": "hidden siege",
+      "target": "ukryty oblężenie",
+      "tertiary": "скрытый осада",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"hidden siege\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-132",
+      "source": "hidden fortress",
+      "target": "ukryty forteca",
+      "tertiary": "скрытый крепость",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"hidden fortress\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-133",
+      "source": "hidden watch",
+      "target": "ukryty straż",
+      "tertiary": "скрытый дозор",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"hidden watch\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-134",
+      "source": "hidden vow",
+      "target": "ukryty ślubowanie",
+      "tertiary": "скрытый обет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"hidden vow\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-135",
+      "source": "hidden legacy",
+      "target": "ukryty dziedzictwo",
+      "tertiary": "скрытый наследие",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"hidden legacy\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-136",
+      "source": "hidden bloodline",
+      "target": "ukryty linia krwi",
+      "tertiary": "скрытый кровная линия",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"hidden bloodline\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-137",
+      "source": "hidden kingdom",
+      "target": "ukryty królestwo",
+      "tertiary": "скрытый королевство",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"hidden kingdom\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-138",
+      "source": "hidden regent",
+      "target": "ukryty regent",
+      "tertiary": "скрытый регент",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"hidden regent\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-139",
+      "source": "hidden heir",
+      "target": "ukryty dziedzic",
+      "tertiary": "скрытый наследник",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"hidden heir\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-140",
+      "source": "hidden rebellion",
+      "target": "ukryty bunt",
+      "tertiary": "скрытый восстание",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"hidden rebellion\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-141",
+      "source": "hidden intrigue",
+      "target": "ukryty intryga",
+      "tertiary": "скрытый интрига",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"hidden intrigue\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-142",
+      "source": "hidden betrayal",
+      "target": "ukryty zdrada",
+      "tertiary": "скрытый предательство",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"hidden betrayal\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-143",
+      "source": "hidden destiny",
+      "target": "ukryty przeznaczenie",
+      "tertiary": "скрытый судьба",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"hidden destiny\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-144",
+      "source": "hidden prophecy",
+      "target": "ukryty proroctwo",
+      "tertiary": "скрытый пророчество",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"hidden prophecy\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-145",
+      "source": "hidden trial",
+      "target": "ukryty sąd",
+      "tertiary": "скрытый суд",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"hidden trial\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-146",
+      "source": "hidden citadel",
+      "target": "ukryty cytadela",
+      "tertiary": "скрытый цитадель",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"hidden citadel\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-147",
+      "source": "hidden raven",
+      "target": "ukryty kruk",
+      "tertiary": "скрытый ворон",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"hidden raven\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-148",
+      "source": "hidden dragon",
+      "target": "ukryty smok",
+      "tertiary": "скрытый дракон",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"hidden dragon\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-149",
+      "source": "hidden wildfire",
+      "target": "ukryty dziki ogień",
+      "tertiary": "скрытый дикий огонь",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"hidden wildfire\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-150",
+      "source": "hidden night",
+      "target": "ukryty noc",
+      "tertiary": "скрытый ночь",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"hidden night\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-151",
+      "source": "bloody throne",
+      "target": "krwawy tron",
+      "tertiary": "кровавый трон",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"bloody throne\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-152",
+      "source": "bloody banner",
+      "target": "krwawy sztandar",
+      "tertiary": "кровавый знамя",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"bloody banner\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-153",
+      "source": "bloody oath",
+      "target": "krwawy przysięga",
+      "tertiary": "кровавый клятва",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"bloody oath\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-154",
+      "source": "bloody council",
+      "target": "krwawy rada",
+      "tertiary": "кровавый совет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"bloody council\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-155",
+      "source": "bloody alliance",
+      "target": "krwawy sojusz",
+      "tertiary": "кровавый союз",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"bloody alliance\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-156",
+      "source": "bloody siege",
+      "target": "krwawy oblężenie",
+      "tertiary": "кровавый осада",
+      "level": "B2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"bloody siege\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-157",
+      "source": "bloody fortress",
+      "target": "krwawy forteca",
+      "tertiary": "кровавый крепость",
+      "level": "B2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"bloody fortress\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-158",
+      "source": "bloody watch",
+      "target": "krwawy straż",
+      "tertiary": "кровавый дозор",
+      "level": "B2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"bloody watch\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-159",
+      "source": "bloody vow",
+      "target": "krwawy ślubowanie",
+      "tertiary": "кровавый обет",
+      "level": "B2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"bloody vow\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-160",
+      "source": "bloody legacy",
+      "target": "krwawy dziedzictwo",
+      "tertiary": "кровавый наследие",
+      "level": "B2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"bloody legacy\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-161",
+      "source": "bloody bloodline",
+      "target": "krwawy linia krwi",
+      "tertiary": "кровавый кровная линия",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"bloody bloodline\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-162",
+      "source": "bloody kingdom",
+      "target": "krwawy królestwo",
+      "tertiary": "кровавый королевство",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"bloody kingdom\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-163",
+      "source": "bloody regent",
+      "target": "krwawy regent",
+      "tertiary": "кровавый регент",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"bloody regent\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-164",
+      "source": "bloody heir",
+      "target": "krwawy dziedzic",
+      "tertiary": "кровавый наследник",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"bloody heir\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-165",
+      "source": "bloody rebellion",
+      "target": "krwawy bunt",
+      "tertiary": "кровавый восстание",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"bloody rebellion\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-166",
+      "source": "bloody intrigue",
+      "target": "krwawy intryga",
+      "tertiary": "кровавый интрига",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"bloody intrigue\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-167",
+      "source": "bloody betrayal",
+      "target": "krwawy zdrada",
+      "tertiary": "кровавый предательство",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"bloody betrayal\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-168",
+      "source": "bloody destiny",
+      "target": "krwawy przeznaczenie",
+      "tertiary": "кровавый судьба",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"bloody destiny\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-169",
+      "source": "bloody prophecy",
+      "target": "krwawy proroctwo",
+      "tertiary": "кровавый пророчество",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"bloody prophecy\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-170",
+      "source": "bloody trial",
+      "target": "krwawy sąd",
+      "tertiary": "кровавый суд",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"bloody trial\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-171",
+      "source": "bloody citadel",
+      "target": "krwawy cytadela",
+      "tertiary": "кровавый цитадель",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"bloody citadel\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-172",
+      "source": "bloody raven",
+      "target": "krwawy kruk",
+      "tertiary": "кровавый ворон",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"bloody raven\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-173",
+      "source": "bloody dragon",
+      "target": "krwawy smok",
+      "tertiary": "кровавый дракон",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"bloody dragon\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-174",
+      "source": "bloody wildfire",
+      "target": "krwawy dziki ogień",
+      "tertiary": "кровавый дикий огонь",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"bloody wildfire\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-175",
+      "source": "bloody night",
+      "target": "krwawy noc",
+      "tertiary": "кровавый ночь",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"bloody night\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-176",
+      "source": "brutal throne",
+      "target": "brutalny tron",
+      "tertiary": "жестокий трон",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"brutal throne\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-177",
+      "source": "brutal banner",
+      "target": "brutalny sztandar",
+      "tertiary": "жестокий знамя",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"brutal banner\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-178",
+      "source": "brutal oath",
+      "target": "brutalny przysięga",
+      "tertiary": "жестокий клятва",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"brutal oath\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-179",
+      "source": "brutal council",
+      "target": "brutalny rada",
+      "tertiary": "жестокий совет",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"brutal council\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-180",
+      "source": "brutal alliance",
+      "target": "brutalny sojusz",
+      "tertiary": "жестокий союз",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"brutal alliance\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-181",
+      "source": "brutal siege",
+      "target": "brutalny oblężenie",
+      "tertiary": "жестокий осада",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"brutal siege\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-182",
+      "source": "brutal fortress",
+      "target": "brutalny forteca",
+      "tertiary": "жестокий крепость",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"brutal fortress\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-183",
+      "source": "brutal watch",
+      "target": "brutalny straż",
+      "tertiary": "жестокий дозор",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"brutal watch\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-184",
+      "source": "brutal vow",
+      "target": "brutalny ślubowanie",
+      "tertiary": "жестокий обет",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"brutal vow\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-185",
+      "source": "brutal legacy",
+      "target": "brutalny dziedzictwo",
+      "tertiary": "жестокий наследие",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"brutal legacy\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-186",
+      "source": "brutal bloodline",
+      "target": "brutalny linia krwi",
+      "tertiary": "жестокий кровная линия",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"brutal bloodline\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-187",
+      "source": "brutal kingdom",
+      "target": "brutalny królestwo",
+      "tertiary": "жестокий королевство",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"brutal kingdom\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-188",
+      "source": "brutal regent",
+      "target": "brutalny regent",
+      "tertiary": "жестокий регент",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"brutal regent\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-189",
+      "source": "brutal heir",
+      "target": "brutalny dziedzic",
+      "tertiary": "жестокий наследник",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"brutal heir\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-190",
+      "source": "brutal rebellion",
+      "target": "brutalny bunt",
+      "tertiary": "жестокий восстание",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"brutal rebellion\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-191",
+      "source": "brutal intrigue",
+      "target": "brutalny intryga",
+      "tertiary": "жестокий интрига",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"brutal intrigue\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-192",
+      "source": "brutal betrayal",
+      "target": "brutalny zdrada",
+      "tertiary": "жестокий предательство",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"brutal betrayal\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-193",
+      "source": "brutal destiny",
+      "target": "brutalny przeznaczenie",
+      "tertiary": "жестокий судьба",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"brutal destiny\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-194",
+      "source": "brutal prophecy",
+      "target": "brutalny proroctwo",
+      "tertiary": "жестокий пророчество",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"brutal prophecy\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-195",
+      "source": "brutal trial",
+      "target": "brutalny sąd",
+      "tertiary": "жестокий суд",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"brutal trial\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-196",
+      "source": "brutal citadel",
+      "target": "brutalny cytadela",
+      "tertiary": "жестокий цитадель",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"brutal citadel\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-197",
+      "source": "brutal raven",
+      "target": "brutalny kruk",
+      "tertiary": "жестокий ворон",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"brutal raven\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-198",
+      "source": "brutal dragon",
+      "target": "brutalny smok",
+      "tertiary": "жестокий дракон",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"brutal dragon\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-199",
+      "source": "brutal wildfire",
+      "target": "brutalny dziki ogień",
+      "tertiary": "жестокий дикий огонь",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"brutal wildfire\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-200",
+      "source": "brutal night",
+      "target": "brutalny noc",
+      "tertiary": "жестокий ночь",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"brutal night\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-201",
+      "source": "loyal throne",
+      "target": "lojalny tron",
+      "tertiary": "верный трон",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"loyal throne\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-202",
+      "source": "loyal banner",
+      "target": "lojalny sztandar",
+      "tertiary": "верный знамя",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"loyal banner\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-203",
+      "source": "loyal oath",
+      "target": "lojalny przysięga",
+      "tertiary": "верный клятва",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"loyal oath\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-204",
+      "source": "loyal council",
+      "target": "lojalny rada",
+      "tertiary": "верный совет",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"loyal council\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-205",
+      "source": "loyal alliance",
+      "target": "lojalny sojusz",
+      "tertiary": "верный союз",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"loyal alliance\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-206",
+      "source": "loyal siege",
+      "target": "lojalny oblężenie",
+      "tertiary": "верный осада",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"loyal siege\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-207",
+      "source": "loyal fortress",
+      "target": "lojalny forteca",
+      "tertiary": "верный крепость",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"loyal fortress\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-208",
+      "source": "loyal watch",
+      "target": "lojalny straż",
+      "tertiary": "верный дозор",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"loyal watch\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-209",
+      "source": "loyal vow",
+      "target": "lojalny ślubowanie",
+      "tertiary": "верный обет",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"loyal vow\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-210",
+      "source": "loyal legacy",
+      "target": "lojalny dziedzictwo",
+      "tertiary": "верный наследие",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"loyal legacy\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-211",
+      "source": "loyal bloodline",
+      "target": "lojalny linia krwi",
+      "tertiary": "верный кровная линия",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"loyal bloodline\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-212",
+      "source": "loyal kingdom",
+      "target": "lojalny królestwo",
+      "tertiary": "верный королевство",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"loyal kingdom\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-213",
+      "source": "loyal regent",
+      "target": "lojalny regent",
+      "tertiary": "верный регент",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"loyal regent\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-214",
+      "source": "loyal heir",
+      "target": "lojalny dziedzic",
+      "tertiary": "верный наследник",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"loyal heir\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-215",
+      "source": "loyal rebellion",
+      "target": "lojalny bunt",
+      "tertiary": "верный восстание",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"loyal rebellion\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-216",
+      "source": "loyal intrigue",
+      "target": "lojalny intryga",
+      "tertiary": "верный интрига",
+      "level": "C1",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"loyal intrigue\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-217",
+      "source": "loyal betrayal",
+      "target": "lojalny zdrada",
+      "tertiary": "верный предательство",
+      "level": "C1",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"loyal betrayal\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-218",
+      "source": "loyal destiny",
+      "target": "lojalny przeznaczenie",
+      "tertiary": "верный судьба",
+      "level": "C1",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"loyal destiny\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-219",
+      "source": "loyal prophecy",
+      "target": "lojalny proroctwo",
+      "tertiary": "верный пророчество",
+      "level": "C1",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"loyal prophecy\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-220",
+      "source": "loyal trial",
+      "target": "lojalny sąd",
+      "tertiary": "верный суд",
+      "level": "C1",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"loyal trial\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-221",
+      "source": "loyal citadel",
+      "target": "lojalny cytadela",
+      "tertiary": "верный цитадель",
+      "level": "C2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"loyal citadel\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-222",
+      "source": "loyal raven",
+      "target": "lojalny kruk",
+      "tertiary": "верный ворон",
+      "level": "C2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"loyal raven\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-223",
+      "source": "loyal dragon",
+      "target": "lojalny smok",
+      "tertiary": "верный дракон",
+      "level": "C2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"loyal dragon\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-224",
+      "source": "loyal wildfire",
+      "target": "lojalny dziki ogień",
+      "tertiary": "верный дикий огонь",
+      "level": "C2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"loyal wildfire\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-225",
+      "source": "loyal night",
+      "target": "lojalny noc",
+      "tertiary": "верный ночь",
+      "level": "C2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"loyal night\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-226",
+      "source": "treacherous throne",
+      "target": "zdradziecki tron",
+      "tertiary": "предательский трон",
+      "level": "C2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"treacherous throne\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-227",
+      "source": "treacherous banner",
+      "target": "zdradziecki sztandar",
+      "tertiary": "предательский знамя",
+      "level": "C2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"treacherous banner\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-228",
+      "source": "treacherous oath",
+      "target": "zdradziecki przysięga",
+      "tertiary": "предательский клятва",
+      "level": "C2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"treacherous oath\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-229",
+      "source": "treacherous council",
+      "target": "zdradziecki rada",
+      "tertiary": "предательский совет",
+      "level": "C2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"treacherous council\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-230",
+      "source": "treacherous alliance",
+      "target": "zdradziecki sojusz",
+      "tertiary": "предательский союз",
+      "level": "C2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"treacherous alliance\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-231",
+      "source": "treacherous siege",
+      "target": "zdradziecki oblężenie",
+      "tertiary": "предательский осада",
+      "level": "C2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"treacherous siege\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-232",
+      "source": "treacherous fortress",
+      "target": "zdradziecki forteca",
+      "tertiary": "предательский крепость",
+      "level": "C2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"treacherous fortress\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-233",
+      "source": "treacherous watch",
+      "target": "zdradziecki straż",
+      "tertiary": "предательский дозор",
+      "level": "C2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"treacherous watch\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-234",
+      "source": "treacherous vow",
+      "target": "zdradziecki ślubowanie",
+      "tertiary": "предательский обет",
+      "level": "C2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"treacherous vow\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-235",
+      "source": "treacherous legacy",
+      "target": "zdradziecki dziedzictwo",
+      "tertiary": "предательский наследие",
+      "level": "C2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"treacherous legacy\" is common in Game of Thrones style narratives."
+      ]
+    },
+    {
+      "id": "got-236",
+      "source": "treacherous bloodline",
+      "target": "zdradziecki linia krwi",
+      "tertiary": "предательский кровная линия",
+      "level": "C2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The chronicles mention \"treacherous bloodline\" as part of noble power struggles."
+      ]
+    },
+    {
+      "id": "got-237",
+      "source": "treacherous kingdom",
+      "target": "zdradziecki królestwo",
+      "tertiary": "предательский королевство",
+      "level": "C2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The verb sense of \"treacherous kingdom\" appears in tense negotiation scenes."
+      ]
+    },
+    {
+      "id": "got-238",
+      "source": "treacherous regent",
+      "target": "zdradziecki regent",
+      "tertiary": "предательский регент",
+      "level": "C2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adjective \"treacherous regent\" helps describe characters, motives, or strategies."
+      ]
+    },
+    {
+      "id": "got-239",
+      "source": "treacherous heir",
+      "target": "zdradziecki dziedzic",
+      "tertiary": "предательский наследник",
+      "level": "C2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Writers use \"treacherous heir\" to add precision to battle or court scenes."
+      ]
+    },
+    {
+      "id": "got-240",
+      "source": "treacherous rebellion",
+      "target": "zdradziecki bunt",
+      "tertiary": "предательский восстание",
+      "level": "C2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "\"treacherous rebellion\" works as a thematic phrase in fantasy-political contexts."
+      ]
+    },
+    {
+      "id": "got-241",
+      "source": "treacherous intrigue",
+      "target": "zdradziecki intryga",
+      "tertiary": "предательский интрига",
+      "level": "C2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In this deck, \"treacherous intrigue\" is used as a key political term in Westeros."
+      ]
+    },
+    {
+      "id": "got-242",
+      "source": "treacherous betrayal",
+      "target": "zdradziecki zdrada",
+      "tertiary": "предательский предательство",
+      "level": "C2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "A commander might use \"treacherous betrayal\" when giving urgent orders."
+      ]
+    },
+    {
+      "id": "got-243",
+      "source": "treacherous destiny",
+      "target": "zdradziecki przeznaczenie",
+      "tertiary": "предательский судьба",
+      "level": "C2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Use \"treacherous destiny\" to describe the mood of a political decision."
+      ]
+    },
+    {
+      "id": "got-244",
+      "source": "treacherous prophecy",
+      "target": "zdradziecki proroctwo",
+      "tertiary": "предательский пророчество",
+      "level": "C2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The adverb \"treacherous prophecy\" explains how an action is carried out."
+      ]
+    },
+    {
+      "id": "got-245",
+      "source": "treacherous trial",
+      "target": "zdradziecki sąd",
+      "tertiary": "предательский суд",
+      "level": "C2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In court language, \"treacherous trial\" can signal status and authority."
+      ]
+    },
+    {
+      "id": "got-246",
+      "source": "treacherous citadel",
+      "target": "zdradziecki cytadela",
+      "tertiary": "предательский цитадель",
+      "level": "C2",
+      "part_of_speech": "noun",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "Learners often meet \"treacherous citadel\" in scenes about war and succession."
+      ]
+    },
+    {
+      "id": "got-247",
+      "source": "treacherous raven",
+      "target": "zdradziecki kruk",
+      "tertiary": "предательский ворон",
+      "level": "C2",
+      "part_of_speech": "verb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In context, \"treacherous raven\" can describe an action during court intrigue."
+      ]
+    },
+    {
+      "id": "got-248",
+      "source": "treacherous dragon",
+      "target": "zdradziecki smok",
+      "tertiary": "предательский дракон",
+      "level": "C2",
+      "part_of_speech": "adjective",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In dialogue, \"treacherous dragon\" often adds a sharp emotional tone."
+      ]
+    },
+    {
+      "id": "got-249",
+      "source": "treacherous wildfire",
+      "target": "zdradziecki dziki ogień",
+      "tertiary": "предательский дикий огонь",
+      "level": "C2",
+      "part_of_speech": "adverb",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "In practice, \"treacherous wildfire\" modifies the manner of speech or movement."
+      ]
+    },
+    {
+      "id": "got-250",
+      "source": "treacherous night",
+      "target": "zdradziecki noc",
+      "tertiary": "предательский ночь",
+      "level": "C2",
+      "part_of_speech": "phrase",
+      "tags": [
+        "game-of-thrones",
+        "westeros",
+        "fantasy",
+        "politics"
+      ],
+      "examples": [
+        "The phrase \"treacherous night\" is common in Game of Thrones style narratives."
+      ]
+    }
+  ]
+}
