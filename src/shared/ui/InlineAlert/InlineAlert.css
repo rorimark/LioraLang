@@ -1,14 +1,20 @@
 .inline-alert {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1100;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+  width: min(380px, calc(100vw - 32px));
   border-radius: 10px;
   border: 1px solid var(--color-border);
   background: var(--color-surface-muted);
   color: var(--color-text);
   font-size: 0.82rem;
   padding: 8px 10px;
+  box-shadow: var(--shadow-sm);
 }
 
 .inline-alert--error {
@@ -46,4 +52,14 @@
 
 .inline-alert__close:hover {
   opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .inline-alert {
+    right: 12px;
+    left: 12px;
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+    bottom: auto;
+    width: auto;
+  }
 }

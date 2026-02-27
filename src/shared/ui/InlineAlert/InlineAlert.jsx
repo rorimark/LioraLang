@@ -1,57 +1,34 @@
 import { memo, useEffect } from "react";
-import "./InlineAlert.css";
-
-const AUTO_CLOSE_VARIANTS = new Set(["info", "success", "danger"]);
-const DEFAULT_AUTO_CLOSE_MS = 4200;
+import { showToast } from "@shared/lib/toast";
 
 export const InlineAlert = memo(
   ({
     text,
     variant = "info",
     onClose,
-    autoCloseMs = DEFAULT_AUTO_CLOSE_MS,
+    autoCloseMs = 4200,
     disableAutoClose = false,
   }) => {
     useEffect(() => {
-      if (
-        !text ||
-        typeof onClose !== "function" ||
-        disableAutoClose ||
-        !AUTO_CLOSE_VARIANTS.has(variant)
-      ) {
+      if (!text) {
         return undefined;
       }
 
-      const timeoutId = window.setTimeout(() => {
-        onClose();
-      }, autoCloseMs);
+      showToast({
+        text,
+        variant,
+        autoCloseMs,
+        disableAutoClose,
+      });
 
-      return () => {
-        window.clearTimeout(timeoutId);
-      };
+      if (typeof onClose === "function") {
+        onClose();
+      }
+
+      return undefined;
     }, [text, variant, onClose, autoCloseMs, disableAutoClose]);
 
-    if (!text) {
-      return null;
-    }
-
-    return (
-      <div
-        className={`inline-alert inline-alert--${variant}`}
-        role={variant === "error" || variant === "danger" ? "alert" : "status"}
-      >
-        <span className="inline-alert__text">{text}</span>
-
-        <button
-          type="button"
-          className="inline-alert__close"
-          onClick={onClose}
-          aria-label="Close notification"
-        >
-          ×
-        </button>
-      </div>
-    );
+    return null;
   },
 );
 

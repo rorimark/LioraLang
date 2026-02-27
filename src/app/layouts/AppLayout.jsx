@@ -1,7 +1,9 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { DesktopTitleBar, NavBar, PageHeader } from "@widgets";
+import { RuntimeErrorPresenter } from "@features/runtime-error";
 import { desktopApi } from "@shared/api";
 import { resolvePageMeta, ROUTE_PATHS } from "@shared/config/routes";
+import { ToastViewport } from "@shared/ui";
 import { useEffect } from "react";
 import "./AppLayout.css";
 
@@ -63,6 +65,8 @@ export const AppLayout = () => {
           <NavBar mobile />
         </div>
       </div>
+      <RuntimeErrorPresenter />
+      <ToastViewport />
     </div>
   );
 };

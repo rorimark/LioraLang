@@ -39,6 +39,7 @@ export const SettingsDatabasePanel = memo(() => {
     openDbFolder,
     changeDbLocation,
     verifyIntegrity,
+    showRuntimeErrorPreview,
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     toggleTheme,
@@ -120,6 +121,14 @@ export const SettingsDatabasePanel = memo(() => {
                 {isVerifyingIntegrity
                   ? "Checking integrity..."
                   : "Check file integrity"}
+              </button>
+
+              <button
+                type="button"
+                className="settings-page-panel__temp-action"
+                onClick={showRuntimeErrorPreview}
+              >
+                TEMP: Preview error modal
               </button>
             </div>
           </section>

@@ -74,6 +74,11 @@
   opacity: 0.6;
 }
 
+.settings-page-panel__temp-action {
+  border-color: var(--color-danger) !important;
+  color: var(--color-danger) !important;
+}
+
 .settings-page-panel__path {
   border: 1px dashed var(--color-border);
   border-radius: 9px;

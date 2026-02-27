@@ -83,8 +83,28 @@ export const useDeckDetailsPanel = () => {
         return;
       }
 
-      setMessage(`Deck exported: ${result?.filePath || "completed"}`);
-      setMessageVariant("info");
+      const exportedCount = Number.isInteger(result?.exportedCount)
+        ? result.exportedCount
+        : 0;
+      const exportedDeckName =
+        typeof result?.deckName === "string" && result.deckName.trim()
+          ? result.deckName
+          : "Deck";
+      const exportFilePath =
+        typeof result?.filePath === "string" ? result.filePath.trim() : "";
+
+      if (exportedCount === 0) {
+        setMessage(`Exported "${exportedDeckName}" as empty deck`);
+        setMessageVariant("warning");
+      } else if (!exportFilePath) {
+        setMessage(
+          `Exported "${exportedDeckName}": ${exportedCount} words (path unavailable)`,
+        );
+        setMessageVariant("warning");
+      } else {
+        setMessage(`Exported "${exportedDeckName}": ${exportedCount} words`);
+        setMessageVariant("success");
+      }
     } catch (exportError) {
       setMessage(exportError.message || "Failed to export deck");
       setMessageVariant("error");
