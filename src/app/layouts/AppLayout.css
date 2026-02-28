@@ -34,7 +34,8 @@
 .app-shell__content {
   flex: 1;
   min-height: 0;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 0 24px 24px;
 }
 
@@ -58,6 +59,15 @@
 
   .app-shell__content {
     padding: 0 16px 104px;
+  }
+
+  .app-shell__content--learn {
+    padding: 0 12px calc(env(safe-area-inset-bottom) + 82px);
+  }
+
+  .app-shell__content--learn .page.learn-page {
+    padding-top: 6px;
+    gap: 10px;
   }
 
   .app-shell__mobile-nav {

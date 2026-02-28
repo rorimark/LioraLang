@@ -45,7 +45,7 @@ body {
 }
 
 :root[ui-high-contrast="true"] {
-  --color-border: color-mix(in srgb, var(--color-text) 35%, transparent);
+  --color-border: color-mix(in srgb, var(--color-text) 35%, var(--color-transparent));
   --shadow-sm: none;
   --shadow-md: none;
 }
