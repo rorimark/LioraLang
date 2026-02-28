@@ -46,6 +46,12 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 960px) {
+  .page-header__subtitle {
+    display: none;
+  }
+}
+
 @media (max-width: 720px) {
   .page-header {
     padding: 14px 16px 12px;

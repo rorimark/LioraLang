@@ -31,16 +31,16 @@
   display: inline-flex;
   gap: 3px;
   padding: 2px;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-transparent);
   border-radius: 10px;
-  background: transparent;
+  background: var(--color-transparent);
   -webkit-app-region: no-drag;
   transition: background-color 120ms ease, border-color 120ms ease;
 }
 
 .desktop-title-bar__history:hover {
-  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
-  background: color-mix(in srgb, var(--color-surface) 28%, transparent);
+  border-color: color-mix(in srgb, var(--color-border) 60%, var(--color-transparent));
+  background: color-mix(in srgb, var(--color-surface) 28%, var(--color-transparent));
 }
 
 .desktop-title-bar__history button {
@@ -48,7 +48,7 @@
   height: 24px;
   border: 0;
   border-radius: 7px;
-  background: transparent;
+  background: var(--color-transparent);
   color: color-mix(in srgb, var(--color-text) 78%, var(--color-text-muted));
   display: grid;
   place-items: center;
@@ -58,12 +58,12 @@
 }
 
 .desktop-title-bar__history button:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 62%, var(--color-transparent));
   color: var(--color-text);
 }
 
 .desktop-title-bar__history button:active:not(:disabled) {
-  background: color-mix(in srgb, var(--color-surface-muted) 78%, transparent);
+  background: color-mix(in srgb, var(--color-surface-muted) 78%, var(--color-transparent));
 }
 
 .desktop-title-bar__history button:disabled {
@@ -91,7 +91,7 @@
   display: grid;
   place-items: center;
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-on-primary);
   font-size: 0.64rem;
   font-weight: 700;
 }
