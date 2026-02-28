@@ -3,7 +3,7 @@ import { desktopApi } from "@shared/api";
 
 const CHART_WIDTH = 560;
 const CHART_HEIGHT = 220;
-const CHART_PADDING = 22;
+const CHART_PADDING = 20;
 const WEEK_DAY_FORMATTER = new Intl.DateTimeFormat("en-US", {
   weekday: "short",
 });
@@ -13,6 +13,7 @@ const PERCENT_FORMATTER = new Intl.NumberFormat("en-US", {
 });
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+const MAX_DECK_LOAD_ITEMS = 4;
 
 const toSafeNumber = (value) => {
   const numericValue = Number(value);
@@ -241,6 +242,57 @@ const buildAreaPoints = (linePoints) => {
   return `${startX},${bottomY} ${linePoints} ${endX},${bottomY}`;
 };
 
+const buildYPosition = (value, maxValue = 1) => {
+  const safeMaxValue = Math.max(1, toSafeNumber(maxValue));
+  const clampedValue = Math.max(0, toSafeNumber(value));
+
+  return (
+    CHART_HEIGHT -
+    CHART_PADDING -
+    (clampedValue / safeMaxValue) * (CHART_HEIGHT - CHART_PADDING * 2)
+  );
+};
+
+const buildSeriesPoints = (values = [], maxValue = 1) => {
+  if (!Array.isArray(values) || values.length === 0) {
+    return [];
+  }
+
+  const safeMaxValue = Math.max(1, toSafeNumber(maxValue));
+  const stepX =
+    values.length > 1
+      ? (CHART_WIDTH - CHART_PADDING * 2) / (values.length - 1)
+      : 0;
+
+  return values.map((value, index) => ({
+    x: CHART_PADDING + stepX * index,
+    y: buildYPosition(value, safeMaxValue),
+    value: Math.max(0, toSafeNumber(value)),
+  }));
+};
+
+const buildYAxisTicks = (maxValue) => {
+  const safeMaxValue = Math.max(1, Math.round(toSafeNumber(maxValue)));
+  const rawTicks = [safeMaxValue, safeMaxValue * 0.75, safeMaxValue * 0.5, safeMaxValue * 0.25, 0];
+  const usedValues = new Set();
+
+  return rawTicks
+    .map((value) => Math.max(0, Math.round(value)))
+    .filter((value) => {
+      if (usedValues.has(value)) {
+        return false;
+      }
+
+      usedValues.add(value);
+      return true;
+    })
+    .sort((first, second) => second - first)
+    .map((value) => ({
+      value,
+      y: buildYPosition(value, safeMaxValue),
+    }));
+};
+
 const sum = (values = []) => values.reduce((total, value) => total + toSafeNumber(value), 0);
 
 const average = (values = []) => {
@@ -350,22 +402,40 @@ export const useProgressOverviewPanel = () => {
     const reviewAreaPoints = buildAreaPoints(reviewLinePoints);
     const recallScaledValues = weeklyRecall.map((value) => (value / 100) * maxReviews);
     const recallLinePoints = buildLinePoints(recallScaledValues, maxReviews);
+    const reviewPoints = buildSeriesPoints(weeklyReviews, maxReviews);
+    const recallPoints = buildSeriesPoints(recallScaledValues, maxReviews);
 
     return {
       labels: overview.weekly.map((item) => item.label),
+      reviews: weeklyReviews,
+      recall: weeklyRecall,
+      yAxisTicks: buildYAxisTicks(maxReviews),
       reviewLinePoints,
       reviewAreaPoints,
       recallLinePoints,
+      reviewPoints,
+      recallPoints,
       hasData: weeklyReviews.some((value) => value > 0),
     };
   }, [overview.weekly]);
 
   const deckLoadRows = useMemo(() => {
-    const maxCards = Math.max(1, ...overview.deckLoad.map((deck) => deck.cards));
+    const topDecks = [...overview.deckLoad]
+      .sort((leftDeck, rightDeck) => {
+        if (rightDeck.cards !== leftDeck.cards) {
+          return rightDeck.cards - leftDeck.cards;
+        }
 
-    return overview.deckLoad.map((deck) => ({
+        return rightDeck.reviews7d - leftDeck.reviews7d;
+      })
+      .slice(0, MAX_DECK_LOAD_ITEMS);
+    const maxCards = Math.max(1, ...topDecks.map((deck) => deck.cards));
+    const maxReviews = Math.max(1, ...topDecks.map((deck) => deck.reviews7d));
+
+    return topDecks.map((deck) => ({
       ...deck,
-      fillPercent: Math.round((deck.cards / maxCards) * 100),
+      cardsFillPercent: Math.round((deck.cards / maxCards) * 100),
+      reviewsFillPercent: Math.round((deck.reviews7d / maxReviews) * 100),
     }));
   }, [overview.deckLoad]);
 
