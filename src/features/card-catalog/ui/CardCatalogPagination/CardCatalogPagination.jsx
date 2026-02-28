@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
+import "./CardCatalogPagination.css";
 
 const buildVisiblePages = (currentPage, totalPages) => {
   if (totalPages <= 7) {
@@ -106,6 +107,7 @@ export const CardCatalogPagination = memo(
                 <span
                   key={`ellipsis-${index}`}
                   className="cards-pagination__ellipsis"
+                  aria-hidden="true"
                 >
                   ...
                 </span>
@@ -123,6 +125,8 @@ export const CardCatalogPagination = memo(
                     : "cards-pagination__page"
                 }
                 onClick={handlePageButtonClick}
+                aria-current={page === currentPage ? "page" : undefined}
+                aria-label={`Go to page ${page}`}
               >
                 {page}
               </button>
