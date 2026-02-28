@@ -6,7 +6,7 @@ import {
 } from "@shared/lib/toast";
 import "./ToastViewport.css";
 
-const AUTO_CLOSE_VARIANTS = new Set(["info", "success", "warning", "danger"]);
+const AUTO_CLOSE_VARIANTS = new Set(["info", "success", "warning"]);
 const EXIT_ANIMATION_MS = 170;
 
 const resolveExitAnimationDuration = () => {

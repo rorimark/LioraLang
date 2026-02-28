@@ -11,7 +11,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(2, 6, 23, 0.56);
+  background: var(--color-overlay);
 }
 
 .runtime-error-modal__content {
@@ -41,7 +41,7 @@
 
 .runtime-error-modal__close {
   border: 0;
-  background: transparent;
+  background: var(--color-transparent);
   color: var(--color-text-muted);
   cursor: pointer;
   font-size: 1.15rem;
@@ -78,7 +78,7 @@
 .runtime-error-modal__dismiss {
   border: 1px solid var(--color-danger);
   border-radius: 8px;
-  background: transparent;
+  background: var(--color-transparent);
   color: var(--color-danger);
   cursor: pointer;
   font-family: inherit;
@@ -87,5 +87,5 @@
 }
 
 .runtime-error-modal__dismiss:hover {
-  background: rgba(220, 38, 38, 0.12);
+  background: color-mix(in srgb, var(--color-danger) 12%, var(--color-transparent));
 }

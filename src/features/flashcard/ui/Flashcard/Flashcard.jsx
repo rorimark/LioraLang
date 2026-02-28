@@ -18,16 +18,27 @@ export const Flashcard = memo(
         className={isFlipped ? "flashcard flashcard--flipped" : "flashcard"}
         onClick={onFlip}
         disabled={disabled}
-        aria-label="Flashcard, click to flip"
+        aria-label={
+          isFlipped
+            ? "Flashcard back side. Press to show front side."
+            : "Flashcard front side. Press to reveal answer."
+        }
+        aria-pressed={isFlipped}
       >
         <span className="flashcard__inner">
-          <span className="flashcard__face flashcard__face--front">
+          <span
+            className="flashcard__face flashcard__face--front"
+            aria-hidden={isFlipped}
+          >
             <span className="flashcard__label">{frontLabel}</span>
             <strong className="flashcard__text">{frontText || "-"}</strong>
             <span className="flashcard__hint">Tap to reveal answer</span>
           </span>
 
-          <span className="flashcard__face flashcard__face--back">
+          <span
+            className="flashcard__face flashcard__face--back"
+            aria-hidden={!isFlipped}
+          >
             <span className="flashcard__head">
               <span className="flashcard__label">{backLabel}</span>
               {backMetaBadges.length > 0 && (

@@ -11,7 +11,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--color-overlay);
 }
 
 .action-modal__content {
@@ -41,7 +41,7 @@
 
 .action-modal__close {
   border: 0;
-  background: transparent;
+  background: var(--color-transparent);
   color: var(--color-text-muted);
   cursor: pointer;
   font-size: 1.15rem;
