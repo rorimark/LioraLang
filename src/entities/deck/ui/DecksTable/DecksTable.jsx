@@ -195,16 +195,15 @@ export const DecksTable = memo(
                       ))}
 
                       {hiddenTags.length > 0 && (
-                        <span className="decks-table__tags-more-wrap">
-                          <span
+                        <details className="decks-table__tags-more-wrap">
+                          <summary
                             className="decks-table__tags-more"
-                            tabIndex={0}
                             title={allTagsTooltip}
                             aria-describedby={`deck-tags-tooltip-${deck.id}`}
                             aria-label={`Show all tags for ${deck.name}`}
                           >
                             ...
-                          </span>
+                          </summary>
                           <span
                             id={`deck-tags-tooltip-${deck.id}`}
                             role="tooltip"
@@ -212,7 +211,7 @@ export const DecksTable = memo(
                           >
                             {allTagsTooltip}
                           </span>
-                        </span>
+                        </details>
                       )}
                     </div>
                   </div>

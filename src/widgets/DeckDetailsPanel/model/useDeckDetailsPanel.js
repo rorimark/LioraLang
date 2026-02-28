@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { useDeckWords } from "@entities/deck";
 import { useCardCatalog } from "@features/card-catalog";
 import { desktopApi } from "@shared/api";
+import { useAppPreferences } from "@shared/lib/appPreferences";
 
 const FILTERS_BREAKPOINT = 1080;
 
@@ -17,6 +18,7 @@ const isNarrowViewport = () => {
 export const useDeckDetailsPanel = () => {
   const navigate = useNavigate();
   const { deckId } = useParams();
+  const { appPreferences } = useAppPreferences();
   const { deck, words, isLoading, error, refreshDeckWords } = useDeckWords(deckId);
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
@@ -77,7 +79,11 @@ export const useDeckDetailsPanel = () => {
     setIsExporting(true);
 
     try {
-      const result = await desktopApi.exportDeckToJson(deckId);
+      const result = await desktopApi.exportDeckToJson(deckId, {
+        exportFormat: appPreferences.importExport.exportFormat,
+        includeExamples: appPreferences.importExport.includeExamples,
+        includeTags: appPreferences.importExport.includeTags,
+      });
 
       if (result?.canceled) {
         return;
@@ -111,7 +117,12 @@ export const useDeckDetailsPanel = () => {
     } finally {
       setIsExporting(false);
     }
-  }, [deckId]);
+  }, [
+    appPreferences.importExport.exportFormat,
+    appPreferences.importExport.includeExamples,
+    appPreferences.importExport.includeTags,
+    deckId,
+  ]);
 
   const clearMessage = useCallback(() => {
     setMessage("");

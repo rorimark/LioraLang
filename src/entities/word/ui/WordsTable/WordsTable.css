@@ -55,7 +55,7 @@
   .words-table {
     min-width: 0;
     border: none;
-    background: transparent;
+    background: var(--color-transparent);
   }
 
   .words-table thead {

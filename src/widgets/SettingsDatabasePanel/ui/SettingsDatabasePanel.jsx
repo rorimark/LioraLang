@@ -39,7 +39,6 @@ export const SettingsDatabasePanel = memo(() => {
     openDbFolder,
     changeDbLocation,
     verifyIntegrity,
-    showRuntimeErrorPreview,
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     toggleTheme,
@@ -49,7 +48,7 @@ export const SettingsDatabasePanel = memo(() => {
   } = useSettingsDatabasePanel();
 
   return (
-    <article className="panel settings-page-panel">
+    <article className="settings-page-panel">
       <InlineAlert
         text={statusMessage}
         variant={statusVariant}
@@ -57,11 +56,9 @@ export const SettingsDatabasePanel = memo(() => {
       />
 
       <div className="settings-page-panel__layout">
-        <div className="settings-page-panel__column settings-page-panel__column--wide">
-          <AppPreferencesSection />
-        </div>
+        <AppPreferencesSection />
 
-        <div className="settings-page-panel__column">
+        <aside className="settings-page-panel__side">
           <section className="settings-page-panel__section">
             <h3>General</h3>
             <p>Theme and shortcuts for everyday navigation.</p>
@@ -122,17 +119,9 @@ export const SettingsDatabasePanel = memo(() => {
                   ? "Checking integrity..."
                   : "Check file integrity"}
               </button>
-
-              <button
-                type="button"
-                className="settings-page-panel__temp-action"
-                onClick={showRuntimeErrorPreview}
-              >
-                TEMP: Preview error modal
-              </button>
             </div>
           </section>
-        </div>
+        </aside>
       </div>
 
       <ImportDeckModal

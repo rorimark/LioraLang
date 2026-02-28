@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { desktopApi } from "@shared/api";
+import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   DEFAULT_SOURCE_LANGUAGE,
   DEFAULT_TARGET_LANGUAGE,
@@ -23,24 +24,89 @@ const PART_OF_SPEECH_OPTIONS = [
 const WORDS_PAGE_SIZE_OPTIONS = [10, 20, 50];
 const DEFAULT_WORDS_PAGE_SIZE = WORDS_PAGE_SIZE_OPTIONS[0];
 const MAX_TOTAL_TAGS = 10;
+const LEVEL_OPTIONS_SET = new Set(LEVEL_OPTIONS);
+const PART_OF_SPEECH_OPTIONS_SET = new Set(PART_OF_SPEECH_OPTIONS);
 
-const createDefaultDeckForm = () => ({
-  name: "",
-  description: "",
-  sourceLanguage: DEFAULT_SOURCE_LANGUAGE,
-  targetLanguage: DEFAULT_TARGET_LANGUAGE,
-  tertiaryLanguage: "",
-  tagsInput: "",
-});
+const buildDefaultDeckLanguages = (deckDefaults = {}) => {
+  const preferredSource =
+    typeof deckDefaults?.sourceLanguage === "string"
+      ? deckDefaults.sourceLanguage.trim()
+      : "";
+  const preferredTarget =
+    typeof deckDefaults?.targetLanguage === "string"
+      ? deckDefaults.targetLanguage.trim()
+      : "";
+  const sourceLanguage = preferredSource || DEFAULT_SOURCE_LANGUAGE;
+  const fallbackTarget =
+    LANGUAGE_OPTIONS.find((language) => language !== sourceLanguage) ||
+    DEFAULT_TARGET_LANGUAGE;
+  const targetLanguage =
+    preferredTarget &&
+    preferredTarget.toLowerCase() !== sourceLanguage.toLowerCase()
+      ? preferredTarget
+      : fallbackTarget;
 
-const createDefaultWordDraft = () => ({
-  source: "",
-  target: "",
-  tertiary: "",
-  level: "A1",
-  part_of_speech: "noun",
-  example: "",
-});
+  return {
+    sourceLanguage,
+    targetLanguage,
+  };
+};
+
+const buildDefaultDeckTagsInput = (deckDefaults = {}) => {
+  if (!Array.isArray(deckDefaults?.tags)) {
+    return "";
+  }
+
+  const tags = [];
+  const seen = new Set();
+
+  deckDefaults.tags.forEach((item) => {
+    const tag = typeof item === "string" ? item.trim() : "";
+    const key = tag.toLowerCase();
+
+    if (!tag || seen.has(key)) {
+      return;
+    }
+
+    seen.add(key);
+    tags.push(tag);
+  });
+
+  return tags.slice(0, MAX_TOTAL_TAGS).join(", ");
+};
+
+const createDefaultDeckForm = (deckDefaults = {}) => {
+  const defaultLanguages = buildDefaultDeckLanguages(deckDefaults);
+
+  return {
+    name: "",
+    description: "",
+    sourceLanguage: defaultLanguages.sourceLanguage,
+    targetLanguage: defaultLanguages.targetLanguage,
+    tertiaryLanguage: "",
+    tagsInput: buildDefaultDeckTagsInput(deckDefaults),
+  };
+};
+
+const createDefaultWordDraft = (deckDefaults = {}) => {
+  const preferredLevel =
+    typeof deckDefaults?.level === "string" ? deckDefaults.level.trim() : "";
+  const preferredPart =
+    typeof deckDefaults?.partOfSpeech === "string"
+      ? deckDefaults.partOfSpeech.trim()
+      : "";
+
+  return {
+    source: "",
+    target: "",
+    tertiary: "",
+    level: LEVEL_OPTIONS_SET.has(preferredLevel) ? preferredLevel : "A1",
+    part_of_speech: PART_OF_SPEECH_OPTIONS_SET.has(preferredPart)
+      ? preferredPart
+      : "noun",
+    example: "",
+  };
+};
 
 const toEditableWord = (word, fallbackIndex) => ({
   id: word?.id ?? `tmp-${fallbackIndex}`,
@@ -136,19 +202,28 @@ const parseTagsInput = (value) => {
 export const useDeckEditorPanel = () => {
   const navigate = useNavigate();
   const { deckId } = useParams();
+  const { appPreferences } = useAppPreferences();
   const numericDeckId = parseNumericId(deckId);
   const isEditMode = Boolean(numericDeckId);
+  const defaultDeckForm = useMemo(
+    () => createDefaultDeckForm(appPreferences.deckDefaults),
+    [appPreferences.deckDefaults],
+  );
+  const defaultWordDraft = useMemo(
+    () => createDefaultWordDraft(appPreferences.deckDefaults),
+    [appPreferences.deckDefaults],
+  );
   const nextTempIdRef = useRef(1);
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [isSaving, setIsSaving] = useState(false);
   const [loadError, setLoadError] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
-  const [deckForm, setDeckForm] = useState(() => createDefaultDeckForm());
+  const [deckForm, setDeckForm] = useState(() => defaultDeckForm);
   const [words, setWords] = useState([]);
   const [wordsPage, setWordsPage] = useState(1);
   const [wordsPageSize, setWordsPageSize] = useState(DEFAULT_WORDS_PAGE_SIZE);
-  const [wordDraft, setWordDraft] = useState(() => createDefaultWordDraft());
+  const [wordDraft, setWordDraft] = useState(() => defaultWordDraft);
   const [editingWordId, setEditingWordId] = useState(null);
   const [previewWordId, setPreviewWordId] = useState(null);
 
@@ -158,9 +233,9 @@ export const useDeckEditorPanel = () => {
   }, []);
 
   const resetWordDraft = useCallback(() => {
-    setWordDraft(createDefaultWordDraft());
+    setWordDraft(defaultWordDraft);
     setEditingWordId(null);
-  }, []);
+  }, [defaultWordDraft]);
 
   const applyLoadedDeck = useCallback((deck, loadedWords) => {
     const deckTags = parseTagsJson(deck?.tagsJson);
@@ -212,11 +287,38 @@ export const useDeckEditorPanel = () => {
   useEffect(() => {
     if (!isEditMode) {
       setIsLoading(false);
+      setDeckForm((currentState) => {
+        const isPristine =
+          words.length === 0 &&
+          !currentState.name.trim() &&
+          !currentState.description.trim() &&
+          !currentState.tertiaryLanguage.trim() &&
+          !currentState.tagsInput.trim();
+
+        return isPristine ? defaultDeckForm : currentState;
+      });
+      setWordDraft((currentState) => {
+        const isPristine =
+          editingWordId === null &&
+          !currentState.source.trim() &&
+          !currentState.target.trim() &&
+          !currentState.tertiary.trim() &&
+          !currentState.example.trim();
+
+        return isPristine ? defaultWordDraft : currentState;
+      });
       return;
     }
 
     loadDeckForEdit();
-  }, [isEditMode, loadDeckForEdit]);
+  }, [
+    defaultDeckForm,
+    defaultWordDraft,
+    editingWordId,
+    isEditMode,
+    loadDeckForEdit,
+    words.length,
+  ]);
 
   const handleDeckFormChange = useCallback((event) => {
     const { name, value } = event.target;

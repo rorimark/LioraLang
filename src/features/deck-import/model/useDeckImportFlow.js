@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { desktopApi } from "@shared/api";
 import {
   useAppPreferences,
@@ -9,14 +9,36 @@ import {
   LANGUAGE_OPTIONS,
 } from "@shared/config/languages";
 
-const createDefaultImportLanguages = () => ({
-  sourceLanguage: DEFAULT_SOURCE_LANGUAGE,
-  targetLanguage: DEFAULT_TARGET_LANGUAGE,
-  tertiaryLanguage: "",
-});
 const toLanguageKey = (value) => value.trim().toLowerCase();
 
-const resolveImportLanguages = (value = {}) => {
+const createImportLanguagesFromDefaults = (deckDefaults = {}) => {
+  const preferredSource =
+    typeof deckDefaults?.sourceLanguage === "string"
+      ? deckDefaults.sourceLanguage.trim()
+      : "";
+  const preferredTarget =
+    typeof deckDefaults?.targetLanguage === "string"
+      ? deckDefaults.targetLanguage.trim()
+      : "";
+  const sourceLanguage = preferredSource || DEFAULT_SOURCE_LANGUAGE;
+  const fallbackTargetLanguage =
+    LANGUAGE_OPTIONS.find((language) => language !== sourceLanguage) ||
+    DEFAULT_TARGET_LANGUAGE;
+  const targetLanguage =
+    preferredTarget &&
+    preferredTarget !== sourceLanguage &&
+    toLanguageKey(preferredTarget) !== toLanguageKey(sourceLanguage)
+      ? preferredTarget
+      : fallbackTargetLanguage;
+
+  return {
+    sourceLanguage,
+    targetLanguage,
+    tertiaryLanguage: "",
+  };
+};
+
+const resolveImportLanguages = (value = {}, deckDefaults = {}) => {
   const selectedSource = typeof value?.sourceLanguage === "string"
     ? value.sourceLanguage.trim()
     : "";
@@ -27,9 +49,11 @@ const resolveImportLanguages = (value = {}) => {
     ? value.tertiaryLanguage.trim()
     : "";
 
-  const sourceLanguage = selectedSource || DEFAULT_SOURCE_LANGUAGE;
+  const defaults = createImportLanguagesFromDefaults(deckDefaults);
+  const sourceLanguage = selectedSource || defaults.sourceLanguage;
   const fallbackTargetLanguage =
     LANGUAGE_OPTIONS.find((language) => language !== sourceLanguage) ||
+    defaults.targetLanguage ||
     DEFAULT_TARGET_LANGUAGE;
   const targetLanguage = selectedTarget && selectedTarget !== sourceLanguage
     && toLanguageKey(selectedTarget) !== toLanguageKey(sourceLanguage)
@@ -51,6 +75,10 @@ const resolveImportLanguages = (value = {}) => {
 
 export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   const { appPreferences } = useAppPreferences();
+  const defaultImportLanguages = useMemo(
+    () => createImportLanguagesFromDefaults(appPreferences.deckDefaults),
+    [appPreferences.deckDefaults],
+  );
   const [isImporting, setIsImporting] = useState(false);
   const [selectedImportFilePath, setSelectedImportFilePath] = useState("");
   const [selectedImportFileName, setSelectedImportFileName] = useState("");
@@ -58,8 +86,8 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   const [importDeckNameDraft, setImportDeckNameDraft] = useState("");
   const [isImportConfirmOpen, setIsImportConfirmOpen] = useState(false);
   const [isLanguageReviewOpen, setIsLanguageReviewOpen] = useState(false);
-  const [importLanguages, setImportLanguages] = useState(() =>
-    createDefaultImportLanguages(),
+  const [importLanguages, setImportLanguages] = useState(
+    () => defaultImportLanguages,
   );
 
   const reportMessage = useCallback(
@@ -78,8 +106,8 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     setSelectedImportWordsCount(null);
     setImportDeckNameDraft("");
     setIsLanguageReviewOpen(false);
-    setImportLanguages(createDefaultImportLanguages());
-  }, []);
+    setImportLanguages(defaultImportLanguages);
+  }, [defaultImportLanguages]);
 
   const applyImportSelection = useCallback((result) => {
     const filePath =
@@ -107,12 +135,24 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       sourceLanguage: result?.sourceLanguage,
       targetLanguage: result?.targetLanguage,
       tertiaryLanguage: result?.tertiaryLanguage,
-    }));
+    }, appPreferences.deckDefaults));
     setIsLanguageReviewOpen(
       Boolean(appPreferences.importExport.autoOpenLanguageReview),
     );
     setIsImportConfirmOpen(true);
-  }, [appPreferences.importExport.autoOpenLanguageReview, reportMessage]);
+  }, [
+    appPreferences.deckDefaults,
+    appPreferences.importExport.autoOpenLanguageReview,
+    reportMessage,
+  ]);
+
+  useEffect(() => {
+    if (isImportConfirmOpen) {
+      return;
+    }
+
+    setImportLanguages(defaultImportLanguages);
+  }, [defaultImportLanguages, isImportConfirmOpen]);
 
   const openImportConfirm = useCallback(() => {
     reportMessage("", "info");
@@ -220,6 +260,11 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         sourceLanguage,
         targetLanguage,
         tertiaryLanguage,
+        settings: {
+          duplicateStrategy: appPreferences.importExport.duplicateStrategy,
+          includeExamples: appPreferences.importExport.includeExamples,
+          includeTags: appPreferences.importExport.includeTags,
+        },
       });
 
       if (result?.canceled) {
@@ -271,6 +316,9 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       setIsImporting(false);
     }
   }, [
+    appPreferences.importExport.duplicateStrategy,
+    appPreferences.importExport.includeExamples,
+    appPreferences.importExport.includeTags,
     importDeckNameDraft,
     onImportSuccess,
     reportMessage,
