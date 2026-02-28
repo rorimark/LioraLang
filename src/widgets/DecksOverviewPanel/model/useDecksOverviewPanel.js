@@ -3,11 +3,13 @@ import { useNavigate } from "react-router";
 import { useDecks } from "@entities/deck";
 import { useDeckImportFlow } from "@features/deck-import";
 import { desktopApi } from "@shared/api";
+import { useAppPreferences } from "@shared/lib/appPreferences";
 import { ROUTE_PATHS } from "@shared/config/routes";
 
 export const useDecksOverviewPanel = () => {
   const navigate = useNavigate();
   const { decks, isLoading, error, refreshDecks } = useDecks();
+  const { appPreferences } = useAppPreferences();
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
   const [exportingDeckId, setExportingDeckId] = useState(null);
@@ -68,7 +70,11 @@ export const useDecksOverviewPanel = () => {
     setExportingDeckId(deckId);
 
     try {
-      const result = await desktopApi.exportDeckToJson(deckId);
+      const result = await desktopApi.exportDeckToJson(deckId, {
+        exportFormat: appPreferences.importExport.exportFormat,
+        includeExamples: appPreferences.importExport.includeExamples,
+        includeTags: appPreferences.importExport.includeTags,
+      });
 
       if (result?.canceled) {
         return;
@@ -105,15 +111,45 @@ export const useDecksOverviewPanel = () => {
     } finally {
       setExportingDeckId(null);
     }
-  }, [reportMessage]);
+  }, [
+    appPreferences.importExport.exportFormat,
+    appPreferences.importExport.includeExamples,
+    appPreferences.importExport.includeTags,
+    reportMessage,
+  ]);
+
+  const deleteDeckById = useCallback(async (deckId, deckName = "") => {
+    if (!deckId) {
+      return;
+    }
+
+    reportMessage("", "info");
+    setDeletingDeckId(deckId);
+
+    try {
+      await desktopApi.deleteDeck(deckId);
+      const deletedName = deckName?.trim() || "Deck";
+      reportMessage(`Deck deleted: ${deletedName}`, "danger");
+      await refreshDecks();
+    } catch (deleteError) {
+      reportMessage(deleteError.message || "Failed to delete deck", "error");
+    } finally {
+      setDeletingDeckId(null);
+    }
+  }, [refreshDecks, reportMessage]);
 
   const openDeleteModal = useCallback((deckId, deckName = "") => {
+    if (!appPreferences.dataSafety.confirmDestructive) {
+      void deleteDeckById(deckId, deckName);
+      return;
+    }
+
     setDeleteState({
       isOpen: true,
       deckId,
       deckName,
     });
-  }, []);
+  }, [appPreferences.dataSafety.confirmDestructive, deleteDeckById]);
 
   const closeDeleteModal = useCallback(() => {
     if (!deletingDeckId) {
@@ -130,25 +166,13 @@ export const useDecksOverviewPanel = () => {
       return;
     }
 
-    reportMessage("", "info");
-    setDeletingDeckId(deleteState.deckId);
-
-    try {
-      await desktopApi.deleteDeck(deleteState.deckId);
-      const deletedName = deleteState.deckName?.trim() || "Deck";
-      reportMessage(`Deck deleted: ${deletedName}`, "danger");
-      setDeleteState(() => ({
-        isOpen: false,
-        deckId: null,
-        deckName: "",
-      }));
-      await refreshDecks();
-    } catch (deleteError) {
-      reportMessage(deleteError.message || "Failed to delete deck", "error");
-    } finally {
-      setDeletingDeckId(null);
-    }
-  }, [deleteState.deckId, deleteState.deckName, refreshDecks, reportMessage]);
+    await deleteDeckById(deleteState.deckId, deleteState.deckName);
+    setDeleteState(() => ({
+      isOpen: false,
+      deckId: null,
+      deckName: "",
+    }));
+  }, [deleteDeckById, deleteState.deckId, deleteState.deckName]);
 
   const clearMessage = useCallback(() => {
     setMessage("");

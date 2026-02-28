@@ -80,7 +80,7 @@ export const DeckDetailsPanel = memo(() => {
         <span className="cards-panel__count">{totalItems} results</span>
       </div>
 
-      <div className="decks-page-panel__actions">
+      <div className="cards-panel__actions">
         <button type="button" onClick={openEditDeck}>
           Edit deck
         </button>

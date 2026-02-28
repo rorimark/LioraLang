@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useThemeSwitch } from "@features/theme-switch";
 import { desktopApi } from "@shared/api";
+import { useAppPreferences } from "@shared/lib/appPreferences";
 
 export const useSettingsDatabasePanel = () => {
+  const { appPreferences } = useAppPreferences();
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
   const [dbPath, setDbPath] = useState("");
@@ -112,64 +114,9 @@ export const useSettingsDatabasePanel = () => {
     });
   }, []);
 
-  const verifyIntegrity = useCallback(async () => {
-    setIsVerifyingIntegrity(true);
-
-    try {
-      const report = await desktopApi.verifyIntegrity({ repair: false });
-      const isHealthy = Boolean(report?.ok);
-      const needsRepair = Boolean(report?.database?.needsRepair);
-      const databaseIssues = Array.isArray(report?.database?.issues)
-        ? report.database.issues
-        : [];
-      const coreFilesIssues = Array.isArray(report?.coreFiles?.issues)
-        ? report.coreFiles.issues
-        : [];
-
-      closeIntegrityRepairConfirm();
-
-      if (isHealthy) {
-        reportMessage("Integrity check passed. No issues found.", "success");
-        return;
-      }
-
-      if (needsRepair) {
-        setIntegrityRepairConfirmState({
-          isOpen: true,
-          issues: databaseIssues,
-        });
-        reportMessage(
-          "Integrity issues found. Confirm database restore to continue.",
-          "info",
-        );
-        return;
-      }
-
-      const allIssues = [...databaseIssues, ...coreFilesIssues];
-      const issuesSummary = allIssues.length > 0 ? allIssues[0] : "Unknown issue";
-      reportMessage(`Integrity check failed: ${issuesSummary}`, "error");
-    } catch (verifyError) {
-      reportMessage(
-        verifyError.message || "Failed to run integrity check",
-        "error",
-      );
-    } finally {
-      setIsVerifyingIntegrity(false);
-    }
-  }, [closeIntegrityRepairConfirm, reportMessage]);
-
-  const showRuntimeErrorPreview = useCallback(async () => {
-    try {
-      await desktopApi.showRuntimeErrorPreview();
-    } catch (previewError) {
-      reportMessage(
-        previewError.message || "Failed to open runtime error preview",
-        "error",
-      );
-    }
-  }, [reportMessage]);
-
-  const confirmIntegrityRepair = useCallback(async () => {
+  const runIntegrityRepair = useCallback(async ({
+    closeConfirm = true,
+  } = {}) => {
     setIsRepairingIntegrity(true);
 
     try {
@@ -204,9 +151,72 @@ export const useSettingsDatabasePanel = () => {
       );
     } finally {
       setIsRepairingIntegrity(false);
-      closeIntegrityRepairConfirm();
+
+      if (closeConfirm) {
+        closeIntegrityRepairConfirm();
+      }
     }
   }, [closeIntegrityRepairConfirm, reportMessage]);
+
+  const verifyIntegrity = useCallback(async () => {
+    setIsVerifyingIntegrity(true);
+
+    try {
+      const report = await desktopApi.verifyIntegrity({ repair: false });
+      const isHealthy = Boolean(report?.ok);
+      const needsRepair = Boolean(report?.database?.needsRepair);
+      const databaseIssues = Array.isArray(report?.database?.issues)
+        ? report.database.issues
+        : [];
+      const coreFilesIssues = Array.isArray(report?.coreFiles?.issues)
+        ? report.coreFiles.issues
+        : [];
+
+      closeIntegrityRepairConfirm();
+
+      if (isHealthy) {
+        reportMessage("Integrity check passed. No issues found.", "success");
+        return;
+      }
+
+      if (needsRepair) {
+        if (!appPreferences.dataSafety.confirmDestructive) {
+          await runIntegrityRepair();
+          return;
+        }
+
+        setIntegrityRepairConfirmState({
+          isOpen: true,
+          issues: databaseIssues,
+        });
+        reportMessage(
+          "Integrity issues found. Confirm database restore to continue.",
+          "info",
+        );
+        return;
+      }
+
+      const allIssues = [...databaseIssues, ...coreFilesIssues];
+      const issuesSummary = allIssues.length > 0 ? allIssues[0] : "Unknown issue";
+      reportMessage(`Integrity check failed: ${issuesSummary}`, "error");
+    } catch (verifyError) {
+      reportMessage(
+        verifyError.message || "Failed to run integrity check",
+        "error",
+      );
+    } finally {
+      setIsVerifyingIntegrity(false);
+    }
+  }, [
+    appPreferences.dataSafety.confirmDestructive,
+    closeIntegrityRepairConfirm,
+    reportMessage,
+    runIntegrityRepair,
+  ]);
+
+  const confirmIntegrityRepair = useCallback(async () => {
+    await runIntegrityRepair();
+  }, [runIntegrityRepair]);
 
   const clearStatusMessage = useCallback(() => {
     setStatusMessage("");
@@ -239,7 +249,6 @@ export const useSettingsDatabasePanel = () => {
     openDbFolder,
     changeDbLocation,
     verifyIntegrity,
-    showRuntimeErrorPreview,
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     toggleTheme,
