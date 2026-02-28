@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { useDecks } from "@entities/deck";
 import { desktopApi } from "@shared/api";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   LEARN_FLIP_SHORTCUT_MODES,
@@ -196,12 +198,13 @@ const buildCompletionMessage = (session) => {
 
   if (session?.completionState?.reason === "daily-limit") {
     const dailyGoal = Number(session?.limits?.dailyGoal);
+    const dailyLeft = Number(session?.limits?.dailyLeft);
 
-    if (Number.isInteger(dailyGoal) && dailyGoal > 0) {
+    if (Number.isInteger(dailyLeft) && dailyLeft <= 0 && Number.isInteger(dailyGoal) && dailyGoal > 0) {
       return `Daily goal reached (${dailyGoal} cards). Continue tomorrow or start an extra session.`;
     }
 
-    return "Daily limit reached. Adjust SRS limits in Settings or continue tomorrow.";
+    return "Today's review limits were reached. Continue tomorrow or start an extra session.";
   }
 
   if (session?.completionState?.reason === "empty-deck") {
@@ -212,6 +215,7 @@ const buildCompletionMessage = (session) => {
 };
 
 export const useLearnFlashcardsPanel = () => {
+  const navigate = useNavigate();
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const { appPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
@@ -616,6 +620,12 @@ export const useLearnFlashcardsPanel = () => {
   const handleRefreshSession = useCallback(() => {
     void loadSession(selectedDeckId);
   }, [loadSession, selectedDeckId]);
+  const handleOpenDeckCreatePage = useCallback(() => {
+    navigate(ROUTE_PATHS.deckCreate);
+  }, [navigate]);
+  const handleOpenBrowsePage = useCallback(() => {
+    navigate(ROUTE_PATHS.browse);
+  }, [navigate]);
   const canStartNewSession = Boolean(
     session?.completionState?.done &&
       session?.completionState?.canStartNewSession &&
@@ -629,6 +639,7 @@ export const useLearnFlashcardsPanel = () => {
     decksError,
     wordsError: sessionError,
     isDecksLoading,
+    hasDecks: decks.length > 0,
     isWordsLoading: isSessionLoading,
     isRatingPending,
     selectedDeckId,
@@ -648,5 +659,7 @@ export const useLearnFlashcardsPanel = () => {
     handleStartNewSession,
     toggleBackVisibility,
     refreshSession: handleRefreshSession,
+    openDeckCreatePage: handleOpenDeckCreatePage,
+    openBrowsePage: handleOpenBrowsePage,
   };
 };

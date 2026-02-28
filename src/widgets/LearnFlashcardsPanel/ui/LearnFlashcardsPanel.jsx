@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLearnFlashcardsPanel } from "../model";
+import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
 import "./LearnFlashcardsPanel.css";
 
 export const LearnFlashcardsPanel = memo(() => {
@@ -12,6 +13,7 @@ export const LearnFlashcardsPanel = memo(() => {
     decksError,
     wordsError,
     isDecksLoading,
+    hasDecks,
     isWordsLoading,
     isRatingPending,
     selectedDeckId,
@@ -30,6 +32,8 @@ export const LearnFlashcardsPanel = memo(() => {
     handleStartNewSession,
     toggleBackVisibility,
     refreshSession,
+    openDeckCreatePage,
+    openBrowsePage,
   } = useLearnFlashcardsPanel();
 
   return (
@@ -42,8 +46,13 @@ export const LearnFlashcardsPanel = memo(() => {
               id="learn-deck-select"
               value={selectedDeckId}
               onChange={handleDeckSelectChange}
-              disabled={isDecksLoading || decks.length === 0}
+              disabled={isDecksLoading || !hasDecks}
             >
+              {!hasDecks && (
+                <option value="">
+                  {isDecksLoading ? "Loading decks..." : "No decks yet"}
+                </option>
+              )}
               {decks.map((deckItem) => (
                 <option key={deckItem.id} value={deckItem.id}>
                   {deckItem.name}
@@ -86,7 +95,12 @@ export const LearnFlashcardsPanel = memo(() => {
         </div>
       )}
 
-      {isWordsLoading ? (
+      {!hasDecks ? (
+        <LearnEmptyDeckState
+          onCreateDeck={openDeckCreatePage}
+          onOpenBrowse={openBrowsePage}
+        />
+      ) : isWordsLoading ? (
         <div className="learn-page-panel__status learn-page-panel__status--fill">
           Building SRS queue...
         </div>
