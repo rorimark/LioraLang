@@ -63,6 +63,8 @@ export const initDb = () => {
     CREATE TABLE IF NOT EXISTS review_cards (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       word_id INTEGER NOT NULL UNIQUE,
+      state TEXT DEFAULT 'new',
+      learning_step INTEGER DEFAULT 0,
       due_at TEXT,
       interval_days INTEGER DEFAULT 1,
       ease_factor REAL DEFAULT 2.5,
@@ -70,6 +72,23 @@ export const initDb = () => {
       lapses INTEGER DEFAULT 0,
       last_reviewed_at TEXT,
       FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS review_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      word_id INTEGER NOT NULL,
+      deck_id INTEGER NOT NULL,
+      reviewed_at TEXT NOT NULL,
+      rating TEXT NOT NULL,
+      queue_type TEXT NOT NULL,
+      prev_state TEXT,
+      next_state TEXT,
+      prev_interval_days INTEGER,
+      next_interval_days INTEGER,
+      prev_ease_factor REAL,
+      next_ease_factor REAL,
+      FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
+      FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE
     );
   `);
 
@@ -80,6 +99,8 @@ export const initDb = () => {
   ensureColumn(db, "words", "source_text", "TEXT");
   ensureColumn(db, "words", "target_text", "TEXT");
   ensureColumn(db, "words", "tertiary_text", "TEXT");
+  ensureColumn(db, "review_cards", "state", "TEXT DEFAULT 'new'");
+  ensureColumn(db, "review_cards", "learning_step", "INTEGER DEFAULT 0");
   const wordColumns = db.prepare("PRAGMA table_info(words)").all();
   const hasLegacySource = wordColumns.some((column) => column.name === "eng");
   const hasLegacyTarget = wordColumns.some((column) => column.name === "ru");
@@ -111,5 +132,27 @@ export const initDb = () => {
 
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_words_source_text ON words(source_text)
+  `);
+
+  db.exec(`
+    UPDATE review_cards
+    SET state = 'new'
+    WHERE state IS NULL OR TRIM(state) = ''
+  `);
+
+  db.exec(`
+    UPDATE review_cards
+    SET learning_step = 0
+    WHERE learning_step IS NULL
+  `);
+
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_review_cards_state_due
+    ON review_cards(state, due_at)
+  `);
+
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_review_logs_deck_reviewed
+    ON review_logs(deck_id, reviewed_at)
   `);
 };

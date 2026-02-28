@@ -1,7 +1,6 @@
 import "./NavBar.css";
 import { memo } from "react";
 import { NavTab } from "@shared/ui";
-import { NAV_ITEMS } from "@shared/config/routes";
 import {
   IoLayersOutline,
   IoGlobeOutline,
@@ -9,6 +8,8 @@ import {
   IoStatsChartOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
+import { useNavBar } from "../model";
+import { NavBarLearnShortcuts } from "./NavBarLearnShortcuts";
 
 const ICONS_BY_NAME = {
   learn: IoLayersOutline,
@@ -18,11 +19,8 @@ const ICONS_BY_NAME = {
   settings: IoSettingsOutline,
 };
 
-const desktopNavItems = NAV_ITEMS.filter((item) => item.key !== "settings");
-const settingsNavItem = NAV_ITEMS.find((item) => item.key === "settings");
-
 export const NavBar = memo(({ mobile = false }) => {
-  const navItems = mobile ? NAV_ITEMS : desktopNavItems;
+  const { navItems, settingsNavItem, showLearnShortcuts } = useNavBar(mobile);
 
   return (
     <nav
@@ -51,6 +49,8 @@ export const NavBar = memo(({ mobile = false }) => {
           </li>
         ))}
       </ul>
+
+      {showLearnShortcuts && <NavBarLearnShortcuts />}
 
       {!mobile && settingsNavItem && (
         <div className="nav-bar__footer">

@@ -6,13 +6,15 @@ export const ShortcutSettingsSection = memo(({ compact = false }) => {
   const {
     historyShortcutMode,
     learnFlipShortcutMode,
-    learnNavigationShortcutMode,
+    learnRatingShortcutMode,
     historyOptions,
     flipOptions,
-    navigationOptions,
+    ratingOptions,
+    showLearnShortcuts,
     handleHistoryShortcutChange,
     handleFlipShortcutChange,
-    handleNavigationShortcutChange,
+    handleRatingShortcutChange,
+    handleShowLearnShortcutsChange,
   } = useShortcutSettingsSection();
 
   return (
@@ -31,7 +33,9 @@ export const ShortcutSettingsSection = memo(({ compact = false }) => {
       )}
 
       <label className="shortcut-settings-section__field">
-        <span className="shortcut-settings-section__label">History navigation</span>
+        <span className="shortcut-settings-section__label">
+          History navigation
+        </span>
         <select
           value={historyShortcutMode}
           onChange={handleHistoryShortcutChange}
@@ -59,17 +63,26 @@ export const ShortcutSettingsSection = memo(({ compact = false }) => {
       </label>
 
       <label className="shortcut-settings-section__field">
-        <span className="shortcut-settings-section__label">Next/previous flashcard</span>
+        <span className="shortcut-settings-section__label">Rate flashcard</span>
         <select
-          value={learnNavigationShortcutMode}
-          onChange={handleNavigationShortcutChange}
+          value={learnRatingShortcutMode}
+          onChange={handleRatingShortcutChange}
         >
-          {navigationOptions.map((option) => (
+          {ratingOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
         </select>
+      </label>
+
+      <label className="shortcut-settings-section__check">
+        <input
+          type="checkbox"
+          checked={showLearnShortcuts}
+          onChange={handleShowLearnShortcutsChange}
+        />
+        <span>Show shortcut hints</span>
       </label>
     </section>
   );

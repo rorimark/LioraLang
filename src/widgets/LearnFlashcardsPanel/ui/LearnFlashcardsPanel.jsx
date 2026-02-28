@@ -1,48 +1,78 @@
 import { memo } from "react";
 import { Flashcard } from "@features/flashcard";
+import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLearnFlashcardsPanel } from "../model";
 import "./LearnFlashcardsPanel.css";
 
 export const LearnFlashcardsPanel = memo(() => {
   const {
     deck,
+    sessionMode,
     decks,
     decksError,
     wordsError,
     isDecksLoading,
     isWordsLoading,
+    isRatingPending,
     selectedDeckId,
     currentWord,
     cardFrontText,
     cardBackText,
     cardMetaBadges,
-    currentCardIndex,
-    cardsCount,
     isBackVisible,
-    flipShortcutHint,
-    navigationShortcutHint,
+    sessionStats,
+    completionMessage,
+    canStartNewSession,
+    isExtendedSession,
+    ratingOptions,
     handleDeckSelectChange,
-    handlePrevCard,
-    handleNextCard,
+    handleRateCard,
+    handleStartNewSession,
     toggleBackVisibility,
+    refreshSession,
   } = useLearnFlashcardsPanel();
 
   return (
     <article className="panel learn-page-panel">
-      <div className="learn-page-panel__controls">
-        <label htmlFor="learn-deck-select">Choose deck</label>
-        <select
-          id="learn-deck-select"
-          value={selectedDeckId}
-          onChange={handleDeckSelectChange}
-          disabled={isDecksLoading || decks.length === 0}
-        >
-          {decks.map((deckItem) => (
-            <option key={deckItem.id} value={deckItem.id}>
-              {deckItem.name}
-            </option>
-          ))}
-        </select>
+      <div className="learn-page-panel__header">
+        <div className="learn-page-panel__deck-control">
+          <label htmlFor="learn-deck-select">Choose deck</label>
+          <div className="learn-page-panel__deck-row">
+            <select
+              id="learn-deck-select"
+              value={selectedDeckId}
+              onChange={handleDeckSelectChange}
+              disabled={isDecksLoading || decks.length === 0}
+            >
+              {decks.map((deckItem) => (
+                <option key={deckItem.id} value={deckItem.id}>
+                  {deckItem.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className="learn-page-panel__refresh"
+              onClick={refreshSession}
+              disabled={isWordsLoading || !selectedDeckId}
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        {isExtendedSession ? (
+          <div className="learn-page-panel__header-actions">
+            <span className="learn-page-panel__mode-badge">Extra session</span>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="learn-page-panel__stats-row" aria-live="polite">
+        <span className="learn-page-panel__stat-pill">Learning {sessionStats.dueLearning}</span>
+        <span className="learn-page-panel__stat-pill">Review {sessionStats.dueReview}</span>
+        <span className="learn-page-panel__stat-pill">New {sessionStats.dueNew}</span>
+        <span className="learn-page-panel__stat-pill">Today {sessionStats.totalStudiedToday}</span>
       </div>
 
       {decksError && (
@@ -50,18 +80,30 @@ export const LearnFlashcardsPanel = memo(() => {
           {decksError}
         </div>
       )}
+      {wordsError && (
+        <div className="learn-page-panel__status learn-page-panel__status--error">
+          {wordsError}
+        </div>
+      )}
 
       {isWordsLoading ? (
         <div className="learn-page-panel__status learn-page-panel__status--fill">
-          Loading flashcards...
-        </div>
-      ) : wordsError ? (
-        <div className="learn-page-panel__status learn-page-panel__status--error learn-page-panel__status--fill">
-          {wordsError}
+          Building SRS queue...
         </div>
       ) : !currentWord ? (
         <div className="learn-page-panel__status learn-page-panel__status--fill">
-          This deck has no cards yet.
+          <div className="learn-page-panel__done">
+            <span>{completionMessage || "No cards available for this deck."}</span>
+            {canStartNewSession && (
+              <button
+                type="button"
+                className="learn-page-panel__start-session"
+                onClick={handleStartNewSession}
+              >
+                Start new session
+              </button>
+            )}
+          </div>
         </div>
       ) : (
         <>
@@ -75,32 +117,46 @@ export const LearnFlashcardsPanel = memo(() => {
                 backMetaBadges={cardMetaBadges}
                 isFlipped={isBackVisible}
                 onFlip={toggleBackVisibility}
+                disabled={isRatingPending}
               />
             </div>
           </div>
 
-          <div className="learn-page-panel__meta">
-            <span className="learn-page-panel__meta-item">
-              Card {currentCardIndex} of {cardsCount}
+          <div className="learn-page-panel__meta-chips">
+            <span className="learn-page-panel__meta-chip">
+              Deck: {deck?.name || "Deck"}
             </span>
-            <span className="learn-page-panel__meta-item learn-page-panel__meta-item--deck">
-              {deck?.name || "Deck"}
+            <span className="learn-page-panel__meta-chip">
+              State: {currentWord.state}
             </span>
-            <span className="learn-page-panel__meta-item learn-page-panel__meta-item--shortcuts">
-              {flipShortcutHint}: Flip • {navigationShortcutHint}: Navigate
+            <span className="learn-page-panel__meta-chip">
+              Mode: {sessionMode === "extended" ? "extra" : "daily"}
             </span>
           </div>
 
           <div className="learn-page-panel__actions">
-            <button type="button" onClick={handlePrevCard}>
-              Prev
+            <button
+              type="button"
+              className="learn-page-panel__flip-button"
+              onClick={toggleBackVisibility}
+              disabled={isRatingPending}
+            >
+              {isBackVisible ? "Hide answer" : "Show answer"}
             </button>
-            <button type="button" onClick={toggleBackVisibility}>
-              Flip
-            </button>
-            <button type="button" onClick={handleNextCard}>
-              Next
-            </button>
+          </div>
+
+          <div className="learn-page-panel__ratings" aria-live="polite">
+            {isBackVisible ? (
+              <SrsRatingControls
+                ratingOptions={ratingOptions}
+                onRate={handleRateCard}
+                disabled={isRatingPending}
+              />
+            ) : (
+              <div className="learn-page-panel__rating-placeholder">
+                Reveal the answer to see grading buttons.
+              </div>
+            )}
           </div>
         </>
       )}
