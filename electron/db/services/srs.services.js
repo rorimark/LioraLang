@@ -1095,6 +1095,11 @@ const buildSession = ({
   limits,
   forceAllCards,
 }) => {
+  const totalDueWithoutLimits =
+    queueCounters.learningDueCount +
+    queueCounters.reviewDueCount +
+    queueCounters.newDueCount;
+  const hasDueWithoutLimits = totalDueWithoutLimits > 0;
   const reviewAvailable = forceAllCards
     ? Math.max(0, queueCounters.reviewDueCount)
     : Math.max(0, Math.min(queueCounters.reviewDueCount, limits.reviewLeft));
@@ -1105,6 +1110,7 @@ const buildSession = ({
   const blockedByLimits =
     !forceAllCards &&
     !card &&
+    hasDueWithoutLimits &&
     (
       limits.dailyLimitReached ||
       (
@@ -1150,7 +1156,11 @@ const buildSession = ({
     completionState: {
       done: !card,
       reason: !card ? completionReason : "",
-      canStartNewSession: !forceAllCards && queueCounters.totalCards > 0,
+      canStartNewSession:
+        !forceAllCards &&
+        !card &&
+        completionReason === "daily-limit" &&
+        hasDueWithoutLimits,
     },
   };
 };
@@ -1173,8 +1183,14 @@ const getDeckOrThrow = (db, deckId) => {
   return deck;
 };
 
-const resolveSessionLimits = (srsSettings, studySessionSettings, todayCounters) => {
+const resolveSessionLimits = (
+  srsSettings,
+  studySessionSettings,
+  todayCounters,
+  queueCounters = null,
+) => {
   const dailyGoal = studySessionSettings.dailyGoal;
+  const dueReviewCount = Math.max(0, Number(queueCounters?.reviewDueCount) || 0);
   const reviewLeftRaw = Math.max(
     0,
     srsSettings.maxReviewsPerDay - todayCounters.reviewedToday,
@@ -1184,8 +1200,10 @@ const resolveSessionLimits = (srsSettings, studySessionSettings, todayCounters) 
     srsSettings.newCardsPerDay - todayCounters.newStudiedToday,
   );
   const dailyLeft = Math.max(0, dailyGoal - todayCounters.totalStudiedToday);
+  const reviewBudget = Math.min(reviewLeftRaw, Math.min(dailyLeft, dueReviewCount));
+  const dailyLeftAfterReviews = Math.max(0, dailyLeft - reviewBudget);
   const reviewLeft = Math.min(reviewLeftRaw, dailyLeft);
-  const newLeft = Math.min(newLeftRaw, Math.max(0, dailyLeft - reviewLeft));
+  const newLeft = Math.min(newLeftRaw, dailyLeftAfterReviews);
 
   return {
     newCardsPerDay: srsSettings.newCardsPerDay,
@@ -1216,12 +1234,13 @@ export const getSrsSessionSnapshot = ({
   const now = new Date();
   const nowIso = now.toISOString();
   const todayCounters = getTodayCounters(db, numericDeckId);
+  const queueCounters = getQueueCounters(db, numericDeckId, nowIso);
   const limits = resolveSessionLimits(
     srsSettings,
     studySessionSettings,
     todayCounters,
+    queueCounters,
   );
-  const queueCounters = getQueueCounters(db, numericDeckId, nowIso);
   const nextCardRow = pickNextCardRow(db, numericDeckId, nowIso, limits, {
     forceAllCards: Boolean(forceAllCards),
     settings,
