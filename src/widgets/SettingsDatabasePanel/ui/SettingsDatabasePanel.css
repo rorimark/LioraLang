@@ -83,6 +83,16 @@
   white-space: nowrap;
 }
 
+.settings-page-panel__actions .settings-page-panel__reset-all-button {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-on-primary);
+}
+
+.settings-page-panel__actions .settings-page-panel__reset-all-button:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
 @media (max-width: 1120px) {
   .settings-page-panel__layout {
     grid-template-columns: 1fr;

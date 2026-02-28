@@ -23,6 +23,7 @@ const SHUFFLE_MODE_OPTIONS = new Set(["off", "per_session", "always"]);
 const DUPLICATE_STRATEGY_OPTIONS = new Set(["skip", "update", "keep_both"]);
 const EXPORT_FORMAT_OPTIONS = new Set(["lioradeck", "json"]);
 const FONT_SCALE_OPTIONS = new Set(["small", "normal", "large"]);
+const THEME_MODE_OPTIONS = new Set(["system", "light", "dark"]);
 const BACKUP_INTERVAL_OPTIONS = new Set(["off", "daily", "weekly", "monthly"]);
 const UPDATE_CHANNEL_OPTIONS = new Set(["stable", "beta"]);
 const LOG_LEVEL_OPTIONS = new Set(["error", "warn", "debug"]);
@@ -117,6 +118,7 @@ export const DEFAULT_APP_PREFERENCES = {
     includeTags: true,
   },
   uiAccessibility: {
+    themeMode: "system",
     fontScale: "normal",
     compactMode: false,
     reducedMotion: false,
@@ -235,6 +237,11 @@ export const normalizeAppPreferences = (value = {}) => {
       ),
     },
     uiAccessibility: {
+      themeMode: toOneOf(
+        value?.uiAccessibility?.themeMode,
+        THEME_MODE_OPTIONS,
+        DEFAULT_APP_PREFERENCES.uiAccessibility.themeMode,
+      ),
       fontScale: toOneOf(
         value?.uiAccessibility?.fontScale,
         FONT_SCALE_OPTIONS,

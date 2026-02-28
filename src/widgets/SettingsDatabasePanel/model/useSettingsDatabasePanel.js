@@ -1,22 +1,35 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useThemeSwitch } from "@features/theme-switch";
 import { desktopApi } from "@shared/api";
-import { useAppPreferences } from "@shared/lib/appPreferences";
+import {
+  APP_PREFERENCES_APP_KEY,
+  DEFAULT_APP_PREFERENCES,
+  useAppPreferences,
+} from "@shared/lib/appPreferences";
+import {
+  DEFAULT_SHORTCUT_SETTINGS,
+  SHORTCUT_SETTINGS_APP_KEY,
+  useShortcutSettings,
+} from "@shared/lib/shortcutSettings";
+import { APP_THEME_MODES } from "@shared/lib/theme";
 
 export const useSettingsDatabasePanel = () => {
   const { appPreferences } = useAppPreferences();
+  const { shortcutSettings } = useShortcutSettings();
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
   const [dbPath, setDbPath] = useState("");
   const [isChangingDbLocation, setIsChangingDbLocation] = useState(false);
   const [isVerifyingIntegrity, setIsVerifyingIntegrity] = useState(false);
   const [isRepairingIntegrity, setIsRepairingIntegrity] = useState(false);
+  const [isResettingSettings, setIsResettingSettings] = useState(false);
+  const [isResetSettingsConfirmOpen, setIsResetSettingsConfirmOpen] = useState(false);
   const [integrityRepairConfirmState, setIntegrityRepairConfirmState] = useState({
     isOpen: false,
     issues: [],
   });
-  const { isDarkTheme, toggleTheme } = useThemeSwitch();
+  const { themeMode, themeModeOptions, handleThemeModeChange } = useThemeSwitch();
 
   const reportMessage = useCallback((text, variant = "info") => {
     setStatusMessage(text);
@@ -222,6 +235,57 @@ export const useSettingsDatabasePanel = () => {
     setStatusMessage("");
   }, []);
 
+  const openResetSettingsConfirm = useCallback(() => {
+    setIsResetSettingsConfirmOpen(true);
+  }, []);
+
+  const closeResetSettingsConfirm = useCallback(() => {
+    if (isResettingSettings) {
+      return;
+    }
+
+    setIsResetSettingsConfirmOpen(false);
+  }, [isResettingSettings]);
+
+  const isResetAllDisabled = useMemo(() => {
+    const hasDefaultTheme = themeMode === APP_THEME_MODES.system;
+    const hasDefaultShortcuts =
+      shortcutSettings.historyNavigation ===
+        DEFAULT_SHORTCUT_SETTINGS.historyNavigation &&
+      shortcutSettings.learnFlip === DEFAULT_SHORTCUT_SETTINGS.learnFlip &&
+      shortcutSettings.learnRating === DEFAULT_SHORTCUT_SETTINGS.learnRating &&
+      shortcutSettings.showLearnShortcuts ===
+        DEFAULT_SHORTCUT_SETTINGS.showLearnShortcuts;
+    const hasDefaultAppPreferences =
+      JSON.stringify(appPreferences) === JSON.stringify(DEFAULT_APP_PREFERENCES);
+
+    return (
+      isResettingSettings ||
+      (hasDefaultTheme && hasDefaultShortcuts && hasDefaultAppPreferences)
+    );
+  }, [appPreferences, isResettingSettings, shortcutSettings, themeMode]);
+
+  const resetAllSettingsToDefaults = useCallback(async () => {
+    setIsResettingSettings(true);
+
+    try {
+      await desktopApi.updateAppSettings({
+        [APP_PREFERENCES_APP_KEY]: DEFAULT_APP_PREFERENCES,
+        [SHORTCUT_SETTINGS_APP_KEY]: DEFAULT_SHORTCUT_SETTINGS,
+      });
+
+      reportMessage("All settings restored to defaults.", "success");
+    } catch (resetError) {
+      reportMessage(
+        resetError.message || "Failed to reset settings",
+        "error",
+      );
+    } finally {
+      setIsResettingSettings(false);
+      setIsResetSettingsConfirmOpen(false);
+    }
+  }, [reportMessage]);
+
   return {
     dbPath,
     statusMessage,
@@ -229,6 +293,9 @@ export const useSettingsDatabasePanel = () => {
     isChangingDbLocation,
     isVerifyingIntegrity,
     isRepairingIntegrity,
+    isResettingSettings,
+    isResetSettingsConfirmOpen,
+    isResetAllDisabled,
     isImporting,
     selectedImportFileName,
     selectedImportWordsCount,
@@ -239,7 +306,8 @@ export const useSettingsDatabasePanel = () => {
     isLanguageReviewOpen,
     isIntegrityRepairConfirmOpen: integrityRepairConfirmState.isOpen,
     integrityRepairIssues: integrityRepairConfirmState.issues,
-    isDarkTheme,
+    themeMode,
+    themeModeOptions,
     openImportConfirm,
     closeImportConfirm,
     openLanguageReview,
@@ -251,7 +319,10 @@ export const useSettingsDatabasePanel = () => {
     verifyIntegrity,
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
-    toggleTheme,
+    handleThemeModeChange,
+    openResetSettingsConfirm,
+    closeResetSettingsConfirm,
+    resetAllSettingsToDefaults,
     clearStatusMessage,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,

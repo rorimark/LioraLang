@@ -7,7 +7,7 @@ import { ImportDeckModal } from "@features/deck-import";
 import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
 import { ThemeSwitch } from "@features/theme-switch";
-import { InlineAlert } from "@shared/ui";
+import { ActionModal, InlineAlert } from "@shared/ui";
 import { useSettingsDatabasePanel } from "../model";
 import "./SettingsDatabasePanel.css";
 
@@ -19,6 +19,9 @@ export const SettingsDatabasePanel = memo(() => {
     isChangingDbLocation,
     isVerifyingIntegrity,
     isRepairingIntegrity,
+    isResettingSettings,
+    isResetSettingsConfirmOpen,
+    isResetAllDisabled,
     isImporting,
     selectedImportFileName,
     selectedImportWordsCount,
@@ -29,7 +32,8 @@ export const SettingsDatabasePanel = memo(() => {
     isLanguageReviewOpen,
     isIntegrityRepairConfirmOpen,
     integrityRepairIssues,
-    isDarkTheme,
+    themeMode,
+    themeModeOptions,
     openImportConfirm,
     closeImportConfirm,
     openLanguageReview,
@@ -41,7 +45,10 @@ export const SettingsDatabasePanel = memo(() => {
     verifyIntegrity,
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
-    toggleTheme,
+    handleThemeModeChange,
+    openResetSettingsConfirm,
+    closeResetSettingsConfirm,
+    resetAllSettingsToDefaults,
     clearStatusMessage,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
@@ -63,9 +70,25 @@ export const SettingsDatabasePanel = memo(() => {
             <h3>General</h3>
             <p>Theme and shortcuts for everyday navigation.</p>
             <div className="settings-page-panel__theme">
-              <ThemeSwitch isDarkTheme={isDarkTheme} onToggle={toggleTheme} />
+              <ThemeSwitch
+                themeMode={themeMode}
+                themeModeOptions={themeModeOptions}
+                onThemeModeChange={handleThemeModeChange}
+              />
             </div>
             <ShortcutSettingsSection compact />
+            <div className="settings-page-panel__actions">
+              <button
+                type="button"
+                className="settings-page-panel__reset-all-button"
+                onClick={openResetSettingsConfirm}
+                disabled={isResetAllDisabled}
+              >
+                {isResettingSettings
+                  ? "Resetting settings..."
+                  : "Reset all settings to defaults"}
+              </button>
+            </div>
           </section>
 
           <section className="settings-page-panel__section">
@@ -148,6 +171,17 @@ export const SettingsDatabasePanel = memo(() => {
         isRepairing={isRepairingIntegrity}
         onConfirm={confirmIntegrityRepair}
         onClose={closeIntegrityRepairConfirm}
+      />
+
+      <ActionModal
+        isOpen={isResetSettingsConfirmOpen}
+        title="Reset all settings?"
+        description="This will restore preferences, shortcuts, and color scheme mode to defaults."
+        confirmLabel="Reset settings"
+        cancelLabel="Cancel"
+        isConfirming={isResettingSettings}
+        onConfirm={resetAllSettingsToDefaults}
+        onClose={closeResetSettingsConfirm}
       />
     </article>
   );
