@@ -92,6 +92,10 @@ const normalizeLearnRatingMode = (value) => {
 };
 
 const mapLegacyNavigationToRating = (value) => {
+  if (typeof value !== "string") {
+    return DEFAULT_SHORTCUT_SETTINGS.learnRating;
+  }
+
   const legacyMode = normalizeLearnNavigationMode(value);
 
   if (legacyMode === LEARN_NAV_SHORTCUT_MODES.ad) {
@@ -106,7 +110,7 @@ const mapLegacyNavigationToRating = (value) => {
     return LEARN_RATING_SHORTCUT_MODES.disabled;
   }
 
-  return LEARN_RATING_SHORTCUT_MODES.digits;
+  return DEFAULT_SHORTCUT_SETTINGS.learnRating;
 };
 
 export const normalizeShortcutSettings = (value = {}) => {
