@@ -1,18 +1,71 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useDecks, useDeckWords } from "@entities/deck";
+import { useDecks } from "@entities/deck";
+import { desktopApi } from "@shared/api";
+import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   LEARN_FLIP_SHORTCUT_MODES,
-  LEARN_NAV_SHORTCUT_MODES,
+  LEARN_RATING_SHORTCUT_MODES,
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
 import { readLearnProgress, saveLearnProgress } from "./learnProgressStorage";
 
+const EMPTY_SESSION = {
+  deck: null,
+  sessionMode: "default",
+  card: null,
+  stats: {
+    totalCards: 0,
+    dueLearning: 0,
+    dueReview: 0,
+    dueNew: 0,
+    dueTotal: 0,
+    reviewedToday: 0,
+    newStudiedToday: 0,
+    totalStudiedToday: 0,
+  },
+  limits: {
+    newCardsPerDay: 20,
+    maxReviewsPerDay: 100,
+    newLeft: 20,
+    reviewLeft: 100,
+    isBypassed: false,
+  },
+  completionState: {
+    done: false,
+    reason: "",
+    canStartNewSession: false,
+  },
+};
+
+const RATING_OPTIONS = [
+  { key: "again", label: "Again", tone: "danger" },
+  { key: "hard", label: "Hard", tone: "warning" },
+  { key: "good", label: "Good", tone: "neutral" },
+  { key: "easy", label: "Easy", tone: "success" },
+];
+
+const AUTO_FLIP_DELAY_TO_MS = {
+  off: 0,
+  "1s": 1000,
+  "2s": 2000,
+  "3s": 3000,
+};
+
+const SHUFFLE_MODE_OFF = "off";
+const SHUFFLE_MODE_PER_SESSION = "per_session";
+
+const createShuffleSeed = () => Math.floor(Math.random() * 2_147_483_646) + 1;
+
 const buildCardFrontText = (word) => word?.source || "-";
 
 const buildCardBackText = (word) => {
-  const parts = [word?.target, word?.tertiary].filter(Boolean).join(" • ");
+  const values = [word?.target, word?.tertiary].filter(Boolean);
 
-  return parts || "No translation";
+  if (values.length === 0) {
+    return "No translation";
+  }
+
+  return values.join(" • ");
 };
 
 const buildCardMetaBadges = (word) => {
@@ -42,16 +95,10 @@ const isInteractiveEventTarget = (target) => {
     return false;
   }
 
-  const elementTagName = target.tagName;
   const tagName =
-    typeof elementTagName === "string" ? elementTagName.toLowerCase() : "";
+    typeof target.tagName === "string" ? target.tagName.toLowerCase() : "";
 
-  if (
-    tagName === "input" ||
-    tagName === "textarea" ||
-    tagName === "select" ||
-    tagName === "option"
-  ) {
+  if (["input", "textarea", "select", "option"].includes(tagName)) {
     return true;
   }
 
@@ -59,7 +106,7 @@ const isInteractiveEventTarget = (target) => {
 };
 
 const hasNoModifiers = (event) =>
-  !event.metaKey && !event.ctrlKey && !event.altKey;
+  !event.metaKey && !event.ctrlKey && !event.altKey && !event.shiftKey;
 
 const matchesFlipShortcut = (event, mode) => {
   if (mode === LEARN_FLIP_SHORTCUT_MODES.disabled || !hasNoModifiers(event)) {
@@ -73,169 +120,313 @@ const matchesFlipShortcut = (event, mode) => {
   return event.code === "Space";
 };
 
-const matchesNextShortcut = (event, mode) => {
-  if (mode === LEARN_NAV_SHORTCUT_MODES.disabled || !hasNoModifiers(event)) {
-    return false;
+const resolveRatingFromKeyboardShortcut = (event, mode) => {
+  if (
+    mode === LEARN_RATING_SHORTCUT_MODES.disabled ||
+    !hasNoModifiers(event)
+  ) {
+    return "";
   }
 
-  if (mode === LEARN_NAV_SHORTCUT_MODES.ad) {
-    return event.code === "KeyD";
+  const { code } = event;
+
+  if (mode === LEARN_RATING_SHORTCUT_MODES.asdf) {
+    if (code === "KeyA") {
+      return "again";
+    }
+
+    if (code === "KeyS") {
+      return "hard";
+    }
+
+    if (code === "KeyD") {
+      return "good";
+    }
+
+    if (code === "KeyF") {
+      return "easy";
+    }
+
+    return "";
   }
 
-  if (mode === LEARN_NAV_SHORTCUT_MODES.jl) {
-    return event.code === "KeyL";
+  if (mode === LEARN_RATING_SHORTCUT_MODES.arrows) {
+    if (code === "ArrowLeft") {
+      return "again";
+    }
+
+    if (code === "ArrowDown") {
+      return "hard";
+    }
+
+    if (code === "ArrowUp") {
+      return "good";
+    }
+
+    if (code === "ArrowRight") {
+      return "easy";
+    }
+
+    return "";
   }
 
-  return event.code === "ArrowRight";
+  if (code === "Digit1" || code === "Numpad1") {
+    return "again";
+  }
+
+  if (code === "Digit2" || code === "Numpad2") {
+    return "hard";
+  }
+
+  if (code === "Digit3" || code === "Numpad3") {
+    return "good";
+  }
+
+  if (code === "Digit4" || code === "Numpad4") {
+    return "easy";
+  }
+
+  return "";
 };
 
-const matchesPrevShortcut = (event, mode) => {
-  if (mode === LEARN_NAV_SHORTCUT_MODES.disabled || !hasNoModifiers(event)) {
-    return false;
+const buildCompletionMessage = (session) => {
+  if (!session?.completionState?.done) {
+    return "";
   }
 
-  if (mode === LEARN_NAV_SHORTCUT_MODES.ad) {
-    return event.code === "KeyA";
+  if (session?.completionState?.reason === "daily-limit") {
+    const dailyGoal = Number(session?.limits?.dailyGoal);
+
+    if (Number.isInteger(dailyGoal) && dailyGoal > 0) {
+      return `Daily goal reached (${dailyGoal} cards). Continue tomorrow or start an extra session.`;
+    }
+
+    return "Daily limit reached. Adjust SRS limits in Settings or continue tomorrow.";
   }
 
-  if (mode === LEARN_NAV_SHORTCUT_MODES.jl) {
-    return event.code === "KeyJ";
+  if (session?.completionState?.reason === "empty-deck") {
+    return "This deck has no cards yet.";
   }
 
-  return event.code === "ArrowLeft";
-};
-
-const resolveFlipShortcutHint = (mode) => {
-  if (mode === LEARN_FLIP_SHORTCUT_MODES.enter) {
-    return "Enter";
-  }
-
-  if (mode === LEARN_FLIP_SHORTCUT_MODES.disabled) {
-    return "Off";
-  }
-
-  return "Space";
-};
-
-const resolveNavigationShortcutHint = (mode) => {
-  if (mode === LEARN_NAV_SHORTCUT_MODES.ad) {
-    return "A / D";
-  }
-
-  if (mode === LEARN_NAV_SHORTCUT_MODES.jl) {
-    return "J / L";
-  }
-
-  if (mode === LEARN_NAV_SHORTCUT_MODES.disabled) {
-    return "Off";
-  }
-
-  return "← / →";
+  return "All due cards are done for now.";
 };
 
 export const useLearnFlashcardsPanel = () => {
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
+  const { appPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
-  const [progressState, setProgressState] = useState(() => readLearnProgress());
-  const selectedDeckIdState = progressState.selectedDeckId;
-  const isBackVisible = progressState.isBackVisible;
-  const indexByDeckId = progressState.indexByDeckId;
+  const [learnProgress, setLearnProgress] = useState(() => readLearnProgress());
+  const [extendedSessionByDeckId, setExtendedSessionByDeckId] = useState({});
+  const [session, setSession] = useState(EMPTY_SESSION);
+  const [isSessionLoading, setIsSessionLoading] = useState(false);
+  const [sessionError, setSessionError] = useState("");
+  const [isRatingPending, setIsRatingPending] = useState(false);
+  const loadSessionRequestRef = useRef(0);
+  const shuffleSeedByDeckRef = useRef({});
+
+  const spacedRepetitionSettings = appPreferences.spacedRepetition;
+  const studySessionSettings = appPreferences.studySession;
+  const shuffleMode = studySessionSettings?.shuffleMode || SHUFFLE_MODE_OFF;
+  const autoFlipDelayMs =
+    AUTO_FLIP_DELAY_TO_MS[studySessionSettings.autoFlipDelay] || 0;
 
   const selectedDeckId = useMemo(() => {
-    if (!selectedDeckIdState) {
+    if (!learnProgress.selectedDeckId) {
       return decks[0] ? String(decks[0].id) : "";
     }
 
     const hasSelectedDeck = decks.some(
-      (deckItem) => String(deckItem.id) === selectedDeckIdState,
+      (deckItem) => String(deckItem.id) === learnProgress.selectedDeckId,
     );
 
     if (hasSelectedDeck) {
-      return selectedDeckIdState;
+      return learnProgress.selectedDeckId;
     }
 
     return decks[0] ? String(decks[0].id) : "";
-  }, [decks, selectedDeckIdState]);
+  }, [decks, learnProgress.selectedDeckId]);
+  const isExtendedSession = useMemo(
+    () => Boolean(extendedSessionByDeckId[selectedDeckId]),
+    [extendedSessionByDeckId, selectedDeckId],
+  );
 
-  const {
-    deck,
-    words,
-    isLoading: isWordsLoading,
-    error: wordsError,
-  } = useDeckWords(selectedDeckId);
+  const setProgressCardWordId = useCallback((deckId, wordId) => {
+    const numericWordId = Number(wordId);
 
-  const safeWords = useMemo(() => (Array.isArray(words) ? words : []), [words]);
-  const currentIndex = useMemo(() => {
+    setLearnProgress((prevState) => {
+      const nextMap = {
+        ...prevState.lastCardWordIdByDeck,
+      };
+
+      if (Number.isInteger(numericWordId) && numericWordId > 0) {
+        nextMap[deckId] = numericWordId;
+      } else {
+        delete nextMap[deckId];
+      }
+
+      return {
+        ...prevState,
+        lastCardWordIdByDeck: nextMap,
+      };
+    });
+  }, []);
+
+  useEffect(() => {
+    if (shuffleMode !== SHUFFLE_MODE_PER_SESSION) {
+      shuffleSeedByDeckRef.current = {};
+    }
+  }, [shuffleMode]);
+
+  const resolveShuffleSeed = useCallback(
+    (deckId, options = {}) => {
+      if (shuffleMode !== SHUFFLE_MODE_PER_SESSION) {
+        return null;
+      }
+
+      const normalizedDeckId = String(deckId || "");
+
+      if (!normalizedDeckId) {
+        return null;
+      }
+
+      const shouldRenew = Boolean(options?.renew);
+
+      if (
+        shouldRenew ||
+        !Number.isInteger(shuffleSeedByDeckRef.current[normalizedDeckId])
+      ) {
+        shuffleSeedByDeckRef.current[normalizedDeckId] = createShuffleSeed();
+      }
+
+      return shuffleSeedByDeckRef.current[normalizedDeckId];
+    },
+    [shuffleMode],
+  );
+
+  const loadSession = useCallback(
+    async (deckId, options = {}) => {
+      const normalizedDeckId = String(deckId || "");
+      const forceAllCards =
+        typeof options?.forceAllCards === "boolean"
+          ? options.forceAllCards
+          : Boolean(extendedSessionByDeckId[normalizedDeckId]);
+      const shuffleSeed =
+        Number.isInteger(options?.shuffleSeed) && options.shuffleSeed > 0
+          ? options.shuffleSeed
+          : resolveShuffleSeed(normalizedDeckId);
+
+      if (!normalizedDeckId) {
+        setSession(EMPTY_SESSION);
+        setSessionError("");
+        setIsSessionLoading(false);
+        return;
+      }
+
+      const requestId = loadSessionRequestRef.current + 1;
+      loadSessionRequestRef.current = requestId;
+      setIsSessionLoading(true);
+      setSessionError("");
+
+      try {
+        const nextSession = await desktopApi.getSrsSession(
+          normalizedDeckId,
+          {
+            spacedRepetition: spacedRepetitionSettings,
+            studySession: {
+              dailyGoal: studySessionSettings?.dailyGoal,
+              repeatWrongCards: studySessionSettings?.repeatWrongCards,
+              shuffleMode,
+              shuffleSeed,
+            },
+          },
+          {
+            forceAllCards,
+          },
+        );
+
+        if (loadSessionRequestRef.current !== requestId) {
+          return;
+        }
+
+        setSession(nextSession || EMPTY_SESSION);
+        setProgressCardWordId(normalizedDeckId, nextSession?.card?.wordId);
+      } catch (error) {
+        if (loadSessionRequestRef.current !== requestId) {
+          return;
+        }
+
+        setSession(EMPTY_SESSION);
+        setSessionError(error?.message || "Failed to load SRS session");
+      } finally {
+        if (loadSessionRequestRef.current === requestId) {
+          setIsSessionLoading(false);
+        }
+      }
+    },
+    [
+      extendedSessionByDeckId,
+      resolveShuffleSeed,
+      setProgressCardWordId,
+      shuffleMode,
+      spacedRepetitionSettings,
+      studySessionSettings,
+    ],
+  );
+
+  useEffect(() => {
     if (!selectedDeckId) {
-      return 0;
+      return;
     }
 
-    const deckIndex = Number(indexByDeckId[selectedDeckId]);
+    setLearnProgress((prevState) => {
+      if (prevState.selectedDeckId === selectedDeckId) {
+        return prevState;
+      }
 
-    if (!Number.isFinite(deckIndex) || deckIndex < 0) {
-      return 0;
+      return {
+        ...prevState,
+        selectedDeckId,
+        isBackVisible: false,
+      };
+    });
+  }, [selectedDeckId]);
+
+  useEffect(() => {
+    void loadSession(selectedDeckId);
+  }, [loadSession, selectedDeckId]);
+
+  useEffect(() => {
+    saveLearnProgress(learnProgress);
+  }, [learnProgress]);
+
+  const currentWord = session?.card || null;
+  const isBackVisible = learnProgress.isBackVisible;
+
+  useEffect(() => {
+    if (!currentWord || isBackVisible || autoFlipDelayMs <= 0) {
+      return undefined;
     }
 
-    return Math.floor(deckIndex);
-  }, [indexByDeckId, selectedDeckId]);
-  const hasCards = safeWords.length > 0;
-  const resolvedIndex = hasCards
-    ? Math.min(currentIndex, safeWords.length - 1)
-    : 0;
-  const currentWord = hasCards ? safeWords[resolvedIndex] : null;
-  const normalizedIndexByDeckIdForSave = useMemo(() => {
-    if (!selectedDeckId) {
-      return indexByDeckId;
-    }
+    const timeoutId = window.setTimeout(() => {
+      setLearnProgress((prevState) => ({
+        ...prevState,
+        isBackVisible: true,
+      }));
+    }, autoFlipDelayMs);
 
-    const expectedIndex = hasCards ? resolvedIndex : 0;
-    const storedIndex = Number(indexByDeckId[selectedDeckId]);
-    const safeStoredIndex =
-      Number.isFinite(storedIndex) && storedIndex >= 0
-        ? Math.floor(storedIndex)
-        : 0;
-
-    if (safeStoredIndex === expectedIndex) {
-      return indexByDeckId;
-    }
-
-    return {
-      ...indexByDeckId,
-      [selectedDeckId]: expectedIndex,
+    return () => {
+      window.clearTimeout(timeoutId);
     };
-  }, [indexByDeckId, selectedDeckId, hasCards, resolvedIndex]);
-  const cardFrontText = useMemo(
-    () => buildCardFrontText(currentWord),
-    [currentWord],
-  );
-  const cardBackText = useMemo(
-    () => buildCardBackText(currentWord),
-    [currentWord],
-  );
-  const cardMetaBadges = useMemo(
-    () => buildCardMetaBadges(currentWord),
-    [currentWord],
-  );
+  }, [autoFlipDelayMs, currentWord, isBackVisible]);
 
   const handleDeckChange = useCallback((deckId) => {
     const normalizedDeckId = String(deckId || "");
 
-    setProgressState((prevState) => {
-      const existingDeckIndex = Number(prevState.indexByDeckId[normalizedDeckId]);
-      const hasExistingDeckIndex =
-        Number.isFinite(existingDeckIndex) && existingDeckIndex >= 0;
-
-      return {
-        selectedDeckId: normalizedDeckId,
-        isBackVisible: false,
-        indexByDeckId: hasExistingDeckIndex
-          ? prevState.indexByDeckId
-          : {
-              ...prevState.indexByDeckId,
-              [normalizedDeckId]: 0,
-            },
-      };
-    });
+    setLearnProgress((prevState) => ({
+      ...prevState,
+      selectedDeckId: normalizedDeckId,
+      isBackVisible: false,
+    }));
   }, []);
 
   const handleDeckSelectChange = useCallback(
@@ -246,93 +437,113 @@ export const useLearnFlashcardsPanel = () => {
   );
 
   const toggleBackVisibility = useCallback(() => {
-    setProgressState((prevState) => ({
+    if (!currentWord || isRatingPending) {
+      return;
+    }
+
+    setLearnProgress((prevState) => ({
       ...prevState,
       isBackVisible: !prevState.isBackVisible,
     }));
-  }, []);
+  }, [currentWord, isRatingPending]);
 
-  const handleNextCard = useCallback(() => {
-    if (!hasCards || !selectedDeckId) {
-      return;
-    }
+  const handleRateCard = useCallback(
+    async (rating) => {
+      if (!selectedDeckId || !currentWord || isRatingPending) {
+        return;
+      }
 
-    setProgressState((prevState) => {
-      const currentDeckIndex = Number(prevState.indexByDeckId[selectedDeckId]);
-      const safeCurrentDeckIndex =
-        Number.isFinite(currentDeckIndex) && currentDeckIndex >= 0
-          ? Math.floor(currentDeckIndex)
-          : 0;
-      const nextDeckIndex = (safeCurrentDeckIndex + 1) % safeWords.length;
+      setIsRatingPending(true);
+      setSessionError("");
 
-      return {
-        ...prevState,
-        isBackVisible: false,
-        indexByDeckId: {
-          ...prevState.indexByDeckId,
-          [selectedDeckId]: nextDeckIndex,
-        },
-      };
-    });
-  }, [hasCards, safeWords.length, selectedDeckId]);
+      try {
+        const nextSession = await desktopApi.gradeSrsCard({
+          deckId: selectedDeckId,
+          wordId: currentWord.wordId,
+          rating,
+          settings: {
+            spacedRepetition: spacedRepetitionSettings,
+            studySession: {
+              dailyGoal: studySessionSettings?.dailyGoal,
+              repeatWrongCards: studySessionSettings?.repeatWrongCards,
+              shuffleMode,
+              shuffleSeed: resolveShuffleSeed(selectedDeckId),
+            },
+          },
+          forceAllCards: isExtendedSession,
+        });
 
-  const handlePrevCard = useCallback(() => {
-    if (!hasCards || !selectedDeckId) {
-      return;
-    }
-
-    setProgressState((prevState) => {
-      const currentDeckIndex = Number(prevState.indexByDeckId[selectedDeckId]);
-      const safeCurrentDeckIndex =
-        Number.isFinite(currentDeckIndex) && currentDeckIndex >= 0
-          ? Math.floor(currentDeckIndex)
-          : 0;
-      const prevDeckIndex =
-        (safeCurrentDeckIndex - 1 + safeWords.length) % safeWords.length;
-
-      return {
-        ...prevState,
-        isBackVisible: false,
-        indexByDeckId: {
-          ...prevState.indexByDeckId,
-          [selectedDeckId]: prevDeckIndex,
-        },
-      };
-    });
-  }, [hasCards, safeWords.length, selectedDeckId]);
-
-  useEffect(() => {
-    saveLearnProgress({
+        setSession(nextSession || EMPTY_SESSION);
+        setLearnProgress((prevState) => ({
+          ...prevState,
+          isBackVisible: false,
+        }));
+        setProgressCardWordId(selectedDeckId, nextSession?.card?.wordId);
+      } catch (error) {
+        setSessionError(error?.message || "Failed to grade card");
+      } finally {
+        setIsRatingPending(false);
+      }
+    },
+    [
+      currentWord,
+      isRatingPending,
       selectedDeckId,
-      isBackVisible,
-      indexByDeckId: normalizedIndexByDeckIdForSave,
+      setProgressCardWordId,
+      spacedRepetitionSettings,
+      studySessionSettings,
+      shuffleMode,
+      resolveShuffleSeed,
+      isExtendedSession,
+    ],
+  );
+
+  const handleStartNewSession = useCallback(() => {
+    if (!selectedDeckId) {
+      return;
+    }
+
+    setExtendedSessionByDeckId((prevValue) => ({
+      ...prevValue,
+      [selectedDeckId]: true,
+    }));
+    setLearnProgress((prevState) => ({
+      ...prevState,
+      isBackVisible: false,
+    }));
+    const renewedShuffleSeed = resolveShuffleSeed(selectedDeckId, { renew: true });
+    void loadSession(selectedDeckId, {
+      forceAllCards: true,
+      shuffleSeed: renewedShuffleSeed,
     });
-  }, [selectedDeckId, isBackVisible, normalizedIndexByDeckIdForSave]);
+  }, [loadSession, resolveShuffleSeed, selectedDeckId]);
 
   const keyboardHandlersRef = useRef({
-    canHandleCards: false,
+    canFlip: false,
+    canRate: false,
     handleFlip: () => {},
-    handleNext: () => {},
-    handlePrev: () => {},
+    handleRate: () => {},
     flipShortcutMode: LEARN_FLIP_SHORTCUT_MODES.space,
-    navigationShortcutMode: LEARN_NAV_SHORTCUT_MODES.arrows,
+    ratingShortcutMode: LEARN_RATING_SHORTCUT_MODES.digits,
   });
 
   useEffect(() => {
-    keyboardHandlersRef.current.canHandleCards = hasCards;
+    keyboardHandlersRef.current.canFlip = Boolean(currentWord) && !isRatingPending;
+    keyboardHandlersRef.current.canRate =
+      Boolean(currentWord) && learnProgress.isBackVisible && !isRatingPending;
     keyboardHandlersRef.current.handleFlip = toggleBackVisibility;
-    keyboardHandlersRef.current.handleNext = handleNextCard;
-    keyboardHandlersRef.current.handlePrev = handlePrevCard;
+    keyboardHandlersRef.current.handleRate = handleRateCard;
     keyboardHandlersRef.current.flipShortcutMode = shortcutSettings.learnFlip;
-    keyboardHandlersRef.current.navigationShortcutMode =
-      shortcutSettings.learnNavigation;
+    keyboardHandlersRef.current.ratingShortcutMode =
+      shortcutSettings.learnRating;
   }, [
-    hasCards,
-    toggleBackVisibility,
-    handleNextCard,
-    handlePrevCard,
+    currentWord,
+    handleRateCard,
+    isRatingPending,
+    learnProgress.isBackVisible,
     shortcutSettings.learnFlip,
-    shortcutSettings.learnNavigation,
+    shortcutSettings.learnRating,
+    toggleBackVisibility,
   ]);
 
   useEffect(() => {
@@ -345,30 +556,33 @@ export const useLearnFlashcardsPanel = () => {
         return;
       }
 
-      const { canHandleCards, handleFlip, handleNext, handlePrev } =
-        keyboardHandlersRef.current;
-      const { flipShortcutMode, navigationShortcutMode } =
-        keyboardHandlersRef.current;
+      const {
+        canFlip,
+        canRate,
+        handleFlip,
+        handleRate,
+        flipShortcutMode,
+        ratingShortcutMode,
+      } = keyboardHandlersRef.current;
 
-      if (!canHandleCards) {
-        return;
-      }
-
-      if (matchesFlipShortcut(event, flipShortcutMode)) {
+      if (canFlip && matchesFlipShortcut(event, flipShortcutMode)) {
         event.preventDefault();
         handleFlip();
         return;
       }
 
-      if (matchesNextShortcut(event, navigationShortcutMode)) {
-        event.preventDefault();
-        handleNext();
+      if (!canRate) {
         return;
       }
 
-      if (matchesPrevShortcut(event, navigationShortcutMode)) {
+      const ratingFromShortcut = resolveRatingFromKeyboardShortcut(
+        event,
+        ratingShortcutMode,
+      );
+
+      if (ratingFromShortcut) {
         event.preventDefault();
-        handlePrev();
+        handleRate(ratingFromShortcut);
       }
     };
 
@@ -379,28 +593,60 @@ export const useLearnFlashcardsPanel = () => {
     };
   }, []);
 
+  const ratingOptions = useMemo(() => {
+    const preview = currentWord?.ratingPreview || {};
+
+    return RATING_OPTIONS.map((option) => ({
+      ...option,
+      value: preview[option.key] || "-",
+    }));
+  }, [currentWord]);
+  const cardFrontText = useMemo(
+    () => buildCardFrontText(currentWord),
+    [currentWord],
+  );
+  const cardBackText = useMemo(
+    () => buildCardBackText(currentWord),
+    [currentWord],
+  );
+  const cardMetaBadges = useMemo(
+    () => buildCardMetaBadges(currentWord),
+    [currentWord],
+  );
+  const handleRefreshSession = useCallback(() => {
+    void loadSession(selectedDeckId);
+  }, [loadSession, selectedDeckId]);
+  const canStartNewSession = Boolean(
+    session?.completionState?.done &&
+      session?.completionState?.canStartNewSession &&
+      !isExtendedSession,
+  );
+
   return {
-    deck,
+    deck: session?.deck || null,
+    sessionMode: session?.sessionMode || EMPTY_SESSION.sessionMode,
     decks,
     decksError,
-    wordsError,
+    wordsError: sessionError,
     isDecksLoading,
-    isWordsLoading,
+    isWordsLoading: isSessionLoading,
+    isRatingPending,
     selectedDeckId,
     currentWord,
     cardFrontText,
     cardBackText,
     cardMetaBadges,
-    currentCardIndex: Math.min(resolvedIndex + 1, safeWords.length),
-    cardsCount: safeWords.length,
     isBackVisible,
-    flipShortcutHint: resolveFlipShortcutHint(shortcutSettings.learnFlip),
-    navigationShortcutHint: resolveNavigationShortcutHint(
-      shortcutSettings.learnNavigation,
-    ),
+    sessionStats: session?.stats || EMPTY_SESSION.stats,
+    sessionLimits: session?.limits || EMPTY_SESSION.limits,
+    completionMessage: buildCompletionMessage(session),
+    canStartNewSession,
+    isExtendedSession,
+    ratingOptions,
     handleDeckSelectChange,
-    handlePrevCard,
-    handleNextCard,
+    handleRateCard,
+    handleStartNewSession,
     toggleBackVisibility,
+    refreshSession: handleRefreshSession,
   };
 };

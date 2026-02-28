@@ -1,8 +1,18 @@
-import { app, BrowserWindow, dialog, ipcMain, shell, session } from "electron";
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  ipcMain,
+  Menu,
+  shell,
+  Tray,
+  session,
+} from "electron";
 import process from "node:process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import Database from "better-sqlite3";
 import {
   closeDatabaseConnection,
   getDatabase,
@@ -24,30 +34,350 @@ import {
   saveDeck,
 } from "./db/services/db.services.js";
 import { getAppSettings, updateAppSettings } from "./db/services/settings.services.js";
+import { getSrsSessionSnapshot, gradeSrsCard } from "./db/services/srs.services.js";
+import { getProgressOverview } from "./db/services/progress.services.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const APP_ICON_PATH = path.join(__dirname, "assets", "icon.png");
+const APP_THEME_CSS_PATH = path.join(__dirname, "..", "src", "shared", "config", "variables.css");
 const WINDOW_TITLE_BAR_HEIGHT = 36;
+const parseCssVariableBlock = (cssBlock) => {
+  if (typeof cssBlock !== "string" || cssBlock.length === 0) {
+    return {};
+  }
+
+  const tokens = {};
+
+  for (const match of cssBlock.matchAll(/--([a-z0-9-]+)\s*:\s*([^;]+);/gi)) {
+    const tokenName = match[1]?.trim();
+    const tokenValue = match[2]?.replace(/\s+/g, " ").trim();
+
+    if (!tokenName || !tokenValue) {
+      continue;
+    }
+
+    tokens[tokenName] = tokenValue;
+  }
+
+  return tokens;
+};
+
+const readAppThemeTokens = () => {
+  try {
+    const cssSource = fs.readFileSync(APP_THEME_CSS_PATH, "utf8");
+    const lightBlock = cssSource.match(/:root\s*{([\s\S]*?)}/)?.[1] || "";
+    const darkBlock = cssSource.match(/:root\[theme=["']dark["']\]\s*{([\s\S]*?)}/)?.[1] || "";
+    const lightTokens = parseCssVariableBlock(lightBlock);
+
+    return {
+      light: lightTokens,
+      dark: {
+        ...lightTokens,
+        ...parseCssVariableBlock(darkBlock),
+      },
+    };
+  } catch {
+    return {
+      light: {},
+      dark: {},
+    };
+  }
+};
+
+const APP_THEME_TOKENS = readAppThemeTokens();
+const resolveThemeToken = (tokenName, themeName = "light", fallbackValue = "") => {
+  const themeTokens = APP_THEME_TOKENS[themeName] || APP_THEME_TOKENS.light;
+  const resolvedValue = themeTokens?.[tokenName] || APP_THEME_TOKENS.light?.[tokenName];
+
+  if (typeof resolvedValue === "string" && resolvedValue.length > 0) {
+    return resolvedValue;
+  }
+
+  return fallbackValue;
+};
+
 const WINDOW_TITLE_BAR_THEME = {
   light: {
-    color: "#d5deea",
-    symbolColor: "#0f172a",
+    color: resolveThemeToken("color-titlebar", "light"),
+    symbolColor: resolveThemeToken("color-titlebar-symbol", "light"),
   },
   dark: {
-    color: "#070c14",
-    symbolColor: "#f8fafc",
+    color: resolveThemeToken("color-titlebar", "dark"),
+    symbolColor: resolveThemeToken("color-titlebar-symbol", "dark"),
   },
+};
+const FATAL_STARTUP_ERROR_THEME = {
+  bodyBackground: resolveThemeToken("color-bg", "dark"),
+  bodyText: resolveThemeToken("color-text", "dark"),
+  cardBorder: resolveThemeToken("color-border", "dark"),
+  cardBackground: resolveThemeToken("color-surface", "dark"),
+  cardShadow: resolveThemeToken("shadow-md", "dark"),
+  mutedText: resolveThemeToken("color-text-muted", "dark"),
+  codeBorder: resolveThemeToken("flashcard-border", "dark"),
+  codeBackground: resolveThemeToken("color-surface-muted", "dark"),
 };
 
 let mainWindow = null;
+let appTray = null;
+let isQuitRequested = false;
+let backupTimerId = null;
+let isBackupInFlight = false;
+let backupScheduleSignature = "";
+let launchAtStartupSignature = null;
 let pendingImportFilePaths = [];
 let pendingRuntimeErrorEvents = [];
 const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck"];
 const DB_FILE_NAME = "lioralang.db";
+const APP_PREFERENCES_SETTINGS_KEY = "appPreferences";
+const LOG_LEVELS = {
+  error: "error",
+  warn: "warn",
+  debug: "debug",
+};
+const LOG_LEVEL_PRIORITY = {
+  [LOG_LEVELS.error]: 1,
+  [LOG_LEVELS.warn]: 2,
+  [LOG_LEVELS.debug]: 3,
+};
+const BACKUP_INTERVAL_MS = {
+  off: 0,
+  daily: 24 * 60 * 60 * 1000,
+  weekly: 7 * 24 * 60 * 60 * 1000,
+  monthly: 30 * 24 * 60 * 60 * 1000,
+};
+const DEFAULT_RUNTIME_APP_PREFERENCES = {
+  studySession: {
+    dailyGoal: 20,
+    repeatWrongCards: true,
+  },
+  deckDefaults: {
+    sourceLanguage: "English",
+    targetLanguage: "Ukrainian",
+    level: "A1",
+    partOfSpeech: "noun",
+    tags: [],
+  },
+  importExport: {
+    autoOpenLanguageReview: false,
+    duplicateStrategy: "skip",
+    exportFormat: "lioradeck",
+    includeExamples: true,
+    includeTags: true,
+  },
+  dataSafety: {
+    autoBackupInterval: "weekly",
+    maxBackups: 10,
+    confirmDestructive: true,
+  },
+  desktop: {
+    launchAtStartup: false,
+    minimizeToTray: false,
+    hardwareAcceleration: true,
+    updateChannel: "stable",
+  },
+  privacy: {
+    analyticsEnabled: false,
+    crashReportsEnabled: true,
+    logLevel: LOG_LEVELS.error,
+  },
+};
+let appPreferencesCache = DEFAULT_RUNTIME_APP_PREFERENCES;
 
 const getDevServerUrl = () => {
   return process.env.VITE_DEV_SERVER_URL || "http://localhost:5175";
+};
+
+const toCleanString = (value) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value.trim();
+};
+
+const toBoolean = (value, fallback) => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  return fallback;
+};
+
+const toIntegerInRange = (value, min, max, fallback) => {
+  const numericValue = Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    return fallback;
+  }
+
+  if (numericValue < min) {
+    return min;
+  }
+
+  if (numericValue > max) {
+    return max;
+  }
+
+  return Math.round(numericValue);
+};
+
+const normalizeUniqueTags = (value) => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const uniqueTags = [];
+  const seen = new Set();
+
+  value.forEach((item) => {
+    const tag = toCleanString(item);
+    const tagKey = tag.toLowerCase();
+
+    if (!tag || seen.has(tagKey)) {
+      return;
+    }
+
+    seen.add(tagKey);
+    uniqueTags.push(tag);
+  });
+
+  return uniqueTags.slice(0, 10);
+};
+
+const normalizeAppPreferencesForMain = (value = {}) => {
+  const raw = value && typeof value === "object" ? value : {};
+  const dataSafetyInterval = toCleanString(raw?.dataSafety?.autoBackupInterval);
+  const backupInterval = Object.hasOwn(BACKUP_INTERVAL_MS, dataSafetyInterval)
+    ? dataSafetyInterval
+    : DEFAULT_RUNTIME_APP_PREFERENCES.dataSafety.autoBackupInterval;
+  const duplicateStrategy = ["skip", "update", "keep_both"].includes(
+    raw?.importExport?.duplicateStrategy,
+  )
+    ? raw.importExport.duplicateStrategy
+    : DEFAULT_RUNTIME_APP_PREFERENCES.importExport.duplicateStrategy;
+  const exportFormat = ["lioradeck", "json"].includes(raw?.importExport?.exportFormat)
+    ? raw.importExport.exportFormat
+    : DEFAULT_RUNTIME_APP_PREFERENCES.importExport.exportFormat;
+  const updateChannel = ["stable", "beta"].includes(raw?.desktop?.updateChannel)
+    ? raw.desktop.updateChannel
+    : DEFAULT_RUNTIME_APP_PREFERENCES.desktop.updateChannel;
+  const logLevel = Object.hasOwn(LOG_LEVEL_PRIORITY, raw?.privacy?.logLevel)
+    ? raw.privacy.logLevel
+    : DEFAULT_RUNTIME_APP_PREFERENCES.privacy.logLevel;
+
+  return {
+    studySession: {
+      dailyGoal: toIntegerInRange(
+        raw?.studySession?.dailyGoal,
+        1,
+        999,
+        DEFAULT_RUNTIME_APP_PREFERENCES.studySession.dailyGoal,
+      ),
+      repeatWrongCards: toBoolean(
+        raw?.studySession?.repeatWrongCards,
+        DEFAULT_RUNTIME_APP_PREFERENCES.studySession.repeatWrongCards,
+      ),
+    },
+    deckDefaults: {
+      sourceLanguage:
+        toCleanString(raw?.deckDefaults?.sourceLanguage) ||
+        DEFAULT_RUNTIME_APP_PREFERENCES.deckDefaults.sourceLanguage,
+      targetLanguage:
+        toCleanString(raw?.deckDefaults?.targetLanguage) ||
+        DEFAULT_RUNTIME_APP_PREFERENCES.deckDefaults.targetLanguage,
+      level:
+        toCleanString(raw?.deckDefaults?.level) ||
+        DEFAULT_RUNTIME_APP_PREFERENCES.deckDefaults.level,
+      partOfSpeech:
+        toCleanString(raw?.deckDefaults?.partOfSpeech) ||
+        DEFAULT_RUNTIME_APP_PREFERENCES.deckDefaults.partOfSpeech,
+      tags: normalizeUniqueTags(raw?.deckDefaults?.tags),
+    },
+    importExport: {
+      autoOpenLanguageReview: toBoolean(
+        raw?.importExport?.autoOpenLanguageReview,
+        DEFAULT_RUNTIME_APP_PREFERENCES.importExport.autoOpenLanguageReview,
+      ),
+      duplicateStrategy,
+      exportFormat,
+      includeExamples: toBoolean(
+        raw?.importExport?.includeExamples,
+        DEFAULT_RUNTIME_APP_PREFERENCES.importExport.includeExamples,
+      ),
+      includeTags: toBoolean(
+        raw?.importExport?.includeTags,
+        DEFAULT_RUNTIME_APP_PREFERENCES.importExport.includeTags,
+      ),
+    },
+    dataSafety: {
+      autoBackupInterval: backupInterval,
+      maxBackups: toIntegerInRange(
+        raw?.dataSafety?.maxBackups,
+        1,
+        100,
+        DEFAULT_RUNTIME_APP_PREFERENCES.dataSafety.maxBackups,
+      ),
+      confirmDestructive: toBoolean(
+        raw?.dataSafety?.confirmDestructive,
+        DEFAULT_RUNTIME_APP_PREFERENCES.dataSafety.confirmDestructive,
+      ),
+    },
+    desktop: {
+      launchAtStartup: toBoolean(
+        raw?.desktop?.launchAtStartup,
+        DEFAULT_RUNTIME_APP_PREFERENCES.desktop.launchAtStartup,
+      ),
+      minimizeToTray: toBoolean(
+        raw?.desktop?.minimizeToTray,
+        DEFAULT_RUNTIME_APP_PREFERENCES.desktop.minimizeToTray,
+      ),
+      hardwareAcceleration: toBoolean(
+        raw?.desktop?.hardwareAcceleration,
+        DEFAULT_RUNTIME_APP_PREFERENCES.desktop.hardwareAcceleration,
+      ),
+      updateChannel,
+    },
+    privacy: {
+      analyticsEnabled: toBoolean(
+        raw?.privacy?.analyticsEnabled,
+        DEFAULT_RUNTIME_APP_PREFERENCES.privacy.analyticsEnabled,
+      ),
+      crashReportsEnabled: toBoolean(
+        raw?.privacy?.crashReportsEnabled,
+        DEFAULT_RUNTIME_APP_PREFERENCES.privacy.crashReportsEnabled,
+      ),
+      logLevel,
+    },
+  };
+};
+
+const extractAppPreferencesFromSettings = (settings = {}) => {
+  const nextPreferences = settings?.[APP_PREFERENCES_SETTINGS_KEY];
+  return normalizeAppPreferencesForMain(nextPreferences);
+};
+
+const getRuntimeLogLevel = () =>
+  appPreferencesCache?.privacy?.logLevel || LOG_LEVELS.error;
+
+const shouldLog = (targetLevel) => {
+  const targetPriority = LOG_LEVEL_PRIORITY[targetLevel] || LOG_LEVEL_PRIORITY[LOG_LEVELS.error];
+  const currentPriority =
+    LOG_LEVEL_PRIORITY[getRuntimeLogLevel()] || LOG_LEVEL_PRIORITY[LOG_LEVELS.error];
+
+  return currentPriority >= targetPriority;
+};
+
+const logWarn = (...args) => {
+  if (shouldLog(LOG_LEVELS.warn)) {
+    console.warn(...args);
+  }
+};
+
+const logError = (...args) => {
+  if (shouldLog(LOG_LEVELS.error)) {
+    console.error(...args);
+  }
 };
 
 const resolveTitleBarTheme = (themeValue) => {
@@ -239,6 +569,10 @@ const queueRuntimeErrorEvent = (payload) => {
 };
 
 const reportRuntimeError = (error, source = "main") => {
+  if (!appPreferencesCache.privacy.crashReportsEnabled) {
+    return;
+  }
+
   const errorMessage =
     typeof error?.message === "string"
       ? error.message
@@ -280,8 +614,8 @@ const buildFatalStartupErrorHtml = (payload) => {
           }
           body {
             margin: 0;
-            background: #0f1115;
-            color: #e5e7eb;
+            background: ${FATAL_STARTUP_ERROR_THEME.bodyBackground};
+            color: ${FATAL_STARTUP_ERROR_THEME.bodyText};
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: grid;
             place-items: center;
@@ -290,10 +624,10 @@ const buildFatalStartupErrorHtml = (payload) => {
           }
           .error-card {
             width: min(560px, 100%);
-            border: 1px solid #2b3444;
+            border: 1px solid ${FATAL_STARTUP_ERROR_THEME.cardBorder};
             border-radius: 14px;
-            background: #151922;
-            box-shadow: 0 24px 52px rgba(0, 0, 0, 0.45);
+            background: ${FATAL_STARTUP_ERROR_THEME.cardBackground};
+            box-shadow: ${FATAL_STARTUP_ERROR_THEME.cardShadow};
             padding: 18px;
           }
           .error-card h1 {
@@ -302,15 +636,15 @@ const buildFatalStartupErrorHtml = (payload) => {
           }
           .error-card p {
             margin: 0;
-            color: #cbd5e1;
+            color: ${FATAL_STARTUP_ERROR_THEME.mutedText};
             line-height: 1.4;
           }
           .error-card pre {
             margin: 12px 0 0;
-            border: 1px solid #334155;
+            border: 1px solid ${FATAL_STARTUP_ERROR_THEME.codeBorder};
             border-radius: 10px;
-            background: #0b1220;
-            color: #cbd5e1;
+            background: ${FATAL_STARTUP_ERROR_THEME.codeBackground};
+            color: ${FATAL_STARTUP_ERROR_THEME.mutedText};
             padding: 10px;
             max-height: 220px;
             overflow: auto;
@@ -435,6 +769,342 @@ const navigateForward = (webContents) => {
 const resolveActiveDbPath = () => {
   const storedDbPath = readStoredDbPath(app.getPath("userData"));
   return storedDbPath || getDefaultDbPath();
+};
+
+const resolveWindowTitle = () => {
+  return appPreferencesCache.desktop.updateChannel === "beta"
+    ? "LioraLang (Beta)"
+    : "LioraLang";
+};
+
+const readAppPreferencesFromDatabaseFile = (dbFilePath) => {
+  if (typeof dbFilePath !== "string" || !dbFilePath || !fs.existsSync(dbFilePath)) {
+    return DEFAULT_RUNTIME_APP_PREFERENCES;
+  }
+
+  let db = null;
+
+  try {
+    db = new Database(dbFilePath, {
+      readonly: true,
+      fileMustExist: true,
+    });
+    const row = db
+      .prepare("SELECT value FROM app_settings WHERE key = ?")
+      .get(APP_PREFERENCES_SETTINGS_KEY);
+
+    if (!row || typeof row.value !== "string") {
+      return DEFAULT_RUNTIME_APP_PREFERENCES;
+    }
+
+    const parsedValue = JSON.parse(row.value);
+    return normalizeAppPreferencesForMain(parsedValue);
+  } catch {
+    return DEFAULT_RUNTIME_APP_PREFERENCES;
+  } finally {
+    try {
+      db?.close();
+    } catch {
+      // no-op
+    }
+  }
+};
+
+const resolveBootstrapAppPreferences = () => {
+  try {
+    const bootstrapDbPath = resolveActiveDbPath();
+    return readAppPreferencesFromDatabaseFile(bootstrapDbPath);
+  } catch {
+    return DEFAULT_RUNTIME_APP_PREFERENCES;
+  }
+};
+
+const getAnalyticsLogFilePath = () => {
+  return path.join(app.getPath("userData"), "analytics", "events.jsonl");
+};
+
+const trackAnalyticsEvent = (eventName, payload = {}) => {
+  if (!appPreferencesCache.privacy.analyticsEnabled) {
+    return;
+  }
+
+  const normalizedName = toCleanString(eventName);
+
+  if (!normalizedName) {
+    return;
+  }
+
+  try {
+    const logFilePath = getAnalyticsLogFilePath();
+    fs.mkdirSync(path.dirname(logFilePath), { recursive: true });
+    const line = JSON.stringify({
+      event: normalizedName,
+      payload: payload && typeof payload === "object" ? payload : {},
+      timestamp: new Date().toISOString(),
+      channel: appPreferencesCache.desktop.updateChannel,
+      appVersion: app.getVersion(),
+    });
+
+    fs.appendFileSync(logFilePath, `${line}\n`, "utf8");
+  } catch (error) {
+    logWarn("Failed to write analytics event", error);
+  }
+};
+
+const clearBackupSchedule = () => {
+  if (backupTimerId !== null) {
+    clearInterval(backupTimerId);
+    backupTimerId = null;
+  }
+
+  backupScheduleSignature = "";
+};
+
+const getBackupDirectoryPath = (dbPath) => {
+  return path.join(path.dirname(dbPath), "backups");
+};
+
+const backupFilePrefix = (dbPath) => {
+  return `${path.basename(dbPath, path.extname(dbPath))}.backup-`;
+};
+
+const createBackupTimestamp = () => {
+  return new Date().toISOString().replaceAll("-", "").replaceAll(":", "").replaceAll(".", "");
+};
+
+const listBackupFiles = (dbPath) => {
+  const backupDirectory = getBackupDirectoryPath(dbPath);
+
+  if (!fs.existsSync(backupDirectory)) {
+    return [];
+  }
+
+  const prefix = backupFilePrefix(dbPath);
+
+  return fs
+    .readdirSync(backupDirectory)
+    .filter((fileName) => fileName.startsWith(prefix) && fileName.endsWith(".db"))
+    .sort((left, right) => left.localeCompare(right))
+    .map((fileName) => path.join(backupDirectory, fileName));
+};
+
+const pruneOldBackups = (dbPath, maxBackups) => {
+  const safeMaxBackups = Math.max(1, Number(maxBackups) || 1);
+  const backupFiles = listBackupFiles(dbPath);
+
+  if (backupFiles.length <= safeMaxBackups) {
+    return;
+  }
+
+  const filesToDelete = backupFiles.slice(0, backupFiles.length - safeMaxBackups);
+
+  filesToDelete.forEach((filePath) => {
+    try {
+      fs.unlinkSync(filePath);
+    } catch (error) {
+      logWarn("Failed to remove old backup", filePath, error);
+    }
+  });
+};
+
+const createDatabaseBackupSnapshot = (maxBackups) => {
+  const dbPath = getDatabasePath();
+
+  if (!dbPath || !fs.existsSync(dbPath)) {
+    return null;
+  }
+
+  const backupDirectory = getBackupDirectoryPath(dbPath);
+  const backupPath = path.join(
+    backupDirectory,
+    `${backupFilePrefix(dbPath)}${createBackupTimestamp()}.db`,
+  );
+
+  try {
+    const db = getDatabase();
+    db.pragma("wal_checkpoint(TRUNCATE)");
+  } catch {
+    // checkpoint is best-effort only
+  }
+
+  fs.mkdirSync(backupDirectory, { recursive: true });
+  fs.copyFileSync(dbPath, backupPath);
+  pruneOldBackups(dbPath, maxBackups);
+
+  return backupPath;
+};
+
+const runScheduledBackup = () => {
+  if (isBackupInFlight) {
+    return;
+  }
+
+  isBackupInFlight = true;
+
+  try {
+    const backupPath = createDatabaseBackupSnapshot(
+      appPreferencesCache.dataSafety.maxBackups,
+    );
+
+    if (backupPath) {
+      trackAnalyticsEvent("database.backup.created", {
+        backupPath,
+      });
+    }
+  } catch (error) {
+    reportRuntimeError(error, "backup");
+  } finally {
+    isBackupInFlight = false;
+  }
+};
+
+const syncBackupSchedule = () => {
+  const intervalKey = appPreferencesCache.dataSafety.autoBackupInterval;
+  const intervalMs = BACKUP_INTERVAL_MS[intervalKey] || 0;
+  const dbPath = getDatabasePath() || "";
+  const nextSignature = [
+    intervalKey,
+    String(appPreferencesCache.dataSafety.maxBackups),
+    dbPath,
+  ].join("|");
+
+  if (backupTimerId !== null && backupScheduleSignature === nextSignature) {
+    return;
+  }
+
+  clearBackupSchedule();
+  backupScheduleSignature = nextSignature;
+
+  if (intervalMs <= 0) {
+    return;
+  }
+
+  backupTimerId = setInterval(() => {
+    runScheduledBackup();
+  }, intervalMs);
+
+  if (typeof backupTimerId?.unref === "function") {
+    backupTimerId.unref();
+  }
+
+  const hasBackups = (() => {
+    try {
+      const dbPath = getDatabasePath();
+      if (!dbPath) {
+        return false;
+      }
+      return listBackupFiles(dbPath).length > 0;
+    } catch {
+      return false;
+    }
+  })();
+
+  if (!hasBackups) {
+    runScheduledBackup();
+  }
+};
+
+const showMainWindow = () => {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+
+  mainWindow.show();
+  mainWindow.focus();
+};
+
+const destroyTray = () => {
+  if (!appTray) {
+    return;
+  }
+
+  appTray.destroy();
+  appTray = null;
+};
+
+const ensureTray = () => {
+  if (appTray) {
+    return appTray;
+  }
+
+  const tray = new Tray(APP_ICON_PATH);
+  tray.setToolTip("LioraLang");
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      {
+        label: "Show LioraLang",
+        click: () => {
+          showMainWindow();
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Quit",
+        click: () => {
+          isQuitRequested = true;
+          app.quit();
+        },
+      },
+    ]),
+  );
+  tray.on("click", () => {
+    showMainWindow();
+  });
+  appTray = tray;
+
+  return appTray;
+};
+
+const syncTrayMode = () => {
+  if (appPreferencesCache.desktop.minimizeToTray) {
+    ensureTray();
+    return;
+  }
+
+  destroyTray();
+};
+
+const syncLaunchAtStartupSetting = () => {
+  if (!app.isPackaged) {
+    launchAtStartupSignature = null;
+    return;
+  }
+
+  const openAtLogin = Boolean(appPreferencesCache.desktop.launchAtStartup);
+  const nextSignature = String(openAtLogin);
+
+  if (launchAtStartupSignature === nextSignature) {
+    return;
+  }
+
+  try {
+    app.setLoginItemSettings({ openAtLogin });
+    launchAtStartupSignature = nextSignature;
+  } catch (error) {
+    logWarn("Failed to apply launch-at-startup setting", error);
+  }
+};
+
+const syncWindowTitle = () => {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+
+  mainWindow.setTitle(resolveWindowTitle());
+};
+
+const syncRuntimePreferences = () => {
+  process.env.LIORALANG_UPDATE_CHANNEL = appPreferencesCache.desktop.updateChannel;
+  syncLaunchAtStartupSetting();
+  syncTrayMode();
+  syncBackupSchedule();
+  syncWindowTitle();
 };
 
 const moveFileSafely = (sourcePath, targetPath) => {
@@ -637,6 +1307,7 @@ const createWindow = async () => {
     icon: APP_ICON_PATH,
     show: false,
     autoHideMenuBar: true,
+    title: resolveWindowTitle(),
     titleBarStyle: isMac ? "hiddenInset" : "hidden",
     ...(isMac
       ? {}
@@ -652,6 +1323,26 @@ const createWindow = async () => {
       nodeIntegration: false,
       preload: path.join(__dirname, "preload.cjs"),
     },
+  });
+
+  mainWindow.on("close", (event) => {
+    if (isQuitRequested || !appPreferencesCache.desktop.minimizeToTray) {
+      return;
+    }
+
+    event.preventDefault();
+    mainWindow?.hide();
+    ensureTray();
+  });
+
+  mainWindow.on("minimize", (event) => {
+    if (!appPreferencesCache.desktop.minimizeToTray) {
+      return;
+    }
+
+    event.preventDefault();
+    mainWindow?.hide();
+    ensureTray();
   });
 
   mainWindow.once("ready-to-show", () => {
@@ -754,13 +1445,36 @@ const setupIpcHandlers = () => {
       typeof payload?.tertiaryLanguage === "string"
         ? payload.tertiaryLanguage.trim()
         : "";
+    const appPreferences = extractAppPreferencesFromSettings(getAppSettings());
+    const duplicateStrategy = ["skip", "update", "keep_both"].includes(
+      payload?.settings?.duplicateStrategy,
+    )
+      ? payload.settings.duplicateStrategy
+      : appPreferences.importExport.duplicateStrategy;
+    const includeExamples =
+      typeof payload?.settings?.includeExamples === "boolean"
+        ? payload.settings.includeExamples
+        : appPreferences.importExport.includeExamples;
+    const includeTags =
+      typeof payload?.settings?.includeTags === "boolean"
+        ? payload.settings.includeTags
+        : appPreferences.importExport.includeTags;
     const importResult = importDeckFromJsonFile(filePath, {
       deckName: preferredDeckName,
       sourceLanguage,
       targetLanguage,
       tertiaryLanguage,
+      duplicateStrategy,
+      includeExamples,
+      includeTags,
     });
     sendDecksUpdated();
+    trackAnalyticsEvent("deck.imported", {
+      deckId: importResult.deckId,
+      importedCount: importResult.importedCount,
+      skippedCount: importResult.skippedCount,
+      duplicateStrategy,
+    });
 
     return {
       canceled: false,
@@ -768,27 +1482,68 @@ const setupIpcHandlers = () => {
     };
   });
 
-  ipcMain.handle("decks:export-json", async (_, deckId) => {
-    const deck = getDeckById(Number(deckId));
+  ipcMain.handle("decks:export-json", async (_, payload) => {
+    const normalizedDeckId = Number(
+      typeof payload === "object" ? payload?.deckId : payload,
+    );
+    const deck = getDeckById(normalizedDeckId);
 
     if (!deck) {
       throw new Error("Deck not found");
     }
 
+    const appPreferences = extractAppPreferencesFromSettings(getAppSettings());
+    const preferredFormat = ["lioradeck", "json"].includes(
+      payload?.settings?.exportFormat,
+    )
+      ? payload.settings.exportFormat
+      : appPreferences.importExport.exportFormat;
+    const includeExamples =
+      typeof payload?.settings?.includeExamples === "boolean"
+        ? payload.settings.includeExamples
+        : appPreferences.importExport.includeExamples;
+    const includeTags =
+      typeof payload?.settings?.includeTags === "boolean"
+        ? payload.settings.includeTags
+        : appPreferences.importExport.includeTags;
+    const isJsonFormat = preferredFormat === "json";
+    const primaryFilter = isJsonFormat
+      ? { name: "JSON", extensions: ["json"] }
+      : { name: "Liora deck", extensions: ["lioradeck"] };
+    const secondaryFilter = isJsonFormat
+      ? { name: "Liora deck", extensions: ["lioradeck"] }
+      : { name: "JSON", extensions: ["json"] };
+    const defaultExtension = isJsonFormat ? "json" : "lioradeck";
+
     const result = await dialog.showSaveDialog(mainWindow, {
       title: "Export deck package",
-      defaultPath: `${deck.name}.lioradeck`,
-      filters: [
-        { name: "Liora deck", extensions: ["lioradeck"] },
-        { name: "JSON", extensions: ["json"] },
-      ],
+      defaultPath: `${deck.name}.${defaultExtension}`,
+      filters: [primaryFilter, secondaryFilter],
     });
 
     if (result.canceled || !result.filePath) {
       return { canceled: true };
     }
 
-    const exportResult = exportDeckToJsonFile(Number(deckId), result.filePath);
+    const selectedExtension = path.extname(result.filePath).toLowerCase();
+    const hasSupportedExtension =
+      selectedExtension === ".lioradeck" || selectedExtension === ".json";
+    const resolvedFilePath = hasSupportedExtension
+      ? result.filePath
+      : `${result.filePath}.${defaultExtension}`;
+    const exportResult = exportDeckToJsonFile(
+      normalizedDeckId,
+      resolvedFilePath,
+      {
+        includeExamples,
+        includeTags,
+      },
+    );
+    trackAnalyticsEvent("deck.exported", {
+      deckId: normalizedDeckId,
+      exportedCount: exportResult.exportedCount,
+      format: preferredFormat,
+    });
 
     return {
       canceled: false,
@@ -799,19 +1554,51 @@ const setupIpcHandlers = () => {
   ipcMain.handle("decks:rename", (_, payload) => {
     const renamedDeck = renameDeck(payload?.deckId, payload?.name);
     sendDecksUpdated();
+    trackAnalyticsEvent("deck.renamed", {
+      deckId: payload?.deckId,
+    });
     return renamedDeck;
   });
 
   ipcMain.handle("decks:delete", (_, payload) => {
     const deletionResult = deleteDeck(payload?.deckId);
     sendDecksUpdated();
+    trackAnalyticsEvent("deck.deleted", {
+      deckId: payload?.deckId,
+    });
     return deletionResult;
   });
 
   ipcMain.handle("decks:save", (_, payload) => {
     const saveResult = saveDeck(payload || {});
     sendDecksUpdated();
+    trackAnalyticsEvent("deck.saved", {
+      deckId: saveResult?.deck?.id || payload?.deckId || null,
+      wordsCount: Array.isArray(saveResult?.words) ? saveResult.words.length : 0,
+    });
     return saveResult;
+  });
+
+  ipcMain.handle("srs:get-session", (_, payload) => {
+    return getSrsSessionSnapshot({
+      deckId: payload?.deckId,
+      settings: payload?.settings || {},
+      forceAllCards: Boolean(payload?.forceAllCards),
+    });
+  });
+
+  ipcMain.handle("srs:grade-card", (_, payload) => {
+    return gradeSrsCard({
+      deckId: payload?.deckId,
+      wordId: payload?.wordId,
+      rating: payload?.rating,
+      settings: payload?.settings || {},
+      forceAllCards: Boolean(payload?.forceAllCards),
+    });
+  });
+
+  ipcMain.handle("progress:get-overview", () => {
+    return getProgressOverview();
   });
 
   ipcMain.handle("app:get-db-path", () => {
@@ -846,8 +1633,12 @@ const setupIpcHandlers = () => {
     const targetFolderPath = result.filePaths[0];
     const targetDbPath = path.join(targetFolderPath, DB_FILE_NAME);
     const changeResult = changeDatabasePath(targetDbPath);
+    syncBackupSchedule();
     sendDecksUpdated();
-    sendAppSettingsUpdated(getAppSettings());
+    const nextSettings = getAppSettings();
+    appPreferencesCache = extractAppPreferencesFromSettings(nextSettings);
+    syncRuntimePreferences();
+    sendAppSettingsUpdated(nextSettings);
 
     return {
       canceled: false,
@@ -862,18 +1653,25 @@ const setupIpcHandlers = () => {
 
     if (report?.database?.repaired) {
       sendDecksUpdated();
-      sendAppSettingsUpdated(getAppSettings());
+      const nextSettings = getAppSettings();
+      appPreferencesCache = extractAppPreferencesFromSettings(nextSettings);
+      syncRuntimePreferences();
+      sendAppSettingsUpdated(nextSettings);
     }
 
     return report;
   });
 
   ipcMain.handle("app:get-settings", () => {
-    return getAppSettings();
+    const settings = getAppSettings();
+    appPreferencesCache = extractAppPreferencesFromSettings(settings);
+    return settings;
   });
 
   ipcMain.handle("app:update-settings", (_, payload) => {
     const nextSettings = updateAppSettings(payload?.settings || {});
+    appPreferencesCache = extractAppPreferencesFromSettings(nextSettings);
+    syncRuntimePreferences();
     sendAppSettingsUpdated(nextSettings);
     return nextSettings;
   });
@@ -960,18 +1758,27 @@ const setupIpcHandlers = () => {
   });
 };
 
-const hasSingleInstanceLock = app.requestSingleInstanceLock();
+appPreferencesCache = resolveBootstrapAppPreferences();
+
+if (!appPreferencesCache.desktop.hardwareAcceleration) {
+  app.disableHardwareAcceleration();
+}
+
+const shouldEnforceSingleInstanceLock = app.isPackaged;
+const hasSingleInstanceLock = shouldEnforceSingleInstanceLock
+  ? app.requestSingleInstanceLock()
+  : true;
 
 if (!hasSingleInstanceLock) {
   app.quit();
 } else {
   process.on("uncaughtException", (error) => {
-    console.error("Uncaught Electron error:", error);
+    logError("Uncaught Electron error:", error);
     reportRuntimeError(error, "uncaughtException");
   });
 
   process.on("unhandledRejection", (reason) => {
-    console.error("Unhandled Electron rejection:", reason);
+    logError("Unhandled Electron rejection:", reason);
     reportRuntimeError(reason, "unhandledRejection");
   });
 
@@ -989,11 +1796,7 @@ if (!hasSingleInstanceLock) {
       return;
     }
 
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
-    }
-
-    mainWindow.focus();
+    showMainWindow();
   });
 
   app.on("open-file", (event, filePath) => {
@@ -1008,9 +1811,13 @@ if (!hasSingleInstanceLock) {
 
       initDatabaseConnection(dbPath);
       initDb();
+      const currentSettings = getAppSettings();
+      appPreferencesCache = extractAppPreferencesFromSettings(currentSettings);
+      syncRuntimePreferences();
       setupContentSecurityPolicy();
       setupIpcHandlers();
       await createWindow();
+      syncRuntimePreferences();
       queueImportFileOpenRequest(
         resolveDeckImportFilePathFromArgs(process.argv, process.cwd()),
       );
@@ -1021,11 +1828,14 @@ if (!hasSingleInstanceLock) {
           queueImportFileOpenRequest(
             resolveDeckImportFilePathFromArgs(process.argv, process.cwd()),
           );
+          return;
         }
+
+        showMainWindow();
       });
     })
     .catch(async (startupError) => {
-      console.error("Failed to start Electron app:", startupError);
+      logError("Failed to start Electron app:", startupError);
       const startupPayload = buildRuntimeErrorPayload({
         title: "LioraLang Startup Error",
         message: startupError?.message || "Failed to start application",
@@ -1038,10 +1848,16 @@ if (!hasSingleInstanceLock) {
       try {
         await openFatalStartupErrorWindow(startupPayload);
       } catch (fatalWindowError) {
-        console.error("Failed to render custom startup error window:", fatalWindowError);
+        logError("Failed to render custom startup error window:", fatalWindowError);
         app.quit();
       }
     });
+
+  app.on("before-quit", () => {
+    isQuitRequested = true;
+    clearBackupSchedule();
+    destroyTray();
+  });
 
   app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {

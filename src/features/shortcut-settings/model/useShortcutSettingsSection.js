@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import {
   HISTORY_SHORTCUT_MODES,
   LEARN_FLIP_SHORTCUT_MODES,
-  LEARN_NAV_SHORTCUT_MODES,
+  LEARN_RATING_SHORTCUT_MODES,
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
 
@@ -63,22 +63,22 @@ export const useShortcutSettingsSection = () => {
     [],
   );
 
-  const navigationOptions = useMemo(
+  const ratingOptions = useMemo(
     () => [
       {
-        value: LEARN_NAV_SHORTCUT_MODES.arrows,
-        label: "Arrow keys (Default)",
+        value: LEARN_RATING_SHORTCUT_MODES.digits,
+        label: "1 / 2 / 3 / 4 (Default)",
       },
       {
-        value: LEARN_NAV_SHORTCUT_MODES.ad,
-        label: "A / D",
+        value: LEARN_RATING_SHORTCUT_MODES.asdf,
+        label: "A / S / D / F",
       },
       {
-        value: LEARN_NAV_SHORTCUT_MODES.jl,
-        label: "J / L",
+        value: LEARN_RATING_SHORTCUT_MODES.arrows,
+        label: "← / ↓ / ↑ / →",
       },
       {
-        value: LEARN_NAV_SHORTCUT_MODES.disabled,
+        value: LEARN_RATING_SHORTCUT_MODES.disabled,
         label: "Disabled",
       },
     ],
@@ -103,10 +103,19 @@ export const useShortcutSettingsSection = () => {
     [updateShortcutSettings],
   );
 
-  const handleNavigationShortcutChange = useCallback(
+  const handleRatingShortcutChange = useCallback(
     (event) => {
       updateShortcutSettings({
-        learnNavigation: event.target.value,
+        learnRating: event.target.value,
+      });
+    },
+    [updateShortcutSettings],
+  );
+
+  const handleShowLearnShortcutsChange = useCallback(
+    (event) => {
+      updateShortcutSettings({
+        showLearnShortcuts: Boolean(event.target.checked),
       });
     },
     [updateShortcutSettings],
@@ -115,12 +124,14 @@ export const useShortcutSettingsSection = () => {
   return {
     historyShortcutMode: shortcutSettings.historyNavigation,
     learnFlipShortcutMode: shortcutSettings.learnFlip,
-    learnNavigationShortcutMode: shortcutSettings.learnNavigation,
+    learnRatingShortcutMode: shortcutSettings.learnRating,
+    showLearnShortcuts: shortcutSettings.showLearnShortcuts,
     historyOptions,
     flipOptions,
-    navigationOptions,
+    ratingOptions,
     handleHistoryShortcutChange,
     handleFlipShortcutChange,
-    handleNavigationShortcutChange,
+    handleRatingShortcutChange,
+    handleShowLearnShortcutsChange,
   };
 };

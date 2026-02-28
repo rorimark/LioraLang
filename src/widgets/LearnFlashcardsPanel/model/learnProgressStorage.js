@@ -3,29 +3,29 @@ const LEARN_PROGRESS_STORAGE_KEY = "lioralang-learn-progress-v1";
 const DEFAULT_LEARN_PROGRESS = {
   selectedDeckId: "",
   isBackVisible: false,
-  indexByDeckId: {},
+  lastCardWordIdByDeck: {},
 };
 
 const isBrowser = typeof window !== "undefined";
 
-const normalizeIndexByDeckId = (value) => {
+const normalizeLastCardWordIdByDeck = (value) => {
   if (!value || typeof value !== "object") {
     return {};
   }
 
-  return Object.entries(value).reduce((acc, [deckId, index]) => {
+  return Object.entries(value).reduce((acc, [deckId, wordId]) => {
     const normalizedDeckId = String(deckId || "");
-    const normalizedIndex = Number(index);
+    const normalizedWordId = Number(wordId);
 
     if (!normalizedDeckId) {
       return acc;
     }
 
-    if (!Number.isFinite(normalizedIndex) || normalizedIndex < 0) {
+    if (!Number.isInteger(normalizedWordId) || normalizedWordId <= 0) {
       return acc;
     }
 
-    acc[normalizedDeckId] = Math.floor(normalizedIndex);
+    acc[normalizedDeckId] = normalizedWordId;
     return acc;
   }, {});
 };
@@ -50,7 +50,9 @@ export const readLearnProgress = () => {
           ? parsedValue.selectedDeckId
           : "",
       isBackVisible: Boolean(parsedValue?.isBackVisible),
-      indexByDeckId: normalizeIndexByDeckId(parsedValue?.indexByDeckId),
+      lastCardWordIdByDeck: normalizeLastCardWordIdByDeck(
+        parsedValue?.lastCardWordIdByDeck,
+      ),
     };
   } catch {
     return DEFAULT_LEARN_PROGRESS;
@@ -66,7 +68,9 @@ export const saveLearnProgress = (value) => {
     selectedDeckId:
       typeof value?.selectedDeckId === "string" ? value.selectedDeckId : "",
     isBackVisible: Boolean(value?.isBackVisible),
-    indexByDeckId: normalizeIndexByDeckId(value?.indexByDeckId),
+    lastCardWordIdByDeck: normalizeLastCardWordIdByDeck(
+      value?.lastCardWordIdByDeck,
+    ),
   };
 
   try {

@@ -1,83 +1,78 @@
 import { memo } from "react";
+import { useProgressOverviewPanel } from "../model";
 import "./ProgressOverviewPanel.css";
-
-const KPI_ITEMS = [
-  { label: "Cards Reviewed (7d)", value: "468", trend: "+12%" },
-  { label: "Average Recall", value: "89.4%", trend: "+2.1%" },
-  { label: "Current Streak", value: "16 days", trend: "+3 days" },
-  { label: "Mature Cards", value: "1,284", trend: "+74" },
-];
-
-const WEEK_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const WEEKLY_REVIEWS = [42, 57, 61, 50, 46, 74, 79];
-const WEEKLY_RECALL = [82, 84, 86, 85, 87, 89, 91];
-
-const DECK_LOAD = [
-  { name: "General Core", cards: 348 },
-  { name: "Phrasal Verbs", cards: 204 },
-  { name: "Business English", cards: 187 },
-  { name: "Travel Pack", cards: 132 },
-];
-
-const RETENTION_SPLITS = [
-  { label: "Vocabulary", value: 94 },
-  { label: "Grammar", value: 88 },
-  { label: "Listening", value: 81 },
-];
-
-const RECENT_MILESTONES = [
-  "Reached 1000 total reviews this month",
-  "New best streak: 16 days",
-  "Imported 3 custom decks",
-  "Daily review target completed 6/7 days",
-];
-
-const MAX_WEEKLY_REVIEWS = Math.max(...WEEKLY_REVIEWS);
-const MAX_DECK_LOAD = Math.max(...DECK_LOAD.map((item) => item.cards));
 
 const CHART_WIDTH = 560;
 const CHART_HEIGHT = 220;
 const CHART_PADDING = 22;
 
-const buildLinePoints = (values) => {
-  const stepX = (CHART_WIDTH - CHART_PADDING * 2) / (values.length - 1);
-  const maxValue = Math.max(...values);
+const ProgressOverviewLoading = memo(() => {
+  return (
+    <div className="progress-overview" aria-hidden>
+      <section className="kpi-grid progress-overview__kpi-grid">
+        <article className="kpi-card progress-overview__kpi-card progress-overview__placeholder" />
+        <article className="kpi-card progress-overview__kpi-card progress-overview__placeholder" />
+        <article className="kpi-card progress-overview__kpi-card progress-overview__placeholder" />
+        <article className="kpi-card progress-overview__kpi-card progress-overview__placeholder" />
+      </section>
 
-  return values
-    .map((value, index) => {
-      const x = CHART_PADDING + stepX * index;
-      const y =
-        CHART_HEIGHT -
-        CHART_PADDING -
-        ((value / maxValue) * (CHART_HEIGHT - CHART_PADDING * 2));
+      <section className="panel-grid panel-grid--two">
+        <article className="panel progress-overview__panel progress-overview__placeholder progress-overview__placeholder--tall" />
+        <article className="panel progress-overview__panel progress-overview__placeholder progress-overview__placeholder--tall" />
+      </section>
 
-      return `${x},${y}`;
-    })
-    .join(" ");
-};
+      <article className="panel progress-overview__panel progress-overview__placeholder progress-overview__placeholder--mid" />
+    </div>
+  );
+});
 
-const buildAreaPoints = (values) => {
-  const linePoints = buildLinePoints(values);
-  const startX = CHART_PADDING;
-  const endX = CHART_WIDTH - CHART_PADDING;
-  const bottomY = CHART_HEIGHT - CHART_PADDING;
+ProgressOverviewLoading.displayName = "ProgressOverviewLoading";
 
-  return `${startX},${bottomY} ${linePoints} ${endX},${bottomY}`;
-};
+const ProgressOverviewError = memo(({ error, onRetry }) => {
+  return (
+    <article className="panel progress-overview__panel progress-overview__state">
+      <h2>Progress data is unavailable</h2>
+      <p>{error}</p>
+      <button type="button" onClick={onRetry}>
+        Try again
+      </button>
+    </article>
+  );
+});
 
-const REVIEW_LINE_POINTS = buildLinePoints(WEEKLY_REVIEWS);
-const REVIEW_AREA_POINTS = buildAreaPoints(WEEKLY_REVIEWS);
-const RECALL_LINE_POINTS = buildLinePoints(WEEKLY_RECALL);
+ProgressOverviewError.displayName = "ProgressOverviewError";
 
 export const ProgressOverviewPanel = memo(() => {
+  const {
+    isLoading,
+    error,
+    refreshOverview,
+    kpiItems,
+    weeklyChart,
+    deckLoadRows,
+    retentionSplit,
+    milestones,
+    intensityBars,
+    generatedAtLabel,
+    totals,
+  } = useProgressOverviewPanel();
+
+  if (isLoading) {
+    return <ProgressOverviewLoading />;
+  }
+
+  if (error) {
+    return <ProgressOverviewError error={error} onRetry={refreshOverview} />;
+  }
+
   return (
     <div className="progress-overview">
       <section className="kpi-grid progress-overview__kpi-grid">
-        {KPI_ITEMS.map((item) => (
+        {kpiItems.map((item) => (
           <article key={item.label} className="kpi-card progress-overview__kpi-card">
             <span>{item.label}</span>
             <strong>{item.value}</strong>
-            <p className="progress-overview__kpi-trend">{item.trend} this week</p>
+            <p className="progress-overview__kpi-trend">{item.trend}</p>
           </article>
         ))}
       </section>
@@ -111,15 +106,15 @@ export const ProgressOverviewPanel = memo(() => {
 
               <polygon
                 className="progress-overview__area"
-                points={REVIEW_AREA_POINTS}
+                points={weeklyChart.reviewAreaPoints}
               />
               <polyline
                 className="progress-overview__line progress-overview__line--reviews"
-                points={REVIEW_LINE_POINTS}
+                points={weeklyChart.reviewLinePoints}
               />
               <polyline
                 className="progress-overview__line progress-overview__line--recall"
-                points={RECALL_LINE_POINTS}
+                points={weeklyChart.recallLinePoints}
               />
             </svg>
 
@@ -130,42 +125,54 @@ export const ProgressOverviewPanel = memo(() => {
               </span>
               <span className="progress-overview__legend-item">
                 <i className="progress-overview__dot progress-overview__dot--recall" />
-                Recall
+                Recall trend
               </span>
             </div>
           </div>
 
           <div className="progress-overview__x-labels">
-            {WEEK_DAYS.map((day) => (
-              <span key={day}>{day}</span>
+            {weeklyChart.labels.map((dayLabel, index) => (
+              <span key={`${dayLabel}-${index}`}>{dayLabel}</span>
             ))}
           </div>
+
+          {!weeklyChart.hasData && (
+            <p className="progress-overview__empty">
+              No reviews in the selected period yet.
+            </p>
+          )}
         </article>
 
         <article className="panel progress-overview__panel">
           <header className="progress-overview__panel-header">
             <h2>Deck Load</h2>
-            <p>Cards currently active in your top decks.</p>
+            <p>Top decks by current card volume and weekly activity.</p>
           </header>
 
-          <ul className="progress-overview__bars">
-            {DECK_LOAD.map((deck) => (
-              <li key={deck.name} className="progress-overview__bar-row">
-                <div className="progress-overview__bar-meta">
-                  <span>{deck.name}</span>
-                  <strong>{deck.cards}</strong>
-                </div>
-                <div className="progress-overview__bar-track">
-                  <div
-                    className="progress-overview__bar-fill"
-                    style={{
-                      width: `${Math.round((deck.cards / MAX_DECK_LOAD) * 100)}%`,
-                    }}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
+          {deckLoadRows.length === 0 ? (
+            <p className="progress-overview__empty">
+              No decks available yet.
+            </p>
+          ) : (
+            <ul className="progress-overview__bars">
+              {deckLoadRows.map((deck) => (
+                <li key={`${deck.id}-${deck.name}`} className="progress-overview__bar-row">
+                  <div className="progress-overview__bar-meta">
+                    <span>{deck.name}</span>
+                    <strong className="progress-overview__bar-meta-value">
+                      {deck.cards} cards / {deck.reviews7d} reviews
+                    </strong>
+                  </div>
+                  <div className="progress-overview__bar-track">
+                    <div
+                      className="progress-overview__bar-fill"
+                      style={{ width: `${deck.fillPercent}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </article>
       </section>
 
@@ -173,11 +180,11 @@ export const ProgressOverviewPanel = memo(() => {
         <article className="panel progress-overview__panel">
           <header className="progress-overview__panel-header">
             <h2>Retention Split</h2>
-            <p>How well each training area is retained.</p>
+            <p>Success rate by learning queue (last 30 days).</p>
           </header>
 
           <div className="progress-overview__rings">
-            {RETENTION_SPLITS.map((split) => (
+            {retentionSplit.map((split) => (
               <div key={split.label} className="progress-overview__ring-card">
                 <div
                   className="progress-overview__ring"
@@ -196,11 +203,11 @@ export const ProgressOverviewPanel = memo(() => {
         <article className="panel progress-overview__panel">
           <header className="progress-overview__panel-header">
             <h2>Recent Milestones</h2>
-            <p>Latest progress highlights from mock analytics.</p>
+            <p>Latest highlights from your learning activity.</p>
           </header>
 
           <ul className="progress-overview__milestones">
-            {RECENT_MILESTONES.map((milestone) => (
+            {milestones.map((milestone) => (
               <li key={milestone}>{milestone}</li>
             ))}
           </ul>
@@ -208,19 +215,28 @@ export const ProgressOverviewPanel = memo(() => {
       </section>
 
       <article className="panel progress-overview__panel">
-        <header className="progress-overview__panel-header">
-          <h2>Daily Intensity</h2>
-          <p>Mock review load trend for the current week.</p>
+        <header className="progress-overview__panel-header progress-overview__panel-header--with-meta">
+          <div>
+            <h2>Daily Intensity</h2>
+            <p>Review load for the last 14 days.</p>
+          </div>
+
+          <div className="progress-overview__meta">
+            <span>Decks: {totals.decks}</span>
+            <span>Words: {totals.words}</span>
+            <span>Reviews: {totals.reviews}</span>
+            {generatedAtLabel && <span>Updated: {generatedAtLabel}</span>}
+          </div>
         </header>
 
         <div className="progress-overview__mini-bars">
-          {WEEKLY_REVIEWS.map((value, index) => (
-            <div key={WEEK_DAYS[index]} className="progress-overview__mini-bar-col">
+          {intensityBars.map((item, index) => (
+            <div key={`${item.date}-${index}`} className="progress-overview__mini-bar-col">
               <div
                 className="progress-overview__mini-bar"
-                style={{ height: `${Math.round((value / MAX_WEEKLY_REVIEWS) * 100)}%` }}
+                style={{ height: `${item.heightPercent}%` }}
               />
-              <span>{WEEK_DAYS[index]}</span>
+              <span>{item.showLabel ? item.label : ""}</span>
             </div>
           ))}
         </div>

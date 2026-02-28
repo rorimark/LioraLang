@@ -6,6 +6,7 @@ const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
 const DECK_PACKAGE_FORMAT = "lioralang.deck";
 const DECK_PACKAGE_VERSION = 1;
 const MAX_DECK_TAGS = 10;
+const DUPLICATE_IMPORT_STRATEGIES = new Set(["skip", "update", "keep_both"]);
 const LANGUAGE_VALUE_ALIASES = {
   english: ["en", "english"],
   ukrainian: ["uk", "ua", "ukrainian"],
@@ -301,6 +302,9 @@ const resolveImportLanguageConfig = (importOptions = {}) => {
       sourceLanguage: "",
       targetLanguage: "",
       tertiaryLanguage: "",
+      duplicateStrategy: "skip",
+      includeExamples: true,
+      includeTags: true,
     };
   }
 
@@ -309,6 +313,17 @@ const resolveImportLanguageConfig = (importOptions = {}) => {
     sourceLanguage: toCleanString(importOptions?.sourceLanguage),
     targetLanguage: toCleanString(importOptions?.targetLanguage),
     tertiaryLanguage: toCleanString(importOptions?.tertiaryLanguage),
+    duplicateStrategy: DUPLICATE_IMPORT_STRATEGIES.has(importOptions?.duplicateStrategy)
+      ? importOptions.duplicateStrategy
+      : "skip",
+    includeExamples:
+      typeof importOptions?.includeExamples === "boolean"
+        ? importOptions.includeExamples
+        : true,
+    includeTags:
+      typeof importOptions?.includeTags === "boolean"
+        ? importOptions.includeTags
+        : true,
   };
 };
 
@@ -641,6 +656,9 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
   const tertiaryLanguageKey = normalizeLanguageName(resolvedTertiaryLanguage);
   const importedDeckDescription = toCleanString(parsedPayload.deck?.description);
   const importedDeckTags = normalizeDeckTags(parsedPayload.deck?.tags);
+  const duplicateStrategy = importConfig.duplicateStrategy;
+  const includeExamples = importConfig.includeExamples;
+  const includeTags = importConfig.includeTags;
 
   if (!sourceLanguage || !targetLanguage) {
     throw new Error("Source and target languages are required for import");
@@ -666,9 +684,51 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
         tertiaryLanguage: resolvedTertiaryLanguage,
       }),
     )
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((word) => ({
+      ...word,
+      tags: includeTags ? word.tags : [],
+      examples: includeExamples ? word.examples : [],
+    }));
+  let skippedCount = parsedPayload.words.length - normalizedWords.length;
+  let persistedWords = normalizedWords;
 
-  const skippedCount = parsedPayload.words.length - normalizedWords.length;
+  if (duplicateStrategy === "skip" || duplicateStrategy === "update") {
+    const keyToIndex = new Map();
+    const dedupedWords = [];
+
+    normalizedWords.forEach((word) => {
+      const dedupeKey = [
+        toCleanString(word?.source).toLowerCase(),
+        toCleanString(word?.target).toLowerCase(),
+        toCleanString(word?.tertiary).toLowerCase(),
+      ].join("\u0000");
+
+      if (!dedupeKey.replaceAll("\u0000", "")) {
+        dedupedWords.push(word);
+        return;
+      }
+
+      if (!keyToIndex.has(dedupeKey)) {
+        keyToIndex.set(dedupeKey, dedupedWords.length);
+        dedupedWords.push(word);
+        return;
+      }
+
+      skippedCount += 1;
+
+      if (duplicateStrategy === "update") {
+        const existingIndex = keyToIndex.get(dedupeKey);
+
+        if (typeof existingIndex === "number") {
+          dedupedWords[existingIndex] = word;
+        }
+      }
+    });
+
+    persistedWords = dedupedWords;
+  }
+
   const deckName = getUniqueDeckName(
     importConfig.deckName || parsedPayload.deck?.name || fileName || "Imported Deck",
   );
@@ -695,12 +755,12 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       sourceLanguage,
       targetLanguage,
       resolvedTertiaryLanguage || null,
-      JSON.stringify(importedDeckTags),
+      JSON.stringify(includeTags ? importedDeckTags : []),
     );
 
     const deckId = Number(deckResult.lastInsertRowid);
 
-    normalizedWords.forEach((word) => {
+    persistedWords.forEach((word) => {
       insertWord.run(
         ...buildInsertWordRunParams(wordSchemaCompatibility, {
           deckId,
@@ -724,12 +784,12 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
   return {
     deckId,
     deckName,
-    importedCount: normalizedWords.length,
+    importedCount: persistedWords.length,
     skippedCount,
   };
 };
 
-export const exportDeckToJsonFile = (deckId, filePath) => {
+export const exportDeckToJsonFile = (deckId, filePath, exportOptions = {}) => {
   const deck = getDeckById(deckId);
 
   if (!deck) {
@@ -737,18 +797,36 @@ export const exportDeckToJsonFile = (deckId, filePath) => {
   }
 
   const words = getDeckWords(deckId);
+  const includeExamples =
+    typeof exportOptions?.includeExamples === "boolean"
+      ? exportOptions.includeExamples
+      : true;
+  const includeTags =
+    typeof exportOptions?.includeTags === "boolean"
+      ? exportOptions.includeTags
+      : true;
   const hasTertiaryLanguage = Boolean(toCleanString(deck?.tertiaryLanguage));
-  const deckTags = normalizeDeckTags(parseArray(deck?.tagsJson));
-  const wordsPayload = words.map((word) => ({
-    id: word.externalId || `w${word.id}`,
-    source: word.source,
-    target: word.target,
-    ...(hasTertiaryLanguage ? { tertiary: word.tertiary } : {}),
-    level: word.level,
-    tags: word.tags,
-    examples: word.examples,
-    part_of_speech: word.part_of_speech,
-  }));
+  const deckTags = includeTags ? normalizeDeckTags(parseArray(deck?.tagsJson)) : [];
+  const wordsPayload = words.map((word) => {
+    const wordPayload = {
+      id: word.externalId || `w${word.id}`,
+      source: word.source,
+      target: word.target,
+      ...(hasTertiaryLanguage ? { tertiary: word.tertiary } : {}),
+      level: word.level,
+      part_of_speech: word.part_of_speech,
+    };
+
+    if (includeTags) {
+      wordPayload.tags = word.tags;
+    }
+
+    if (includeExamples) {
+      wordPayload.examples = word.examples;
+    }
+
+    return wordPayload;
+  });
   const jsonPayload = {
     format: DECK_PACKAGE_FORMAT,
     version: DECK_PACKAGE_VERSION,
@@ -759,7 +837,7 @@ export const exportDeckToJsonFile = (deckId, filePath) => {
       sourceLanguage: deck.sourceLanguage || "",
       targetLanguage: deck.targetLanguage || "",
       tertiaryLanguage: deck.tertiaryLanguage || "",
-      tags: deckTags,
+      ...(includeTags ? { tags: deckTags } : {}),
     },
     words: wordsPayload,
   };

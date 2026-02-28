@@ -29,7 +29,7 @@
   display: grid;
   place-content: center;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-on-primary);
   background: var(--color-primary);
 }
 
@@ -67,6 +67,55 @@
   margin-top: auto;
   padding-top: 10px;
   border-top: 1px solid var(--color-border);
+}
+
+.nav-bar__shortcuts {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-muted);
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.nav-bar__shortcuts-title {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.nav-bar__shortcuts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.nav-bar__shortcuts-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+}
+
+.nav-bar__shortcuts-item kbd {
+  min-width: 26px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.68rem;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  padding: 3px 7px;
+  white-space: nowrap;
 }
 
 .nav-bar--mobile {
