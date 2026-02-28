@@ -3,6 +3,17 @@
   gap: 14px;
 }
 
+.progress-overview__top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.progress-overview__top-row > .progress-overview__panel {
+  height: 100%;
+}
+
 .progress-overview__kpi-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -21,6 +32,14 @@
 .progress-overview__panel {
   display: grid;
   gap: 12px;
+}
+
+.progress-overview__panel--weekly {
+  gap: 8px;
+}
+
+.progress-overview__panel--deck-load {
+  align-content: start;
 }
 
 .progress-overview__panel-header {
@@ -71,6 +90,7 @@
 
 .progress-overview__line-chart {
   width: 100%;
+  aspect-ratio: 560 / 220;
   height: auto;
   display: block;
 }
@@ -78,6 +98,18 @@
 .progress-overview__line-chart line {
   stroke: var(--color-border);
   stroke-width: 1;
+}
+
+.progress-overview__chart-grid line {
+  stroke: var(--color-border);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.progress-overview__axis-label {
+  fill: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 500;
 }
 
 .progress-overview__area {
@@ -99,11 +131,24 @@
   stroke: var(--color-accent);
 }
 
+.progress-overview__point {
+  stroke: var(--color-bg);
+  stroke-width: 1.2;
+}
+
+.progress-overview__point--reviews {
+  fill: var(--color-primary);
+}
+
+.progress-overview__point--recall {
+  fill: var(--color-accent);
+}
+
 .progress-overview__chart-legend {
   margin-top: 6px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .progress-overview__legend-item {
@@ -129,9 +174,10 @@
 }
 
 .progress-overview__x-labels {
+  margin-top: 4px;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 6px;
+  gap: 4px;
 }
 
 .progress-overview__x-labels span {
@@ -145,43 +191,88 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .progress-overview__bar-row {
   display: grid;
   gap: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  padding: 8px;
 }
 
-.progress-overview__bar-meta {
-  display: flex;
-  justify-content: space-between;
+.progress-overview__bar-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 8px;
-  color: var(--color-text);
-  font-size: 0.82rem;
+  gap: 6px;
 }
 
-.progress-overview__bar-meta-value {
+.progress-overview__bar-name {
+  color: var(--color-text);
+  font-size: 0.84rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress-overview__bar-rank {
+  min-width: 24px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   color: var(--color-text-muted);
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-align: right;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-overview__bar-stat {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.progress-overview__bar-stat strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.progress-overview__bar-stat--reviews {
+  color: var(--color-accent);
 }
 
 .progress-overview__bar-track {
   width: 100%;
-  height: 10px;
+  height: 6px;
   border-radius: 999px;
-  background: var(--color-surface-muted);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   overflow: hidden;
+}
+
+.progress-overview__bar-track--reviews {
+  height: 5px;
 }
 
 .progress-overview__bar-fill {
   height: 100%;
   border-radius: 999px;
+}
+
+.progress-overview__bar-fill--cards {
   background: var(--color-primary);
+}
+
+.progress-overview__bar-fill--reviews {
+  background: var(--color-accent);
 }
 
 .progress-overview__rings {
@@ -334,6 +425,10 @@
 }
 
 @media (max-width: 1080px) {
+  .progress-overview__top-row {
+    grid-template-columns: 1fr;
+  }
+
   .progress-overview__kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -361,6 +456,15 @@
   .progress-overview__mini-bar {
     width: min(16px, 100%);
   }
+
+  .progress-overview__bar-head {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+  }
+
+  .progress-overview__bar-head .progress-overview__bar-stat {
+    justify-self: start;
+  }
 }
 
 @media (max-width: 640px) {
@@ -372,13 +476,8 @@
     grid-template-columns: 1fr;
   }
 
-  .progress-overview__bar-meta {
-    grid-template-columns: 1fr;
-    display: grid;
-    gap: 2px;
-  }
-
-  .progress-overview__bar-meta-value {
-    text-align: left;
+  .progress-overview__bar-head {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
   }
 }

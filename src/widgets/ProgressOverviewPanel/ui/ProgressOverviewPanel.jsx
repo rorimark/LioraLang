@@ -4,7 +4,7 @@ import "./ProgressOverviewPanel.css";
 
 const CHART_WIDTH = 560;
 const CHART_HEIGHT = 220;
-const CHART_PADDING = 22;
+const CHART_PADDING = 20;
 
 const ProgressOverviewLoading = memo(() => {
   return (
@@ -77,8 +77,8 @@ export const ProgressOverviewPanel = memo(() => {
         ))}
       </section>
 
-      <section className="panel-grid panel-grid--two">
-        <article className="panel progress-overview__panel">
+      <section className="progress-overview__top-row">
+        <article className="panel progress-overview__panel progress-overview__panel--weekly">
           <header className="progress-overview__panel-header">
             <h2>Weekly Review Activity</h2>
             <p>Cards reviewed and recall quality for the last 7 days.</p>
@@ -91,6 +91,25 @@ export const ProgressOverviewPanel = memo(() => {
               role="img"
               aria-label="Weekly review activity chart"
             >
+              {weeklyChart.yAxisTicks.map((tick) => (
+                <g key={`tick-${tick.value}`} className="progress-overview__chart-grid">
+                  <line
+                    x1={CHART_PADDING}
+                    y1={tick.y}
+                    x2={CHART_WIDTH - CHART_PADDING}
+                    y2={tick.y}
+                  />
+                  <text
+                    className="progress-overview__axis-label"
+                    x={CHART_PADDING - 6}
+                    y={tick.y + 3}
+                    textAnchor="end"
+                  >
+                    {tick.value}
+                  </text>
+                </g>
+              ))}
+
               <line
                 x1={CHART_PADDING}
                 y1={CHART_HEIGHT - CHART_PADDING}
@@ -116,7 +135,37 @@ export const ProgressOverviewPanel = memo(() => {
                 className="progress-overview__line progress-overview__line--recall"
                 points={weeklyChart.recallLinePoints}
               />
+
+              {weeklyChart.reviewPoints.map((point, index) => (
+                <circle
+                  key={`review-point-${index}`}
+                  className="progress-overview__point progress-overview__point--reviews"
+                  cx={point.x}
+                  cy={point.y}
+                  r="3.2"
+                >
+                  <title>{`${weeklyChart.labels[index]}: ${Math.round(point.value)} reviews`}</title>
+                </circle>
+              ))}
+
+              {weeklyChart.recallPoints.map((point, index) => (
+                <circle
+                  key={`recall-point-${index}`}
+                  className="progress-overview__point progress-overview__point--recall"
+                  cx={point.x}
+                  cy={point.y}
+                  r="2.6"
+                >
+                  <title>{`${weeklyChart.labels[index]}: ${Math.round(weeklyChart.recall[index])}% recall`}</title>
+                </circle>
+              ))}
             </svg>
+
+            <div className="progress-overview__x-labels">
+              {weeklyChart.labels.map((dayLabel, index) => (
+                <span key={`${dayLabel}-${index}`}>{dayLabel}</span>
+              ))}
+            </div>
 
             <div className="progress-overview__chart-legend">
               <span className="progress-overview__legend-item">
@@ -125,15 +174,9 @@ export const ProgressOverviewPanel = memo(() => {
               </span>
               <span className="progress-overview__legend-item">
                 <i className="progress-overview__dot progress-overview__dot--recall" />
-                Recall trend
+                Recall trend (%)
               </span>
             </div>
-          </div>
-
-          <div className="progress-overview__x-labels">
-            {weeklyChart.labels.map((dayLabel, index) => (
-              <span key={`${dayLabel}-${index}`}>{dayLabel}</span>
-            ))}
           </div>
 
           {!weeklyChart.hasData && (
@@ -143,10 +186,10 @@ export const ProgressOverviewPanel = memo(() => {
           )}
         </article>
 
-        <article className="panel progress-overview__panel">
+        <article className="panel progress-overview__panel progress-overview__panel--deck-load">
           <header className="progress-overview__panel-header">
-            <h2>Deck Load</h2>
-            <p>Top decks by current card volume and weekly activity.</p>
+            <h2>Top Deck Activity</h2>
+            <p>Top 4 decks by cards and review activity over 7 days.</p>
           </header>
 
           {deckLoadRows.length === 0 ? (
@@ -155,18 +198,32 @@ export const ProgressOverviewPanel = memo(() => {
             </p>
           ) : (
             <ul className="progress-overview__bars">
-              {deckLoadRows.map((deck) => (
+              {deckLoadRows.map((deck, index) => (
                 <li key={`${deck.id}-${deck.name}`} className="progress-overview__bar-row">
-                  <div className="progress-overview__bar-meta">
-                    <span>{deck.name}</span>
-                    <strong className="progress-overview__bar-meta-value">
-                      {deck.cards} cards / {deck.reviews7d} reviews
+                  <div className="progress-overview__bar-head">
+                    <span className="progress-overview__bar-rank">#{index + 1}</span>
+                    <strong className="progress-overview__bar-name" title={deck.name}>
+                      {deck.name}
                     </strong>
+                    <span className="progress-overview__bar-stat">
+                      <strong>{deck.cards}</strong> cards
+                    </span>
+                    <span className="progress-overview__bar-stat progress-overview__bar-stat--reviews">
+                      <strong>{deck.reviews7d}</strong> rev
+                    </span>
                   </div>
+
                   <div className="progress-overview__bar-track">
                     <div
-                      className="progress-overview__bar-fill"
-                      style={{ width: `${deck.fillPercent}%` }}
+                      className="progress-overview__bar-fill progress-overview__bar-fill--cards"
+                      style={{ width: `${deck.cardsFillPercent}%` }}
+                    />
+                  </div>
+
+                  <div className="progress-overview__bar-track progress-overview__bar-track--reviews">
+                    <div
+                      className="progress-overview__bar-fill progress-overview__bar-fill--reviews"
+                      style={{ width: `${deck.reviewsFillPercent}%` }}
                     />
                   </div>
                 </li>
