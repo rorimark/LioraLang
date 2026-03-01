@@ -71,7 +71,7 @@ export const useSettingsDatabasePanel = () => {
 
     const timeoutId = window.setTimeout(() => {
       setHighlightedSettingsTab("");
-    }, 2400);
+    }, 1800);
 
     return () => {
       window.clearTimeout(timeoutId);

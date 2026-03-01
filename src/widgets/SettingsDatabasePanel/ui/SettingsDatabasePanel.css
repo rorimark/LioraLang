@@ -25,11 +25,16 @@
   display: grid;
   gap: 10px;
   scroll-margin-top: 84px;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
 .settings-page-panel__section--active {
   border-color: var(--color-primary-border);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary-border) 45%, var(--color-transparent));
+  background: color-mix(in srgb, var(--color-primary-soft) 20%, var(--color-surface));
 }
 
 .settings-page-panel__section h3 {
