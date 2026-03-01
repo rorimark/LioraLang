@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./styles/App.css";
 import { AppRouter } from "@app/router";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { usePointerFocusGuard } from "@shared/lib/a11y";
 import {
   APP_THEME_MODES,
   applyThemeMode,
@@ -9,6 +10,8 @@ import {
 } from "@shared/lib/theme";
 
 export const App = () => {
+  usePointerFocusGuard();
+
   const { appPreferences } = useAppPreferences();
   const themeMode = appPreferences.uiAccessibility.themeMode;
 
