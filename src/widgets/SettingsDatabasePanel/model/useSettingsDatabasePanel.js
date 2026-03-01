@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation, useSearchParams } from "react-router";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useThemeSwitch } from "@features/theme-switch";
 import { desktopApi } from "@shared/api";
+import {
+  normalizeSettingsTab,
+  SETTINGS_SECTION_IDS,
+  SETTINGS_TAB_KEYS,
+  SETTINGS_TAB_QUERY_KEY,
+} from "@shared/config/settingsTabs";
 import {
   APP_PREFERENCES_APP_KEY,
   DEFAULT_APP_PREFERENCES,
@@ -15,6 +22,8 @@ import {
 import { APP_THEME_MODES } from "@shared/lib/theme";
 
 export const useSettingsDatabasePanel = () => {
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { appPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
   const [statusMessage, setStatusMessage] = useState("");
@@ -30,6 +39,62 @@ export const useSettingsDatabasePanel = () => {
     issues: [],
   });
   const { themeMode, themeModeOptions, handleThemeModeChange } = useThemeSwitch();
+  const requestedSettingsTab = searchParams.get(SETTINGS_TAB_QUERY_KEY);
+  const [highlightedSettingsTab, setHighlightedSettingsTab] = useState("");
+  const selectedSettingsTab = useMemo(() => {
+    return normalizeSettingsTab(
+      requestedSettingsTab,
+      SETTINGS_TAB_KEYS.general,
+    );
+  }, [requestedSettingsTab]);
+  const menuFocusState =
+    location.state?.settingsMenuFocus &&
+    typeof location.state.settingsMenuFocus === "object"
+      ? location.state.settingsMenuFocus
+      : null;
+  const menuFocusTab = normalizeSettingsTab(menuFocusState?.tab, "");
+  const isMenuFocusNavigation =
+    menuFocusState?.source === "app-menu" && Boolean(menuFocusTab);
+  const menuFocusToken = Number(menuFocusState?.token) || 0;
+
+  useEffect(() => {
+    if (!isMenuFocusNavigation) {
+      setHighlightedSettingsTab("");
+      return undefined;
+    }
+
+    setHighlightedSettingsTab(menuFocusTab);
+
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setHighlightedSettingsTab("");
+    }, 2400);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isMenuFocusNavigation, menuFocusTab, menuFocusToken]);
+
+  useEffect(() => {
+    if (!requestedSettingsTab || typeof document === "undefined") {
+      return;
+    }
+
+    const sectionId = SETTINGS_SECTION_IDS[selectedSettingsTab];
+    const sectionElement = sectionId ? document.getElementById(sectionId) : null;
+
+    if (!sectionElement) {
+      return;
+    }
+
+    sectionElement.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [requestedSettingsTab, selectedSettingsTab]);
 
   const reportMessage = useCallback((text, variant = "info") => {
     setStatusMessage(text);
@@ -287,6 +352,8 @@ export const useSettingsDatabasePanel = () => {
   }, [reportMessage]);
 
   return {
+    selectedSettingsTab,
+    highlightedSettingsTab,
     dbPath,
     statusMessage,
     statusVariant,

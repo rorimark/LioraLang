@@ -5,9 +5,11 @@ const pendingImportFileRequests = [];
 const importFileRequestListeners = new Set();
 const appSettingsUpdatedListeners = new Set();
 const runtimeErrorListeners = new Set();
+const navigationRequestListeners = new Set();
 let isImportFileBridgeInitialized = false;
 let isAppSettingsBridgeInitialized = false;
 let isRuntimeErrorBridgeInitialized = false;
+let isNavigationBridgeInitialized = false;
 
 const getElectronApi = () =>
   typeof window !== "undefined" ? window.electronAPI : undefined;
@@ -80,6 +82,32 @@ const normalizeRuntimeErrorPayload = (payload) => {
       typeof payload.createdAt === "string" ? payload.createdAt : "",
     source:
       typeof payload.source === "string" ? payload.source : "",
+  };
+};
+
+const normalizeNavigationPayload = (payload) => {
+  if (!payload || typeof payload !== "object") {
+    return null;
+  }
+
+  const to = typeof payload.to === "string" ? payload.to.trim() : "";
+
+  if (!to) {
+    return null;
+  }
+
+  return {
+    to,
+    source:
+      typeof payload.source === "string" ? payload.source.trim() : "",
+    settingsTab:
+      typeof payload.settingsTab === "string"
+        ? payload.settingsTab.trim()
+        : "",
+    highlightToken:
+      Number.isFinite(Number(payload.highlightToken))
+        ? Number(payload.highlightToken)
+        : 0,
   };
 };
 
@@ -157,6 +185,30 @@ const initRuntimeErrorBridge = () => {
   });
 
   isRuntimeErrorBridgeInitialized = true;
+};
+
+const initNavigationBridge = () => {
+  if (isNavigationBridgeInitialized || !isDesktopMode()) {
+    return;
+  }
+
+  const electronApi = getElectronApi();
+
+  if (!electronApi || typeof electronApi.onNavigateRequested !== "function") {
+    return;
+  }
+
+  electronApi.onNavigateRequested((payload) => {
+    const normalizedPayload = normalizeNavigationPayload(payload);
+
+    if (!normalizedPayload) {
+      return;
+    }
+
+    navigationRequestListeners.forEach((listener) => listener(normalizedPayload));
+  });
+
+  isNavigationBridgeInitialized = true;
 };
 
 const loadFallbackWords = async () => {
@@ -851,6 +903,19 @@ export const desktopApi = {
 
     return () => {
       runtimeErrorListeners.delete(callback);
+    };
+  },
+
+  subscribeNavigationRequested(callback) {
+    if (!isDesktopMode() || typeof callback !== "function") {
+      return () => {};
+    }
+
+    initNavigationBridge();
+    navigationRequestListeners.add(callback);
+
+    return () => {
+      navigationRequestListeners.delete(callback);
     };
   },
 };
