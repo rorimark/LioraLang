@@ -7,6 +7,7 @@ export const ROUTE_PATHS = {
   deckEdit: "/decks/:deckId/edit",
   deckDetails: "/decks/:deckId",
   progress: "/progress",
+  account: "/account",
   settings: "/settings",
 };
 
@@ -67,6 +68,10 @@ export const PAGE_META = {
   [ROUTE_PATHS.progress]: {
     title: "Learning Progress",
     subtitle: "Track retention, streaks, and spaced-repetition efficiency.",
+  },
+  [ROUTE_PATHS.account]: {
+    title: "Account",
+    subtitle: "Sign in, register, and manage your profile and sync options.",
   },
   [ROUTE_PATHS.settings]: {
     title: "Settings",

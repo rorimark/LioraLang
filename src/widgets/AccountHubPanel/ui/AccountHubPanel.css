@@ -1,0 +1,42 @@
+.account-hub-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.account-hub-panel__head h2 {
+  margin: 0;
+}
+
+.account-hub-panel__head p {
+  margin: 8px 0 0;
+}
+
+.account-hub-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.account-hub-panel__actions button {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.84rem;
+  padding: 8px 12px;
+}
+
+.account-hub-panel__actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.account-hub-panel__list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--color-text-muted);
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+}
