@@ -40,7 +40,10 @@ import { getProgressOverview } from "./db/services/progress.services.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const APP_ICON_PATH = path.join(__dirname, "assets", "icon.png");
+const APP_ICON_PATH =
+  process.platform === "win32"
+    ? path.join(__dirname, "assets", "icon.ico")
+    : path.join(__dirname, "assets", "icon.png");
 const APP_HOMEPAGE_URL = "https://github.com/rorimark/LioraLang";
 const SETTINGS_ROUTE_PATH = "/settings";
 const SETTINGS_MENU_TABS = [
