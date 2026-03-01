@@ -173,9 +173,19 @@
   background: var(--color-primary-soft);
 }
 
+.deck-editor-panel__cell--example {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.deck-editor-panel__cell--actions {
+  width: 1%;
+  white-space: nowrap;
+}
+
 .deck-editor-panel__table-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: inline-flex;
+  flex-wrap: nowrap;
   gap: 6px;
 }
 
@@ -188,6 +198,8 @@
   font-family: inherit;
   font-size: 0.74rem;
   padding: 5px 8px;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .deck-editor-panel__table-actions button:hover {

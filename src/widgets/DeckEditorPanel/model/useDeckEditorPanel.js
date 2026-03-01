@@ -286,37 +286,43 @@ export const useDeckEditorPanel = () => {
 
   useEffect(() => {
     if (!isEditMode) {
-      setIsLoading(false);
-      setDeckForm((currentState) => {
-        const isPristine =
-          words.length === 0 &&
-          !currentState.name.trim() &&
-          !currentState.description.trim() &&
-          !currentState.tertiaryLanguage.trim() &&
-          !currentState.tagsInput.trim();
-
-        return isPristine ? defaultDeckForm : currentState;
-      });
-      setWordDraft((currentState) => {
-        const isPristine =
-          editingWordId === null &&
-          !currentState.source.trim() &&
-          !currentState.target.trim() &&
-          !currentState.tertiary.trim() &&
-          !currentState.example.trim();
-
-        return isPristine ? defaultWordDraft : currentState;
-      });
       return;
     }
 
     loadDeckForEdit();
+  }, [isEditMode, loadDeckForEdit]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      return;
+    }
+
+    setIsLoading(false);
+    setDeckForm((currentState) => {
+      const isPristine =
+        words.length === 0 &&
+        !currentState.name.trim() &&
+        !currentState.description.trim() &&
+        !currentState.tertiaryLanguage.trim() &&
+        !currentState.tagsInput.trim();
+
+      return isPristine ? defaultDeckForm : currentState;
+    });
+    setWordDraft((currentState) => {
+      const isPristine =
+        editingWordId === null &&
+        !currentState.source.trim() &&
+        !currentState.target.trim() &&
+        !currentState.tertiary.trim() &&
+        !currentState.example.trim();
+
+      return isPristine ? defaultWordDraft : currentState;
+    });
   }, [
     defaultDeckForm,
     defaultWordDraft,
     editingWordId,
     isEditMode,
-    loadDeckForEdit,
     words.length,
   ]);
 
@@ -394,19 +400,31 @@ export const useDeckEditorPanel = () => {
 
   const handleDeleteWord = useCallback(
     (wordId) => {
-      setWords((currentState) =>
-        currentState.filter((word) => String(word.id) !== String(wordId)),
+      const normalizedWordId = String(wordId);
+      const removedWord = words.find(
+        (word) => String(word.id) === normalizedWordId,
       );
 
-      if (String(editingWordId) === String(wordId)) {
+      setWords((currentState) =>
+        currentState.filter((word) => {
+          return String(word.id) !== normalizedWordId;
+        }),
+      );
+
+      if (String(editingWordId) === normalizedWordId) {
         resetWordDraft();
       }
 
-      if (String(previewWordId) === String(wordId)) {
+      if (String(previewWordId) === normalizedWordId) {
         setPreviewWordId(null);
       }
+
+      if (removedWord) {
+        const removedWordLabel = removedWord.source?.trim() || "word";
+        reportStatus(`Deleted: ${removedWordLabel}`, "danger");
+      }
     },
-    [editingWordId, previewWordId, resetWordDraft],
+    [editingWordId, previewWordId, reportStatus, resetWordDraft, words],
   );
 
   const wordsTotalPages = useMemo(() => {
