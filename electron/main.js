@@ -881,10 +881,21 @@ const buildSettingsRoute = (tabKey, sectionId) => {
   return `${routeQuery}#${encodedSectionId}`;
 };
 
-const requestSettingsSectionFromMenu = (tabKey, sectionId) => {
+const requestSettingsSectionFromMenu = (
+  tabKey,
+  sectionId,
+  { highlight = true } = {},
+) => {
   showMainWindow();
+  const to = buildSettingsRoute(tabKey, sectionId);
+
+  if (!highlight) {
+    queueNavigationRequest(to);
+    return;
+  }
+
   queueNavigationRequest({
-    to: buildSettingsRoute(tabKey, sectionId),
+    to,
     source: "app-menu",
     settingsTab: tabKey,
     highlightToken: Date.now(),
@@ -1485,7 +1496,13 @@ const buildSettingsMenuSubmenu = () => {
     const item = {
       label: tabConfig.label,
       click: () => {
-        requestSettingsSectionFromMenu(tabConfig.key, tabConfig.sectionId);
+        requestSettingsSectionFromMenu(
+          tabConfig.key,
+          tabConfig.sectionId,
+          {
+            highlight: tabConfig.key !== "general",
+          },
+        );
       },
     };
 
@@ -1525,18 +1542,37 @@ const buildFileMenuSubmenu = () => {
         void requestDeckImportFromMenu();
       },
     },
-    {
-      type: "separator",
-    },
   ];
 
-  if (process.platform === "darwin") {
-    submenu.push({ role: "close" });
-    return submenu;
+  if (process.platform !== "darwin") {
+    submenu.push(
+      {
+        type: "separator",
+      },
+      { role: "quit" },
+    );
   }
 
-  submenu.push({ role: "quit" });
   return submenu;
+};
+
+const buildWindowMenuSubmenu = () => {
+  if (process.platform === "darwin") {
+    return [
+      { role: "minimize" },
+      { role: "zoom" },
+      { role: "close" },
+      { type: "separator" },
+      { role: "front" },
+    ];
+  }
+
+  return [
+    { role: "minimize" },
+    { role: "maximize" },
+    { type: "separator" },
+    { role: "close" },
+  ];
 };
 
 const syncApplicationMenu = () => {
@@ -1559,7 +1595,10 @@ const syncApplicationMenu = () => {
       label: "View",
       submenu: buildViewMenuSubmenu(),
     },
-    { role: "windowMenu" },
+    {
+      label: "Window",
+      submenu: buildWindowMenuSubmenu(),
+    },
     {
       role: "help",
       submenu: [
