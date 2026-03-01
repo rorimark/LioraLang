@@ -31,6 +31,11 @@
   margin-top: 4px;
 }
 
+.app-preferences-section__group--active {
+  border-color: var(--color-primary-border);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary-border) 50%, var(--color-transparent));
+}
+
 .app-preferences-section__group-summary {
   list-style: none;
   cursor: pointer;

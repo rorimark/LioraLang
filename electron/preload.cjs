@@ -58,4 +58,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
       ipcRenderer.removeListener("app:runtime-error", listener);
     };
   },
+  onNavigateRequested: (callback) => {
+    const listener = (_, payload) => callback(payload);
+    ipcRenderer.on("app:navigate", listener);
+
+    return () => {
+      ipcRenderer.removeListener("app:navigate", listener);
+    };
+  },
 });

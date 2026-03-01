@@ -41,6 +41,46 @@ import { getProgressOverview } from "./db/services/progress.services.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const APP_ICON_PATH = path.join(__dirname, "assets", "icon.png");
+const APP_HOMEPAGE_URL = "https://github.com/rorimark/LioraLang";
+const SETTINGS_ROUTE_PATH = "/settings";
+const SETTINGS_MENU_TABS = [
+  {
+    key: "general",
+    label: "General",
+    sectionId: "settings-general",
+    accelerator: "CmdOrCtrl+,",
+  },
+  {
+    key: "learning-core",
+    label: "Learning core",
+    sectionId: "settings-learning-core",
+  },
+  {
+    key: "deck-defaults",
+    label: "Deck defaults",
+    sectionId: "settings-deck-defaults",
+  },
+  {
+    key: "import-export",
+    label: "Import and export",
+    sectionId: "settings-import-export",
+  },
+  {
+    key: "storage-integrity",
+    label: "Storage and integrity",
+    sectionId: "settings-storage-integrity",
+  },
+  {
+    key: "workspace-safety",
+    label: "Workspace and safety",
+    sectionId: "settings-workspace-safety",
+  },
+  {
+    key: "advanced-desktop",
+    label: "Advanced desktop and privacy",
+    sectionId: "settings-advanced-desktop",
+  },
+];
 const APP_THEME_CSS_PATH = path.join(__dirname, "..", "src", "shared", "config", "variables.css");
 const WINDOW_TITLE_BAR_HEIGHT = 36;
 const TITLE_BAR_FALLBACK_THEME = {
@@ -154,6 +194,7 @@ let backupScheduleSignature = "";
 let launchAtStartupSignature = null;
 let pendingImportFilePaths = [];
 let pendingRuntimeErrorEvents = [];
+let pendingNavigationRequests = [];
 const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck"];
 const DB_FILE_NAME = "lioralang.db";
 const APP_PREFERENCES_SETTINGS_KEY = "appPreferences";
@@ -201,6 +242,7 @@ const DEFAULT_RUNTIME_APP_PREFERENCES = {
     launchAtStartup: false,
     minimizeToTray: false,
     hardwareAcceleration: true,
+    devMode: false,
     updateChannel: "stable",
   },
   privacy: {
@@ -362,6 +404,10 @@ const normalizeAppPreferencesForMain = (value = {}) => {
       hardwareAcceleration: toBoolean(
         raw?.desktop?.hardwareAcceleration,
         DEFAULT_RUNTIME_APP_PREFERENCES.desktop.hardwareAcceleration,
+      ),
+      devMode: toBoolean(
+        raw?.desktop?.devMode,
+        DEFAULT_RUNTIME_APP_PREFERENCES.desktop.devMode,
       ),
       updateChannel,
     },
@@ -737,6 +783,156 @@ const queueImportFileOpenRequest = (filePath) => {
   flushPendingImportFileRequests();
 };
 
+const normalizeNavigationRoute = (value) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const normalizedValue = value.trim();
+
+  if (!normalizedValue || !normalizedValue.startsWith("/")) {
+    return "";
+  }
+
+  return normalizedValue;
+};
+
+const normalizeNavigationRequest = (request) => {
+  if (typeof request === "string") {
+    const to = normalizeNavigationRoute(request);
+
+    if (!to) {
+      return null;
+    }
+
+    return { to };
+  }
+
+  if (!request || typeof request !== "object") {
+    return null;
+  }
+
+  const to = normalizeNavigationRoute(request.to);
+
+  if (!to) {
+    return null;
+  }
+
+  const source = toCleanString(request.source);
+  const settingsTab = toCleanString(request.settingsTab);
+  const highlightToken = Number(request.highlightToken);
+
+  return {
+    to,
+    source,
+    settingsTab,
+    highlightToken: Number.isFinite(highlightToken) ? highlightToken : 0,
+  };
+};
+
+const flushPendingNavigationRequests = () => {
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    return;
+  }
+
+  if (mainWindow.webContents.isLoadingMainFrame()) {
+    return;
+  }
+
+  if (pendingNavigationRequests.length === 0) {
+    return;
+  }
+
+  const requestsToSend = pendingNavigationRequests;
+  pendingNavigationRequests = [];
+
+  requestsToSend.forEach((request) => {
+    mainWindow?.webContents.send("app:navigate", request);
+  });
+};
+
+const queueNavigationRequest = (request) => {
+  const normalizedRequest = normalizeNavigationRequest(request);
+
+  if (!normalizedRequest) {
+    return;
+  }
+
+  pendingNavigationRequests.push(normalizedRequest);
+
+  if (pendingNavigationRequests.length > 20) {
+    pendingNavigationRequests = pendingNavigationRequests.slice(-20);
+  }
+
+  flushPendingNavigationRequests();
+};
+
+const buildSettingsRoute = (tabKey, sectionId) => {
+  const safeTabKey = toCleanString(tabKey) || "general";
+  const safeSectionId = toCleanString(sectionId);
+  const encodedTabKey = encodeURIComponent(safeTabKey);
+  const encodedSectionId = safeSectionId ? encodeURIComponent(safeSectionId) : "";
+  const routeQuery = `${SETTINGS_ROUTE_PATH}?tab=${encodedTabKey}`;
+
+  if (!encodedSectionId) {
+    return routeQuery;
+  }
+
+  return `${routeQuery}#${encodedSectionId}`;
+};
+
+const requestSettingsSectionFromMenu = (tabKey, sectionId) => {
+  showMainWindow();
+  queueNavigationRequest({
+    to: buildSettingsRoute(tabKey, sectionId),
+    source: "app-menu",
+    settingsTab: tabKey,
+    highlightToken: Date.now(),
+  });
+};
+
+const getDialogParentWindow = () => {
+  return BrowserWindow.getFocusedWindow() || mainWindow || undefined;
+};
+
+const pickDeckImportPayloadFromDialog = async () => {
+  const result = await dialog.showOpenDialog(getDialogParentWindow(), {
+    title: "Import deck file",
+    properties: ["openFile"],
+    filters: [
+      { name: "Deck files", extensions: ["lioradeck", "json"] },
+      { name: "Liora deck package (.lioradeck)", extensions: ["lioradeck"] },
+      { name: "JSON deck (.json)", extensions: ["json"] },
+    ],
+  });
+
+  if (result.canceled || result.filePaths.length === 0) {
+    return { canceled: true };
+  }
+
+  const payload = readDeckImportPayloadFromFilePath(result.filePaths[0]);
+
+  if (!payload) {
+    throw new Error("Selected import file is invalid");
+  }
+
+  return payload;
+};
+
+const requestDeckImportFromMenu = async () => {
+  try {
+    const payload = await pickDeckImportPayloadFromDialog();
+
+    if (payload?.canceled || typeof payload?.filePath !== "string") {
+      return;
+    }
+
+    queueImportFileOpenRequest(payload.filePath);
+  } catch (error) {
+    reportRuntimeError(error, "menu:import-deck");
+  }
+};
+
 const applyWindowTitleBarTheme = (targetWindow, themeValue) => {
   if (!targetWindow || process.platform === "darwin") {
     return false;
@@ -775,6 +971,125 @@ const canNavigateForward = (webContents) => {
   }
 
   return webContents.navigationHistory.canGoForward();
+};
+
+const isDeveloperModeEnabled = () => {
+  return Boolean(appPreferencesCache?.desktop?.devMode);
+};
+
+const isDevToolsShortcut = (input = {}) => {
+  const inputType = toCleanString(input?.type);
+
+  if (inputType !== "keyDown" && inputType !== "rawKeyDown") {
+    return false;
+  }
+
+  const code = toCleanString(input?.code);
+  const key = toCleanString(input?.key).toLowerCase();
+  const isF12 = code === "F12";
+  const isDevToolsLetter =
+    code === "KeyI" || code === "KeyJ" || code === "KeyC" ||
+    key === "i" || key === "j" || key === "c";
+  const hasPrimaryModifier =
+    process.platform === "darwin"
+      ? Boolean(input?.meta)
+      : Boolean(input?.control);
+  const hasSecondaryModifier =
+    process.platform === "darwin"
+      ? Boolean(input?.alt)
+      : Boolean(input?.shift);
+
+  return isF12 || (isDevToolsLetter && hasPrimaryModifier && hasSecondaryModifier);
+};
+
+const isQuitShortcut = (input = {}) => {
+  const inputType = toCleanString(input?.type);
+
+  if (inputType !== "keyDown" && inputType !== "rawKeyDown") {
+    return false;
+  }
+
+  const code = toCleanString(input?.code);
+  const key = toCleanString(input?.key).toLowerCase();
+
+  if (process.platform === "darwin") {
+    return (code === "KeyQ" || key === "q") && Boolean(input?.meta);
+  }
+
+  return (code === "F4" || key === "f4") && Boolean(input?.alt);
+};
+
+const toggleWindowDevTools = (targetWindow) => {
+  if (!targetWindow || targetWindow.isDestroyed()) {
+    return;
+  }
+
+  const webContents = targetWindow.webContents;
+
+  if (!webContents || webContents.isDestroyed()) {
+    return;
+  }
+
+  if (webContents.isDevToolsOpened()) {
+    webContents.closeDevTools();
+    return;
+  }
+
+  webContents.openDevTools({ mode: "detach", activate: true });
+};
+
+const closeAllDevToolsIfDisabled = () => {
+  if (isDeveloperModeEnabled()) {
+    return;
+  }
+
+  BrowserWindow.getAllWindows().forEach((targetWindow) => {
+    const webContents = targetWindow?.webContents;
+
+    if (webContents && webContents.isDevToolsOpened()) {
+      webContents.closeDevTools();
+    }
+  });
+};
+
+const attachDevToolsAccessControl = (targetWindow) => {
+  if (!targetWindow || targetWindow.isDestroyed()) {
+    return;
+  }
+
+  const webContents = targetWindow.webContents;
+
+  if (!webContents || webContents.isDestroyed()) {
+    return;
+  }
+
+  webContents.on("before-input-event", (event, input) => {
+    if (isQuitShortcut(input)) {
+      event.preventDefault();
+      isQuitRequested = true;
+      app.quit();
+      return;
+    }
+
+    if (!isDevToolsShortcut(input)) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (!isDeveloperModeEnabled()) {
+      closeAllDevToolsIfDisabled();
+      return;
+    }
+
+    toggleWindowDevTools(targetWindow);
+  });
+
+  webContents.on("devtools-opened", () => {
+    if (!isDeveloperModeEnabled()) {
+      webContents.closeDevTools();
+    }
+  });
 };
 
 const navigateBack = (webContents) => {
@@ -1143,12 +1458,132 @@ const syncWindowTitle = () => {
   mainWindow.setTitle(resolveWindowTitle());
 };
 
+const buildViewMenuSubmenu = () => {
+  const baseItems = [
+    { role: "resetZoom" },
+    { role: "zoomIn" },
+    { role: "zoomOut" },
+    { type: "separator" },
+    { role: "togglefullscreen" },
+  ];
+
+  if (!isDeveloperModeEnabled()) {
+    return baseItems;
+  }
+
+  return [
+    { role: "reload" },
+    { role: "forceReload" },
+    { role: "toggleDevTools" },
+    { type: "separator" },
+    ...baseItems,
+  ];
+};
+
+const buildSettingsMenuSubmenu = () => {
+  return SETTINGS_MENU_TABS.map((tabConfig) => {
+    const item = {
+      label: tabConfig.label,
+      click: () => {
+        requestSettingsSectionFromMenu(tabConfig.key, tabConfig.sectionId);
+      },
+    };
+
+    if (tabConfig.accelerator) {
+      item.accelerator = tabConfig.accelerator;
+    }
+
+    return item;
+  });
+};
+
+const buildAppMenuSubmenu = () => {
+  return [
+    { role: "about" },
+    { type: "separator" },
+    {
+      label: "Settings",
+      submenu: buildSettingsMenuSubmenu(),
+    },
+    { type: "separator" },
+    { role: "services" },
+    { type: "separator" },
+    { role: "hide" },
+    { role: "hideOthers" },
+    { role: "unhide" },
+    { type: "separator" },
+    { role: "quit", label: "Qurit LioraLang" },
+  ];
+};
+
+const buildFileMenuSubmenu = () => {
+  const submenu = [
+    {
+      label: "Import deck file...",
+      accelerator: "CmdOrCtrl+O",
+      click: () => {
+        void requestDeckImportFromMenu();
+      },
+    },
+    {
+      type: "separator",
+    },
+  ];
+
+  if (process.platform === "darwin") {
+    submenu.push({ role: "close" });
+    return submenu;
+  }
+
+  submenu.push({ role: "quit" });
+  return submenu;
+};
+
+const syncApplicationMenu = () => {
+  const template = [];
+
+  if (process.platform === "darwin") {
+    template.push({
+      label: app.name || "LioraLang",
+      submenu: buildAppMenuSubmenu(),
+    });
+  }
+
+  template.push(
+    {
+      label: "File",
+      submenu: buildFileMenuSubmenu(),
+    },
+    { role: "editMenu" },
+    {
+      label: "View",
+      submenu: buildViewMenuSubmenu(),
+    },
+    { role: "windowMenu" },
+    {
+      role: "help",
+      submenu: [
+        {
+          label: "LioraLang GitHub",
+          click: () => {
+            void shell.openExternal(APP_HOMEPAGE_URL);
+          },
+        },
+      ],
+    },
+  );
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+};
+
 const syncRuntimePreferences = () => {
   process.env.LIORALANG_UPDATE_CHANNEL = appPreferencesCache.desktop.updateChannel;
   syncLaunchAtStartupSetting();
   syncTrayMode();
   syncBackupSchedule();
   syncWindowTitle();
+  syncApplicationMenu();
+  closeAllDevToolsIfDisabled();
 };
 
 const moveFileSafely = (sourcePath, targetPath) => {
@@ -1369,6 +1804,8 @@ const createWindow = async () => {
     },
   });
 
+  attachDevToolsAccessControl(mainWindow);
+
   mainWindow.on("close", (event) => {
     if (isQuitRequested || !appPreferencesCache.desktop.minimizeToTray) {
       return;
@@ -1393,15 +1830,13 @@ const createWindow = async () => {
     mainWindow?.show();
     flushPendingImportFileRequests();
     flushPendingRuntimeErrorEvents();
-
-    if (!app.isPackaged) {
-      mainWindow?.webContents.openDevTools({ mode: "detach" });
-    }
+    flushPendingNavigationRequests();
   });
 
   mainWindow.webContents.on("did-finish-load", () => {
     flushPendingImportFileRequests();
     flushPendingRuntimeErrorEvents();
+    flushPendingNavigationRequests();
   });
 
   if (!app.isPackaged) {
@@ -1438,28 +1873,7 @@ const setupIpcHandlers = () => {
   });
 
   ipcMain.handle("decks:pick-import-json", async () => {
-    const result = await dialog.showOpenDialog(mainWindow, {
-      title: "Import deck file",
-      properties: ["openFile"],
-      filters: [
-        { name: "Deck files", extensions: ["lioradeck", "json"] },
-        { name: "Liora deck package (.lioradeck)", extensions: ["lioradeck"] },
-        { name: "JSON deck (.json)", extensions: ["json"] },
-      ],
-    });
-
-    if (result.canceled || result.filePaths.length === 0) {
-      return { canceled: true };
-    }
-
-    const selectedFilePath = result.filePaths[0];
-    const payload = readDeckImportPayloadFromFilePath(selectedFilePath);
-
-    if (!payload) {
-      throw new Error("Selected import file is invalid");
-    }
-
-    return payload;
+    return pickDeckImportPayloadFromDialog();
   });
 
   ipcMain.handle("decks:import-json", async (_, payload) => {

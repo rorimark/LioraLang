@@ -42,6 +42,40 @@ export const AppLayout = () => {
     });
   }, [isDesktopMode, navigate, normalizedPathname]);
 
+  useEffect(() => {
+    if (!isDesktopMode) {
+      return undefined;
+    }
+
+    return desktopApi.subscribeNavigationRequested((payload) => {
+      const nextRoute = typeof payload?.to === "string" ? payload.to.trim() : "";
+
+      if (!nextRoute) {
+        return;
+      }
+
+      const isSettingsMenuNavigation =
+        payload?.source === "app-menu" &&
+        typeof payload?.settingsTab === "string" &&
+        payload.settingsTab.trim().length > 0;
+
+      if (!isSettingsMenuNavigation) {
+        navigate(nextRoute);
+        return;
+      }
+
+      navigate(nextRoute, {
+        state: {
+          settingsMenuFocus: {
+            source: "app-menu",
+            tab: payload.settingsTab,
+            token: payload.highlightToken || Date.now(),
+          },
+        },
+      });
+    });
+  }, [isDesktopMode, navigate]);
+
   return (
     <div className={isDesktopMode ? "app-frame app-frame--desktop" : "app-frame"}>
       <DesktopTitleBar />

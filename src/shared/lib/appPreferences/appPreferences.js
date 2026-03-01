@@ -133,6 +133,7 @@ export const DEFAULT_APP_PREFERENCES = {
     launchAtStartup: false,
     minimizeToTray: false,
     hardwareAcceleration: true,
+    devMode: false,
     updateChannel: "stable",
   },
   privacy: {
@@ -288,6 +289,10 @@ export const normalizeAppPreferences = (value = {}) => {
       hardwareAcceleration: toBoolean(
         value?.desktop?.hardwareAcceleration,
         DEFAULT_APP_PREFERENCES.desktop.hardwareAcceleration,
+      ),
+      devMode: toBoolean(
+        value?.desktop?.devMode,
+        DEFAULT_APP_PREFERENCES.desktop.devMode,
       ),
       updateChannel: toOneOf(
         value?.desktop?.updateChannel,

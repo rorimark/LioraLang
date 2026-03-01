@@ -6,6 +6,7 @@ import {
 import { ImportDeckModal } from "@features/deck-import";
 import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
+import { SETTINGS_SECTION_IDS, SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
 import { ThemeSwitch } from "@features/theme-switch";
 import { ActionModal, InlineAlert } from "@shared/ui";
 import { useSettingsDatabasePanel } from "../model";
@@ -20,6 +21,8 @@ export const SettingsDatabasePanel = memo(() => {
     isVerifyingIntegrity,
     isRepairingIntegrity,
     isResettingSettings,
+    selectedSettingsTab,
+    highlightedSettingsTab,
     isResetSettingsConfirmOpen,
     isResetAllDisabled,
     isImporting,
@@ -63,10 +66,20 @@ export const SettingsDatabasePanel = memo(() => {
       />
 
       <div className="settings-page-panel__layout">
-        <AppPreferencesSection />
+        <AppPreferencesSection
+          selectedTab={selectedSettingsTab}
+          highlightedTab={highlightedSettingsTab}
+        />
 
         <aside className="settings-page-panel__side">
-          <section className="settings-page-panel__section">
+          <section
+            id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.general]}
+            className={
+              highlightedSettingsTab === SETTINGS_TAB_KEYS.general
+                ? "settings-page-panel__section settings-page-panel__section--active"
+                : "settings-page-panel__section"
+            }
+          >
             <h3>General</h3>
             <p>Theme and shortcuts for everyday navigation.</p>
             <div className="settings-page-panel__theme">
@@ -91,7 +104,14 @@ export const SettingsDatabasePanel = memo(() => {
             </div>
           </section>
 
-          <section className="settings-page-panel__section">
+          <section
+            id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.importExport]}
+            className={
+              highlightedSettingsTab === SETTINGS_TAB_KEYS.importExport
+                ? "settings-page-panel__section settings-page-panel__section--active"
+                : "settings-page-panel__section"
+            }
+          >
             <h3>Deck Import and Export</h3>
             <p>Bring external decks into your local library and set defaults.</p>
 
@@ -108,7 +128,14 @@ export const SettingsDatabasePanel = memo(() => {
             <ImportExportSettingsSection />
           </section>
 
-          <section className="settings-page-panel__section">
+          <section
+            id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.storageIntegrity]}
+            className={
+              highlightedSettingsTab === SETTINGS_TAB_KEYS.storageIntegrity
+                ? "settings-page-panel__section settings-page-panel__section--active"
+                : "settings-page-panel__section"
+            }
+          >
             <h3>Storage and Integrity</h3>
             <p>Control storage location and integrity checks.</p>
 

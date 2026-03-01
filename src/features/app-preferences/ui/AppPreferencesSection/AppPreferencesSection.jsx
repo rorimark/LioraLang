@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
+import { SETTINGS_SECTION_IDS, SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
 import { useAppPreferencesSection } from "../../model";
 import "./AppPreferencesSection.css";
 
@@ -36,23 +37,43 @@ const PART_OPTION_ITEMS = PART_OF_SPEECH_OPTIONS.map((part) => (
 ));
 
 const PreferencesGroup = ({
+  tabKey,
+  selectedTab,
+  highlightedTab,
+  sectionId,
   title,
   description,
   defaultOpen = false,
   children,
-}) => (
-  <details className="app-preferences-section__group" open={defaultOpen}>
-    <summary className="app-preferences-section__group-summary">
-      <span className="app-preferences-section__group-title">{title}</span>
-      <span className="app-preferences-section__group-description">
-        {description}
-      </span>
-    </summary>
-    <div className="app-preferences-section__group-grid">{children}</div>
-  </details>
-);
+}) => {
+  const isSelectedGroup = selectedTab === tabKey;
+  const isHighlightedGroup = highlightedTab === tabKey;
 
-export const AppPreferencesSection = memo(() => {
+  return (
+    <details
+      id={sectionId}
+      className={
+        isHighlightedGroup
+          ? "app-preferences-section__group app-preferences-section__group--active"
+          : "app-preferences-section__group"
+      }
+      open={defaultOpen || isSelectedGroup}
+    >
+      <summary className="app-preferences-section__group-summary">
+        <span className="app-preferences-section__group-title">{title}</span>
+        <span className="app-preferences-section__group-description">
+          {description}
+        </span>
+      </summary>
+      <div className="app-preferences-section__group-grid">{children}</div>
+    </details>
+  );
+};
+
+export const AppPreferencesSection = memo(({
+  selectedTab = SETTINGS_TAB_KEYS.general,
+  highlightedTab = "",
+}) => {
   const {
     appPreferences,
     handleBooleanFieldChange,
@@ -69,6 +90,10 @@ export const AppPreferencesSection = memo(() => {
       </header>
 
       <PreferencesGroup
+        tabKey={SETTINGS_TAB_KEYS.learningCore}
+        selectedTab={selectedTab}
+        highlightedTab={highlightedTab}
+        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.learningCore]}
         title="Learning Core"
         description="Session flow and spaced repetition tuning."
         defaultOpen
@@ -181,6 +206,10 @@ export const AppPreferencesSection = memo(() => {
       </PreferencesGroup>
 
       <PreferencesGroup
+        tabKey={SETTINGS_TAB_KEYS.deckDefaults}
+        selectedTab={selectedTab}
+        highlightedTab={highlightedTab}
+        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.deckDefaults]}
         title="Deck Defaults"
         description="Default values for deck creation."
       >
@@ -239,6 +268,10 @@ export const AppPreferencesSection = memo(() => {
       </PreferencesGroup>
 
       <PreferencesGroup
+        tabKey={SETTINGS_TAB_KEYS.workspaceSafety}
+        selectedTab={selectedTab}
+        highlightedTab={highlightedTab}
+        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.workspaceSafety]}
         title="Workspace and Safety"
         description="Accessibility, backups, and destructive action guards."
       >
@@ -324,6 +357,10 @@ export const AppPreferencesSection = memo(() => {
       </PreferencesGroup>
 
       <PreferencesGroup
+        tabKey={SETTINGS_TAB_KEYS.advancedDesktop}
+        selectedTab={selectedTab}
+        highlightedTab={highlightedTab}
+        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.advancedDesktop]}
         title="Advanced Desktop and Privacy"
         description="Launch behavior, telemetry preferences, and diagnostics."
       >
@@ -355,6 +392,15 @@ export const AppPreferencesSection = memo(() => {
               onChange={handleBooleanFieldChange}
             />
             <span>Hardware acceleration</span>
+          </label>
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="desktop.devMode"
+              checked={appPreferences.desktop.devMode}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Developer mode (DevTools shortcuts)</span>
           </label>
           <label>
             <span>Update channel</span>
