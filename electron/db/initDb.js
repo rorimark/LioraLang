@@ -95,10 +95,19 @@ export const initDb = () => {
   ensureColumn(db, "decks", "source_language", "TEXT");
   ensureColumn(db, "decks", "target_language", "TEXT");
   ensureColumn(db, "decks", "tertiary_language", "TEXT");
+  ensureColumn(db, "decks", "description", "TEXT");
   ensureColumn(db, "decks", "tags_json", "TEXT DEFAULT '[]'");
+  ensureColumn(db, "decks", "created_at", "TEXT");
+  ensureColumn(db, "decks", "updated_at", "TEXT");
+  ensureColumn(db, "words", "external_id", "TEXT");
   ensureColumn(db, "words", "source_text", "TEXT");
   ensureColumn(db, "words", "target_text", "TEXT");
   ensureColumn(db, "words", "tertiary_text", "TEXT");
+  ensureColumn(db, "words", "level", "TEXT");
+  ensureColumn(db, "words", "part_of_speech", "TEXT");
+  ensureColumn(db, "words", "tags_json", "TEXT DEFAULT '[]'");
+  ensureColumn(db, "words", "examples_json", "TEXT DEFAULT '[]'");
+  ensureColumn(db, "words", "created_at", "TEXT");
   ensureColumn(db, "review_cards", "state", "TEXT DEFAULT 'new'");
   ensureColumn(db, "review_cards", "learning_step", "INTEGER DEFAULT 0");
   const wordColumns = db.prepare("PRAGMA table_info(words)").all();
@@ -129,6 +138,36 @@ export const initDb = () => {
       WHERE tertiary_text IS NULL
     `);
   }
+
+  db.exec(`
+    UPDATE decks
+    SET created_at = COALESCE(created_at, CURRENT_TIMESTAMP)
+    WHERE created_at IS NULL OR TRIM(created_at) = ''
+  `);
+
+  db.exec(`
+    UPDATE decks
+    SET updated_at = COALESCE(updated_at, created_at, CURRENT_TIMESTAMP)
+    WHERE updated_at IS NULL OR TRIM(updated_at) = ''
+  `);
+
+  db.exec(`
+    UPDATE words
+    SET tags_json = '[]'
+    WHERE tags_json IS NULL OR TRIM(tags_json) = ''
+  `);
+
+  db.exec(`
+    UPDATE words
+    SET examples_json = '[]'
+    WHERE examples_json IS NULL OR TRIM(examples_json) = ''
+  `);
+
+  db.exec(`
+    UPDATE words
+    SET created_at = COALESCE(created_at, CURRENT_TIMESTAMP)
+    WHERE created_at IS NULL OR TRIM(created_at) = ''
+  `);
 
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_words_source_text ON words(source_text)
