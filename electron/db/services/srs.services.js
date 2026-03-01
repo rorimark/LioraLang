@@ -21,6 +21,11 @@ const DEFAULT_SRS_SETTINGS = {
   easyBonus: 1.3,
   lapsePenalty: 0.7,
 };
+const MIN_INTERVAL_DAYS = 1;
+const MAX_INTERVAL_DAYS = 36_500;
+const MIN_INTERVAL_MINUTES = 1;
+const MAX_INTERVAL_MINUTES = MAX_INTERVAL_DAYS * 24 * 60;
+const MAX_DATE_TIMESTAMP_MS = 8_640_000_000_000_000;
 const DEFAULT_STUDY_SESSION_SETTINGS = {
   shuffleMode: "off",
   shuffleSeed: null,
@@ -39,7 +44,6 @@ const SHUFFLE_SEED_MIN = 1;
 const SHUFFLE_SEED_MAX = 2_147_483_646;
 const LOW_CONFIDENCE_REPS_THRESHOLD = 3;
 const SHUFFLE_WINDOW_LIMITS = {
-  forceAll: 24,
   learning: 10,
   review: 12,
 };
@@ -81,6 +85,10 @@ const toIntegerInRange = (value, min, max, fallback) => {
   return Math.round(numericValue);
 };
 
+const clampIntegerInRange = (value, min, max, fallback) => {
+  return toIntegerInRange(value, min, max, fallback);
+};
+
 const parseJsonArray = (value) => {
   if (typeof value !== "string") {
     return [];
@@ -109,7 +117,12 @@ const parseLearningSteps = (value) => {
       const plainNumber = Number(token);
 
       if (Number.isFinite(plainNumber) && plainNumber > 0) {
-        return Math.round(plainNumber);
+        return clampIntegerInRange(
+          plainNumber,
+          MIN_INTERVAL_MINUTES,
+          MAX_INTERVAL_MINUTES,
+          MIN_INTERVAL_MINUTES,
+        );
       }
 
       const match = token.match(
@@ -128,14 +141,29 @@ const parseLearningSteps = (value) => {
       }
 
       if (unit.startsWith("d")) {
-        return Math.round(amount * 24 * 60);
+        return clampIntegerInRange(
+          amount * 24 * 60,
+          MIN_INTERVAL_MINUTES,
+          MAX_INTERVAL_MINUTES,
+          MIN_INTERVAL_MINUTES,
+        );
       }
 
       if (unit.startsWith("h")) {
-        return Math.round(amount * 60);
+        return clampIntegerInRange(
+          amount * 60,
+          MIN_INTERVAL_MINUTES,
+          MAX_INTERVAL_MINUTES,
+          MIN_INTERVAL_MINUTES,
+        );
       }
 
-      return Math.round(amount);
+      return clampIntegerInRange(
+        amount,
+        MIN_INTERVAL_MINUTES,
+        MAX_INTERVAL_MINUTES,
+        MIN_INTERVAL_MINUTES,
+      );
     })
     .filter((minutes) => Number.isInteger(minutes) && minutes > 0);
 
@@ -268,7 +296,7 @@ const normalizeCard = (card = {}) => {
     dueAt: toCleanString(card.dueAt) || null,
     intervalDays:
       Number.isFinite(intervalDaysRaw) && intervalDaysRaw >= 0
-        ? Math.floor(intervalDaysRaw)
+        ? Math.min(Math.floor(intervalDaysRaw), MAX_INTERVAL_DAYS)
         : state === CARD_STATES.new
           ? 0
           : 1,
@@ -279,17 +307,33 @@ const normalizeCard = (card = {}) => {
 };
 
 const toDateWithMinutes = (baseDate, minutes) => {
-  const value = Number(minutes);
-  const safeMinutes = Number.isFinite(value) ? Math.max(1, Math.round(value)) : 1;
+  const safeMinutes = clampIntegerInRange(
+    minutes,
+    MIN_INTERVAL_MINUTES,
+    MAX_INTERVAL_MINUTES,
+    MIN_INTERVAL_MINUTES,
+  );
+  const timestampMs = Math.min(
+    baseDate.getTime() + safeMinutes * 60_000,
+    MAX_DATE_TIMESTAMP_MS,
+  );
 
-  return new Date(baseDate.getTime() + safeMinutes * 60_000);
+  return new Date(timestampMs);
 };
 
 const toDateWithDays = (baseDate, days) => {
-  const value = Number(days);
-  const safeDays = Number.isFinite(value) ? Math.max(1, Math.round(value)) : 1;
+  const safeDays = clampIntegerInRange(
+    days,
+    MIN_INTERVAL_DAYS,
+    MAX_INTERVAL_DAYS,
+    MIN_INTERVAL_DAYS,
+  );
+  const timestampMs = Math.min(
+    baseDate.getTime() + safeDays * 24 * 60 * 60_000,
+    MAX_DATE_TIMESTAMP_MS,
+  );
 
-  return new Date(baseDate.getTime() + safeDays * 24 * 60 * 60_000);
+  return new Date(timestampMs);
 };
 
 const getQueueTypeByState = (state) => {
@@ -323,8 +367,18 @@ const graduateCard = ({
   const baseInterval = fromRelearning
     ? Math.max(1, Math.round(Math.max(1, card.intervalDays) * srsSettings.lapsePenalty))
     : Math.max(1, card.intervalDays || 1);
-  const goodInterval = Math.max(1, baseInterval);
-  const easyInterval = Math.max(goodInterval + 1, Math.round(goodInterval * srsSettings.easyBonus));
+  const goodInterval = clampIntegerInRange(
+    Math.max(1, baseInterval),
+    MIN_INTERVAL_DAYS,
+    MAX_INTERVAL_DAYS,
+    MIN_INTERVAL_DAYS,
+  );
+  const easyInterval = clampIntegerInRange(
+    Math.max(goodInterval + 1, Math.round(goodInterval * srsSettings.easyBonus)),
+    MIN_INTERVAL_DAYS,
+    MAX_INTERVAL_DAYS,
+    goodInterval,
+  );
   const intervalDays = easy ? easyInterval : goodInterval;
   const easeFactor = easy
     ? clampEaseFactor(card.easeFactor + 0.05)
@@ -398,7 +452,12 @@ const resolveScheduleOutcome = ({
       return graduateCard({
         card: {
           ...card,
-          intervalDays: Math.max(2, Math.round(resolveLearningStepMinutes(learningSteps, learningSteps.length - 1) / 1440)),
+          intervalDays: clampIntegerInRange(
+            Math.max(2, Math.round(resolveLearningStepMinutes(learningSteps, learningSteps.length - 1) / 1440)),
+            MIN_INTERVAL_DAYS,
+            MAX_INTERVAL_DAYS,
+            2,
+          ),
         },
         now,
         srsSettings,
@@ -494,16 +553,36 @@ const resolveScheduleOutcome = ({
   }
 
   const baseInterval = Math.max(1, card.intervalDays || 1);
-  const hardInterval = Math.max(1, Math.round(baseInterval * 1.2));
-  const goodInterval = Math.max(hardInterval, Math.round(baseInterval * Math.max(1.4, card.easeFactor)));
-  const easyInterval = Math.max(goodInterval + 1, Math.round(baseInterval * card.easeFactor * srsSettings.easyBonus));
+  const hardInterval = clampIntegerInRange(
+    Math.max(1, Math.round(baseInterval * 1.2)),
+    MIN_INTERVAL_DAYS,
+    MAX_INTERVAL_DAYS,
+    MIN_INTERVAL_DAYS,
+  );
+  const goodInterval = clampIntegerInRange(
+    Math.max(hardInterval, Math.round(baseInterval * Math.max(1.4, card.easeFactor))),
+    MIN_INTERVAL_DAYS,
+    MAX_INTERVAL_DAYS,
+    hardInterval,
+  );
+  const easyInterval = clampIntegerInRange(
+    Math.max(goodInterval + 1, Math.round(baseInterval * card.easeFactor * srsSettings.easyBonus)),
+    MIN_INTERVAL_DAYS,
+    MAX_INTERVAL_DAYS,
+    goodInterval,
+  );
 
   if (rating === CARD_RATINGS.again) {
     return {
       state: CARD_STATES.relearning,
       learningStep: 0,
       dueAt: resolveAgainDueAt(now, firstLearningStep, studySessionSettings),
-      intervalDays: Math.max(1, Math.round(baseInterval * srsSettings.lapsePenalty)),
+      intervalDays: clampIntegerInRange(
+        Math.max(1, Math.round(baseInterval * srsSettings.lapsePenalty)),
+        MIN_INTERVAL_DAYS,
+        MAX_INTERVAL_DAYS,
+        MIN_INTERVAL_DAYS,
+      ),
       easeFactor: clampEaseFactor(card.easeFactor - 0.2),
       reps: Math.max(0, card.reps - 1),
       lapses: card.lapses + 1,
@@ -742,98 +821,6 @@ const getQueueCounters = (db, deckId, nowIso) => {
   };
 };
 
-const pickForceAllCardRow = (db, deckId, shuffleSettings) => {
-  const { shuffleMode, shuffleSeed } = shuffleSettings;
-
-  if (shuffleMode === SHUFFLE_MODES.off) {
-    return db
-      .prepare(
-        `
-          SELECT ${CARD_FIELDS_SELECT}
-          FROM words
-          LEFT JOIN review_cards ON review_cards.word_id = words.id
-          WHERE words.deck_id = ?
-          ORDER BY
-            CASE
-              WHEN review_cards.state IN ('learning', 'relearning') THEN 0
-              WHEN review_cards.state = 'review' THEN 1
-              ELSE 2
-            END ASC,
-            CASE
-              WHEN review_cards.state IN ('learning', 'relearning')
-                THEN COALESCE(review_cards.due_at, '1970-01-01T00:00:00.000Z')
-              ELSE COALESCE(review_cards.last_reviewed_at, '1970-01-01T00:00:00.000Z')
-            END ASC,
-            words.id ASC
-          LIMIT 1
-        `,
-      )
-      .get(deckId);
-  }
-
-  if (shuffleMode === SHUFFLE_MODES.perSession) {
-    return db
-      .prepare(
-        `
-          WITH candidates AS (
-            SELECT ${CARD_FIELDS_SELECT}
-            FROM words
-            LEFT JOIN review_cards ON review_cards.word_id = words.id
-            WHERE words.deck_id = ?
-            ORDER BY
-              CASE
-                WHEN review_cards.state IN ('learning', 'relearning') THEN 0
-                WHEN review_cards.state = 'review' THEN 1
-                ELSE 2
-              END ASC,
-              CASE
-                WHEN review_cards.state IN ('learning', 'relearning')
-                  THEN COALESCE(review_cards.due_at, '1970-01-01T00:00:00.000Z')
-                ELSE COALESCE(review_cards.last_reviewed_at, '1970-01-01T00:00:00.000Z')
-              END ASC,
-              words.id ASC
-            LIMIT ?
-          )
-          SELECT *
-          FROM candidates
-          ORDER BY ABS(((wordId * 1103515245) + ?) % 2147483647) ASC, wordId ASC
-          LIMIT 1
-        `,
-      )
-      .get(deckId, SHUFFLE_WINDOW_LIMITS.forceAll, shuffleSeed);
-  }
-
-  return db
-    .prepare(
-      `
-        WITH candidates AS (
-          SELECT ${CARD_FIELDS_SELECT}
-          FROM words
-          LEFT JOIN review_cards ON review_cards.word_id = words.id
-          WHERE words.deck_id = ?
-          ORDER BY
-            CASE
-              WHEN review_cards.state IN ('learning', 'relearning') THEN 0
-              WHEN review_cards.state = 'review' THEN 1
-              ELSE 2
-            END ASC,
-            CASE
-              WHEN review_cards.state IN ('learning', 'relearning')
-                THEN COALESCE(review_cards.due_at, '1970-01-01T00:00:00.000Z')
-              ELSE COALESCE(review_cards.last_reviewed_at, '1970-01-01T00:00:00.000Z')
-            END ASC,
-            words.id ASC
-          LIMIT ?
-        )
-        SELECT *
-        FROM candidates
-        ORDER BY RANDOM()
-        LIMIT 1
-      `,
-    )
-    .get(deckId, SHUFFLE_WINDOW_LIMITS.forceAll);
-};
-
 const pickLearningCardRow = (db, deckId, nowIso, shuffleSettings) => {
   const { shuffleMode, shuffleSeed } = shuffleSettings;
 
@@ -1047,11 +1034,7 @@ const pickNextCardRow = (db, deckId, nowIso, limits, options = {}) => {
   const forceAllCards = Boolean(options?.forceAllCards);
   const shuffleSettings = normalizeStudySessionSettings(options?.settings || {});
 
-  if (forceAllCards) {
-    return pickForceAllCardRow(db, deckId, shuffleSettings);
-  }
-
-  if (limits.dailyLimitReached) {
+  if (!forceAllCards && limits.dailyLimitReached) {
     return null;
   }
 
@@ -1061,7 +1044,7 @@ const pickNextCardRow = (db, deckId, nowIso, limits, options = {}) => {
     return learningRow;
   }
 
-  if (limits.reviewLeft > 0) {
+  if (forceAllCards || limits.reviewLeft > 0) {
     const lowConfidenceReviewRow = pickLowConfidenceReviewCardRow(
       db,
       deckId,
@@ -1080,7 +1063,7 @@ const pickNextCardRow = (db, deckId, nowIso, limits, options = {}) => {
     }
   }
 
-  if (limits.newLeft > 0) {
+  if (forceAllCards || limits.newLeft > 0) {
     return pickNewCardRow(db, deckId, shuffleSettings);
   }
 
