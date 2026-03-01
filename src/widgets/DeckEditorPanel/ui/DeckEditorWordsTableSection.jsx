@@ -89,8 +89,16 @@ export const DeckEditorWordsTableSection = memo(() => {
                     )}
                     <td data-label="Level">{renderWordCell(word.level)}</td>
                     <td data-label="Part">{renderWordCell(word.part_of_speech)}</td>
-                    <td data-label="Example">{renderWordCell(word.example)}</td>
-                    <td data-label="Actions">
+                    <td
+                      data-label="Example"
+                      className="deck-editor-panel__cell--example"
+                    >
+                      {renderWordCell(word.example)}
+                    </td>
+                    <td
+                      data-label="Actions"
+                      className="deck-editor-panel__cell--actions"
+                    >
                       <div className="deck-editor-panel__table-actions">
                         <button
                           type="button"
