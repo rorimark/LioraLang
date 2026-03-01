@@ -21,6 +21,7 @@ import {
 } from "./db/db.js";
 import { initDb } from "./db/initDb.js";
 import { readStoredDbPath, writeStoredDbPath } from "./services/dbPath.service.js";
+import { migrateLegacyDbStorage } from "./services/legacyStorageMigration.service.js";
 import { verifyAppIntegrityAndRepair } from "./services/integrity.service.js";
 import {
   listDecks,
@@ -42,6 +43,16 @@ const __dirname = path.dirname(__filename);
 const APP_ICON_PATH = path.join(__dirname, "assets", "icon.png");
 const APP_THEME_CSS_PATH = path.join(__dirname, "..", "src", "shared", "config", "variables.css");
 const WINDOW_TITLE_BAR_HEIGHT = 36;
+const TITLE_BAR_FALLBACK_THEME = {
+  light: {
+    color: "#d5deea",
+    symbolColor: "#0f172a",
+  },
+  dark: {
+    color: "#070c14",
+    symbolColor: "#f8fafc",
+  },
+};
 const parseCssVariableBlock = (cssBlock) => {
   if (typeof cssBlock !== "string" || cssBlock.length === 0) {
     return {};
@@ -99,12 +110,28 @@ const resolveThemeToken = (tokenName, themeName = "light", fallbackValue = "") =
 
 const WINDOW_TITLE_BAR_THEME = {
   light: {
-    color: resolveThemeToken("color-titlebar", "light"),
-    symbolColor: resolveThemeToken("color-titlebar-symbol", "light"),
+    color: resolveThemeToken(
+      "color-titlebar",
+      "light",
+      TITLE_BAR_FALLBACK_THEME.light.color,
+    ),
+    symbolColor: resolveThemeToken(
+      "color-titlebar-symbol",
+      "light",
+      TITLE_BAR_FALLBACK_THEME.light.symbolColor,
+    ),
   },
   dark: {
-    color: resolveThemeToken("color-titlebar", "dark"),
-    symbolColor: resolveThemeToken("color-titlebar-symbol", "dark"),
+    color: resolveThemeToken(
+      "color-titlebar",
+      "dark",
+      TITLE_BAR_FALLBACK_THEME.dark.color,
+    ),
+    symbolColor: resolveThemeToken(
+      "color-titlebar-symbol",
+      "dark",
+      TITLE_BAR_FALLBACK_THEME.dark.symbolColor,
+    ),
   },
 };
 const FATAL_STARTUP_ERROR_THEME = {
@@ -769,6 +796,23 @@ const navigateForward = (webContents) => {
 const resolveActiveDbPath = () => {
   const storedDbPath = readStoredDbPath(app.getPath("userData"));
   return storedDbPath || getDefaultDbPath();
+};
+
+const runLegacyStorageMigration = () => {
+  try {
+    return migrateLegacyDbStorage({
+      appDataPath: app.getPath("appData"),
+      currentUserDataPath: app.getPath("userData"),
+      dbFileName: DB_FILE_NAME,
+    });
+  } catch {
+    return {
+      migrated: false,
+      dbPath: "",
+      sourceDbPath: "",
+      reason: "migration-failed",
+    };
+  }
 };
 
 const resolveWindowTitle = () => {
@@ -1757,6 +1801,24 @@ const setupIpcHandlers = () => {
     return { applied };
   });
 };
+
+const legacyStorageMigrationReport = runLegacyStorageMigration();
+
+if (legacyStorageMigrationReport.migrated) {
+  logWarn(
+    "Legacy storage migrated to current user data directory:",
+    legacyStorageMigrationReport.sourceDbPath,
+    "->",
+    legacyStorageMigrationReport.dbPath,
+  );
+}
+
+if (legacyStorageMigrationReport.reason === "legacy-path-linked") {
+  logWarn(
+    "Using legacy database path from previous install:",
+    legacyStorageMigrationReport.dbPath,
+  );
+}
 
 appPreferencesCache = resolveBootstrapAppPreferences();
 
