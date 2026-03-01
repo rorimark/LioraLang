@@ -25,6 +25,10 @@
   border-radius: 10px;
   background: color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted));
   overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
 .app-preferences-section__group + .app-preferences-section__group {
@@ -34,6 +38,7 @@
 .app-preferences-section__group--active {
   border-color: var(--color-primary-border);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary-border) 50%, var(--color-transparent));
+  background: color-mix(in srgb, var(--color-primary-soft) 18%, var(--color-surface));
 }
 
 .app-preferences-section__group-summary {
