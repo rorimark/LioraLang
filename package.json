@@ -4,7 +4,7 @@
   "author": "Mark Storchovyi markstorchovyi@gmail.com",
   "homepage": "https://github.com/rorimark/LioraLang",
   "private": true,
-  "version": "0.0.8",
+  "version": "0.0.10",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -14,8 +14,8 @@
     "rebuild:native": "npm_config_runtime=electron npm_config_target=40.6.1 npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
     "build": "vite build",
     "dist:test": "pnpm build && electron-builder --mac dmg --arm64 --publish never && electron-builder --win nsis --x64 --publish never && pnpm rebuild:native",
-    "dist:test:mac": "pnpm build && electron-builder --mac dmg --arm64 --publish never",
-    "dist:test:win": "pnpm build && electron-builder --win nsis --x64 --publish never",
+    "dist:test:mac": "pnpm build && electron-builder --mac dmg --arm64 --publish never && pnpm rebuild:native",
+    "dist:test:win": "pnpm build && electron-builder --win nsis --x64 --publish never && pnpm rebuild:native",
     "check:persistence": "node electron/scripts/run-persistence-check.cjs",
     "lint": "eslint .",
     "preview": "vite preview"
