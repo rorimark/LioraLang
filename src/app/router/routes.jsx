@@ -1,6 +1,7 @@
 import { Navigate } from "react-router";
 import { AppLayout } from "@app/layouts/AppLayout";
 import {
+  AccountPage,
   BrowsePage,
   DeckDetailsPage,
   DeckEditorPage,
@@ -24,6 +25,10 @@ export const routes = [
       {
         path: toChildPath(ROUTE_PATHS.learn),
         element: <LearnPage />,
+      },
+      {
+        path: toChildPath(ROUTE_PATHS.account),
+        element: <AccountPage />,
       },
       {
         path: toChildPath(ROUTE_PATHS.browse),

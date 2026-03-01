@@ -1,4 +1,5 @@
 export { NavBar } from "./NavbBar";
+export { AccountHubPanel } from "./AccountHubPanel";
 export { DesktopTitleBar } from "./DesktopTitleBar";
 export { PageHeader } from "./PageHeader";
 export { BrowseDecksPanel } from "./BrowseDecksPanel";

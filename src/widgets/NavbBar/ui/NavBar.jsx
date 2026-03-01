@@ -1,6 +1,8 @@
 import "./NavBar.css";
 import { memo } from "react";
+import { Link } from "react-router";
 import { NavTab } from "@shared/ui";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import {
   IoLayersOutline,
   IoGlobeOutline,
@@ -32,7 +34,13 @@ export const NavBar = memo(({ mobile = false }) => {
           <span className="nav-bar__logo">LL</span>
           <div>
             <strong>LioraLang</strong>
-            <p>Mark Storchovyi</p>
+            <Link
+              className="nav-bar__account-link"
+              to={ROUTE_PATHS.account}
+              aria-label="Open account page"
+            >
+              Sign in / Sugn up
+            </Link>
           </div>
         </div>
       )}

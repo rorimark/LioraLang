@@ -1,4 +1,5 @@
 export { LearnPage } from "./learn";
+export { AccountPage } from "./account";
 export { BrowsePage } from "./browse";
 export { DecksPage } from "./decks";
 export { DeckEditorPage } from "./deck-editor";
