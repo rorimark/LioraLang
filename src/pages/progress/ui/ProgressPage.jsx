@@ -1,4 +1,4 @@
-import { ProgressOverviewPanel } from "@widgets";
+import { ProgressOverviewPanel } from "@widgets/ProgressOverviewPanel";
 
 export const ProgressPage = () => {
   return (

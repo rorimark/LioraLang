@@ -1,4 +1,4 @@
-import { DeckDetailsPanel } from "@widgets";
+import { DeckDetailsPanel } from "@widgets/DeckDetailsPanel";
 
 export const DeckDetailsPage = () => {
   return (

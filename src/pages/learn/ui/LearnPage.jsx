@@ -1,4 +1,4 @@
-import { LearnFlashcardsPanel } from "@widgets";
+import { LearnFlashcardsPanel } from "@widgets/LearnFlashcardsPanel";
 
 export const LearnPage = () => {
   return (

@@ -1,4 +1,4 @@
-import { BrowseDecksPanel } from "@widgets";
+import { BrowseDecksPanel } from "@widgets/BrowseDecksPanel";
 
 export const BrowsePage = () => {
   return (
