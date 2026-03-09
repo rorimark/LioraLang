@@ -4,9 +4,9 @@ import "./LandingPage.css";
 
 export const LandingPage = () => {
   usePageMeta({
-    title: "LioraLang - Offline-first language learning",
+    title: "LioraLang - Flashcards and spaced repetition that actually stick",
     description:
-      "Create custom decks, learn with spaced repetition flashcards, and track your progress in one local-first app.",
+      "Create and share decks, study with spaced repetition, and use LioraLang on web or desktop with full control over your data.",
   });
 
   return (
