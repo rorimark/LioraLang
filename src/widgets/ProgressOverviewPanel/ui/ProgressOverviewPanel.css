@@ -79,6 +79,11 @@
   border-radius: 999px;
   padding: 3px 8px;
   background: var(--color-surface-muted);
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .progress-overview__chart-wrap {
@@ -288,16 +293,16 @@
 }
 
 .progress-overview__ring {
-  width: 86px;
-  height: 86px;
+  width: clamp(64px, 9vw, 86px);
+  height: clamp(64px, 9vw, 86px);
   border-radius: 50%;
   display: grid;
   place-items: center;
 }
 
 .progress-overview__ring-inner {
-  width: 62px;
-  height: 62px;
+  width: clamp(46px, 6.5vw, 62px);
+  height: clamp(46px, 6.5vw, 62px);
   border-radius: 50%;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -312,6 +317,8 @@
   color: var(--color-text-muted);
   font-size: 0.8rem;
   text-align: center;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .progress-overview__milestones {
@@ -341,6 +348,7 @@
   align-items: end;
   gap: 6px;
   padding: 10px;
+  overflow: hidden;
 }
 
 .progress-overview__mini-bar-col {
@@ -349,6 +357,7 @@
   align-items: end;
   justify-items: center;
   gap: 6px;
+  min-width: 0;
 }
 
 .progress-overview__mini-bar {
@@ -359,6 +368,12 @@
 }
 
 .progress-overview__mini-bar-col span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--color-text-muted);
   font-size: 0.71rem;
   min-height: 12px;
@@ -479,6 +494,46 @@
   .progress-overview__bar-head {
     grid-template-columns: auto minmax(0, 1fr);
     grid-template-rows: auto auto auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .progress-overview__rings {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .progress-overview__mini-bars {
+    min-height: 154px;
+    gap: 2px;
+    padding: 6px;
+  }
+
+  .progress-overview__mini-bar {
+    width: min(10px, 100%);
+    border-radius: 6px 6px 3px 3px;
+  }
+
+  .progress-overview__mini-bar-col {
+    gap: 4px;
+  }
+
+  .progress-overview__mini-bar-col span {
+    font-size: 0.62rem;
+    min-height: 9px;
+  }
+
+  .progress-overview__mini-bar-col:nth-child(even) span {
+    visibility: hidden;
+  }
+
+  .progress-overview__meta {
+    gap: 4px;
+  }
+
+  .progress-overview__meta span {
+    font-size: 0.68rem;
+    padding: 2px 6px;
   }
 }
 
