@@ -8,6 +8,8 @@ const ROUTE_PRELOADERS = [
   () => import("@pages/progress/ui/ProgressPage"),
   () => import("@pages/settings/ui/SettingsPage"),
 ];
+let hasScheduledPreload = false;
+let preloadInFlightPromise = null;
 
 const shouldPreloadRoutes = () => {
   if (import.meta.env.VITE_APP_TARGET !== "web") {
@@ -26,15 +28,31 @@ const shouldPreloadRoutes = () => {
 };
 
 const runRoutePreload = async () => {
-  await Promise.allSettled(
-    ROUTE_PRELOADERS.map((loadRoute) => loadRoute()),
-  );
+  if (!preloadInFlightPromise) {
+    preloadInFlightPromise = Promise.allSettled(
+      ROUTE_PRELOADERS.map((loadRoute) => loadRoute()),
+    ).finally(() => {
+      preloadInFlightPromise = null;
+    });
+  }
+
+  await preloadInFlightPromise;
 };
 
-export const preloadRoutesForOffline = () => {
+export const preloadAppRoutesNow = () => {
   if (!shouldPreloadRoutes()) {
     return;
   }
+
+  void runRoutePreload();
+};
+
+export const preloadRoutesForOffline = () => {
+  if (hasScheduledPreload || !shouldPreloadRoutes()) {
+    return;
+  }
+
+  hasScheduledPreload = true;
 
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(() => {

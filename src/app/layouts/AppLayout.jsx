@@ -4,7 +4,10 @@ import { NavBar } from "@widgets/NavbBar";
 import { PageHeader } from "@widgets/PageHeader";
 import { RuntimeErrorPresenter } from "@features/runtime-error";
 import { usePlatformService } from "@app/providers";
+import { preloadRoutesForOffline } from "@app/router/preloadRoutesForOffline";
 import { resolvePageMeta, ROUTE_PATHS } from "@shared/config/routes";
+import { registerWebPwa } from "@shared/lib/pwa";
+import { usePageMeta } from "@shared/lib/seo";
 import { ToastViewport } from "@shared/ui";
 import { useEffect } from "react";
 import "./AppLayout.css";
@@ -25,6 +28,11 @@ export const AppLayout = () => {
   const pageMeta = resolvePageMeta(normalizedPathname);
   const isDesktopMode = runtimeGateway.isDesktopMode();
   const isLearnPage = normalizedPathname === ROUTE_PATHS.learn;
+
+  usePageMeta({
+    title: `${pageMeta.title} - LioraLang`,
+    description: pageMeta.subtitle,
+  });
 
   useEffect(() => {
     if (!isDesktopMode) {
@@ -78,6 +86,11 @@ export const AppLayout = () => {
       });
     });
   }, [isDesktopMode, navigate, runtimeGateway]);
+
+  useEffect(() => {
+    void registerWebPwa();
+    preloadRoutesForOffline();
+  }, []);
 
   return (
     <div className={isDesktopMode ? "app-frame app-frame--desktop" : "app-frame"}>

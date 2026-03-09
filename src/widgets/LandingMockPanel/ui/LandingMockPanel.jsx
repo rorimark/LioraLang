@@ -1,53 +1,64 @@
 import { memo } from "react";
 import { Link } from "react-router";
-import { ROUTE_PATHS } from "@shared/config/routes";
+import { useLandingMockPanel } from "../model/useLandingMockPanel";
 import "./LandingMockPanel.css";
 
-const MOCK_FEATURES = [
-  {
-    title: "Offline-first decks",
-    description: "Create and edit decks locally with no server required.",
-  },
-  {
-    title: "Spaced repetition",
-    description: "Rate cards as Again, Hard, Good, or Easy and keep momentum.",
-  },
-  {
-    title: "Import and share",
-    description: "Import deck files, export your own, and publish to LioraLangHub.",
-  },
-];
-
 export const LandingMockPanel = memo(() => {
+  const {
+    features,
+    primaryCtaTo,
+    secondaryCtaTo,
+    handlePrefetchApp,
+  } = useLandingMockPanel();
+
   return (
     <article className="landing-mock-panel">
       <header className="landing-mock-panel__hero">
         <p className="landing-mock-panel__eyebrow">LioraLang</p>
-        <h1>Build your language system, not random word lists</h1>
+        <h1>Own your language learning workflow from first card to mastery</h1>
         <p className="landing-mock-panel__lead">
-          This is a lightweight landing mock. The app itself is available under
-          <strong> /app</strong>.
+          Build decks, study with spaced repetition, and track real progress in
+          one fast workspace. Your data stays under your control.
         </p>
         <div className="landing-mock-panel__actions">
-          <Link to={ROUTE_PATHS.learn} className="landing-mock-panel__cta">
+          <Link
+            to={primaryCtaTo}
+            className="landing-mock-panel__cta"
+            onMouseEnter={handlePrefetchApp}
+            onFocus={handlePrefetchApp}
+            onTouchStart={handlePrefetchApp}
+          >
             Open app
           </Link>
           <Link
-            to={ROUTE_PATHS.decks}
+            to={secondaryCtaTo}
             className="landing-mock-panel__cta landing-mock-panel__cta--secondary"
+            onMouseEnter={handlePrefetchApp}
+            onFocus={handlePrefetchApp}
+            onTouchStart={handlePrefetchApp}
           >
-            Go to decks
+            Explore decks
           </Link>
         </div>
       </header>
 
       <section className="landing-mock-panel__grid" aria-label="Core features">
-        {MOCK_FEATURES.map((feature) => (
+        {features.map((feature) => (
           <article key={feature.title} className="landing-mock-panel__card">
             <h2>{feature.title}</h2>
             <p>{feature.description}</p>
           </article>
         ))}
+      </section>
+
+      <section className="landing-mock-panel__workflow" aria-label="Study workflow">
+        <h2>How it works</h2>
+        <ol>
+          <li>Create a deck with source and target languages.</li>
+          <li>Add words with tags, levels, and examples.</li>
+          <li>Study daily sessions and rate each card.</li>
+          <li>Use analytics to tune your weak areas.</li>
+        </ol>
       </section>
     </article>
   );
