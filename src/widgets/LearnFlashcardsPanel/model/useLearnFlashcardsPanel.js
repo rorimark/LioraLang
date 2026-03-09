@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { usePlatformService } from "@app/providers";
 import { useDecks } from "@entities/deck";
-import { desktopApi } from "@shared/api";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
@@ -9,7 +9,12 @@ import {
   LEARN_RATING_SHORTCUT_MODES,
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
-import { readLearnProgress, saveLearnProgress } from "./learnProgressStorage";
+import {
+  DEFAULT_LEARN_PROGRESS,
+  areLearnProgressEqual,
+  createLearnProgressSettingsPatch,
+  readLearnProgressFromSettings,
+} from "./learnProgressStorage";
 
 const EMPTY_SESSION = {
   deck: null,
@@ -216,10 +221,13 @@ const buildCompletionMessage = (session) => {
 
 export const useLearnFlashcardsPanel = () => {
   const navigate = useNavigate();
+  const srsRepository = usePlatformService("srsRepository");
+  const settingsRepository = usePlatformService("settingsRepository");
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const { appPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
-  const [learnProgress, setLearnProgress] = useState(() => readLearnProgress());
+  const [learnProgress, setLearnProgress] = useState(DEFAULT_LEARN_PROGRESS);
+  const [isLearnProgressReady, setIsLearnProgressReady] = useState(false);
   const [extendedSessionByDeckId, setExtendedSessionByDeckId] = useState({});
   const [session, setSession] = useState(EMPTY_SESSION);
   const [isSessionLoading, setIsSessionLoading] = useState(false);
@@ -227,6 +235,51 @@ export const useLearnFlashcardsPanel = () => {
   const [isRatingPending, setIsRatingPending] = useState(false);
   const loadSessionRequestRef = useRef(0);
   const shuffleSeedByDeckRef = useRef({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    settingsRepository
+      .getAppSettings()
+      .then((settings) => {
+        if (cancelled) {
+          return;
+        }
+
+        const nextProgress = readLearnProgressFromSettings(settings);
+
+        setLearnProgress((prevState) =>
+          areLearnProgressEqual(prevState, nextProgress)
+            ? prevState
+            : nextProgress,
+        );
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLearnProgress(DEFAULT_LEARN_PROGRESS);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsLearnProgressReady(true);
+        }
+      });
+
+    const unsubscribe = settingsRepository.subscribeAppSettingsUpdated((nextSettings) => {
+      const nextProgress = readLearnProgressFromSettings(nextSettings);
+
+      setLearnProgress((prevState) =>
+        areLearnProgressEqual(prevState, nextProgress)
+          ? prevState
+          : nextProgress,
+      );
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
+  }, [settingsRepository]);
 
   const spacedRepetitionSettings = appPreferences.spacedRepetition;
   const studySessionSettings = appPreferences.studySession;
@@ -332,7 +385,7 @@ export const useLearnFlashcardsPanel = () => {
       setSessionError("");
 
       try {
-        const nextSession = await desktopApi.getSrsSession(
+        const nextSession = await srsRepository.getSrsSession(
           normalizedDeckId,
           {
             spacedRepetition: spacedRepetitionSettings,
@@ -372,6 +425,7 @@ export const useLearnFlashcardsPanel = () => {
       resolveShuffleSeed,
       setProgressCardWordId,
       shuffleMode,
+      srsRepository,
       spacedRepetitionSettings,
       studySessionSettings,
     ],
@@ -400,8 +454,20 @@ export const useLearnFlashcardsPanel = () => {
   }, [loadSession, selectedDeckId]);
 
   useEffect(() => {
-    saveLearnProgress(learnProgress);
-  }, [learnProgress]);
+    if (!isLearnProgressReady) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      void settingsRepository
+        .updateAppSettings(createLearnProgressSettingsPatch(learnProgress))
+        .catch(() => {});
+    }, 140);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isLearnProgressReady, learnProgress, settingsRepository]);
 
   const currentWord = session?.card || null;
   const isBackVisible = learnProgress.isBackVisible;
@@ -461,7 +527,7 @@ export const useLearnFlashcardsPanel = () => {
       setSessionError("");
 
       try {
-        const nextSession = await desktopApi.gradeSrsCard({
+        const nextSession = await srsRepository.gradeSrsCard({
           deckId: selectedDeckId,
           wordId: currentWord.wordId,
           rating,
@@ -498,6 +564,7 @@ export const useLearnFlashcardsPanel = () => {
       studySessionSettings,
       shuffleMode,
       resolveShuffleSeed,
+      srsRepository,
       isExtendedSession,
     ],
   );

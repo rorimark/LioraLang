@@ -1,12 +1,10 @@
-const LEARN_PROGRESS_STORAGE_KEY = "lioralang-learn-progress-v1";
+export const LEARN_PROGRESS_SETTINGS_KEY = "learnProgress";
 
-const DEFAULT_LEARN_PROGRESS = {
+export const DEFAULT_LEARN_PROGRESS = {
   selectedDeckId: "",
   isBackVisible: false,
   lastCardWordIdByDeck: {},
 };
-
-const isBrowser = typeof window !== "undefined";
 
 const normalizeLastCardWordIdByDeck = (value) => {
   if (!value || typeof value !== "object") {
@@ -30,41 +28,8 @@ const normalizeLastCardWordIdByDeck = (value) => {
   }, {});
 };
 
-export const readLearnProgress = () => {
-  if (!isBrowser) {
-    return DEFAULT_LEARN_PROGRESS;
-  }
-
-  try {
-    const rawValue = window.localStorage.getItem(LEARN_PROGRESS_STORAGE_KEY);
-
-    if (!rawValue) {
-      return DEFAULT_LEARN_PROGRESS;
-    }
-
-    const parsedValue = JSON.parse(rawValue);
-
-    return {
-      selectedDeckId:
-        typeof parsedValue?.selectedDeckId === "string"
-          ? parsedValue.selectedDeckId
-          : "",
-      isBackVisible: Boolean(parsedValue?.isBackVisible),
-      lastCardWordIdByDeck: normalizeLastCardWordIdByDeck(
-        parsedValue?.lastCardWordIdByDeck,
-      ),
-    };
-  } catch {
-    return DEFAULT_LEARN_PROGRESS;
-  }
-};
-
-export const saveLearnProgress = (value) => {
-  if (!isBrowser) {
-    return;
-  }
-
-  const normalizedPayload = {
+export const normalizeLearnProgress = (value) => {
+  return {
     selectedDeckId:
       typeof value?.selectedDeckId === "string" ? value.selectedDeckId : "",
     isBackVisible: Boolean(value?.isBackVisible),
@@ -72,13 +37,39 @@ export const saveLearnProgress = (value) => {
       value?.lastCardWordIdByDeck,
     ),
   };
+};
 
-  try {
-    window.localStorage.setItem(
-      LEARN_PROGRESS_STORAGE_KEY,
-      JSON.stringify(normalizedPayload),
-    );
-  } catch {
-    // Ignore storage write failures.
+const areWordIdMapsEqual = (left, right) => {
+  const leftEntries = Object.entries(left || {});
+  const rightEntries = Object.entries(right || {});
+
+  if (leftEntries.length !== rightEntries.length) {
+    return false;
   }
+
+  return leftEntries.every(([deckId, wordId]) => right?.[deckId] === wordId);
+};
+
+export const areLearnProgressEqual = (left, right) => {
+  const leftValue = normalizeLearnProgress(left);
+  const rightValue = normalizeLearnProgress(right);
+
+  return (
+    leftValue.selectedDeckId === rightValue.selectedDeckId &&
+    leftValue.isBackVisible === rightValue.isBackVisible &&
+    areWordIdMapsEqual(
+      leftValue.lastCardWordIdByDeck,
+      rightValue.lastCardWordIdByDeck,
+    )
+  );
+};
+
+export const readLearnProgressFromSettings = (settings) => {
+  return normalizeLearnProgress(settings?.[LEARN_PROGRESS_SETTINGS_KEY]);
+};
+
+export const createLearnProgressSettingsPatch = (value) => {
+  return {
+    [LEARN_PROGRESS_SETTINGS_KEY]: normalizeLearnProgress(value),
+  };
 };
