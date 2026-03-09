@@ -151,7 +151,7 @@ export const SettingsDatabasePanel = memo(() => {
             <p>Theme, shortcuts, and everyday interface behavior.</p>
           </header>
 
-          <div className="settings-page-panel__section-grid">
+          <div className="settings-page-panel__stack">
             <div className="settings-page-panel__slot">
               <h4>Appearance</h4>
               <ThemeSwitch
@@ -220,7 +220,7 @@ export const SettingsDatabasePanel = memo(() => {
             DB: {dbPath || "Loading..."}
           </div>
 
-          <div className="settings-page-panel__section-grid">
+          <div className="settings-page-panel__section-grid settings-page-panel__section-grid--actions">
             <div className="settings-page-panel__actions">
               <button
                 type="button"
@@ -253,25 +253,27 @@ export const SettingsDatabasePanel = memo(() => {
         </section>
       ) : null}
 
-      <section className="settings-page-panel__section settings-page-panel__section--danger">
-        <header className="settings-page-panel__section-head">
-          <h3>Reset</h3>
-          <p>Restore all settings to the default configuration.</p>
-        </header>
+      {activeSettingsTab === SETTINGS_TAB_KEYS.general ? (
+        <section className="settings-page-panel__section settings-page-panel__section--danger">
+          <header className="settings-page-panel__section-head">
+            <h3>Reset</h3>
+            <p>Restore all settings to the default configuration.</p>
+          </header>
 
-        <div className="settings-page-panel__actions">
-          <button
-            type="button"
-            className="settings-page-panel__reset-all-button"
-            onClick={openResetSettingsConfirm}
-            disabled={isResetAllDisabled}
-          >
-            {isResettingSettings
-              ? "Resetting settings..."
-              : "Reset all settings to defaults"}
-          </button>
-        </div>
-      </section>
+          <div className="settings-page-panel__actions">
+            <button
+              type="button"
+              className="settings-page-panel__reset-all-button"
+              onClick={openResetSettingsConfirm}
+              disabled={isResetAllDisabled}
+            >
+              {isResettingSettings
+                ? "Resetting settings..."
+                : "Reset all settings to defaults"}
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <ImportDeckModal
         isOpen={isImportConfirmOpen}

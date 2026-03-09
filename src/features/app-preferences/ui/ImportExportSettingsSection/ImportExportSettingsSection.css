@@ -2,6 +2,8 @@
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  grid-auto-rows: min-content;
 }
 
 .import-export-settings__field {

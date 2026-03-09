@@ -1,8 +1,7 @@
 .settings-page-panel {
   display: grid;
   gap: 14px;
-  width: min(100%, 1080px);
-  margin-inline: auto;
+  width: 100%;
   min-width: 0;
 }
 
@@ -102,6 +101,19 @@
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  grid-auto-rows: min-content;
+}
+
+.settings-page-panel__section-grid--actions {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.settings-page-panel__stack {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+  align-items: start;
 }
 
 .settings-page-panel__slot {
@@ -109,6 +121,8 @@
   display: grid;
   gap: 10px;
   min-width: 0;
+  align-content: start;
+  align-self: start;
 }
 
 .settings-page-panel__slot h4 {
