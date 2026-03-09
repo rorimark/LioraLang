@@ -40,7 +40,12 @@ export const LearnFlashcardsPanel = memo(() => {
     <article className="panel learn-page-panel">
       <div className="learn-page-panel__header">
         <div className="learn-page-panel__deck-control">
-          <label htmlFor="learn-deck-select">Choose deck</label>
+          <label
+            className="learn-page-panel__deck-label"
+            htmlFor="learn-deck-select"
+          >
+            Choose deck
+          </label>
           <div className="learn-page-panel__deck-row">
             <select
               id="learn-deck-select"
@@ -70,11 +75,14 @@ export const LearnFlashcardsPanel = memo(() => {
           </div>
         </div>
 
-        {isExtendedSession ? (
-          <div className="learn-page-panel__header-actions">
+        <div className="learn-page-panel__header-actions">
+          <span className="learn-page-panel__mode-badge learn-page-panel__mode-badge--neutral">
+            Due {sessionStats.dueTotal}
+          </span>
+          {isExtendedSession ? (
             <span className="learn-page-panel__mode-badge">Extra session</span>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
 
       <div className="learn-page-panel__stats-row" aria-live="polite">
@@ -148,29 +156,31 @@ export const LearnFlashcardsPanel = memo(() => {
             </span>
           </div>
 
-          <div className="learn-page-panel__actions">
-            <button
-              type="button"
-              className="learn-page-panel__flip-button"
-              onClick={toggleBackVisibility}
-              disabled={isRatingPending}
-            >
-              {isBackVisible ? "Hide answer" : "Show answer"}
-            </button>
-          </div>
-
-          <div className="learn-page-panel__ratings" aria-live="polite">
-            {isBackVisible ? (
-              <SrsRatingControls
-                ratingOptions={ratingOptions}
-                onRate={handleRateCard}
+          <div className="learn-page-panel__controls-dock">
+            <div className="learn-page-panel__actions">
+              <button
+                type="button"
+                className="learn-page-panel__flip-button"
+                onClick={toggleBackVisibility}
                 disabled={isRatingPending}
-              />
-            ) : (
-              <div className="learn-page-panel__rating-placeholder">
-                Reveal the answer to see grading buttons.
-              </div>
-            )}
+              >
+                {isBackVisible ? "Hide answer" : "Show answer"}
+              </button>
+            </div>
+
+            <div className="learn-page-panel__ratings" aria-live="polite">
+              {isBackVisible ? (
+                <SrsRatingControls
+                  ratingOptions={ratingOptions}
+                  onRate={handleRateCard}
+                  disabled={isRatingPending}
+                />
+              ) : (
+                <div className="learn-page-panel__rating-placeholder">
+                  Reveal the answer to see grading buttons.
+                </div>
+              )}
+            </div>
           </div>
         </>
       )}
