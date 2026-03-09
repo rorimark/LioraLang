@@ -27,6 +27,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
   navigateWindowBack: () => ipcRenderer.invoke("window:navigate-back"),
   navigateWindowForward: () => ipcRenderer.invoke("window:navigate-forward"),
   applyWindowTheme: (payload) => ipcRenderer.invoke("window:apply-theme", payload),
+  hubListDecks: (payload) => ipcRenderer.invoke("hub:list-decks", payload),
+  hubCreateDownloadUrl: (payload) =>
+    ipcRenderer.invoke("hub:create-download-url", payload),
+  hubPublishDeck: (payload) => ipcRenderer.invoke("hub:publish-deck", payload),
+  hubIncrementDeckDownloads: (payload) =>
+    ipcRenderer.invoke("hub:increment-downloads", payload),
 
   onDecksUpdated: (callback) => {
     const listener = () => callback();

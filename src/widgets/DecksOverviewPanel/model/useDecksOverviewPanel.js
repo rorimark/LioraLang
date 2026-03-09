@@ -1,13 +1,15 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
+import { usePlatformService } from "@app/providers";
 import { useDecks } from "@entities/deck";
 import { useDeckImportFlow } from "@features/deck-import";
-import { desktopApi, hubDecksApi } from "@shared/api";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { ROUTE_PATHS } from "@shared/config/routes";
 
 export const useDecksOverviewPanel = () => {
   const navigate = useNavigate();
+  const deckRepository = usePlatformService("deckRepository");
+  const hubRepository = usePlatformService("hubRepository");
   const { decks, isLoading, error, refreshDecks } = useDecks();
   const { appPreferences } = useAppPreferences();
   const [message, setMessage] = useState("");
@@ -71,7 +73,7 @@ export const useDecksOverviewPanel = () => {
     setExportingDeckId(deckId);
 
     try {
-      const result = await desktopApi.exportDeckToJson(deckId, {
+      const result = await deckRepository.exportDeckToJson(deckId, {
         exportFormat: appPreferences.importExport.exportFormat,
         includeExamples: appPreferences.importExport.includeExamples,
         includeTags: appPreferences.importExport.includeTags,
@@ -116,13 +118,14 @@ export const useDecksOverviewPanel = () => {
     appPreferences.importExport.exportFormat,
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
+    deckRepository,
     reportMessage,
   ]);
 
   const publishDeck = useCallback(async (deckId) => {
     reportMessage("", "info");
 
-    if (!hubDecksApi.isConfigured()) {
+    if (!hubRepository.isConfigured()) {
       reportMessage(
         "LLH is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY to .env.",
         "error",
@@ -147,7 +150,7 @@ export const useDecksOverviewPanel = () => {
     setPublishingDeckId(normalizedDeckId);
 
     try {
-      const exported = await desktopApi.exportDeckPackage(normalizedDeckId, {
+      const exported = await deckRepository.exportDeckPackage(normalizedDeckId, {
         includeExamples: appPreferences.importExport.includeExamples,
         includeTags: appPreferences.importExport.includeTags,
       });
@@ -157,7 +160,7 @@ export const useDecksOverviewPanel = () => {
         throw new Error("Failed to prepare deck package for publish");
       }
 
-      const publishResult = await hubDecksApi.publishDeck({
+      const publishResult = await hubRepository.publishDeck({
         deck,
         deckPackage,
       });
@@ -171,6 +174,24 @@ export const useDecksOverviewPanel = () => {
       const wordsCount = Number.isFinite(Number(publishResult?.wordsCount))
         ? Number(publishResult.wordsCount)
         : exported?.exportedCount || 0;
+      const skippedAsDuplicate = Boolean(publishResult?.skippedAsDuplicate);
+      const queuedPublish = Boolean(publishResult?.queued);
+
+      if (skippedAsDuplicate) {
+        reportMessage(
+          `"${publishedTitle}" is already up to date on LLH (v${version}, ${wordsCount} words)`,
+          "warning",
+        );
+        return;
+      }
+
+      if (queuedPublish) {
+        reportMessage(
+          `Queued "${publishedTitle}" for LLH publish. It will sync automatically when you're online.`,
+          "warning",
+        );
+        return;
+      }
 
       reportMessage(
         `Published "${publishedTitle}" to LLH (v${version}, ${wordsCount} words)`,
@@ -184,7 +205,9 @@ export const useDecksOverviewPanel = () => {
   }, [
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
+    deckRepository,
     decks,
+    hubRepository,
     reportMessage,
   ]);
 
@@ -197,7 +220,7 @@ export const useDecksOverviewPanel = () => {
     setDeletingDeckId(deckId);
 
     try {
-      await desktopApi.deleteDeck(deckId);
+      await deckRepository.deleteDeck(deckId);
       const deletedName = deckName?.trim() || "Deck";
       reportMessage(`Deck deleted: ${deletedName}`, "danger");
       await refreshDecks();
@@ -206,7 +229,7 @@ export const useDecksOverviewPanel = () => {
     } finally {
       setDeletingDeckId(null);
     }
-  }, [refreshDecks, reportMessage]);
+  }, [deckRepository, refreshDecks, reportMessage]);
 
   const openDeleteModal = useCallback((deckId, deckName = "") => {
     if (!appPreferences.dataSafety.confirmDestructive) {

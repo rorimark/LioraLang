@@ -24,6 +24,12 @@ import { readStoredDbPath, writeStoredDbPath } from "./services/dbPath.service.j
 import { migrateLegacyDbStorage } from "./services/legacyStorageMigration.service.js";
 import { verifyAppIntegrityAndRepair } from "./services/integrity.service.js";
 import {
+  createHubDeckDownloadUrl,
+  incrementHubDeckDownloads,
+  listHubDecks,
+  publishHubDeck,
+} from "./services/hub.service.js";
+import {
   listDecks,
   getDeckById,
   getDeckWords,
@@ -199,14 +205,10 @@ let launchAtStartupSignature = null;
 let pendingImportFilePaths = [];
 let pendingRuntimeErrorEvents = [];
 let pendingNavigationRequests = [];
-const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck"];
+const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck", ".lioralang"];
 const DB_FILE_NAME = "lioralang.db";
 const REMOTE_IMPORT_TIMEOUT_MS = 35_000;
 const REMOTE_IMPORT_MAX_BYTES = 50 * 1024 * 1024;
-const EXTERNAL_CONNECT_SOURCES = [
-  "https://*.supabase.co",
-  "wss://*.supabase.co",
-];
 const APP_PREFERENCES_SETTINGS_KEY = "appPreferences";
 const LOG_LEVELS = {
   error: "error",
@@ -609,7 +611,7 @@ const importDeckFromFilePath = (filePath, payload = {}) => {
   const fileExtension = path.extname(normalizedFilePath).toLowerCase();
 
   if (!SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(fileExtension)) {
-    throw new Error("Only .json and .lioradeck files can be imported");
+    throw new Error("Only .json, .lioradeck and .lioralang files can be imported");
   }
 
   if (!fs.existsSync(normalizedFilePath)) {
@@ -685,7 +687,7 @@ const downloadRemoteDeckToTempFile = async (downloadUrl, fileNameHint = "") => {
   const safeExtension = path.extname(safeFileName).toLowerCase();
 
   if (!SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(safeExtension)) {
-    throw new Error("Only .json and .lioradeck files can be imported");
+    throw new Error("Only .json, .lioradeck and .lioralang files can be imported");
   }
 
   const importTempDir = path.join(app.getPath("temp"), "lioralang-imports");
@@ -1098,8 +1100,9 @@ const pickDeckImportPayloadFromDialog = async () => {
     title: "Import deck file",
     properties: ["openFile"],
     filters: [
-      { name: "Deck files", extensions: ["lioradeck", "json"] },
+      { name: "Deck files", extensions: ["lioradeck", "lioralang", "json"] },
       { name: "Liora deck package (.lioradeck)", extensions: ["lioradeck"] },
+      { name: "Legacy Liora package (.lioralang)", extensions: ["lioralang"] },
       { name: "JSON deck (.json)", extensions: ["json"] },
     ],
   });
@@ -1967,7 +1970,7 @@ const buildContentSecurityPolicy = () => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob:",
       "font-src 'self' https://fonts.gstatic.com data:",
-      `connect-src ${joinConnectSources(EXTERNAL_CONNECT_SOURCES)}`,
+      `connect-src ${joinConnectSources()}`,
       "object-src 'none'",
       "base-uri 'self'",
       "frame-ancestors 'none'",
@@ -1988,7 +1991,6 @@ const buildContentSecurityPolicy = () => {
     `connect-src ${joinConnectSources([
       devOrigin,
       devWsOrigin,
-      ...EXTERNAL_CONNECT_SOURCES,
     ])}`,
     "object-src 'none'",
     "base-uri 'self'",
@@ -2289,6 +2291,47 @@ const setupIpcHandlers = () => {
       wordsCount: Array.isArray(saveResult?.words) ? saveResult.words.length : 0,
     });
     return saveResult;
+  });
+
+  ipcMain.handle("hub:list-decks", (_, payload) => {
+    return listHubDecks({
+      config: payload?.config || {},
+      page: payload?.page,
+      pageSize: payload?.pageSize,
+      search: payload?.search,
+    });
+  });
+
+  ipcMain.handle("hub:create-download-url", (_, payload) => {
+    return createHubDeckDownloadUrl({
+      config: payload?.config || {},
+      filePath: payload?.filePath,
+      expiresInSeconds: payload?.expiresInSeconds,
+    });
+  });
+
+  ipcMain.handle("hub:publish-deck", async (_, payload) => {
+    const publishResult = await publishHubDeck({
+      config: payload?.config || {},
+      deck: payload?.deck || {},
+      deckPackage: payload?.deckPackage || null,
+    });
+
+    trackAnalyticsEvent("deck.publishedToHub", {
+      deckId: publishResult?.deckId || null,
+      version: publishResult?.version || null,
+      wordsCount: publishResult?.wordsCount || null,
+    });
+
+    return publishResult;
+  });
+
+  ipcMain.handle("hub:increment-downloads", async (_, payload) => {
+    return incrementHubDeckDownloads({
+      config: payload?.config || {},
+      deckId: payload?.deckId,
+      currentDownloadsCount: payload?.currentDownloadsCount,
+    });
   });
 
   ipcMain.handle("srs:get-session", (_, payload) => {
