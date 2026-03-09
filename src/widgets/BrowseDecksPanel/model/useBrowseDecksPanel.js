@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { desktopApi, hubDecksApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 
 const BROWSE_PAGE_SIZE = 6;
@@ -55,7 +55,19 @@ const withDownloadsCounterWarning = (message) => {
   };
 };
 
+const withDownloadsCounterQueuedWarning = (message) => {
+  const baseText = typeof message?.text === "string" ? message.text.trim() : "";
+  const fallbackText = "Deck imported";
+
+  return {
+    text: `${baseText || fallbackText}. Downloads update is queued and will sync when you're online.`,
+    variant: "warning",
+  };
+};
+
 export const useBrowseDecksPanel = () => {
+  const deckRepository = usePlatformService("deckRepository");
+  const hubRepository = usePlatformService("hubRepository");
   const { appPreferences } = useAppPreferences();
   const [decks, setDecks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -70,7 +82,7 @@ export const useBrowseDecksPanel = () => {
   const [importingDeckId, setImportingDeckId] = useState("");
   const requestIdRef = useRef(0);
 
-  const isConfigured = hubDecksApi.isConfigured();
+  const isConfigured = hubRepository.isConfigured();
   const totalPages = useMemo(() => {
     if (totalDecks <= 0) {
       return 1;
@@ -105,7 +117,7 @@ export const useBrowseDecksPanel = () => {
     setIsLoading(true);
     setError("");
 
-    hubDecksApi
+    hubRepository
       .listDecks({
         page: currentPage,
         pageSize: BROWSE_PAGE_SIZE,
@@ -140,7 +152,7 @@ export const useBrowseDecksPanel = () => {
 
         setIsLoading(false);
       });
-  }, [currentPage, isConfigured, refreshToken, searchValue]);
+  }, [currentPage, hubRepository, isConfigured, refreshToken, searchValue]);
 
   useEffect(() => {
     if (currentPage <= totalPages) {
@@ -184,11 +196,6 @@ export const useBrowseDecksPanel = () => {
       return;
     }
 
-    if (!desktopApi.isDesktopMode()) {
-      reportMessage("Hub import is available only in desktop mode", "error");
-      return;
-    }
-
     const filePath = deck?.latestVersion?.filePath || "";
 
     if (!filePath) {
@@ -200,14 +207,14 @@ export const useBrowseDecksPanel = () => {
     reportMessage("", "info");
 
     try {
-      const downloadUrl = await hubDecksApi.createDownloadUrl(filePath);
+      const downloadUrl = await hubRepository.createDownloadUrl(filePath);
       const targetLanguages = Array.isArray(deck.targetLanguages)
         ? deck.targetLanguages
         : [];
       const targetLanguage = targetLanguages[0] || "";
       const tertiaryLanguage = targetLanguages[1] || "";
       const fileName = filePath.split("/").pop() || filePath;
-      const result = await desktopApi.importDeckFromUrl({
+      const result = await deckRepository.importDeckFromUrl({
         downloadUrl,
         fileName,
         deckName: deck.title || "",
@@ -223,10 +230,19 @@ export const useBrowseDecksPanel = () => {
       const importMessage = resolveImportMessage(result, deck.title);
 
       try {
-        const nextDownloadsCount = await hubDecksApi.incrementDeckDownloads(
+        const incrementResult = await hubRepository.incrementDeckDownloads(
           deck.id,
           deck.downloadsCount,
         );
+        const isDownloadsIncrementQueued =
+          typeof incrementResult === "object" && Boolean(incrementResult?.queued);
+        const nextDownloadsCount =
+          typeof incrementResult === "object"
+            ? Number(incrementResult?.count)
+            : Number(incrementResult);
+        const normalizedDownloadsCount = Number.isFinite(nextDownloadsCount)
+          ? Math.max(0, Math.trunc(nextDownloadsCount))
+          : Math.max(0, Number(deck.downloadsCount) || 0);
 
         setDecks((previousDecks) => {
           if (!Array.isArray(previousDecks) || previousDecks.length === 0) {
@@ -240,10 +256,16 @@ export const useBrowseDecksPanel = () => {
 
             return {
               ...item,
-              downloadsCount: nextDownloadsCount,
+              downloadsCount: normalizedDownloadsCount,
             };
           });
         });
+
+        if (isDownloadsIncrementQueued) {
+          const queuedMessage = withDownloadsCounterQueuedWarning(importMessage);
+          reportMessage(queuedMessage.text, queuedMessage.variant);
+          return;
+        }
 
         reportMessage(importMessage.text, importMessage.variant);
       } catch {
@@ -259,6 +281,8 @@ export const useBrowseDecksPanel = () => {
     appPreferences.importExport.duplicateStrategy,
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
+    deckRepository,
+    hubRepository,
     reportMessage,
   ]);
 

@@ -1,17 +1,23 @@
 import { getSupabaseClient, hasSupabaseConfig } from "./supabaseClient";
+import {
+  normalizeTextArray,
+  resolveExistingDeckByTitle,
+  toPublishableDeck,
+  validatePublishableDeck,
+} from "@shared/core/usecases/hub";
+import { validateDeckPackageObject } from "@shared/core/usecases/importExport";
 
 const HUB_STORAGE_BUCKET = "decks";
 const DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS = 120;
 const INCREMENT_DOWNLOADS_RPC_NAME = "increment_hub_deck_downloads";
+const MAX_HUB_PACKAGE_BYTES = 50 * 1024 * 1024;
 
-const normalizeTextArray = (value) => {
-  if (!Array.isArray(value)) {
-    return [];
+const toCleanString = (value) => {
+  if (typeof value !== "string") {
+    return "";
   }
 
-  return value
-    .map((item) => (typeof item === "string" ? item.trim() : ""))
-    .filter(Boolean);
+  return value.trim();
 };
 
 const sanitizeFileName = (value) => {
@@ -29,49 +35,21 @@ const sanitizeFileName = (value) => {
   return normalizedName || "deck";
 };
 
-const parseTags = (value) => {
-  if (Array.isArray(value)) {
-    return normalizeTextArray(value);
+const isAnonymousSignInDisabledError = (error) => {
+  if (!error || typeof error !== "object") {
+    return false;
   }
 
-  if (typeof value !== "string" || !value.trim()) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(value);
-    return normalizeTextArray(parsed);
-  } catch {
-    return [];
-  }
+  const message = toCleanString(error.message).toLowerCase();
+  return message.includes("anonymous sign-ins are disabled");
 };
 
-const toPublishableDeck = (value = {}) => {
-  const title =
-    typeof value?.name === "string" && value.name.trim()
-      ? value.name.trim()
-      : typeof value?.title === "string"
-        ? value.title.trim()
-        : "";
-  const sourceLanguage =
-    typeof value?.sourceLanguage === "string" ? value.sourceLanguage.trim() : "";
-  const targetLanguage =
-    typeof value?.targetLanguage === "string" ? value.targetLanguage.trim() : "";
-  const tertiaryLanguage =
-    typeof value?.tertiaryLanguage === "string" ? value.tertiaryLanguage.trim() : "";
-  const targetLanguages = [targetLanguage, tertiaryLanguage].filter(Boolean);
+const resolveAnonymousSignInErrorMessage = (error) => {
+  if (isAnonymousSignInDisabledError(error)) {
+    return "Anonymous sign-ins are disabled in Supabase. Enable Auth > Providers > Anonymous.";
+  }
 
-  return {
-    title,
-    description:
-      typeof value?.description === "string" ? value.description.trim() : "",
-    sourceLanguage,
-    targetLanguages,
-    tags: parseTags(value?.tags ?? value?.tagsJson),
-    wordsCount: Number.isFinite(Number(value?.wordsCount))
-      ? Number(value.wordsCount)
-      : 0,
-  };
+  return toCleanString(error?.message) || "Failed to sign in to LioraLangHub";
 };
 
 const ensureAnonymousSession = async (supabaseClient) => {
@@ -88,7 +66,7 @@ const ensureAnonymousSession = async (supabaseClient) => {
   const { data: signInData, error: signInError } = await supabaseClient.auth.signInAnonymously();
 
   if (signInError || !signInData?.user?.id) {
-    throw new Error(signInError?.message || "Failed to sign in to LioraLangHub");
+    throw new Error(resolveAnonymousSignInErrorMessage(signInError));
   }
 
   return signInData.user;
@@ -326,11 +304,18 @@ export const hubDecksApi = {
 
   async createDownloadUrl(filePath, expiresInSeconds = DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS) {
     const supabase = ensureSupabaseClient();
-    const normalizedFilePath =
-      typeof filePath === "string" ? filePath.trim() : "";
+    const normalizedFilePath = toCleanString(filePath);
 
     if (!normalizedFilePath) {
       throw new Error("Hub deck file path is required");
+    }
+
+    if (
+      normalizedFilePath.includes("..") ||
+      normalizedFilePath.startsWith("/") ||
+      normalizedFilePath.includes("\0")
+    ) {
+      throw new Error("Hub deck file path is invalid");
     }
 
     const { data, error } = await supabase.storage
@@ -396,44 +381,40 @@ export const hubDecksApi = {
     const supabase = ensureSupabaseClient();
     const user = await ensureAnonymousSession(supabase);
     const publishableDeck = toPublishableDeck(deck);
-
-    if (!publishableDeck.title) {
-      throw new Error("Deck title is required for publish");
-    }
-
-    if (!publishableDeck.sourceLanguage || publishableDeck.targetLanguages.length === 0) {
-      throw new Error("Deck languages are missing");
-    }
-
-    if (!deckPackage || typeof deckPackage !== "object" || !Array.isArray(deckPackage.words)) {
-      throw new Error("Deck package payload is invalid");
-    }
+    validatePublishableDeck(publishableDeck);
+    const packageMetadata = validateDeckPackageObject(deckPackage);
 
     const normalizedWordsCount = Math.max(
       Number.isFinite(Number(publishableDeck.wordsCount))
         ? Number(publishableDeck.wordsCount)
         : 0,
-      Array.isArray(deckPackage.words) ? deckPackage.words.length : 0,
+      Number(packageMetadata.wordsCount || 0),
     );
     const serializedPackage = JSON.stringify(deckPackage);
     const packageBytes = new TextEncoder().encode(serializedPackage);
+    if (packageBytes.byteLength === 0) {
+      throw new Error("Deck package is empty");
+    }
+    if (packageBytes.byteLength > MAX_HUB_PACKAGE_BYTES) {
+      throw new Error("Deck package is too large to publish (max 50 MB)");
+    }
     const packageChecksum = await sha256Hex(packageBytes);
     const baseFileName = sanitizeFileName(publishableDeck.title);
 
     const {
-      data: existingDeck,
-      error: existingDeckError,
+      data: ownerDecks,
+      error: ownerDecksError,
     } = await supabase
       .from("hub_decks")
       .select("id,title")
       .eq("owner_id", user.id)
-      .eq("title", publishableDeck.title)
-      .maybeSingle();
+      .limit(500);
 
-    if (existingDeckError) {
-      throw new Error(existingDeckError.message || "Failed to check existing Hub deck");
+    if (ownerDecksError) {
+      throw new Error(ownerDecksError.message || "Failed to check existing Hub deck");
     }
 
+    const existingDeck = resolveExistingDeckByTitle(ownerDecks, publishableDeck);
     let hubDeckId = existingDeck?.id || "";
 
     if (!hubDeckId) {
@@ -483,7 +464,7 @@ export const hubDecksApi = {
       error: latestVersionError,
     } = await supabase
       .from("hub_deck_versions")
-      .select("version")
+      .select("version,file_path,checksum_sha256,words_count")
       .eq("deck_id", hubDeckId)
       .order("version", { ascending: false })
       .limit(1)
@@ -493,8 +474,33 @@ export const hubDecksApi = {
       throw new Error(latestVersionError.message || "Failed to resolve Hub deck version");
     }
 
-    const nextVersion = Number.isFinite(Number(latestVersionRow?.version))
-      ? Number(latestVersionRow.version) + 1
+    const latestChecksum = toCleanString(latestVersionRow?.checksum_sha256).toLowerCase();
+    const latestWordsCount = Number.isFinite(Number(latestVersionRow?.words_count))
+      ? Number(latestVersionRow.words_count)
+      : 0;
+    const latestVersion = Number.isFinite(Number(latestVersionRow?.version))
+      ? Number(latestVersionRow.version)
+      : 0;
+    const latestFilePath = toCleanString(latestVersionRow?.file_path);
+
+    if (
+      latestVersion > 0 &&
+      latestChecksum &&
+      latestChecksum === packageChecksum.toLowerCase() &&
+      latestWordsCount === normalizedWordsCount
+    ) {
+      return {
+        deckId: hubDeckId,
+        version: latestVersion,
+        filePath: latestFilePath,
+        wordsCount: normalizedWordsCount,
+        title: publishableDeck.title,
+        skippedAsDuplicate: true,
+      };
+    }
+
+    const nextVersion = latestVersion > 0
+      ? latestVersion + 1
       : 1;
     const filePath = `${user.id}/${baseFileName}-v${nextVersion}-${Date.now()}.lioradeck`;
     const uploadBlob = new Blob([packageBytes], { type: "application/octet-stream" });
