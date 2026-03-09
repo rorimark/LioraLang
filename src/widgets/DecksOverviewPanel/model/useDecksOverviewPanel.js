@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDecks } from "@entities/deck";
 import { useDeckImportFlow } from "@features/deck-import";
-import { desktopApi } from "@shared/api";
+import { desktopApi, hubDecksApi } from "@shared/api";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { ROUTE_PATHS } from "@shared/config/routes";
 
@@ -12,6 +12,7 @@ export const useDecksOverviewPanel = () => {
   const { appPreferences } = useAppPreferences();
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
+  const [publishingDeckId, setPublishingDeckId] = useState(null);
   const [exportingDeckId, setExportingDeckId] = useState(null);
   const [deletingDeckId, setDeletingDeckId] = useState(null);
   const [deleteState, setDeleteState] = useState({
@@ -118,6 +119,75 @@ export const useDecksOverviewPanel = () => {
     reportMessage,
   ]);
 
+  const publishDeck = useCallback(async (deckId) => {
+    reportMessage("", "info");
+
+    if (!hubDecksApi.isConfigured()) {
+      reportMessage(
+        "LLH is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY to .env.",
+        "error",
+      );
+      return;
+    }
+
+    const normalizedDeckId = Number(deckId);
+
+    if (!Number.isInteger(normalizedDeckId) || normalizedDeckId <= 0) {
+      reportMessage("Invalid deck id", "error");
+      return;
+    }
+
+    const deck = decks.find((item) => Number(item?.id) === normalizedDeckId);
+
+    if (!deck) {
+      reportMessage("Deck not found", "error");
+      return;
+    }
+
+    setPublishingDeckId(normalizedDeckId);
+
+    try {
+      const exported = await desktopApi.exportDeckPackage(normalizedDeckId, {
+        includeExamples: appPreferences.importExport.includeExamples,
+        includeTags: appPreferences.importExport.includeTags,
+      });
+      const deckPackage = exported?.package;
+
+      if (!deckPackage || typeof deckPackage !== "object") {
+        throw new Error("Failed to prepare deck package for publish");
+      }
+
+      const publishResult = await hubDecksApi.publishDeck({
+        deck,
+        deckPackage,
+      });
+      const publishedTitle =
+        typeof publishResult?.title === "string" && publishResult.title.trim()
+          ? publishResult.title.trim()
+          : deck.name || "Deck";
+      const version = Number.isFinite(Number(publishResult?.version))
+        ? Number(publishResult.version)
+        : 1;
+      const wordsCount = Number.isFinite(Number(publishResult?.wordsCount))
+        ? Number(publishResult.wordsCount)
+        : exported?.exportedCount || 0;
+
+      reportMessage(
+        `Published "${publishedTitle}" to LLH (v${version}, ${wordsCount} words)`,
+        "success",
+      );
+    } catch (publishError) {
+      reportMessage(publishError.message || "Failed to publish deck", "error");
+    } finally {
+      setPublishingDeckId(null);
+    }
+  }, [
+    appPreferences.importExport.includeExamples,
+    appPreferences.importExport.includeTags,
+    decks,
+    reportMessage,
+  ]);
+
   const deleteDeckById = useCallback(async (deckId, deckName = "") => {
     if (!deckId) {
       return;
@@ -184,6 +254,7 @@ export const useDecksOverviewPanel = () => {
     error,
     message,
     messageVariant,
+    publishingDeckId,
     exportingDeckId,
     deletingDeckId,
     isImporting,
@@ -199,6 +270,7 @@ export const useDecksOverviewPanel = () => {
     openDeck,
     openCreateDeck,
     openEditDeck,
+    publishDeck,
     exportDeck,
     openDeleteModal,
     closeDeleteModal,
