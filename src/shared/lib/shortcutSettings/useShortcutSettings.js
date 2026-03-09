@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 import {
   DEFAULT_SHORTCUT_SETTINGS,
   SHORTCUT_SETTINGS_APP_KEY,
   normalizeShortcutSettings,
 } from "./shortcutSettings";
 
+const areShortcutSettingsEqual = (left, right) => {
+  return JSON.stringify(left) === JSON.stringify(right);
+};
+
 export const useShortcutSettings = () => {
+  const settingsRepository = usePlatformService("settingsRepository");
   const [shortcutSettings, setShortcutSettings] = useState(
     DEFAULT_SHORTCUT_SETTINGS,
   );
@@ -14,7 +19,7 @@ export const useShortcutSettings = () => {
   useEffect(() => {
     let cancelled = false;
 
-    desktopApi
+    settingsRepository
       .getAppSettings()
       .then((settings) => {
         if (cancelled) {
@@ -22,26 +27,46 @@ export const useShortcutSettings = () => {
         }
 
         const storedShortcutSettings = settings?.[SHORTCUT_SETTINGS_APP_KEY];
-        setShortcutSettings(normalizeShortcutSettings(storedShortcutSettings));
+        const nextShortcutSettings = normalizeShortcutSettings(
+          storedShortcutSettings,
+        );
+
+        setShortcutSettings((prevValue) =>
+          areShortcutSettingsEqual(prevValue, nextShortcutSettings)
+            ? prevValue
+            : nextShortcutSettings,
+        );
       })
       .catch(() => {
         if (cancelled) {
           return;
         }
 
-        setShortcutSettings(DEFAULT_SHORTCUT_SETTINGS);
+        setShortcutSettings((prevValue) =>
+          areShortcutSettingsEqual(prevValue, DEFAULT_SHORTCUT_SETTINGS)
+            ? prevValue
+            : DEFAULT_SHORTCUT_SETTINGS,
+        );
       });
 
-    const unsubscribe = desktopApi.subscribeAppSettingsUpdated((nextSettings) => {
+    const unsubscribe = settingsRepository.subscribeAppSettingsUpdated((nextSettings) => {
       const storedShortcutSettings = nextSettings?.[SHORTCUT_SETTINGS_APP_KEY];
-      setShortcutSettings(normalizeShortcutSettings(storedShortcutSettings));
+      const nextShortcutSettings = normalizeShortcutSettings(
+        storedShortcutSettings,
+      );
+
+      setShortcutSettings((prevValue) =>
+        areShortcutSettingsEqual(prevValue, nextShortcutSettings)
+          ? prevValue
+          : nextShortcutSettings,
+      );
     });
 
     return () => {
       cancelled = true;
       unsubscribe();
     };
-  }, []);
+  }, [settingsRepository]);
 
   const updateShortcutSettings = useCallback((patch) => {
     setShortcutSettings((prevSettings) => {
@@ -50,14 +75,18 @@ export const useShortcutSettings = () => {
         ...(patch || {}),
       });
 
-      void desktopApi
+      if (areShortcutSettingsEqual(prevSettings, nextSettings)) {
+        return prevSettings;
+      }
+
+      void settingsRepository
         .updateAppSettings({
           [SHORTCUT_SETTINGS_APP_KEY]: nextSettings,
         })
         .catch(() => {});
       return nextSettings;
     });
-  }, []);
+  }, [settingsRepository]);
 
   return {
     shortcutSettings,

@@ -1,27 +1,38 @@
 import { useCallback, useEffect, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 import {
-  APP_PREFERENCES_APP_KEY,
   DEFAULT_APP_PREFERENCES,
   mergeAppPreferences,
   normalizeAppPreferences,
 } from "./appPreferences";
+import { APP_PREFERENCES_APP_KEY } from "./constants";
+
+const areAppPreferencesEqual = (left, right) => {
+  return JSON.stringify(left) === JSON.stringify(right);
+};
 
 export const useAppPreferences = () => {
+  const settingsRepository = usePlatformService("settingsRepository");
   const [appPreferences, setAppPreferences] = useState(DEFAULT_APP_PREFERENCES);
 
   useEffect(() => {
     let cancelled = false;
 
-    desktopApi
+    settingsRepository
       .getAppSettings()
       .then((settings) => {
         if (cancelled) {
           return;
         }
 
-        setAppPreferences(
-          normalizeAppPreferences(settings?.[APP_PREFERENCES_APP_KEY]),
+        const nextPreferences = normalizeAppPreferences(
+          settings?.[APP_PREFERENCES_APP_KEY],
+        );
+
+        setAppPreferences((prevSettings) =>
+          areAppPreferencesEqual(prevSettings, nextPreferences)
+            ? prevSettings
+            : nextPreferences,
         );
       })
       .catch(() => {
@@ -29,12 +40,22 @@ export const useAppPreferences = () => {
           return;
         }
 
-        setAppPreferences(DEFAULT_APP_PREFERENCES);
+        setAppPreferences((prevSettings) =>
+          areAppPreferencesEqual(prevSettings, DEFAULT_APP_PREFERENCES)
+            ? prevSettings
+            : DEFAULT_APP_PREFERENCES,
+        );
       });
 
-    const unsubscribe = desktopApi.subscribeAppSettingsUpdated((nextSettings) => {
-      setAppPreferences(
-        normalizeAppPreferences(nextSettings?.[APP_PREFERENCES_APP_KEY]),
+    const unsubscribe = settingsRepository.subscribeAppSettingsUpdated((nextSettings) => {
+      const nextPreferences = normalizeAppPreferences(
+        nextSettings?.[APP_PREFERENCES_APP_KEY],
+      );
+
+      setAppPreferences((prevSettings) =>
+        areAppPreferencesEqual(prevSettings, nextPreferences)
+          ? prevSettings
+          : nextPreferences,
       );
     });
 
@@ -42,13 +63,17 @@ export const useAppPreferences = () => {
       cancelled = true;
       unsubscribe();
     };
-  }, []);
+  }, [settingsRepository]);
 
   const updateAppPreferences = useCallback((patch) => {
     setAppPreferences((currentValue) => {
       const nextPreferences = mergeAppPreferences(currentValue, patch);
 
-      void desktopApi
+      if (areAppPreferencesEqual(currentValue, nextPreferences)) {
+        return currentValue;
+      }
+
+      void settingsRepository
         .updateAppSettings({
           [APP_PREFERENCES_APP_KEY]: nextPreferences,
         })
@@ -56,7 +81,7 @@ export const useAppPreferences = () => {
 
       return nextPreferences;
     });
-  }, []);
+  }, [settingsRepository]);
 
   return {
     appPreferences,
