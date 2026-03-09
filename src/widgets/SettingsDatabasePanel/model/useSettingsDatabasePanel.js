@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useSearchParams } from "react-router";
+import { usePlatformService } from "@app/providers";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useThemeSwitch } from "@features/theme-switch";
-import { desktopApi } from "@shared/api";
 import {
   normalizeSettingsTab,
-  SETTINGS_SECTION_IDS,
   SETTINGS_TAB_KEYS,
   SETTINGS_TAB_QUERY_KEY,
 } from "@shared/config/settingsTabs";
@@ -22,6 +21,8 @@ import {
 import { APP_THEME_MODES } from "@shared/lib/theme";
 
 export const useSettingsDatabasePanel = () => {
+  const settingsRepository = usePlatformService("settingsRepository");
+  const systemRepository = usePlatformService("systemRepository");
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { appPreferences } = useAppPreferences();
@@ -78,24 +79,6 @@ export const useSettingsDatabasePanel = () => {
     };
   }, [isMenuFocusNavigation, menuFocusTab, menuFocusToken]);
 
-  useEffect(() => {
-    if (!requestedSettingsTab || typeof document === "undefined") {
-      return;
-    }
-
-    const sectionId = SETTINGS_SECTION_IDS[selectedSettingsTab];
-    const sectionElement = sectionId ? document.getElementById(sectionId) : null;
-
-    if (!sectionElement) {
-      return;
-    }
-
-    sectionElement.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [requestedSettingsTab, selectedSettingsTab]);
-
   const reportMessage = useCallback((text, variant = "info") => {
     setStatusMessage(text);
     setStatusVariant(variant);
@@ -125,7 +108,7 @@ export const useSettingsDatabasePanel = () => {
   useEffect(() => {
     let cancelled = false;
 
-    desktopApi
+    systemRepository
       .getDbPath()
       .then((path) => {
         if (!cancelled) {
@@ -141,21 +124,21 @@ export const useSettingsDatabasePanel = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [systemRepository]);
 
   const openDbFolder = useCallback(async () => {
     try {
-      await desktopApi.openDbFolder();
+      await systemRepository.openDbFolder();
     } catch (openError) {
       reportMessage(openError.message || "Failed to open DB folder", "error");
     }
-  }, [reportMessage]);
+  }, [reportMessage, systemRepository]);
 
   const changeDbLocation = useCallback(async () => {
     setIsChangingDbLocation(true);
 
     try {
-      const changeResult = await desktopApi.changeDbLocation();
+      const changeResult = await systemRepository.changeDbLocation();
 
       if (changeResult?.canceled) {
         return;
@@ -183,7 +166,7 @@ export const useSettingsDatabasePanel = () => {
     } finally {
       setIsChangingDbLocation(false);
     }
-  }, [reportMessage]);
+  }, [reportMessage, systemRepository]);
 
   const closeIntegrityRepairConfirm = useCallback(() => {
     setIntegrityRepairConfirmState({
@@ -198,7 +181,7 @@ export const useSettingsDatabasePanel = () => {
     setIsRepairingIntegrity(true);
 
     try {
-      const report = await desktopApi.verifyIntegrity({ repair: true });
+      const report = await systemRepository.verifyIntegrity({ repair: true });
       const isHealthy = Boolean(report?.ok);
       const backupPaths = Array.isArray(report?.database?.backupPaths)
         ? report.database.backupPaths
@@ -234,13 +217,13 @@ export const useSettingsDatabasePanel = () => {
         closeIntegrityRepairConfirm();
       }
     }
-  }, [closeIntegrityRepairConfirm, reportMessage]);
+  }, [closeIntegrityRepairConfirm, reportMessage, systemRepository]);
 
   const verifyIntegrity = useCallback(async () => {
     setIsVerifyingIntegrity(true);
 
     try {
-      const report = await desktopApi.verifyIntegrity({ repair: false });
+      const report = await systemRepository.verifyIntegrity({ repair: false });
       const isHealthy = Boolean(report?.ok);
       const needsRepair = Boolean(report?.database?.needsRepair);
       const databaseIssues = Array.isArray(report?.database?.issues)
@@ -290,6 +273,7 @@ export const useSettingsDatabasePanel = () => {
     closeIntegrityRepairConfirm,
     reportMessage,
     runIntegrityRepair,
+    systemRepository,
   ]);
 
   const confirmIntegrityRepair = useCallback(async () => {
@@ -334,7 +318,7 @@ export const useSettingsDatabasePanel = () => {
     setIsResettingSettings(true);
 
     try {
-      await desktopApi.updateAppSettings({
+      await settingsRepository.updateAppSettings({
         [APP_PREFERENCES_APP_KEY]: DEFAULT_APP_PREFERENCES,
         [SHORTCUT_SETTINGS_APP_KEY]: DEFAULT_SHORTCUT_SETTINGS,
       });
@@ -349,7 +333,7 @@ export const useSettingsDatabasePanel = () => {
       setIsResettingSettings(false);
       setIsResetSettingsConfirmOpen(false);
     }
-  }, [reportMessage]);
+  }, [reportMessage, settingsRepository]);
 
   return {
     selectedSettingsTab,

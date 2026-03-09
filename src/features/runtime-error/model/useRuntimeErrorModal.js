@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 
 const MAX_QUEUED_ERRORS = 8;
 
@@ -22,18 +22,19 @@ const appendErrorToQueue = (queue, nextError) => {
 };
 
 export const useRuntimeErrorModal = () => {
+  const runtimeGateway = usePlatformService("runtimeGateway");
   const [errorQueue, setErrorQueue] = useState([]);
-  const isDesktopMode = useMemo(() => desktopApi.isDesktopMode(), []);
+  const isDesktopMode = useMemo(() => runtimeGateway.isDesktopMode(), [runtimeGateway]);
 
   useEffect(() => {
     if (!isDesktopMode) {
       return undefined;
     }
 
-    return desktopApi.subscribeRuntimeErrors((errorPayload) => {
+    return runtimeGateway.subscribeRuntimeErrors((errorPayload) => {
       setErrorQueue((queue) => appendErrorToQueue(queue, errorPayload));
     });
-  }, [isDesktopMode]);
+  }, [isDesktopMode, runtimeGateway]);
 
   const activeError = errorQueue.length > 0 ? errorQueue[0] : null;
 

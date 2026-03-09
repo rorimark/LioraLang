@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 
 export const useDeckWords = (deckId) => {
+  const deckRepository = usePlatformService("deckRepository");
   const [deck, setDeck] = useState(null);
   const [words, setWords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,8 +21,8 @@ export const useDeckWords = (deckId) => {
 
     try {
       const [loadedDeck, loadedWords] = await Promise.all([
-        desktopApi.getDeckById(deckId),
-        desktopApi.getDeckWords(deckId),
+        deckRepository.getDeckById(deckId),
+        deckRepository.getDeckWords(deckId),
       ]);
 
       setDeck(loadedDeck);
@@ -33,7 +34,7 @@ export const useDeckWords = (deckId) => {
     } finally {
       setIsLoading(false);
     }
-  }, [deckId]);
+  }, [deckId, deckRepository]);
 
   useEffect(() => {
     loadDeckWords();

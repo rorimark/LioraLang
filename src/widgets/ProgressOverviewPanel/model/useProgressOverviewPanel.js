@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 
 const CHART_WIDTH = 560;
 const CHART_HEIGHT = 220;
@@ -332,6 +332,7 @@ const buildTrendLabel = (values = [], { percent = false } = {}) => {
 };
 
 export const useProgressOverviewPanel = () => {
+  const progressRepository = usePlatformService("progressRepository");
   const [overview, setOverview] = useState(EMPTY_OVERVIEW);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -341,14 +342,14 @@ export const useProgressOverviewPanel = () => {
     setError("");
 
     try {
-      const result = await desktopApi.getProgressOverview();
+      const result = await progressRepository.getProgressOverview();
       setOverview(normalizeOverview(result));
     } catch (overviewError) {
       setError(overviewError?.message || "Failed to load progress overview");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [progressRepository]);
 
   useEffect(() => {
     void refreshOverview();
