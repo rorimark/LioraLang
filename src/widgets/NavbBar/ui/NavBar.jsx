@@ -39,7 +39,7 @@ export const NavBar = memo(({ mobile = false }) => {
               to={ROUTE_PATHS.account}
               aria-label="Open account page"
             >
-              Sign in / Sugn up
+              Sign in / Sign up
             </Link>
           </div>
         </div>
