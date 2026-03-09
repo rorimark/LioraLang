@@ -22,7 +22,7 @@ export const registerWebPwa = async () => {
   }
 
   registerPromise = navigator.serviceWorker
-    .register("/sw.js")
+    .register("/sw.js", { scope: "/app/" })
     .catch(() => null);
 
   return registerPromise;
