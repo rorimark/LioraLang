@@ -1,0 +1,1 @@
+export { usePageMeta } from "./usePageMeta";
