@@ -1,27 +1,5 @@
-const STORAGE_KEY = "lioralang_custom_words";
-
-const parseJSON = (value) => {
-  try {
-    return JSON.parse(value);
-  } catch {
-    return [];
-  }
-};
-
 export const getCustomWords = () => {
-  if (typeof window === "undefined") {
-    return [];
-  }
-
-  const rawValue = window.localStorage.getItem(STORAGE_KEY);
-
-  if (!rawValue) {
-    return [];
-  }
-
-  const parsed = parseJSON(rawValue);
-
-  return Array.isArray(parsed) ? parsed : [];
+  return [];
 };
 
 export const mergeWords = (baseWords, customWords) => {
