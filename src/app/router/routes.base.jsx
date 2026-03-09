@@ -8,7 +8,7 @@ import {
 } from "@shared/config/routes";
 import { RouteErrorBoundary, RouteHydrateFallback } from "@shared/ui";
 
-const loadRouteComponent = (loader) => async () => {
+export const loadRouteComponent = (loader) => async () => {
   const module = await loader();
   const Component = module?.default;
 
@@ -21,9 +21,7 @@ const loadRouteComponent = (loader) => async () => {
   };
 };
 
-const isDesktopTarget = import.meta.env.VITE_APP_TARGET !== "web";
-
-const appRoute = {
+export const appRoute = {
   path: ROUTE_PATHS.appRoot,
   element: <AppLayout />,
   errorElement: <RouteErrorBoundary />,
@@ -70,14 +68,7 @@ const appRoute = {
   ],
 };
 
-export const routes = [
-  isDesktopTarget
-    ? { path: ROUTE_PATHS.root, element: <Navigate to={ROUTE_PATHS.learn} replace /> }
-    : {
-        path: ROUTE_PATHS.root,
-        lazy: loadRouteComponent(() => import("@pages/landing/ui/LandingPage")),
-      },
-  appRoute,
+export const legacyRoutes = [
   { path: LEGACY_ROUTE_PATHS.learn, element: <Navigate to={ROUTE_PATHS.learn} replace /> },
   { path: LEGACY_ROUTE_PATHS.browse, element: <Navigate to={ROUTE_PATHS.browse} replace /> },
   { path: LEGACY_ROUTE_PATHS.decks, element: <Navigate to={ROUTE_PATHS.decks} replace /> },
@@ -93,8 +84,5 @@ export const routes = [
   { path: LEGACY_ROUTE_PATHS.progress, element: <Navigate to={ROUTE_PATHS.progress} replace /> },
   { path: LEGACY_ROUTE_PATHS.account, element: <Navigate to={ROUTE_PATHS.account} replace /> },
   { path: LEGACY_ROUTE_PATHS.settings, element: <Navigate to={ROUTE_PATHS.settings} replace /> },
-  {
-    path: "*",
-    element: <Navigate to={isDesktopTarget ? ROUTE_PATHS.learn : ROUTE_PATHS.landing} replace />,
-  },
 ];
+

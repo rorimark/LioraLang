@@ -29,6 +29,11 @@ const resolvePlatformTargetAliasPath = (target) =>
     ? path.resolve(__dirname, "src/shared/platform/target/web.js")
     : path.resolve(__dirname, "src/shared/platform/target/desktop.js");
 
+const resolveRouterRoutesAliasPath = (target) =>
+  target === PLATFORM_TARGETS.web
+    ? path.resolve(__dirname, "src/app/router/routes.web.jsx")
+    : path.resolve(__dirname, "src/app/router/routes.desktop.jsx");
+
 export default defineConfig(({ mode }) => {
   const platformTarget = resolvePlatformTarget(mode);
   const isWebTarget = platformTarget === PLATFORM_TARGETS.web;
@@ -53,6 +58,7 @@ export default defineConfig(({ mode }) => {
         "@shared": path.resolve(__dirname, "src/shared"),
         "@platform": path.resolve(__dirname, "src/shared/platform"),
         "@platform-target": resolvePlatformTargetAliasPath(platformTarget),
+        "@app-router-routes": resolveRouterRoutesAliasPath(platformTarget),
       },
     },
   };
