@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 import {
   useAppPreferences,
 } from "@shared/lib/appPreferences";
@@ -74,6 +74,8 @@ const resolveImportLanguages = (value = {}, deckDefaults = {}) => {
 };
 
 export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
+  const deckRepository = usePlatformService("deckRepository");
+  const runtimeGateway = usePlatformService("runtimeGateway");
   const { appPreferences } = useAppPreferences();
   const defaultImportLanguages = useMemo(
     () => createImportLanguagesFromDefaults(appPreferences.deckDefaults),
@@ -157,7 +159,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   const openImportConfirm = useCallback(() => {
     reportMessage("", "info");
 
-    desktopApi
+    deckRepository
       .pickImportDeckJson()
       .then((result) => {
         if (result?.canceled) {
@@ -168,24 +170,24 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       .catch((pickError) => {
         reportMessage(pickError.message || "Failed to select import file", "error");
       });
-  }, [applyImportSelection, reportMessage]);
+  }, [applyImportSelection, deckRepository, reportMessage]);
 
   useEffect(() => {
-    const unsubscribe = desktopApi.subscribeImportDeckFileRequested((payload) => {
+    const unsubscribe = runtimeGateway.subscribeImportDeckFileRequested((payload) => {
       reportMessage("", "info");
       applyImportSelection(payload);
-      desktopApi.acknowledgeImportDeckFileRequest(payload?.filePath);
+      runtimeGateway.acknowledgeImportDeckFileRequest(payload?.filePath);
     });
 
-    let pendingRequest = desktopApi.consumePendingImportDeckFileRequest();
+    let pendingRequest = runtimeGateway.consumePendingImportDeckFileRequest();
 
     while (pendingRequest) {
       applyImportSelection(pendingRequest);
-      pendingRequest = desktopApi.consumePendingImportDeckFileRequest();
+      pendingRequest = runtimeGateway.consumePendingImportDeckFileRequest();
     }
 
     return unsubscribe;
-  }, [applyImportSelection, reportMessage]);
+  }, [applyImportSelection, reportMessage, runtimeGateway]);
 
   const closeImportConfirm = useCallback(() => {
     if (!isImporting) {
@@ -225,7 +227,10 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     const tertiaryLanguage = importLanguages.tertiaryLanguage.trim();
 
     if (!selectedImportFilePath) {
-      reportMessage("Select a .lioradeck or .json file before confirming import", "error");
+      reportMessage(
+        "Select a .lioradeck, .lioralang or .json file before confirming import",
+        "error",
+      );
       return;
     }
 
@@ -254,7 +259,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     setIsImporting(true);
 
     try {
-      const result = await desktopApi.importDeckFromJson({
+      const result = await deckRepository.importDeckFromJson({
         filePath: selectedImportFilePath,
         deckName: nextDeckName,
         sourceLanguage,
@@ -320,6 +325,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
     importDeckNameDraft,
+    deckRepository,
     onImportSuccess,
     reportMessage,
     resetImportState,

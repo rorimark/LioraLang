@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 
 export const useDecks = () => {
+  const deckRepository = usePlatformService("deckRepository");
   const [decks, setDecks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,26 +12,26 @@ export const useDecks = () => {
     setError(null);
 
     try {
-      const loadedDecks = await desktopApi.listDecks();
+      const loadedDecks = await deckRepository.listDecks();
       setDecks(Array.isArray(loadedDecks) ? loadedDecks : []);
     } catch (loadError) {
       setError(loadError.message || "Failed to load decks");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [deckRepository]);
 
   useEffect(() => {
     loadDecks();
   }, [loadDecks]);
 
   useEffect(() => {
-    const unsubscribe = desktopApi.subscribeDecksUpdated(() => {
+    const unsubscribe = deckRepository.subscribeDecksUpdated(() => {
       loadDecks();
     });
 
     return unsubscribe;
-  }, [loadDecks]);
+  }, [deckRepository, loadDecks]);
 
   return {
     decks,

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { usePlatformService } from "@app/providers";
 import { useDeckWords } from "@entities/deck";
 import { useCardCatalog } from "@features/card-catalog";
-import { desktopApi } from "@shared/api";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 
 const FILTERS_BREAKPOINT = 1080;
@@ -17,6 +17,7 @@ const isNarrowViewport = () => {
 
 export const useDeckDetailsPanel = () => {
   const navigate = useNavigate();
+  const deckRepository = usePlatformService("deckRepository");
   const { deckId } = useParams();
   const { appPreferences } = useAppPreferences();
   const { deck, words, isLoading, error, refreshDeckWords } = useDeckWords(deckId);
@@ -79,7 +80,7 @@ export const useDeckDetailsPanel = () => {
     setIsExporting(true);
 
     try {
-      const result = await desktopApi.exportDeckToJson(deckId, {
+      const result = await deckRepository.exportDeckToJson(deckId, {
         exportFormat: appPreferences.importExport.exportFormat,
         includeExamples: appPreferences.importExport.includeExamples,
         includeTags: appPreferences.importExport.includeTags,
@@ -121,6 +122,7 @@ export const useDeckDetailsPanel = () => {
     appPreferences.importExport.exportFormat,
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
+    deckRepository,
     deckId,
   ]);
 

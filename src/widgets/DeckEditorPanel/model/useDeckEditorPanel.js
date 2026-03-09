@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   DEFAULT_SOURCE_LANGUAGE,
@@ -201,6 +201,7 @@ const parseTagsInput = (value) => {
 
 export const useDeckEditorPanel = () => {
   const navigate = useNavigate();
+  const deckRepository = usePlatformService("deckRepository");
   const { deckId } = useParams();
   const { appPreferences } = useAppPreferences();
   const numericDeckId = parseNumericId(deckId);
@@ -268,8 +269,8 @@ export const useDeckEditorPanel = () => {
 
     try {
       const [deck, loadedWords] = await Promise.all([
-        desktopApi.getDeckById(numericDeckId),
-        desktopApi.getDeckWords(numericDeckId),
+        deckRepository.getDeckById(numericDeckId),
+        deckRepository.getDeckWords(numericDeckId),
       ]);
 
       if (!deck) {
@@ -282,7 +283,7 @@ export const useDeckEditorPanel = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [applyLoadedDeck, numericDeckId]);
+  }, [applyLoadedDeck, deckRepository, numericDeckId]);
 
   useEffect(() => {
     if (!isEditMode) {
@@ -563,7 +564,7 @@ export const useDeckEditorPanel = () => {
         savePayload.deckId = numericDeckId;
       }
 
-      const saveResult = await desktopApi.saveDeck(savePayload);
+      const saveResult = await deckRepository.saveDeck(savePayload);
       const savedDeck = saveResult?.deck || null;
       const savedWords = Array.isArray(saveResult?.words) ? saveResult.words : [];
 
@@ -593,6 +594,7 @@ export const useDeckEditorPanel = () => {
     deckForm.targetLanguage,
     deckForm.tertiaryLanguage,
     deckForm.tagsInput,
+    deckRepository,
     navigate,
     numericDeckId,
     reportStatus,

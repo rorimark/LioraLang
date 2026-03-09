@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
-import { desktopApi } from "@shared/api";
+import { usePlatformService } from "@app/providers";
 import { HISTORY_SHORTCUT_MODES, useShortcutSettings } from "@shared/lib/shortcutSettings";
 
 const DEFAULT_HISTORY_STATE = {
@@ -58,7 +58,8 @@ const isInteractiveEventTarget = (target) => {
 
 export const useDesktopTitleBar = () => {
   const { pathname, search, hash } = useLocation();
-  const isDesktopMode = useMemo(() => desktopApi.isDesktopMode(), []);
+  const runtimeGateway = usePlatformService("runtimeGateway");
+  const isDesktopMode = useMemo(() => runtimeGateway.isDesktopMode(), [runtimeGateway]);
   const [historyState, setHistoryState] = useState(DEFAULT_HISTORY_STATE);
   const platformClassName = useMemo(() => resolvePlatformClassName(), []);
   const { shortcutSettings } = useShortcutSettings();
@@ -70,7 +71,7 @@ export const useDesktopTitleBar = () => {
 
     let cancelled = false;
 
-    desktopApi
+    runtimeGateway
       .getWindowHistoryState()
       .then((state) => {
         if (!cancelled) {
@@ -86,7 +87,7 @@ export const useDesktopTitleBar = () => {
     return () => {
       cancelled = true;
     };
-  }, [isDesktopMode, pathname, search, hash]);
+  }, [isDesktopMode, pathname, runtimeGateway, search, hash]);
 
   const navigateBack = useCallback(async () => {
     if (!isDesktopMode) {
@@ -94,17 +95,17 @@ export const useDesktopTitleBar = () => {
     }
 
     try {
-      const state = await desktopApi.navigateWindowBack();
+      const state = await runtimeGateway.navigateWindowBack();
       setHistoryState(normalizeHistoryState(state));
     } catch {
       try {
-        const state = await desktopApi.getWindowHistoryState();
+        const state = await runtimeGateway.getWindowHistoryState();
         setHistoryState(normalizeHistoryState(state));
       } catch {
         setHistoryState(DEFAULT_HISTORY_STATE);
       }
     }
-  }, [isDesktopMode]);
+  }, [isDesktopMode, runtimeGateway]);
 
   const navigateForward = useCallback(async () => {
     if (!isDesktopMode) {
@@ -112,17 +113,17 @@ export const useDesktopTitleBar = () => {
     }
 
     try {
-      const state = await desktopApi.navigateWindowForward();
+      const state = await runtimeGateway.navigateWindowForward();
       setHistoryState(normalizeHistoryState(state));
     } catch {
       try {
-        const state = await desktopApi.getWindowHistoryState();
+        const state = await runtimeGateway.getWindowHistoryState();
         setHistoryState(normalizeHistoryState(state));
       } catch {
         setHistoryState(DEFAULT_HISTORY_STATE);
       }
     }
-  }, [isDesktopMode]);
+  }, [isDesktopMode, runtimeGateway]);
 
   useEffect(() => {
     if (!isDesktopMode || typeof window === "undefined") {
