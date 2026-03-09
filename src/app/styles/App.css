@@ -135,6 +135,10 @@ body {
 }
 
 @media (max-width: 960px) {
+  .page {
+    padding-top: 0;
+  }
+
   .kpi-grid {
     grid-template-columns: 1fr;
   }

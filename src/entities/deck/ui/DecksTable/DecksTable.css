@@ -16,6 +16,7 @@
   font-size: 0.85rem;
   text-align: left;
   color: var(--color-text);
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
@@ -164,6 +165,7 @@
   font-size: 0.78rem;
   cursor: pointer;
   padding: 6px 10px;
+  white-space: nowrap;
 }
 
 .decks-table__actions button:hover:not(:disabled) {
@@ -341,6 +343,17 @@
 
   .decks-table__actions {
     grid-template-columns: 1fr;
+  }
+
+  .decks-table__actions button {
+    min-height: 34px;
+    font-size: 0.72rem;
+    padding: 6px 7px;
+  }
+
+  .decks-table__actions .decks-table__button--danger {
+    font-size: 0.72rem;
+    padding: 6px 7px;
   }
 
   .decks-table__tags-more {

@@ -135,6 +135,7 @@
 }
 
 .deck-editor-panel__table-wrap {
+  min-width: 0;
   overflow: auto;
 }
 
@@ -285,5 +286,75 @@
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+  }
+
+  .deck-editor-panel__cell--actions {
+    width: auto;
+    white-space: normal;
+  }
+
+  .deck-editor-panel__table-actions {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .deck-editor-panel {
+    gap: 12px;
+  }
+
+  .deck-editor-panel__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .deck-editor-panel__toolbar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .deck-editor-panel__toolbar button {
+    width: 100%;
+    min-height: 36px;
+  }
+
+  .deck-editor-panel__section {
+    padding: 10px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .deck-editor-panel__toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .deck-editor-panel__table td {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 8px 9px;
+  }
+
+  .deck-editor-panel__table td::before {
+    font-size: 0.68rem;
+  }
+
+  .deck-editor-panel__table-actions button {
+    width: auto;
+    min-width: 68px;
+    min-height: 34px;
+    font-size: 0.72rem;
+    padding: 6px 7px;
+  }
+
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger {
+    font-size: 0.72rem;
+    padding: 6px 7px;
   }
 }

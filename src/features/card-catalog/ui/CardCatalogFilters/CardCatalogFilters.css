@@ -110,3 +110,30 @@
 .card-catalog-filter-item label {
   cursor: pointer;
 }
+
+@media (max-width: 760px) {
+  .card-catalog-filters {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .card-catalog-filters__controls {
+    gap: 7px;
+  }
+
+  .card-catalog-filters__controls input,
+  .card-catalog-filters__controls select,
+  .card-catalog-filters__controls button {
+    min-height: 34px;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+
+  .card-catalog-filter-group {
+    padding: 8px;
+  }
+
+  .card-catalog-filter-group__list {
+    max-height: 148px;
+  }
+}
