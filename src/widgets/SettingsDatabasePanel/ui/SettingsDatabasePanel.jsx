@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   AppPreferencesSection,
   ImportExportSettingsSection,
@@ -12,14 +12,11 @@ import { ActionModal, InlineAlert } from "@shared/ui";
 import { useSettingsDatabasePanel } from "../model";
 import "./SettingsDatabasePanel.css";
 
-const SETTINGS_NAV_ITEMS = [
+const BASE_SETTINGS_NAV_ITEMS = [
   { key: SETTINGS_TAB_KEYS.general, label: "General" },
   { key: SETTINGS_TAB_KEYS.learningCore, label: "Learning Core" },
   { key: SETTINGS_TAB_KEYS.deckDefaults, label: "Deck Defaults" },
   { key: SETTINGS_TAB_KEYS.workspaceSafety, label: "Workspace and Safety" },
-  { key: SETTINGS_TAB_KEYS.advancedDesktop, label: "Desktop and Privacy" },
-  { key: SETTINGS_TAB_KEYS.importExport, label: "Import and Export" },
-  { key: SETTINGS_TAB_KEYS.storageIntegrity, label: "Storage and Integrity" },
 ];
 
 const APP_PREFERENCES_TAB_KEYS = new Set([
@@ -51,6 +48,7 @@ const resolveQuickNavClassName = (tabKey, selectedTab, highlightedTab) => {
 
 export const SettingsDatabasePanel = memo(() => {
   const {
+    isDesktopMode,
     dbPath,
     statusMessage,
     statusVariant,
@@ -94,11 +92,58 @@ export const SettingsDatabasePanel = memo(() => {
     handleImportLanguageChange,
   } = useSettingsDatabasePanel();
 
+  const settingsNavItems = useMemo(() => {
+    const items = [
+      ...BASE_SETTINGS_NAV_ITEMS,
+      {
+        key: SETTINGS_TAB_KEYS.advancedDesktop,
+        label: isDesktopMode ? "Desktop and Privacy" : "Privacy",
+      },
+      { key: SETTINGS_TAB_KEYS.importExport, label: "Import and Export" },
+    ];
+
+    if (isDesktopMode) {
+      items.push({
+        key: SETTINGS_TAB_KEYS.storageIntegrity,
+        label: "Storage and Integrity",
+      });
+    }
+
+    return items;
+  }, [isDesktopMode]);
+  const availableSettingsTabs = useMemo(
+    () => new Set(settingsNavItems.map((item) => item.key)),
+    [settingsNavItems],
+  );
+  const resolvedHighlightedTab = useMemo(
+    () => (availableSettingsTabs.has(highlightedSettingsTab) ? highlightedSettingsTab : ""),
+    [availableSettingsTabs, highlightedSettingsTab],
+  );
   const [activeSettingsTab, setActiveSettingsTab] = useState(selectedSettingsTab);
 
   useEffect(() => {
-    setActiveSettingsTab(selectedSettingsTab);
-  }, [selectedSettingsTab]);
+    const nextTab = availableSettingsTabs.has(selectedSettingsTab)
+      ? selectedSettingsTab
+      : SETTINGS_TAB_KEYS.general;
+
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setActiveSettingsTab((currentTab) => {
+        if (currentTab === nextTab) {
+          return currentTab;
+        }
+
+        return nextTab;
+      });
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [availableSettingsTabs, selectedSettingsTab]);
 
   const handleQuickNavClick = useCallback((event) => {
     const nextTabKey = event.currentTarget.dataset.tabKey;
@@ -121,13 +166,13 @@ export const SettingsDatabasePanel = memo(() => {
       />
 
       <nav className="settings-page-panel__quick-nav" aria-label="Settings sections">
-        {SETTINGS_NAV_ITEMS.map((item) => (
+        {settingsNavItems.map((item) => (
           <button
             key={item.key}
             className={resolveQuickNavClassName(
               item.key,
               activeSettingsTab,
-              highlightedSettingsTab,
+              resolvedHighlightedTab,
             )}
             type="button"
             data-tab-key={item.key}
@@ -143,7 +188,7 @@ export const SettingsDatabasePanel = memo(() => {
           id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.general]}
           className={resolveSectionClassName(
             SETTINGS_TAB_KEYS.general,
-            highlightedSettingsTab,
+            resolvedHighlightedTab,
           )}
         >
           <header className="settings-page-panel__section-head">
@@ -171,8 +216,9 @@ export const SettingsDatabasePanel = memo(() => {
 
       {isAppPreferencesTab ? (
         <AppPreferencesSection
-          highlightedTab={highlightedSettingsTab}
+          highlightedTab={resolvedHighlightedTab}
           activeTabKey={activeSettingsTab}
+          isDesktopMode={isDesktopMode}
         />
       ) : null}
 
@@ -181,7 +227,7 @@ export const SettingsDatabasePanel = memo(() => {
           id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.importExport]}
           className={resolveSectionClassName(
             SETTINGS_TAB_KEYS.importExport,
-            highlightedSettingsTab,
+            resolvedHighlightedTab,
           )}
         >
           <header className="settings-page-panel__section-head">
@@ -203,12 +249,12 @@ export const SettingsDatabasePanel = memo(() => {
         </section>
       ) : null}
 
-      {activeSettingsTab === SETTINGS_TAB_KEYS.storageIntegrity ? (
+      {isDesktopMode && activeSettingsTab === SETTINGS_TAB_KEYS.storageIntegrity ? (
         <section
           id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.storageIntegrity]}
           className={resolveSectionClassName(
             SETTINGS_TAB_KEYS.storageIntegrity,
-            highlightedSettingsTab,
+            resolvedHighlightedTab,
           )}
         >
           <header className="settings-page-panel__section-head">

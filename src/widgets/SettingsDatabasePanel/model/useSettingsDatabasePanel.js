@@ -23,6 +23,7 @@ import { APP_THEME_MODES } from "@shared/lib/theme";
 export const useSettingsDatabasePanel = () => {
   const settingsRepository = usePlatformService("settingsRepository");
   const systemRepository = usePlatformService("systemRepository");
+  const runtimeGateway = usePlatformService("runtimeGateway");
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { appPreferences } = useAppPreferences();
@@ -48,6 +49,10 @@ export const useSettingsDatabasePanel = () => {
       SETTINGS_TAB_KEYS.general,
     );
   }, [requestedSettingsTab]);
+  const isDesktopMode = useMemo(
+    () => runtimeGateway.isDesktopMode(),
+    [runtimeGateway],
+  );
   const menuFocusState =
     location.state?.settingsMenuFocus &&
     typeof location.state.settingsMenuFocus === "object"
@@ -336,6 +341,7 @@ export const useSettingsDatabasePanel = () => {
   }, [reportMessage, settingsRepository]);
 
   return {
+    isDesktopMode,
     selectedSettingsTab,
     highlightedSettingsTab,
     dbPath,

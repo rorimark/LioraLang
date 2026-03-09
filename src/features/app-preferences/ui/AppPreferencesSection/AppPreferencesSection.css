@@ -49,6 +49,14 @@
   grid-auto-rows: min-content;
 }
 
+.app-preferences-section__checks-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  grid-auto-rows: min-content;
+}
+
 .app-preferences-section__field {
   display: grid;
   gap: 6px;
@@ -116,6 +124,10 @@
     grid-template-columns: 1fr;
   }
 
+  .app-preferences-section__checks-grid {
+    grid-template-columns: 1fr;
+  }
+
   .app-preferences-section__field--wide,
   .app-preferences-section__check--wide {
     grid-column: auto;
@@ -133,6 +145,10 @@
   }
 
   .app-preferences-section__grid {
+    gap: 8px;
+  }
+
+  .app-preferences-section__checks-grid {
     gap: 8px;
   }
 

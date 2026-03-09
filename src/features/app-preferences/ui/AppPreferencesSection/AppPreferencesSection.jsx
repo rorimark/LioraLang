@@ -47,6 +47,7 @@ const resolveBlockClassName = (tabKey, highlightedTab) => {
 export const AppPreferencesSection = memo(({
   highlightedTab = "",
   activeTabKey = "",
+  isDesktopMode = false,
 }) => {
   const {
     appPreferences,
@@ -71,7 +72,7 @@ export const AppPreferencesSection = memo(({
           <p>Session flow and spaced repetition tuning.</p>
         </header>
 
-        <div className="app-preferences-section__grid">
+        <div className="app-preferences-section__grid app-preferences-section__grid--fields">
           <label className="app-preferences-section__field">
             <span>Daily goal (cards)</span>
             <input
@@ -169,6 +170,9 @@ export const AppPreferencesSection = memo(({
             />
           </label>
 
+        </div>
+
+        <div className="app-preferences-section__checks-grid">
           <label className="app-preferences-section__check app-preferences-section__check--wide">
             <input
               type="checkbox"
@@ -195,7 +199,7 @@ export const AppPreferencesSection = memo(({
           <p>Default values used in deck creation.</p>
         </header>
 
-        <div className="app-preferences-section__grid">
+        <div className="app-preferences-section__grid app-preferences-section__grid--fields">
           <label className="app-preferences-section__field">
             <span>Source language</span>
             <select
@@ -266,7 +270,7 @@ export const AppPreferencesSection = memo(({
           <p>Accessibility and data safety defaults.</p>
         </header>
 
-        <div className="app-preferences-section__grid">
+        <div className="app-preferences-section__grid app-preferences-section__grid--fields">
           <label className="app-preferences-section__field">
             <span>Font scale</span>
             <select
@@ -306,6 +310,9 @@ export const AppPreferencesSection = memo(({
             />
           </label>
 
+        </div>
+
+        <div className="app-preferences-section__checks-grid">
           <label className="app-preferences-section__check">
             <input
               type="checkbox"
@@ -358,22 +365,28 @@ export const AppPreferencesSection = memo(({
           )}
         >
         <header className="app-preferences-section__head">
-          <h3>Advanced Desktop and Privacy</h3>
-          <p>Desktop behavior, diagnostics, and privacy options.</p>
+          <h3>{isDesktopMode ? "Advanced Desktop and Privacy" : "Privacy"}</h3>
+          <p>
+            {isDesktopMode
+              ? "Desktop behavior, diagnostics, and privacy options."
+              : "Diagnostics and privacy options for web mode."}
+          </p>
         </header>
 
-        <div className="app-preferences-section__grid">
-          <label className="app-preferences-section__field">
-            <span>Update channel</span>
-            <select
-              name="desktop.updateChannel"
-              value={appPreferences.desktop.updateChannel}
-              onChange={handleSelectFieldChange}
-            >
-              <option value="stable">Stable</option>
-              <option value="beta">Beta</option>
-            </select>
-          </label>
+        <div className="app-preferences-section__grid app-preferences-section__grid--fields">
+          {isDesktopMode ? (
+            <label className="app-preferences-section__field">
+              <span>Update channel</span>
+              <select
+                name="desktop.updateChannel"
+                value={appPreferences.desktop.updateChannel}
+                onChange={handleSelectFieldChange}
+              >
+                <option value="stable">Stable</option>
+                <option value="beta">Beta</option>
+              </select>
+            </label>
+          ) : null}
 
           <label className="app-preferences-section__field">
             <span>Log level</span>
@@ -388,45 +401,56 @@ export const AppPreferencesSection = memo(({
             </select>
           </label>
 
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.launchAtStartup"
-              checked={appPreferences.desktop.launchAtStartup}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Launch at startup</span>
-          </label>
+        </div>
 
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.minimizeToTray"
-              checked={appPreferences.desktop.minimizeToTray}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Minimize to tray</span>
-          </label>
+        <div className="app-preferences-section__checks-grid">
+          {isDesktopMode ? (
+            <label className="app-preferences-section__check">
+              <input
+                type="checkbox"
+                name="desktop.launchAtStartup"
+                checked={appPreferences.desktop.launchAtStartup}
+                onChange={handleBooleanFieldChange}
+              />
+              <span>Launch at startup</span>
+            </label>
+          ) : null}
 
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.hardwareAcceleration"
-              checked={appPreferences.desktop.hardwareAcceleration}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Hardware acceleration</span>
-          </label>
+          {isDesktopMode ? (
+            <label className="app-preferences-section__check">
+              <input
+                type="checkbox"
+                name="desktop.minimizeToTray"
+                checked={appPreferences.desktop.minimizeToTray}
+                onChange={handleBooleanFieldChange}
+              />
+              <span>Minimize to tray</span>
+            </label>
+          ) : null}
 
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.devMode"
-              checked={appPreferences.desktop.devMode}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Developer mode</span>
-          </label>
+          {isDesktopMode ? (
+            <label className="app-preferences-section__check">
+              <input
+                type="checkbox"
+                name="desktop.hardwareAcceleration"
+                checked={appPreferences.desktop.hardwareAcceleration}
+                onChange={handleBooleanFieldChange}
+              />
+              <span>Hardware acceleration</span>
+            </label>
+          ) : null}
+
+          {isDesktopMode ? (
+            <label className="app-preferences-section__check">
+              <input
+                type="checkbox"
+                name="desktop.devMode"
+                checked={appPreferences.desktop.devMode}
+                onChange={handleBooleanFieldChange}
+              />
+              <span>Developer mode</span>
+            </label>
+          ) : null}
 
           <label className="app-preferences-section__check">
             <input
