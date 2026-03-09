@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./styles/App.css";
 import { AppRouter } from "@app/router";
-import { useAppPreferences } from "@shared/lib/appPreferences";
+import { useStartupPreferences } from "@shared/lib/appPreferences";
 import { usePointerFocusGuard } from "@shared/lib/a11y";
 import {
   APP_THEME_MODES,
@@ -12,8 +12,8 @@ import {
 export const App = () => {
   usePointerFocusGuard();
 
-  const { appPreferences } = useAppPreferences();
-  const themeMode = appPreferences.uiAccessibility.themeMode;
+  const { startupPreferences } = useStartupPreferences();
+  const themeMode = startupPreferences.uiAccessibility.themeMode;
 
   useEffect(() => {
     applyThemeMode(themeMode);
@@ -59,13 +59,13 @@ export const App = () => {
     }
 
     const root = document.documentElement;
-    const accessibility = appPreferences.uiAccessibility;
+    const accessibility = startupPreferences.uiAccessibility;
 
     root.setAttribute("ui-font-scale", accessibility.fontScale);
     root.setAttribute("ui-compact", String(accessibility.compactMode));
     root.setAttribute("ui-reduced-motion", String(accessibility.reducedMotion));
     root.setAttribute("ui-high-contrast", String(accessibility.highContrast));
-  }, [appPreferences.uiAccessibility]);
+  }, [startupPreferences.uiAccessibility]);
 
   return <AppRouter />;
 };

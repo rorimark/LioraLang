@@ -1,7 +1,5 @@
-import { desktopApi } from "@shared/api";
+import { getPlatformServices } from "@shared/platform";
 
-const THEME_STORAGE_KEY = "lioralang-theme-mode";
-const LEGACY_THEME_STORAGE_KEY = "lioralang-theme";
 const SYSTEM_THEME_MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
 export const APP_THEMES = {
@@ -39,51 +37,11 @@ const getSystemTheme = () => {
     : APP_THEMES.light;
 };
 
-const getLegacyThemeMode = () => {
-  if (!isBrowser) {
-    return "";
-  }
-
-  const legacyTheme = window.localStorage.getItem(LEGACY_THEME_STORAGE_KEY);
-
-  if (legacyTheme === APP_THEMES.dark || legacyTheme === APP_THEMES.light) {
-    return legacyTheme;
-  }
-
-  return "";
-};
-
 export const getSavedThemeMode = () => {
-  if (!isBrowser) {
-    return APP_THEME_MODES.system;
-  }
-
-  const savedThemeMode = window.localStorage.getItem(THEME_STORAGE_KEY);
-
-  if (
-    savedThemeMode === APP_THEME_MODES.system ||
-    savedThemeMode === APP_THEME_MODES.light ||
-    savedThemeMode === APP_THEME_MODES.dark
-  ) {
-    return savedThemeMode;
-  }
-
-  const legacyThemeMode = getLegacyThemeMode();
-
-  if (legacyThemeMode) {
-    return legacyThemeMode;
-  }
-
   return APP_THEME_MODES.system;
 };
 
-export const saveThemeMode = (themeMode) => {
-  if (!isBrowser) {
-    return;
-  }
-
-  window.localStorage.setItem(THEME_STORAGE_KEY, normalizeThemeMode(themeMode));
-};
+export const saveThemeMode = () => {};
 
 export const resolveAppliedTheme = (themeMode) => {
   const normalizedMode = normalizeThemeMode(themeMode);
@@ -105,6 +63,7 @@ export const isDarkThemeActive = (themeMode) => {
 
 export const applyThemeMode = (themeMode) => {
   const resolvedTheme = resolveAppliedTheme(themeMode);
+  const runtimeGateway = getPlatformServices().runtimeGateway;
 
   if (typeof document === "undefined") {
     return resolvedTheme;
@@ -114,12 +73,12 @@ export const applyThemeMode = (themeMode) => {
 
   if (resolvedTheme === APP_THEMES.dark) {
     root.setAttribute("theme", APP_THEMES.dark);
-    void desktopApi.applyWindowTheme(APP_THEMES.dark).catch(() => {});
+    void runtimeGateway.applyWindowTheme(APP_THEMES.dark).catch(() => {});
     return resolvedTheme;
   }
 
   root.removeAttribute("theme");
-  void desktopApi.applyWindowTheme(APP_THEMES.light).catch(() => {});
+  void runtimeGateway.applyWindowTheme(APP_THEMES.light).catch(() => {});
 
   return resolvedTheme;
 };
@@ -134,14 +93,7 @@ export const getSystemThemeMediaQuery = () => {
 
 export const getSavedTheme = () => resolveAppliedTheme(getSavedThemeMode());
 
-export const saveTheme = (theme) => {
-  if (theme === APP_THEMES.dark) {
-    saveThemeMode(APP_THEME_MODES.dark);
-    return;
-  }
-
-  saveThemeMode(APP_THEME_MODES.light);
-};
+export const saveTheme = () => {};
 
 export const applyTheme = (theme) => {
   if (theme === APP_THEMES.dark) {

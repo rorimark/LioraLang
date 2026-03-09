@@ -2,8 +2,7 @@ import {
   DEFAULT_SOURCE_LANGUAGE,
   DEFAULT_TARGET_LANGUAGE,
 } from "@shared/config/languages";
-
-export const APP_PREFERENCES_APP_KEY = "appPreferences";
+import { APP_PREFERENCES_APP_KEY } from "./constants";
 
 const LEVEL_OPTIONS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
 const PART_OF_SPEECH_OPTIONS = new Set([
