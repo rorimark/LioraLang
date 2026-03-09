@@ -1,3 +1,4 @@
+export { LandingPage } from "./landing";
 export { LearnPage } from "./learn";
 export { AccountPage } from "./account";
 export { BrowsePage } from "./browse";
