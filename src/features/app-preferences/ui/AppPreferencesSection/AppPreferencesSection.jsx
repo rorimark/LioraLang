@@ -36,43 +36,17 @@ const PART_OPTION_ITEMS = PART_OF_SPEECH_OPTIONS.map((part) => (
   </option>
 ));
 
-const PreferencesGroup = ({
-  tabKey,
-  selectedTab,
-  highlightedTab,
-  sectionId,
-  title,
-  description,
-  defaultOpen = false,
-  children,
-}) => {
-  const isSelectedGroup = selectedTab === tabKey;
-  const isHighlightedGroup = highlightedTab === tabKey;
+const resolveBlockClassName = (tabKey, highlightedTab) => {
+  if (highlightedTab === tabKey) {
+    return "app-preferences-section__block app-preferences-section__block--active";
+  }
 
-  return (
-    <details
-      id={sectionId}
-      className={
-        isHighlightedGroup
-          ? "app-preferences-section__group app-preferences-section__group--active"
-          : "app-preferences-section__group"
-      }
-      open={defaultOpen || isSelectedGroup}
-    >
-      <summary className="app-preferences-section__group-summary">
-        <span className="app-preferences-section__group-title">{title}</span>
-        <span className="app-preferences-section__group-description">
-          {description}
-        </span>
-      </summary>
-      <div className="app-preferences-section__group-grid">{children}</div>
-    </details>
-  );
+  return "app-preferences-section__block";
 };
 
 export const AppPreferencesSection = memo(({
-  selectedTab = SETTINGS_TAB_KEYS.general,
   highlightedTab = "",
+  activeTabKey = "",
 }) => {
   const {
     appPreferences,
@@ -83,24 +57,22 @@ export const AppPreferencesSection = memo(({
   } = useAppPreferencesSection();
 
   return (
-    <section className="app-preferences-section">
-      <header className="app-preferences-section__head">
-        <h3>Study Preferences</h3>
-        <p>Core behavior, defaults, and safety settings for this workspace.</p>
-      </header>
+    <div className="app-preferences-section">
+      {activeTabKey === SETTINGS_TAB_KEYS.learningCore ? (
+        <section
+          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.learningCore]}
+          className={resolveBlockClassName(
+            SETTINGS_TAB_KEYS.learningCore,
+            highlightedTab,
+          )}
+        >
+        <header className="app-preferences-section__head">
+          <h3>Learning Core</h3>
+          <p>Session flow and spaced repetition tuning.</p>
+        </header>
 
-      <PreferencesGroup
-        tabKey={SETTINGS_TAB_KEYS.learningCore}
-        selectedTab={selectedTab}
-        highlightedTab={highlightedTab}
-        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.learningCore]}
-        title="Learning Core"
-        description="Session flow and spaced repetition tuning."
-        defaultOpen
-      >
-        <fieldset className="app-preferences-section__card">
-          <legend>Study session</legend>
-          <label>
+        <div className="app-preferences-section__grid">
+          <label className="app-preferences-section__field">
             <span>Daily goal (cards)</span>
             <input
               type="number"
@@ -111,7 +83,8 @@ export const AppPreferencesSection = memo(({
               onChange={handleNumberFieldChange}
             />
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Auto-flip delay</span>
             <select
               name="studySession.autoFlipDelay"
@@ -124,7 +97,8 @@ export const AppPreferencesSection = memo(({
               <option value="3s">3 seconds</option>
             </select>
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Shuffle mode</span>
             <select
               name="studySession.shuffleMode"
@@ -136,20 +110,8 @@ export const AppPreferencesSection = memo(({
               <option value="always">Always</option>
             </select>
           </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="studySession.repeatWrongCards"
-              checked={appPreferences.studySession.repeatWrongCards}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Repeat wrong cards</span>
-          </label>
-        </fieldset>
 
-        <fieldset className="app-preferences-section__card">
-          <legend>Spaced repetition</legend>
-          <label>
+          <label className="app-preferences-section__field">
             <span>New cards per day</span>
             <input
               type="number"
@@ -160,7 +122,8 @@ export const AppPreferencesSection = memo(({
               onChange={handleNumberFieldChange}
             />
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Max reviews per day</span>
             <input
               type="number"
@@ -171,7 +134,8 @@ export const AppPreferencesSection = memo(({
               onChange={handleNumberFieldChange}
             />
           </label>
-          <label>
+
+          <label className="app-preferences-section__field app-preferences-section__field--wide">
             <span>Learning steps</span>
             <input
               type="text"
@@ -180,7 +144,8 @@ export const AppPreferencesSection = memo(({
               onChange={handleTextFieldChange}
             />
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Easy bonus (%)</span>
             <input
               type="number"
@@ -191,7 +156,8 @@ export const AppPreferencesSection = memo(({
               onChange={handleNumberFieldChange}
             />
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Lapse penalty (%)</span>
             <input
               type="number"
@@ -202,20 +168,35 @@ export const AppPreferencesSection = memo(({
               onChange={handleNumberFieldChange}
             />
           </label>
-        </fieldset>
-      </PreferencesGroup>
 
-      <PreferencesGroup
-        tabKey={SETTINGS_TAB_KEYS.deckDefaults}
-        selectedTab={selectedTab}
-        highlightedTab={highlightedTab}
-        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.deckDefaults]}
-        title="Deck Defaults"
-        description="Default values for deck creation."
-      >
-        <fieldset className="app-preferences-section__card">
-          <legend>Deck defaults</legend>
-          <label>
+          <label className="app-preferences-section__check app-preferences-section__check--wide">
+            <input
+              type="checkbox"
+              name="studySession.repeatWrongCards"
+              checked={appPreferences.studySession.repeatWrongCards}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Repeat wrong cards</span>
+          </label>
+        </div>
+        </section>
+      ) : null}
+
+      {activeTabKey === SETTINGS_TAB_KEYS.deckDefaults ? (
+        <section
+          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.deckDefaults]}
+          className={resolveBlockClassName(
+            SETTINGS_TAB_KEYS.deckDefaults,
+            highlightedTab,
+          )}
+        >
+        <header className="app-preferences-section__head">
+          <h3>Deck Defaults</h3>
+          <p>Default values used in deck creation.</p>
+        </header>
+
+        <div className="app-preferences-section__grid">
+          <label className="app-preferences-section__field">
             <span>Source language</span>
             <select
               name="deckDefaults.sourceLanguage"
@@ -225,7 +206,8 @@ export const AppPreferencesSection = memo(({
               {LANGUAGE_OPTION_ITEMS}
             </select>
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Target language</span>
             <select
               name="deckDefaults.targetLanguage"
@@ -235,7 +217,8 @@ export const AppPreferencesSection = memo(({
               {LANGUAGE_OPTION_ITEMS}
             </select>
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Default level</span>
             <select
               name="deckDefaults.level"
@@ -245,7 +228,8 @@ export const AppPreferencesSection = memo(({
               {LEVEL_OPTION_ITEMS}
             </select>
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Part of speech</span>
             <select
               name="deckDefaults.partOfSpeech"
@@ -255,7 +239,8 @@ export const AppPreferencesSection = memo(({
               {PART_OPTION_ITEMS}
             </select>
           </label>
-          <label>
+
+          <label className="app-preferences-section__field app-preferences-section__field--wide">
             <span>Default tags (comma separated)</span>
             <input
               type="text"
@@ -264,20 +249,25 @@ export const AppPreferencesSection = memo(({
               onChange={handleTextFieldChange}
             />
           </label>
-        </fieldset>
-      </PreferencesGroup>
+        </div>
+        </section>
+      ) : null}
 
-      <PreferencesGroup
-        tabKey={SETTINGS_TAB_KEYS.workspaceSafety}
-        selectedTab={selectedTab}
-        highlightedTab={highlightedTab}
-        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.workspaceSafety]}
-        title="Workspace and Safety"
-        description="Accessibility, backups, and destructive action guards."
-      >
-        <fieldset className="app-preferences-section__card">
-          <legend>UI and accessibility</legend>
-          <label>
+      {activeTabKey === SETTINGS_TAB_KEYS.workspaceSafety ? (
+        <section
+          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.workspaceSafety]}
+          className={resolveBlockClassName(
+            SETTINGS_TAB_KEYS.workspaceSafety,
+            highlightedTab,
+          )}
+        >
+        <header className="app-preferences-section__head">
+          <h3>Workspace and Safety</h3>
+          <p>Accessibility and data safety defaults.</p>
+        </header>
+
+        <div className="app-preferences-section__grid">
+          <label className="app-preferences-section__field">
             <span>Font scale</span>
             <select
               name="uiAccessibility.fontScale"
@@ -289,38 +279,8 @@ export const AppPreferencesSection = memo(({
               <option value="large">Large</option>
             </select>
           </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="uiAccessibility.compactMode"
-              checked={appPreferences.uiAccessibility.compactMode}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Compact mode</span>
-          </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="uiAccessibility.reducedMotion"
-              checked={appPreferences.uiAccessibility.reducedMotion}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Reduced motion</span>
-          </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="uiAccessibility.highContrast"
-              checked={appPreferences.uiAccessibility.highContrast}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>High contrast mode</span>
-          </label>
-        </fieldset>
 
-        <fieldset className="app-preferences-section__card">
-          <legend>Data and safety</legend>
-          <label>
+          <label className="app-preferences-section__field">
             <span>Auto backup interval</span>
             <select
               name="dataSafety.autoBackupInterval"
@@ -333,7 +293,8 @@ export const AppPreferencesSection = memo(({
               <option value="monthly">Monthly</option>
             </select>
           </label>
-          <label>
+
+          <label className="app-preferences-section__field">
             <span>Max backups</span>
             <input
               type="number"
@@ -344,7 +305,38 @@ export const AppPreferencesSection = memo(({
               onChange={handleNumberFieldChange}
             />
           </label>
+
           <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="uiAccessibility.compactMode"
+              checked={appPreferences.uiAccessibility.compactMode}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Compact mode</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="uiAccessibility.reducedMotion"
+              checked={appPreferences.uiAccessibility.reducedMotion}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Reduced motion</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="uiAccessibility.highContrast"
+              checked={appPreferences.uiAccessibility.highContrast}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>High contrast mode</span>
+          </label>
+
+          <label className="app-preferences-section__check app-preferences-section__check--wide">
             <input
               type="checkbox"
               name="dataSafety.confirmDestructive"
@@ -353,56 +345,25 @@ export const AppPreferencesSection = memo(({
             />
             <span>Confirm destructive actions</span>
           </label>
-        </fieldset>
-      </PreferencesGroup>
+        </div>
+        </section>
+      ) : null}
 
-      <PreferencesGroup
-        tabKey={SETTINGS_TAB_KEYS.advancedDesktop}
-        selectedTab={selectedTab}
-        highlightedTab={highlightedTab}
-        sectionId={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.advancedDesktop]}
-        title="Advanced Desktop and Privacy"
-        description="Launch behavior, telemetry preferences, and diagnostics."
-      >
-        <fieldset className="app-preferences-section__card">
-          <legend>Desktop</legend>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.launchAtStartup"
-              checked={appPreferences.desktop.launchAtStartup}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Launch at startup</span>
-          </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.minimizeToTray"
-              checked={appPreferences.desktop.minimizeToTray}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Minimize to tray</span>
-          </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.hardwareAcceleration"
-              checked={appPreferences.desktop.hardwareAcceleration}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Hardware acceleration</span>
-          </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="desktop.devMode"
-              checked={appPreferences.desktop.devMode}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Developer mode (DevTools shortcuts)</span>
-          </label>
-          <label>
+      {activeTabKey === SETTINGS_TAB_KEYS.advancedDesktop ? (
+        <section
+          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.advancedDesktop]}
+          className={resolveBlockClassName(
+            SETTINGS_TAB_KEYS.advancedDesktop,
+            highlightedTab,
+          )}
+        >
+        <header className="app-preferences-section__head">
+          <h3>Advanced Desktop and Privacy</h3>
+          <p>Desktop behavior, diagnostics, and privacy options.</p>
+        </header>
+
+        <div className="app-preferences-section__grid">
+          <label className="app-preferences-section__field">
             <span>Update channel</span>
             <select
               name="desktop.updateChannel"
@@ -413,29 +374,8 @@ export const AppPreferencesSection = memo(({
               <option value="beta">Beta</option>
             </select>
           </label>
-        </fieldset>
 
-        <fieldset className="app-preferences-section__card">
-          <legend>Privacy</legend>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="privacy.analyticsEnabled"
-              checked={appPreferences.privacy.analyticsEnabled}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Usage analytics</span>
-          </label>
-          <label className="app-preferences-section__check">
-            <input
-              type="checkbox"
-              name="privacy.crashReportsEnabled"
-              checked={appPreferences.privacy.crashReportsEnabled}
-              onChange={handleBooleanFieldChange}
-            />
-            <span>Crash reports</span>
-          </label>
-          <label>
+          <label className="app-preferences-section__field">
             <span>Log level</span>
             <select
               name="privacy.logLevel"
@@ -447,9 +387,70 @@ export const AppPreferencesSection = memo(({
               <option value="debug">Debug</option>
             </select>
           </label>
-        </fieldset>
-      </PreferencesGroup>
-    </section>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="desktop.launchAtStartup"
+              checked={appPreferences.desktop.launchAtStartup}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Launch at startup</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="desktop.minimizeToTray"
+              checked={appPreferences.desktop.minimizeToTray}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Minimize to tray</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="desktop.hardwareAcceleration"
+              checked={appPreferences.desktop.hardwareAcceleration}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Hardware acceleration</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="desktop.devMode"
+              checked={appPreferences.desktop.devMode}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Developer mode</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="privacy.analyticsEnabled"
+              checked={appPreferences.privacy.analyticsEnabled}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Usage analytics</span>
+          </label>
+
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="privacy.crashReportsEnabled"
+              checked={appPreferences.privacy.crashReportsEnabled}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Crash reports</span>
+          </label>
+        </div>
+        </section>
+      ) : null}
+    </div>
   );
 });
 

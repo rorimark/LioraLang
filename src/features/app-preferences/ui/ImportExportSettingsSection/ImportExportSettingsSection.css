@@ -1,18 +1,18 @@
 .import-export-settings {
   display: grid;
-  gap: 8px;
-  border-top: 1px solid var(--color-border);
-  padding-top: 10px;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .import-export-settings__field {
   display: grid;
   gap: 4px;
+  min-width: 0;
 }
 
 .import-export-settings__field > span {
   color: var(--color-text-muted);
-  font-size: 0.76rem;
+  font-size: 0.78rem;
 }
 
 .import-export-settings__field > select {
@@ -22,7 +22,7 @@
   background: var(--color-surface);
   color: var(--color-text);
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   padding: 7px 9px;
 }
 
@@ -31,6 +31,12 @@
   grid-template-columns: auto 1fr;
   align-items: center;
   column-gap: 8px;
+  grid-column: 1 / -1;
+  min-height: 34px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--color-transparent));
+  border-radius: 8px;
+  background: var(--color-surface);
+  padding: 6px 9px;
 }
 
 .import-export-settings__check input[type="checkbox"] {
@@ -40,4 +46,21 @@
 .import-export-settings__check > span {
   color: var(--color-text);
   font-size: 0.8rem;
+}
+
+@media (max-width: 760px) {
+  .import-export-settings {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .import-export-settings__field > select {
+    min-height: 36px;
+    font-size: 0.78rem;
+    padding: 7px 9px;
+  }
+
+  .import-export-settings__check > span {
+    font-size: 0.78rem;
+  }
 }
