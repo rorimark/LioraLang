@@ -789,7 +789,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
   };
 };
 
-export const exportDeckToJsonFile = (deckId, filePath, exportOptions = {}) => {
+const buildDeckExportPayload = (deckId, exportOptions = {}) => {
   const deck = getDeckById(deckId);
 
   if (!deck) {
@@ -841,6 +841,35 @@ export const exportDeckToJsonFile = (deckId, filePath, exportOptions = {}) => {
     },
     words: wordsPayload,
   };
+
+  return {
+    deck,
+    wordsPayload,
+    jsonPayload,
+  };
+};
+
+export const exportDeckToJsonPackage = (deckId, exportOptions = {}) => {
+  const {
+    deck,
+    wordsPayload,
+    jsonPayload,
+  } = buildDeckExportPayload(deckId, exportOptions);
+
+  return {
+    deckId,
+    deckName: deck.name,
+    exportedCount: wordsPayload.length,
+    package: jsonPayload,
+  };
+};
+
+export const exportDeckToJsonFile = (deckId, filePath, exportOptions = {}) => {
+  const {
+    deck,
+    wordsPayload,
+    jsonPayload,
+  } = buildDeckExportPayload(deckId, exportOptions);
 
   fs.writeFileSync(filePath, JSON.stringify(jsonPayload, null, 2), "utf8");
 

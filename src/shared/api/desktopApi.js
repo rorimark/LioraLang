@@ -24,6 +24,8 @@ const isDesktopMode = () =>
     getElectronApi() &&
       typeof getElectronApi().pickImportDeckJson === "function" &&
       typeof getElectronApi().importDeckFromJson === "function" &&
+      typeof getElectronApi().importDeckFromUrl === "function" &&
+      typeof getElectronApi().exportDeckPackage === "function" &&
       typeof getElectronApi().exportDeckToJson === "function",
   );
 
@@ -562,6 +564,37 @@ export const desktopApi = {
     }
 
     return getElectronApi().importDeckFromJson(payloadOrDeckName || {});
+  },
+
+  async importDeckFromUrl(payload = {}) {
+    if (!isDesktopMode()) {
+      if (isElectronRuntime()) {
+        throw new Error(
+          "Desktop API is unavailable in this window. Restart the app.",
+        );
+      }
+
+      throw new Error("Hub import is available only in desktop mode");
+    }
+
+    return getElectronApi().importDeckFromUrl(payload || {});
+  },
+
+  async exportDeckPackage(deckId, settings = {}) {
+    if (!isDesktopMode()) {
+      if (isElectronRuntime()) {
+        throw new Error(
+          "Desktop API is unavailable in this window. Restart the app.",
+        );
+      }
+
+      throw new Error("Deck export package is available only in desktop mode");
+    }
+
+    return getElectronApi().exportDeckPackage({
+      deckId,
+      settings: settings || {},
+    });
   },
 
   async exportDeckToJson(deckId, settings = {}) {

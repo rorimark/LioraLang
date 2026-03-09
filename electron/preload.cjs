@@ -6,6 +6,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getDeckWords: (deckId) => ipcRenderer.invoke("decks:get-words", deckId),
   pickImportDeckJson: () => ipcRenderer.invoke("decks:pick-import-json"),
   importDeckFromJson: (payload) => ipcRenderer.invoke("decks:import-json", payload),
+  importDeckFromUrl: (payload) => ipcRenderer.invoke("decks:import-url", payload),
+  exportDeckPackage: (payload) => ipcRenderer.invoke("decks:export-package", payload),
   exportDeckToJson: (payload) => ipcRenderer.invoke("decks:export-json", payload),
   renameDeck: (payload) => ipcRenderer.invoke("decks:rename", payload),
   deleteDeck: (payload) => ipcRenderer.invoke("decks:delete", payload),
