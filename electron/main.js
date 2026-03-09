@@ -29,6 +29,7 @@ import {
   getDeckWords,
   importDeckFromJsonFile,
   readDeckImportMetadataFromJsonFile,
+  exportDeckToJsonPackage,
   exportDeckToJsonFile,
   renameDeck,
   deleteDeck,
@@ -200,6 +201,12 @@ let pendingRuntimeErrorEvents = [];
 let pendingNavigationRequests = [];
 const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck"];
 const DB_FILE_NAME = "lioralang.db";
+const REMOTE_IMPORT_TIMEOUT_MS = 35_000;
+const REMOTE_IMPORT_MAX_BYTES = 50 * 1024 * 1024;
+const EXTERNAL_CONNECT_SOURCES = [
+  "https://*.supabase.co",
+  "wss://*.supabase.co",
+];
 const APP_PREFERENCES_SETTINGS_KEY = "appPreferences";
 const LOG_LEVELS = {
   error: "error",
@@ -553,6 +560,183 @@ const readDeckImportPayloadFromFilePath = (filePath) => {
     packageFormat: importMetadata?.format || "",
     packageVersion: importMetadata?.version ?? null,
   };
+};
+
+const resolveDeckImportSettings = (payload = {}) => {
+  const appPreferences = extractAppPreferencesFromSettings(getAppSettings());
+  const sourceLanguage =
+    typeof payload?.sourceLanguage === "string" ? payload.sourceLanguage.trim() : "";
+  const targetLanguage =
+    typeof payload?.targetLanguage === "string" ? payload.targetLanguage.trim() : "";
+  const tertiaryLanguage =
+    typeof payload?.tertiaryLanguage === "string"
+      ? payload.tertiaryLanguage.trim()
+      : "";
+  const duplicateStrategy = ["skip", "update", "keep_both"].includes(
+    payload?.settings?.duplicateStrategy,
+  )
+    ? payload.settings.duplicateStrategy
+    : appPreferences.importExport.duplicateStrategy;
+  const includeExamples =
+    typeof payload?.settings?.includeExamples === "boolean"
+      ? payload.settings.includeExamples
+      : appPreferences.importExport.includeExamples;
+  const includeTags =
+    typeof payload?.settings?.includeTags === "boolean"
+      ? payload.settings.includeTags
+      : appPreferences.importExport.includeTags;
+
+  return {
+    deckName:
+      typeof payload?.deckName === "string" ? payload.deckName.trim() : "",
+    sourceLanguage,
+    targetLanguage,
+    tertiaryLanguage,
+    duplicateStrategy,
+    includeExamples,
+    includeTags,
+  };
+};
+
+const importDeckFromFilePath = (filePath, payload = {}) => {
+  const normalizedFilePath =
+    typeof filePath === "string" ? filePath.trim() : "";
+
+  if (!normalizedFilePath) {
+    throw new Error("Import file is not selected");
+  }
+
+  const fileExtension = path.extname(normalizedFilePath).toLowerCase();
+
+  if (!SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(fileExtension)) {
+    throw new Error("Only .json and .lioradeck files can be imported");
+  }
+
+  if (!fs.existsSync(normalizedFilePath)) {
+    throw new Error("Selected import file does not exist");
+  }
+
+  const importSettings = resolveDeckImportSettings(payload);
+  const importResult = importDeckFromJsonFile(normalizedFilePath, importSettings);
+
+  return {
+    importResult,
+    duplicateStrategy: importSettings.duplicateStrategy,
+  };
+};
+
+const resolveRemoteImportUrl = (value) => {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalizedUrl = value.trim();
+
+  if (!normalizedUrl) {
+    return null;
+  }
+
+  try {
+    const parsedUrl = new URL(normalizedUrl);
+
+    if (!["https:", "http:"].includes(parsedUrl.protocol)) {
+      return null;
+    }
+
+    return parsedUrl;
+  } catch {
+    return null;
+  }
+};
+
+const toSafeImportFileName = (value, fallbackExtension = ".lioradeck") => {
+  const rawValue =
+    typeof value === "string" ? value.trim() : "";
+  const baseName = rawValue
+    ? path.basename(rawValue)
+    : `hub-deck${fallbackExtension}`;
+  const cleanedName = baseName
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const normalizedExtension = path.extname(cleanedName).toLowerCase();
+
+  if (SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(normalizedExtension)) {
+    return cleanedName;
+  }
+
+  const fallbackName = path.basename(cleanedName, path.extname(cleanedName)) || "hub-deck";
+  const safeExtension = SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(fallbackExtension)
+    ? fallbackExtension
+    : ".lioradeck";
+
+  return `${fallbackName}${safeExtension}`;
+};
+
+const downloadRemoteDeckToTempFile = async (downloadUrl, fileNameHint = "") => {
+  const parsedUrl = resolveRemoteImportUrl(downloadUrl);
+
+  if (!parsedUrl) {
+    throw new Error("Invalid Hub deck download URL");
+  }
+
+  const extensionFromPath = path.extname(parsedUrl.pathname || "").toLowerCase();
+  const safeFileName = toSafeImportFileName(fileNameHint, extensionFromPath || ".lioradeck");
+  const safeExtension = path.extname(safeFileName).toLowerCase();
+
+  if (!SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(safeExtension)) {
+    throw new Error("Only .json and .lioradeck files can be imported");
+  }
+
+  const importTempDir = path.join(app.getPath("temp"), "lioralang-imports");
+  fs.mkdirSync(importTempDir, { recursive: true });
+
+  const randomSuffix = Math.random().toString(16).slice(2, 10);
+  const tempFilePath = path.join(
+    importTempDir,
+    `hub-${Date.now()}-${randomSuffix}${safeExtension}`,
+  );
+  const abortController = new AbortController();
+  const timeoutId = setTimeout(() => {
+    abortController.abort();
+  }, REMOTE_IMPORT_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(parsedUrl.toString(), {
+      method: "GET",
+      signal: abortController.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to download deck package (${response.status})`);
+    }
+
+    const contentLength = Number(response.headers.get("content-length"));
+
+    if (Number.isFinite(contentLength) && contentLength > REMOTE_IMPORT_MAX_BYTES) {
+      throw new Error("Downloaded deck file is too large");
+    }
+
+    const fileBuffer = new Uint8Array(await response.arrayBuffer());
+
+    if (fileBuffer.byteLength === 0) {
+      throw new Error("Downloaded deck file is empty");
+    }
+
+    if (fileBuffer.byteLength > REMOTE_IMPORT_MAX_BYTES) {
+      throw new Error("Downloaded deck file is too large");
+    }
+
+    fs.writeFileSync(tempFilePath, fileBuffer);
+
+    return {
+      tempFilePath,
+      safeFileName,
+      byteLength: fileBuffer.byteLength,
+    };
+  } finally {
+    clearTimeout(timeoutId);
+  }
 };
 
 const flushPendingImportFileRequests = () => {
@@ -1771,6 +1955,10 @@ const changeDatabasePath = (targetDbPath) => {
 };
 
 const buildContentSecurityPolicy = () => {
+  const joinConnectSources = (sources = []) => {
+    return [...new Set(["'self'", ...sources])].join(" ");
+  };
+
   if (app.isPackaged) {
     return [
       "default-src 'self'",
@@ -1779,7 +1967,7 @@ const buildContentSecurityPolicy = () => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob:",
       "font-src 'self' https://fonts.gstatic.com data:",
-      "connect-src 'self'",
+      `connect-src ${joinConnectSources(EXTERNAL_CONNECT_SOURCES)}`,
       "object-src 'none'",
       "base-uri 'self'",
       "frame-ancestors 'none'",
@@ -1797,7 +1985,11 @@ const buildContentSecurityPolicy = () => {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob:",
     "font-src 'self' https://fonts.gstatic.com data:",
-    `connect-src 'self' ${devOrigin} ${devWsOrigin}`,
+    `connect-src ${joinConnectSources([
+      devOrigin,
+      devWsOrigin,
+      ...EXTERNAL_CONNECT_SOURCES,
+    ])}`,
     "object-src 'none'",
     "base-uri 'self'",
     "frame-ancestors 'none'",
@@ -1919,67 +2111,66 @@ const setupIpcHandlers = () => {
   });
 
   ipcMain.handle("decks:import-json", async (_, payload) => {
-    const filePath = typeof payload?.filePath === "string" ? payload.filePath : "";
+    const filePath =
+      typeof payload?.filePath === "string" ? payload.filePath.trim() : "";
+    const { importResult, duplicateStrategy } = importDeckFromFilePath(
+      filePath,
+      payload || {},
+    );
 
-    if (!filePath) {
-      throw new Error("Import file is not selected");
-    }
-
-    const fileExtension = path.extname(filePath).toLowerCase();
-
-    if (!SUPPORTED_DECK_IMPORT_EXTENSIONS.includes(fileExtension)) {
-      throw new Error("Only .json and .lioradeck files can be imported");
-    }
-
-    if (!fs.existsSync(filePath)) {
-      throw new Error("Selected import file does not exist");
-    }
-
-    const preferredDeckName =
-      typeof payload?.deckName === "string" ? payload.deckName.trim() : "";
-    const sourceLanguage =
-      typeof payload?.sourceLanguage === "string" ? payload.sourceLanguage.trim() : "";
-    const targetLanguage =
-      typeof payload?.targetLanguage === "string" ? payload.targetLanguage.trim() : "";
-    const tertiaryLanguage =
-      typeof payload?.tertiaryLanguage === "string"
-        ? payload.tertiaryLanguage.trim()
-        : "";
-    const appPreferences = extractAppPreferencesFromSettings(getAppSettings());
-    const duplicateStrategy = ["skip", "update", "keep_both"].includes(
-      payload?.settings?.duplicateStrategy,
-    )
-      ? payload.settings.duplicateStrategy
-      : appPreferences.importExport.duplicateStrategy;
-    const includeExamples =
-      typeof payload?.settings?.includeExamples === "boolean"
-        ? payload.settings.includeExamples
-        : appPreferences.importExport.includeExamples;
-    const includeTags =
-      typeof payload?.settings?.includeTags === "boolean"
-        ? payload.settings.includeTags
-        : appPreferences.importExport.includeTags;
-    const importResult = importDeckFromJsonFile(filePath, {
-      deckName: preferredDeckName,
-      sourceLanguage,
-      targetLanguage,
-      tertiaryLanguage,
-      duplicateStrategy,
-      includeExamples,
-      includeTags,
-    });
     sendDecksUpdated();
     trackAnalyticsEvent("deck.imported", {
       deckId: importResult.deckId,
       importedCount: importResult.importedCount,
       skippedCount: importResult.skippedCount,
       duplicateStrategy,
+      source: "local-file",
     });
 
     return {
       canceled: false,
       ...importResult,
     };
+  });
+
+  ipcMain.handle("decks:import-url", async (_, payload) => {
+    const downloadUrl =
+      typeof payload?.downloadUrl === "string" ? payload.downloadUrl.trim() : "";
+    const fileNameHint =
+      typeof payload?.fileName === "string" ? payload.fileName.trim() : "";
+    let tempFilePath = "";
+
+    try {
+      const downloadedFile = await downloadRemoteDeckToTempFile(
+        downloadUrl,
+        fileNameHint,
+      );
+      tempFilePath = downloadedFile.tempFilePath;
+      const downloadedBytes = downloadedFile.byteLength;
+      const { importResult, duplicateStrategy } = importDeckFromFilePath(
+        tempFilePath,
+        payload || {},
+      );
+
+      sendDecksUpdated();
+      trackAnalyticsEvent("deck.imported", {
+        deckId: importResult.deckId,
+        importedCount: importResult.importedCount,
+        skippedCount: importResult.skippedCount,
+        duplicateStrategy,
+        source: "hub-remote",
+        downloadedBytes,
+      });
+
+      return {
+        canceled: false,
+        ...importResult,
+      };
+    } finally {
+      if (tempFilePath && fs.existsSync(tempFilePath)) {
+        fs.rmSync(tempFilePath, { force: true });
+      }
+    }
   });
 
   ipcMain.handle("decks:export-json", async (_, payload) => {
@@ -2049,6 +2240,27 @@ const setupIpcHandlers = () => {
       canceled: false,
       ...exportResult,
     };
+  });
+
+  ipcMain.handle("decks:export-package", (_, payload) => {
+    const normalizedDeckId = Number(
+      typeof payload === "object" ? payload?.deckId : payload,
+    );
+    const appPreferences = extractAppPreferencesFromSettings(getAppSettings());
+    const includeExamples =
+      typeof payload?.settings?.includeExamples === "boolean"
+        ? payload.settings.includeExamples
+        : appPreferences.importExport.includeExamples;
+    const includeTags =
+      typeof payload?.settings?.includeTags === "boolean"
+        ? payload.settings.includeTags
+        : appPreferences.importExport.includeTags;
+    const exportResult = exportDeckToJsonPackage(normalizedDeckId, {
+      includeExamples,
+      includeTags,
+    });
+
+    return exportResult;
   });
 
   ipcMain.handle("decks:rename", (_, payload) => {
