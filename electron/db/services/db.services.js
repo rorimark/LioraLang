@@ -1,29 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
 import { getDatabase } from "../db.js";
+import {
+  buildExportDeckPackage,
+  getDeckImportMetadata,
+  normalizeWordsForImport,
+  parseDeckPackageFileText,
+  resolveImportConfig,
+  validateImportLanguages,
+} from "../../../src/shared/core/usecases/importExport/index.js";
 
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
-const DECK_PACKAGE_FORMAT = "lioralang.deck";
-const DECK_PACKAGE_VERSION = 1;
 const MAX_DECK_TAGS = 10;
-const DUPLICATE_IMPORT_STRATEGIES = new Set(["skip", "update", "keep_both"]);
-const LANGUAGE_VALUE_ALIASES = {
-  english: ["en", "english"],
-  ukrainian: ["uk", "ua", "ukrainian"],
-  russian: ["ru", "russian"],
-  polish: ["pl", "polish"],
-  german: ["de", "german"],
-  spanish: ["es", "spanish"],
-  french: ["fr", "french"],
-  italian: ["it", "italian"],
-  portuguese: ["pt", "portuguese"],
-  turkish: ["tr", "turkish"],
-  czech: ["cs", "czech"],
-  japanese: ["ja", "japanese"],
-};
-const DEFAULT_IMPORT_SOURCE_LANGUAGE = "English";
-const DEFAULT_IMPORT_TARGET_LANGUAGE = "Ukrainian";
-const DEFAULT_IMPORT_TERTIARY_LANGUAGE = "";
 
 const parseArray = (value) => {
   try {
@@ -252,120 +240,6 @@ const normalizeLanguageName = (value) => {
   return toCleanString(value).toLowerCase();
 };
 
-const sanitizeFieldKey = (value) => {
-  return value.replace(/\s+/g, "_");
-};
-
-const resolveValueByAliases = (word, aliases) => {
-  if (!word || typeof word !== "object" || Array.isArray(word)) {
-    return "";
-  }
-
-  const normalizedWord = new Map(
-    Object.entries(word).map(([key, value]) => [key.toLowerCase(), value]),
-  );
-
-  for (const alias of aliases) {
-    const aliasKey = alias.toLowerCase();
-
-    if (!normalizedWord.has(aliasKey)) {
-      continue;
-    }
-
-    const resolved = toCleanString(normalizedWord.get(aliasKey));
-
-    if (resolved) {
-      return resolved;
-    }
-  }
-
-  return "";
-};
-
-const buildLanguageAliases = (language, fallbackAliases = []) => {
-  const normalizedLanguage = normalizeLanguageName(language);
-  const configuredAliases = LANGUAGE_VALUE_ALIASES[normalizedLanguage] || [];
-  const languageDerivedAliases = normalizedLanguage
-    ? [
-        normalizedLanguage,
-        sanitizeFieldKey(normalizedLanguage),
-      ]
-    : [];
-
-  return [...new Set([...configuredAliases, ...languageDerivedAliases, ...fallbackAliases])];
-};
-
-const resolveImportLanguageConfig = (importOptions = {}) => {
-  if (typeof importOptions === "string") {
-    return {
-      deckName: toCleanString(importOptions),
-      sourceLanguage: "",
-      targetLanguage: "",
-      tertiaryLanguage: "",
-      duplicateStrategy: "skip",
-      includeExamples: true,
-      includeTags: true,
-    };
-  }
-
-  return {
-    deckName: toCleanString(importOptions?.deckName),
-    sourceLanguage: toCleanString(importOptions?.sourceLanguage),
-    targetLanguage: toCleanString(importOptions?.targetLanguage),
-    tertiaryLanguage: toCleanString(importOptions?.tertiaryLanguage),
-    duplicateStrategy: DUPLICATE_IMPORT_STRATEGIES.has(importOptions?.duplicateStrategy)
-      ? importOptions.duplicateStrategy
-      : "skip",
-    includeExamples:
-      typeof importOptions?.includeExamples === "boolean"
-        ? importOptions.includeExamples
-        : true,
-    includeTags:
-      typeof importOptions?.includeTags === "boolean"
-        ? importOptions.includeTags
-        : true,
-  };
-};
-
-const parseDeckImportPayload = (value) => {
-  if (Array.isArray(value)) {
-    return {
-      words: value,
-      deck: null,
-      format: "",
-      version: null,
-    };
-  }
-
-  if (!value || typeof value !== "object") {
-    throw new Error("JSON must contain an array of words or a deck package object");
-  }
-
-  if (!Array.isArray(value.words)) {
-    throw new Error("Deck package must include a words array");
-  }
-
-  const deck = value.deck && typeof value.deck === "object"
-    ? {
-        name: toCleanString(value.deck.name),
-        description: toCleanString(value.deck.description),
-        sourceLanguage: toCleanString(value.deck.sourceLanguage),
-        targetLanguage: toCleanString(value.deck.targetLanguage),
-        tertiaryLanguage: toCleanString(value.deck.tertiaryLanguage),
-        tags: normalizeDeckTags(value.deck.tags),
-      }
-    : null;
-
-  const version = Number(value.version);
-
-  return {
-    words: value.words,
-    deck,
-    format: toCleanString(value.format),
-    version: Number.isFinite(version) ? version : null,
-  };
-};
-
 const buildDeckDescription = ({
   sourceLanguage,
   targetLanguage,
@@ -405,48 +279,6 @@ const normalizeEditableWord = (word, index) => {
     partOfSpeech: toCleanString(word?.part_of_speech),
     tags: toCleanArray(word?.tags),
     examples,
-  };
-};
-
-const normalizeWord = (
-  word,
-  index,
-  {
-    sourceLanguage,
-    targetLanguage,
-    tertiaryLanguage,
-  },
-) => {
-  const sourceValue = resolveValueByAliases(
-    word,
-    buildLanguageAliases(sourceLanguage, ["source"]),
-  );
-
-  if (!sourceValue) {
-    return null;
-  }
-
-  const targetValue = resolveValueByAliases(
-    word,
-    buildLanguageAliases(targetLanguage, ["target"]),
-  );
-  const tertiaryValue = tertiaryLanguage
-    ? resolveValueByAliases(
-        word,
-        buildLanguageAliases(tertiaryLanguage, ["tertiary"]),
-      )
-    : "";
-  const level = toCleanString(word?.level).toUpperCase();
-
-  return {
-    externalId: toCleanString(String(word?.id ?? `imported-${index + 1}`)),
-    source: sourceValue,
-    target: targetValue,
-    tertiary: tertiaryValue,
-    level: ALLOWED_LEVELS.has(level) ? level : null,
-    partOfSpeech: toCleanString(word?.part_of_speech),
-    tags: toCleanArray(word?.tags),
-    examples: toCleanArray(word?.examples),
   };
 };
 
@@ -611,22 +443,22 @@ export const getDeckWords = (deckId) => {
 
 export const readDeckImportMetadataFromJsonFile = (filePath) => {
   const raw = fs.readFileSync(filePath, "utf8");
-  const parsed = JSON.parse(raw);
-  const payload = parseDeckImportPayload(parsed);
-
-  if (!payload.deck) {
-    return {
-      format: payload.format,
-      version: payload.version,
-      wordsCount: payload.words.length,
-    };
-  }
+  const parsedPackage = parseDeckPackageFileText(raw);
+  const metadata = getDeckImportMetadata({
+    parsedPackage,
+    fileName: path.basename(filePath),
+  });
 
   return {
-    format: payload.format,
-    version: payload.version,
-    wordsCount: payload.words.length,
-    ...payload.deck,
+    name: metadata.suggestedDeckName,
+    sourceLanguage: metadata.sourceLanguage,
+    targetLanguage: metadata.targetLanguage,
+    tertiaryLanguage: metadata.tertiaryLanguage,
+    tags: metadata.tags,
+    description: metadata.description,
+    format: metadata.format,
+    version: metadata.version,
+    wordsCount: metadata.wordsCount,
   };
 };
 
@@ -634,103 +466,45 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
   const db = getDatabase();
   const wordSchemaCompatibility = getWordSchemaCompatibility(db);
   const raw = fs.readFileSync(filePath, "utf8");
-  const parsed = JSON.parse(raw);
-  const parsedPayload = parseDeckImportPayload(parsed);
-  const importConfig = resolveImportLanguageConfig(importOptions);
-  const sourceLanguage = toCleanString(
-    importConfig.sourceLanguage ||
-      parsedPayload.deck?.sourceLanguage ||
-      DEFAULT_IMPORT_SOURCE_LANGUAGE,
-  );
-  const targetLanguage = toCleanString(
-    importConfig.targetLanguage ||
-      parsedPayload.deck?.targetLanguage ||
-      DEFAULT_IMPORT_TARGET_LANGUAGE,
-  );
-  const tertiaryLanguage = toCleanString(importConfig.tertiaryLanguage);
-  const resolvedTertiaryLanguage = toCleanString(
-    tertiaryLanguage || parsedPayload.deck?.tertiaryLanguage || DEFAULT_IMPORT_TERTIARY_LANGUAGE,
-  );
-  const sourceLanguageKey = normalizeLanguageName(sourceLanguage);
-  const targetLanguageKey = normalizeLanguageName(targetLanguage);
-  const tertiaryLanguageKey = normalizeLanguageName(resolvedTertiaryLanguage);
-  const importedDeckDescription = toCleanString(parsedPayload.deck?.description);
-  const importedDeckTags = normalizeDeckTags(parsedPayload.deck?.tags);
-  const duplicateStrategy = importConfig.duplicateStrategy;
-  const includeExamples = importConfig.includeExamples;
-  const includeTags = importConfig.includeTags;
-
-  if (!sourceLanguage || !targetLanguage) {
-    throw new Error("Source and target languages are required for import");
-  }
-
-  if (sourceLanguageKey === targetLanguageKey) {
-    throw new Error("Source and target languages should be different");
-  }
-
-  if (
-    tertiaryLanguageKey &&
-    (tertiaryLanguageKey === sourceLanguageKey || tertiaryLanguageKey === targetLanguageKey)
-  ) {
-    throw new Error("Optional language should be different from source and target");
-  }
-
+  const parsedPackage = parseDeckPackageFileText(raw);
   const fileName = path.basename(filePath, path.extname(filePath));
-  const normalizedWords = parsedPayload.words
-    .map((word, index) =>
-      normalizeWord(word, index, {
-        sourceLanguage,
-        targetLanguage,
-        tertiaryLanguage: resolvedTertiaryLanguage,
-      }),
-    )
-    .filter(Boolean)
-    .map((word) => ({
-      ...word,
-      tags: includeTags ? word.tags : [],
-      examples: includeExamples ? word.examples : [],
-    }));
-  let skippedCount = parsedPayload.words.length - normalizedWords.length;
-  let persistedWords = normalizedWords;
+  const importConfig = resolveImportConfig({
+    payload: importOptions,
+    parsedPackage,
+    fallbackDeckName: fileName || "Imported Deck",
+  });
 
-  if (duplicateStrategy === "skip" || duplicateStrategy === "update") {
-    const keyToIndex = new Map();
-    const dedupedWords = [];
+  validateImportLanguages(importConfig);
 
-    normalizedWords.forEach((word) => {
-      const dedupeKey = [
-        toCleanString(word?.source).toLowerCase(),
-        toCleanString(word?.target).toLowerCase(),
-        toCleanString(word?.tertiary).toLowerCase(),
-      ].join("\u0000");
-
-      if (!dedupeKey.replaceAll("\u0000", "")) {
-        dedupedWords.push(word);
-        return;
-      }
-
-      if (!keyToIndex.has(dedupeKey)) {
-        keyToIndex.set(dedupeKey, dedupedWords.length);
-        dedupedWords.push(word);
-        return;
-      }
-
-      skippedCount += 1;
-
-      if (duplicateStrategy === "update") {
-        const existingIndex = keyToIndex.get(dedupeKey);
-
-        if (typeof existingIndex === "number") {
-          dedupedWords[existingIndex] = word;
-        }
-      }
-    });
-
-    persistedWords = dedupedWords;
-  }
+  const sourceLanguage = toCleanString(importConfig.sourceLanguage);
+  const targetLanguage = toCleanString(importConfig.targetLanguage);
+  const resolvedTertiaryLanguage = toCleanString(importConfig.tertiaryLanguage);
+  const includeTags = Boolean(importConfig.includeTags);
+  const normalizedWordsResult = normalizeWordsForImport({
+    parsedPackage,
+    sourceLanguage,
+    targetLanguage,
+    tertiaryLanguage: resolvedTertiaryLanguage,
+    duplicateStrategy: importConfig.duplicateStrategy,
+    includeTags: importConfig.includeTags,
+    includeExamples: importConfig.includeExamples,
+  });
+  const persistedWords = normalizedWordsResult.words.map((word) => ({
+    externalId: toCleanString(word?.externalId),
+    source: toCleanString(word?.source),
+    target: toCleanString(word?.target),
+    tertiary: toCleanString(word?.tertiary),
+    level: toCleanString(word?.level).toUpperCase(),
+    partOfSpeech: toCleanString(word?.part_of_speech),
+    tags: toCleanArray(word?.tags),
+    examples: toCleanArray(word?.examples),
+  }));
+  const skippedCount = Number(normalizedWordsResult.skippedCount) || 0;
+  const importedDeckDescription = toCleanString(importConfig.description);
+  const importedDeckTags = normalizeDeckTags(importConfig.tags);
 
   const deckName = getUniqueDeckName(
-    importConfig.deckName || parsedPayload.deck?.name || fileName || "Imported Deck",
+    importConfig.deckName || fileName || "Imported Deck",
   );
   const deckDescription = importedDeckDescription || `Imported from ${path.basename(filePath)}`;
 
@@ -805,42 +579,17 @@ const buildDeckExportPayload = (deckId, exportOptions = {}) => {
     typeof exportOptions?.includeTags === "boolean"
       ? exportOptions.includeTags
       : true;
-  const hasTertiaryLanguage = Boolean(toCleanString(deck?.tertiaryLanguage));
   const deckTags = includeTags ? normalizeDeckTags(parseArray(deck?.tagsJson)) : [];
-  const wordsPayload = words.map((word) => {
-    const wordPayload = {
-      id: word.externalId || `w${word.id}`,
-      source: word.source,
-      target: word.target,
-      ...(hasTertiaryLanguage ? { tertiary: word.tertiary } : {}),
-      level: word.level,
-      part_of_speech: word.part_of_speech,
-    };
-
-    if (includeTags) {
-      wordPayload.tags = word.tags;
-    }
-
-    if (includeExamples) {
-      wordPayload.examples = word.examples;
-    }
-
-    return wordPayload;
-  });
-  const jsonPayload = {
-    format: DECK_PACKAGE_FORMAT,
-    version: DECK_PACKAGE_VERSION,
-    exportedAt: new Date().toISOString(),
+  const jsonPayload = buildExportDeckPackage({
     deck: {
-      name: deck.name,
-      description: deck.description || "",
-      sourceLanguage: deck.sourceLanguage || "",
-      targetLanguage: deck.targetLanguage || "",
-      tertiaryLanguage: deck.tertiaryLanguage || "",
-      ...(includeTags ? { tags: deckTags } : {}),
+      ...deck,
+      tags: deckTags,
     },
-    words: wordsPayload,
-  };
+    words,
+    includeTags,
+    includeExamples,
+  });
+  const wordsPayload = Array.isArray(jsonPayload?.words) ? jsonPayload.words : [];
 
   return {
     deck,
