@@ -52,7 +52,7 @@ const APP_ICON_PATH =
     ? path.join(__dirname, "assets", "icon.ico")
     : path.join(__dirname, "assets", "icon.png");
 const APP_HOMEPAGE_URL = "https://github.com/rorimark/LioraLang";
-const SETTINGS_ROUTE_PATH = "/settings";
+const SETTINGS_ROUTE_PATH = "/app/settings";
 const SETTINGS_MENU_TABS = [
   {
     key: "general",

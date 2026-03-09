@@ -24,7 +24,7 @@ export const AppLayout = () => {
   const normalizedPathname = normalizePathname(pathname);
   const pageMeta = resolvePageMeta(normalizedPathname);
   const isDesktopMode = runtimeGateway.isDesktopMode();
-  const isLearnPage = normalizedPathname === "/learn";
+  const isLearnPage = normalizedPathname === ROUTE_PATHS.learn;
 
   useEffect(() => {
     if (!isDesktopMode) {

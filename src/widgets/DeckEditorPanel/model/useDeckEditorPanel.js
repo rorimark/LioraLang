@@ -7,7 +7,11 @@ import {
   DEFAULT_TARGET_LANGUAGE,
   LANGUAGE_OPTIONS,
 } from "@shared/config/languages";
-import { ROUTE_PATHS } from "@shared/config/routes";
+import {
+  buildDeckDetailsRoute,
+  buildDeckEditRoute,
+  ROUTE_PATHS,
+} from "@shared/config/routes";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const PART_OF_SPEECH_OPTIONS = [
@@ -513,7 +517,7 @@ export const useDeckEditorPanel = () => {
       return;
     }
 
-    navigate(`/decks/${numericDeckId}`);
+    navigate(buildDeckDetailsRoute(numericDeckId));
   }, [navigate, numericDeckId]);
 
   const handleSaveDeck = useCallback(async () => {
@@ -579,7 +583,7 @@ export const useDeckEditorPanel = () => {
       );
 
       if (!numericDeckId) {
-        navigate(`/decks/${savedDeck.id}/edit`, { replace: true });
+        navigate(buildDeckEditRoute(savedDeck.id), { replace: true });
       }
     } catch (saveError) {
       reportStatus(saveError.message || "Failed to save deck", "error");

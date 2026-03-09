@@ -4,6 +4,7 @@ import { usePlatformService } from "@app/providers";
 import { useDeckWords } from "@entities/deck";
 import { useCardCatalog } from "@features/card-catalog";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { buildDeckEditRoute } from "@shared/config/routes";
 
 const FILTERS_BREAKPOINT = 1080;
 
@@ -139,7 +140,7 @@ export const useDeckDetailsPanel = () => {
       return;
     }
 
-    navigate(`/decks/${deckId}/edit`);
+    navigate(buildDeckEditRoute(deckId));
   }, [deckId, navigate]);
 
   return {
