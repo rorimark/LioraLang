@@ -13,6 +13,7 @@ export const DecksOverviewPanel = memo(() => {
     error,
     message,
     messageVariant,
+    publishingDeckId,
     exportingDeckId,
     deletingDeckId,
     isImporting,
@@ -27,6 +28,7 @@ export const DecksOverviewPanel = memo(() => {
     openDeck,
     openCreateDeck,
     openEditDeck,
+    publishDeck,
     exportDeck,
     openDeleteModal,
     closeDeleteModal,
@@ -92,8 +94,10 @@ export const DecksOverviewPanel = memo(() => {
           decks={decks}
           onOpenDeck={openDeck}
           onEditDeck={openEditDeck}
+          onPublishDeck={publishDeck}
           onExportDeck={exportDeck}
           onDeleteDeck={openDeleteModal}
+          publishingDeckId={publishingDeckId}
           exportingDeckId={exportingDeckId}
           deletingDeckId={deletingDeckId}
         />

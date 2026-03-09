@@ -183,6 +183,17 @@
   padding: 6px 10px;
 }
 
+.decks-table__actions .decks-table__button--publish {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
+  color: var(--color-primary-strong);
+}
+
+.decks-table__actions .decks-table__button--publish:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 20%, var(--color-surface));
+}
+
 .decks-table__actions .decks-table__button--danger:hover:not(:disabled) {
   border-color: var(--color-danger);
   background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));

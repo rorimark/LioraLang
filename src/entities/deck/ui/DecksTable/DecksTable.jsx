@@ -120,13 +120,19 @@ export const DecksTable = memo(
     decks,
     onOpenDeck,
     onEditDeck,
+    onPublishDeck,
     onExportDeck,
     onDeleteDeck,
+    publishingDeckId = null,
     exportingDeckId = null,
     deletingDeckId = null,
   }) => {
     const handleOpenDeck = useCallback(
       (event) => {
+        if (typeof onOpenDeck !== "function") {
+          return;
+        }
+
         onOpenDeck(event.currentTarget.dataset.deckId);
       },
       [onOpenDeck],
@@ -134,6 +140,10 @@ export const DecksTable = memo(
 
     const handleExportDeck = useCallback(
       (event) => {
+        if (typeof onExportDeck !== "function") {
+          return;
+        }
+
         onExportDeck(event.currentTarget.dataset.deckId);
       },
       [onExportDeck],
@@ -141,13 +151,32 @@ export const DecksTable = memo(
 
     const handleEditDeck = useCallback(
       (event) => {
+        if (typeof onEditDeck !== "function") {
+          return;
+        }
+
         onEditDeck(event.currentTarget.dataset.deckId);
       },
       [onEditDeck],
     );
 
+    const handlePublishDeck = useCallback(
+      (event) => {
+        if (typeof onPublishDeck !== "function") {
+          return;
+        }
+
+        onPublishDeck(event.currentTarget.dataset.deckId);
+      },
+      [onPublishDeck],
+    );
+
     const handleDeleteDeck = useCallback(
       (event) => {
+        if (typeof onDeleteDeck !== "function") {
+          return;
+        }
+
         onDeleteDeck(
           event.currentTarget.dataset.deckId,
           event.currentTarget.dataset.deckName,
@@ -233,6 +262,17 @@ export const DecksTable = memo(
                       onClick={handleEditDeck}
                     >
                       Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="decks-table__button--publish"
+                      data-deck-id={deck.id}
+                      onClick={handlePublishDeck}
+                      disabled={String(publishingDeckId) === String(deck.id)}
+                    >
+                      {String(publishingDeckId) === String(deck.id)
+                        ? "Publishing..."
+                        : "Publish"}
                     </button>
                     <button
                       type="button"
