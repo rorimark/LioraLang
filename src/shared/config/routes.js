@@ -1,5 +1,19 @@
 export const ROUTE_PATHS = {
   root: "/",
+  landing: "/",
+  appRoot: "/app",
+  learn: "/app/learn",
+  browse: "/app/browse",
+  decks: "/app/decks",
+  deckCreate: "/app/decks/new",
+  deckEdit: "/app/decks/:deckId/edit",
+  deckDetails: "/app/decks/:deckId",
+  progress: "/app/progress",
+  account: "/app/account",
+  settings: "/app/settings",
+};
+
+export const LEGACY_ROUTE_PATHS = {
   learn: "/learn",
   browse: "/browse",
   decks: "/decks",
@@ -9,6 +23,36 @@ export const ROUTE_PATHS = {
   progress: "/progress",
   account: "/account",
   settings: "/settings",
+};
+
+const toRouteParam = (value) => {
+  const normalizedValue = String(value ?? "").trim();
+
+  if (!normalizedValue) {
+    return "";
+  }
+
+  return encodeURIComponent(normalizedValue);
+};
+
+export const buildDeckDetailsRoute = (deckId) => {
+  const routeParam = toRouteParam(deckId);
+
+  if (!routeParam) {
+    return ROUTE_PATHS.decks;
+  }
+
+  return `${ROUTE_PATHS.decks}/${routeParam}`;
+};
+
+export const buildDeckEditRoute = (deckId) => {
+  const routeParam = toRouteParam(deckId);
+
+  if (!routeParam) {
+    return ROUTE_PATHS.decks;
+  }
+
+  return `${ROUTE_PATHS.decks}/${routeParam}/edit`;
 };
 
 export const NAV_ITEMS = [
@@ -83,16 +127,19 @@ export const PAGE_META = {
   },
 };
 
+const DECK_EDIT_ROUTE_PATTERN = /^\/app\/decks\/[^/]+\/edit$/;
+const DECK_DETAILS_ROUTE_PREFIX = "/app/decks/";
+
 export const resolvePageMeta = (pathname) => {
   if (pathname === ROUTE_PATHS.deckCreate) {
     return PAGE_META[ROUTE_PATHS.deckEdit];
   }
 
-  if (/^\/decks\/[^/]+\/edit$/.test(pathname)) {
+  if (DECK_EDIT_ROUTE_PATTERN.test(pathname)) {
     return PAGE_META[ROUTE_PATHS.deckEdit];
   }
 
-  if (pathname.startsWith("/decks/")) {
+  if (pathname.startsWith(DECK_DETAILS_ROUTE_PREFIX)) {
     return PAGE_META[ROUTE_PATHS.deckDetails];
   }
 

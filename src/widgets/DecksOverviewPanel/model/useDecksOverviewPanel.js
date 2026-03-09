@@ -4,7 +4,11 @@ import { usePlatformService } from "@app/providers";
 import { useDecks } from "@entities/deck";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import { ROUTE_PATHS } from "@shared/config/routes";
+import {
+  buildDeckDetailsRoute,
+  buildDeckEditRoute,
+  ROUTE_PATHS,
+} from "@shared/config/routes";
 
 export const useDecksOverviewPanel = () => {
   const navigate = useNavigate();
@@ -52,7 +56,7 @@ export const useDecksOverviewPanel = () => {
 
   const openDeck = useCallback(
     (deckId) => {
-      navigate(`/decks/${deckId}`);
+      navigate(buildDeckDetailsRoute(deckId));
     },
     [navigate],
   );
@@ -63,7 +67,7 @@ export const useDecksOverviewPanel = () => {
 
   const openEditDeck = useCallback(
     (deckId) => {
-      navigate(`/decks/${deckId}/edit`);
+      navigate(buildDeckEditRoute(deckId));
     },
     [navigate],
   );
