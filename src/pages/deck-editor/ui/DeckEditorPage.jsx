@@ -1,4 +1,4 @@
-import { DeckEditorPanel } from "@widgets";
+import { DeckEditorPanel } from "@widgets/DeckEditorPanel";
 
 export const DeckEditorPage = () => {
   return (

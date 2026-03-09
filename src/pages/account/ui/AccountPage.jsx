@@ -1,4 +1,4 @@
-import { AccountHubPanel } from "@widgets";
+import { AccountHubPanel } from "@widgets/AccountHubPanel";
 
 export const AccountPage = () => {
   return (

@@ -1,4 +1,4 @@
-import { SettingsDatabasePanel } from "@widgets";
+import { SettingsDatabasePanel } from "@widgets/SettingsDatabasePanel";
 
 export const SettingsPage = () => {
   return (
