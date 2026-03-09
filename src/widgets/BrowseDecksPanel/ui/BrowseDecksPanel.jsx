@@ -17,7 +17,6 @@ export const BrowseDecksPanel = memo(() => {
     importingDeckId,
     message,
     messageVariant,
-    refreshDecks,
     handleSearchInputChange,
     clearSearch,
     goToPreviousPage,

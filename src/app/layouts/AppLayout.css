@@ -8,6 +8,10 @@
 }
 
 .app-shell {
+  --mobile-content-padding-x: 16px;
+  --mobile-content-padding-y: 10px;
+  --mobile-nav-offset: calc(env(safe-area-inset-bottom) + 72px);
+  --mobile-learn-nav-offset: calc(env(safe-area-inset-bottom) + 84px);
   flex: 1;
   height: 100%;
   min-height: 0;
@@ -40,17 +44,28 @@
 }
 
 .app-shell__content--learn {
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 12px 24px 24px;
+}
+
+.app-shell__content--learn > .page.learn-page {
+  flex: 1;
+  height: 100%;
+  min-height: 0;
 }
 
 .app-shell__mobile-nav {
   display: none;
+  height: 0;
 }
 
 @media (max-width: 960px) {
   .app-shell {
     grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr);
   }
 
   .app-shell__sidebar {
@@ -58,19 +73,81 @@
   }
 
   .app-shell__content {
-    padding: 0 16px 104px;
+    padding:
+      var(--mobile-content-padding-y)
+      var(--mobile-content-padding-x)
+      calc(var(--mobile-nav-offset) + var(--mobile-content-padding-y));
   }
 
   .app-shell__content--learn {
-    padding: 0 12px calc(env(safe-area-inset-bottom) + 82px);
+    padding:
+      var(--mobile-content-padding-y)
+      var(--mobile-content-padding-x)
+      var(--mobile-learn-nav-offset);
+    overflow: hidden;
   }
 
   .app-shell__content--learn .page.learn-page {
-    padding-top: 6px;
-    gap: 10px;
+    padding-top: 0;
+    gap: 0;
   }
 
   .app-shell__mobile-nav {
     display: block;
+    height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    --mobile-content-padding-x: 12px;
+    --mobile-content-padding-y: 8px;
+    --mobile-nav-offset: calc(env(safe-area-inset-bottom) + 68px);
+    --mobile-learn-nav-offset: calc(env(safe-area-inset-bottom) + 80px);
+  }
+
+  .app-shell__content--learn {
+    padding:
+      var(--mobile-content-padding-y)
+      var(--mobile-content-padding-x)
+      var(--mobile-learn-nav-offset);
+  }
+}
+
+@media (max-width: 960px) and (orientation: landscape) and (max-height: 560px) {
+  .app-shell {
+    --mobile-content-padding-x: 10px;
+    --mobile-content-padding-y: 8px;
+    --mobile-nav-offset: calc(env(safe-area-inset-bottom) + 10px);
+    --mobile-learn-nav-offset: calc(env(safe-area-inset-bottom) + 10px);
+    --mobile-side-nav-width: 86px;
+    --mobile-side-nav-edge-gap: 8px;
+    --mobile-landscape-header-height: 40px;
+  }
+
+  .app-shell__content {
+    padding:
+      var(--mobile-content-padding-y)
+      calc(
+        var(--mobile-side-nav-width) + 12px + var(--mobile-side-nav-edge-gap) + env(safe-area-inset-right)
+      )
+      var(--mobile-content-padding-y)
+      var(--mobile-content-padding-x);
+  }
+
+  .app-shell__content--learn {
+    padding:
+      var(--mobile-content-padding-y)
+      calc(
+        var(--mobile-side-nav-width) + 12px + var(--mobile-side-nav-edge-gap) + env(safe-area-inset-right)
+      )
+      var(--mobile-content-padding-y)
+      var(--mobile-content-padding-x);
+    overflow: hidden;
+  }
+
+  .app-shell__content--learn .page.learn-page {
+    padding-top: 0;
+    gap: 0;
   }
 }

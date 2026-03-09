@@ -49,11 +49,46 @@
 .nav-tab--compact {
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 6px;
+  gap: 3px;
+  padding: 8px 5px;
 }
 
 .nav-tab--compact span {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   text-align: center;
+  line-height: 1.1;
+}
+
+.nav-tab--compact svg {
+  width: 1.16rem;
+  height: 1.16rem;
+}
+
+@media (max-width: 480px) {
+  .nav-tab--compact {
+    border-radius: 9px;
+    padding: 7px 4px;
+  }
+
+  .nav-tab--compact svg {
+    width: 1.08rem;
+    height: 1.08rem;
+  }
+
+  .nav-tab--compact span {
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-width: 960px) and (orientation: landscape) and (max-height: 560px) {
+  .nav-tab--compact {
+    gap: 3px;
+    min-height: 50px;
+    padding: 5px 2px;
+  }
+
+  .nav-tab--compact span {
+    font-size: 0.56rem;
+    line-height: 1.1;
+  }
 }
