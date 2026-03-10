@@ -82,7 +82,7 @@ export const SettingsDatabasePanel = memo(() => {
         toggleLanguageReview,
         confirmImportDeck,
         handlePasteTextChange,
-        parsePasteText,
+        importFromPaste,
         openDbFolder,
         changeDbLocation,
         verifyIntegrity,
@@ -344,7 +344,7 @@ export const SettingsDatabasePanel = memo(() => {
         onCloseLanguageReview={closeLanguageReview}
         onToggleLanguageReview={toggleLanguageReview}
         onPasteTextChange={handlePasteTextChange}
-        onParsePasteText={parsePasteText}
+        onImportPaste={importFromPaste}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
       />
