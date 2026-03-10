@@ -12,11 +12,16 @@ export const ImportDeckModal = memo(
     importLanguages,
     languageOptions,
     isLanguageReviewOpen = false,
+    isPasteMode = false,
+    pasteTextDraft = "",
+    pasteError = "",
     onDeckNameChange,
     onLanguageChange,
     onOpenLanguageReview,
     onCloseLanguageReview,
     onToggleLanguageReview,
+    onPasteTextChange,
+    onParsePasteText,
     onConfirm,
     onClose,
   }) => {
@@ -51,6 +56,34 @@ export const ImportDeckModal = memo(
           onChange={onDeckNameChange}
           placeholder="Use filename if empty"
         />
+        {isPasteMode ? (
+          <div className="import-deck-modal__paste">
+            <label className="import-deck-modal__label" htmlFor="import-deck-paste">
+              Paste deck JSON (mobile fallback)
+            </label>
+            <textarea
+              id="import-deck-paste"
+              className="import-deck-modal__input import-deck-modal__textarea"
+              value={pasteTextDraft}
+              onChange={onPasteTextChange}
+              placeholder="Paste the deck JSON here"
+              rows={6}
+            />
+            <div className="import-deck-modal__paste-actions">
+              <button
+                type="button"
+                className="import-deck-modal__language-toggle"
+                onClick={onParsePasteText}
+                disabled={!pasteTextDraft.trim()}
+              >
+                Use pasted JSON
+              </button>
+              {pasteError ? (
+                <span className="import-deck-modal__paste-error">{pasteError}</span>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
         <div className="import-deck-modal__language-review">
           <p className="import-deck-modal__language-summary">
             Detected languages in package:{" "}

@@ -63,25 +63,30 @@ export const SettingsDatabasePanel = memo(() => {
     isImporting,
     selectedImportFileName,
     selectedImportWordsCount,
-    importDeckNameDraft,
-    importLanguages,
-    languageOptions,
-    isImportConfirmOpen,
-    isLanguageReviewOpen,
-    isIntegrityRepairConfirmOpen,
-    integrityRepairIssues,
-    themeMode,
-    themeModeOptions,
+        importDeckNameDraft,
+        importLanguages,
+        languageOptions,
+        isImportConfirmOpen,
+        isLanguageReviewOpen,
+        isPasteMode,
+        pasteTextDraft,
+        pasteError,
+        isIntegrityRepairConfirmOpen,
+        integrityRepairIssues,
+        themeMode,
+        themeModeOptions,
     openImportConfirm,
-    closeImportConfirm,
-    openLanguageReview,
-    closeLanguageReview,
-    toggleLanguageReview,
-    confirmImportDeck,
-    openDbFolder,
-    changeDbLocation,
-    verifyIntegrity,
-    confirmIntegrityRepair,
+        closeImportConfirm,
+        openLanguageReview,
+        closeLanguageReview,
+        toggleLanguageReview,
+        confirmImportDeck,
+        handlePasteTextChange,
+        parsePasteText,
+        openDbFolder,
+        changeDbLocation,
+        verifyIntegrity,
+        confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     handleThemeModeChange,
     openResetSettingsConfirm,
@@ -330,11 +335,16 @@ export const SettingsDatabasePanel = memo(() => {
         importLanguages={importLanguages}
         languageOptions={languageOptions}
         isLanguageReviewOpen={isLanguageReviewOpen}
+        isPasteMode={isPasteMode}
+        pasteTextDraft={pasteTextDraft}
+        pasteError={pasteError}
         onDeckNameChange={handleImportDeckNameDraftChange}
         onLanguageChange={handleImportLanguageChange}
         onOpenLanguageReview={openLanguageReview}
         onCloseLanguageReview={closeLanguageReview}
         onToggleLanguageReview={toggleLanguageReview}
+        onPasteTextChange={handlePasteTextChange}
+        onParsePasteText={parsePasteText}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
       />

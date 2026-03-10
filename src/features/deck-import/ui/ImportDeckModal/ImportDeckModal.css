@@ -63,3 +63,28 @@
   padding: 8px 10px;
   word-break: break-all;
 }
+
+.import-deck-modal__paste {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px dashed var(--color-border);
+  border-radius: 9px;
+}
+
+.import-deck-modal__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.import-deck-modal__paste-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.import-deck-modal__paste-error {
+  color: var(--color-danger);
+  font-size: 0.78rem;
+}
