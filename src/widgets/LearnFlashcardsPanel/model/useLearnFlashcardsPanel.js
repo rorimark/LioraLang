@@ -63,6 +63,12 @@ const SHUFFLE_MODE_PER_SESSION = "per_session";
 
 const createShuffleSeed = () => Math.floor(Math.random() * 2_147_483_646) + 1;
 
+const LEARN_SESSION_CACHE = {
+  sessionsByDeckId: {},
+  extendedSessionByDeckId: {},
+  shuffleSeedsByDeckId: {},
+};
+
 const buildCardFrontText = (word) => word?.source || "-";
 
 const buildCardBackText = (word) => {
@@ -228,13 +234,17 @@ export const useLearnFlashcardsPanel = () => {
   const { shortcutSettings } = useShortcutSettings();
   const [learnProgress, setLearnProgress] = useState(DEFAULT_LEARN_PROGRESS);
   const [isLearnProgressReady, setIsLearnProgressReady] = useState(false);
-  const [extendedSessionByDeckId, setExtendedSessionByDeckId] = useState({});
+  const [extendedSessionByDeckId, setExtendedSessionByDeckId] = useState(
+    () => LEARN_SESSION_CACHE.extendedSessionByDeckId || {},
+  );
   const [session, setSession] = useState(EMPTY_SESSION);
   const [isSessionLoading, setIsSessionLoading] = useState(false);
   const [sessionError, setSessionError] = useState("");
   const [isRatingPending, setIsRatingPending] = useState(false);
   const loadSessionRequestRef = useRef(0);
-  const shuffleSeedByDeckRef = useRef({});
+  const shuffleSeedByDeckRef = useRef(
+    LEARN_SESSION_CACHE.shuffleSeedsByDeckId || {},
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -331,6 +341,7 @@ export const useLearnFlashcardsPanel = () => {
   useEffect(() => {
     if (shuffleMode !== SHUFFLE_MODE_PER_SESSION) {
       shuffleSeedByDeckRef.current = {};
+      LEARN_SESSION_CACHE.shuffleSeedsByDeckId = {};
     }
   }, [shuffleMode]);
 
@@ -353,11 +364,37 @@ export const useLearnFlashcardsPanel = () => {
         !Number.isInteger(shuffleSeedByDeckRef.current[normalizedDeckId])
       ) {
         shuffleSeedByDeckRef.current[normalizedDeckId] = createShuffleSeed();
+        LEARN_SESSION_CACHE.shuffleSeedsByDeckId = {
+          ...shuffleSeedByDeckRef.current,
+        };
       }
 
       return shuffleSeedByDeckRef.current[normalizedDeckId];
     },
     [shuffleMode],
+  );
+
+  const restoreCachedSession = useCallback(
+    (deckId) => {
+      const normalizedDeckId = String(deckId || "");
+
+      if (!normalizedDeckId) {
+        return false;
+      }
+
+      const cached = LEARN_SESSION_CACHE.sessionsByDeckId[normalizedDeckId];
+
+      if (!cached || !cached.session) {
+        return false;
+      }
+
+      setSession(cached.session);
+      setSessionError(cached.sessionError || "");
+      setIsSessionLoading(false);
+      setProgressCardWordId(normalizedDeckId, cached.session?.card?.wordId);
+      return true;
+    },
+    [setProgressCardWordId],
   );
 
   const loadSession = useCallback(
@@ -371,11 +408,17 @@ export const useLearnFlashcardsPanel = () => {
         Number.isInteger(options?.shuffleSeed) && options.shuffleSeed > 0
           ? options.shuffleSeed
           : resolveShuffleSeed(normalizedDeckId);
+      const preferCache =
+        typeof options?.preferCache === "boolean" ? options.preferCache : true;
 
       if (!normalizedDeckId) {
         setSession(EMPTY_SESSION);
         setSessionError("");
         setIsSessionLoading(false);
+        return;
+      }
+
+      if (preferCache && restoreCachedSession(normalizedDeckId)) {
         return;
       }
 
@@ -422,6 +465,7 @@ export const useLearnFlashcardsPanel = () => {
     },
     [
       extendedSessionByDeckId,
+      restoreCachedSession,
       resolveShuffleSeed,
       setProgressCardWordId,
       shuffleMode,
@@ -450,7 +494,7 @@ export const useLearnFlashcardsPanel = () => {
   }, [selectedDeckId]);
 
   useEffect(() => {
-    void loadSession(selectedDeckId);
+    void loadSession(selectedDeckId, { preferCache: true });
   }, [loadSession, selectedDeckId]);
 
   useEffect(() => {
@@ -586,6 +630,7 @@ export const useLearnFlashcardsPanel = () => {
     void loadSession(selectedDeckId, {
       forceAllCards: true,
       shuffleSeed: renewedShuffleSeed,
+      preferCache: false,
     });
   }, [loadSession, resolveShuffleSeed, selectedDeckId]);
 
@@ -685,8 +730,26 @@ export const useLearnFlashcardsPanel = () => {
     [currentWord],
   );
   const handleRefreshSession = useCallback(() => {
-    void loadSession(selectedDeckId);
+    void loadSession(selectedDeckId, { preferCache: false });
   }, [loadSession, selectedDeckId]);
+
+  useEffect(() => {
+    if (!selectedDeckId) {
+      return;
+    }
+
+    LEARN_SESSION_CACHE.sessionsByDeckId[selectedDeckId] = {
+      session,
+      sessionError,
+      updatedAtMs: Date.now(),
+    };
+  }, [selectedDeckId, session, sessionError]);
+
+  useEffect(() => {
+    LEARN_SESSION_CACHE.extendedSessionByDeckId = {
+      ...extendedSessionByDeckId,
+    };
+  }, [extendedSessionByDeckId]);
   const handleOpenDeckCreatePage = useCallback(() => {
     navigate(ROUTE_PATHS.deckCreate);
   }, [navigate]);
