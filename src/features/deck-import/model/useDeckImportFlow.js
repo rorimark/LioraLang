@@ -14,7 +14,8 @@ import {
   LANGUAGE_OPTIONS,
 } from "@shared/config/languages";
 
-const toLanguageKey = (value) => value.trim().toLowerCase();
+const toCleanString = (value) => (typeof value === "string" ? value.trim() : "");
+const toLanguageKey = (value) => toCleanString(value).toLowerCase();
 
 const createImportLanguagesFromDefaults = (deckDefaults = {}) => {
   const preferredSource =
@@ -86,7 +87,6 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     () => createImportLanguagesFromDefaults(appPreferences.deckDefaults),
     [appPreferences.deckDefaults],
   );
-  const isDesktopMode = runtimeGateway.isDesktopMode();
   const [isImporting, setIsImporting] = useState(false);
   const [selectedImportFilePath, setSelectedImportFilePath] = useState("");
   const [selectedImportFileName, setSelectedImportFileName] = useState("");
@@ -95,10 +95,10 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   const [importDeckNameDraft, setImportDeckNameDraft] = useState("");
   const [isImportConfirmOpen, setIsImportConfirmOpen] = useState(false);
   const [isLanguageReviewOpen, setIsLanguageReviewOpen] = useState(false);
-  const defaultPasteMode = !isDesktopMode;
-  const [isPasteMode, setIsPasteMode] = useState(defaultPasteMode);
   const [pasteTextDraft, setPasteTextDraft] = useState("");
   const [pasteError, setPasteError] = useState("");
+  const [jsonDeckNameDraft, setJsonDeckNameDraft] = useState("");
+  const [isJsonImportOpen, setIsJsonImportOpen] = useState(false);
   const [importLanguages, setImportLanguages] = useState(
     () => defaultImportLanguages,
   );
@@ -120,11 +120,17 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     setSelectedImportWordsCount(null);
     setImportDeckNameDraft("");
     setIsLanguageReviewOpen(false);
-    setIsPasteMode(defaultPasteMode);
     setPasteTextDraft("");
     setPasteError("");
     setImportLanguages(defaultImportLanguages);
-  }, [defaultImportLanguages, defaultPasteMode]);
+  }, [defaultImportLanguages]);
+
+  const resetJsonImportState = useCallback(() => {
+    setIsJsonImportOpen(false);
+    setPasteTextDraft("");
+    setPasteError("");
+    setJsonDeckNameDraft("");
+  }, []);
 
   const applyImportSelection = useCallback((result) => {
     const filePath =
@@ -160,13 +166,11 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       Boolean(appPreferences.importExport.autoOpenLanguageReview),
     );
     setIsImportConfirmOpen(true);
-    setIsPasteMode(defaultPasteMode);
     setPasteTextDraft("");
     setPasteError("");
   }, [
     appPreferences.deckDefaults,
     appPreferences.importExport.autoOpenLanguageReview,
-    defaultPasteMode,
     reportMessage,
   ]);
 
@@ -180,6 +184,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
 
   const openImportConfirm = useCallback(() => {
     reportMessage("", "info");
+    resetJsonImportState();
 
     deckRepository
       .pickImportDeckJson()
@@ -190,16 +195,9 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         applyImportSelection(result);
       })
       .catch((pickError) => {
-        const message = pickError.message || "Failed to select import file";
-        reportMessage(message, "error");
-        if (!isDesktopMode) {
-          setIsPasteMode(true);
-          setPasteError(message);
-          setPasteTextDraft("");
-          setIsImportConfirmOpen(true);
-        }
+        reportMessage(pickError.message || "Failed to select import file", "error");
       });
-  }, [applyImportSelection, deckRepository, isDesktopMode, reportMessage]);
+  }, [applyImportSelection, deckRepository, reportMessage, resetJsonImportState]);
 
   useEffect(() => {
     const unsubscribe = runtimeGateway.subscribeImportDeckFileRequested((payload) => {
@@ -235,6 +233,10 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       ...currentState,
       [name]: value,
     }));
+  }, []);
+
+  const handleJsonDeckNameChange = useCallback((event) => {
+    setJsonDeckNameDraft(event.target.value);
   }, []);
 
   const handlePasteTextChange = useCallback((event) => {
@@ -306,7 +308,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
 
       if (result?.canceled) {
         resetImportState();
-        return;
+        return { success: false, canceled: true };
       }
 
       const importedCount = Number.isInteger(result?.importedCount)
@@ -347,8 +349,11 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       if (typeof onImportSuccess === "function") {
         await onImportSuccess(result);
       }
+
+      return { success: true, result };
     } catch (importError) {
       reportMessage(importError.message || "Failed to import deck", "error");
+      return { success: false, canceled: false };
     } finally {
       setIsImporting(false);
     }
@@ -362,12 +367,12 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     resetImportState,
   ]);
 
-  const importFromPaste = useCallback(() => {
-    const normalizedText = pasteTextDraft.trim();
+  const importFromPaste = useCallback(async ({ text = "", deckName = "" } = {}) => {
+    const normalizedText = toCleanString(text) || pasteTextDraft.trim();
 
     if (!normalizedText) {
       setPasteError("Paste deck JSON first");
-      return;
+      return { success: false };
     }
 
     try {
@@ -382,27 +387,38 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         targetLanguage: metadata.targetLanguage,
         tertiaryLanguage: metadata.tertiaryLanguage,
       }, appPreferences.deckDefaults);
-      const deckName =
-        importDeckNameDraft.trim() || metadata.suggestedDeckName || "Imported Deck";
+      const resolvedDeckName =
+        toCleanString(deckName) ||
+        jsonDeckNameDraft.trim() ||
+        metadata.suggestedDeckName ||
+        "Imported Deck";
 
       setPasteError("");
 
-      void runImport({
+      const importResult = await runImport({
         filePath: "",
         fileText: normalizedText,
         fileName: "pasted-deck.lioradeck",
-        deckName,
+        deckName: resolvedDeckName,
         sourceLanguage: resolvedLanguages.sourceLanguage,
         targetLanguage: resolvedLanguages.targetLanguage,
         tertiaryLanguage: resolvedLanguages.tertiaryLanguage,
       });
+
+      if (importResult?.success) {
+        resetJsonImportState();
+      }
+
+      return importResult;
     } catch (error) {
       setPasteError(error.message || "Failed to parse pasted deck");
+      return { success: false };
     }
   }, [
     appPreferences.deckDefaults,
-    importDeckNameDraft,
+    jsonDeckNameDraft,
     pasteTextDraft,
+    resetJsonImportState,
     runImport,
   ]);
 
@@ -413,6 +429,17 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   const closeLanguageReview = useCallback(() => {
     setIsLanguageReviewOpen(false);
   }, []);
+
+  const openJsonImport = useCallback(() => {
+    setIsJsonImportOpen(true);
+    setPasteError("");
+  }, []);
+
+  const closeJsonImport = useCallback(() => {
+    if (!isImporting) {
+      resetJsonImportState();
+    }
+  }, [isImporting, resetJsonImportState]);
 
   const toggleLanguageReview = useCallback(() => {
     setIsLanguageReviewOpen((value) => !value);
@@ -453,7 +480,8 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     languageOptions: LANGUAGE_OPTIONS,
     isImportConfirmOpen,
     isLanguageReviewOpen,
-    isPasteMode: isPasteMode && !isDesktopMode,
+    isJsonImportOpen,
+    jsonDeckNameDraft,
     pasteTextDraft,
     pasteError,
     openImportConfirm,
@@ -461,9 +489,12 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     openLanguageReview,
     closeLanguageReview,
     toggleLanguageReview,
+    openJsonImport,
+    closeJsonImport,
     confirmImportDeck,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
+    handleJsonDeckNameChange,
     handlePasteTextChange,
     importFromPaste,
   };

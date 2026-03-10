@@ -1,2 +1,2 @@
-export { ImportDeckModal } from "./ui";
+export { CreateDeckFromJsonModal, ImportDeckModal } from "./ui";
 export { useDeckImportFlow } from "./model";

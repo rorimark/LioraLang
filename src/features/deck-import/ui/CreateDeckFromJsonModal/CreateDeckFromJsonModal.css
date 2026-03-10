@@ -1,0 +1,5 @@
+.json-deck-modal__error {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: 0.78rem;
+}

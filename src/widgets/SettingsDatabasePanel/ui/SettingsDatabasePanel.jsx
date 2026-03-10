@@ -3,7 +3,7 @@ import {
   AppPreferencesSection,
   ImportExportSettingsSection,
 } from "@features/app-preferences";
-import { ImportDeckModal } from "@features/deck-import";
+import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
 import { ThemeSwitch } from "@features/theme-switch";
@@ -63,26 +63,30 @@ export const SettingsDatabasePanel = memo(() => {
     isImporting,
     selectedImportFileName,
     selectedImportWordsCount,
-        importDeckNameDraft,
-        importLanguages,
-        languageOptions,
-        isImportConfirmOpen,
-        isLanguageReviewOpen,
-        isPasteMode,
-        pasteTextDraft,
-        pasteError,
+    importDeckNameDraft,
+    importLanguages,
+    languageOptions,
+    isImportConfirmOpen,
+    isLanguageReviewOpen,
+    isJsonImportOpen,
+    jsonDeckNameDraft,
+    pasteTextDraft,
+    pasteError,
         isIntegrityRepairConfirmOpen,
         integrityRepairIssues,
         themeMode,
         themeModeOptions,
     openImportConfirm,
-        closeImportConfirm,
+    openJsonImport,
+    closeImportConfirm,
+    closeJsonImport,
         openLanguageReview,
         closeLanguageReview,
         toggleLanguageReview,
         confirmImportDeck,
-        handlePasteTextChange,
-        importFromPaste,
+    handlePasteTextChange,
+    handleJsonDeckNameChange,
+    importFromPaste,
         openDbFolder,
         changeDbLocation,
         verifyIntegrity,
@@ -248,6 +252,13 @@ export const SettingsDatabasePanel = memo(() => {
             >
               {isImporting ? "Importing..." : "Import deck file"}
             </button>
+            <button
+              type="button"
+              onClick={openJsonImport}
+              disabled={isImporting}
+            >
+              Create deck from JSON
+            </button>
           </div>
 
           <ImportExportSettingsSection />
@@ -335,18 +346,25 @@ export const SettingsDatabasePanel = memo(() => {
         importLanguages={importLanguages}
         languageOptions={languageOptions}
         isLanguageReviewOpen={isLanguageReviewOpen}
-        isPasteMode={isPasteMode}
-        pasteTextDraft={pasteTextDraft}
-        pasteError={pasteError}
         onDeckNameChange={handleImportDeckNameDraftChange}
         onLanguageChange={handleImportLanguageChange}
         onOpenLanguageReview={openLanguageReview}
         onCloseLanguageReview={closeLanguageReview}
         onToggleLanguageReview={toggleLanguageReview}
-        onPasteTextChange={handlePasteTextChange}
-        onImportPaste={importFromPaste}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
+      />
+
+      <CreateDeckFromJsonModal
+        isOpen={isJsonImportOpen}
+        isImporting={isImporting}
+        deckNameDraft={jsonDeckNameDraft}
+        jsonText={pasteTextDraft}
+        jsonError={pasteError}
+        onDeckNameChange={handleJsonDeckNameChange}
+        onJsonTextChange={handlePasteTextChange}
+        onConfirm={importFromPaste}
+        onClose={closeJsonImport}
       />
 
       <IntegrityRepairModal
