@@ -9,8 +9,8 @@ import {
   resolveExistingDeckByTitle,
   toPublishableDeck,
   validatePublishableDeck,
-} from "../../src/shared/core/usecases/hub/index.js";
-import { validateDeckPackageObject } from "../../src/shared/core/usecases/importExport/index.js";
+} from "./hub-helpers.js";
+import { validateDeckPackageObject } from "./hub-package.js";
 
 const HUB_STORAGE_BUCKET = "decks";
 const DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS = 120;

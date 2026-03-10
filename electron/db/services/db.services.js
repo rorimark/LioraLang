@@ -8,7 +8,7 @@ import {
   parseDeckPackageFileText,
   resolveImportConfig,
   validateImportLanguages,
-} from "../../../src/shared/core/usecases/importExport/index.js";
+} from "./import-export.js";
 
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
 const MAX_DECK_TAGS = 10;
