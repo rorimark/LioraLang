@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
   const isWebTarget = platformTarget === PLATFORM_TARGETS.web;
 
   return {
-    base: "./",
+    base: isWebTarget ? "/" : "./",
     plugins: [react()],
     build: {
       manifest: isWebTarget ? "asset-manifest.json" : false,
