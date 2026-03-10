@@ -340,6 +340,13 @@ const createHubRepository = () => {
         currentDownloadsCount,
       });
     },
+    async deleteDeck(deckId) {
+      const hubConfig = ensureHubConfig();
+      return ensureElectronApi().hubDeleteDeck({
+        config: hubConfig,
+        deckId,
+      });
+    },
   };
 };
 

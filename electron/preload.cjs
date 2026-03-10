@@ -33,6 +33,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   hubPublishDeck: (payload) => ipcRenderer.invoke("hub:publish-deck", payload),
   hubIncrementDeckDownloads: (payload) =>
     ipcRenderer.invoke("hub:increment-downloads", payload),
+  hubDeleteDeck: (payload) => ipcRenderer.invoke("hub:delete-deck", payload),
 
   onDecksUpdated: (callback) => {
     const listener = () => callback();

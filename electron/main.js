@@ -25,6 +25,7 @@ import { migrateLegacyDbStorage } from "./services/legacyStorageMigration.servic
 import { verifyAppIntegrityAndRepair } from "./services/integrity.service.js";
 import {
   createHubDeckDownloadUrl,
+  deleteHubDeck,
   incrementHubDeckDownloads,
   listHubDecks,
   publishHubDeck,
@@ -2331,6 +2332,13 @@ const setupIpcHandlers = () => {
       config: payload?.config || {},
       deckId: payload?.deckId,
       currentDownloadsCount: payload?.currentDownloadsCount,
+    });
+  });
+
+  ipcMain.handle("hub:delete-deck", async (_, payload) => {
+    return deleteHubDeck({
+      config: payload?.config || {},
+      deckId: payload?.deckId,
     });
   });
 

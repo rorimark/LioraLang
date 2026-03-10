@@ -540,4 +540,78 @@ export const hubDecksApi = {
       title: publishableDeck.title,
     };
   },
+
+  async deleteDeck({ deckId } = {}) {
+    const supabase = ensureSupabaseClient();
+    const user = await ensureAnonymousSession(supabase);
+    const normalizedDeckId = toCleanString(deckId);
+
+    if (!normalizedDeckId) {
+      throw new Error("Hub deck id is required");
+    }
+
+    const { data: deckRow, error: deckRowError } = await supabase
+      .from("hub_decks")
+      .select("id,owner_id")
+      .eq("id", normalizedDeckId)
+      .maybeSingle();
+
+    if (deckRowError) {
+      throw new Error(deckRowError.message || "Failed to resolve Hub deck");
+    }
+
+    if (!deckRow?.id) {
+      throw new Error("Hub deck not found");
+    }
+
+    if (deckRow.owner_id !== user.id) {
+      throw new Error("Only the owner can delete this Hub deck");
+    }
+
+    const { data: deckVersions, error: deckVersionsError } = await supabase
+      .from("hub_deck_versions")
+      .select("file_path")
+      .eq("deck_id", normalizedDeckId);
+
+    if (deckVersionsError) {
+      throw new Error(deckVersionsError.message || "Failed to load Hub deck versions");
+    }
+
+    const filePaths = (Array.isArray(deckVersions) ? deckVersions : [])
+      .map((version) => toCleanString(version?.file_path))
+      .filter(Boolean);
+
+    if (filePaths.length > 0) {
+      const { error: removeError } = await supabase.storage
+        .from(HUB_STORAGE_BUCKET)
+        .remove(filePaths);
+
+      if (removeError) {
+        throw new Error(removeError.message || "Failed to remove Hub deck files");
+      }
+    }
+
+    const { error: deleteVersionsError } = await supabase
+      .from("hub_deck_versions")
+      .delete()
+      .eq("deck_id", normalizedDeckId);
+
+    if (deleteVersionsError) {
+      throw new Error(deleteVersionsError.message || "Failed to delete Hub deck versions");
+    }
+
+    const { error: deleteDeckError } = await supabase
+      .from("hub_decks")
+      .delete()
+      .eq("id", normalizedDeckId);
+
+    if (deleteDeckError) {
+      throw new Error(deleteDeckError.message || "Failed to delete Hub deck");
+    }
+
+    return {
+      deckId: normalizedDeckId,
+      deletedFiles: filePaths.length,
+    };
+  },
 };
