@@ -341,10 +341,21 @@ const pickDeckFileInBrowser = () => {
       return;
     }
 
+    const isMobileBrowser = () => {
+      if (typeof navigator === "undefined") {
+        return false;
+      }
+
+      const userAgent = navigator.userAgent || "";
+      return /Android|iPhone|iPad|iPod/i.test(userAgent);
+    };
+
     const input = document.createElement("input");
 
     input.type = "file";
-    input.accept = ".json,.lioradeck,.lioralang,application/json";
+    input.accept = isMobileBrowser()
+      ? ""
+      : ".json,.lioradeck,.lioralang,application/json,application/octet-stream,text/plain";
     input.style.position = "fixed";
     input.style.left = "-9999px";
     input.style.top = "-9999px";
