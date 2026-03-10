@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { DecksTable } from "@entities/deck";
-import { ImportDeckModal } from "@features/deck-import";
+import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
 import { InlineAlert } from "@shared/ui";
 import { useDecksOverviewPanel } from "../model";
@@ -24,7 +24,8 @@ export const DecksOverviewPanel = memo(() => {
     languageOptions,
     isImportConfirmOpen,
     isLanguageReviewOpen,
-    isPasteMode,
+    isJsonImportOpen,
+    jsonDeckNameDraft,
     pasteTextDraft,
     pasteError,
     deleteState,
@@ -37,7 +38,9 @@ export const DecksOverviewPanel = memo(() => {
     closeDeleteModal,
     confirmDeleteDeck,
     openImportConfirm,
+    openJsonImport,
     closeImportConfirm,
+    closeJsonImport,
     openLanguageReview,
     closeLanguageReview,
     toggleLanguageReview,
@@ -45,6 +48,7 @@ export const DecksOverviewPanel = memo(() => {
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
     handlePasteTextChange,
+    handleJsonDeckNameChange,
     importFromPaste,
     refreshDecks,
     clearMessage,
@@ -69,6 +73,14 @@ export const DecksOverviewPanel = memo(() => {
             disabled={isImporting}
           >
             {isImporting ? "Importing..." : "Import deck file"}
+          </button>
+          <button
+            type="button"
+            className="decks-page-panel__refresh"
+            onClick={openJsonImport}
+            disabled={isImporting}
+          >
+            Create deck from JSON
           </button>
           <button
             type="button"
@@ -125,18 +137,25 @@ export const DecksOverviewPanel = memo(() => {
         importLanguages={importLanguages}
         languageOptions={languageOptions}
         isLanguageReviewOpen={isLanguageReviewOpen}
-        isPasteMode={isPasteMode}
-        pasteTextDraft={pasteTextDraft}
-        pasteError={pasteError}
         onDeckNameChange={handleImportDeckNameDraftChange}
         onLanguageChange={handleImportLanguageChange}
         onOpenLanguageReview={openLanguageReview}
         onCloseLanguageReview={closeLanguageReview}
         onToggleLanguageReview={toggleLanguageReview}
-        onPasteTextChange={handlePasteTextChange}
-        onImportPaste={importFromPaste}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
+      />
+
+      <CreateDeckFromJsonModal
+        isOpen={isJsonImportOpen}
+        isImporting={isImporting}
+        deckNameDraft={jsonDeckNameDraft}
+        jsonText={pasteTextDraft}
+        jsonError={pasteError}
+        onDeckNameChange={handleJsonDeckNameChange}
+        onJsonTextChange={handlePasteTextChange}
+        onConfirm={importFromPaste}
+        onClose={closeJsonImport}
       />
     </article>
   );
