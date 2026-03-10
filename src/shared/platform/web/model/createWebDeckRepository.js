@@ -344,7 +344,7 @@ const pickDeckFileInBrowser = () => {
     const input = document.createElement("input");
 
     input.type = "file";
-    input.accept = ".json,.lioradeck,.lioralang,application/json,application/octet-stream,text/plain,*/*";
+    input.accept = "*/*";
     input.style.position = "fixed";
     input.style.left = "-9999px";
     input.style.top = "-9999px";
@@ -695,6 +695,19 @@ export const createWebDeckRepository = () => {
         ? { deckName: payloadOrDeckName }
         : payloadOrDeckName || {};
       const token = toCleanString(payload.filePath);
+      const fileText = toCleanString(payload.fileText);
+
+      if (fileText) {
+        const parsedPackage = parseDeckPackageFileText(fileText);
+        validateDeckPackageObject(parsedPackage);
+        const fallbackFileName = toCleanString(payload?.fileName) || "pasted-deck.lioradeck";
+
+        return importParsedPackage({
+          parsedPackage,
+          payload,
+          fallbackFileName,
+        });
+      }
 
       if (!token) {
         throw new Error("Import file is not selected");

@@ -4,6 +4,11 @@ import {
   useAppPreferences,
 } from "@shared/lib/appPreferences";
 import {
+  getDeckImportMetadata,
+  parseDeckPackageFileText,
+  validateDeckPackageObject,
+} from "@shared/core/usecases/importExport";
+import {
   DEFAULT_SOURCE_LANGUAGE,
   DEFAULT_TARGET_LANGUAGE,
   LANGUAGE_OPTIONS,
@@ -81,13 +86,18 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     () => createImportLanguagesFromDefaults(appPreferences.deckDefaults),
     [appPreferences.deckDefaults],
   );
+  const isDesktopMode = runtimeGateway.isDesktopMode();
   const [isImporting, setIsImporting] = useState(false);
   const [selectedImportFilePath, setSelectedImportFilePath] = useState("");
   const [selectedImportFileName, setSelectedImportFileName] = useState("");
+  const [selectedImportFileText, setSelectedImportFileText] = useState("");
   const [selectedImportWordsCount, setSelectedImportWordsCount] = useState(null);
   const [importDeckNameDraft, setImportDeckNameDraft] = useState("");
   const [isImportConfirmOpen, setIsImportConfirmOpen] = useState(false);
   const [isLanguageReviewOpen, setIsLanguageReviewOpen] = useState(false);
+  const [isPasteMode, setIsPasteMode] = useState(false);
+  const [pasteTextDraft, setPasteTextDraft] = useState("");
+  const [pasteError, setPasteError] = useState("");
   const [importLanguages, setImportLanguages] = useState(
     () => defaultImportLanguages,
   );
@@ -105,9 +115,13 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     setIsImportConfirmOpen(false);
     setSelectedImportFilePath("");
     setSelectedImportFileName("");
+    setSelectedImportFileText("");
     setSelectedImportWordsCount(null);
     setImportDeckNameDraft("");
     setIsLanguageReviewOpen(false);
+    setIsPasteMode(false);
+    setPasteTextDraft("");
+    setPasteError("");
     setImportLanguages(defaultImportLanguages);
   }, [defaultImportLanguages]);
 
@@ -116,6 +130,8 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       typeof result?.filePath === "string" ? result.filePath : "";
     const fileName =
       typeof result?.fileName === "string" ? result.fileName : "";
+    const fileText =
+      typeof result?.fileText === "string" ? result.fileText : "";
     const suggestedDeckName =
       typeof result?.suggestedDeckName === "string"
         ? result.suggestedDeckName
@@ -124,13 +140,14 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       ? result.wordsCount
       : null;
 
-    if (!filePath) {
+    if (!filePath && !fileText) {
       reportMessage("Selected file is invalid", "error");
       return;
     }
 
     setSelectedImportFilePath(filePath);
     setSelectedImportFileName(fileName);
+    setSelectedImportFileText(fileText);
     setSelectedImportWordsCount(suggestedWordsCount);
     setImportDeckNameDraft(suggestedDeckName);
     setImportLanguages(resolveImportLanguages({
@@ -142,6 +159,9 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       Boolean(appPreferences.importExport.autoOpenLanguageReview),
     );
     setIsImportConfirmOpen(true);
+    setIsPasteMode(false);
+    setPasteTextDraft("");
+    setPasteError("");
   }, [
     appPreferences.deckDefaults,
     appPreferences.importExport.autoOpenLanguageReview,
@@ -168,9 +188,16 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         applyImportSelection(result);
       })
       .catch((pickError) => {
-        reportMessage(pickError.message || "Failed to select import file", "error");
+        const message = pickError.message || "Failed to select import file";
+        reportMessage(message, "error");
+        if (!isDesktopMode) {
+          setIsPasteMode(true);
+          setPasteError(message);
+          setPasteTextDraft("");
+          setIsImportConfirmOpen(true);
+        }
       });
-  }, [applyImportSelection, deckRepository, reportMessage]);
+  }, [applyImportSelection, deckRepository, isDesktopMode, reportMessage]);
 
   useEffect(() => {
     const unsubscribe = runtimeGateway.subscribeImportDeckFileRequested((payload) => {
@@ -208,6 +235,46 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     }));
   }, []);
 
+  const handlePasteTextChange = useCallback((event) => {
+    setPasteTextDraft(event.target.value);
+    setPasteError("");
+  }, []);
+
+  const parsePasteText = useCallback(() => {
+    const normalizedText = pasteTextDraft.trim();
+
+    if (!normalizedText) {
+      setPasteError("Paste deck JSON first");
+      return;
+    }
+
+    try {
+      const parsedPackage = parseDeckPackageFileText(normalizedText);
+      validateDeckPackageObject(parsedPackage);
+      const metadata = getDeckImportMetadata({
+        parsedPackage,
+        fileName: "pasted-deck.lioradeck",
+      });
+
+      applyImportSelection({
+        filePath: "",
+        fileName: "pasted-deck.lioradeck",
+        fileText: normalizedText,
+        suggestedDeckName: metadata.suggestedDeckName,
+        sourceLanguage: metadata.sourceLanguage,
+        targetLanguage: metadata.targetLanguage,
+        tertiaryLanguage: metadata.tertiaryLanguage,
+        tags: metadata.tags,
+        description: metadata.description,
+        wordsCount: metadata.wordsCount,
+        packageFormat: metadata.format,
+        packageVersion: metadata.version,
+      });
+    } catch (error) {
+      setPasteError(error.message || "Failed to parse pasted deck");
+    }
+  }, [applyImportSelection, pasteTextDraft]);
+
   const openLanguageReview = useCallback(() => {
     setIsLanguageReviewOpen(true);
   }, []);
@@ -226,7 +293,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     const targetLanguage = importLanguages.targetLanguage.trim();
     const tertiaryLanguage = importLanguages.tertiaryLanguage.trim();
 
-    if (!selectedImportFilePath) {
+    if (!selectedImportFilePath && !selectedImportFileText) {
       reportMessage(
         "Select a .lioradeck, .lioralang or .json file before confirming import",
         "error",
@@ -261,6 +328,8 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     try {
       const result = await deckRepository.importDeckFromJson({
         filePath: selectedImportFilePath,
+        fileText: selectedImportFileText,
+        fileName: selectedImportFileName,
         deckName: nextDeckName,
         sourceLanguage,
         targetLanguage,
@@ -344,6 +413,9 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     languageOptions: LANGUAGE_OPTIONS,
     isImportConfirmOpen,
     isLanguageReviewOpen,
+    isPasteMode: isPasteMode && !isDesktopMode,
+    pasteTextDraft,
+    pasteError,
     openImportConfirm,
     closeImportConfirm,
     openLanguageReview,
@@ -352,5 +424,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     confirmImportDeck,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
+    handlePasteTextChange,
+    parsePasteText,
   };
 };

@@ -41,6 +41,9 @@ export const useDecksOverviewPanel = () => {
     languageOptions,
     isImportConfirmOpen,
     isLanguageReviewOpen,
+    isPasteMode,
+    pasteTextDraft,
+    pasteError,
     openImportConfirm,
     closeImportConfirm,
     openLanguageReview,
@@ -49,6 +52,8 @@ export const useDecksOverviewPanel = () => {
     confirmImportDeck,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
+    handlePasteTextChange,
+    parsePasteText,
   } = useDeckImportFlow({
     onMessage: reportMessage,
     onImportSuccess: refreshDecks,
@@ -292,6 +297,9 @@ export const useDecksOverviewPanel = () => {
     languageOptions,
     isImportConfirmOpen,
     isLanguageReviewOpen,
+    isPasteMode,
+    pasteTextDraft,
+    pasteError,
     deleteState,
     refreshDecks,
     openDeck,
@@ -310,6 +318,8 @@ export const useDecksOverviewPanel = () => {
     confirmImportDeck,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
+    handlePasteTextChange,
+    parsePasteText,
     clearMessage,
   };
 };

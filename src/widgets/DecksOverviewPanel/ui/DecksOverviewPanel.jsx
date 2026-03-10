@@ -120,11 +120,16 @@ export const DecksOverviewPanel = memo(() => {
         importLanguages={importLanguages}
         languageOptions={languageOptions}
         isLanguageReviewOpen={isLanguageReviewOpen}
+        isPasteMode={isPasteMode}
+        pasteTextDraft={pasteTextDraft}
+        pasteError={pasteError}
         onDeckNameChange={handleImportDeckNameDraftChange}
         onLanguageChange={handleImportLanguageChange}
         onOpenLanguageReview={openLanguageReview}
         onCloseLanguageReview={closeLanguageReview}
         onToggleLanguageReview={toggleLanguageReview}
+        onPasteTextChange={handlePasteTextChange}
+        onParsePasteText={parsePasteText}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
       />

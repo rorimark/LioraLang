@@ -98,6 +98,9 @@ export const useSettingsDatabasePanel = () => {
     languageOptions,
     isImportConfirmOpen,
     isLanguageReviewOpen,
+    isPasteMode,
+    pasteTextDraft,
+    pasteError,
     openImportConfirm,
     closeImportConfirm,
     openLanguageReview,
@@ -106,6 +109,8 @@ export const useSettingsDatabasePanel = () => {
     confirmImportDeck,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
+    handlePasteTextChange,
+    parsePasteText,
   } = useDeckImportFlow({
     onMessage: reportMessage,
   });
@@ -361,6 +366,9 @@ export const useSettingsDatabasePanel = () => {
     languageOptions,
     isImportConfirmOpen,
     isLanguageReviewOpen,
+    isPasteMode,
+    pasteTextDraft,
+    pasteError,
     isIntegrityRepairConfirmOpen: integrityRepairConfirmState.isOpen,
     integrityRepairIssues: integrityRepairConfirmState.issues,
     themeMode,
@@ -383,5 +391,7 @@ export const useSettingsDatabasePanel = () => {
     clearStatusMessage,
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
+    handlePasteTextChange,
+    parsePasteText,
   };
 };
