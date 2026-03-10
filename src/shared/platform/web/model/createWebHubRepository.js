@@ -8,6 +8,7 @@ import {
 const HUB_SYNC_ACTION_TYPES = {
   publishDeck: "hub.publishDeck",
   incrementDeckDownloads: "hub.incrementDeckDownloads",
+  deleteDeck: "hub.deleteDeck",
 };
 
 const HUB_SYNC_PENDING_STATUS = "pending";
@@ -181,6 +182,13 @@ const processQueuedHubSyncAction = async (hubDecksApi, record) => {
     return;
   }
 
+  if (record.actionType === HUB_SYNC_ACTION_TYPES.deleteDeck) {
+    const deckId = record?.payload?.deckId;
+
+    await hubDecksApi.deleteDeck({ deckId });
+    return;
+  }
+
   throw new Error(`Unsupported sync action: ${record.actionType}`);
 };
 
@@ -344,6 +352,28 @@ export const createWebHubRepository = () => {
         });
         scheduleFlushQueuedHubActions();
         return resolveOptimisticDownloadsResult(currentDownloadsCount);
+      }
+    },
+    async deleteDeck(deckId) {
+      if (!isBrowserOnline()) {
+        await enqueueHubSyncAction(HUB_SYNC_ACTION_TYPES.deleteDeck, { deckId });
+        scheduleFlushQueuedHubActions();
+        return { queued: true };
+      }
+
+      try {
+        const hubDecksApi = await getHubDecksApi();
+        const result = await hubDecksApi.deleteDeck({ deckId });
+        scheduleFlushQueuedHubActions();
+        return result;
+      } catch (error) {
+        if (!isOfflineLikeError(error)) {
+          throw error;
+        }
+
+        await enqueueHubSyncAction(HUB_SYNC_ACTION_TYPES.deleteDeck, { deckId });
+        scheduleFlushQueuedHubActions();
+        return { queued: true };
       }
     },
   };

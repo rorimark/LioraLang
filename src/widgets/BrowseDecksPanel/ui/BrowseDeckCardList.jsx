@@ -73,7 +73,10 @@ export const BrowseDeckCardList = memo(
   ({
     decks,
     importingDeckId = "",
+    deletingDeckId = "",
+    canDeleteHubDecks = false,
     onImportDeck,
+    onDeleteDeck,
   }) => {
     const handleImportDeck = useCallback(
       (event) => {
@@ -94,6 +97,27 @@ export const BrowseDeckCardList = memo(
       [decks, onImportDeck],
     );
 
+    const handleDeleteDeck = useCallback(
+      (event) => {
+        const deckId = event.currentTarget.dataset.deckId;
+
+        if (!deckId) {
+          return;
+        }
+
+        const deck = decks.find((item) => String(item?.id) === String(deckId));
+
+        if (!deck) {
+          return;
+        }
+
+        if (typeof onDeleteDeck === "function") {
+          onDeleteDeck(deck);
+        }
+      },
+      [decks, onDeleteDeck],
+    );
+
     if (!Array.isArray(decks) || decks.length === 0) {
       return (
         <div className="browse-decks-panel__empty">
@@ -110,6 +134,7 @@ export const BrowseDeckCardList = memo(
           const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS);
           const hiddenTagsCount = Math.max(0, tags.length - visibleTags.length);
           const isImporting = String(importingDeckId) === String(deck?.id);
+          const isDeleting = String(deletingDeckId) === String(deck?.id);
           const fileSize = formatFileSize(deck?.latestVersion?.fileSizeBytes);
           const createdAt = formatDate(deck?.createdAt);
           const wordsCount = Number.isFinite(Number(deck?.wordsCount))
@@ -175,10 +200,21 @@ export const BrowseDeckCardList = memo(
                   type="button"
                   data-deck-id={deck.id}
                   onClick={handleImportDeck}
-                  disabled={isImporting || !deck?.latestVersion?.filePath}
+                  disabled={isImporting || isDeleting || !deck?.latestVersion?.filePath}
                 >
                   {isImporting ? "Importing..." : "Import to Decks"}
                 </button>
+                {canDeleteHubDecks ? (
+                  <button
+                    type="button"
+                    className="browse-decks-panel__delete"
+                    data-deck-id={deck.id}
+                    onClick={handleDeleteDeck}
+                    disabled={isImporting || isDeleting}
+                  >
+                    {isDeleting ? "Deleting..." : "Delete from Hub"}
+                  </button>
+                ) : null}
               </div>
             </article>
           );
@@ -189,4 +225,3 @@ export const BrowseDeckCardList = memo(
 );
 
 BrowseDeckCardList.displayName = "BrowseDeckCardList";
-

@@ -80,9 +80,11 @@ export const useBrowseDecksPanel = () => {
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
   const [importingDeckId, setImportingDeckId] = useState("");
+  const [deletingDeckId, setDeletingDeckId] = useState("");
   const requestIdRef = useRef(0);
 
   const isConfigured = hubRepository.isConfigured();
+  const canDeleteHubDecks = Boolean(appPreferences?.desktop?.devMode);
   const totalPages = useMemo(() => {
     if (totalDecks <= 0) {
       return 1;
@@ -286,6 +288,48 @@ export const useBrowseDecksPanel = () => {
     reportMessage,
   ]);
 
+  const deleteDeckFromHub = useCallback(async (deck) => {
+    if (!deck?.id) {
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      const confirmed = window.confirm(
+        `Delete "${deck.title || "this deck"}" from LioraLangHub? This cannot be undone.`,
+      );
+
+      if (!confirmed) {
+        return;
+      }
+    }
+
+    setDeletingDeckId(String(deck.id));
+    reportMessage("", "info");
+
+    try {
+      const result = await hubRepository.deleteDeck(deck.id);
+      const isQueued = Boolean(result?.queued);
+      const deletedId = String(deck.id);
+
+      setDecks((previousDecks) =>
+        previousDecks.filter((item) => String(item?.id) !== deletedId),
+      );
+
+      setTotalDecks((previousTotal) => Math.max(0, previousTotal - 1));
+
+      if (isQueued) {
+        reportMessage("Delete queued and will sync when you're online.", "warning");
+        return;
+      }
+
+      reportMessage("Hub deck deleted.", "danger");
+    } catch (deleteError) {
+      reportMessage(deleteError.message || "Failed to delete Hub deck", "error");
+    } finally {
+      setDeletingDeckId("");
+    }
+  }, [hubRepository, reportMessage]);
+
   return {
     decks,
     isLoading,
@@ -296,6 +340,8 @@ export const useBrowseDecksPanel = () => {
     totalPages,
     totalDecks,
     importingDeckId,
+    deletingDeckId,
+    canDeleteHubDecks,
     message,
     messageVariant,
     refreshDecks,
@@ -304,6 +350,7 @@ export const useBrowseDecksPanel = () => {
     goToPreviousPage,
     goToNextPage,
     importDeckFromHub,
+    deleteDeckFromHub,
     clearMessage,
   };
 };

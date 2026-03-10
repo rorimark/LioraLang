@@ -15,6 +15,8 @@ export const BrowseDecksPanel = memo(() => {
     totalPages,
     totalDecks,
     importingDeckId,
+    deletingDeckId,
+    canDeleteHubDecks,
     message,
     messageVariant,
     handleSearchInputChange,
@@ -22,6 +24,7 @@ export const BrowseDecksPanel = memo(() => {
     goToPreviousPage,
     goToNextPage,
     importDeckFromHub,
+    deleteDeckFromHub,
     clearMessage,
   } = useBrowseDecksPanel();
 
@@ -95,7 +98,10 @@ export const BrowseDecksPanel = memo(() => {
         <BrowseDeckCardList
           decks={decks}
           importingDeckId={importingDeckId}
+          deletingDeckId={deletingDeckId}
+          canDeleteHubDecks={canDeleteHubDecks}
           onImportDeck={importDeckFromHub}
+          onDeleteDeck={deleteDeckFromHub}
         />
       ) : null}
 
