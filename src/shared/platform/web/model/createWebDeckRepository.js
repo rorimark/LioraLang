@@ -341,18 +341,33 @@ const pickDeckFileInBrowser = () => {
       return;
     }
 
+    const isIOS = () => {
+      if (typeof navigator === "undefined") {
+        return false;
+      }
+
+      const userAgent = navigator.userAgent || "";
+      return /iPhone|iPad|iPod/i.test(userAgent);
+    };
+
     const input = document.createElement("input");
 
     input.type = "file";
-    input.accept = "*/*";
+    input.accept = ".json,.lioradeck,.lioralang,application/json,application/octet-stream,text/plain";
+    input.removeAttribute("capture");
     input.style.position = "fixed";
     input.style.left = "-9999px";
     input.style.top = "-9999px";
     let settled = false;
     let didReceiveChange = false;
 
+    let iosCancelTimeoutId = null;
+
     const cleanup = () => {
       window.removeEventListener("focus", handleWindowFocus);
+      if (iosCancelTimeoutId) {
+        window.clearTimeout(iosCancelTimeoutId);
+      }
       input.remove();
     };
 
@@ -387,7 +402,7 @@ const pickDeckFileInBrowser = () => {
         if (selectedFiles.length === 0) {
           safeResolve({ canceled: true });
         }
-      }, 300);
+      }, 600);
     };
 
     input.addEventListener("change", async () => {
@@ -427,7 +442,15 @@ const pickDeckFileInBrowser = () => {
     });
 
     document.body.appendChild(input);
-    window.addEventListener("focus", handleWindowFocus, { once: true });
+    if (!isIOS()) {
+      window.addEventListener("focus", handleWindowFocus, { once: true });
+    } else {
+      iosCancelTimeoutId = window.setTimeout(() => {
+        if (!didReceiveChange && !settled) {
+          safeResolve({ canceled: true });
+        }
+      }, 60_000);
+    }
     input.click();
   });
 };
