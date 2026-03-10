@@ -45,7 +45,7 @@ export const DecksOverviewPanel = memo(() => {
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
     handlePasteTextChange,
-    parsePasteText,
+    importFromPaste,
     refreshDecks,
     clearMessage,
   } = useDecksOverviewPanel();
@@ -134,7 +134,7 @@ export const DecksOverviewPanel = memo(() => {
         onCloseLanguageReview={closeLanguageReview}
         onToggleLanguageReview={toggleLanguageReview}
         onPasteTextChange={handlePasteTextChange}
-        onParsePasteText={parsePasteText}
+        onImportPaste={importFromPaste}
         onConfirm={confirmImportDeck}
         onClose={closeImportConfirm}
       />

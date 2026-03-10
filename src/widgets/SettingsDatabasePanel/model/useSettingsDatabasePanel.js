@@ -110,7 +110,7 @@ export const useSettingsDatabasePanel = () => {
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
     handlePasteTextChange,
-    parsePasteText,
+    importFromPaste,
   } = useDeckImportFlow({
     onMessage: reportMessage,
   });
@@ -392,6 +392,6 @@ export const useSettingsDatabasePanel = () => {
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
     handlePasteTextChange,
-    parsePasteText,
+    importFromPaste,
   };
 };

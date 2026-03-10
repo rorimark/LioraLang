@@ -53,7 +53,7 @@ export const useDecksOverviewPanel = () => {
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
     handlePasteTextChange,
-    parsePasteText,
+    importFromPaste,
   } = useDeckImportFlow({
     onMessage: reportMessage,
     onImportSuccess: refreshDecks,
@@ -319,7 +319,7 @@ export const useDecksOverviewPanel = () => {
     handleImportDeckNameDraftChange,
     handleImportLanguageChange,
     handlePasteTextChange,
-    parsePasteText,
+    importFromPaste,
     clearMessage,
   };
 };

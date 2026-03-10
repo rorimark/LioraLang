@@ -21,11 +21,12 @@ export const ImportDeckModal = memo(
     onCloseLanguageReview,
     onToggleLanguageReview,
     onPasteTextChange,
-    onParsePasteText,
+    onImportPaste,
     onConfirm,
     onClose,
   }) => {
     const normalizedDeckName = deckNameDraft?.trim() || "";
+    const isConfirmDisabled = isPasteMode && !selectedFileName;
     const sourceLanguage = importLanguages?.sourceLanguage || "";
     const targetLanguage = importLanguages?.targetLanguage || "";
     const tertiaryLanguage = importLanguages?.tertiaryLanguage || "";
@@ -42,6 +43,7 @@ export const ImportDeckModal = memo(
         description="Supports .lioradeck, .lioralang and .json. Review import details and confirm language mapping."
         confirmLabel="Import"
         isConfirming={isImporting}
+        isConfirmDisabled={isConfirmDisabled}
         onConfirm={onConfirm}
         onClose={onClose}
       >
@@ -73,10 +75,10 @@ export const ImportDeckModal = memo(
               <button
                 type="button"
                 className="import-deck-modal__language-toggle"
-                onClick={onParsePasteText}
+                onClick={onImportPaste}
                 disabled={!pasteTextDraft.trim()}
               >
-                Use pasted JSON
+                Import pasted JSON
               </button>
               {pasteError ? (
                 <span className="import-deck-modal__paste-error">{pasteError}</span>
