@@ -27,7 +27,7 @@
 .browse-decks-panel__refresh,
 .browse-decks-panel__clear,
 .browse-decks-panel__pagination-actions button,
-.browse-decks-panel__actions button {
+.browse-decks-panel__actions button:not(.browse-decks-panel__delete) {
   border: 1px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface);
@@ -40,7 +40,7 @@
 .browse-decks-panel__refresh:hover:not(:disabled),
 .browse-decks-panel__clear:hover:not(:disabled),
 .browse-decks-panel__pagination-actions button:hover:not(:disabled),
-.browse-decks-panel__actions button:hover:not(:disabled) {
+.browse-decks-panel__actions button:not(.browse-decks-panel__delete):hover:not(:disabled) {
   background: var(--color-surface-muted);
 }
 
@@ -192,18 +192,28 @@
   gap: 8px;
 }
 
+.browse-decks-panel__actions--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .browse-decks-panel__actions button {
   width: 100%;
   font-weight: 600;
 }
 
 .browse-decks-panel__delete {
+  border: 1px solid var(--color-danger);
+  border-radius: 10px;
   border-color: var(--color-danger);
-  color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-on-primary);
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  cursor: pointer;
 }
 
 .browse-decks-panel__delete:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
+  background: color-mix(in srgb, var(--color-danger) 85%, #000);
 }
 
 .browse-decks-panel__pagination {
