@@ -195,7 +195,13 @@ export const BrowseDeckCardList = memo(
                 </div>
               </dl>
 
-              <div className="browse-decks-panel__actions">
+              <div
+                className={
+                  canDeleteHubDecks
+                    ? "browse-decks-panel__actions"
+                    : "browse-decks-panel__actions browse-decks-panel__actions--single"
+                }
+              >
                 <button
                   type="button"
                   data-deck-id={deck.id}

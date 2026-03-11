@@ -440,17 +440,15 @@ export const AppPreferencesSection = memo(({
             </label>
           ) : null}
 
-          {isDesktopMode ? (
-            <label className="app-preferences-section__check">
-              <input
-                type="checkbox"
-                name="desktop.devMode"
-                checked={appPreferences.desktop.devMode}
-                onChange={handleBooleanFieldChange}
-              />
-              <span>Developer mode</span>
-            </label>
-          ) : null}
+          <label className="app-preferences-section__check">
+            <input
+              type="checkbox"
+              name="desktop.devMode"
+              checked={appPreferences.desktop.devMode}
+              onChange={handleBooleanFieldChange}
+            />
+            <span>Developer mode</span>
+          </label>
 
           <label className="app-preferences-section__check">
             <input
