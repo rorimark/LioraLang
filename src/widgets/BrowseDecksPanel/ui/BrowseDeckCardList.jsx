@@ -133,6 +133,8 @@ export const BrowseDeckCardList = memo(
           const tags = normalizeTags(deck?.tags);
           const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS);
           const hiddenTagsCount = Math.max(0, tags.length - visibleTags.length);
+          const hasDescription =
+            typeof deck?.description === "string" && deck.description.trim().length > 0;
           const isImporting = String(importingDeckId) === String(deck?.id);
           const isDeleting = String(deletingDeckId) === String(deck?.id);
           const fileSize = formatFileSize(deck?.latestVersion?.fileSizeBytes);
@@ -153,47 +155,56 @@ export const BrowseDeckCardList = memo(
                 </span>
               </header>
 
-              {deck?.description ? (
-                <p className="browse-decks-panel__description">{deck.description}</p>
-              ) : null}
+              <p
+                className={
+                  hasDescription
+                    ? "browse-decks-panel__description"
+                    : "browse-decks-panel__description browse-decks-panel__description--empty"
+                }
+                aria-hidden={!hasDescription}
+              >
+                {hasDescription ? deck.description : "\u00A0"}
+              </p>
 
-              <div className="browse-decks-panel__badges">
-                {languages.map((language) => (
-                  <MetaBadge
-                    key={`${deck.id}-lang-${language}`}
-                    text={language}
-                    accent={false}
-                  />
-                ))}
-                {visibleTags.map((tag) => (
-                  <MetaBadge
-                    key={`${deck.id}-tag-${tag}`}
-                    text={tag}
-                    accent={false}
-                  />
-                ))}
-                {hiddenTagsCount > 0 ? (
-                  <MetaBadge
-                    text={`+${hiddenTagsCount}`}
-                    accent={false}
-                  />
-                ) : null}
+              <div className="browse-decks-panel__card-footer">
+                <div className="browse-decks-panel__badges">
+                  {languages.map((language) => (
+                    <MetaBadge
+                      key={`${deck.id}-lang-${language}`}
+                      text={language}
+                      accent={false}
+                    />
+                  ))}
+                  {visibleTags.map((tag) => (
+                    <MetaBadge
+                      key={`${deck.id}-tag-${tag}`}
+                      text={tag}
+                      accent={false}
+                    />
+                  ))}
+                  {hiddenTagsCount > 0 ? (
+                    <MetaBadge
+                      text={`+${hiddenTagsCount}`}
+                      accent={false}
+                    />
+                  ) : null}
+                </div>
+
+                <dl className="browse-decks-panel__stats">
+                  <div>
+                    <dt>Words</dt>
+                    <dd>{wordsCount}</dd>
+                  </div>
+                  <div>
+                    <dt>Downloads</dt>
+                    <dd>{downloadsCount}</dd>
+                  </div>
+                  <div>
+                    <dt>Package</dt>
+                    <dd>{fileSize}</dd>
+                  </div>
+                </dl>
               </div>
-
-              <dl className="browse-decks-panel__stats">
-                <div>
-                  <dt>Words</dt>
-                  <dd>{wordsCount}</dd>
-                </div>
-                <div>
-                  <dt>Downloads</dt>
-                  <dd>{downloadsCount}</dd>
-                </div>
-                <div>
-                  <dt>Package</dt>
-                  <dd>{fileSize}</dd>
-                </div>
-              </dl>
 
               <div
                 className={
