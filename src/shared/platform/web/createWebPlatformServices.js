@@ -82,12 +82,17 @@ const createRuntimeGateway = () => {
       canGoForward: false,
     }),
     applyWindowTheme: async () => ({ applied: false }),
+    checkForUpdates: async () => ({
+      status: "disabled",
+      message: "Updates are available only in the desktop app.",
+    }),
     hasPendingImportDeckFileRequest: () => false,
     consumePendingImportDeckFileRequest: () => null,
     acknowledgeImportDeckFileRequest: () => {},
     subscribeImportDeckFileRequested: () => NOOP_UNSUBSCRIBE,
     subscribeRuntimeErrors: () => NOOP_UNSUBSCRIBE,
     subscribeNavigationRequested: () => NOOP_UNSUBSCRIBE,
+    subscribeUpdateStatus: () => NOOP_UNSUBSCRIBE,
   };
 };
 

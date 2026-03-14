@@ -27,6 +27,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   navigateWindowBack: () => ipcRenderer.invoke("window:navigate-back"),
   navigateWindowForward: () => ipcRenderer.invoke("window:navigate-forward"),
   applyWindowTheme: (payload) => ipcRenderer.invoke("window:apply-theme", payload),
+  checkForUpdates: () => ipcRenderer.invoke("updates:check"),
   hubListDecks: (payload) => ipcRenderer.invoke("hub:list-decks", payload),
   hubCreateDownloadUrl: (payload) =>
     ipcRenderer.invoke("hub:create-download-url", payload),
@@ -73,6 +74,14 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
     return () => {
       ipcRenderer.removeListener("app:navigate", listener);
+    };
+  },
+  onUpdateStatus: (callback) => {
+    const listener = (_, payload) => callback(payload);
+    ipcRenderer.on("updates:status", listener);
+
+    return () => {
+      ipcRenderer.removeListener("updates:status", listener);
     };
   },
 });

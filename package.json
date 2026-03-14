@@ -4,7 +4,7 @@
   "author": "Mark Storchovyi markstorchovyi@gmail.com",
   "homepage": "https://github.com/rorimark/LioraLang",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.2.3",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -21,6 +21,8 @@
     "icons:all": "node electron/scripts/build-icons.mjs --target all",
     "icons:mac": "node electron/scripts/build-icons.mjs --target mac",
     "icons:win": "node electron/scripts/build-icons.mjs --target win",
+    "release:notes": "node scripts/release-notes.mjs",
+    "release:publish": "node scripts/release-publish.mjs",
     "dist:local": "pnpm build:desktop && electron-builder --mac dmg --arm64 --publish never && electron-builder --win nsis --x64 --publish never && pnpm rebuild:native",
     "dist:test:mac": "pnpm build:desktop && electron-builder --mac dmg --arm64 --publish never && pnpm rebuild:native",
     "dist:test:win": "pnpm build:desktop && electron-builder --win nsis --x64 --publish never && pnpm rebuild:native",
@@ -33,6 +35,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.98.0",
     "@vercel/analytics": "^1.6.1",
+    "electron-updater": "^6.8.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
@@ -71,6 +74,13 @@
   "build": {
     "appId": "com.lioralang.app",
     "productName": "LioraLang",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "rorimark",
+        "repo": "LioraLang"
+      }
+    ],
     "directories": {
       "output": "release"
     },

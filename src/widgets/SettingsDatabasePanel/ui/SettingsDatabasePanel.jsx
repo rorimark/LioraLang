@@ -52,6 +52,7 @@ export const SettingsDatabasePanel = memo(() => {
     dbPath,
     statusMessage,
     statusVariant,
+    isCheckingUpdates,
     isChangingDbLocation,
     isVerifyingIntegrity,
     isRepairingIntegrity,
@@ -90,9 +91,10 @@ export const SettingsDatabasePanel = memo(() => {
         openDbFolder,
         changeDbLocation,
         verifyIntegrity,
-        confirmIntegrityRepair,
+    confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     handleThemeModeChange,
+    checkForUpdates,
     openResetSettingsConfirm,
     closeResetSettingsConfirm,
     resetAllSettingsToDefaults,
@@ -219,6 +221,21 @@ export const SettingsDatabasePanel = memo(() => {
               <h4>Shortcuts</h4>
               <ShortcutSettingsSection compact />
             </div>
+
+            {isDesktopMode ? (
+              <div className="settings-page-panel__slot">
+                <h4>Updates</h4>
+                <div className="settings-page-panel__actions">
+                  <button
+                    type="button"
+                    onClick={checkForUpdates}
+                    disabled={isCheckingUpdates}
+                  >
+                    {isCheckingUpdates ? "Checking..." : "Check for updates"}
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
       ) : null}

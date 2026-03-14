@@ -8,6 +8,8 @@ import {
   Tray,
   session,
 } from "electron";
+import updaterPkg from "electron-updater";
+const { autoUpdater } = updaterPkg;
 import process from "node:process";
 import fs from "node:fs";
 import path from "node:path";
@@ -206,6 +208,7 @@ let launchAtStartupSignature = null;
 let pendingImportFilePaths = [];
 let pendingRuntimeErrorEvents = [];
 let pendingNavigationRequests = [];
+let isAutoUpdaterInitialized = false;
 const SUPPORTED_DECK_IMPORT_EXTENSIONS = [".json", ".lioradeck", ".lioralang"];
 const DB_FILE_NAME = "lioralang.db";
 const REMOTE_IMPORT_TIMEOUT_MS = 35_000;
@@ -1177,6 +1180,90 @@ const canNavigateForward = (webContents) => {
 
 const isDeveloperModeEnabled = () => {
   return Boolean(appPreferencesCache?.desktop?.devMode);
+};
+
+const isMissingUpdateArtifactError = (error) => {
+  const message = typeof error?.message === "string" ? error.message : "";
+
+  if (!message) {
+    return false;
+  }
+
+  return (
+    message.includes("Cannot find") &&
+    (message.includes("latest") || message.includes("stable") || message.includes("beta")) &&
+    message.includes(".yml")
+  );
+};
+
+const broadcastUpdateStatus = (payload) => {
+  BrowserWindow.getAllWindows().forEach((targetWindow) => {
+    if (targetWindow?.isDestroyed()) {
+      return;
+    }
+
+    targetWindow.webContents.send("updates:status", payload);
+  });
+};
+
+const initAutoUpdater = () => {
+  if (isAutoUpdaterInitialized) {
+    return;
+  }
+
+  isAutoUpdaterInitialized = true;
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on("checking-for-update", () => {
+    broadcastUpdateStatus({ status: "checking" });
+  });
+
+  autoUpdater.on("update-available", (info) => {
+    broadcastUpdateStatus({ status: "available", info });
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    broadcastUpdateStatus({ status: "none" });
+  });
+
+  autoUpdater.on("download-progress", (progress) => {
+    broadcastUpdateStatus({
+      status: "downloading",
+      progress: {
+        percent: Math.round(progress?.percent || 0),
+        transferred: progress?.transferred,
+        total: progress?.total,
+      },
+    });
+  });
+
+  autoUpdater.on("update-downloaded", (info) => {
+    broadcastUpdateStatus({ status: "downloaded", info });
+  });
+
+  autoUpdater.on("error", (error) => {
+    if (isMissingUpdateArtifactError(error)) {
+      broadcastUpdateStatus({
+        status: "none",
+        message: "No published updates yet.",
+      });
+      return;
+    }
+
+    broadcastUpdateStatus({
+      status: "error",
+      message: error?.message || "Update check failed",
+    });
+  });
+};
+
+const configureAutoUpdater = () => {
+  const preference = appPreferencesCache?.desktop?.updateChannel || "stable";
+  const channel = preference === "beta" ? "beta" : "latest";
+
+  autoUpdater.channel = channel;
+  autoUpdater.allowPrerelease = preference === "beta";
 };
 
 const isDevToolsShortcut = (input = {}) => {
@@ -2437,6 +2524,32 @@ const setupIpcHandlers = () => {
     syncRuntimePreferences();
     sendAppSettingsUpdated(nextSettings);
     return nextSettings;
+  });
+
+  ipcMain.handle("updates:check", async () => {
+    if (!app.isPackaged) {
+      return {
+        status: "disabled",
+        message: "Updates are available only in packaged builds.",
+      };
+    }
+
+    initAutoUpdater();
+    configureAutoUpdater();
+
+    try {
+      const result = await autoUpdater.checkForUpdates();
+      const hasUpdate = Boolean(result?.updateInfo?.version);
+      return {
+        status: hasUpdate ? "available" : "none",
+        info: result?.updateInfo || null,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: error?.message || "Update check failed",
+      };
+    }
   });
 
   ipcMain.handle("app:debug-show-runtime-error", () => {

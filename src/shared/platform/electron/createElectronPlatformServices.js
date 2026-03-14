@@ -9,10 +9,12 @@ const importFileRequestListeners = new Set();
 const appSettingsUpdatedListeners = new Set();
 const runtimeErrorListeners = new Set();
 const navigationRequestListeners = new Set();
+const updateStatusListeners = new Set();
 let isImportFileBridgeInitialized = false;
 let isAppSettingsBridgeInitialized = false;
 let isRuntimeErrorBridgeInitialized = false;
 let isNavigationBridgeInitialized = false;
+let isUpdateStatusBridgeInitialized = false;
 
 const resolveHubConfig = () => {
   const supabaseUrl = typeof import.meta.env.VITE_SUPABASE_URL === "string"
@@ -229,6 +231,24 @@ const initNavigationBridge = () => {
   });
 
   isNavigationBridgeInitialized = true;
+};
+
+const initUpdateStatusBridge = () => {
+  if (isUpdateStatusBridgeInitialized) {
+    return;
+  }
+
+  const electronApi = getElectronApi();
+
+  if (!electronApi || typeof electronApi.onUpdateStatus !== "function") {
+    return;
+  }
+
+  electronApi.onUpdateStatus((payload) => {
+    updateStatusListeners.forEach((listener) => listener(payload || {}));
+  });
+
+  isUpdateStatusBridgeInitialized = true;
 };
 
 const createDeckRepository = () => {
@@ -485,6 +505,30 @@ const createRuntimeGateway = () => {
 
       return () => {
         navigationRequestListeners.delete(callback);
+      };
+    },
+    async checkForUpdates() {
+      const electronApi = getElectronApi();
+
+      if (!electronApi || typeof electronApi.checkForUpdates !== "function") {
+        return {
+          status: "disabled",
+          message: "Updates are available only in the desktop app.",
+        };
+      }
+
+      return electronApi.checkForUpdates();
+    },
+    subscribeUpdateStatus(callback) {
+      if (typeof callback !== "function") {
+        return NOOP_UNSUBSCRIBE;
+      }
+
+      initUpdateStatusBridge();
+      updateStatusListeners.add(callback);
+
+      return () => {
+        updateStatusListeners.delete(callback);
       };
     },
   };
