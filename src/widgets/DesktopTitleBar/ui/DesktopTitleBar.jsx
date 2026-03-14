@@ -11,6 +11,8 @@ export const DesktopTitleBar = memo(() => {
     canGoForward,
     navigateBack,
     navigateForward,
+    backShortcutLabel,
+    forwardShortcutLabel,
   } = useDesktopTitleBar();
 
   if (!isDesktopMode) {
@@ -24,24 +26,42 @@ export const DesktopTitleBar = memo(() => {
     >
       <div className="desktop-title-bar__left">
         <div className="desktop-title-bar__history" role="group" aria-label="History">
-          <button
-            type="button"
-            onClick={navigateBack}
-            disabled={!canGoBack}
-            aria-label="Go back"
-            title="Back"
-          >
-            <IoChevronBackOutline />
-          </button>
-          <button
-            type="button"
-            onClick={navigateForward}
-            disabled={!canGoForward}
-            aria-label="Go forward"
-            title="Forward"
-          >
-            <IoChevronForwardOutline />
-          </button>
+          <div className="desktop-title-bar__history-item">
+            <button
+              type="button"
+              onClick={navigateBack}
+              disabled={!canGoBack}
+              aria-label="Go back"
+            >
+              <IoChevronBackOutline />
+            </button>
+            <div className="desktop-title-bar__tooltip" role="tooltip">
+              <span>Go back</span>
+              {backShortcutLabel ? (
+                <span className="desktop-title-bar__tooltip-shortcut">
+                  {backShortcutLabel}
+                </span>
+              ) : null}
+            </div>
+          </div>
+          <div className="desktop-title-bar__history-item">
+            <button
+              type="button"
+              onClick={navigateForward}
+              disabled={!canGoForward}
+              aria-label="Go forward"
+            >
+              <IoChevronForwardOutline />
+            </button>
+            <div className="desktop-title-bar__tooltip" role="tooltip">
+              <span>Go forward</span>
+              {forwardShortcutLabel ? (
+                <span className="desktop-title-bar__tooltip-shortcut">
+                  {forwardShortcutLabel}
+                </span>
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -56,4 +76,3 @@ export const DesktopTitleBar = memo(() => {
 });
 
 DesktopTitleBar.displayName = "DesktopTitleBar";
-

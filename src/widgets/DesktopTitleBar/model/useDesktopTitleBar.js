@@ -35,6 +35,31 @@ const normalizeHistoryState = (value) => {
   };
 };
 
+const resolveHistoryShortcutLabel = (platformClassName, shortcutMode, direction) => {
+  if (shortcutMode === HISTORY_SHORTCUT_MODES.disabled) {
+    return "";
+  }
+
+  const isDarwin = platformClassName === "desktop-title-bar--darwin";
+  const isSystemMode = shortcutMode === HISTORY_SHORTCUT_MODES.system;
+  const isAlternativeMode = shortcutMode === HISTORY_SHORTCUT_MODES.alternative;
+
+  if (!isSystemMode && !isAlternativeMode) {
+    return "";
+  }
+
+  const modifier = isSystemMode
+    ? isDarwin
+      ? "Cmd"
+      : "Alt"
+    : isDarwin
+      ? "Alt"
+      : "Ctrl";
+  const arrow = direction === "back" ? "Left" : "Right";
+
+  return `${modifier}+${arrow}`;
+};
+
 const isInteractiveEventTarget = (target) => {
   if (!target || typeof target !== "object") {
     return false;
@@ -63,6 +88,7 @@ export const useDesktopTitleBar = () => {
   const [historyState, setHistoryState] = useState(DEFAULT_HISTORY_STATE);
   const platformClassName = useMemo(() => resolvePlatformClassName(), []);
   const { shortcutSettings } = useShortcutSettings();
+  const historyShortcutMode = shortcutSettings.historyNavigation;
 
   useEffect(() => {
     if (!isDesktopMode) {
@@ -191,8 +217,28 @@ export const useDesktopTitleBar = () => {
     navigateBack,
     navigateForward,
     platformClassName,
-    shortcutSettings.historyNavigation,
+    historyShortcutMode,
   ]);
+
+  const backShortcutLabel = useMemo(
+    () =>
+      resolveHistoryShortcutLabel(
+        platformClassName,
+        historyShortcutMode,
+        "back",
+      ),
+    [historyShortcutMode, platformClassName],
+  );
+
+  const forwardShortcutLabel = useMemo(
+    () =>
+      resolveHistoryShortcutLabel(
+        platformClassName,
+        historyShortcutMode,
+        "forward",
+      ),
+    [historyShortcutMode, platformClassName],
+  );
 
   return {
     isDesktopMode,
@@ -201,5 +247,7 @@ export const useDesktopTitleBar = () => {
     canGoForward: historyState.canGoForward,
     navigateBack,
     navigateForward,
+    backShortcutLabel,
+    forwardShortcutLabel,
   };
 };
