@@ -4,6 +4,8 @@ import { usePlatformService } from "@app/providers";
 const CHART_WIDTH = 560;
 const CHART_HEIGHT = 220;
 const CHART_PADDING = 20;
+const SPARKLINE_HEIGHT = 54;
+const SPARKLINE_PADDING = 8;
 const WEEK_DAY_FORMATTER = new Intl.DateTimeFormat("en-US", {
   weekday: "short",
 });
@@ -13,7 +15,7 @@ const PERCENT_FORMATTER = new Intl.NumberFormat("en-US", {
 });
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-const MAX_DECK_LOAD_ITEMS = 4;
+const MAX_DECK_LOAD_ITEMS = 5;
 
 const toSafeNumber = (value) => {
   const numericValue = Number(value);
@@ -230,6 +232,53 @@ const buildLinePoints = (values = [], maxValue = 1) => {
     .join(" ");
 };
 
+const buildLinePointsForSize = (
+  values = [],
+  maxValue = 1,
+  { width = CHART_WIDTH, height = CHART_HEIGHT, padding = CHART_PADDING } = {},
+) => {
+  if (!Array.isArray(values) || values.length === 0) {
+    return "";
+  }
+
+  if (values.length === 1) {
+    const x = padding;
+    const y = height - padding;
+    return `${x},${y}`;
+  }
+
+  const safeMaxValue = Math.max(1, toSafeNumber(maxValue));
+  const stepX = (width - padding * 2) / (values.length - 1);
+
+  return values
+    .map((value, index) => {
+      const clamped = Math.max(0, toSafeNumber(value));
+      const x = padding + stepX * index;
+      const y =
+        height -
+        padding -
+        (clamped / safeMaxValue) * (height - padding * 2);
+
+      return `${x},${y}`;
+    })
+    .join(" ");
+};
+
+const buildAreaPointsForSize = (
+  linePoints,
+  { width = CHART_WIDTH, height = CHART_HEIGHT, padding = CHART_PADDING } = {},
+) => {
+  if (!linePoints) {
+    return "";
+  }
+
+  const startX = padding;
+  const endX = width - padding;
+  const bottomY = height - padding;
+
+  return `${startX},${bottomY} ${linePoints} ${endX},${bottomY}`;
+};
+
 const buildAreaPoints = (linePoints) => {
   if (!linePoints) {
     return "";
@@ -405,6 +454,16 @@ export const useProgressOverviewPanel = () => {
     const recallLinePoints = buildLinePoints(recallScaledValues, maxReviews);
     const reviewPoints = buildSeriesPoints(weeklyReviews, maxReviews);
     const recallPoints = buildSeriesPoints(recallScaledValues, maxReviews);
+    const recallSparklinePoints = buildLinePointsForSize(weeklyRecall, 100, {
+      width: CHART_WIDTH,
+      height: SPARKLINE_HEIGHT,
+      padding: SPARKLINE_PADDING,
+    });
+    const recallSparklineArea = buildAreaPointsForSize(recallSparklinePoints, {
+      width: CHART_WIDTH,
+      height: SPARKLINE_HEIGHT,
+      padding: SPARKLINE_PADDING,
+    });
 
     return {
       labels: overview.weekly.map((item) => item.label),
@@ -416,7 +475,12 @@ export const useProgressOverviewPanel = () => {
       recallLinePoints,
       reviewPoints,
       recallPoints,
+      recallSparklinePoints,
+      recallSparklineArea,
       hasData: weeklyReviews.some((value) => value > 0),
+      summary: {
+        avgRecall: `${formatPercent(average(weeklyRecall))}%`,
+      },
     };
   }, [overview.weekly]);
 
@@ -439,16 +503,6 @@ export const useProgressOverviewPanel = () => {
       reviewsFillPercent: Math.round((deck.reviews7d / maxReviews) * 100),
     }));
   }, [overview.deckLoad]);
-
-  const intensityBars = useMemo(() => {
-    const maxValue = Math.max(1, ...overview.intensity.map((item) => item.value));
-
-    return overview.intensity.map((item, index) => ({
-      ...item,
-      heightPercent: Math.round((item.value / maxValue) * 100),
-      showLabel: index % 2 === 0 || index === overview.intensity.length - 1,
-    }));
-  }, [overview.intensity]);
 
   const milestones = useMemo(() => {
     if (overview.milestones.length > 0) {
@@ -488,7 +542,6 @@ export const useProgressOverviewPanel = () => {
     deckLoadRows,
     retentionSplit: overview.retentionSplit,
     milestones,
-    intensityBars,
     generatedAtLabel,
     totals: overview.totals,
   };

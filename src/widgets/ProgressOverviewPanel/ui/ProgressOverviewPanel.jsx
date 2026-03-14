@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useProgressOverviewPanel } from "../model";
 import "./ProgressOverviewPanel.css";
 
@@ -52,10 +52,67 @@ export const ProgressOverviewPanel = memo(() => {
     deckLoadRows,
     retentionSplit,
     milestones,
-    intensityBars,
+    intensityCells,
+    intensitySummary,
     generatedAtLabel,
     totals,
   } = useProgressOverviewPanel();
+  const chartRef = useRef(null);
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+
+  const handleChartMove = useCallback(
+    (event) => {
+      if (!chartRef.current || weeklyChart.labels.length === 0) {
+        return;
+      }
+
+      const rect = chartRef.current.getBoundingClientRect();
+      const clientX =
+        "touches" in event
+          ? event.touches?.[0]?.clientX ?? 0
+          : event.clientX ?? 0;
+      const ratio = rect.width > 0 ? (clientX - rect.left) / rect.width : 0;
+      const clampedRatio = Math.min(1, Math.max(0, ratio));
+      const x = clampedRatio * CHART_WIDTH;
+      const stepX =
+        weeklyChart.labels.length > 1
+          ? (CHART_WIDTH - CHART_PADDING * 2) / (weeklyChart.labels.length - 1)
+          : 0;
+      const rawIndex = stepX > 0 ? Math.round((x - CHART_PADDING) / stepX) : 0;
+      const nextIndex = Math.min(
+        weeklyChart.labels.length - 1,
+        Math.max(0, rawIndex),
+      );
+
+      setHoveredIndex(nextIndex);
+    },
+    [weeklyChart.labels.length],
+  );
+
+  const handleChartLeave = useCallback(() => {
+    setHoveredIndex(-1);
+  }, []);
+
+  const hoverData = useMemo(() => {
+    if (hoveredIndex < 0) {
+      return null;
+    }
+
+    const label = weeklyChart.labels[hoveredIndex] || "";
+    const reviews = Math.round(weeklyChart.reviews[hoveredIndex] || 0);
+    const recall = Math.round(weeklyChart.recall[hoveredIndex] || 0);
+    const reviewPoint = weeklyChart.reviewPoints[hoveredIndex];
+    const left = reviewPoint ? `${(reviewPoint.x / CHART_WIDTH) * 100}%` : "0%";
+
+    return {
+      label,
+      reviews,
+      recall,
+      left,
+      x: reviewPoint ? reviewPoint.x : CHART_PADDING,
+      reviewY: reviewPoint ? reviewPoint.y : CHART_HEIGHT - CHART_PADDING,
+    };
+  }, [hoveredIndex, weeklyChart]);
 
   if (isLoading) {
     return <ProgressOverviewLoading />;
@@ -84,12 +141,19 @@ export const ProgressOverviewPanel = memo(() => {
             <p>Cards reviewed and recall quality for the last 7 days.</p>
           </header>
 
-          <div className="progress-overview__chart-wrap">
+          <div
+            className="progress-overview__chart-wrap"
+            onMouseMove={handleChartMove}
+            onMouseLeave={handleChartLeave}
+            onTouchMove={handleChartMove}
+            onTouchEnd={handleChartLeave}
+          >
             <svg
               className="progress-overview__line-chart"
               viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
               role="img"
               aria-label="Weekly review activity chart"
+              ref={chartRef}
             >
               {weeklyChart.yAxisTicks.map((tick) => (
                 <g key={`tick-${tick.value}`} className="progress-overview__chart-grid">
@@ -131,11 +195,6 @@ export const ProgressOverviewPanel = memo(() => {
                 className="progress-overview__line progress-overview__line--reviews"
                 points={weeklyChart.reviewLinePoints}
               />
-              <polyline
-                className="progress-overview__line progress-overview__line--recall"
-                points={weeklyChart.recallLinePoints}
-              />
-
               {weeklyChart.reviewPoints.map((point, index) => (
                 <circle
                   key={`review-point-${index}`}
@@ -148,33 +207,76 @@ export const ProgressOverviewPanel = memo(() => {
                 </circle>
               ))}
 
-              {weeklyChart.recallPoints.map((point, index) => (
-                <circle
-                  key={`recall-point-${index}`}
-                  className="progress-overview__point progress-overview__point--recall"
-                  cx={point.x}
-                  cy={point.y}
-                  r="2.6"
-                >
-                  <title>{`${weeklyChart.labels[index]}: ${Math.round(weeklyChart.recall[index])}% recall`}</title>
-                </circle>
-              ))}
+              {hoverData ? (
+                <>
+                  <line
+                    className="progress-overview__hover-line"
+                    x1={hoverData.x}
+                    x2={hoverData.x}
+                    y1={CHART_PADDING}
+                    y2={CHART_HEIGHT - CHART_PADDING}
+                  />
+                  <circle
+                    className="progress-overview__hover-dot progress-overview__hover-dot--reviews"
+                    cx={hoverData.x}
+                    cy={hoverData.reviewY}
+                    r="4.2"
+                  />
+                </>
+              ) : null}
             </svg>
+
+            {hoverData ? (
+              <div
+                className="progress-overview__chart-tooltip"
+                style={{ left: hoverData.left }}
+                role="tooltip"
+              >
+                <span className="progress-overview__chart-tooltip-title">
+                  {hoverData.label}
+                </span>
+                <span>Reviews: {hoverData.reviews}</span>
+                <span>Recall: {hoverData.recall}%</span>
+              </div>
+            ) : null}
 
             <div className="progress-overview__x-labels">
               {weeklyChart.labels.map((dayLabel, index) => (
                 <span key={`${dayLabel}-${index}`}>{dayLabel}</span>
               ))}
+
+            </div>
+
+
+
+            <div className="progress-overview__sparkline" aria-label="Recall trend">
+              <div className="progress-overview__sparkline-head">
+                <span>Recall trend</span>
+                <span className="progress-overview__sparkline-meta">
+                  Avg {weeklyChart.summary?.avgRecall || "--"}
+                </span>
+              </div>
+              <svg
+                className="progress-overview__sparkline-chart"
+                viewBox={`0 0 ${CHART_WIDTH} 54`}
+                role="img"
+                aria-label="Recall trend sparkline"
+              >
+                <polygon
+                  className="progress-overview__sparkline-area"
+                  points={weeklyChart.recallSparklineArea}
+                />
+                <polyline
+                  className="progress-overview__sparkline-line"
+                  points={weeklyChart.recallSparklinePoints}
+                />
+              </svg>
             </div>
 
             <div className="progress-overview__chart-legend">
               <span className="progress-overview__legend-item">
                 <i className="progress-overview__dot progress-overview__dot--reviews" />
                 Reviews
-              </span>
-              <span className="progress-overview__legend-item">
-                <i className="progress-overview__dot progress-overview__dot--recall" />
-                Recall trend (%)
               </span>
             </div>
           </div>
@@ -189,7 +291,7 @@ export const ProgressOverviewPanel = memo(() => {
         <article className="panel progress-overview__panel progress-overview__panel--deck-load">
           <header className="progress-overview__panel-header">
             <h2>Top Deck Activity</h2>
-            <p>Top 4 decks by cards and review activity over 7 days.</p>
+            <p>Top 5 decks by cards and review activity over 7 days.</p>
           </header>
 
           {deckLoadRows.length === 0 ? (
@@ -207,9 +309,6 @@ export const ProgressOverviewPanel = memo(() => {
                     </strong>
                     <span className="progress-overview__bar-stat">
                       <strong>{deck.cards}</strong> cards
-                    </span>
-                    <span className="progress-overview__bar-stat progress-overview__bar-stat--reviews">
-                      <strong>{deck.reviews7d}</strong> rev
                     </span>
                   </div>
 
@@ -271,31 +370,27 @@ export const ProgressOverviewPanel = memo(() => {
         </article>
       </section>
 
-      <article className="panel progress-overview__panel">
-        <header className="progress-overview__panel-header progress-overview__panel-header--with-meta">
-          <div>
-            <h2>Daily Intensity</h2>
-            <p>Review load for the last 14 days.</p>
-          </div>
-
-          <div className="progress-overview__meta">
-            <span>Decks: {totals.decks}</span>
-            <span>Words: {totals.words}</span>
-            <span>Reviews: {totals.reviews}</span>
-            {generatedAtLabel && <span>Updated: {generatedAtLabel}</span>}
-          </div>
+      <article className="panel progress-overview__panel progress-overview__panel--totals">
+        <header className="progress-overview__panel-header">
+          <h2>Library Totals</h2>
+          <p>Overall size of your study library.</p>
         </header>
 
-        <div className="progress-overview__mini-bars">
-          {intensityBars.map((item, index) => (
-            <div key={`${item.date}-${index}`} className="progress-overview__mini-bar-col">
-              <div
-                className="progress-overview__mini-bar"
-                style={{ height: `${item.heightPercent}%` }}
-              />
-              <span>{item.showLabel ? item.label : ""}</span>
+        <div className="progress-overview__totals-grid">
+          <div className="progress-overview__totals-card">
+            <span>Decks</span>
+            <strong>{totals.decks}</strong>
+          </div>
+          <div className="progress-overview__totals-card">
+            <span>Words</span>
+            <strong>{totals.words}</strong>
+          </div>
+          {generatedAtLabel ? (
+            <div className="progress-overview__totals-card">
+              <span>Updated</span>
+              <strong>{generatedAtLabel}</strong>
             </div>
-          ))}
+          ) : null}
         </div>
       </article>
     </div>
