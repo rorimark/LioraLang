@@ -55,8 +55,47 @@
   line-height: 1.45;
 }
 
+.runtime-error-modal__message--clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
 .runtime-error-modal__details {
   margin: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  padding: 6px 8px;
+}
+
+.runtime-error-modal__details-toggle {
+  list-style: none;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.runtime-error-modal__details-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.runtime-error-modal__details-toggle::after {
+  content: "▾";
+  margin-left: 6px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.runtime-error-modal__details[open] .runtime-error-modal__details-toggle::after {
+  content: "▴";
+}
+
+.runtime-error-modal__details-body {
+  margin: 8px 0 0;
   border: 1px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
