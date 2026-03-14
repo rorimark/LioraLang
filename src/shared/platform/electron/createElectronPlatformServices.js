@@ -446,6 +446,15 @@ const createRuntimeGateway = () => {
 
       return electronApi.applyWindowTheme({ theme });
     },
+    async getAppVersion() {
+      const electronApi = getElectronApi();
+
+      if (!electronApi || typeof electronApi.getAppVersion !== "function") {
+        return { version: null };
+      }
+
+      return electronApi.getAppVersion();
+    },
     hasPendingImportDeckFileRequest() {
       initImportFileBridge();
       return pendingImportFileRequests.length > 0;

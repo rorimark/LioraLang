@@ -1,3 +1,4 @@
+/* global __APP_VERSION__ */
 import {
   createWebDeckRepository,
   createWebHubRepository,
@@ -82,6 +83,9 @@ const createRuntimeGateway = () => {
       canGoForward: false,
     }),
     applyWindowTheme: async () => ({ applied: false }),
+    getAppVersion: async () => ({
+      version: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : null,
+    }),
     checkForUpdates: async () => ({
       status: "disabled",
       message: "Updates are available only in the desktop app.",

@@ -138,6 +138,24 @@
   min-width: 0;
 }
 
+.settings-page-panel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.settings-page-panel__meta strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.settings-page-panel__meta-separator {
+  color: var(--color-text-muted);
+}
+
 .settings-page-panel__actions button,
 .settings-page-panel__path-action {
   width: auto;
