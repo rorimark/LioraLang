@@ -5,11 +5,17 @@ import { execSync } from "node:child_process";
 const PROJECT_ROOT = process.cwd();
 const NOTES_PATH = path.join(PROJECT_ROOT, "release", "RELEASE_NOTES.md");
 
-const run = (command) => execSync(command, { encoding: "utf8", stdio: "pipe" }).trim();
+const runCapture = (command) =>
+  execSync(command, { encoding: "utf8", stdio: "pipe" }).trim();
+
+const runLive = (command) => {
+  execSync(command, { encoding: "utf8", stdio: "inherit" });
+  return "";
+};
 
 const safeRun = (command) => {
   try {
-    return run(command);
+    return runCapture(command);
   } catch (error) {
     return error?.stdout?.toString?.() || "";
   }
@@ -35,12 +41,12 @@ const ensureTag = (tag) => {
     return;
   }
 
-  run(`git tag -a ${tag} -m "${tag}"`);
+  runLive(`git tag -a ${tag} -m "${tag}"`);
 };
 
 const ensureGh = () => {
   try {
-    run("gh --version");
+    runCapture("gh --version");
   } catch {
     throw new Error("GitHub CLI (gh) is required. Install it and run `gh auth login`.");
   }
@@ -62,29 +68,55 @@ const isReleaseMetadataForVersion = (filePath, version) => {
   }
 };
 
+const normalizeReleaseFileName = (fileName) =>
+  fileName.replace(/\.blockmap$/i, "");
+
 const getAssets = (version) => {
   const releaseDir = path.join(PROJECT_ROOT, "release");
   if (!fs.existsSync(releaseDir)) {
     return [];
   }
 
-  return fs
-    .readdirSync(releaseDir)
-    .filter((file) => {
-      const filePath = path.join(releaseDir, file);
-      const isCandidate = /\.dmg$|\.exe$|\.zip$|\.blockmap$|\.ya?ml$/i.test(file);
+  const entries = fs.readdirSync(releaseDir);
+  const primaryAssets = entries.filter((file) => {
+    if (!/\.dmg$|\.exe$|\.zip$/i.test(file)) {
+      return false;
+    }
 
-      if (!isCandidate) {
-        return false;
-      }
+    return file.includes(version);
+  });
 
-      if (/\.ya?ml$/i.test(file)) {
-        return isReleaseMetadataForVersion(filePath, version);
-      }
+  if (primaryAssets.length === 0) {
+    throw new Error(
+      `No release artifacts found for ${version}. Build the app before publishing.`,
+    );
+  }
 
-      return file.includes(version);
-    })
-    .map((file) => path.join(releaseDir, file));
+  const primaryAssetNames = new Set(
+    primaryAssets.map((file) => normalizeReleaseFileName(file)),
+  );
+
+  const blockmaps = entries.filter((file) => {
+    if (!/\.blockmap$/i.test(file)) {
+      return false;
+    }
+
+    const baseName = normalizeReleaseFileName(file);
+    return primaryAssetNames.has(baseName);
+  });
+
+  const metadataFiles = entries.filter((file) => {
+    if (!/\.ya?ml$/i.test(file)) {
+      return false;
+    }
+
+    const filePath = path.join(releaseDir, file);
+    return isReleaseMetadataForVersion(filePath, version);
+  });
+
+  return [...primaryAssets, ...blockmaps, ...metadataFiles].map((file) =>
+    path.join(releaseDir, file),
+  );
 };
 
 const main = () => {
@@ -97,24 +129,35 @@ const main = () => {
   const prerelease = process.env.PRERELEASE === "1" ? "--prerelease" : "";
 
   ensureTag(tag);
-  run("git push --tags");
-
   const assets = getAssets(version);
-  const assetsArg = assets.length > 0 ? assets.map((file) => `"${file}"`).join(" ") : "";
+  process.stdout.write(`Publishing assets (${assets.length}):\n`);
+  assets.forEach((asset) => {
+    process.stdout.write(` - ${asset}\n`);
+  });
 
-  const command = [
-    "gh release create",
-    tag,
-    assetsArg,
-    `--title \"LioraLang ${tag}\"`,
-    `--notes-file \"${NOTES_PATH}\"`,
-    draft,
-    prerelease,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  runLive("git push --tags");
 
-  run(command);
+  const releaseExists = Boolean(
+    safeRun(`gh release view ${tag} --json tagName`)?.trim(),
+  );
+
+  if (!releaseExists) {
+    const createCommand = [
+      "gh release create",
+      tag,
+      `--title \"LioraLang ${tag}\"`,
+      `--notes-file \"${NOTES_PATH}\"`,
+      draft,
+      prerelease,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    runLive(createCommand);
+  }
+
+  const assetsArg = assets.map((file) => JSON.stringify(file)).join(" ");
+  runLive(`gh release upload ${tag} ${assetsArg} --clobber`);
   process.stdout.write(`Release ${tag} published.\n`);
 };
 
