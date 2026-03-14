@@ -76,6 +76,53 @@
   height: 15px;
 }
 
+.desktop-title-bar__history-item {
+  position: relative;
+  display: inline-flex;
+}
+
+.desktop-title-bar__tooltip {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  transform: translate(-50%, 4px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 6;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-tooltip);
+  color: var(--color-text);
+  font-size: 0.72rem;
+  padding: 6px 8px;
+  white-space: nowrap;
+  display: grid;
+  gap: 2px;
+}
+
+.desktop-title-bar__tooltip::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--color-surface);
+}
+
+.desktop-title-bar__tooltip-shortcut {
+  font-size: 0.66rem;
+  color: var(--color-text-muted);
+}
+
+.desktop-title-bar__history-item:hover .desktop-title-bar__tooltip,
+.desktop-title-bar__history-item:focus-within .desktop-title-bar__tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 .desktop-title-bar__center {
   display: inline-flex;
   align-items: center;
