@@ -46,7 +46,23 @@ const ensureGh = () => {
   }
 };
 
-const getAssets = () => {
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const isReleaseMetadataForVersion = (filePath, version) => {
+  if (!/\.ya?ml$/i.test(filePath)) {
+    return false;
+  }
+
+  try {
+    const content = fs.readFileSync(filePath, "utf8");
+    const versionPattern = new RegExp(`^version:\\s*${escapeRegExp(version)}\\s*$`, "m");
+    return versionPattern.test(content);
+  } catch {
+    return false;
+  }
+};
+
+const getAssets = (version) => {
   const releaseDir = path.join(PROJECT_ROOT, "release");
   if (!fs.existsSync(releaseDir)) {
     return [];
@@ -54,7 +70,20 @@ const getAssets = () => {
 
   return fs
     .readdirSync(releaseDir)
-    .filter((file) => /\.dmg$|\.exe$|\.zip$|\.blockmap$/.test(file))
+    .filter((file) => {
+      const filePath = path.join(releaseDir, file);
+      const isCandidate = /\.dmg$|\.exe$|\.zip$|\.blockmap$|\.ya?ml$/i.test(file);
+
+      if (!isCandidate) {
+        return false;
+      }
+
+      if (/\.ya?ml$/i.test(file)) {
+        return isReleaseMetadataForVersion(filePath, version);
+      }
+
+      return file.includes(version);
+    })
     .map((file) => path.join(releaseDir, file));
 };
 
@@ -70,7 +99,7 @@ const main = () => {
   ensureTag(tag);
   run("git push --tags");
 
-  const assets = getAssets();
+  const assets = getAssets(version);
   const assetsArg = assets.length > 0 ? assets.map((file) => `"${file}"`).join(" ") : "";
 
   const command = [
