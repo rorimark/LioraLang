@@ -11,7 +11,7 @@
     "dev": "concurrently -k \"pnpm dev:renderer\" \"pnpm dev:electron\"",
     "dev:renderer": "vite --mode desktop --host --port 5175 --strictPort",
     "dev:web": "vite --mode web --host --port 5175 --strictPort",
-    "setup:web": "pnpm install --no-optional",
+    "setup:web": "pnpm install",
     "setup:desktop": "pnpm install",
     "dev:electron": "wait-on tcp:5175 && VITE_DEV_SERVER_URL=http://localhost:5175 electron .",
     "rebuild:native": "npm_config_runtime=electron npm_config_target=40.6.1 npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
