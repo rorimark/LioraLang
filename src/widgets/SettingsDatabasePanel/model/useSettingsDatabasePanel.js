@@ -35,6 +35,7 @@ export const useSettingsDatabasePanel = () => {
   const [isVerifyingIntegrity, setIsVerifyingIntegrity] = useState(false);
   const [isRepairingIntegrity, setIsRepairingIntegrity] = useState(false);
   const [isResettingSettings, setIsResettingSettings] = useState(false);
+  const [isCheckingUpdates, setIsCheckingUpdates] = useState(false);
   const [isResetSettingsConfirmOpen, setIsResetSettingsConfirmOpen] = useState(false);
   const [integrityRepairConfirmState, setIntegrityRepairConfirmState] = useState({
     isOpen: false,
@@ -89,6 +90,41 @@ export const useSettingsDatabasePanel = () => {
     setStatusVariant(variant);
   }, []);
 
+  const handleUpdateStatus = useCallback(
+    (payload) => {
+      if (!payload || typeof payload !== "object") {
+        return;
+      }
+
+      const status = payload.status;
+
+      if (status === "checking") {
+        reportMessage("Checking for updates...", "info");
+        return;
+      }
+
+      if (status === "available") {
+        reportMessage("Update available. Downloading in background.", "info");
+        return;
+      }
+
+      if (status === "downloaded") {
+        reportMessage("Update ready. Restart the app to install.", "success");
+        return;
+      }
+
+      if (status === "none") {
+        reportMessage("You're up to date.", "success");
+        return;
+      }
+
+      if (status === "error") {
+        reportMessage(payload.message || "Update check failed", "error");
+      }
+    },
+    [reportMessage],
+  );
+
   const {
     isImporting,
     selectedImportFileName,
@@ -120,6 +156,14 @@ export const useSettingsDatabasePanel = () => {
   });
 
   useEffect(() => {
+    if (!isDesktopMode) {
+      return undefined;
+    }
+
+    return runtimeGateway.subscribeUpdateStatus(handleUpdateStatus);
+  }, [handleUpdateStatus, isDesktopMode, runtimeGateway]);
+
+  useEffect(() => {
     let cancelled = false;
 
     systemRepository
@@ -147,6 +191,31 @@ export const useSettingsDatabasePanel = () => {
       reportMessage(openError.message || "Failed to open DB folder", "error");
     }
   }, [reportMessage, systemRepository]);
+
+  const checkForUpdates = useCallback(async () => {
+    setIsCheckingUpdates(true);
+
+    try {
+      const result = await runtimeGateway.checkForUpdates();
+      const status = result?.status;
+
+      if (status === "disabled") {
+        reportMessage(result.message || "Updates are available only in desktop builds.", "info");
+      } else if (status === "available") {
+        reportMessage("Update available. Downloading in background.", "info");
+      } else if (status === "none") {
+        reportMessage("You're up to date.", "success");
+      } else if (status === "error") {
+        reportMessage(result.message || "Update check failed", "error");
+      } else {
+        reportMessage("Checking for updates...", "info");
+      }
+    } catch (error) {
+      reportMessage(error?.message || "Update check failed", "error");
+    } finally {
+      setIsCheckingUpdates(false);
+    }
+  }, [reportMessage, runtimeGateway]);
 
   const changeDbLocation = useCallback(async () => {
     setIsChangingDbLocation(true);
@@ -362,6 +431,7 @@ export const useSettingsDatabasePanel = () => {
     isResettingSettings,
     isResetSettingsConfirmOpen,
     isResetAllDisabled,
+    isCheckingUpdates,
     isImporting,
     selectedImportFileName,
     selectedImportWordsCount,
@@ -392,6 +462,7 @@ export const useSettingsDatabasePanel = () => {
     confirmIntegrityRepair,
     closeIntegrityRepairConfirm,
     handleThemeModeChange,
+    checkForUpdates,
     openResetSettingsConfirm,
     closeResetSettingsConfirm,
     resetAllSettingsToDefaults,
