@@ -738,6 +738,10 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
+    if (!session?.deck && !sessionError) {
+      return;
+    }
+
     LEARN_SESSION_CACHE.sessionsByDeckId[selectedDeckId] = {
       session,
       sessionError,

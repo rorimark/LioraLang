@@ -76,20 +76,23 @@ export const LearnFlashcardsPanel = memo(() => {
         </div>
 
         <div className="learn-page-panel__header-actions">
-          <span className="learn-page-panel__mode-badge learn-page-panel__mode-badge--neutral">
-            Due {sessionStats.dueTotal}
-          </span>
+          {hasDecks && currentWord ? (
+            <div className="learn-page-panel__meta-chips">
+              <span className="learn-page-panel__meta-chip">
+                Deck: {deck?.name || "Deck"}
+              </span>
+              <span className="learn-page-panel__meta-chip">
+                State: {currentWord.state}
+              </span>
+              <span className="learn-page-panel__meta-chip">
+                Mode: {sessionMode === "extended" ? "extra" : "daily"}
+              </span>
+            </div>
+          ) : null}
           {isExtendedSession ? (
             <span className="learn-page-panel__mode-badge">Extra session</span>
           ) : null}
         </div>
-      </div>
-
-      <div className="learn-page-panel__stats-row" aria-live="polite">
-        <span className="learn-page-panel__stat-pill">Learning {sessionStats.dueLearning}</span>
-        <span className="learn-page-panel__stat-pill">Review {sessionStats.dueReview}</span>
-        <span className="learn-page-panel__stat-pill">New {sessionStats.dueNew}</span>
-        <span className="learn-page-panel__stat-pill">Today {sessionStats.totalStudiedToday}</span>
       </div>
 
       {decksError && (
@@ -142,18 +145,6 @@ export const LearnFlashcardsPanel = memo(() => {
                 disabled={isRatingPending}
               />
             </div>
-          </div>
-
-          <div className="learn-page-panel__meta-chips">
-            <span className="learn-page-panel__meta-chip">
-              Deck: {deck?.name || "Deck"}
-            </span>
-            <span className="learn-page-panel__meta-chip">
-              State: {currentWord.state}
-            </span>
-            <span className="learn-page-panel__meta-chip">
-              Mode: {sessionMode === "extended" ? "extra" : "daily"}
-            </span>
           </div>
 
           <div className="learn-page-panel__controls-dock">
