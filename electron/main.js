@@ -463,6 +463,12 @@ const logWarn = (...args) => {
   }
 };
 
+const logDebug = (...args) => {
+  if (shouldLog(LOG_LEVELS.debug)) {
+    console.info(...args);
+  }
+};
+
 const logError = (...args) => {
   if (shouldLog(LOG_LEVELS.error)) {
     console.error(...args);
@@ -781,6 +787,41 @@ const normalizeRuntimeErrorText = (value, fallback = "Unknown error") => {
   return normalizedValue || fallback;
 };
 
+const truncateRuntimeText = (value, limit = 6000) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  if (value.length <= limit) {
+    return value;
+  }
+
+  return `${value.slice(0, limit)}…`;
+};
+
+const resolveRuntimeErrorPresentation = (error) => {
+  const message =
+    typeof error?.message === "string"
+      ? error.message
+      : normalizeRuntimeErrorText(String(error || "Unknown error"));
+  const stack = typeof error?.stack === "string" ? error.stack : "";
+
+  if (message.includes("ZIP file not provided")) {
+    return {
+      title: "Update Error",
+      message:
+        "Update package is incomplete on the server. Please try again later.",
+      details: truncateRuntimeText(`${message}\n${stack}`.trim()),
+    };
+  }
+
+  return {
+    title: "LioraLang Error",
+    message: normalizeRuntimeErrorText(message),
+    details: truncateRuntimeText(stack),
+  };
+};
+
 const buildRuntimeErrorPayload = ({
   title,
   message,
@@ -839,15 +880,11 @@ const reportRuntimeError = (error, source = "main") => {
     return;
   }
 
-  const errorMessage =
-    typeof error?.message === "string"
-      ? error.message
-      : normalizeRuntimeErrorText(String(error || "Unknown error"));
-  const errorStack = typeof error?.stack === "string" ? error.stack : "";
+  const presentation = resolveRuntimeErrorPresentation(error);
   const payload = buildRuntimeErrorPayload({
-    title: "LioraLang Error",
-    message: errorMessage,
-    details: errorStack,
+    title: presentation.title,
+    message: presentation.message,
+    details: presentation.details,
     source,
   });
 
@@ -1220,10 +1257,24 @@ const initAutoUpdater = () => {
   });
 
   autoUpdater.on("update-available", (info) => {
+    logDebug(
+      "[Updater] update-available",
+      "app",
+      app.getVersion(),
+      "remote",
+      info?.version,
+    );
+    if (isSameAppVersion(info?.version, app.getVersion())) {
+      logDebug("[Updater] same version, ignoring update.");
+      broadcastUpdateStatus({ status: "none" });
+      return;
+    }
+
     broadcastUpdateStatus({ status: "available", info });
   });
 
   autoUpdater.on("update-not-available", () => {
+    logDebug("[Updater] update-not-available", "app", app.getVersion());
     broadcastUpdateStatus({ status: "none" });
   });
 
@@ -1239,10 +1290,12 @@ const initAutoUpdater = () => {
   });
 
   autoUpdater.on("update-downloaded", (info) => {
+    logDebug("[Updater] update-downloaded", "remote", info?.version);
     broadcastUpdateStatus({ status: "downloaded", info });
   });
 
   autoUpdater.on("error", (error) => {
+    logDebug("[Updater] error", error?.message || error);
     if (isMissingUpdateArtifactError(error)) {
       broadcastUpdateStatus({
         status: "none",
@@ -1264,6 +1317,19 @@ const configureAutoUpdater = () => {
 
   autoUpdater.channel = channel;
   autoUpdater.allowPrerelease = preference === "beta";
+};
+
+const normalizeAppVersion = (value) => {
+  const normalized = toCleanString(String(value || ""));
+  return normalized.replace(/^v/i, "");
+};
+
+const isSameAppVersion = (left, right) => {
+  if (!left || !right) {
+    return false;
+  }
+
+  return normalizeAppVersion(left) === normalizeAppVersion(right);
 };
 
 const isDevToolsShortcut = (input = {}) => {
@@ -2544,8 +2610,26 @@ const setupIpcHandlers = () => {
     configureAutoUpdater();
 
     try {
+      logDebug("[Updater] checkForUpdates start", "app", app.getVersion());
       const result = await autoUpdater.checkForUpdates();
       const hasUpdate = Boolean(result?.updateInfo?.version);
+      logDebug(
+        "[Updater] checkForUpdates result",
+        "app",
+        app.getVersion(),
+        "remote",
+        result?.updateInfo?.version,
+        "hasUpdate",
+        hasUpdate,
+      );
+
+      if (hasUpdate && isSameAppVersion(result?.updateInfo?.version, app.getVersion())) {
+        return {
+          status: "none",
+          info: result?.updateInfo || null,
+        };
+      }
+
       return {
         status: hasUpdate ? "available" : "none",
         info: result?.updateInfo || null,
