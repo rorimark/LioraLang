@@ -50,6 +50,8 @@ export const SettingsDatabasePanel = memo(() => {
   const {
     isDesktopMode,
     dbPath,
+    appVersionLabel,
+    appPlatformLabel,
     statusMessage,
     statusVariant,
     isCheckingUpdates,
@@ -236,6 +238,16 @@ export const SettingsDatabasePanel = memo(() => {
                 </div>
               </div>
             ) : null}
+
+            <div className="settings-page-panel__slot">
+              <h4>About</h4>
+              <div className="settings-page-panel__meta">
+                <span>Version</span>
+                <strong>{appVersionLabel}</strong>
+                <span className="settings-page-panel__meta-separator">•</span>
+                <span>{appPlatformLabel}</span>
+              </div>
+            </div>
           </div>
         </section>
       ) : null}

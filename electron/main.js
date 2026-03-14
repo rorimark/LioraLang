@@ -2518,6 +2518,12 @@ const setupIpcHandlers = () => {
     return settings;
   });
 
+  ipcMain.handle("app:get-version", () => {
+    return {
+      version: app.getVersion(),
+    };
+  });
+
   ipcMain.handle("app:update-settings", (_, payload) => {
     const nextSettings = updateAppSettings(payload?.settings || {});
     appPreferencesCache = extractAppPreferencesFromSettings(nextSettings);

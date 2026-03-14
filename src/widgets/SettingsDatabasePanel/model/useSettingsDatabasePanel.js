@@ -20,6 +20,22 @@ import {
 } from "@shared/lib/shortcutSettings";
 import { APP_THEME_MODES } from "@shared/lib/theme";
 
+const resolveAppVersion = (value) => {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (typeof value.version === "string") {
+    return value.version;
+  }
+
+  return "";
+};
+
 export const useSettingsDatabasePanel = () => {
   const settingsRepository = usePlatformService("settingsRepository");
   const systemRepository = usePlatformService("systemRepository");
@@ -31,6 +47,7 @@ export const useSettingsDatabasePanel = () => {
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
   const [dbPath, setDbPath] = useState("");
+  const [appVersion, setAppVersion] = useState("");
   const [isChangingDbLocation, setIsChangingDbLocation] = useState(false);
   const [isVerifyingIntegrity, setIsVerifyingIntegrity] = useState(false);
   const [isRepairingIntegrity, setIsRepairingIntegrity] = useState(false);
@@ -183,6 +200,40 @@ export const useSettingsDatabasePanel = () => {
       cancelled = true;
     };
   }, [systemRepository]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    runtimeGateway
+      .getAppVersion()
+      .then((value) => {
+        if (!cancelled) {
+          setAppVersion(resolveAppVersion(value));
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setAppVersion("");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [runtimeGateway]);
+
+  const appVersionLabel = useMemo(() => {
+    if (!appVersion) {
+      return "Unavailable";
+    }
+
+    return `v${appVersion}`;
+  }, [appVersion]);
+
+  const appPlatformLabel = useMemo(
+    () => (isDesktopMode ? "Desktop" : "Web"),
+    [isDesktopMode],
+  );
 
   const openDbFolder = useCallback(async () => {
     try {
@@ -423,6 +474,8 @@ export const useSettingsDatabasePanel = () => {
     selectedSettingsTab,
     highlightedSettingsTab,
     dbPath,
+    appVersionLabel,
+    appPlatformLabel,
     statusMessage,
     statusVariant,
     isChangingDbLocation,

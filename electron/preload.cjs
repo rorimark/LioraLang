@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getProgressOverview: () => ipcRenderer.invoke("progress:get-overview"),
 
   getDbPath: () => ipcRenderer.invoke("app:get-db-path"),
+  getAppVersion: () => ipcRenderer.invoke("app:get-version"),
   getAppSettings: () => ipcRenderer.invoke("app:get-settings"),
   updateAppSettings: (payload) => ipcRenderer.invoke("app:update-settings", payload),
   openDbFolder: () => ipcRenderer.invoke("app:open-db-folder"),

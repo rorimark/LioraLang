@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
+import { readFileSync } from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +38,10 @@ const resolveRouterRoutesAliasPath = (target) =>
 export default defineConfig(({ mode }) => {
   const platformTarget = resolvePlatformTarget(mode);
   const isWebTarget = platformTarget === PLATFORM_TARGETS.web;
+  const packageJson = JSON.parse(
+    readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+  );
+  const appVersion = String(packageJson?.version || "0.0.0");
 
   return {
     base: isWebTarget ? "/" : "./",
@@ -46,6 +51,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       __APP_TARGET__: JSON.stringify(platformTarget),
+      __APP_VERSION__: JSON.stringify(appVersion),
     },
     resolve: {
       alias: {
