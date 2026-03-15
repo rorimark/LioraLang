@@ -28,3 +28,5 @@ release
 *.sln
 *.sw?
 refactoring_plan.md
+.codex
+qodana.yaml
