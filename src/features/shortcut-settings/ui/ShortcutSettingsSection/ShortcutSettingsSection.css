@@ -1,10 +1,10 @@
 .shortcut-settings-section {
   display: grid;
-  gap: 10px;
+  gap: var(--ui-shortcut-section-gap);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: var(--color-surface);
-  padding: 12px;
+  padding: var(--ui-shortcut-section-padding);
 }
 
 .shortcut-settings-section--compact {
@@ -35,7 +35,7 @@
 }
 
 .shortcut-settings-section__label {
-  font-size: 0.78rem;
+  font-size: var(--ui-shortcut-label-font-size);
   color: var(--color-text-muted);
 }
 
@@ -46,17 +46,18 @@
   background: var(--color-surface);
   color: var(--color-text);
   font-family: inherit;
-  font-size: 0.82rem;
-  padding: 8px 10px;
+  font-size: var(--ui-shortcut-select-font-size);
+  padding: var(--ui-shortcut-select-padding-y) var(--ui-shortcut-select-padding-x);
+  min-height: 36px;
 }
 
 .shortcut-settings-section__check {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.82rem;
+  font-size: var(--ui-shortcut-check-font-size);
   color: var(--color-text);
-  min-height: 34px;
+  min-height: var(--ui-shortcut-check-min-height);
 }
 
 .shortcut-settings-section--compact .shortcut-settings-section__check {

@@ -24,7 +24,7 @@
   min-height: 0;
   overflow: hidden;
   border-right: 1px solid var(--color-border);
-  padding: 16px;
+  padding: var(--ui-sidebar-padding);
 }
 
 .app-shell__main {
@@ -40,7 +40,7 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0 24px 24px;
+  padding: 0 var(--ui-content-padding-x) var(--ui-content-padding-bottom);
 }
 
 .app-shell__content--learn {
@@ -48,7 +48,10 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 12px 24px 24px;
+  padding:
+    var(--ui-content-padding-learn-top)
+    var(--ui-content-padding-x)
+    var(--ui-content-padding-bottom);
 }
 
 .app-shell__content--learn > .page.learn-page {

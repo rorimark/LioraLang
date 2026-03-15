@@ -24,6 +24,63 @@ body {
   overflow: hidden;
 }
 
+:root {
+  --ui-focus-ring-color: var(--color-primary);
+  --ui-page-gap: 16px;
+  --ui-page-padding-top: 12px;
+  --ui-panel-padding: 18px;
+  --ui-kpi-grid-gap: 12px;
+  --ui-kpi-card-padding-y: 14px;
+  --ui-kpi-card-padding-x: 16px;
+  --ui-panel-grid-gap: 12px;
+  --ui-list-gap: 8px;
+  --ui-list-margin-top: 12px;
+  --ui-content-padding-x: 24px;
+  --ui-content-padding-bottom: 24px;
+  --ui-content-padding-learn-top: 12px;
+  --ui-sidebar-padding: 16px;
+  --ui-page-header-padding-top: 22px;
+  --ui-page-header-padding-x: 24px;
+  --ui-page-header-padding-bottom: 16px;
+  --ui-page-header-gap: 18px;
+  --ui-page-header-title-size: clamp(1.5rem, 2vw, 2rem);
+  --ui-page-header-subtitle-size: 0.95rem;
+  --ui-page-header-subtitle-margin-top: 8px;
+  --ui-nav-bar-gap: 20px;
+  --ui-nav-bar-padding: 16px;
+  --ui-nav-bar-logo-size: 38px;
+  --ui-nav-bar-brand-gap: 12px;
+  --ui-nav-shortcuts-padding: 10px;
+  --ui-nav-tab-padding-y: 10px;
+  --ui-nav-tab-padding-x: 12px;
+  --ui-nav-tab-gap: 12px;
+  --ui-nav-tab-font-size: 0.96rem;
+  --ui-nav-tab-min-height: 40px;
+  --ui-meta-badge-padding-y: 6px;
+  --ui-meta-badge-padding-x: 12px;
+  --ui-meta-badge-font-size: 0.76rem;
+  --ui-shortcut-section-padding: 12px;
+  --ui-shortcut-section-gap: 10px;
+  --ui-shortcut-select-padding-y: 8px;
+  --ui-shortcut-select-padding-x: 10px;
+  --ui-shortcut-select-font-size: 0.82rem;
+  --ui-shortcut-label-font-size: 0.78rem;
+  --ui-shortcut-check-font-size: 0.82rem;
+  --ui-shortcut-check-min-height: 34px;
+}
+
+:where(:focus-visible) {
+  outline: 2px solid var(--ui-focus-ring-color);
+  outline-offset: 2px;
+}
+
+@supports not selector(:focus-visible) {
+  :where(:focus) {
+    outline: 2px solid var(--ui-focus-ring-color);
+    outline-offset: 2px;
+  }
+}
+
 :root[ui-font-scale="small"] {
   font-size: 14px;
 }
@@ -36,12 +93,46 @@ body {
   font-size: 18px;
 }
 
-:root[ui-compact="true"] .panel {
-  padding: 14px;
-}
-
-:root[ui-compact="true"] .page {
-  gap: 12px;
+:root[ui-compact="true"] {
+  --ui-page-gap: 12px;
+  --ui-page-padding-top: 8px;
+  --ui-panel-padding: 14px;
+  --ui-kpi-grid-gap: 10px;
+  --ui-kpi-card-padding-y: 12px;
+  --ui-kpi-card-padding-x: 14px;
+  --ui-panel-grid-gap: 10px;
+  --ui-list-gap: 6px;
+  --ui-list-margin-top: 8px;
+  --ui-content-padding-x: 20px;
+  --ui-content-padding-bottom: 20px;
+  --ui-content-padding-learn-top: 8px;
+  --ui-sidebar-padding: 12px;
+  --ui-page-header-padding-top: 16px;
+  --ui-page-header-padding-x: 20px;
+  --ui-page-header-padding-bottom: 12px;
+  --ui-page-header-gap: 12px;
+  --ui-page-header-title-size: clamp(1.32rem, 1.9vw, 1.7rem);
+  --ui-page-header-subtitle-size: 0.88rem;
+  --ui-page-header-subtitle-margin-top: 6px;
+  --ui-nav-bar-gap: 14px;
+  --ui-nav-bar-padding: 12px;
+  --ui-nav-bar-logo-size: 34px;
+  --ui-nav-bar-brand-gap: 10px;
+  --ui-nav-shortcuts-padding: 8px;
+  --ui-nav-tab-padding-y: 8px;
+  --ui-nav-tab-padding-x: 10px;
+  --ui-nav-tab-gap: 10px;
+  --ui-nav-tab-font-size: 0.9rem;
+  --ui-meta-badge-padding-y: 4px;
+  --ui-meta-badge-padding-x: 10px;
+  --ui-meta-badge-font-size: 0.7rem;
+  --ui-shortcut-section-padding: 10px;
+  --ui-shortcut-section-gap: 8px;
+  --ui-shortcut-select-padding-y: 6px;
+  --ui-shortcut-select-padding-x: 9px;
+  --ui-shortcut-select-font-size: 0.78rem;
+  --ui-shortcut-label-font-size: 0.72rem;
+  --ui-shortcut-check-font-size: 0.78rem;
 }
 
 :root[ui-high-contrast="true"] {
@@ -67,21 +158,21 @@ body {
 
 .page {
   display: grid;
-  gap: 16px;
-  padding-top: 12px;
+  gap: var(--ui-page-gap);
+  padding-top: var(--ui-page-padding-top);
 }
 
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--ui-kpi-grid-gap);
 }
 
 .kpi-card {
   border-radius: 14px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  padding: 14px 16px;
+  padding: var(--ui-kpi-card-padding-y) var(--ui-kpi-card-padding-x);
   box-shadow: var(--shadow-sm);
 }
 
@@ -99,7 +190,7 @@ body {
 
 .panel-grid {
   display: grid;
-  gap: 12px;
+  gap: var(--ui-panel-grid-gap);
 }
 
 .panel-grid--two {
@@ -110,7 +201,7 @@ body {
   border-radius: 16px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  padding: 18px;
+  padding: var(--ui-panel-padding);
   box-shadow: var(--shadow-sm);
 }
 
@@ -127,10 +218,10 @@ body {
 }
 
 .list {
-  margin: 12px 0 0;
+  margin: var(--ui-list-margin-top) 0 0;
   padding-left: 20px;
   display: grid;
-  gap: 8px;
+  gap: var(--ui-list-gap);
   color: var(--color-text);
 }
 
