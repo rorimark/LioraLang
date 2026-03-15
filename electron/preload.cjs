@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getAppSettings: () => ipcRenderer.invoke("app:get-settings"),
   updateAppSettings: (payload) => ipcRenderer.invoke("app:update-settings", payload),
   openDbFolder: () => ipcRenderer.invoke("app:open-db-folder"),
+  openDownloadsFolder: () => ipcRenderer.invoke("app:open-downloads"),
   changeDbLocation: () => ipcRenderer.invoke("app:change-db-location"),
   verifyIntegrity: (payload) => ipcRenderer.invoke("app:verify-integrity", payload),
   showRuntimeErrorPreview: () => ipcRenderer.invoke("app:debug-show-runtime-error"),
@@ -29,6 +30,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   navigateWindowForward: () => ipcRenderer.invoke("window:navigate-forward"),
   applyWindowTheme: (payload) => ipcRenderer.invoke("window:apply-theme", payload),
   checkForUpdates: () => ipcRenderer.invoke("updates:check"),
+  downloadUpdate: () => ipcRenderer.invoke("updates:download"),
   hubListDecks: (payload) => ipcRenderer.invoke("hub:list-decks", payload),
   hubCreateDownloadUrl: (payload) =>
     ipcRenderer.invoke("hub:create-download-url", payload),

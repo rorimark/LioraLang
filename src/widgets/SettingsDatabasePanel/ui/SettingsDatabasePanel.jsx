@@ -54,6 +54,11 @@ export const SettingsDatabasePanel = memo(() => {
     appPlatformLabel,
     statusMessage,
     statusVariant,
+    statusAction,
+    statusActionSticky,
+    isUpdatePromptOpen,
+    updatePromptVersion,
+    isUpdateDownloading,
     isCheckingUpdates,
     isChangingDbLocation,
     isVerifyingIntegrity,
@@ -97,6 +102,8 @@ export const SettingsDatabasePanel = memo(() => {
     closeIntegrityRepairConfirm,
     handleThemeModeChange,
     checkForUpdates,
+    closeUpdatePrompt,
+    confirmUpdateDownload,
     openResetSettingsConfirm,
     closeResetSettingsConfirm,
     resetAllSettingsToDefaults,
@@ -175,7 +182,24 @@ export const SettingsDatabasePanel = memo(() => {
       <InlineAlert
         text={statusMessage}
         variant={statusVariant}
+        action={statusAction}
+        disableAutoClose={statusActionSticky}
         onClose={clearStatusMessage}
+      />
+
+      <ActionModal
+        isOpen={isUpdatePromptOpen}
+        title="Update Available"
+        description={
+          updatePromptVersion
+            ? `Version ${updatePromptVersion} is ready to download.`
+            : "A new version is ready to download."
+        }
+        confirmLabel="Download update"
+        cancelLabel="Not now"
+        isConfirming={isUpdateDownloading}
+        onConfirm={confirmUpdateDownload}
+        onClose={closeUpdatePrompt}
       />
 
       <nav className="settings-page-panel__quick-nav" aria-label="Settings sections">

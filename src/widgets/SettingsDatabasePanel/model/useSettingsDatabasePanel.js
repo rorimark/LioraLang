@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router";
 import { usePlatformService } from "@app/providers";
 import { useDeckImportFlow } from "@features/deck-import";
@@ -46,6 +46,15 @@ export const useSettingsDatabasePanel = () => {
   const { shortcutSettings } = useShortcutSettings();
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
+  const [statusAction, setStatusAction] = useState(null);
+  const lastUpdateToastRef = useRef({
+    key: "",
+    timestamp: 0,
+  });
+  const lastUpdatePromptRef = useRef("");
+  const [isUpdatePromptOpen, setIsUpdatePromptOpen] = useState(false);
+  const [updatePromptVersion, setUpdatePromptVersion] = useState("");
+  const [isUpdateDownloading, setIsUpdateDownloading] = useState(false);
   const [dbPath, setDbPath] = useState("");
   const [appVersion, setAppVersion] = useState("");
   const [isChangingDbLocation, setIsChangingDbLocation] = useState(false);
@@ -102,10 +111,19 @@ export const useSettingsDatabasePanel = () => {
     };
   }, [isMenuFocusNavigation, menuFocusTab, menuFocusToken]);
 
-  const reportMessage = useCallback((text, variant = "info") => {
+  const reportMessage = useCallback((text, variant = "info", action = null) => {
     setStatusMessage(text);
     setStatusVariant(variant);
+    setStatusAction(action);
   }, []);
+
+  const openDownloadsFolder = useCallback(async () => {
+    try {
+      await systemRepository.openDownloadsFolder();
+    } catch (openError) {
+      reportMessage(openError.message || "Failed to open Downloads folder", "error");
+    }
+  }, [reportMessage, systemRepository]);
 
   const handleUpdateStatus = useCallback(
     (payload) => {
@@ -114,6 +132,20 @@ export const useSettingsDatabasePanel = () => {
       }
 
       const status = payload.status;
+      const messageKey = `${status}:${payload.message || ""}:${payload.progress?.percent || ""}`;
+      const now = Date.now();
+
+      if (
+        lastUpdateToastRef.current.key === messageKey &&
+        now - lastUpdateToastRef.current.timestamp < 1500
+      ) {
+        return;
+      }
+
+      lastUpdateToastRef.current = {
+        key: messageKey,
+        timestamp: now,
+      };
 
       if (status === "checking") {
         reportMessage("Checking for updates...", "info");
@@ -121,7 +153,16 @@ export const useSettingsDatabasePanel = () => {
       }
 
       if (status === "available") {
-        reportMessage("Update available. Downloading in background.", "info");
+        const nextVersion =
+          typeof payload?.info?.version === "string"
+            ? payload.info.version
+            : "";
+
+        if (nextVersion && lastUpdatePromptRef.current !== nextVersion) {
+          lastUpdatePromptRef.current = nextVersion;
+          setUpdatePromptVersion(nextVersion);
+          setIsUpdatePromptOpen(true);
+        }
         return;
       }
 
@@ -136,10 +177,19 @@ export const useSettingsDatabasePanel = () => {
       }
 
       if (status === "error") {
+        if (payload.code === "signature" && payload.downloadsReady) {
+          reportMessage(payload.message || "Update check failed", "error", {
+            label: "Open Downloads",
+            onClick: openDownloadsFolder,
+            disableAutoClose: true,
+          });
+          return;
+        }
+
         reportMessage(payload.message || "Update check failed", "error");
       }
     },
-    [reportMessage],
+    [openDownloadsFolder, reportMessage],
   );
 
   const {
@@ -253,7 +303,16 @@ export const useSettingsDatabasePanel = () => {
       if (status === "disabled") {
         reportMessage(result.message || "Updates are available only in desktop builds.", "info");
       } else if (status === "available") {
-        reportMessage("Update available. Downloading in background.", "info");
+        const nextVersion =
+          typeof result?.info?.version === "string"
+            ? result.info.version
+            : "";
+
+        if (nextVersion) {
+          lastUpdatePromptRef.current = "";
+          setUpdatePromptVersion(nextVersion);
+          setIsUpdatePromptOpen(true);
+        }
       } else if (status === "none") {
         reportMessage("You're up to date.", "success");
       } else if (status === "error") {
@@ -265,6 +324,27 @@ export const useSettingsDatabasePanel = () => {
       reportMessage(error?.message || "Update check failed", "error");
     } finally {
       setIsCheckingUpdates(false);
+    }
+  }, [reportMessage, runtimeGateway]);
+
+  const closeUpdatePrompt = useCallback(() => {
+    setIsUpdatePromptOpen(false);
+    lastUpdatePromptRef.current = "";
+  }, []);
+
+  const confirmUpdateDownload = useCallback(async () => {
+    setIsUpdateDownloading(true);
+
+    try {
+      const result = await runtimeGateway.downloadUpdate();
+      if (result?.status === "error") {
+        reportMessage(result.message || "Failed to download update", "error");
+      }
+    } catch (error) {
+      reportMessage(error?.message || "Failed to download update", "error");
+    } finally {
+      setIsUpdateDownloading(false);
+      setIsUpdatePromptOpen(false);
     }
   }, [reportMessage, runtimeGateway]);
 
@@ -478,6 +558,11 @@ export const useSettingsDatabasePanel = () => {
     appPlatformLabel,
     statusMessage,
     statusVariant,
+    statusAction,
+    statusActionSticky: Boolean(statusAction?.disableAutoClose),
+    isUpdatePromptOpen,
+    updatePromptVersion,
+    isUpdateDownloading,
     isChangingDbLocation,
     isVerifyingIntegrity,
     isRepairingIntegrity,
@@ -516,6 +601,8 @@ export const useSettingsDatabasePanel = () => {
     closeIntegrityRepairConfirm,
     handleThemeModeChange,
     checkForUpdates,
+    closeUpdatePrompt,
+    confirmUpdateDownload,
     openResetSettingsConfirm,
     closeResetSettingsConfirm,
     resetAllSettingsToDefaults,
