@@ -59,6 +59,21 @@
   min-width: 0;
 }
 
+.toast-item__action {
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, var(--color-transparent));
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: currentColor;
+  cursor: pointer;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 5px 9px;
+}
+
+.toast-item__action:hover {
+  background: var(--color-surface-muted);
+}
+
 .toast-item__close {
   border: 0;
   background: var(--color-transparent);

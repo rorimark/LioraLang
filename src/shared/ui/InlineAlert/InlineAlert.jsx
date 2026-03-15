@@ -8,6 +8,7 @@ export const InlineAlert = memo(
     onClose,
     autoCloseMs = 4200,
     disableAutoClose = false,
+    action = null,
   }) => {
     useEffect(() => {
       if (!text) {
@@ -19,6 +20,7 @@ export const InlineAlert = memo(
         variant,
         autoCloseMs,
         disableAutoClose,
+        action,
       });
 
       if (typeof onClose === "function") {
@@ -26,7 +28,7 @@ export const InlineAlert = memo(
       }
 
       return undefined;
-    }, [text, variant, onClose, autoCloseMs, disableAutoClose]);
+    }, [text, variant, onClose, autoCloseMs, disableAutoClose, action]);
 
     return null;
   },

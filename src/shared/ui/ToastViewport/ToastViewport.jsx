@@ -56,6 +56,7 @@ const ToastItem = memo(
     variant,
     autoCloseMs = 4200,
     disableAutoClose = false,
+    action,
   }) => {
     const [isExiting, setIsExiting] = useState(false);
     const removeTimeoutRef = useRef(0);
@@ -79,6 +80,20 @@ const ToastItem = memo(
         removeToast(id);
       }, exitDelay);
     }, [id, isExiting]);
+
+    const handleActionClick = useCallback(() => {
+      if (!action || typeof action.onClick !== "function") {
+        return;
+      }
+
+      action.onClick();
+      closeToast();
+    }, [action, closeToast]);
+
+    const hasAction =
+      action &&
+      typeof action.label === "string" &&
+      typeof action.onClick === "function";
 
     useEffect(() => {
       if (
@@ -113,6 +128,15 @@ const ToastItem = memo(
         aria-live={variant === "error" || variant === "danger" ? "assertive" : "polite"}
       >
         <span className="toast-item__text">{text}</span>
+        {hasAction ? (
+          <button
+            type="button"
+            className="toast-item__action"
+            onClick={handleActionClick}
+          >
+            {action.label}
+          </button>
+        ) : null}
         <button
           type="button"
           className="toast-item__close"

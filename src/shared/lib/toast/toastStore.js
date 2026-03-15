@@ -27,6 +27,7 @@ export const showToast = ({
   variant = "info",
   autoCloseMs = 4200,
   disableAutoClose = false,
+  action = null,
 } = {}) => {
   if (typeof text !== "string" || !text.trim()) {
     return "";
@@ -38,6 +39,7 @@ export const showToast = ({
     variant,
     autoCloseMs,
     disableAutoClose,
+    action,
   };
 
   toasts = [...toasts, nextToast];
