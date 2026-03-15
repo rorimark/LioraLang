@@ -133,6 +133,7 @@
     },
     "win": {
       "icon": "electron/assets/icon.ico",
+      "artifactName": "LioraLang-Setup-${version}.${ext}",
       "target": [
         {
           "target": "nsis",
