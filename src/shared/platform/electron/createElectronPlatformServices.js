@@ -399,6 +399,7 @@ const createSystemRepository = () => {
   return {
     getDbPath: () => ensureElectronApi().getDbPath(),
     openDbFolder: () => ensureElectronApi().openDbFolder(),
+    openDownloadsFolder: () => ensureElectronApi().openDownloadsFolder(),
     changeDbLocation: () => ensureElectronApi().changeDbLocation(),
     verifyIntegrity: (options = {}) =>
       ensureElectronApi().verifyIntegrity({
@@ -527,6 +528,18 @@ const createRuntimeGateway = () => {
       }
 
       return electronApi.checkForUpdates();
+    },
+    async downloadUpdate() {
+      const electronApi = getElectronApi();
+
+      if (!electronApi || typeof electronApi.downloadUpdate !== "function") {
+        return {
+          status: "disabled",
+          message: "Updates are available only in the desktop app.",
+        };
+      }
+
+      return electronApi.downloadUpdate();
     },
     subscribeUpdateStatus(callback) {
       if (typeof callback !== "function") {

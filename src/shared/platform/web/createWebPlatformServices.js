@@ -58,6 +58,9 @@ const createSystemRepository = () => {
     async openDbFolder() {
       throw new Error("Open DB folder is available only in desktop mode");
     },
+    async openDownloadsFolder() {
+      throw new Error("Downloads folder is available only in desktop mode");
+    },
     async changeDbLocation() {
       throw new Error("Database location is available only in desktop mode");
     },
@@ -87,6 +90,10 @@ const createRuntimeGateway = () => {
       version: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : null,
     }),
     checkForUpdates: async () => ({
+      status: "disabled",
+      message: "Updates are available only in the desktop app.",
+    }),
+    downloadUpdate: async () => ({
       status: "disabled",
       message: "Updates are available only in the desktop app.",
     }),
