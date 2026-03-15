@@ -66,6 +66,18 @@
   min-height: 36px;
 }
 
+@media (max-width: 1180px) {
+  .decks-page-panel__controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    align-items: stretch;
+  }
+
+  .decks-page-panel__refresh {
+    width: 100%;
+  }
+}
+
 @media (max-width: 900px) {
   .decks-page-panel {
     gap: 12px;
