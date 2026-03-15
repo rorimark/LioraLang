@@ -71,11 +71,72 @@ const isReleaseMetadataForVersion = (filePath, version) => {
 const normalizeReleaseFileName = (fileName) =>
   fileName.replace(/\.blockmap$/i, "");
 
+const extractMetadataAssetName = (content) => {
+  const pathMatch = content.match(/^path:\s*([^\s]+)$/m);
+  if (pathMatch?.[1]) {
+    return pathMatch[1].trim();
+  }
+
+  const urlMatch = content.match(/^\s*-?\s*url:\s*([^\s]+)$/m);
+  if (urlMatch?.[1]) {
+    return urlMatch[1].trim();
+  }
+
+  return "";
+};
+
+const validateLatestMetadata = (releaseDir, version, fileName, requiredExtension) => {
+  const metadataPath = path.join(releaseDir, fileName);
+
+  if (!fs.existsSync(metadataPath)) {
+    throw new Error(`${fileName} is missing. Build the release before publishing.`);
+  }
+
+  const content = fs.readFileSync(metadataPath, "utf8");
+  const versionPattern = new RegExp(`^version:\\s*${escapeRegExp(version)}\\s*$`, "m");
+
+  if (!versionPattern.test(content)) {
+    throw new Error(`${fileName} does not match version ${version}.`);
+  }
+
+  const assetName = extractMetadataAssetName(content);
+  if (!assetName) {
+    throw new Error(`${fileName} does not reference a release asset.`);
+  }
+
+  if (!assetName.endsWith(requiredExtension)) {
+    throw new Error(`${fileName} should reference a ${requiredExtension} file.`);
+  }
+
+  const assetPath = path.join(releaseDir, assetName);
+  if (!fs.existsSync(assetPath)) {
+    const fallbackNames = [
+      assetName.replace(/-Setup-/i, " Setup "),
+      assetName.replace(/-/g, " "),
+    ].filter((candidate) => candidate && candidate !== assetName);
+
+    const fallbackPath = fallbackNames
+      .map((candidate) => path.join(releaseDir, candidate))
+      .find((candidatePath) => fs.existsSync(candidatePath));
+
+    if (fallbackPath) {
+      fs.copyFileSync(fallbackPath, assetPath);
+    } else {
+      throw new Error(`Release asset referenced by ${fileName} is missing: ${assetName}`);
+    }
+  }
+
+  return assetPath;
+};
+
 const getAssets = (version) => {
   const releaseDir = path.join(PROJECT_ROOT, "release");
   if (!fs.existsSync(releaseDir)) {
     return [];
   }
+
+  validateLatestMetadata(releaseDir, version, "latest-mac.yml", ".zip");
+  validateLatestMetadata(releaseDir, version, "latest.yml", ".exe");
 
   const entries = fs.readdirSync(releaseDir);
   const primaryAssets = entries.filter((file) => {
