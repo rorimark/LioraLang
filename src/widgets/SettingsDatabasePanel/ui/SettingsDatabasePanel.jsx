@@ -351,17 +351,14 @@ export const SettingsDatabasePanel = memo(() => {
               <button type="button" onClick={openDbFolder}>
                 Open database folder
               </button>
-            </div>
-
-            <div className="settings-page-panel__actions">
               <button
-                type="button"
-                onClick={verifyIntegrity}
-                disabled={isVerifyingIntegrity}
+                  type="button"
+                  onClick={verifyIntegrity}
+                  disabled={isVerifyingIntegrity}
               >
                 {isVerifyingIntegrity
-                  ? "Checking integrity..."
-                  : "Check file integrity"}
+                    ? "Checking integrity..."
+                    : "Check file integrity"}
               </button>
             </div>
           </div>
