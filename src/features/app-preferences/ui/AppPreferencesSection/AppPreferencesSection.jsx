@@ -343,7 +343,7 @@ export const AppPreferencesSection = memo(({
             <span>High contrast mode</span>
           </label>
 
-          <label className="app-preferences-section__check app-preferences-section__check--wide">
+          <label className="app-preferences-section__check">
             <input
               type="checkbox"
               name="dataSafety.confirmDestructive"
