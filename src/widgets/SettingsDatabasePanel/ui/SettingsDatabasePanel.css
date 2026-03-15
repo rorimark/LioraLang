@@ -106,7 +106,10 @@
 }
 
 .settings-page-panel__section-grid--actions {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
 }
 
 .settings-page-panel__stack {
