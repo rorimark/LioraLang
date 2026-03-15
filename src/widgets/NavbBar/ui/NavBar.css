@@ -7,8 +7,8 @@
   flex-direction: column;
   min-height: 0;
   height: 100%;
-  gap: 20px;
-  padding: 16px;
+  gap: var(--ui-nav-bar-gap);
+  padding: var(--ui-nav-bar-padding);
   border-radius: 18px;
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
@@ -18,13 +18,13 @@
 .nav-bar__brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--ui-nav-bar-brand-gap);
   padding: 2px 2px 8px;
 }
 
 .nav-bar__logo {
-  width: 38px;
-  height: 38px;
+  width: var(--ui-nav-bar-logo-size);
+  height: var(--ui-nav-bar-logo-size);
   border-radius: 12px;
   display: grid;
   place-content: center;
@@ -110,7 +110,7 @@
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background: var(--color-surface-muted);
-  padding: 10px;
+  padding: var(--ui-nav-shortcuts-padding);
   display: grid;
   gap: 8px;
 }

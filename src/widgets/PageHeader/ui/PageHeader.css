@@ -7,8 +7,11 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 18px;
-  padding: 22px 24px 16px;
+  gap: var(--ui-page-header-gap);
+  padding:
+    var(--ui-page-header-padding-top)
+    var(--ui-page-header-padding-x)
+    var(--ui-page-header-padding-bottom);
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg);
 }
@@ -17,7 +20,7 @@
   margin: 0;
   font-family: "Fraunces", serif;
   font-weight: 600;
-  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-size: var(--ui-page-header-title-size);
   line-height: 1.1;
   color: var(--color-text);
 }
@@ -32,10 +35,10 @@
 }
 
 .page-header__subtitle {
-  margin: 8px 0 0;
+  margin: var(--ui-page-header-subtitle-margin-top) 0 0;
   max-width: 680px;
   color: var(--color-text-muted);
-  font-size: 0.95rem;
+  font-size: var(--ui-page-header-subtitle-size);
   line-height: 1.4;
 }
 
