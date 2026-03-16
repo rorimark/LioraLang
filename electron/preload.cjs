@@ -32,6 +32,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   checkForUpdates: () => ipcRenderer.invoke("updates:check"),
   downloadUpdate: () => ipcRenderer.invoke("updates:download"),
   hubListDecks: (payload) => ipcRenderer.invoke("hub:list-decks", payload),
+  hubGetDeckBySlug: (payload) =>
+    ipcRenderer.invoke("hub:get-deck-by-slug", payload),
   hubCreateDownloadUrl: (payload) =>
     ipcRenderer.invoke("hub:create-download-url", payload),
   hubPublishDeck: (payload) => ipcRenderer.invoke("hub:publish-deck", payload),

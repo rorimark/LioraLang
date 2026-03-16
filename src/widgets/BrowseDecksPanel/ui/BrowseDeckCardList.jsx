@@ -1,5 +1,7 @@
 import { memo, useCallback } from "react";
+import { Link } from "react-router";
 import { Button, MetaBadge } from "@shared/ui";
+import { buildBrowseDeckRoute } from "@shared/config/routes";
 
 const MAX_VISIBLE_TAGS = 4;
 
@@ -139,17 +141,33 @@ export const BrowseDeckCardList = memo(
           const isDeleting = String(deletingDeckId) === String(deck?.id);
           const fileSize = formatFileSize(deck?.latestVersion?.fileSizeBytes);
           const createdAt = formatDate(deck?.createdAt);
+          const updatedAt = formatDate(
+            deck?.latestVersion?.createdAt || deck?.createdAt,
+          );
           const wordsCount = Number.isFinite(Number(deck?.wordsCount))
             ? Number(deck.wordsCount)
             : 0;
           const downloadsCount = Number.isFinite(Number(deck?.downloadsCount))
             ? Number(deck.downloadsCount)
             : 0;
+          const deckSlug =
+            typeof deck?.slug === "string" && deck.slug.trim()
+              ? deck.slug.trim()
+              : "";
+          const deckLink = deckSlug ? buildBrowseDeckRoute(deckSlug) : "";
 
           return (
             <article className="browse-decks-panel__card" key={deck.id}>
               <header className="browse-decks-panel__card-head">
-                <h3>{deck?.title || "Untitled deck"}</h3>
+                <h3>
+                  {deckLink ? (
+                    <Link className="browse-decks-panel__card-link" to={deckLink}>
+                      {deck?.title || "Untitled deck"}
+                    </Link>
+                  ) : (
+                    deck?.title || "Untitled deck"
+                  )}
+                </h3>
                 <span className="browse-decks-panel__card-meta">
                   Added {createdAt}
                 </span>
@@ -198,6 +216,10 @@ export const BrowseDeckCardList = memo(
                   <div>
                     <dt>Downloads</dt>
                     <dd>{downloadsCount}</dd>
+                  </div>
+                  <div>
+                    <dt>Updated</dt>
+                    <dd>{updatedAt}</dd>
                   </div>
                   <div>
                     <dt>Package</dt>

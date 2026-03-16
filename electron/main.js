@@ -29,6 +29,7 @@ import { verifyAppIntegrityAndRepair } from "./services/integrity.service.js";
 import {
   createHubDeckDownloadUrl,
   deleteHubDeck,
+  getHubDeckBySlug,
   incrementHubDeckDownloads,
   listHubDecks,
   publishHubDeck,
@@ -2691,6 +2692,13 @@ const setupIpcHandlers = () => {
       page: payload?.page,
       pageSize: payload?.pageSize,
       search: payload?.search,
+    });
+  });
+
+  ipcMain.handle("hub:get-deck-by-slug", (_, payload) => {
+    return getHubDeckBySlug({
+      config: payload?.config || {},
+      slug: payload?.slug,
     });
   });
 

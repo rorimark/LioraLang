@@ -35,6 +35,38 @@ const sanitizeFileName = (value) => {
   return normalizedName || "deck";
 };
 
+const toShortId = (value) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value.replace(/-/g, "").slice(0, 6);
+};
+
+const toSlug = (value) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+const buildDeckSlug = (title, id) => {
+  const base = toSlug(typeof title === "string" ? title : "");
+  const suffix = toShortId(typeof id === "string" ? id : String(id || ""));
+
+  if (base && suffix) {
+    return `${base}-${suffix}`;
+  }
+
+  return base || suffix;
+};
+
 const isAnonymousSignInDisabledError = (error) => {
   if (!error || typeof error !== "object") {
     return false;
@@ -104,8 +136,14 @@ const toHubDeck = (deck, latestVersion) => {
     uniqueLanguages.push(language);
   });
 
+  const slug =
+    typeof deck?.slug === "string" && deck.slug.trim()
+      ? deck.slug.trim()
+      : buildDeckSlug(deck?.title, deck?.id);
+
   return {
     id: String(deck?.id || ""),
+    slug,
     title: typeof deck?.title === "string" ? deck.title.trim() : "",
     description: typeof deck?.description === "string" ? deck.description.trim() : "",
     sourceLanguage:
@@ -239,7 +277,7 @@ export const hubDecksApi = {
     let decksQuery = supabase
       .from("hub_decks")
       .select(
-        "id,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
         { count: "exact" },
       )
       .eq("is_published", true)
@@ -300,6 +338,43 @@ export const hubDecksApi = {
       page: normalizedPage,
       pageSize: normalizedPageSize,
     };
+  },
+
+  async getDeckBySlug(slug) {
+    const supabase = ensureSupabaseClient();
+    const normalizedSlug = toCleanString(slug).toLowerCase();
+
+    if (!normalizedSlug) {
+      throw new Error("Hub deck slug is required");
+    }
+
+    const { data: deck, error: deckError } = await supabase
+      .from("hub_decks")
+      .select(
+        "id,slug,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
+      )
+      .eq("slug", normalizedSlug)
+      .eq("is_published", true)
+      .single();
+
+    if (deckError) {
+      throw new Error(deckError.message || "Failed to load Hub deck");
+    }
+
+    const { data: versions, error: versionsError } = await supabase
+      .from("hub_deck_versions")
+      .select("deck_id,version,file_path,file_format,file_size_bytes,created_at")
+      .eq("deck_id", deck?.id)
+      .order("version", { ascending: false })
+      .limit(1);
+
+    if (versionsError) {
+      throw new Error(versionsError.message || "Failed to load Hub deck versions");
+    }
+
+    const latestVersion = Array.isArray(versions) ? versions[0] : null;
+
+    return toHubDeck(deck, latestVersion);
   },
 
   async createDownloadUrl(filePath, expiresInSeconds = DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS) {
@@ -406,7 +481,7 @@ export const hubDecksApi = {
       error: ownerDecksError,
     } = await supabase
       .from("hub_decks")
-      .select("id,title")
+      .select("id,title,slug")
       .eq("owner_id", user.id)
       .limit(500);
 
@@ -415,9 +490,10 @@ export const hubDecksApi = {
     }
 
     const existingDeck = resolveExistingDeckByTitle(ownerDecks, publishableDeck);
-    let hubDeckId = existingDeck?.id || "";
+  let hubDeckId = existingDeck?.id || "";
+  const shouldUpdateSlug = !toCleanString(existingDeck?.slug);
 
-    if (!hubDeckId) {
+  if (!hubDeckId) {
       const {
         data: insertedDeck,
         error: insertDeckError,
@@ -441,6 +517,14 @@ export const hubDecksApi = {
       }
 
       hubDeckId = insertedDeck.id;
+      const nextSlug = buildDeckSlug(publishableDeck.title, hubDeckId);
+
+      if (nextSlug) {
+        await supabase
+          .from("hub_decks")
+          .update({ slug: nextSlug })
+          .eq("id", hubDeckId);
+      }
     } else {
       const { error: updateDeckError } = await supabase
         .from("hub_decks")
@@ -456,6 +540,17 @@ export const hubDecksApi = {
 
       if (updateDeckError) {
         throw new Error(updateDeckError.message || "Failed to update Hub deck");
+      }
+
+      if (shouldUpdateSlug) {
+        const nextSlug = buildDeckSlug(publishableDeck.title, hubDeckId);
+
+        if (nextSlug) {
+          await supabase
+            .from("hub_decks")
+            .update({ slug: nextSlug })
+            .eq("id", hubDeckId);
+        }
       }
     }
 

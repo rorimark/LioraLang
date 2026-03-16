@@ -41,6 +41,10 @@ export const appRoute = {
       lazy: loadRouteComponent(() => import("@pages/browse/ui/BrowsePage")),
     },
     {
+      path: "browse/:deckSlug",
+      lazy: loadRouteComponent(() => import("@pages/browse/ui/BrowsePage")),
+    },
+    {
       path: "decks",
       lazy: loadRouteComponent(() => import("@pages/decks/ui/DecksPage")),
     },
@@ -85,4 +89,3 @@ export const legacyRoutes = [
   { path: LEGACY_ROUTE_PATHS.account, element: <Navigate to={ROUTE_PATHS.account} replace /> },
   { path: LEGACY_ROUTE_PATHS.settings, element: <Navigate to={ROUTE_PATHS.settings} replace /> },
 ];
-
