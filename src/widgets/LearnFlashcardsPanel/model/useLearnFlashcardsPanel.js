@@ -10,11 +10,9 @@ import {
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
 import {
-  DEFAULT_LEARN_PROGRESS,
-  areLearnProgressEqual,
-  createLearnProgressSettingsPatch,
-  readLearnProgressFromSettings,
   readLearnProgressFromSession,
+  readBrowseProgressFromStorage,
+  writeBrowseProgressToStorage,
   writeLearnProgressToSession,
 } from "./learnProgressStorage";
 
@@ -289,14 +287,21 @@ const buildCompletionMessage = (session) => {
 export const useLearnFlashcardsPanel = () => {
   const navigate = useNavigate();
   const srsRepository = usePlatformService("srsRepository");
-  const settingsRepository = usePlatformService("settingsRepository");
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const { appPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
-  const [learnProgress, setLearnProgress] = useState(() =>
-    readLearnProgressFromSession(),
-  );
-  const [isLearnProgressReady, setIsLearnProgressReady] = useState(false);
+  const [learnProgress, setLearnProgress] = useState(() => {
+    const baseProgress = readLearnProgressFromSession();
+    const persistedBrowse = readBrowseProgressFromStorage();
+
+    return {
+      ...baseProgress,
+      lastBrowseWordIdByDeck: {
+        ...persistedBrowse,
+        ...baseProgress.lastBrowseWordIdByDeck,
+      },
+    };
+  });
   const [extendedSessionByDeckId, setExtendedSessionByDeckId] = useState(
     () => LEARN_SESSION_CACHE.extendedSessionByDeckId || {},
   );
@@ -309,54 +314,6 @@ export const useLearnFlashcardsPanel = () => {
     LEARN_SESSION_CACHE.shuffleSeedsByDeckId || {},
   );
 
-  useEffect(() => {
-    let cancelled = false;
-
-    settingsRepository
-      .getAppSettings()
-      .then((settings) => {
-        if (cancelled) {
-          return;
-        }
-
-        const nextProgress = readLearnProgressFromSettings(settings);
-
-        setLearnProgress((prevState) => {
-          if (!areLearnProgressEqual(prevState, DEFAULT_LEARN_PROGRESS)) {
-            return prevState;
-          }
-
-          return areLearnProgressEqual(prevState, nextProgress)
-            ? prevState
-            : nextProgress;
-        });
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLearnProgress(DEFAULT_LEARN_PROGRESS);
-        }
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setIsLearnProgressReady(true);
-        }
-      });
-
-    const unsubscribe = settingsRepository.subscribeAppSettingsUpdated((nextSettings) => {
-      const nextProgress = readLearnProgressFromSettings(nextSettings);
-
-      setLearnProgress((prevState) =>
-        areLearnProgressEqual(prevState, nextProgress)
-          ? prevState
-          : nextProgress,
-      );
-    });
-
-    return () => {
-      cancelled = true;
-      unsubscribe();
-    };
-  }, [settingsRepository]);
 
   const spacedRepetitionSettings = appPreferences.spacedRepetition;
   const studySessionSettings = appPreferences.studySession;
@@ -390,7 +347,6 @@ export const useLearnFlashcardsPanel = () => {
     words: deckWords,
     isLoading: isDeckWordsLoading,
     error: deckWordsError,
-    refreshDeckWords,
   } = useDeckWords(selectedDeckId);
 
   const isExtendedSession = useMemo(
@@ -398,28 +354,65 @@ export const useLearnFlashcardsPanel = () => {
     [extendedSessionByDeckId, selectedDeckId],
   );
 
-  const setProgressCardWordId = useCallback((deckId, wordId) => {
-    const numericWordId = Number(wordId);
+  const setSrsProgressCardWordId = useCallback((deckId, wordId) => {
+    const normalizedWordId =
+      typeof wordId === "string"
+        ? wordId.trim()
+        : typeof wordId === "number" && Number.isFinite(wordId) && wordId > 0
+          ? String(wordId)
+          : "";
 
     setLearnProgress((prevState) => {
       const nextMap = {
-        ...prevState.lastCardWordIdByDeck,
+        ...prevState.lastSrsCardWordIdByDeck,
       };
 
-      if (Number.isInteger(numericWordId) && numericWordId > 0) {
-        nextMap[deckId] = numericWordId;
+      if (normalizedWordId) {
+        nextMap[deckId] = normalizedWordId;
       } else {
         delete nextMap[deckId];
       }
 
       return {
         ...prevState,
-        lastCardWordIdByDeck: nextMap,
+        lastSrsCardWordIdByDeck: nextMap,
       };
     });
   }, []);
 
-  const lastViewedWordId = learnProgress.lastCardWordIdByDeck[selectedDeckId];
+  const setBrowseProgressCardWordId = useCallback((deckId, wordId) => {
+    const normalizedWordId =
+      typeof wordId === "string"
+        ? wordId.trim()
+        : typeof wordId === "number" && Number.isFinite(wordId) && wordId > 0
+          ? String(wordId)
+          : "";
+
+    setLearnProgress((prevState) => {
+      const nextMap = {
+        ...prevState.lastBrowseWordIdByDeck,
+      };
+
+      if (normalizedWordId) {
+        nextMap[deckId] = normalizedWordId;
+      } else {
+        delete nextMap[deckId];
+      }
+
+      const nextState = {
+        ...prevState,
+        lastBrowseWordIdByDeck: nextMap,
+      };
+
+      writeLearnProgressToSession(nextState);
+      writeBrowseProgressToStorage(nextMap);
+
+      return nextState;
+    });
+  }, []);
+
+  const lastViewedWordId =
+    learnProgress.lastBrowseWordIdByDeck[selectedDeckId];
   const browseIndexById = useMemo(() => {
     const indexMap = new Map();
     deckWords.forEach((word, index) => {
@@ -456,20 +449,24 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
+    if (isDeckWordsLoading) {
+      return;
+    }
+
     if (deckWords.length === 0) {
-      setProgressCardWordId(selectedDeckId, null);
       return;
     }
 
     if (!browseWord) {
-      setProgressCardWordId(selectedDeckId, deckWords[0].id);
+      setBrowseProgressCardWordId(selectedDeckId, deckWords[0].id);
     }
   }, [
     browseWord,
     deckWords,
+    isDeckWordsLoading,
     isBrowseMode,
     selectedDeckId,
-    setProgressCardWordId,
+    setBrowseProgressCardWordId,
   ]);
 
   useEffect(() => {
@@ -526,10 +523,10 @@ export const useLearnFlashcardsPanel = () => {
       setSession(cached.session);
       setSessionError(cached.sessionError || "");
       setIsSessionLoading(false);
-      setProgressCardWordId(normalizedDeckId, cached.session?.card?.wordId);
+      setSrsProgressCardWordId(normalizedDeckId, cached.session?.card?.wordId);
       return true;
     },
-    [setProgressCardWordId],
+    [setSrsProgressCardWordId],
   );
 
   const loadSession = useCallback(
@@ -584,7 +581,7 @@ export const useLearnFlashcardsPanel = () => {
         }
 
         setSession(nextSession || EMPTY_SESSION);
-        setProgressCardWordId(normalizedDeckId, nextSession?.card?.wordId);
+        setSrsProgressCardWordId(normalizedDeckId, nextSession?.card?.wordId);
       } catch (error) {
         if (loadSessionRequestRef.current !== requestId) {
           return;
@@ -602,7 +599,7 @@ export const useLearnFlashcardsPanel = () => {
       extendedSessionByDeckId,
       restoreCachedSession,
       resolveShuffleSeed,
-      setProgressCardWordId,
+      setSrsProgressCardWordId,
       shuffleMode,
       srsRepository,
       spacedRepetitionSettings,
@@ -636,25 +633,14 @@ export const useLearnFlashcardsPanel = () => {
     void loadSession(selectedDeckId, { preferCache: true });
   }, [isBrowseMode, loadSession, selectedDeckId]);
 
-  useEffect(() => {
-    if (!isLearnProgressReady) {
-      return undefined;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      void settingsRepository
-        .updateAppSettings(createLearnProgressSettingsPatch(learnProgress))
-        .catch(() => {});
-    }, 140);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [isLearnProgressReady, learnProgress, settingsRepository]);
 
   useEffect(() => {
     writeLearnProgressToSession(learnProgress);
   }, [learnProgress]);
+
+  useEffect(() => {
+    writeBrowseProgressToStorage(learnProgress.lastBrowseWordIdByDeck);
+  }, [learnProgress.lastBrowseWordIdByDeck]);
 
   const srsCard = session?.card || null;
   const currentWord = isBrowseMode ? browseWord : srsCard;
@@ -755,7 +741,7 @@ export const useLearnFlashcardsPanel = () => {
           ...prevState,
           isBackVisible: false,
         }));
-        setProgressCardWordId(selectedDeckId, nextSession?.card?.wordId);
+        setSrsProgressCardWordId(selectedDeckId, nextSession?.card?.wordId);
       } catch (error) {
         setSessionError(error?.message || "Failed to grade card");
       } finally {
@@ -767,7 +753,7 @@ export const useLearnFlashcardsPanel = () => {
       isBrowseMode,
       isRatingPending,
       selectedDeckId,
-      setProgressCardWordId,
+      setSrsProgressCardWordId,
       spacedRepetitionSettings,
       studySessionSettings,
       shuffleMode,
@@ -808,7 +794,7 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
-    setProgressCardWordId(selectedDeckId, nextWord.id);
+    setBrowseProgressCardWordId(selectedDeckId, nextWord.id);
     setLearnProgress((prevState) => ({
       ...prevState,
       isBackVisible: false,
@@ -819,7 +805,7 @@ export const useLearnFlashcardsPanel = () => {
     deckWords,
     isBrowseMode,
     selectedDeckId,
-    setProgressCardWordId,
+    setBrowseProgressCardWordId,
   ]);
 
   const handleBrowseNext = useCallback(() => {
@@ -832,7 +818,7 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
-    setProgressCardWordId(selectedDeckId, nextWord.id);
+    setBrowseProgressCardWordId(selectedDeckId, nextWord.id);
     setLearnProgress((prevState) => ({
       ...prevState,
       isBackVisible: false,
@@ -843,7 +829,7 @@ export const useLearnFlashcardsPanel = () => {
     deckWords,
     isBrowseMode,
     selectedDeckId,
-    setProgressCardWordId,
+    setBrowseProgressCardWordId,
   ]);
 
   const keyboardHandlersRef = useRef({
@@ -977,14 +963,6 @@ export const useLearnFlashcardsPanel = () => {
     () => buildCardMetaBadges(currentWord),
     [currentWord],
   );
-  const handleRefreshSession = useCallback(() => {
-    if (isBrowseMode) {
-      void refreshDeckWords();
-      return;
-    }
-
-    void loadSession(selectedDeckId, { preferCache: false });
-  }, [isBrowseMode, loadSession, refreshDeckWords, selectedDeckId]);
 
   useEffect(() => {
     if (!selectedDeckId) {
@@ -1055,7 +1033,6 @@ export const useLearnFlashcardsPanel = () => {
     handleBrowsePrev,
     handleBrowseNext,
     toggleBackVisibility,
-    refreshSession: handleRefreshSession,
     openDeckCreatePage: handleOpenDeckCreatePage,
     openBrowsePage: handleOpenBrowsePage,
   };
