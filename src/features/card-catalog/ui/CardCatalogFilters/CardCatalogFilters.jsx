@@ -37,6 +37,7 @@ export const CardCatalogFilters = memo(
     search,
     sort,
     filters,
+    resultsCount = 0,
     levelOptions,
     partOfSpeechOptions,
     sortOptions,
@@ -69,7 +70,14 @@ export const CardCatalogFilters = memo(
     return (
       <fieldset className="card-catalog-filters">
         <legend className="sr-only">Card filters</legend>
-        <h3 className="card-catalog-filters__title">Filters</h3>
+        <div className="card-catalog-filters__header">
+          <h3 className="card-catalog-filters__title">Filters</h3>
+          <span className="card-catalog-filters__results">
+            {Number.isFinite(Number(resultsCount))
+              ? `${Number(resultsCount)} results`
+              : "0 results"}
+          </span>
+        </div>
 
         <div className="card-catalog-filters__controls">
           <input

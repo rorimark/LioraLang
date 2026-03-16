@@ -77,7 +77,6 @@ export const DeckDetailsPanel = memo(() => {
       <div className="cards-panel__header">
         <h2>{deck.name}</h2>
         <p>{deck.description || "Deck details and words catalog"}</p>
-        <span className="cards-panel__count">{totalItems} results</span>
       </div>
 
       <div className="cards-panel__actions">
@@ -134,6 +133,7 @@ export const DeckDetailsPanel = memo(() => {
               search={search}
               sort={sort}
               filters={filters}
+              resultsCount={totalItems}
               levelOptions={levelOptions}
               partOfSpeechOptions={partOfSpeechOptions}
               sortOptions={SORT_OPTIONS}
