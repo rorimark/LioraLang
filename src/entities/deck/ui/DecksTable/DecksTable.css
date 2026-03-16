@@ -65,6 +65,7 @@
 .decks-table__tags-cell {
   position: relative;
   vertical-align: top;
+  overflow: visible;
 }
 
 .decks-table__tags-wrap {
@@ -88,10 +89,11 @@
   position: relative;
   display: inline-block;
   z-index: 2;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .decks-table__tags-more {
-  list-style: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -108,14 +110,6 @@
   user-select: none;
 }
 
-.decks-table__tags-more::-webkit-details-marker {
-  display: none;
-}
-
-.decks-table__tags-more::marker {
-  content: "";
-}
-
 .decks-table__tags-more:hover {
   background: var(--color-surface);
 }
@@ -125,9 +119,12 @@
   z-index: 30;
   top: calc(100% + 6px);
   right: 0;
-  width: min(320px, 52vw);
+  width: min(320px, 40vw);
   max-height: 180px;
   overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-surface);
@@ -143,13 +140,24 @@
   pointer-events: none;
 }
 
+.decks-table__tags-more-wrap--align-left .decks-table__tags-tooltip {
+  left: 0;
+  right: auto;
+}
+
+.decks-table__tags-more-wrap--open .decks-table__tags-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
 .decks-table__tags-more-wrap:hover .decks-table__tags-tooltip,
-.decks-table__tags-more-wrap:focus-within .decks-table__tags-tooltip,
-.decks-table__tags-more-wrap[open] .decks-table__tags-tooltip {
+.decks-table__tags-more-wrap:focus-within .decks-table__tags-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
+
 
 .decks-table__actions {
   display: flex;
@@ -267,8 +275,8 @@
   }
 
   .decks-table__tags-tooltip {
-    left: 0;
-    right: auto;
+    left: auto;
+    right: 0;
     width: min(300px, calc(100vw - 56px));
   }
 
@@ -317,13 +325,6 @@
     font-size: 0.74rem;
   }
 
-  .decks-table__tags-more-wrap[open] .decks-table__tags-tooltip {
-    position: static;
-    width: 100%;
-    max-height: none;
-    margin-top: 6px;
-    box-shadow: none;
-  }
 }
 
 @media (max-width: 520px) {

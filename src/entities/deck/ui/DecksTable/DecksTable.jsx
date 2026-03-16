@@ -1,6 +1,7 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useRef } from "react";
 import { formatDeckCreatedAt } from "@shared/lib/date";
 import { MetaBadge } from "@shared/ui";
+import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
 import "./DecksTable.css";
 
 const MAX_VISIBLE_TAGS = 5;
@@ -127,6 +128,10 @@ export const DecksTable = memo(
     exportingDeckId = null,
     deletingDeckId = null,
   }) => {
+    const tableRef = useRef(null);
+
+    useDeckTagsPopover(tableRef);
+
     const handleOpenDeck = useCallback(
       (event) => {
         if (typeof onOpenDeck !== "function") {
@@ -186,7 +191,7 @@ export const DecksTable = memo(
     );
 
     return (
-      <table className="decks-table" aria-label="Decks table">
+      <table ref={tableRef} className="decks-table" aria-label="Decks table">
         <thead>
           <tr>
             <th>Deck</th>
@@ -207,7 +212,6 @@ export const DecksTable = memo(
           ) : decks.map((deck) => {
             const deckTags = buildDeckTags(deck);
             const { visibleTags, hiddenTags } = splitDeckTags(deckTags);
-            const allTagsTooltip = deckTags.map((tag) => tag.text).join(" • ");
 
             return (
               <tr key={deck.id}>
@@ -224,23 +228,27 @@ export const DecksTable = memo(
                       ))}
 
                       {hiddenTags.length > 0 && (
-                        <details className="decks-table__tags-more-wrap">
-                          <summary
-                            className="decks-table__tags-more"
-                            title={allTagsTooltip}
-                            aria-describedby={`deck-tags-tooltip-${deck.id}`}
-                            aria-label={`Show all tags for ${deck.name}`}
-                          >
-                            ...
-                          </summary>
+                        <span
+                          className="decks-table__tags-more-wrap"
+                          tabIndex={0}
+                          aria-describedby={`deck-tags-tooltip-${deck.id}`}
+                          aria-label={`Show all tags for ${deck.name}`}
+                        >
+                          <span className="decks-table__tags-more">...</span>
                           <span
                             id={`deck-tags-tooltip-${deck.id}`}
                             role="tooltip"
                             className="decks-table__tags-tooltip"
                           >
-                            {allTagsTooltip}
+                            {deckTags.map((tag) => (
+                              <MetaBadge
+                                key={`${deck.id}-tooltip-${tag.key}`}
+                                text={tag.text}
+                                accent={tag.accent}
+                              />
+                            ))}
                           </span>
-                        </details>
+                        </span>
                       )}
                     </div>
                   </div>
