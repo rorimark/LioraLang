@@ -239,7 +239,7 @@ export const BrowseDeckCardList = memo(
                   data-deck-id={deck.id}
                   onClick={handleImportDeck}
                   disabled={isImporting || isDeleting || !deck?.latestVersion?.filePath}
-                  variant="secondary"
+                  variant="primary"
                 >
                   {isImporting ? "Importing..." : "Import to Decks"}
                 </Button>

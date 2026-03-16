@@ -234,7 +234,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
             <Button
               onClick={importDeckFromHub}
               disabled={importing || !deck?.latestVersion?.filePath}
-              variant="secondary"
+              variant="primary"
             >
               {importing ? "Importing..." : "Import to Decks"}
             </Button>
@@ -243,7 +243,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
       ) : null}
 
       {isConfigured && !isLoading && !error && deck ? (
-        <section className="browse-deck-details__preview">
+        <>
           <header className="browse-deck-details__preview-head">
             <h3>Words preview</h3>
             <span>{totalItems} words</span>
@@ -271,12 +271,10 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
 
               <div className="dictionary-workspace">
                 <div className="dictionary-table-area">
-                  <div className="dictionary-table-scroll browse-deck-details__preview-table">
-                    <WordsTable
-                      words={paginatedWords}
-                      languageLabels={previewLanguages}
-                    />
-                  </div>
+                  <WordsTable
+                    words={paginatedWords}
+                    languageLabels={previewLanguages}
+                  />
 
                   <CardCatalogPagination
                     currentPage={resolvedPage}
@@ -311,7 +309,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               </div>
             </>
           )}
-        </section>
+        </>
       ) : null}
 
       {isConfigured && !isLoading && !error && deck && isNarrowFiltersViewport ? (
