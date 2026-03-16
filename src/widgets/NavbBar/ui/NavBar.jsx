@@ -3,6 +3,8 @@ import { memo } from "react";
 import { Link } from "react-router";
 import { NavTab } from "@shared/ui";
 import { ROUTE_PATHS } from "@shared/config/routes";
+import { NAV_ITEMS } from "@shared/config/routes";
+import { NavBarLearnShortcutsSlot } from "./NavBarLearnShortcutsSlot";
 import {
   IoLayersOutline,
   IoGlobeOutline,
@@ -10,8 +12,8 @@ import {
   IoStatsChartOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
-import { useNavBar } from "../model";
-import { NavBarLearnShortcuts } from "./NavBarLearnShortcuts";
+const desktopNavItems = NAV_ITEMS.filter((item) => item.key !== "settings");
+const settingsNavItem = NAV_ITEMS.find((item) => item.key === "settings");
 
 const ICONS_BY_NAME = {
   learn: IoLayersOutline,
@@ -22,7 +24,7 @@ const ICONS_BY_NAME = {
 };
 
 export const NavBar = memo(({ mobile = false }) => {
-  const { navItems, settingsNavItem, showLearnShortcuts } = useNavBar(mobile);
+  const navItems = mobile ? NAV_ITEMS : desktopNavItems;
 
   return (
     <nav
@@ -58,20 +60,21 @@ export const NavBar = memo(({ mobile = false }) => {
         ))}
       </ul>
 
-      {showLearnShortcuts && <NavBarLearnShortcuts />}
-
       {!mobile && settingsNavItem && (
-        <div className="nav-bar__footer">
-          <ul className="nav-bar__list">
-            <li className="nav-bar__list-item">
-              <NavTab
-                to={settingsNavItem.to}
-                icon={ICONS_BY_NAME[settingsNavItem.icon]}
-                title={settingsNavItem.title}
-              />
-            </li>
-          </ul>
-        </div>
+        <>
+          <NavBarLearnShortcutsSlot />
+          <div className="nav-bar__footer">
+            <ul className="nav-bar__list">
+              <li className="nav-bar__list-item">
+                <NavTab
+                  to={settingsNavItem.to}
+                  icon={ICONS_BY_NAME[settingsNavItem.icon]}
+                  title={settingsNavItem.title}
+                />
+              </li>
+            </ul>
+          </div>
+        </>
       )}
     </nav>
   );
