@@ -40,7 +40,11 @@
   background: var(--color-primary-strong);
 }
 
-.ui-button--secondary {\n  background: var(--color-surface);\n  border-color: var(--color-border);\n  color: var(--color-text);\n}\n+
+.ui-button--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
 .ui-button--ghost {
   background: var(--color-transparent);
   border-color: var(--color-transparent);
