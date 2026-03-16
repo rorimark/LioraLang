@@ -125,3 +125,13 @@
     padding: 7px 9px;
   }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .decks-page-panel__refresh:hover {
+    background: var(--color-surface);
+  }
+
+  .decks-page-panel__refresh:active {
+    background: var(--color-surface-muted);
+  }
+}
