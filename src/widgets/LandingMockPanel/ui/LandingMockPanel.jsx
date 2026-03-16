@@ -29,8 +29,10 @@ export const LandingMockPanel = memo(() => {
     hubHighlights,
     visualTiles,
     mobileSteps,
+    contactLinks,
     openWebTo,
     desktopReleaseUrl,
+    githubRepoUrl,
     handlePrefetchApp,
   } = useLandingMockPanel();
 
@@ -314,15 +316,49 @@ export const LandingMockPanel = memo(() => {
       </section>
 
       <footer className="landing-footer">
-        <p>Ready to build your own system?</p>
-        <Link
-          to={openWebTo}
-          onMouseEnter={handlePrefetchApp}
-          onFocus={handlePrefetchApp}
-          onTouchStart={handlePrefetchApp}
-        >
-          Open LioraLang
-        </Link>
+        <div className="landing-footer__brand">
+          <strong>LioraLang</strong>
+          <span>Offline-first language learning with spaced repetition.</span>
+        </div>
+        <div className="landing-footer__links">
+          <span className="landing-footer__label">Connect</span>
+          <ul>
+            {contactLinks.map((link) => (
+              <li key={link.title}>
+                <a
+                  href={link.href}
+                  target={link.openInNewTab ? "_blank" : undefined}
+                  rel={link.openInNewTab ? EXTERNAL_LINK_REL : undefined}
+                >
+                  {link.title}
+                </a>
+                <span>{link.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="landing-footer__cta">
+          <span className="landing-footer__label">Get started</span>
+          <div className="landing-footer__cta-actions">
+            <Link
+              to={openWebTo}
+              className="landing-footer__action"
+              onMouseEnter={handlePrefetchApp}
+              onFocus={handlePrefetchApp}
+              onTouchStart={handlePrefetchApp}
+            >
+              Open LioraLang
+            </Link>
+            <a
+              href={githubRepoUrl}
+              className="landing-footer__secondary"
+              target="_blank"
+              rel={EXTERNAL_LINK_REL}
+            >
+              View on GitHub
+            </a>
+          </div>
+        </div>
       </footer>
     </article>
   );
