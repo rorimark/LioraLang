@@ -27,6 +27,7 @@ export const DeckDetailsPanel = memo(() => {
     isExporting,
     exportDeck,
     openEditDeck,
+    openDecksOverview,
     clearMessage,
     isNarrowFiltersViewport,
     isFiltersExpanded,
@@ -80,6 +81,13 @@ export const DeckDetailsPanel = memo(() => {
       </div>
 
       <div className="cards-panel__actions">
+        <button
+          type="button"
+          className="cards-panel__button--secondary"
+          onClick={openDecksOverview}
+        >
+          Back to decks
+        </button>
         <button type="button" onClick={openEditDeck}>
           Edit deck
         </button>
