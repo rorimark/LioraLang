@@ -70,6 +70,8 @@ export const WordsTable = memo(({ words, languageLabels }) => {
         ) : (
           words.map((word) => {
             const examples = resolveExamples(word);
+            const previewExamples = examples.slice(0, 2);
+            const hasMoreExamples = examples.length > previewExamples.length;
             const isExpanded = String(expandedRowId) === String(word.id);
 
             return (
@@ -84,20 +86,41 @@ export const WordsTable = memo(({ words, languageLabels }) => {
                   }
                 >
                   <td data-label={labels.sourceLanguage}>
-                    <span className="words-table__cell-text">
-                      {word.source || "-"}
+                    <span className="words-table__cell-main">
+                      <span className="words-table__cell-text words-table__cell-truncate">
+                        {word.source || "-"}
+                      </span>
+                      <span className="words-table__tap-hint">Tap to expand</span>
+                      <span
+                        className={
+                          isExpanded
+                            ? "words-table__row-chevron words-table__row-chevron--open"
+                            : "words-table__row-chevron"
+                        }
+                        aria-hidden="true"
+                      >
+                        ›
+                      </span>
                     </span>
                   </td>
                   <td className="words-table__level" data-label="Level">
                     {word.level || "-"}
                   </td>
                   <td data-label="Part of speech">
-                    {word.part_of_speech || "-"}
+                    <span className="words-table__cell-truncate">
+                      {word.part_of_speech || "-"}
+                    </span>
                   </td>
-                  <td data-label={labels.targetLanguage}>{word.target || "-"}</td>
+                  <td data-label={labels.targetLanguage}>
+                    <span className="words-table__cell-truncate">
+                      {word.target || "-"}
+                    </span>
+                  </td>
                   {labels.hasTertiaryLanguage && (
                     <td data-label={labels.tertiaryLanguage}>
-                      {word.tertiary || "-"}
+                      <span className="words-table__cell-truncate">
+                        {word.tertiary || "-"}
+                      </span>
                     </td>
                   )}
                   <td className="words-table__examples" data-label="Examples">
@@ -105,7 +128,7 @@ export const WordsTable = memo(({ words, languageLabels }) => {
                       "-"
                     ) : (
                       <ul className="words-table__examples-list">
-                        {examples.map((example, index) => (
+                        {previewExamples.map((example, index) => (
                           <li
                             key={`${word.id}-example-${index}`}
                             className="words-table__example"
@@ -113,6 +136,11 @@ export const WordsTable = memo(({ words, languageLabels }) => {
                             {example}
                           </li>
                         ))}
+                        {hasMoreExamples && (
+                          <li className="words-table__example words-table__example--more">
+                            …
+                          </li>
+                        )}
                       </ul>
                     )}
                   </td>
