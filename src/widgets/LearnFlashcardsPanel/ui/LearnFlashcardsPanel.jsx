@@ -39,7 +39,6 @@ export const LearnFlashcardsPanel = memo(() => {
     handleBrowsePrev,
     handleBrowseNext,
     toggleBackVisibility,
-    refreshSession,
     openDeckCreatePage,
     openBrowsePage,
   } = useLearnFlashcardsPanel();
@@ -72,14 +71,6 @@ export const LearnFlashcardsPanel = memo(() => {
                 </option>
               ))}
             </select>
-            <button
-              type="button"
-              className="learn-page-panel__refresh"
-              onClick={refreshSession}
-              disabled={isWordsLoading || !selectedDeckId}
-            >
-              Refresh
-            </button>
           </div>
         </div>
 
@@ -95,7 +86,6 @@ export const LearnFlashcardsPanel = memo(() => {
               onClick={switchToSrsMode}
             >
               SRS
-              <span className="learn-page-panel__mode-hint">1-4</span>
             </button>
             <button
               type="button"
@@ -107,7 +97,6 @@ export const LearnFlashcardsPanel = memo(() => {
               onClick={switchToBrowseMode}
             >
               Review
-              <span className="learn-page-panel__mode-hint">← →</span>
             </button>
           </div>
           {hasDecks && currentWord ? (
@@ -189,45 +178,51 @@ export const LearnFlashcardsPanel = memo(() => {
             </div>
           </div>
 
-          <div className="learn-page-panel__controls-dock">
-            <div className="learn-page-panel__actions">
-              {isBrowseMode && (
+          <div
+            className={`learn-page-panel__controls-dock${
+              isBrowseMode ? " learn-page-panel__controls-dock--browse" : ""
+            }`}
+          >
+            {!isBrowseMode && (
+              <div className="learn-page-panel__actions">
                 <button
                   type="button"
-                  className="learn-page-panel__nav-button"
-                  onClick={handleBrowsePrev}
-                  disabled={!canBrowsePrev || isRatingPending}
+                  className="learn-page-panel__flip-button"
+                  onClick={toggleBackVisibility}
+                  disabled={isRatingPending}
                 >
-                  Previous
-                  <span className="learn-page-panel__button-hint">←</span>
+                  {isBackVisible ? "Hide answer" : "Show answer"}
                 </button>
-              )}
-              <button
-                type="button"
-                className="learn-page-panel__flip-button"
-                onClick={toggleBackVisibility}
-                disabled={isRatingPending}
-              >
-                {isBackVisible ? "Hide answer" : "Show answer"}
-                <span className="learn-page-panel__button-hint">Space</span>
-              </button>
-              {isBrowseMode && (
-                <button
-                  type="button"
-                  className="learn-page-panel__nav-button"
-                  onClick={handleBrowseNext}
-                  disabled={!canBrowseNext || isRatingPending}
-                >
-                  Next
-                  <span className="learn-page-panel__button-hint">→</span>
-                </button>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="learn-page-panel__ratings" aria-live="polite">
               {isBrowseMode ? (
-                <div className="learn-page-panel__rating-placeholder">
-                  Review mode doesn&apos;t grade cards.
+                <div className="learn-page-panel__rating-placeholder learn-page-panel__rating-placeholder--actions">
+                  <button
+                    type="button"
+                    className="learn-page-panel__nav-button"
+                    onClick={handleBrowsePrev}
+                    disabled={!canBrowsePrev || isRatingPending}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    className="learn-page-panel__flip-button"
+                    onClick={toggleBackVisibility}
+                    disabled={isRatingPending}
+                  >
+                    {isBackVisible ? "Hide answer" : "Show answer"}
+                  </button>
+                  <button
+                    type="button"
+                    className="learn-page-panel__nav-button"
+                    onClick={handleBrowseNext}
+                    disabled={!canBrowseNext || isRatingPending}
+                  >
+                    Next
+                  </button>
                 </div>
               ) : isBackVisible ? (
                 <SrsRatingControls

@@ -1,11 +1,29 @@
+import { debugLogData } from "@shared/lib/debug";
+
 export const LEARN_PROGRESS_SETTINGS_KEY = "learnProgress";
 export const LEARN_PROGRESS_SESSION_KEY = "learnProgressSession";
+export const LEARN_PROGRESS_LOCAL_KEY = "learnProgressLocal";
+export const LEARN_BROWSE_PROGRESS_KEY = "learnBrowseProgress";
 
 export const DEFAULT_LEARN_PROGRESS = {
   selectedDeckId: "",
   isBackVisible: false,
   viewMode: "srs",
-  lastCardWordIdByDeck: {},
+  lastSrsCardWordIdByDeck: {},
+  lastBrowseWordIdByDeck: {},
+};
+
+const normalizeWordId = (wordId) => {
+  if (typeof wordId === "string") {
+    const normalized = wordId.trim();
+    return normalized ? normalized : null;
+  }
+
+  if (typeof wordId === "number" && Number.isFinite(wordId) && wordId > 0) {
+    return String(wordId);
+  }
+
+  return null;
 };
 
 const normalizeLastCardWordIdByDeck = (value) => {
@@ -15,13 +33,13 @@ const normalizeLastCardWordIdByDeck = (value) => {
 
   return Object.entries(value).reduce((acc, [deckId, wordId]) => {
     const normalizedDeckId = String(deckId || "");
-    const normalizedWordId = Number(wordId);
+    const normalizedWordId = normalizeWordId(wordId);
 
     if (!normalizedDeckId) {
       return acc;
     }
 
-    if (!Number.isInteger(normalizedWordId) || normalizedWordId <= 0) {
+    if (!normalizedWordId) {
       return acc;
     }
 
@@ -36,14 +54,29 @@ export const normalizeLearnProgress = (value) => {
       ? value.viewMode
       : DEFAULT_LEARN_PROGRESS.viewMode;
 
+  const legacyMap = normalizeLastCardWordIdByDeck(
+    value?.lastCardWordIdByDeck,
+  );
+  const lastSrsCardWordIdByDeck = normalizeLastCardWordIdByDeck(
+    value?.lastSrsCardWordIdByDeck,
+  );
+  const lastBrowseWordIdByDeck = normalizeLastCardWordIdByDeck(
+    value?.lastBrowseWordIdByDeck,
+  );
+
   return {
     selectedDeckId:
       typeof value?.selectedDeckId === "string" ? value.selectedDeckId : "",
     isBackVisible: Boolean(value?.isBackVisible),
     viewMode,
-    lastCardWordIdByDeck: normalizeLastCardWordIdByDeck(
-      value?.lastCardWordIdByDeck,
-    ),
+    lastSrsCardWordIdByDeck:
+      Object.keys(lastSrsCardWordIdByDeck).length > 0
+        ? lastSrsCardWordIdByDeck
+        : legacyMap,
+    lastBrowseWordIdByDeck:
+      Object.keys(lastBrowseWordIdByDeck).length > 0
+        ? lastBrowseWordIdByDeck
+        : legacyMap,
   };
 };
 
@@ -67,8 +100,12 @@ export const areLearnProgressEqual = (left, right) => {
     leftValue.isBackVisible === rightValue.isBackVisible &&
     leftValue.viewMode === rightValue.viewMode &&
     areWordIdMapsEqual(
-      leftValue.lastCardWordIdByDeck,
-      rightValue.lastCardWordIdByDeck,
+      leftValue.lastSrsCardWordIdByDeck,
+      rightValue.lastSrsCardWordIdByDeck,
+    ) &&
+    areWordIdMapsEqual(
+      leftValue.lastBrowseWordIdByDeck,
+      rightValue.lastBrowseWordIdByDeck,
     )
   );
 };
@@ -90,11 +127,28 @@ export const readLearnProgressFromSession = () => {
 
   try {
     const raw = window.sessionStorage.getItem(LEARN_PROGRESS_SESSION_KEY);
-    if (!raw) {
+    if (raw) {
+      const parsed = normalizeLearnProgress(JSON.parse(raw));
+      debugLogData("learn.session.read", {
+        key: LEARN_PROGRESS_SESSION_KEY,
+        source: "session",
+        value: parsed,
+      });
+      return parsed;
+    }
+
+    const fallback = window.localStorage.getItem(LEARN_PROGRESS_LOCAL_KEY);
+    if (!fallback) {
       return DEFAULT_LEARN_PROGRESS;
     }
 
-    return normalizeLearnProgress(JSON.parse(raw));
+    const parsed = normalizeLearnProgress(JSON.parse(fallback));
+    debugLogData("learn.session.read", {
+      key: LEARN_PROGRESS_LOCAL_KEY,
+      source: "local",
+      value: parsed,
+    });
+    return parsed;
   } catch {
     return DEFAULT_LEARN_PROGRESS;
   }
@@ -106,10 +160,60 @@ export const writeLearnProgressToSession = (value) => {
   }
 
   try {
+    const normalized = normalizeLearnProgress(value);
     window.sessionStorage.setItem(
       LEARN_PROGRESS_SESSION_KEY,
-      JSON.stringify(normalizeLearnProgress(value)),
+      JSON.stringify(normalized),
     );
+    window.localStorage.setItem(
+      LEARN_PROGRESS_LOCAL_KEY,
+      JSON.stringify(normalized),
+    );
+    debugLogData("learn.session.write", {
+      key: LEARN_PROGRESS_SESSION_KEY,
+      value: normalized,
+    });
+  } catch {
+    // ignore storage failures
+  }
+};
+
+export const readBrowseProgressFromStorage = () => {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  try {
+    const raw = window.localStorage.getItem(LEARN_BROWSE_PROGRESS_KEY);
+    if (!raw) {
+      return {};
+    }
+
+    const parsed = normalizeLastCardWordIdByDeck(JSON.parse(raw));
+    debugLogData("learn.browse.read", {
+      key: LEARN_BROWSE_PROGRESS_KEY,
+      value: parsed,
+    });
+    return parsed;
+  } catch {
+    return {};
+  }
+};
+
+export const writeBrowseProgressToStorage = (value) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(
+      LEARN_BROWSE_PROGRESS_KEY,
+      JSON.stringify(normalizeLastCardWordIdByDeck(value)),
+    );
+    debugLogData("learn.browse.write", {
+      key: LEARN_BROWSE_PROGRESS_KEY,
+      value: normalizeLastCardWordIdByDeck(value),
+    });
   } catch {
     // ignore storage failures
   }

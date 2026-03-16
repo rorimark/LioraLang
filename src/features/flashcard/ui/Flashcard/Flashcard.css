@@ -33,6 +33,7 @@
   position: absolute;
   inset: 0;
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   align-content: center;
   gap: 12px;
   padding: 24px;
@@ -95,11 +96,23 @@
 }
 
 .flashcard__text {
+  align-self: center;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
   font-size: clamp(1.62rem, 3.25vw, 2.75rem);
   line-height: 1.24;
   color: var(--color-text);
   overflow-wrap: anywhere;
   word-break: break-word;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.flashcard__text::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .flashcard__hint {
