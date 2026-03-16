@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { InlineAlert } from "@shared/ui";
+import { Button, InlineAlert, Panel, TextInput } from "@shared/ui";
 import { useBrowseDecksPanel } from "../model";
 import { BrowseDeckCardList } from "./BrowseDeckCardList";
 import "./BrowseDecksPanel.css";
@@ -31,7 +31,7 @@ export const BrowseDecksPanel = memo(() => {
   const isSearchActive = Boolean(searchInput.trim());
 
   return (
-    <article className="panel browse-decks-panel">
+    <Panel className="browse-decks-panel">
       {/* <header className="browse-decks-panel__header">
         <div className="browse-decks-panel__titles">
           <h2>Browse Community Decks</h2>
@@ -67,7 +67,7 @@ export const BrowseDecksPanel = memo(() => {
         <div className="browse-decks-panel__toolbar">
           <label className="browse-decks-panel__search" htmlFor="browse-search">
             <span className="sr-only">Search decks</span>
-            <input
+            <TextInput
               id="browse-search"
               type="search"
               placeholder="Search decks by title..."
@@ -75,14 +75,14 @@ export const BrowseDecksPanel = memo(() => {
               onChange={handleSearchInputChange}
             />
           </label>
-          <button
-            type="button"
+          <Button
             className="browse-decks-panel__clear"
             onClick={clearSearch}
             disabled={!isSearchActive}
+            size="sm"
           >
             Clear
-          </button>
+          </Button>
         </div>
       ) : null}
 
@@ -113,24 +113,24 @@ export const BrowseDecksPanel = memo(() => {
               : "No decks available"}
           </span>
           <div className="browse-decks-panel__pagination-actions">
-            <button
-              type="button"
+            <Button
               onClick={goToPreviousPage}
               disabled={currentPage <= 1 || isLoading}
+              size="sm"
             >
               Previous
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
               onClick={goToNextPage}
               disabled={currentPage >= totalPages || isLoading}
+              size="sm"
             >
               Next
-            </button>
+            </Button>
           </div>
         </footer>
       ) : null}
-    </article>
+    </Panel>
   );
 });
 

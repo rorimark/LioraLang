@@ -120,7 +120,12 @@ const toEditableWord = (word, fallbackIndex) => ({
   tertiary: word?.tertiary ?? "",
   level: word?.level || "A1",
   part_of_speech: word?.part_of_speech || "other",
-  example: Array.isArray(word?.examples) ? word.examples[0] || "" : "",
+  examples: Array.isArray(word?.examples)
+    ? word.examples
+    : typeof word?.example === "string"
+      ? [word.example]
+      : [],
+  example: Array.isArray(word?.examples) ? word.examples[0] || "" : word?.example ?? "",
 });
 
 const toWordDraft = (word) => ({
@@ -129,7 +134,7 @@ const toWordDraft = (word) => ({
   tertiary: word?.tertiary ?? "",
   level: word?.level || "A1",
   part_of_speech: word?.part_of_speech || "noun",
-  example: word?.example ?? "",
+  example: Array.isArray(word?.examples) ? word.examples[0] || "" : word?.example ?? "",
 });
 
 const parseNumericId = (value) => {
@@ -355,6 +360,7 @@ export const useDeckEditorPanel = () => {
       return;
     }
 
+    const normalizedExample = wordDraft.example.trim();
     const nextWord = {
       id: editingWordId ?? `tmp-${nextTempIdRef.current++}`,
       source: cleanedSource,
@@ -362,12 +368,18 @@ export const useDeckEditorPanel = () => {
       tertiary: wordDraft.tertiary.trim(),
       level: wordDraft.level || "A1",
       part_of_speech: wordDraft.part_of_speech || "other",
-      example: wordDraft.example.trim(),
+      example: normalizedExample,
     };
 
     setWords((currentState) => {
       if (editingWordId === null) {
-        return [...currentState, nextWord];
+        return [
+          ...currentState,
+          {
+            ...nextWord,
+            examples: normalizedExample ? [normalizedExample] : [],
+          },
+        ];
       }
 
       return currentState.map((word) => {
@@ -375,9 +387,21 @@ export const useDeckEditorPanel = () => {
           return word;
         }
 
+        const existingExamples = Array.isArray(word.examples) ? word.examples : [];
+        const fallbackExample =
+          typeof word.example === "string" ? word.example.trim() : "";
+        const nextExamples = normalizedExample
+          ? [normalizedExample]
+          : existingExamples.length > 0
+            ? existingExamples
+            : fallbackExample
+              ? [fallbackExample]
+              : [];
+
         return {
           ...word,
           ...nextWord,
+          examples: nextExamples,
         };
       });
     });
@@ -561,6 +585,11 @@ export const useDeckEditorPanel = () => {
           level: word.level,
           part_of_speech: word.part_of_speech,
           example: word.example,
+          examples: Array.isArray(word.examples)
+            ? word.examples
+            : word.example
+              ? [word.example]
+              : [],
         })),
       };
 

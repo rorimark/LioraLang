@@ -267,7 +267,17 @@ const normalizeEditableWord = (word, index) => {
   const parsedId = Number(word?.id);
   const resolvedExamples = toCleanArray(word?.examples);
   const singleExample = toCleanString(word?.example);
-  const examples = singleExample ? [singleExample] : resolvedExamples;
+  const examples = [];
+
+  if (singleExample) {
+    examples.push(singleExample);
+  }
+
+  resolvedExamples.forEach((item) => {
+    if (!examples.includes(item)) {
+      examples.push(item);
+    }
+  });
 
   return {
     id: Number.isInteger(parsedId) && parsedId > 0 ? parsedId : null,

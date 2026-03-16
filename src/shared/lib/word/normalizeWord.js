@@ -8,6 +8,7 @@ const toCleanString = (value) => {
 
 export const normalizeWord = (word, fallbackId = "") => {
   const resolvedId = word?.id ?? fallbackId;
+  const example = toCleanString(word?.example);
 
   return {
     id: resolvedId,
@@ -19,6 +20,6 @@ export const normalizeWord = (word, fallbackId = "") => {
     part_of_speech: word?.part_of_speech ?? "other",
     tags: Array.isArray(word?.tags) ? word.tags : [],
     examples: Array.isArray(word?.examples) ? word.examples : [],
+    example,
   };
 };
-

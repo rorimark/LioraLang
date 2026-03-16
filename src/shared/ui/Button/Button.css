@@ -1,0 +1,77 @@
+.ui-button {
+  appearance: none;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.1;
+  padding: 8px 12px;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    opacity 140ms ease;
+}
+
+.ui-button:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+}
+
+.ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ui-button--primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.ui-button--primary:hover:not(:disabled) {
+  background: var(--color-primary-strong);
+}
+
+.ui-button--secondary {\n  background: var(--color-surface);\n  border-color: var(--color-border);\n  color: var(--color-text);\n}\n+
+.ui-button--ghost {
+  background: var(--color-transparent);
+  border-color: var(--color-transparent);
+  color: var(--color-text-muted);
+}
+
+.ui-button--ghost:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+.ui-button--danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: var(--color-on-primary);
+}
+
+.ui-button--danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-danger) 85%, #000);
+}
+
+.ui-button--sm {
+  font-size: 0.76rem;
+  padding: 7px 10px;
+}
+
+.ui-button--md {
+  font-size: 0.82rem;
+  padding: 8px 12px;
+}
+
+.ui-button--full {
+  width: 100%;
+}

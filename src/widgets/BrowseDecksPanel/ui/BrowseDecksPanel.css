@@ -24,34 +24,6 @@
   margin: 0;
 }
 
-.browse-decks-panel__refresh,
-.browse-decks-panel__clear,
-.browse-decks-panel__pagination-actions button,
-.browse-decks-panel__actions button:not(.browse-decks-panel__delete) {
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.8rem;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.browse-decks-panel__refresh:hover:not(:disabled),
-.browse-decks-panel__clear:hover:not(:disabled),
-.browse-decks-panel__pagination-actions button:hover:not(:disabled),
-.browse-decks-panel__actions button:not(.browse-decks-panel__delete):hover:not(:disabled) {
-  background: var(--color-surface-muted);
-}
-
-.browse-decks-panel__refresh:disabled,
-.browse-decks-panel__clear:disabled,
-.browse-decks-panel__pagination-actions button:disabled,
-.browse-decks-panel__actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .browse-decks-panel__warning,
 .browse-decks-panel__error,
 .browse-decks-panel__loading,
@@ -88,20 +60,8 @@
   flex: 1;
 }
 
-.browse-decks-panel__search input {
+.browse-decks-panel__search .ui-input {
   width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.84rem;
-  padding: 10px 12px;
-  min-width: 0;
-}
-
-.browse-decks-panel__search input:focus {
-  outline: none;
-  border-color: var(--color-primary);
 }
 
 .browse-decks-panel__grid {
@@ -209,24 +169,8 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-.browse-decks-panel__actions button {
+.browse-decks-panel__actions .ui-button {
   width: 100%;
-  font-weight: 600;
-}
-
-.browse-decks-panel__delete {
-  border: 1px solid var(--color-danger);
-  border-radius: 10px;
-  border-color: var(--color-danger);
-  background: var(--color-danger);
-  color: var(--color-on-primary);
-  font-size: 0.8rem;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.browse-decks-panel__delete:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-danger) 85%, #000);
 }
 
 .browse-decks-panel__pagination {
@@ -277,7 +221,7 @@
     width: 100%;
   }
 
-  .browse-decks-panel__pagination-actions button {
+  .browse-decks-panel__pagination-actions .ui-button {
     flex: 1;
   }
 }
@@ -292,10 +236,8 @@
     gap: 6px;
   }
 
-  .browse-decks-panel__refresh,
-  .browse-decks-panel__clear,
-  .browse-decks-panel__pagination-actions button,
-  .browse-decks-panel__actions button {
+  .browse-decks-panel__pagination-actions .ui-button,
+  .browse-decks-panel__actions .ui-button {
     min-height: 34px;
     font-size: 0.76rem;
     padding: 7px 10px;

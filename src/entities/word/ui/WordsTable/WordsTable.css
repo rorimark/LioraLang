@@ -45,6 +45,36 @@
   text-align: center;
 }
 
+.words-table__examples {
+  width: 34%;
+}
+
+.words-table__examples-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.words-table__example {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.45;
+  padding: 2px 0;
+}
+
+.words-table__example::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--color-primary-strong);
+  margin-top: 8px;
+  flex: 0 0 7px;
+}
+
 .words-table__empty {
   text-align: center;
   color: var(--color-text-muted);
@@ -96,6 +126,10 @@
   .words-table__level {
     width: auto;
     text-align: left;
+  }
+
+  .words-table__examples {
+    width: auto;
   }
 
   .words-table__empty {

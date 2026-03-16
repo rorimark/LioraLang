@@ -1,8 +1,10 @@
 export const LEARN_PROGRESS_SETTINGS_KEY = "learnProgress";
+export const LEARN_PROGRESS_SESSION_KEY = "learnProgressSession";
 
 export const DEFAULT_LEARN_PROGRESS = {
   selectedDeckId: "",
   isBackVisible: false,
+  viewMode: "srs",
   lastCardWordIdByDeck: {},
 };
 
@@ -29,10 +31,16 @@ const normalizeLastCardWordIdByDeck = (value) => {
 };
 
 export const normalizeLearnProgress = (value) => {
+  const viewMode =
+    value?.viewMode === "browse" || value?.viewMode === "srs"
+      ? value.viewMode
+      : DEFAULT_LEARN_PROGRESS.viewMode;
+
   return {
     selectedDeckId:
       typeof value?.selectedDeckId === "string" ? value.selectedDeckId : "",
     isBackVisible: Boolean(value?.isBackVisible),
+    viewMode,
     lastCardWordIdByDeck: normalizeLastCardWordIdByDeck(
       value?.lastCardWordIdByDeck,
     ),
@@ -57,6 +65,7 @@ export const areLearnProgressEqual = (left, right) => {
   return (
     leftValue.selectedDeckId === rightValue.selectedDeckId &&
     leftValue.isBackVisible === rightValue.isBackVisible &&
+    leftValue.viewMode === rightValue.viewMode &&
     areWordIdMapsEqual(
       leftValue.lastCardWordIdByDeck,
       rightValue.lastCardWordIdByDeck,
@@ -72,4 +81,36 @@ export const createLearnProgressSettingsPatch = (value) => {
   return {
     [LEARN_PROGRESS_SETTINGS_KEY]: normalizeLearnProgress(value),
   };
+};
+
+export const readLearnProgressFromSession = () => {
+  if (typeof window === "undefined") {
+    return DEFAULT_LEARN_PROGRESS;
+  }
+
+  try {
+    const raw = window.sessionStorage.getItem(LEARN_PROGRESS_SESSION_KEY);
+    if (!raw) {
+      return DEFAULT_LEARN_PROGRESS;
+    }
+
+    return normalizeLearnProgress(JSON.parse(raw));
+  } catch {
+    return DEFAULT_LEARN_PROGRESS;
+  }
+};
+
+export const writeLearnProgressToSession = (value) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.sessionStorage.setItem(
+      LEARN_PROGRESS_SESSION_KEY,
+      JSON.stringify(normalizeLearnProgress(value)),
+    );
+  } catch {
+    // ignore storage failures
+  }
 };

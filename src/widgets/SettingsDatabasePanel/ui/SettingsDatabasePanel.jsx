@@ -8,7 +8,14 @@ import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
 import { ThemeSwitch } from "@features/theme-switch";
 import { SETTINGS_SECTION_IDS, SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
-import { ActionModal, InlineAlert } from "@shared/ui";
+import {
+  ActionModal,
+  Button,
+  InlineAlert,
+  Panel,
+  SectionHeader,
+  Tabs,
+} from "@shared/ui";
 import { useSettingsDatabasePanel } from "../model";
 import "./SettingsDatabasePanel.css";
 
@@ -32,18 +39,6 @@ const resolveSectionClassName = (tabKey, highlightedTab) => {
   }
 
   return "settings-page-panel__section";
-};
-
-const resolveQuickNavClassName = (tabKey, selectedTab, highlightedTab) => {
-  if (highlightedTab === tabKey) {
-    return "settings-page-panel__quick-nav-link settings-page-panel__quick-nav-link--highlighted";
-  }
-
-  if (selectedTab === tabKey) {
-    return "settings-page-panel__quick-nav-link settings-page-panel__quick-nav-link--selected";
-  }
-
-  return "settings-page-panel__quick-nav-link";
 };
 
 export const SettingsDatabasePanel = memo(() => {
@@ -165,9 +160,7 @@ export const SettingsDatabasePanel = memo(() => {
     };
   }, [availableSettingsTabs, selectedSettingsTab]);
 
-  const handleQuickNavClick = useCallback((event) => {
-    const nextTabKey = event.currentTarget.dataset.tabKey;
-
+  const handleQuickNavClick = useCallback((nextTabKey) => {
     if (!nextTabKey) {
       return;
     }
@@ -178,7 +171,7 @@ export const SettingsDatabasePanel = memo(() => {
   const isAppPreferencesTab = APP_PREFERENCES_TAB_KEYS.has(activeSettingsTab);
 
   return (
-    <article className="panel settings-page-panel">
+    <Panel className="settings-page-panel">
       <InlineAlert
         text={statusMessage}
         variant={statusVariant}
@@ -202,23 +195,13 @@ export const SettingsDatabasePanel = memo(() => {
         onClose={closeUpdatePrompt}
       />
 
-      <nav className="settings-page-panel__quick-nav" aria-label="Settings sections">
-        {settingsNavItems.map((item) => (
-          <button
-            key={item.key}
-            className={resolveQuickNavClassName(
-              item.key,
-              activeSettingsTab,
-              resolvedHighlightedTab,
-            )}
-            type="button"
-            data-tab-key={item.key}
-            onClick={handleQuickNavClick}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
+      <Tabs
+        ariaLabel="Settings sections"
+        items={settingsNavItems}
+        activeKey={activeSettingsTab}
+        highlightedKey={resolvedHighlightedTab}
+        onSelect={handleQuickNavClick}
+      />
 
       {activeSettingsTab === SETTINGS_TAB_KEYS.general ? (
         <section
@@ -228,10 +211,10 @@ export const SettingsDatabasePanel = memo(() => {
             resolvedHighlightedTab,
           )}
         >
-          <header className="settings-page-panel__section-head">
-            <h3>General</h3>
-            <p>Theme, shortcuts, and everyday interface behavior.</p>
-          </header>
+          <SectionHeader
+            title="General"
+            description="Theme, shortcuts, and everyday interface behavior."
+          />
 
           <div className="settings-page-panel__stack">
             <div className="settings-page-panel__slot">
@@ -252,13 +235,13 @@ export const SettingsDatabasePanel = memo(() => {
               <div className="settings-page-panel__slot">
                 <h4>Updates</h4>
                 <div className="settings-page-panel__actions">
-                  <button
-                    type="button"
+                  <Button
                     onClick={checkForUpdates}
                     disabled={isCheckingUpdates}
+                    variant="secondary"
                   >
                     {isCheckingUpdates ? "Checking..." : "Check for updates"}
-                  </button>
+                  </Button>
                 </div>
               </div>
             ) : null}
@@ -292,26 +275,22 @@ export const SettingsDatabasePanel = memo(() => {
             resolvedHighlightedTab,
           )}
         >
-          <header className="settings-page-panel__section-head">
-            <h3>Deck Import and Export</h3>
-            <p>Import local deck files and define default import/export behavior.</p>
-          </header>
+          <SectionHeader
+            title="Deck Import and Export"
+            description="Import local deck files and define default import/export behavior."
+          />
 
           <div className="settings-page-panel__actions">
-            <button
-              type="button"
+            <Button
               onClick={openImportConfirm}
               disabled={isImporting}
+              variant="primary"
             >
               {isImporting ? "Importing..." : "Import deck file"}
-            </button>
-            <button
-              type="button"
-              onClick={openJsonImport}
-              disabled={isImporting}
-            >
+            </Button>
+            <Button onClick={openJsonImport} disabled={isImporting}>
               Create deck from JSON
-            </button>
+            </Button>
           </div>
 
           <ImportExportSettingsSection />
@@ -326,10 +305,10 @@ export const SettingsDatabasePanel = memo(() => {
             resolvedHighlightedTab,
           )}
         >
-          <header className="settings-page-panel__section-head">
-            <h3>Storage and Integrity</h3>
-            <p>Control database location and run file/database integrity checks.</p>
-          </header>
+          <SectionHeader
+            title="Storage and Integrity"
+            description="Control database location and run file/database integrity checks."
+          />
 
           <div className="settings-page-panel__path">
             DB: {dbPath || "Loading..."}
@@ -337,29 +316,21 @@ export const SettingsDatabasePanel = memo(() => {
 
           <div className="settings-page-panel__section-grid settings-page-panel__section-grid--actions">
             <div className="settings-page-panel__actions">
-              <button
-                type="button"
-                className="settings-page-panel__path-action"
-                onClick={changeDbLocation}
-                disabled={isChangingDbLocation}
-              >
+              <Button onClick={changeDbLocation} disabled={isChangingDbLocation}>
                 {isChangingDbLocation
                   ? "Changing database location..."
                   : "Change database location"}
-              </button>
+              </Button>
 
-              <button type="button" onClick={openDbFolder}>
-                Open database folder
-              </button>
-              <button
-                  type="button"
-                  onClick={verifyIntegrity}
-                  disabled={isVerifyingIntegrity}
+              <Button onClick={openDbFolder}>Open database folder</Button>
+              <Button
+                onClick={verifyIntegrity}
+                disabled={isVerifyingIntegrity}
               >
                 {isVerifyingIntegrity
-                    ? "Checking integrity..."
-                    : "Check file integrity"}
-              </button>
+                  ? "Checking integrity..."
+                  : "Check file integrity"}
+              </Button>
             </div>
           </div>
         </section>
@@ -367,22 +338,21 @@ export const SettingsDatabasePanel = memo(() => {
 
       {activeSettingsTab === SETTINGS_TAB_KEYS.general ? (
         <section className="settings-page-panel__section settings-page-panel__section--danger">
-          <header className="settings-page-panel__section-head">
-            <h3>Reset</h3>
-            <p>Restore all settings to the default configuration.</p>
-          </header>
+          <SectionHeader
+            title="Reset"
+            description="Restore all settings to the default configuration."
+          />
 
           <div className="settings-page-panel__actions">
-            <button
-              type="button"
-              className="settings-page-panel__reset-all-button"
+            <Button
               onClick={openResetSettingsConfirm}
               disabled={isResetAllDisabled}
+              variant="danger"
             >
               {isResettingSettings
                 ? "Resetting settings..."
                 : "Reset all settings to defaults"}
-            </button>
+            </Button>
           </div>
         </section>
       ) : null}
@@ -435,7 +405,7 @@ export const SettingsDatabasePanel = memo(() => {
         onConfirm={resetAllSettingsToDefaults}
         onClose={closeResetSettingsConfirm}
       />
-    </article>
+    </Panel>
   );
 });
 
