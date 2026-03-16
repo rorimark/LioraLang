@@ -219,6 +219,28 @@
   background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .deck-editor-panel__toolbar button:hover,
+  .deck-editor-panel__word-actions button:hover,
+  .deck-editor-panel__table-actions button:hover {
+    background: var(--color-surface);
+  }
+
+  .deck-editor-panel__toolbar button:active,
+  .deck-editor-panel__word-actions button:active,
+  .deck-editor-panel__table-actions button:active {
+    background: var(--color-surface-muted);
+  }
+
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover {
+    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
+  }
+
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:active {
+    background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
+  }
+}
+
 .deck-editor-panel__preview {
   border: 1px solid var(--color-border);
   border-radius: 10px;

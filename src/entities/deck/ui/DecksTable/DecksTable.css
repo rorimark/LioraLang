@@ -369,3 +369,37 @@
     padding: 7px 8px;
   }
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .decks-table tbody tr:hover {
+    background: inherit;
+  }
+
+  .decks-table__tags-more:hover {
+    background: var(--color-surface-muted);
+  }
+
+  .decks-table__actions button:hover:not(:disabled) {
+    background: var(--color-surface);
+  }
+
+  .decks-table__actions button:active:not(:disabled) {
+    background: var(--color-surface-muted);
+  }
+
+  .decks-table__actions .decks-table__button--publish:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
+  }
+
+  .decks-table__actions .decks-table__button--publish:active:not(:disabled) {
+    background: color-mix(in srgb, var(--color-primary) 20%, var(--color-surface));
+  }
+
+  .decks-table__actions .decks-table__button--danger:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
+  }
+
+  .decks-table__actions .decks-table__button--danger:active:not(:disabled) {
+    background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
+  }
+}
