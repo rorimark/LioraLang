@@ -108,6 +108,7 @@
   padding: 4px 8px;
   cursor: pointer;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .decks-table__tags-more:hover {

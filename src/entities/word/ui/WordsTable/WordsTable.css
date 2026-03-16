@@ -44,6 +44,10 @@
   background: var(--color-primary-soft);
 }
 
+.words-table__row:hover td {
+  background: var(--color-primary-soft);
+}
+
 .words-table__row--expanded {
   background: color-mix(
     in srgb,
@@ -51,6 +55,14 @@
     var(--color-surface)
   );
   box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.words-table__row--expanded td {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-soft) 72%,
+    var(--color-surface)
+  );
 }
 
 .words-table__cell-text {
