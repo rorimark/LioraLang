@@ -70,6 +70,10 @@
   padding: 7px 10px;
 }
 
+.cards-panel__button--secondary {
+  background: var(--color-transparent);
+}
+
 .cards-panel__actions button:hover:not(:disabled) {
   background: var(--color-surface-muted);
 }
