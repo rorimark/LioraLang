@@ -3,6 +3,7 @@ import "./styles/App.css";
 import { AppRouter } from "@app/router";
 import { useStartupPreferences } from "@shared/lib/appPreferences";
 import { usePointerFocusGuard } from "@shared/lib/a11y";
+import { useActionLogger } from "@shared/lib/debug";
 import {
   APP_THEME_MODES,
   applyThemeMode,
@@ -11,6 +12,7 @@ import {
 
 export const App = () => {
   usePointerFocusGuard();
+  useActionLogger();
 
   const { startupPreferences } = useStartupPreferences();
   const themeMode = startupPreferences.uiAccessibility.themeMode;

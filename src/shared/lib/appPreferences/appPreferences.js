@@ -25,7 +25,7 @@ const FONT_SCALE_OPTIONS = new Set(["small", "normal", "large"]);
 const THEME_MODE_OPTIONS = new Set(["system", "light", "dark"]);
 const BACKUP_INTERVAL_OPTIONS = new Set(["off", "daily", "weekly", "monthly"]);
 const UPDATE_CHANNEL_OPTIONS = new Set(["stable", "beta"]);
-const LOG_LEVEL_OPTIONS = new Set(["error", "warn", "debug"]);
+const LOG_LEVEL_OPTIONS = new Set(["off", "error", "warn", "debug"]);
 
 const toCleanString = (value) => {
   if (typeof value !== "string") {
@@ -93,7 +93,7 @@ export const DEFAULT_APP_PREFERENCES = {
     dailyGoal: 20,
     autoFlipDelay: "off",
     shuffleMode: "per_session",
-    repeatWrongCards: true,
+    repeatWrongCards: false,
   },
   spacedRepetition: {
     newCardsPerDay: 20,
@@ -138,7 +138,7 @@ export const DEFAULT_APP_PREFERENCES = {
   privacy: {
     analyticsEnabled: false,
     crashReportsEnabled: true,
-    logLevel: "error",
+    logLevel: "off",
   },
 };
 
