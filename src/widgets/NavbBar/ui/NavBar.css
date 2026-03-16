@@ -1,5 +1,6 @@
 .nav-bar {
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .nav-bar--desktop {
