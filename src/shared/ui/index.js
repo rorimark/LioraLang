@@ -5,3 +5,8 @@ export { RouteErrorBoundary } from "./RouteErrorBoundary/RouteErrorBoundary";
 export { InlineAlert } from "./InlineAlert/InlineAlert";
 export { ActionModal } from "./ActionModal/ActionModal";
 export { ToastViewport } from "./ToastViewport/ToastViewport";
+export { Button } from "./Button/Button";
+export { TextInput } from "./TextInput/TextInput";
+export { Tabs } from "./Tabs/Tabs";
+export { Panel } from "./Panel/Panel";
+export { SectionHeader } from "./SectionHeader/SectionHeader";

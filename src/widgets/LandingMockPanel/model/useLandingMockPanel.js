@@ -3,50 +3,99 @@ import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
-const HERO_METRICS = [
+const HERO_HIGHLIGHTS = [
   {
-    value: "Offline-first",
-    label: "Learn without permanent internet connection",
+    title: "Offline-first",
+    subtitle: "Local data stays yours",
+    iconKey: "offline",
   },
   {
-    value: "Desktop + Web",
-    label: "One workflow on macOS, Windows, and browser",
+    title: "Flexible decks",
+    subtitle: "Any language setup",
+    iconKey: "deck",
   },
   {
-    value: "Open format",
-    label: "Import and export decks with full control",
-  },
-];
-
-const LANDING_FEATURES = [
-  {
-    title: "Build your own deck system",
-    description:
-      "Create decks for any language pair, add words with levels and examples, and keep everything structured with tags.",
+    title: "SRS grading",
+    subtitle: "Again · Hard · Good · Easy",
+    iconKey: "srs",
   },
   {
-    title: "Train with real spaced repetition",
-    description:
-      "Review cards with Again, Hard, Good, and Easy grades so the next session focuses on what still needs work.",
-  },
-  {
-    title: "Share and discover with LioraLangHub",
-    description:
-      "Import ready-made packs, publish your own decks, and grow your vocabulary with community collections.",
+    title: "Platforms",
+    subtitle: "Web · macOS · Windows",
+    iconKey: "platforms",
   },
 ];
 
-const WORKFLOW_STEPS = [
-  "Create a deck and choose source and target language setup.",
-  "Add words, parts of speech, levels, examples, and tags.",
-  "Run focused study sessions with keyboard shortcuts and clean controls.",
-  "Track progress and adjust your SRS settings to keep momentum.",
+const FEATURE_CARDS = [
+  {
+    title: "Deck studio",
+    points: ["Multi-language", "Tags", "Examples", "Levels"],
+    iconKey: "deck",
+  },
+  {
+    title: "Study engine",
+    points: ["Stable queue", "Daily goals", "Keyboard flow"],
+    iconKey: "study",
+  },
+  {
+    title: "Data control",
+    points: ["Import/export", "Integrity checks", "Local DB tools"],
+    iconKey: "control",
+  },
+];
+
+const START_OPTIONS = [
+  {
+    title: "Web app",
+    description: "Open instantly with full features.",
+    actionLabel: "Open in browser",
+    to: ROUTE_PATHS.learn,
+    iconKey: "web",
+  },
+  {
+    title: "Desktop app",
+    description: "Offline mode with local SQLite storage.",
+    actionLabel: "Download builds",
+    href: EXTERNAL_LINKS.githubReleases,
+    iconKey: "desktop",
+  },
+];
+
+const HUB_HIGHLIGHTS = [
+  "Browse community decks",
+  "Import in one click",
+  "Publish your own packs",
+  "Keep a clean local library",
+];
+
+const MOBILE_STEPS = [
+  "Open LioraLang in Safari or Chrome on your phone.",
+  "Tap Share or the browser menu, then choose Add to Home Screen.",
+  "Launch it like a native app and keep learning offline-first.",
+];
+
+const VISUAL_TILES = [
+  {
+    title: "Session flow",
+    subtitle: "Smooth queue, no jumps",
+    iconKey: "cadence",
+  },
+  {
+    title: "Deck overview",
+    subtitle: "Tags and metadata",
+    iconKey: "layout",
+  },
+  {
+    title: "Progress",
+    subtitle: "Track what sticks",
+    iconKey: "analytics",
+  },
 ];
 
 const CONTACT_LINKS = [
   {
     title: "GitHub repository",
-    description: "Explore source code, roadmap, and release notes.",
+    description: "Source code, roadmap, and release notes.",
     href: EXTERNAL_LINKS.githubRepo,
     openInNewTab: true,
   },
@@ -70,12 +119,14 @@ export const useLandingMockPanel = () => {
   }, []);
 
   return {
-    heroMetrics: HERO_METRICS,
-    features: LANDING_FEATURES,
-    workflowSteps: WORKFLOW_STEPS,
+    heroHighlights: HERO_HIGHLIGHTS,
+    featureCards: FEATURE_CARDS,
+    startOptions: START_OPTIONS,
+    hubHighlights: HUB_HIGHLIGHTS,
+    mobileSteps: MOBILE_STEPS,
+    visualTiles: VISUAL_TILES,
     contactLinks: CONTACT_LINKS,
     openWebTo: ROUTE_PATHS.learn,
-    exploreDecksTo: ROUTE_PATHS.browse,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,
     githubRepoUrl: EXTERNAL_LINKS.githubRepo,
     handlePrefetchApp: prefetchApp,

@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { MetaBadge } from "@shared/ui";
+import { Button, MetaBadge } from "@shared/ui";
 
 const MAX_VISIBLE_TAGS = 4;
 
@@ -213,24 +213,23 @@ export const BrowseDeckCardList = memo(
                     : "browse-decks-panel__actions browse-decks-panel__actions--single"
                 }
               >
-                <button
-                  type="button"
+                <Button
                   data-deck-id={deck.id}
                   onClick={handleImportDeck}
                   disabled={isImporting || isDeleting || !deck?.latestVersion?.filePath}
+                  variant="secondary"
                 >
                   {isImporting ? "Importing..." : "Import to Decks"}
-                </button>
+                </Button>
                 {canDeleteHubDecks ? (
-                  <button
-                    type="button"
-                    className="browse-decks-panel__delete"
+                  <Button
                     data-deck-id={deck.id}
                     onClick={handleDeleteDeck}
                     disabled={isImporting || isDeleting}
+                    variant="danger"
                   >
                     {isDeleting ? "Deleting..." : "Delete from Hub"}
-                  </button>
+                  </Button>
                 ) : null}
               </div>
             </article>

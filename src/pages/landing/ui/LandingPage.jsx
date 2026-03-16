@@ -6,7 +6,7 @@ export const LandingPage = () => {
   usePageMeta({
     title: "LioraLang - Flashcards and spaced repetition that actually stick",
     description:
-      "Create and share decks, study with spaced repetition, and use LioraLang on web or desktop with full control over your data.",
+      "Stop forgetting words after one review. Build decks, study with spaced repetition, and use LioraLang on web, desktop, or your phone home screen.",
   });
 
   return (

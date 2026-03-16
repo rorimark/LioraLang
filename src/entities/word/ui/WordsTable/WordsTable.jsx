@@ -14,9 +14,35 @@ const resolveLanguageLabels = (languageLabels) => {
   };
 };
 
+const resolveExamples = (word) => {
+  const list = Array.isArray(word?.examples) ? word.examples : [];
+  const fallback = typeof word?.example === "string" ? word.example.trim() : "";
+  const rawExamples = list.length > 0 ? list.slice() : [];
+
+  if (!rawExamples.length && fallback) {
+    rawExamples.push(fallback);
+  } else if (fallback && !rawExamples.includes(fallback)) {
+    rawExamples.push(fallback);
+  }
+
+  const seen = new Set();
+
+  return rawExamples
+    .map((item) => (typeof item === "string" ? item.trim() : ""))
+    .filter((item) => {
+      if (!item) {
+        return false;
+      }
+      if (seen.has(item)) {
+        return false;
+      }
+      seen.add(item);
+      return true;
+    });
+};
 export const WordsTable = memo(({ words, languageLabels }) => {
   const labels = resolveLanguageLabels(languageLabels);
-  const totalColumns = labels.hasTertiaryLanguage ? 5 : 4;
+  const totalColumns = labels.hasTertiaryLanguage ? 6 : 5;
 
   return (
     <table className="words-table" aria-label="Dictionary words">
@@ -26,6 +52,7 @@ export const WordsTable = memo(({ words, languageLabels }) => {
           <th>{labels.sourceLanguage}</th>
           <th className="words-table__level">Level</th>
           <th>Part of speech</th>
+          <th className="words-table__examples">Examples</th>
           <th>{labels.targetLanguage}</th>
           {labels.hasTertiaryLanguage && <th>{labels.tertiaryLanguage}</th>}
         </tr>
@@ -39,19 +66,36 @@ export const WordsTable = memo(({ words, languageLabels }) => {
             </td>
           </tr>
         ) : (
-          words.map((word) => (
-            <tr key={word.id} className="words-table__row">
-              <td data-label={labels.sourceLanguage}>{word.source || "-"}</td>
-              <td className="words-table__level" data-label="Level">
-                {word.level || "-"}
-              </td>
-              <td data-label="Part of speech">{word.part_of_speech || "-"}</td>
-              <td data-label={labels.targetLanguage}>{word.target || "-"}</td>
-              {labels.hasTertiaryLanguage && (
-                <td data-label={labels.tertiaryLanguage}>{word.tertiary || "-"}</td>
-              )}
-            </tr>
-          ))
+          words.map((word) => {
+            const examples = resolveExamples(word);
+
+            return (
+              <tr key={word.id} className="words-table__row">
+                <td data-label={labels.sourceLanguage}>{word.source || "-"}</td>
+                <td className="words-table__level" data-label="Level">
+                  {word.level || "-"}
+                </td>
+                <td data-label="Part of speech">{word.part_of_speech || "-"}</td>
+                <td className="words-table__examples" data-label="Examples">
+                  {examples.length === 0 ? (
+                    "-"
+                  ) : (
+                    <ul className="words-table__examples-list">
+                      {examples.map((example, index) => (
+                        <li key={`${word.id}-example-${index}`} className="words-table__example">
+                          {example}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </td>
+                <td data-label={labels.targetLanguage}>{word.target || "-"}</td>
+                {labels.hasTertiaryLanguage && (
+                  <td data-label={labels.tertiaryLanguage}>{word.tertiary || "-"}</td>
+                )}
+              </tr>
+            );
+          })
         )}
       </tbody>
     </table>

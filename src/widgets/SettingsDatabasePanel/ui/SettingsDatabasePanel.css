@@ -5,55 +5,6 @@
   min-width: 0;
 }
 
-.settings-page-panel__quick-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  overflow: visible;
-  border: 0;
-  border-bottom: 1px solid var(--color-border);
-  border-radius: 0;
-  background: var(--color-transparent);
-  padding: 0 0 10px;
-}
-
-.settings-page-panel__quick-nav-link {
-  flex: 0 0 auto;
-  appearance: none;
-  border: 1px solid var(--color-transparent);
-  border-radius: 10px;
-  background: var(--color-transparent);
-  color: var(--color-text-muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-  line-height: 1.1;
-  cursor: pointer;
-  white-space: nowrap;
-  padding: 8px 11px;
-  transition:
-    background-color 140ms ease,
-    border-color 140ms ease,
-    color 140ms ease;
-}
-
-.settings-page-panel__quick-nav-link:hover {
-  background: var(--color-surface-muted);
-  border-color: color-mix(in srgb, var(--color-border) 70%, var(--color-transparent));
-  color: var(--color-text);
-}
-
-.settings-page-panel__quick-nav-link--selected {
-  border-color: color-mix(in srgb, var(--color-primary-border) 60%, var(--color-border));
-  color: var(--color-primary-strong);
-  background: color-mix(in srgb, var(--color-primary-soft) 30%, var(--color-surface));
-}
-
-.settings-page-panel__quick-nav-link--highlighted {
-  border-color: var(--color-primary);
-  color: var(--color-primary-strong);
-  background: color-mix(in srgb, var(--color-primary-soft) 42%, var(--color-surface));
-}
-
 .settings-page-panel__section {
   border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--color-transparent));
   border-radius: 12px;
@@ -78,23 +29,6 @@
 .settings-page-panel__section--danger {
   border-color: color-mix(in srgb, var(--color-danger) 30%, var(--color-border));
   background: color-mix(in srgb, var(--color-danger) 7%, var(--color-surface));
-}
-
-.settings-page-panel__section-head {
-  display: grid;
-  gap: 3px;
-}
-
-.settings-page-panel__section-head h3 {
-  margin: 0;
-  color: var(--color-text);
-  font-size: 0.98rem;
-}
-
-.settings-page-panel__section-head p {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
 }
 
 .settings-page-panel__section-grid {
@@ -159,30 +93,10 @@
   color: var(--color-text-muted);
 }
 
-.settings-page-panel__actions button,
-.settings-page-panel__path-action {
+.settings-page-panel__actions .ui-button {
   width: auto;
   min-width: 200px;
   max-width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.82rem;
-  font-family: inherit;
-  cursor: pointer;
-  padding: 8px 12px;
-}
-
-.settings-page-panel__actions button:hover:not(:disabled),
-.settings-page-panel__path-action:hover:not(:disabled) {
-  background: var(--color-surface-muted);
-}
-
-.settings-page-panel__actions button:disabled,
-.settings-page-panel__path-action:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .settings-page-panel__path {
@@ -193,16 +107,6 @@
   font-size: 0.8rem;
   padding: 8px 10px;
   word-break: break-all;
-}
-
-.settings-page-panel__actions .settings-page-panel__reset-all-button {
-  border-color: var(--color-danger);
-  background: var(--color-danger);
-  color: var(--color-on-primary);
-}
-
-.settings-page-panel__actions .settings-page-panel__reset-all-button:hover:not(:disabled) {
-  opacity: 0.92;
 }
 
 @media (max-width: 960px) {
@@ -226,23 +130,12 @@
     gap: 10px;
   }
 
-  .settings-page-panel__quick-nav {
-    gap: 6px;
-    padding: 0 0 8px;
-  }
-
-  .settings-page-panel__quick-nav-link {
-    font-size: 0.72rem;
-    padding: 6px 8px;
-  }
-
   .settings-page-panel__section {
     padding: 10px;
     gap: 8px;
   }
 
-  .settings-page-panel__actions button,
-  .settings-page-panel__path-action {
+  .settings-page-panel__actions .ui-button {
     min-height: 36px;
     font-size: 0.78rem;
     padding: 7px 10px;
