@@ -5,7 +5,8 @@ import { App } from "@app";
 import { PlatformProvider } from "@app/providers";
 
 const isWebTarget = __APP_TARGET__ === "web";
-const Analytics = isWebTarget
+const shouldRenderAnalytics = isWebTarget && !import.meta.env.DEV;
+const Analytics = shouldRenderAnalytics
   ? lazy(() =>
       import("@vercel/analytics/react").then((module) => ({
         default: module.Analytics,
@@ -14,8 +15,9 @@ const Analytics = isWebTarget
   : null;
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    {isWebTarget && Analytics ? (
+  // <StrictMode>
+    <>
+    {shouldRenderAnalytics && Analytics ? (
       <Suspense fallback={null}>
         <Analytics />
       </Suspense>
@@ -23,5 +25,5 @@ createRoot(document.getElementById("root")).render(
     <PlatformProvider>
       <App />
     </PlatformProvider>
-  </StrictMode>,
+  {/*</StrictMode>,*/}</>
 );

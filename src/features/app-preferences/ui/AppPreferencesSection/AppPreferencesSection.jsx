@@ -395,6 +395,7 @@ export const AppPreferencesSection = memo(({
               value={appPreferences.privacy.logLevel}
               onChange={handleSelectFieldChange}
             >
+              <option value="off">Off</option>
               <option value="error">Error</option>
               <option value="warn">Warn</option>
               <option value="debug">Debug</option>
