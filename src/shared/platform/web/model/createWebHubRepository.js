@@ -292,6 +292,11 @@ export const createWebHubRepository = () => {
       scheduleFlushQueuedHubActions();
       return hubDecksApi.listDecks(payload);
     },
+    async getDeckBySlug(slug) {
+      const hubDecksApi = await getHubDecksApi();
+      scheduleFlushQueuedHubActions();
+      return hubDecksApi.getDeckBySlug(slug);
+    },
     async createDownloadUrl(filePath, expiresInSeconds) {
       const hubDecksApi = await getHubDecksApi();
       scheduleFlushQueuedHubActions();

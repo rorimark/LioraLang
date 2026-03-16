@@ -3,6 +3,7 @@ export { AccountHubPanel } from "./AccountHubPanel";
 export { DesktopTitleBar } from "./DesktopTitleBar";
 export { PageHeader } from "./PageHeader";
 export { BrowseDecksPanel } from "./BrowseDecksPanel";
+export { BrowseDeckDetailsPanel } from "./BrowseDeckDetailsPanel";
 export { DecksOverviewPanel } from "./DecksOverviewPanel";
 export { DeckEditorPanel } from "./DeckEditorPanel";
 export { DeckDetailsPanel } from "./DeckDetailsPanel";

@@ -1,9 +1,17 @@
-import { BrowseDecksPanel } from "@widgets/BrowseDecksPanel";
+import { useParams } from "react-router";
+import { BrowseDeckDetailsPanel, BrowseDecksPanel } from "@widgets";
 
 export const BrowsePage = () => {
+  const { deckSlug } = useParams();
+  const hasDeckSlug = typeof deckSlug === "string" && deckSlug.trim().length > 0;
+
   return (
     <section className="page">
-      <BrowseDecksPanel />
+      {hasDeckSlug ? (
+        <BrowseDeckDetailsPanel deckSlug={deckSlug} />
+      ) : (
+        <BrowseDecksPanel />
+      )}
     </section>
   );
 };

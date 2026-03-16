@@ -4,6 +4,7 @@ export const ROUTE_PATHS = {
   appRoot: "/app",
   learn: "/app/learn",
   browse: "/app/browse",
+  browseDeck: "/app/browse/:deckSlug",
   decks: "/app/decks",
   deckCreate: "/app/decks/new",
   deckEdit: "/app/decks/:deckId/edit",
@@ -55,6 +56,16 @@ export const buildDeckEditRoute = (deckId) => {
   return `${ROUTE_PATHS.decks}/${routeParam}/edit`;
 };
 
+export const buildBrowseDeckRoute = (deckSlug) => {
+  const routeParam = toRouteParam(deckSlug);
+
+  if (!routeParam) {
+    return ROUTE_PATHS.browse;
+  }
+
+  return `${ROUTE_PATHS.browse}/${routeParam}`;
+};
+
 export const NAV_ITEMS = [
   {
     key: "learn",
@@ -97,6 +108,10 @@ export const PAGE_META = {
     title: "Browse Decks",
     subtitle: "Discover community deck packages and import them in one click.",
   },
+  [ROUTE_PATHS.browseDeck]: {
+    title: "Community Deck",
+    subtitle: "Explore a shared deck and import it to your library.",
+  },
   [ROUTE_PATHS.decks]: {
     title: "Deck Library",
     subtitle: "Manage local decks, inspect content, and export to JSON.",
@@ -129,6 +144,7 @@ export const PAGE_META = {
 
 const DECK_EDIT_ROUTE_PATTERN = /^\/app\/decks\/[^/]+\/edit$/;
 const DECK_DETAILS_ROUTE_PREFIX = "/app/decks/";
+const BROWSE_DECK_ROUTE_PREFIX = "/app/browse/";
 
 export const resolvePageMeta = (pathname) => {
   if (pathname === ROUTE_PATHS.deckCreate) {
@@ -141,6 +157,10 @@ export const resolvePageMeta = (pathname) => {
 
   if (pathname.startsWith(DECK_DETAILS_ROUTE_PREFIX)) {
     return PAGE_META[ROUTE_PATHS.deckDetails];
+  }
+
+  if (pathname.startsWith(BROWSE_DECK_ROUTE_PREFIX)) {
+    return PAGE_META[ROUTE_PATHS.browseDeck];
   }
 
   return PAGE_META[pathname] ?? PAGE_META.default;

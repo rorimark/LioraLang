@@ -337,6 +337,13 @@ const createHubRepository = () => {
         ...(payload || {}),
       });
     },
+    async getDeckBySlug(slug) {
+      const hubConfig = ensureHubConfig();
+      return ensureElectronApi().hubGetDeckBySlug({
+        config: hubConfig,
+        slug,
+      });
+    },
     async createDownloadUrl(filePath, expiresInSeconds) {
       const hubConfig = ensureHubConfig();
       return ensureElectronApi().hubCreateDownloadUrl({
