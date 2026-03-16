@@ -79,6 +79,39 @@
   opacity: 0.6;
 }
 
+.cards-panel__filters-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary-soft) !important;
+  color: var(--color-primary-strong) !important;
+  font-weight: 600;
+}
+
+.cards-panel__filters-button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-primary-soft) 70%, var(--color-surface)) !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cards-panel__actions button:hover:not(:disabled) {
+    background: var(--color-surface);
+  }
+
+  .cards-panel__actions button:active:not(:disabled) {
+    background: var(--color-surface-muted);
+  }
+
+  .cards-panel__filters-button:hover:not(:disabled) {
+    background: var(--color-primary-soft) !important;
+  }
+
+  .cards-panel__filters-button:active:not(:disabled) {
+    background: color-mix(in srgb, var(--color-primary-soft) 75%, var(--color-surface)) !important;
+  }
+}
+
 .dictionary-workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
@@ -107,44 +140,39 @@
   gap: 8px;
 }
 
-.dictionary-filters-toggle {
+.dictionary-filters-modal .card-catalog-filters {
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  background: var(--color-transparent);
+}
+
+.dictionary-filters-modal .card-catalog-filters__title {
   display: none;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.84rem;
-  font-weight: 600;
-  padding: 9px 12px;
-  text-align: left;
 }
 
-.dictionary-filters-toggle:hover {
-  background: var(--color-surface-muted);
+.dictionary-filters-modal .card-catalog-filters__header {
+  justify-content: flex-end;
 }
 
-@media (max-width: 1200px) {
-  .dictionary-workspace {
-    grid-template-columns: minmax(0, 1fr) 290px;
-  }
+.dictionary-filters-modal .card-catalog-filters__results {
+  font-size: 0.78rem;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1450px) {
   .dictionary-workspace {
     grid-template-columns: 1fr;
   }
 
   .dictionary-filters-aside {
     position: static;
-    order: -1;
+    order: 2;
   }
+}
 
+@media (max-width: 1080px) {
   .dictionary-filters-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    width: fit-content;
   }
 }
 

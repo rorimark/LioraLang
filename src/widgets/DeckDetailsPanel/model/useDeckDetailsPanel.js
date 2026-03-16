@@ -6,7 +6,7 @@ import { useCardCatalog } from "@features/card-catalog";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { buildDeckEditRoute } from "@shared/config/routes";
 
-const FILTERS_BREAKPOINT = 1080;
+const FILTERS_BREAKPOINT = 1450;
 
 const isNarrowViewport = () => {
   if (typeof window === "undefined") {
@@ -28,9 +28,7 @@ export const useDeckDetailsPanel = () => {
   const [isNarrowFiltersViewport, setIsNarrowFiltersViewport] = useState(() =>
     isNarrowViewport(),
   );
-  const [isFiltersExpanded, setIsFiltersExpanded] = useState(
-    () => !isNarrowViewport(),
-  );
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
   const cardCatalog = useCardCatalog(words);
   const languageLabels = useMemo(() => {
@@ -57,7 +55,7 @@ export const useDeckDetailsPanel = () => {
     const handleViewportChange = (event) => {
       const isNarrow = event.matches;
       setIsNarrowFiltersViewport(isNarrow);
-      setIsFiltersExpanded(!isNarrow);
+      setIsFiltersExpanded(false);
     };
 
     if (typeof mediaQuery.addEventListener === "function") {

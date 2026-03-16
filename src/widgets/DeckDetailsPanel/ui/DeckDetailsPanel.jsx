@@ -6,7 +6,7 @@ import {
   PAGE_SIZE_OPTIONS,
   SORT_OPTIONS,
 } from "@features/card-catalog";
-import { InlineAlert } from "@shared/ui";
+import { ActionModal, InlineAlert } from "@shared/ui";
 import { useDeckDetailsPanel } from "../model";
 import "./DeckDetailsPanel.css";
 
@@ -89,6 +89,16 @@ export const DeckDetailsPanel = memo(() => {
         <button type="button" onClick={refreshDeckWords}>
           Refresh words
         </button>
+        {isNarrowFiltersViewport && (
+          <button
+            type="button"
+            className="cards-panel__filters-button"
+            onClick={toggleFilters}
+            aria-expanded={isFiltersExpanded}
+          >
+            {isFiltersExpanded ? "Hide filters" : "Show filters"}
+          </button>
+        )}
       </div>
 
       <InlineAlert
@@ -117,18 +127,7 @@ export const DeckDetailsPanel = memo(() => {
         </div>
 
         <aside className="dictionary-filters-aside">
-          {isNarrowFiltersViewport && (
-            <button
-              type="button"
-              className="dictionary-filters-toggle"
-              onClick={toggleFilters}
-              aria-expanded={isFiltersExpanded}
-            >
-              {isFiltersExpanded ? "Hide filters" : "Show filters"}
-            </button>
-          )}
-
-          {(!isNarrowFiltersViewport || isFiltersExpanded) && (
+          {!isNarrowFiltersViewport && (
             <CardCatalogFilters
               search={search}
               sort={sort}
@@ -145,6 +144,34 @@ export const DeckDetailsPanel = memo(() => {
           )}
         </aside>
       </div>
+
+      {isNarrowFiltersViewport && (
+        <ActionModal
+          isOpen={isFiltersExpanded}
+          title="Filters"
+          description="Narrow your results and sort the deck."
+          confirmLabel="Apply"
+          cancelLabel="Close"
+          onConfirm={toggleFilters}
+          onClose={toggleFilters}
+        >
+          <div className="dictionary-filters-modal">
+            <CardCatalogFilters
+              search={search}
+              sort={sort}
+              filters={filters}
+              resultsCount={totalItems}
+              levelOptions={levelOptions}
+              partOfSpeechOptions={partOfSpeechOptions}
+              sortOptions={SORT_OPTIONS}
+              onSearchChange={handleSearchChange}
+              onSortChange={handleSortChange}
+              onToggleFilter={handleToggleFilter}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
+        </ActionModal>
+      )}
     </article>
   );
 });
