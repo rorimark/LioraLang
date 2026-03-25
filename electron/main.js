@@ -276,6 +276,36 @@ const getDevServerUrl = () => {
   return process.env.VITE_DEV_SERVER_URL || "http://localhost:5175";
 };
 
+const toOrigin = (value) => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const normalizedValue = value.trim();
+
+  if (!normalizedValue) {
+    return "";
+  }
+
+  try {
+    return new URL(normalizedValue).origin;
+  } catch {
+    return "";
+  }
+};
+
+const getTrustedRemoteConnectSources = () => {
+  const configuredSupabaseOrigin = toOrigin(process.env.VITE_SUPABASE_URL);
+
+  if (configuredSupabaseOrigin) {
+    return [configuredSupabaseOrigin];
+  }
+
+  // Packaged builds do not always receive Vite env vars at runtime.
+  // Keep the fallback scoped to Supabase only so LLH previews/imports still work.
+  return ["https://*.supabase.co"];
+};
+
 const toCleanString = (value) => {
   if (typeof value !== "string") {
     return "";
@@ -638,6 +668,32 @@ const importDeckFromFilePath = (filePath, payload = {}) => {
     importResult,
     duplicateStrategy: importSettings.duplicateStrategy,
   };
+};
+
+const persistImportTextToTempFile = (fileText, fileNameHint = "") => {
+  const normalizedText =
+    typeof fileText === "string" ? fileText.trim() : "";
+
+  if (!normalizedText) {
+    throw new Error("Import JSON text is empty");
+  }
+
+  const importTempDir = path.join(app.getPath("temp"), "lioralang-imports");
+  fs.mkdirSync(importTempDir, { recursive: true });
+
+  const safeFileName = toSafeImportFileName(
+    fileNameHint || "imported-deck.json",
+    ".json",
+  );
+  const randomSuffix = Math.random().toString(16).slice(2, 10);
+  const tempFilePath = path.join(
+    importTempDir,
+    `json-${Date.now()}-${randomSuffix}-${safeFileName}`,
+  );
+
+  fs.writeFileSync(tempFilePath, normalizedText, "utf8");
+
+  return tempFilePath;
 };
 
 const resolveRemoteImportUrl = (value) => {
@@ -2355,6 +2411,8 @@ const buildContentSecurityPolicy = () => {
     return [...new Set(["'self'", ...sources])].join(" ");
   };
 
+  const trustedRemoteConnectSources = getTrustedRemoteConnectSources();
+
   if (app.isPackaged) {
     return [
       "default-src 'self'",
@@ -2363,7 +2421,7 @@ const buildContentSecurityPolicy = () => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob:",
       "font-src 'self' https://fonts.gstatic.com data:",
-      `connect-src ${joinConnectSources()}`,
+      `connect-src ${joinConnectSources(trustedRemoteConnectSources)}`,
       "object-src 'none'",
       "base-uri 'self'",
       "frame-ancestors 'none'",
@@ -2384,6 +2442,7 @@ const buildContentSecurityPolicy = () => {
     `connect-src ${joinConnectSources([
       devOrigin,
       devWsOrigin,
+      ...trustedRemoteConnectSources,
     ])}`,
     "object-src 'none'",
     "base-uri 'self'",
@@ -2508,24 +2567,46 @@ const setupIpcHandlers = () => {
   ipcMain.handle("decks:import-json", async (_, payload) => {
     const filePath =
       typeof payload?.filePath === "string" ? payload.filePath.trim() : "";
-    const { importResult, duplicateStrategy } = importDeckFromFilePath(
-      filePath,
-      payload || {},
-    );
+    const fileText =
+      typeof payload?.fileText === "string" ? payload.fileText.trim() : "";
+    let tempFilePath = "";
 
-    sendDecksUpdated();
-    trackAnalyticsEvent("deck.imported", {
-      deckId: importResult.deckId,
-      importedCount: importResult.importedCount,
-      skippedCount: importResult.skippedCount,
-      duplicateStrategy,
-      source: "local-file",
-    });
+    try {
+      if (!filePath && fileText) {
+        tempFilePath = persistImportTextToTempFile(
+          fileText,
+          payload?.fileName || payload?.deckName || "",
+        );
+      }
 
-    return {
-      canceled: false,
-      ...importResult,
-    };
+      const importFilePath = filePath || tempFilePath;
+      const { importResult, duplicateStrategy } = importDeckFromFilePath(
+        importFilePath,
+        payload || {},
+      );
+
+      sendDecksUpdated();
+      trackAnalyticsEvent("deck.imported", {
+        deckId: importResult.deckId,
+        importedCount: importResult.importedCount,
+        skippedCount: importResult.skippedCount,
+        duplicateStrategy,
+        source: fileText ? "json-text" : "local-file",
+      });
+
+      return {
+        canceled: false,
+        ...importResult,
+      };
+    } finally {
+      if (tempFilePath && fs.existsSync(tempFilePath)) {
+        try {
+          fs.unlinkSync(tempFilePath);
+        } catch (cleanupError) {
+          console.warn("[LioraLang] Failed to clean temp import file", cleanupError);
+        }
+      }
+    }
   });
 
   ipcMain.handle("decks:import-url", async (_, payload) => {
