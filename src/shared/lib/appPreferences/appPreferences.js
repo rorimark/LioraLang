@@ -1,8 +1,7 @@
-import {
-  DEFAULT_SOURCE_LANGUAGE,
-  DEFAULT_TARGET_LANGUAGE,
-} from "@shared/config/languages";
+import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
 import { APP_PREFERENCES_APP_KEY } from "./constants";
+
+export { DEFAULT_APP_PREFERENCES };
 
 const LEVEL_OPTIONS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
 const PART_OF_SPEECH_OPTIONS = new Set([
@@ -86,60 +85,6 @@ const normalizeTags = (value) => {
   });
 
   return uniqueTags.slice(0, 10);
-};
-
-export const DEFAULT_APP_PREFERENCES = {
-  studySession: {
-    dailyGoal: 20,
-    autoFlipDelay: "off",
-    shuffleMode: "per_session",
-    repeatWrongCards: false,
-  },
-  spacedRepetition: {
-    newCardsPerDay: 20,
-    maxReviewsPerDay: 100,
-    learningSteps: "10m, 1d, 3d",
-    easyBonus: 130,
-    lapsePenalty: 70,
-  },
-  deckDefaults: {
-    sourceLanguage: DEFAULT_SOURCE_LANGUAGE,
-    targetLanguage: DEFAULT_TARGET_LANGUAGE,
-    level: "A1",
-    partOfSpeech: "noun",
-    tags: [],
-  },
-  importExport: {
-    autoOpenLanguageReview: false,
-    duplicateStrategy: "skip",
-    exportFormat: "lioradeck",
-    includeExamples: true,
-    includeTags: true,
-  },
-  uiAccessibility: {
-    themeMode: "system",
-    fontScale: "normal",
-    compactMode: false,
-    reducedMotion: false,
-    highContrast: false,
-  },
-  dataSafety: {
-    autoBackupInterval: "weekly",
-    maxBackups: 10,
-    confirmDestructive: true,
-  },
-  desktop: {
-    launchAtStartup: false,
-    minimizeToTray: false,
-    hardwareAcceleration: true,
-    devMode: false,
-    updateChannel: "stable",
-  },
-  privacy: {
-    analyticsEnabled: false,
-    crashReportsEnabled: true,
-    logLevel: "off",
-  },
 };
 
 export const normalizeAppPreferences = (value = {}) => {

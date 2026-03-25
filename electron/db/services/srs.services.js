@@ -1,4 +1,5 @@
 import { getDatabase } from "../db.js";
+import { DEFAULT_APP_PREFERENCES } from "../../../src/shared/config/appPreferencesDefaults.js";
 
 const CARD_STATES = {
   new: "new",
@@ -29,8 +30,8 @@ const MAX_DATE_TIMESTAMP_MS = 8_640_000_000_000_000;
 const DEFAULT_STUDY_SESSION_SETTINGS = {
   shuffleMode: "off",
   shuffleSeed: null,
-  dailyGoal: 20,
-  repeatWrongCards: true,
+  dailyGoal: DEFAULT_APP_PREFERENCES.studySession.dailyGoal,
+  repeatWrongCards: DEFAULT_APP_PREFERENCES.studySession.repeatWrongCards,
 };
 
 const SHUFFLE_MODES = {

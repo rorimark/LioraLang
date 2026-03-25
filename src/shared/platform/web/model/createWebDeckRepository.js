@@ -3,6 +3,10 @@ import {
   DEFAULT_TARGET_LANGUAGE,
 } from "@shared/config/languages";
 import {
+  isTrustedHubStorageUrl,
+  toOrigin,
+} from "@shared/config/hubRemoteImport";
+import {
   WEB_DB_STORES,
   idbRequest,
   runReadonlyTransaction,
@@ -289,6 +293,12 @@ const resolveImportUrl = (value) => {
     const parsed = new URL(raw);
 
     if (!["https:", "http:"].includes(parsed.protocol)) {
+      return null;
+    }
+
+    const configuredHubOrigin = toOrigin(import.meta.env.VITE_SUPABASE_URL);
+
+    if (!isTrustedHubStorageUrl(parsed, configuredHubOrigin)) {
       return null;
     }
 
