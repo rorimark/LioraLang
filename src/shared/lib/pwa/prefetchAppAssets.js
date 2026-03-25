@@ -28,7 +28,7 @@ const isAppRouteChunk = (key = "") => {
   return APP_ROUTE_CHUNK_MATCHERS.some((matcher) => key.includes(matcher));
 };
 
-const ensurePreloadLink = (href, rel, as) => {
+const ensureResourceHintLink = (href, rel, as) => {
   if (!href) {
     return;
   }
@@ -88,11 +88,13 @@ const preloadAppAssetsFromManifest = async () => {
   });
 
   modulePreloadSet.forEach((assetPath) => {
-    ensurePreloadLink(assetPath, "modulepreload");
+    ensureResourceHintLink(assetPath, "modulepreload");
   });
 
   stylePreloadSet.forEach((assetPath) => {
-    ensurePreloadLink(assetPath, "preload", "style");
+    // CSS is useful for future navigation but not guaranteed to be consumed
+    // immediately, so `prefetch` avoids browser warnings about unused preloads.
+    ensureResourceHintLink(assetPath, "prefetch", "style");
   });
 
   return modulePreloadSet.size + stylePreloadSet.size;
