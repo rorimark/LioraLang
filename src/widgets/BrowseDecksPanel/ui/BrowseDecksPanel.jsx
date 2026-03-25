@@ -1,35 +1,47 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Button, InlineAlert, Panel, TextInput } from "@shared/ui";
 import { useBrowseDecksPanel } from "../model";
 import { BrowseDeckCardList } from "./BrowseDeckCardList";
 import "./BrowseDecksPanel.css";
 
 export const BrowseDecksPanel = memo(() => {
-  const {
-    decks,
-    isLoading,
-    error,
-    isConfigured,
-    searchInput,
-    currentPage,
-    totalPages,
-    totalDecks,
-    importingDeckId,
-    deletingDeckId,
-    canDeleteHubDecks,
-    message,
-    messageVariant,
-    handleSearchInputChange,
-    clearSearch,
-    goToPreviousPage,
-    goToNextPage,
-    importDeckFromHub,
-    copyDeckLink,
-    deleteDeckFromHub,
-    clearMessage,
-  } = useBrowseDecksPanel();
+  const panel = useBrowseDecksPanel();
+  const deckList = useMemo(
+    () => ({
+      decks: panel.decks,
+      pendingState: {
+        importingDeckId: panel.importingDeckId,
+        deletingDeckId: panel.deletingDeckId,
+      },
+      permissions: {
+        canDeleteHubDecks: panel.canDeleteHubDecks,
+      },
+      actions: {
+        onImportDeck: panel.importDeckFromHub,
+        onCopyLink: panel.copyDeckLink,
+        onDeleteDeck: panel.deleteDeckFromHub,
+      },
+    }),
+    [
+      panel.canDeleteHubDecks,
+      panel.copyDeckLink,
+      panel.decks,
+      panel.deleteDeckFromHub,
+      panel.deletingDeckId,
+      panel.importDeckFromHub,
+      panel.importingDeckId,
+    ],
+  );
+  const statusAlert = useMemo(
+    () => ({
+      text: panel.message,
+      variant: panel.messageVariant,
+      onClose: panel.clearMessage,
+    }),
+    [panel.clearMessage, panel.message, panel.messageVariant],
+  );
 
-  const isSearchActive = Boolean(searchInput.trim());
+  const isSearchActive = Boolean(panel.searchInput.trim());
 
   return (
     <Panel className="browse-decks-panel">
@@ -50,13 +62,9 @@ export const BrowseDecksPanel = memo(() => {
         </button>
       </header> */}
 
-      <InlineAlert
-        text={message}
-        variant={messageVariant}
-        onClose={clearMessage}
-      />
+      <InlineAlert alert={statusAlert} />
 
-      {!isConfigured ? (
+      {!panel.isConfigured ? (
         <div className="browse-decks-panel__warning">
           Supabase is not configured. Add <code>VITE_SUPABASE_URL</code> and{" "}
           <code>VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY</code> to your{" "}
@@ -64,7 +72,7 @@ export const BrowseDecksPanel = memo(() => {
         </div>
       ) : null}
 
-      {isConfigured ? (
+      {panel.isConfigured ? (
         <div className="browse-decks-panel__toolbar">
           <label className="browse-decks-panel__search" htmlFor="browse-search">
             <span className="sr-only">Search decks</span>
@@ -72,13 +80,13 @@ export const BrowseDecksPanel = memo(() => {
               id="browse-search"
               type="search"
               placeholder="Search decks by title..."
-              value={searchInput}
-              onChange={handleSearchInputChange}
+              value={panel.searchInput}
+              onChange={panel.handleSearchInputChange}
             />
           </label>
           <Button
             className="browse-decks-panel__clear"
-            onClick={clearSearch}
+            onClick={panel.clearSearch}
             disabled={!isSearchActive}
             size="sm"
           >
@@ -87,44 +95,36 @@ export const BrowseDecksPanel = memo(() => {
         </div>
       ) : null}
 
-      {error ? <div className="browse-decks-panel__error">{error}</div> : null}
+      {panel.error ? <div className="browse-decks-panel__error">{panel.error}</div> : null}
 
-      {isConfigured && isLoading ? (
+      {panel.isConfigured && panel.isLoading ? (
         <div className="browse-decks-panel__loading">
           Loading community decks...
         </div>
       ) : null}
 
-      {isConfigured && !isLoading && !error ? (
-        <BrowseDeckCardList
-          decks={decks}
-          importingDeckId={importingDeckId}
-          deletingDeckId={deletingDeckId}
-          canDeleteHubDecks={canDeleteHubDecks}
-          onImportDeck={importDeckFromHub}
-          onCopyLink={copyDeckLink}
-          onDeleteDeck={deleteDeckFromHub}
-        />
+      {panel.isConfigured && !panel.isLoading && !panel.error ? (
+        <BrowseDeckCardList deckList={deckList} />
       ) : null}
 
-      {isConfigured ? (
+      {panel.isConfigured ? (
         <footer className="browse-decks-panel__pagination">
           <span>
-            {totalDecks > 0
-              ? `Page ${currentPage} of ${totalPages} • ${totalDecks} decks`
+            {panel.totalDecks > 0
+              ? `Page ${panel.currentPage} of ${panel.totalPages} • ${panel.totalDecks} decks`
               : "No decks available"}
           </span>
           <div className="browse-decks-panel__pagination-actions">
             <Button
-              onClick={goToPreviousPage}
-              disabled={currentPage <= 1 || isLoading}
+              onClick={panel.goToPreviousPage}
+              disabled={panel.currentPage <= 1 || panel.isLoading}
               size="sm"
             >
               Previous
             </Button>
             <Button
-              onClick={goToNextPage}
-              disabled={currentPage >= totalPages || isLoading}
+              onClick={panel.goToNextPage}
+              disabled={panel.currentPage >= panel.totalPages || panel.isLoading}
               size="sm"
             >
               Next

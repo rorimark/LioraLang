@@ -18,13 +18,16 @@ export const IntegrityRepairModal = memo(
 
     return (
       <ActionModal
-        isOpen={isOpen}
-        title="Repair database integrity"
-        description="Integrity issues were found. Repair will restore the database to its initial structure and may remove changed data."
-        confirmLabel="Repair database"
-        isConfirming={isRepairing}
-        onConfirm={onConfirm}
-        onClose={onClose}
+        dialog={{
+          isOpen,
+          title: "Repair database integrity",
+          description:
+            "Integrity issues were found. Repair will restore the database to its initial structure and may remove changed data.",
+          confirmLabel: "Repair database",
+          isConfirming: isRepairing,
+          onConfirm,
+          onClose,
+        }}
       >
         <div className="integrity-repair-modal__body">
           <p className="integrity-repair-modal__title">Detected issues:</p>
@@ -49,4 +52,3 @@ export const IntegrityRepairModal = memo(
 );
 
 IntegrityRepairModal.displayName = "IntegrityRepairModal";
-

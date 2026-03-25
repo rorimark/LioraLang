@@ -6,6 +6,8 @@ import "./DecksTable.css";
 
 const MAX_VISIBLE_TAGS = 5;
 const MAX_TOTAL_TAGS = 10;
+const EMPTY_OBJECT = Object.freeze({});
+const EMPTY_ARRAY = Object.freeze([]);
 const normalizeTagKey = (value) =>
   typeof value === "string" ? value.trim().toLowerCase() : "";
 
@@ -116,78 +118,53 @@ const splitDeckTags = (tags, limit = MAX_VISIBLE_TAGS) => {
   };
 };
 
-export const DecksTable = memo(
-  ({
-    decks,
-    onOpenDeck,
-    onEditDeck,
-    onPublishDeck,
-    onExportDeck,
-    onDeleteDeck,
-    publishingDeckId = null,
-    exportingDeckId = null,
-    deletingDeckId = null,
-  }) => {
+export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
+    const resolvedTable = table;
+    const resolvedDecks = Array.isArray(resolvedTable.decks)
+      ? resolvedTable.decks
+      : EMPTY_ARRAY;
+    const actions = resolvedTable.actions || EMPTY_OBJECT;
+    const pendingState = resolvedTable.pendingState || EMPTY_OBJECT;
     const tableRef = useRef(null);
 
     useDeckTagsPopover(tableRef);
 
     const handleOpenDeck = useCallback(
       (event) => {
-        if (typeof onOpenDeck !== "function") {
-          return;
-        }
-
-        onOpenDeck(event.currentTarget.dataset.deckId);
+        actions.onOpenDeck?.(event.currentTarget.dataset.deckId);
       },
-      [onOpenDeck],
+      [actions],
     );
 
     const handleExportDeck = useCallback(
       (event) => {
-        if (typeof onExportDeck !== "function") {
-          return;
-        }
-
-        onExportDeck(event.currentTarget.dataset.deckId);
+        actions.onExportDeck?.(event.currentTarget.dataset.deckId);
       },
-      [onExportDeck],
+      [actions],
     );
 
     const handleEditDeck = useCallback(
       (event) => {
-        if (typeof onEditDeck !== "function") {
-          return;
-        }
-
-        onEditDeck(event.currentTarget.dataset.deckId);
+        actions.onEditDeck?.(event.currentTarget.dataset.deckId);
       },
-      [onEditDeck],
+      [actions],
     );
 
     const handlePublishDeck = useCallback(
       (event) => {
-        if (typeof onPublishDeck !== "function") {
-          return;
-        }
-
-        onPublishDeck(event.currentTarget.dataset.deckId);
+        actions.onPublishDeck?.(event.currentTarget.dataset.deckId);
       },
-      [onPublishDeck],
+      [actions],
     );
 
     const handleDeleteDeck = useCallback(
       (event) => {
-        if (typeof onDeleteDeck !== "function") {
-          return;
-        }
-
-        onDeleteDeck(
+        actions.onDeleteDeck?.(
           event.currentTarget.dataset.deckId,
           event.currentTarget.dataset.deckName,
         );
       },
-      [onDeleteDeck],
+      [actions],
     );
 
     return (
@@ -203,13 +180,13 @@ export const DecksTable = memo(
         </thead>
 
         <tbody>
-          {decks.length === 0 ? (
+          {resolvedDecks.length === 0 ? (
             <tr>
               <td colSpan={5} className="decks-table__empty">
                 No decks found. Create one or import a deck file.
               </td>
             </tr>
-          ) : decks.map((deck) => {
+          ) : resolvedDecks.map((deck) => {
             const deckTags = buildDeckTags(deck);
             const { visibleTags, hiddenTags } = splitDeckTags(deckTags);
 
@@ -276,9 +253,11 @@ export const DecksTable = memo(
                       className="decks-table__button--publish"
                       data-deck-id={deck.id}
                       onClick={handlePublishDeck}
-                      disabled={String(publishingDeckId) === String(deck.id)}
+                      disabled={
+                        String(pendingState.publishingDeckId) === String(deck.id)
+                      }
                     >
-                      {String(publishingDeckId) === String(deck.id)
+                      {String(pendingState.publishingDeckId) === String(deck.id)
                         ? "Publishing..."
                         : "Publish"}
                     </button>
@@ -286,9 +265,11 @@ export const DecksTable = memo(
                       type="button"
                       data-deck-id={deck.id}
                       onClick={handleExportDeck}
-                      disabled={String(exportingDeckId) === String(deck.id)}
+                      disabled={
+                        String(pendingState.exportingDeckId) === String(deck.id)
+                      }
                     >
-                      {String(exportingDeckId) === String(deck.id)
+                      {String(pendingState.exportingDeckId) === String(deck.id)
                         ? "Exporting..."
                         : "Export"}
                     </button>
@@ -298,9 +279,11 @@ export const DecksTable = memo(
                       data-deck-name={deck.name}
                       data-deck-id={deck.id}
                       onClick={handleDeleteDeck}
-                      disabled={String(deletingDeckId) === String(deck.id)}
+                      disabled={
+                        String(pendingState.deletingDeckId) === String(deck.id)
+                      }
                     >
-                      {String(deletingDeckId) === String(deck.id)
+                      {String(pendingState.deletingDeckId) === String(deck.id)
                         ? "Deleting..."
                         : "Delete"}
                     </button>
@@ -312,7 +295,6 @@ export const DecksTable = memo(
         </tbody>
       </table>
     );
-  },
-);
+  });
 
 DecksTable.displayName = "DecksTable";

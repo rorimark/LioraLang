@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
@@ -7,55 +7,103 @@ import { useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
 
 export const DecksOverviewPanel = memo(() => {
-  const {
-    decks,
-    totalDecksCount,
-    deckSearch,
-    isLoading,
-    error,
-    message,
-    messageVariant,
-    publishingDeckId,
-    exportingDeckId,
-    deletingDeckId,
-    isImporting,
-    selectedImportFileName,
-    selectedImportWordsCount,
-    importDeckNameDraft,
-    importLanguages,
-    languageOptions,
-    isImportConfirmOpen,
-    isLanguageReviewOpen,
-    isJsonImportOpen,
-    jsonDeckNameDraft,
-    pasteTextDraft,
-    pasteError,
-    deleteState,
-    openDeck,
-    openCreateDeck,
-    openEditDeck,
-    publishDeck,
-    exportDeck,
-    openDeleteModal,
-    closeDeleteModal,
-    confirmDeleteDeck,
-    openImportConfirm,
-    openJsonImport,
-    closeImportConfirm,
-    closeJsonImport,
-    openLanguageReview,
-    closeLanguageReview,
-    toggleLanguageReview,
-    confirmImportDeck,
-    handleImportDeckNameDraftChange,
-    handleImportLanguageChange,
-    handlePasteTextChange,
-    handleJsonDeckNameChange,
-    importFromPaste,
-    refreshDecks,
-    handleDeckSearchChange,
-    clearMessage,
-  } = useDecksOverviewPanel();
+  const panel = useDecksOverviewPanel();
+  const table = useMemo(
+    () => ({
+      decks: panel.decks,
+      actions: {
+        onOpenDeck: panel.openDeck,
+        onEditDeck: panel.openEditDeck,
+        onPublishDeck: panel.publishDeck,
+        onExportDeck: panel.exportDeck,
+        onDeleteDeck: panel.openDeleteModal,
+      },
+      pendingState: {
+        publishingDeckId: panel.publishingDeckId,
+        exportingDeckId: panel.exportingDeckId,
+        deletingDeckId: panel.deletingDeckId,
+      },
+    }),
+    [
+      panel.decks,
+      panel.deletingDeckId,
+      panel.exportDeck,
+      panel.exportingDeckId,
+      panel.openDeleteModal,
+      panel.openDeck,
+      panel.openEditDeck,
+      panel.publishDeck,
+      panel.publishingDeckId,
+    ],
+  );
+  const importModal = useMemo(
+    () => ({
+      isOpen: panel.isImportConfirmOpen,
+      isImporting: panel.isImporting,
+      selectedFileName: panel.selectedImportFileName,
+      selectedWordsCount: panel.selectedImportWordsCount,
+      deckNameDraft: panel.importDeckNameDraft,
+      importLanguages: panel.importLanguages,
+      languageOptions: panel.languageOptions,
+      isLanguageReviewOpen: panel.isLanguageReviewOpen,
+      onDeckNameChange: panel.handleImportDeckNameDraftChange,
+      onLanguageChange: panel.handleImportLanguageChange,
+      onOpenLanguageReview: panel.openLanguageReview,
+      onCloseLanguageReview: panel.closeLanguageReview,
+      onToggleLanguageReview: panel.toggleLanguageReview,
+      onConfirm: panel.confirmImportDeck,
+      onClose: panel.closeImportConfirm,
+    }),
+    [
+      panel.closeImportConfirm,
+      panel.closeLanguageReview,
+      panel.confirmImportDeck,
+      panel.handleImportDeckNameDraftChange,
+      panel.handleImportLanguageChange,
+      panel.importDeckNameDraft,
+      panel.importLanguages,
+      panel.isImportConfirmOpen,
+      panel.isImporting,
+      panel.isLanguageReviewOpen,
+      panel.languageOptions,
+      panel.openLanguageReview,
+      panel.selectedImportFileName,
+      panel.selectedImportWordsCount,
+      panel.toggleLanguageReview,
+    ],
+  );
+  const jsonImportModal = useMemo(
+    () => ({
+      isOpen: panel.isJsonImportOpen,
+      isImporting: panel.isImporting,
+      deckNameDraft: panel.jsonDeckNameDraft,
+      jsonText: panel.pasteTextDraft,
+      jsonError: panel.pasteError,
+      onDeckNameChange: panel.handleJsonDeckNameChange,
+      onJsonTextChange: panel.handlePasteTextChange,
+      onConfirm: panel.importFromPaste,
+      onClose: panel.closeJsonImport,
+    }),
+    [
+      panel.closeJsonImport,
+      panel.handleJsonDeckNameChange,
+      panel.handlePasteTextChange,
+      panel.importFromPaste,
+      panel.isImporting,
+      panel.isJsonImportOpen,
+      panel.jsonDeckNameDraft,
+      panel.pasteError,
+      panel.pasteTextDraft,
+    ],
+  );
+  const statusAlert = useMemo(
+    () => ({
+      text: panel.message,
+      variant: panel.messageVariant,
+      onClose: panel.clearMessage,
+    }),
+    [panel.clearMessage, panel.message, panel.messageVariant],
+  );
 
   return (
     <article className="panel decks-page-panel">
@@ -65,117 +113,77 @@ export const DecksOverviewPanel = memo(() => {
           <button
             type="button"
             className="decks-page-panel__refresh"
-            onClick={openCreateDeck}
+            onClick={panel.openCreateDeck}
           >
             Create deck
           </button>
           <button
             type="button"
             className="decks-page-panel__refresh"
-            onClick={openImportConfirm}
-            disabled={isImporting}
+            onClick={panel.openImportConfirm}
+            disabled={panel.isImporting}
           >
-            {isImporting ? "Importing..." : "Import deck file"}
+            {panel.isImporting ? "Importing..." : "Import deck file"}
           </button>
           <button
             type="button"
             className="decks-page-panel__refresh"
-            onClick={openJsonImport}
-            disabled={isImporting}
+            onClick={panel.openJsonImport}
+            disabled={panel.isImporting}
           >
             Create deck from JSON
           </button>
           <button
             type="button"
             className="decks-page-panel__refresh"
-            onClick={refreshDecks}
+            onClick={panel.refreshDecks}
           >
             Refresh decks
           </button>
         </div>
       </div>
 
-      <InlineAlert
-        text={message}
-        variant={messageVariant}
-        onClose={clearMessage}
-      />
+      <InlineAlert alert={statusAlert} />
 
       <div className="decks-page-panel__search-row">
         <label className="decks-page-panel__search-field">
           <span>Find deck</span>
           <input
             type="search"
-            value={deckSearch}
-            onChange={(event) => handleDeckSearchChange(event.target.value)}
+            value={panel.deckSearch}
+            onChange={(event) => panel.handleDeckSearchChange(event.target.value)}
             placeholder="Search by name, description, language or tag"
             aria-label="Search decks"
           />
         </label>
         <span className="decks-page-panel__search-meta">
-          {decks.length} / {totalDecksCount}
+          {panel.decks.length} / {panel.totalDecksCount}
         </span>
       </div>
 
-      {error && (
+      {panel.error && (
         <div className="decks-page-panel__message decks-page-panel__message--error">
-          {error}
+          {panel.error}
         </div>
       )}
 
-      {isLoading ? (
+      {panel.isLoading ? (
         <div className="decks-page-panel__loading">Loading decks...</div>
       ) : (
-        <DecksTable
-          decks={decks}
-          onOpenDeck={openDeck}
-          onEditDeck={openEditDeck}
-          onPublishDeck={publishDeck}
-          onExportDeck={exportDeck}
-          onDeleteDeck={openDeleteModal}
-          publishingDeckId={publishingDeckId}
-          exportingDeckId={exportingDeckId}
-          deletingDeckId={deletingDeckId}
-        />
+        <DecksTable table={table} />
       )}
 
       <DeleteDeckModal
-        isOpen={deleteState?.isOpen}
-        deckName={deleteState?.deckName || ""}
-        isDeleting={Boolean(deletingDeckId)}
-        onConfirm={confirmDeleteDeck}
-        onClose={closeDeleteModal}
+        isOpen={panel.deleteState?.isOpen}
+        deckName={panel.deleteState?.deckName || ""}
+        isDeleting={Boolean(panel.deletingDeckId)}
+        onConfirm={panel.confirmDeleteDeck}
+        onClose={panel.closeDeleteModal}
       />
 
-      <ImportDeckModal
-        isOpen={isImportConfirmOpen}
-        isImporting={isImporting}
-        selectedFileName={selectedImportFileName}
-        selectedWordsCount={selectedImportWordsCount}
-        deckNameDraft={importDeckNameDraft}
-        importLanguages={importLanguages}
-        languageOptions={languageOptions}
-        isLanguageReviewOpen={isLanguageReviewOpen}
-        onDeckNameChange={handleImportDeckNameDraftChange}
-        onLanguageChange={handleImportLanguageChange}
-        onOpenLanguageReview={openLanguageReview}
-        onCloseLanguageReview={closeLanguageReview}
-        onToggleLanguageReview={toggleLanguageReview}
-        onConfirm={confirmImportDeck}
-        onClose={closeImportConfirm}
-      />
+      <ImportDeckModal modal={importModal} />
 
-      <CreateDeckFromJsonModal
-        isOpen={isJsonImportOpen}
-        isImporting={isImporting}
-        deckNameDraft={jsonDeckNameDraft}
-        jsonText={pasteTextDraft}
-        jsonError={pasteError}
-        onDeckNameChange={handleJsonDeckNameChange}
-        onJsonTextChange={handlePasteTextChange}
-        onConfirm={importFromPaste}
-        onClose={closeJsonImport}
-      />
+      <CreateDeckFromJsonModal modal={jsonImportModal} />
     </article>
   );
 });

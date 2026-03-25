@@ -1,6 +1,9 @@
 import { memo, useCallback, useMemo } from "react";
 import "./CardCatalogPagination.css";
 
+const EMPTY_OBJECT = Object.freeze({});
+const EMPTY_OPTIONS = Object.freeze([]);
+
 const buildVisiblePages = (currentPage, totalPages) => {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -27,21 +30,21 @@ const buildVisiblePages = (currentPage, totalPages) => {
   return pages;
 };
 
-export const CardCatalogPagination = memo(
-  ({
-    currentPage,
-    totalPages,
-    pageSize,
-    pageSizeOptions,
-    totalItems,
-    rangeStart,
-    rangeEnd,
-    onPageChange,
-    onPageSizeChange,
-  }) => {
+export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
+    const resolvedPagination = pagination;
+    const resolvedPageSizeOptions = Array.isArray(
+      resolvedPagination.pageSizeOptions,
+    )
+      ? resolvedPagination.pageSizeOptions
+      : EMPTY_OPTIONS;
+
     const visiblePages = useMemo(
-      () => buildVisiblePages(currentPage, totalPages),
-      [currentPage, totalPages],
+      () =>
+        buildVisiblePages(
+          resolvedPagination.currentPage,
+          resolvedPagination.totalPages,
+        ),
+      [resolvedPagination.currentPage, resolvedPagination.totalPages],
     );
 
     const handlePageButtonClick = useCallback(
@@ -49,41 +52,42 @@ export const CardCatalogPagination = memo(
         const nextPage = Number(event.currentTarget.dataset.page);
 
         if (Number.isFinite(nextPage)) {
-          onPageChange(nextPage);
+          resolvedPagination.onPageChange?.(nextPage);
         }
       },
-      [onPageChange],
+      [resolvedPagination],
     );
 
     const handlePrevPage = useCallback(() => {
-      onPageChange(currentPage - 1);
-    }, [currentPage, onPageChange]);
+      resolvedPagination.onPageChange?.(resolvedPagination.currentPage - 1);
+    }, [resolvedPagination]);
 
     const handleNextPage = useCallback(() => {
-      onPageChange(currentPage + 1);
-    }, [currentPage, onPageChange]);
+      resolvedPagination.onPageChange?.(resolvedPagination.currentPage + 1);
+    }, [resolvedPagination]);
 
     const handlePageSizeSelect = useCallback(
       (event) => {
-        onPageSizeChange(Number(event.target.value));
+        resolvedPagination.onPageSizeChange?.(Number(event.target.value));
       },
-      [onPageSizeChange],
+      [resolvedPagination],
     );
 
     return (
       <div className="cards-pagination">
         <div className="cards-pagination__meta">
           <span>
-            Showing {rangeStart}-{rangeEnd} of {totalItems}
+            Showing {resolvedPagination.rangeStart}-{resolvedPagination.rangeEnd} of{" "}
+            {resolvedPagination.totalItems}
           </span>
 
           <label className="cards-pagination__size">
             Rows
             <select
-              value={pageSize}
+              value={resolvedPagination.pageSize}
               onChange={handlePageSizeSelect}
             >
-              {pageSizeOptions.map((size) => (
+              {resolvedPageSizeOptions.map((size) => (
                 <option key={size} value={size}>
                   {size}
                 </option>
@@ -96,7 +100,7 @@ export const CardCatalogPagination = memo(
           <button
             type="button"
             onClick={handlePrevPage}
-            disabled={currentPage === 1}
+            disabled={resolvedPagination.currentPage === 1}
           >
             Prev
           </button>
@@ -120,12 +124,14 @@ export const CardCatalogPagination = memo(
                 type="button"
                 data-page={page}
                 className={
-                  page === currentPage
+                  page === resolvedPagination.currentPage
                     ? "cards-pagination__page is-active"
                     : "cards-pagination__page"
                 }
                 onClick={handlePageButtonClick}
-                aria-current={page === currentPage ? "page" : undefined}
+                aria-current={
+                  page === resolvedPagination.currentPage ? "page" : undefined
+                }
                 aria-label={`Go to page ${page}`}
               >
                 {page}
@@ -136,14 +142,15 @@ export const CardCatalogPagination = memo(
           <button
             type="button"
             onClick={handleNextPage}
-            disabled={currentPage === totalPages}
+            disabled={
+              resolvedPagination.currentPage === resolvedPagination.totalPages
+            }
           >
             Next
           </button>
         </div>
       </div>
     );
-  },
-);
+  });
 
 CardCatalogPagination.displayName = "CardCatalogPagination";

@@ -2,19 +2,21 @@ import { memo, useId, useRef } from "react";
 import { useDialogA11y } from "@shared/lib/a11y";
 import "./ActionModal.css";
 
-export const ActionModal = memo(
-  ({
-    isOpen,
-    title,
-    description = "",
-    confirmLabel = "Confirm",
-    cancelLabel = "Cancel",
-    isConfirming = false,
-    isConfirmDisabled = false,
-    onConfirm,
-    onClose,
-    children = null,
-  }) => {
+const EMPTY_DIALOG = Object.freeze({});
+
+export const ActionModal = memo(({ dialog = EMPTY_DIALOG }) => {
+    const {
+      isOpen,
+      title,
+      description = "",
+      confirmLabel = "Confirm",
+      cancelLabel = "Cancel",
+      isConfirming = false,
+      isConfirmDisabled = false,
+      onConfirm,
+      onClose,
+      children = null,
+    } = dialog;
     const contentRef = useRef(null);
     const titleId = useId();
     const descriptionId = useId();
@@ -82,7 +84,6 @@ export const ActionModal = memo(
         </div>
       </div>
     );
-  },
-);
+  });
 
 ActionModal.displayName = "ActionModal";

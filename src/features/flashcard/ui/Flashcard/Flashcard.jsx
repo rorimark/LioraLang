@@ -1,17 +1,20 @@
 import { memo } from "react";
 import "./Flashcard.css";
 
-export const Flashcard = memo(
-  ({
-    frontLabel = "Front",
-    frontText,
-    backLabel = "Back",
-    backText,
-    backMetaBadges = [],
-    isFlipped = false,
-    onFlip,
-    disabled = false,
-  }) => {
+const EMPTY_CARD = Object.freeze({});
+const EMPTY_BADGES = Object.freeze([]);
+
+export const Flashcard = memo(({ card = EMPTY_CARD }) => {
+    const {
+      frontLabel = "Front",
+      frontText,
+      backLabel = "Back",
+      backText,
+      backMetaBadges = EMPTY_BADGES,
+      isFlipped = false,
+      onFlip,
+      disabled = false,
+    } = card;
     return (
       <button
         type="button"
@@ -64,7 +67,6 @@ export const Flashcard = memo(
         </span>
       </button>
     );
-  },
-);
+  });
 
 Flashcard.displayName = "Flashcard";

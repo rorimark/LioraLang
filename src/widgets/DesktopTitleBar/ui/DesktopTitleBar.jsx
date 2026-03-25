@@ -1,27 +1,36 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import { useDesktopTitleBar } from "../model";
 import "./DesktopTitleBar.css";
 
 export const DesktopTitleBar = memo(() => {
-  const {
-    isDesktopMode,
-    platformClassName,
-    canGoBack,
-    canGoForward,
-    navigateBack,
-    navigateForward,
-    backShortcutLabel,
-    forwardShortcutLabel,
-  } = useDesktopTitleBar();
+  const panel = useDesktopTitleBar();
+  const historyControls = useMemo(
+    () => ({
+      canGoBack: panel.canGoBack,
+      canGoForward: panel.canGoForward,
+      navigateBack: panel.navigateBack,
+      navigateForward: panel.navigateForward,
+      backShortcutLabel: panel.backShortcutLabel,
+      forwardShortcutLabel: panel.forwardShortcutLabel,
+    }),
+    [
+      panel.backShortcutLabel,
+      panel.canGoBack,
+      panel.canGoForward,
+      panel.forwardShortcutLabel,
+      panel.navigateBack,
+      panel.navigateForward,
+    ],
+  );
 
-  if (!isDesktopMode) {
+  if (!panel.isDesktopMode) {
     return null;
   }
 
   return (
     <header
-      className={`desktop-title-bar ${platformClassName}`.trim()}
+      className={`desktop-title-bar ${panel.platformClassName}`.trim()}
       aria-label="Desktop title bar"
     >
       <div className="desktop-title-bar__left">
@@ -29,17 +38,17 @@ export const DesktopTitleBar = memo(() => {
           <div className="desktop-title-bar__history-item">
             <button
               type="button"
-              onClick={navigateBack}
-              disabled={!canGoBack}
+              onClick={historyControls.navigateBack}
+              disabled={!historyControls.canGoBack}
               aria-label="Go back"
             >
               <IoChevronBackOutline />
             </button>
             <div className="desktop-title-bar__tooltip" role="tooltip">
               <span>Go back</span>
-              {backShortcutLabel ? (
+              {historyControls.backShortcutLabel ? (
                 <span className="desktop-title-bar__tooltip-shortcut">
-                  {backShortcutLabel}
+                  {historyControls.backShortcutLabel}
                 </span>
               ) : null}
             </div>
@@ -47,17 +56,17 @@ export const DesktopTitleBar = memo(() => {
           <div className="desktop-title-bar__history-item">
             <button
               type="button"
-              onClick={navigateForward}
-              disabled={!canGoForward}
+              onClick={historyControls.navigateForward}
+              disabled={!historyControls.canGoForward}
               aria-label="Go forward"
             >
               <IoChevronForwardOutline />
             </button>
             <div className="desktop-title-bar__tooltip" role="tooltip">
               <span>Go forward</span>
-              {forwardShortcutLabel ? (
+              {historyControls.forwardShortcutLabel ? (
                 <span className="desktop-title-bar__tooltip-shortcut">
-                  {forwardShortcutLabel}
+                  {historyControls.forwardShortcutLabel}
                 </span>
               ) : null}
             </div>

@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLearnFlashcardsPanel } from "../model";
@@ -6,42 +6,68 @@ import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
 import "./LearnFlashcardsPanel.css";
 
 export const LearnFlashcardsPanel = memo(() => {
-  const {
-    deck,
-    sessionMode,
-    decks,
-    decksError,
-    wordsError,
-    isDecksLoading,
-    hasDecks,
-    isWordsLoading,
-    isRatingPending,
-    selectedDeckId,
-    learnViewMode,
-    isBrowseMode,
-    currentWord,
-    cardFrontText,
-    cardBackText,
-    cardMetaBadges,
-    isBackVisible,
-    completionMessage,
-    canStartNewSession,
-    isExtendedSession,
-    ratingOptions,
-    browseProgressLabel,
-    canBrowsePrev,
-    canBrowseNext,
-    handleDeckSelectChange,
-    switchToSrsMode,
-    switchToBrowseMode,
-    handleRateCard,
-    handleStartNewSession,
-    handleBrowsePrev,
-    handleBrowseNext,
-    toggleBackVisibility,
-    openDeckCreatePage,
-    openBrowsePage,
-  } = useLearnFlashcardsPanel();
+  const panel = useLearnFlashcardsPanel();
+  const deckSelector = useMemo(
+    () => ({
+      selectedDeckId: panel.selectedDeckId,
+      isDisabled: panel.isDecksLoading || !panel.hasDecks,
+      options: panel.decks,
+      onChange: panel.handleDeckSelectChange,
+    }),
+    [
+      panel.decks,
+      panel.handleDeckSelectChange,
+      panel.hasDecks,
+      panel.isDecksLoading,
+      panel.selectedDeckId,
+    ],
+  );
+  const modeSwitch = useMemo(
+    () => ({
+      learnViewMode: panel.learnViewMode,
+      switchToSrsMode: panel.switchToSrsMode,
+      switchToBrowseMode: panel.switchToBrowseMode,
+    }),
+    [
+      panel.learnViewMode,
+      panel.switchToBrowseMode,
+      panel.switchToSrsMode,
+    ],
+  );
+  const browseNavigation = useMemo(
+    () => ({
+      canBrowsePrev: panel.canBrowsePrev,
+      canBrowseNext: panel.canBrowseNext,
+      onBrowsePrev: panel.handleBrowsePrev,
+      onBrowseNext: panel.handleBrowseNext,
+    }),
+    [
+      panel.canBrowseNext,
+      panel.canBrowsePrev,
+      panel.handleBrowseNext,
+      panel.handleBrowsePrev,
+    ],
+  );
+  const flashcard = useMemo(
+    () => ({
+      frontLabel: "Front",
+      backLabel: "Back",
+      frontText: panel.cardFrontText,
+      backText: panel.cardBackText,
+      backMetaBadges: panel.cardMetaBadges,
+      isFlipped: panel.isBackVisible,
+      onFlip: panel.toggleBackVisibility,
+      disabled: panel.isRatingPending,
+    }),
+    [
+      panel.cardBackText,
+      panel.cardFrontText,
+      panel.cardMetaBadges,
+      panel.isBackVisible,
+      panel.isRatingPending,
+      panel.toggleBackVisibility,
+    ],
+  );
 
   return (
     <article className="panel learn-page-panel">
@@ -56,16 +82,16 @@ export const LearnFlashcardsPanel = memo(() => {
           <div className="learn-page-panel__deck-row">
             <select
               id="learn-deck-select"
-              value={selectedDeckId}
-              onChange={handleDeckSelectChange}
-              disabled={isDecksLoading || !hasDecks}
+              value={deckSelector.selectedDeckId}
+              onChange={deckSelector.onChange}
+              disabled={deckSelector.isDisabled}
             >
-              {!hasDecks && (
+              {!panel.hasDecks && (
                 <option value="">
-                  {isDecksLoading ? "Loading decks..." : "No decks yet"}
+                  {panel.isDecksLoading ? "Loading decks..." : "No decks yet"}
                 </option>
               )}
-              {decks.map((deckItem) => (
+              {deckSelector.options.map((deckItem) => (
                 <option key={deckItem.id} value={deckItem.id}>
                   {deckItem.name}
                 </option>
@@ -79,82 +105,82 @@ export const LearnFlashcardsPanel = memo(() => {
             <button
               type="button"
               className={
-                learnViewMode === "srs"
+                modeSwitch.learnViewMode === "srs"
                   ? "learn-page-panel__mode-button learn-page-panel__mode-button--active"
                   : "learn-page-panel__mode-button"
               }
-              onClick={switchToSrsMode}
+              onClick={modeSwitch.switchToSrsMode}
             >
               SRS
             </button>
             <button
               type="button"
               className={
-                learnViewMode === "browse"
+                modeSwitch.learnViewMode === "browse"
                   ? "learn-page-panel__mode-button learn-page-panel__mode-button--active"
                   : "learn-page-panel__mode-button"
               }
-              onClick={switchToBrowseMode}
+              onClick={modeSwitch.switchToBrowseMode}
             >
               Review
             </button>
           </div>
-          {hasDecks && currentWord ? (
+          {panel.hasDecks && panel.currentWord ? (
             <div className="learn-page-panel__meta-chips">
               <span className="learn-page-panel__meta-chip">
-                Deck: {deck?.name || "Deck"}
+                Deck: {panel.deck?.name || "Deck"}
               </span>
-              {isBrowseMode ? (
+              {panel.isBrowseMode ? (
                 <span className="learn-page-panel__meta-chip">
-                  Card: {browseProgressLabel || "-"}
+                  Card: {panel.browseProgressLabel || "-"}
                 </span>
               ) : (
                 <>
                   <span className="learn-page-panel__meta-chip">
-                    State: {currentWord.state}
+                    State: {panel.currentWord.state}
                   </span>
                   <span className="learn-page-panel__meta-chip">
-                    Mode: {sessionMode === "extended" ? "extra" : "daily"}
+                    Mode: {panel.sessionMode === "extended" ? "extra" : "daily"}
                   </span>
                 </>
               )}
             </div>
           ) : null}
-          {isExtendedSession && !isBrowseMode ? (
+          {panel.isExtendedSession && !panel.isBrowseMode ? (
             <span className="learn-page-panel__mode-badge">Extra session</span>
           ) : null}
         </div>
       </div>
 
-      {decksError && (
+      {panel.decksError && (
         <div className="learn-page-panel__status learn-page-panel__status--error">
-          {decksError}
+          {panel.decksError}
         </div>
       )}
-      {wordsError && (
+      {panel.wordsError && (
         <div className="learn-page-panel__status learn-page-panel__status--error">
-          {wordsError}
+          {panel.wordsError}
         </div>
       )}
 
-      {!hasDecks ? (
+      {!panel.hasDecks ? (
         <LearnEmptyDeckState
-          onCreateDeck={openDeckCreatePage}
-          onOpenBrowse={openBrowsePage}
+          onCreateDeck={panel.openDeckCreatePage}
+          onOpenBrowse={panel.openBrowsePage}
         />
-      ) : isWordsLoading ? (
+      ) : panel.isWordsLoading ? (
         <div className="learn-page-panel__status learn-page-panel__status--fill">
-          {isBrowseMode ? "Loading cards..." : "Building SRS queue..."}
+          {panel.isBrowseMode ? "Loading cards..." : "Building SRS queue..."}
         </div>
-      ) : !currentWord ? (
+      ) : !panel.currentWord ? (
         <div className="learn-page-panel__status learn-page-panel__status--fill">
           <div className="learn-page-panel__done">
-            <span>{completionMessage || "No cards available for this deck."}</span>
-            {canStartNewSession && (
+            <span>{panel.completionMessage || "No cards available for this deck."}</span>
+            {panel.canStartNewSession && (
               <button
                 type="button"
                 className="learn-page-panel__start-session"
-                onClick={handleStartNewSession}
+                onClick={panel.handleStartNewSession}
               >
                 Start new session
               </button>
@@ -166,69 +192,62 @@ export const LearnFlashcardsPanel = memo(() => {
           <div className="learn-page-panel__card-stage">
             <div className="learn-page-panel__card-viewport">
               <Flashcard
-                frontLabel="Front"
-                backLabel="Back"
-                frontText={cardFrontText}
-                backText={cardBackText}
-                backMetaBadges={cardMetaBadges}
-                isFlipped={isBackVisible}
-                onFlip={toggleBackVisibility}
-                disabled={isRatingPending}
+                card={flashcard}
               />
             </div>
           </div>
 
           <div
             className={`learn-page-panel__controls-dock${
-              isBrowseMode ? " learn-page-panel__controls-dock--browse" : ""
+              panel.isBrowseMode ? " learn-page-panel__controls-dock--browse" : ""
             }`}
           >
-            {!isBrowseMode && (
+            {!panel.isBrowseMode && (
               <div className="learn-page-panel__actions">
                 <button
                   type="button"
                   className="learn-page-panel__flip-button"
-                  onClick={toggleBackVisibility}
-                  disabled={isRatingPending}
+                  onClick={panel.toggleBackVisibility}
+                  disabled={panel.isRatingPending}
                 >
-                  {isBackVisible ? "Hide answer" : "Show answer"}
+                  {panel.isBackVisible ? "Hide answer" : "Show answer"}
                 </button>
               </div>
             )}
 
             <div className="learn-page-panel__ratings" aria-live="polite">
-              {isBrowseMode ? (
+              {panel.isBrowseMode ? (
                 <div className="learn-page-panel__rating-placeholder learn-page-panel__rating-placeholder--actions">
                   <button
                     type="button"
                     className="learn-page-panel__nav-button"
-                    onClick={handleBrowsePrev}
-                    disabled={!canBrowsePrev || isRatingPending}
+                    onClick={browseNavigation.onBrowsePrev}
+                    disabled={!browseNavigation.canBrowsePrev || panel.isRatingPending}
                   >
                     Previous
                   </button>
                   <button
                     type="button"
                     className="learn-page-panel__flip-button"
-                    onClick={toggleBackVisibility}
-                    disabled={isRatingPending}
+                    onClick={panel.toggleBackVisibility}
+                    disabled={panel.isRatingPending}
                   >
-                    {isBackVisible ? "Hide answer" : "Show answer"}
+                    {panel.isBackVisible ? "Hide answer" : "Show answer"}
                   </button>
                   <button
                     type="button"
                     className="learn-page-panel__nav-button"
-                    onClick={handleBrowseNext}
-                    disabled={!canBrowseNext || isRatingPending}
+                    onClick={browseNavigation.onBrowseNext}
+                    disabled={!browseNavigation.canBrowseNext || panel.isRatingPending}
                   >
                     Next
                   </button>
                 </div>
-              ) : isBackVisible ? (
+              ) : panel.isBackVisible ? (
                 <SrsRatingControls
-                  ratingOptions={ratingOptions}
-                  onRate={handleRateCard}
-                  disabled={isRatingPending}
+                  ratingOptions={panel.ratingOptions}
+                  onRate={panel.handleRateCard}
+                  disabled={panel.isRatingPending}
                 />
               ) : (
                 <div className="learn-page-panel__rating-placeholder">

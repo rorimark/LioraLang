@@ -1,6 +1,14 @@
 import { memo, useCallback } from "react";
 import "./CardCatalogFilters.css";
 
+const EMPTY_FILTERS = Object.freeze({
+  level: [],
+  partOfSpeech: [],
+  tags: [],
+});
+const EMPTY_OBJECT = Object.freeze({});
+const EMPTY_OPTIONS = Object.freeze([]);
+
 const FilterItem = memo(({ name, value, label, checked, onChange }) => {
   const id = `${name}-${value}`;
 
@@ -32,40 +40,43 @@ const FilterGroup = memo(({ title, children }) => {
 
 FilterGroup.displayName = "FilterGroup";
 
-export const CardCatalogFilters = memo(
-  ({
-    search,
-    sort,
-    filters,
-    resultsCount = 0,
-    levelOptions,
-    partOfSpeechOptions,
-    tagOptions,
-    sortOptions,
-    onSearchChange,
-    onSortChange,
-    onToggleFilter,
-    onClearFilters,
-  }) => {
+export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
+    const resolvedCatalog = catalog;
+    const resolvedFilters = resolvedCatalog.filters || EMPTY_FILTERS;
+    const resolvedLevelOptions = Array.isArray(resolvedCatalog.levelOptions)
+      ? resolvedCatalog.levelOptions
+      : EMPTY_OPTIONS;
+    const resolvedPartOfSpeechOptions = Array.isArray(
+      resolvedCatalog.partOfSpeechOptions,
+    )
+      ? resolvedCatalog.partOfSpeechOptions
+      : EMPTY_OPTIONS;
+    const resolvedTagOptions = Array.isArray(resolvedCatalog.tagOptions)
+      ? resolvedCatalog.tagOptions
+      : EMPTY_OPTIONS;
+    const resolvedSortOptions = Array.isArray(resolvedCatalog.sortOptions)
+      ? resolvedCatalog.sortOptions
+      : EMPTY_OPTIONS;
+
     const handleSearchChange = useCallback(
       (event) => {
-        onSearchChange(event.target.value);
+        resolvedCatalog.onSearchChange?.(event.target.value);
       },
-      [onSearchChange],
+      [resolvedCatalog],
     );
 
     const handleSortChange = useCallback(
       (event) => {
-        onSortChange(event.target.value);
+        resolvedCatalog.onSortChange?.(event.target.value);
       },
-      [onSortChange],
+      [resolvedCatalog],
     );
 
     const handleFilterToggle = useCallback(
       (event) => {
-        onToggleFilter(event.target.name, event.target.value);
+        resolvedCatalog.onToggleFilter?.(event.target.name, event.target.value);
       },
-      [onToggleFilter],
+      [resolvedCatalog],
     );
 
     return (
@@ -74,8 +85,8 @@ export const CardCatalogFilters = memo(
         <div className="card-catalog-filters__header">
           <h3 className="card-catalog-filters__title">Filters</h3>
           <span className="card-catalog-filters__results">
-            {Number.isFinite(Number(resultsCount))
-              ? `${Number(resultsCount)} results`
+            {Number.isFinite(Number(resolvedCatalog.resultsCount))
+              ? `${Number(resolvedCatalog.resultsCount)} results`
               : "0 results"}
           </span>
         </div>
@@ -83,39 +94,39 @@ export const CardCatalogFilters = memo(
         <div className="card-catalog-filters__controls">
           <input
             type="text"
-            value={search}
+            value={resolvedCatalog.search || ""}
             placeholder="Search by word or translation"
             onChange={handleSearchChange}
             aria-label="Search cards"
           />
 
           <select
-            value={sort}
+            value={resolvedCatalog.sort || ""}
             onChange={handleSortChange}
             aria-label="Sort cards"
           >
-            {sortOptions.map((option) => (
+            {resolvedSortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
           </select>
 
-          <button type="button" onClick={onClearFilters}>
+          <button type="button" onClick={resolvedCatalog.onClearFilters}>
             Clear filters
           </button>
         </div>
 
         <ul className="card-catalog-filters__groups">
-          {levelOptions.length > 0 && (
+          {resolvedLevelOptions.length > 0 && (
             <FilterGroup title="Level">
-              {levelOptions.map((level) => (
+              {resolvedLevelOptions.map((level) => (
                 <FilterItem
                   key={level}
                   name="level"
                   value={level}
                   label={level}
-                  checked={filters.level.includes(level)}
+                  checked={resolvedFilters.level.includes(level)}
                   onChange={handleFilterToggle}
                 />
               ))}
@@ -123,27 +134,27 @@ export const CardCatalogFilters = memo(
           )}
 
           <FilterGroup title="Part of speech">
-            {partOfSpeechOptions.map((part) => (
+            {resolvedPartOfSpeechOptions.map((part) => (
               <FilterItem
                 key={part}
                 name="partOfSpeech"
                 value={part}
                 label={part}
-                checked={filters.partOfSpeech.includes(part)}
+                checked={resolvedFilters.partOfSpeech.includes(part)}
                 onChange={handleFilterToggle}
               />
             ))}
           </FilterGroup>
 
-          {tagOptions.length > 0 && (
+          {resolvedTagOptions.length > 0 && (
             <FilterGroup title="Tags">
-              {tagOptions.map((tag) => (
+              {resolvedTagOptions.map((tag) => (
                 <FilterItem
                   key={tag}
                   name="tags"
                   value={tag}
                   label={tag}
-                  checked={filters.tags.includes(tag)}
+                  checked={resolvedFilters.tags.includes(tag)}
                   onChange={handleFilterToggle}
                 />
               ))}
@@ -152,7 +163,6 @@ export const CardCatalogFilters = memo(
         </ul>
       </fieldset>
     );
-  },
-);
+  });
 
 CardCatalogFilters.displayName = "CardCatalogFilters";

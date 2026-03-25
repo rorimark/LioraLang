@@ -80,66 +80,104 @@ const normalizeTags = (value) => {
 };
 
 export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
-  const {
-    deck,
-    isLoading,
-    error,
-    isConfigured,
-    message,
-    messageVariant,
-    importing,
-    refreshDeck,
-    importDeckFromHub,
-    copyDeckLink,
-    openBrowseDecks,
-    clearMessage,
-    previewWords,
-    previewLanguages,
-    isPreviewLoading,
-    previewError,
-    isNarrowFiltersViewport,
-    isFiltersExpanded,
-    toggleFilters,
-    search,
-    sort,
-    filters,
-    levelOptions,
-    partOfSpeechOptions,
-    tagOptions,
-    paginatedWords,
-    totalItems,
-    totalPages,
-    resolvedPage,
-    pageSize,
-    visibleRange,
-    handleSearchChange,
-    handleSortChange,
-    handlePageChange,
-    handlePageSizeChange,
-    handleToggleFilter,
-    handleClearFilters,
-  } = useBrowseDeckDetailsPanel(deckSlug);
+  const panel = useBrowseDeckDetailsPanel(deckSlug);
 
   const derived = useMemo(() => {
-    const tags = normalizeTags(deck?.tags);
-    const languages = Array.isArray(deck?.languages) ? deck.languages : [];
+    const tags = normalizeTags(panel.deck?.tags);
+    const languages = Array.isArray(panel.deck?.languages) ? panel.deck.languages : [];
 
     return {
       tags,
       languages,
-      createdAt: formatDate(deck?.createdAt),
-      fileSize: formatFileSize(deck?.latestVersion?.fileSizeBytes),
-      wordsCount: Number.isFinite(Number(deck?.wordsCount)) ? Number(deck.wordsCount) : 0,
-      downloadsCount: Number.isFinite(Number(deck?.downloadsCount))
-        ? Number(deck.downloadsCount)
+      createdAt: formatDate(panel.deck?.createdAt),
+      fileSize: formatFileSize(panel.deck?.latestVersion?.fileSizeBytes),
+      wordsCount: Number.isFinite(Number(panel.deck?.wordsCount))
+        ? Number(panel.deck.wordsCount)
+        : 0,
+      downloadsCount: Number.isFinite(Number(panel.deck?.downloadsCount))
+        ? Number(panel.deck.downloadsCount)
         : 0,
       hasDescription:
-        typeof deck?.description === "string" && deck.description.trim().length > 0,
-      updatedAt: formatDate(deck?.latestVersion?.createdAt || deck?.createdAt),
+        typeof panel.deck?.description === "string"
+        && panel.deck.description.trim().length > 0,
+      updatedAt: formatDate(panel.deck?.latestVersion?.createdAt || panel.deck?.createdAt),
     };
-  }, [deck]);
+  }, [panel.deck]);
 
-  const showsWordLevels = levelOptions.length > 0;
+  const showsWordLevels = panel.levelOptions.length > 0;
+  const filterCatalog = useMemo(
+    () => ({
+      search: panel.search,
+      sort: panel.sort,
+      filters: panel.filters,
+      resultsCount: panel.totalItems,
+      levelOptions: showsWordLevels ? panel.levelOptions : [],
+      partOfSpeechOptions: panel.partOfSpeechOptions,
+      tagOptions: panel.tagOptions,
+      sortOptions: SORT_OPTIONS,
+      onSearchChange: panel.handleSearchChange,
+      onSortChange: panel.handleSortChange,
+      onToggleFilter: panel.handleToggleFilter,
+      onClearFilters: panel.handleClearFilters,
+    }),
+    [
+      panel.filters,
+      panel.handleClearFilters,
+      panel.handleSearchChange,
+      panel.handleSortChange,
+      panel.handleToggleFilter,
+      panel.levelOptions,
+      panel.partOfSpeechOptions,
+      panel.search,
+      panel.sort,
+      panel.tagOptions,
+      panel.totalItems,
+      showsWordLevels,
+    ],
+  );
+  const pagination = useMemo(
+    () => ({
+      currentPage: panel.resolvedPage,
+      totalPages: panel.totalPages,
+      pageSize: panel.pageSize,
+      pageSizeOptions: PAGE_SIZE_OPTIONS,
+      totalItems: panel.totalItems,
+      rangeStart: panel.visibleRange.start,
+      rangeEnd: panel.visibleRange.end,
+      onPageChange: panel.handlePageChange,
+      onPageSizeChange: panel.handlePageSizeChange,
+    }),
+    [
+      panel.handlePageChange,
+      panel.handlePageSizeChange,
+      panel.pageSize,
+      panel.resolvedPage,
+      panel.totalItems,
+      panel.totalPages,
+      panel.visibleRange.end,
+      panel.visibleRange.start,
+    ],
+  );
+  const statusAlert = useMemo(
+    () => ({
+      text: panel.message,
+      variant: panel.messageVariant,
+      onClose: panel.clearMessage,
+    }),
+    [panel.clearMessage, panel.message, panel.messageVariant],
+  );
+  const filtersDialog = useMemo(
+    () => ({
+      isOpen: panel.isFiltersExpanded,
+      title: "Filters",
+      description: "Narrow your results and sort the deck.",
+      confirmLabel: "Apply",
+      cancelLabel: "Close",
+      onConfirm: panel.toggleFilters,
+      onClose: panel.toggleFilters,
+    }),
+    [panel.isFiltersExpanded, panel.toggleFilters],
+  );
 
   return (
     <Panel className="browse-deck-details">
@@ -147,50 +185,46 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
         <Button
           variant="secondary"
           className="browse-deck-details__back-button"
-          onClick={openBrowseDecks}
+          onClick={panel.openBrowseDecks}
         >
           <FiArrowLeft />
           Back to Browse
         </Button>
         <Button
           variant="secondary"
-          onClick={refreshDeck}
-          disabled={!isConfigured || isLoading}
+          onClick={panel.refreshDeck}
+          disabled={!panel.isConfigured || panel.isLoading}
         >
           Refresh
         </Button>
       </div>
 
-      <InlineAlert
-        text={message}
-        variant={messageVariant}
-        onClose={clearMessage}
-      />
+      <InlineAlert alert={statusAlert} />
 
-      {!isConfigured ? (
+      {!panel.isConfigured ? (
         <div className="browse-deck-details__warning">
           Supabase is not configured. Add <code>VITE_SUPABASE_URL</code> and{" "}
           <code>VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY</code> to your <code>.env</code>.
         </div>
       ) : null}
 
-      {error ? <div className="browse-deck-details__error">{error}</div> : null}
+      {panel.error ? <div className="browse-deck-details__error">{panel.error}</div> : null}
 
-      {isConfigured && isLoading ? (
+      {panel.isConfigured && panel.isLoading ? (
         <div className="browse-deck-details__loading">Loading community deck...</div>
       ) : null}
 
-      {isConfigured && !isLoading && !error && deck ? (
+      {panel.isConfigured && !panel.isLoading && !panel.error && panel.deck ? (
         <article className="browse-decks-panel__card browse-deck-details__card">
           <header className="browse-decks-panel__card-head">
             <div className="browse-deck-details__title">
               <div className="browse-deck-details__title-row">
-                <h2>{deck?.title || "Untitled deck"}</h2>
+                <h2>{panel.deck.title || "Untitled deck"}</h2>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="browse-deck-details__copy-link"
-                  onClick={copyDeckLink}
+                  onClick={panel.copyDeckLink}
                   aria-label="Copy public deck link"
                   title="Copy public deck link"
                 >
@@ -211,21 +245,21 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
             }
             aria-hidden={!derived.hasDescription}
           >
-            {derived.hasDescription ? deck.description : "\u00A0"}
+            {derived.hasDescription ? panel.deck.description : "\u00A0"}
           </p>
 
           <div className="browse-decks-panel__card-footer">
             <div className="browse-decks-panel__badges">
               {derived.languages.map((language) => (
                 <MetaBadge
-                  key={`${deck.id}-lang-${language}`}
+                  key={`${panel.deck.id}-lang-${language}`}
                   text={language}
                   accent={false}
                 />
               ))}
               {derived.tags.map((tag) => (
                 <MetaBadge
-                  key={`${deck.id}-tag-${tag}`}
+                  key={`${panel.deck.id}-tag-${tag}`}
                   text={tag}
                   accent={false}
                 />
@@ -254,39 +288,39 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
 
           <div className="browse-decks-panel__actions browse-decks-panel__actions--single">
             <Button
-              onClick={importDeckFromHub}
-              disabled={importing || !deck?.latestVersion?.filePath}
+              onClick={panel.importDeckFromHub}
+              disabled={panel.importing || !panel.deck.latestVersion?.filePath}
               variant="primary"
             >
-              {importing ? "Importing..." : "Import to Decks"}
+              {panel.importing ? "Importing..." : "Import to Decks"}
             </Button>
           </div>
         </article>
       ) : null}
 
-      {isConfigured && !isLoading && !error && deck ? (
+      {panel.isConfigured && !panel.isLoading && !panel.error && panel.deck ? (
         <>
           <header className="browse-deck-details__preview-head">
             <h3>Words preview</h3>
-            <span>{totalItems} words</span>
+            <span>{panel.totalItems} words</span>
           </header>
 
-          {isPreviewLoading ? (
+          {panel.isPreviewLoading ? (
             <div className="browse-deck-details__loading">
               Loading deck words...
             </div>
-          ) : previewError ? (
-            <div className="browse-deck-details__error">{previewError}</div>
+          ) : panel.previewError ? (
+            <div className="browse-deck-details__error">{panel.previewError}</div>
           ) : (
             <>
-              {isNarrowFiltersViewport && (
+              {panel.isNarrowFiltersViewport && (
                 <div className="browse-deck-details__preview-actions">
                   <Button
                     className="cards-panel__filters-button"
-                    onClick={toggleFilters}
-                    aria-expanded={isFiltersExpanded}
+                    onClick={panel.toggleFilters}
+                    aria-expanded={panel.isFiltersExpanded}
                   >
-                    {isFiltersExpanded ? "Hide filters" : "Show filters"}
+                    {panel.isFiltersExpanded ? "Hide filters" : "Show filters"}
                   </Button>
                 </div>
               )}
@@ -294,40 +328,17 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               <div className="dictionary-workspace">
                 <div className="dictionary-table-area">
                   <WordsTable
-                    words={paginatedWords}
-                    languageLabels={previewLanguages}
+                    words={panel.paginatedWords}
+                    languageLabels={panel.previewLanguages}
                     showLevelColumn={showsWordLevels}
                   />
 
-                  <CardCatalogPagination
-                    currentPage={resolvedPage}
-                    totalPages={totalPages}
-                    pageSize={pageSize}
-                    pageSizeOptions={PAGE_SIZE_OPTIONS}
-                    totalItems={totalItems}
-                    rangeStart={visibleRange.start}
-                    rangeEnd={visibleRange.end}
-                    onPageChange={handlePageChange}
-                    onPageSizeChange={handlePageSizeChange}
-                  />
+                  <CardCatalogPagination pagination={pagination} />
                 </div>
 
                 <aside className="dictionary-filters-aside">
-                  {!isNarrowFiltersViewport && (
-                    <CardCatalogFilters
-                      search={search}
-                      sort={sort}
-                      filters={filters}
-                      resultsCount={totalItems}
-                      levelOptions={showsWordLevels ? levelOptions : []}
-                      partOfSpeechOptions={partOfSpeechOptions}
-                      tagOptions={tagOptions}
-                      sortOptions={SORT_OPTIONS}
-                      onSearchChange={handleSearchChange}
-                      onSortChange={handleSortChange}
-                      onToggleFilter={handleToggleFilter}
-                      onClearFilters={handleClearFilters}
-                    />
+                  {!panel.isNarrowFiltersViewport && (
+                    <CardCatalogFilters catalog={filterCatalog} />
                   )}
                 </aside>
               </div>
@@ -336,31 +347,16 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
         </>
       ) : null}
 
-      {isConfigured && !isLoading && !error && deck && isNarrowFiltersViewport ? (
+      {panel.isConfigured
+        && !panel.isLoading
+        && !panel.error
+        && panel.deck
+        && panel.isNarrowFiltersViewport ? (
         <ActionModal
-          isOpen={isFiltersExpanded}
-          title="Filters"
-          description="Narrow your results and sort the deck."
-          confirmLabel="Apply"
-          cancelLabel="Close"
-          onConfirm={toggleFilters}
-          onClose={toggleFilters}
+          dialog={filtersDialog}
         >
           <div className="dictionary-filters-modal">
-            <CardCatalogFilters
-              search={search}
-              sort={sort}
-              filters={filters}
-              resultsCount={totalItems}
-              levelOptions={showsWordLevels ? levelOptions : []}
-              partOfSpeechOptions={partOfSpeechOptions}
-              tagOptions={tagOptions}
-              sortOptions={SORT_OPTIONS}
-              onSearchChange={handleSearchChange}
-              onSortChange={handleSortChange}
-              onToggleFilter={handleToggleFilter}
-              onClearFilters={handleClearFilters}
-            />
+            <CardCatalogFilters catalog={filterCatalog} />
           </div>
         </ActionModal>
       ) : null}

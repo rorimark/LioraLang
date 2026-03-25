@@ -42,82 +42,19 @@ const resolveSectionClassName = (tabKey, highlightedTab) => {
 };
 
 export const SettingsDatabasePanel = memo(() => {
-  const {
-    isDesktopMode,
-    dbPath,
-    appVersionLabel,
-    appPlatformLabel,
-    statusMessage,
-    statusVariant,
-    statusAction,
-    statusActionSticky,
-    isUpdatePromptOpen,
-    updatePromptVersion,
-    isUpdateDownloading,
-    isCheckingUpdates,
-    isChangingDbLocation,
-    isVerifyingIntegrity,
-    isRepairingIntegrity,
-    isResettingSettings,
-    selectedSettingsTab,
-    highlightedSettingsTab,
-    isResetSettingsConfirmOpen,
-    isResetAllDisabled,
-    isImporting,
-    selectedImportFileName,
-    selectedImportWordsCount,
-    importDeckNameDraft,
-    importLanguages,
-    languageOptions,
-    isImportConfirmOpen,
-    isLanguageReviewOpen,
-    isJsonImportOpen,
-    jsonDeckNameDraft,
-    pasteTextDraft,
-    pasteError,
-        isIntegrityRepairConfirmOpen,
-        integrityRepairIssues,
-        themeMode,
-        themeModeOptions,
-    openImportConfirm,
-    openJsonImport,
-    closeImportConfirm,
-    closeJsonImport,
-        openLanguageReview,
-        closeLanguageReview,
-        toggleLanguageReview,
-        confirmImportDeck,
-    handlePasteTextChange,
-    handleJsonDeckNameChange,
-    importFromPaste,
-        openDbFolder,
-        changeDbLocation,
-        verifyIntegrity,
-    confirmIntegrityRepair,
-    closeIntegrityRepairConfirm,
-    handleThemeModeChange,
-    checkForUpdates,
-    closeUpdatePrompt,
-    confirmUpdateDownload,
-    openResetSettingsConfirm,
-    closeResetSettingsConfirm,
-    resetAllSettingsToDefaults,
-    clearStatusMessage,
-    handleImportDeckNameDraftChange,
-    handleImportLanguageChange,
-  } = useSettingsDatabasePanel();
+  const panel = useSettingsDatabasePanel();
 
   const settingsNavItems = useMemo(() => {
     const items = [
       ...BASE_SETTINGS_NAV_ITEMS,
       {
         key: SETTINGS_TAB_KEYS.advancedDesktop,
-        label: isDesktopMode ? "Desktop and Privacy" : "Privacy",
+        label: panel.isDesktopMode ? "Desktop and Privacy" : "Privacy",
       },
       { key: SETTINGS_TAB_KEYS.importExport, label: "Import and Export" },
     ];
 
-    if (isDesktopMode) {
+    if (panel.isDesktopMode) {
       items.push({
         key: SETTINGS_TAB_KEYS.storageIntegrity,
         label: "Storage and Integrity",
@@ -125,20 +62,152 @@ export const SettingsDatabasePanel = memo(() => {
     }
 
     return items;
-  }, [isDesktopMode]);
+  }, [panel.isDesktopMode]);
   const availableSettingsTabs = useMemo(
     () => new Set(settingsNavItems.map((item) => item.key)),
     [settingsNavItems],
   );
   const resolvedHighlightedTab = useMemo(
-    () => (availableSettingsTabs.has(highlightedSettingsTab) ? highlightedSettingsTab : ""),
-    [availableSettingsTabs, highlightedSettingsTab],
+    () => (
+      availableSettingsTabs.has(panel.highlightedSettingsTab)
+        ? panel.highlightedSettingsTab
+        : ""
+    ),
+    [availableSettingsTabs, panel.highlightedSettingsTab],
   );
-  const [activeSettingsTab, setActiveSettingsTab] = useState(selectedSettingsTab);
+  const [activeSettingsTab, setActiveSettingsTab] = useState(panel.selectedSettingsTab);
+  const themeControl = useMemo(
+    () => ({
+      themeMode: panel.themeMode,
+      themeModeOptions: panel.themeModeOptions,
+      onThemeModeChange: panel.handleThemeModeChange,
+    }),
+    [
+      panel.handleThemeModeChange,
+      panel.themeMode,
+      panel.themeModeOptions,
+    ],
+  );
+  const importModal = useMemo(
+    () => ({
+      isOpen: panel.isImportConfirmOpen,
+      isImporting: panel.isImporting,
+      selectedFileName: panel.selectedImportFileName,
+      selectedWordsCount: panel.selectedImportWordsCount,
+      deckNameDraft: panel.importDeckNameDraft,
+      importLanguages: panel.importLanguages,
+      languageOptions: panel.languageOptions,
+      isLanguageReviewOpen: panel.isLanguageReviewOpen,
+      onDeckNameChange: panel.handleImportDeckNameDraftChange,
+      onLanguageChange: panel.handleImportLanguageChange,
+      onOpenLanguageReview: panel.openLanguageReview,
+      onCloseLanguageReview: panel.closeLanguageReview,
+      onToggleLanguageReview: panel.toggleLanguageReview,
+      onConfirm: panel.confirmImportDeck,
+      onClose: panel.closeImportConfirm,
+    }),
+    [
+      panel.closeImportConfirm,
+      panel.closeLanguageReview,
+      panel.confirmImportDeck,
+      panel.handleImportDeckNameDraftChange,
+      panel.handleImportLanguageChange,
+      panel.importDeckNameDraft,
+      panel.importLanguages,
+      panel.isImportConfirmOpen,
+      panel.isImporting,
+      panel.isLanguageReviewOpen,
+      panel.languageOptions,
+      panel.openLanguageReview,
+      panel.selectedImportFileName,
+      panel.selectedImportWordsCount,
+      panel.toggleLanguageReview,
+    ],
+  );
+  const jsonImportModal = useMemo(
+    () => ({
+      isOpen: panel.isJsonImportOpen,
+      isImporting: panel.isImporting,
+      deckNameDraft: panel.jsonDeckNameDraft,
+      jsonText: panel.pasteTextDraft,
+      jsonError: panel.pasteError,
+      onDeckNameChange: panel.handleJsonDeckNameChange,
+      onJsonTextChange: panel.handlePasteTextChange,
+      onConfirm: panel.importFromPaste,
+      onClose: panel.closeJsonImport,
+    }),
+    [
+      panel.closeJsonImport,
+      panel.handleJsonDeckNameChange,
+      panel.handlePasteTextChange,
+      panel.importFromPaste,
+      panel.isImporting,
+      panel.isJsonImportOpen,
+      panel.jsonDeckNameDraft,
+      panel.pasteError,
+      panel.pasteTextDraft,
+    ],
+  );
+  const statusAlert = useMemo(
+    () => ({
+      text: panel.statusMessage,
+      variant: panel.statusVariant,
+      action: panel.statusAction,
+      disableAutoClose: panel.statusActionSticky,
+      onClose: panel.clearStatusMessage,
+    }),
+    [
+      panel.clearStatusMessage,
+      panel.statusAction,
+      panel.statusActionSticky,
+      panel.statusMessage,
+      panel.statusVariant,
+    ],
+  );
+  const updatePromptDialog = useMemo(
+    () => ({
+      isOpen: panel.isUpdatePromptOpen,
+      title: "Update Available",
+      description: panel.updatePromptVersion
+        ? `Version ${panel.updatePromptVersion} is ready to download.`
+        : "A new version is ready to download.",
+      confirmLabel: "Download update",
+      cancelLabel: "Not now",
+      isConfirming: panel.isUpdateDownloading,
+      onConfirm: panel.confirmUpdateDownload,
+      onClose: panel.closeUpdatePrompt,
+    }),
+    [
+      panel.closeUpdatePrompt,
+      panel.confirmUpdateDownload,
+      panel.isUpdateDownloading,
+      panel.isUpdatePromptOpen,
+      panel.updatePromptVersion,
+    ],
+  );
+  const resetSettingsDialog = useMemo(
+    () => ({
+      isOpen: panel.isResetSettingsConfirmOpen,
+      title: "Reset all settings?",
+      description:
+        "This will restore preferences, shortcuts, and color scheme mode to defaults.",
+      confirmLabel: "Reset settings",
+      cancelLabel: "Cancel",
+      isConfirming: panel.isResettingSettings,
+      onConfirm: panel.resetAllSettingsToDefaults,
+      onClose: panel.closeResetSettingsConfirm,
+    }),
+    [
+      panel.closeResetSettingsConfirm,
+      panel.isResetSettingsConfirmOpen,
+      panel.isResettingSettings,
+      panel.resetAllSettingsToDefaults,
+    ],
+  );
 
   useEffect(() => {
-    const nextTab = availableSettingsTabs.has(selectedSettingsTab)
-      ? selectedSettingsTab
+    const nextTab = availableSettingsTabs.has(panel.selectedSettingsTab)
+      ? panel.selectedSettingsTab
       : SETTINGS_TAB_KEYS.general;
 
     if (typeof window === "undefined") {
@@ -158,7 +227,7 @@ export const SettingsDatabasePanel = memo(() => {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [availableSettingsTabs, selectedSettingsTab]);
+  }, [availableSettingsTabs, panel.selectedSettingsTab]);
 
   const handleQuickNavClick = useCallback((nextTabKey) => {
     if (!nextTabKey) {
@@ -172,28 +241,9 @@ export const SettingsDatabasePanel = memo(() => {
 
   return (
     <Panel className="settings-page-panel">
-      <InlineAlert
-        text={statusMessage}
-        variant={statusVariant}
-        action={statusAction}
-        disableAutoClose={statusActionSticky}
-        onClose={clearStatusMessage}
-      />
+      <InlineAlert alert={statusAlert} />
 
-      <ActionModal
-        isOpen={isUpdatePromptOpen}
-        title="Update Available"
-        description={
-          updatePromptVersion
-            ? `Version ${updatePromptVersion} is ready to download.`
-            : "A new version is ready to download."
-        }
-        confirmLabel="Download update"
-        cancelLabel="Not now"
-        isConfirming={isUpdateDownloading}
-        onConfirm={confirmUpdateDownload}
-        onClose={closeUpdatePrompt}
-      />
+      <ActionModal dialog={updatePromptDialog} />
 
       <Tabs
         ariaLabel="Settings sections"
@@ -219,11 +269,7 @@ export const SettingsDatabasePanel = memo(() => {
           <div className="settings-page-panel__stack">
             <div className="settings-page-panel__slot">
               <h4>Appearance</h4>
-              <ThemeSwitch
-                themeMode={themeMode}
-                themeModeOptions={themeModeOptions}
-                onThemeModeChange={handleThemeModeChange}
-              />
+              <ThemeSwitch control={themeControl} />
             </div>
 
             <div className="settings-page-panel__slot">
@@ -231,16 +277,16 @@ export const SettingsDatabasePanel = memo(() => {
               <ShortcutSettingsSection compact />
             </div>
 
-            {isDesktopMode ? (
+            {panel.isDesktopMode ? (
               <div className="settings-page-panel__slot">
                 <h4>Updates</h4>
                 <div className="settings-page-panel__actions">
                   <Button
-                    onClick={checkForUpdates}
-                    disabled={isCheckingUpdates}
+                    onClick={panel.checkForUpdates}
+                    disabled={panel.isCheckingUpdates}
                     variant="secondary"
                   >
-                    {isCheckingUpdates ? "Checking..." : "Check for updates"}
+                    {panel.isCheckingUpdates ? "Checking..." : "Check for updates"}
                   </Button>
                 </div>
               </div>
@@ -250,9 +296,9 @@ export const SettingsDatabasePanel = memo(() => {
               <h4>About</h4>
               <div className="settings-page-panel__meta">
                 <span>Version</span>
-                <strong>{appVersionLabel}</strong>
+                <strong>{panel.appVersionLabel}</strong>
                 <span className="settings-page-panel__meta-separator">•</span>
-                <span>{appPlatformLabel}</span>
+                <span>{panel.appPlatformLabel}</span>
               </div>
             </div>
           </div>
@@ -263,7 +309,7 @@ export const SettingsDatabasePanel = memo(() => {
         <AppPreferencesSection
           highlightedTab={resolvedHighlightedTab}
           activeTabKey={activeSettingsTab}
-          isDesktopMode={isDesktopMode}
+          isDesktopMode={panel.isDesktopMode}
         />
       ) : null}
 
@@ -282,13 +328,13 @@ export const SettingsDatabasePanel = memo(() => {
 
           <div className="settings-page-panel__actions">
             <Button
-              onClick={openImportConfirm}
-              disabled={isImporting}
+              onClick={panel.openImportConfirm}
+              disabled={panel.isImporting}
               variant="primary"
             >
-              {isImporting ? "Importing..." : "Import deck file"}
+              {panel.isImporting ? "Importing..." : "Import deck file"}
             </Button>
-            <Button onClick={openJsonImport} disabled={isImporting}>
+            <Button onClick={panel.openJsonImport} disabled={panel.isImporting}>
               Create deck from JSON
             </Button>
           </div>
@@ -297,7 +343,7 @@ export const SettingsDatabasePanel = memo(() => {
         </section>
       ) : null}
 
-      {isDesktopMode && activeSettingsTab === SETTINGS_TAB_KEYS.storageIntegrity ? (
+      {panel.isDesktopMode && activeSettingsTab === SETTINGS_TAB_KEYS.storageIntegrity ? (
         <section
           id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.storageIntegrity]}
           className={resolveSectionClassName(
@@ -311,23 +357,26 @@ export const SettingsDatabasePanel = memo(() => {
           />
 
           <div className="settings-page-panel__path">
-            DB: {dbPath || "Loading..."}
+            DB: {panel.dbPath || "Loading..."}
           </div>
 
           <div className="settings-page-panel__section-grid settings-page-panel__section-grid--actions">
             <div className="settings-page-panel__actions">
-              <Button onClick={changeDbLocation} disabled={isChangingDbLocation}>
-                {isChangingDbLocation
+              <Button
+                onClick={panel.changeDbLocation}
+                disabled={panel.isChangingDbLocation}
+              >
+                {panel.isChangingDbLocation
                   ? "Changing database location..."
                   : "Change database location"}
               </Button>
 
-              <Button onClick={openDbFolder}>Open database folder</Button>
+              <Button onClick={panel.openDbFolder}>Open database folder</Button>
               <Button
-                onClick={verifyIntegrity}
-                disabled={isVerifyingIntegrity}
+                onClick={panel.verifyIntegrity}
+                disabled={panel.isVerifyingIntegrity}
               >
-                {isVerifyingIntegrity
+                {panel.isVerifyingIntegrity
                   ? "Checking integrity..."
                   : "Check file integrity"}
               </Button>
@@ -345,11 +394,11 @@ export const SettingsDatabasePanel = memo(() => {
 
           <div className="settings-page-panel__actions">
             <Button
-              onClick={openResetSettingsConfirm}
-              disabled={isResetAllDisabled}
+              onClick={panel.openResetSettingsConfirm}
+              disabled={panel.isResetAllDisabled}
               variant="danger"
             >
-              {isResettingSettings
+              {panel.isResettingSettings
                 ? "Resetting settings..."
                 : "Reset all settings to defaults"}
             </Button>
@@ -357,54 +406,19 @@ export const SettingsDatabasePanel = memo(() => {
         </section>
       ) : null}
 
-      <ImportDeckModal
-        isOpen={isImportConfirmOpen}
-        isImporting={isImporting}
-        selectedFileName={selectedImportFileName}
-        selectedWordsCount={selectedImportWordsCount}
-        deckNameDraft={importDeckNameDraft}
-        importLanguages={importLanguages}
-        languageOptions={languageOptions}
-        isLanguageReviewOpen={isLanguageReviewOpen}
-        onDeckNameChange={handleImportDeckNameDraftChange}
-        onLanguageChange={handleImportLanguageChange}
-        onOpenLanguageReview={openLanguageReview}
-        onCloseLanguageReview={closeLanguageReview}
-        onToggleLanguageReview={toggleLanguageReview}
-        onConfirm={confirmImportDeck}
-        onClose={closeImportConfirm}
-      />
+      <ImportDeckModal modal={importModal} />
 
-      <CreateDeckFromJsonModal
-        isOpen={isJsonImportOpen}
-        isImporting={isImporting}
-        deckNameDraft={jsonDeckNameDraft}
-        jsonText={pasteTextDraft}
-        jsonError={pasteError}
-        onDeckNameChange={handleJsonDeckNameChange}
-        onJsonTextChange={handlePasteTextChange}
-        onConfirm={importFromPaste}
-        onClose={closeJsonImport}
-      />
+      <CreateDeckFromJsonModal modal={jsonImportModal} />
 
       <IntegrityRepairModal
-        isOpen={isIntegrityRepairConfirmOpen}
-        issues={integrityRepairIssues}
-        isRepairing={isRepairingIntegrity}
-        onConfirm={confirmIntegrityRepair}
-        onClose={closeIntegrityRepairConfirm}
+        isOpen={panel.isIntegrityRepairConfirmOpen}
+        issues={panel.integrityRepairIssues}
+        isRepairing={panel.isRepairingIntegrity}
+        onConfirm={panel.confirmIntegrityRepair}
+        onClose={panel.closeIntegrityRepairConfirm}
       />
 
-      <ActionModal
-        isOpen={isResetSettingsConfirmOpen}
-        title="Reset all settings?"
-        description="This will restore preferences, shortcuts, and color scheme mode to defaults."
-        confirmLabel="Reset settings"
-        cancelLabel="Cancel"
-        isConfirming={isResettingSettings}
-        onConfirm={resetAllSettingsToDefaults}
-        onClose={closeResetSettingsConfirm}
-      />
+      <ActionModal dialog={resetSettingsDialog} />
     </Panel>
   );
 });

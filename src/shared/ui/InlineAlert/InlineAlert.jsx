@@ -1,15 +1,17 @@
 import { memo, useEffect } from "react";
 import { showToast } from "@shared/lib/toast";
 
-export const InlineAlert = memo(
-  ({
-    text,
-    variant = "info",
-    onClose,
-    autoCloseMs = 4200,
-    disableAutoClose = false,
-    action = null,
-  }) => {
+const EMPTY_ALERT = Object.freeze({});
+
+export const InlineAlert = memo(({ alert = EMPTY_ALERT }) => {
+    const {
+      text,
+      variant = "info",
+      onClose,
+      autoCloseMs = 4200,
+      disableAutoClose = false,
+      action = null,
+    } = alert;
     useEffect(() => {
       if (!text) {
         return undefined;
@@ -31,7 +33,6 @@ export const InlineAlert = memo(
     }, [text, variant, onClose, autoCloseMs, disableAutoClose, action]);
 
     return null;
-  },
-);
+  });
 
 InlineAlert.displayName = "InlineAlert";
