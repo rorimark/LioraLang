@@ -18,6 +18,7 @@ export const loadRouteComponent = (loader) => async () => {
 
   return {
     Component,
+    HydrateFallback: RouteHydrateFallback,
   };
 };
 
@@ -25,7 +26,7 @@ export const appRoute = {
   path: ROUTE_PATHS.appRoot,
   element: <AppLayout />,
   errorElement: <RouteErrorBoundary />,
-  hydrateFallbackElement: <RouteHydrateFallback />,
+  HydrateFallback: RouteHydrateFallback,
   children: [
     { index: true, element: <Navigate to={ROUTE_PATHS.learn} replace /> },
     {
