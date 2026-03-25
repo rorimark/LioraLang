@@ -24,6 +24,7 @@ export const BrowseDecksPanel = memo(() => {
     goToPreviousPage,
     goToNextPage,
     importDeckFromHub,
+    copyDeckLink,
     deleteDeckFromHub,
     clearMessage,
   } = useBrowseDecksPanel();
@@ -101,6 +102,7 @@ export const BrowseDecksPanel = memo(() => {
           deletingDeckId={deletingDeckId}
           canDeleteHubDecks={canDeleteHubDecks}
           onImportDeck={importDeckFromHub}
+          onCopyLink={copyDeckLink}
           onDeleteDeck={deleteDeckFromHub}
         />
       ) : null}

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlatformService } from "@app/providers";
-import { ROUTE_PATHS } from "@shared/config/routes";
+import { ROUTE_PATHS, buildBrowseDeckRoute } from "@shared/config/routes";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { copyTextToClipboard } from "@shared/lib/clipboard";
 import {
   normalizeWordsForImport,
   parseDeckPackageFileText,
@@ -402,6 +403,46 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     reportMessage,
   ]);
 
+  const resolvePublicDeckUrl = useCallback(() => {
+    if (!normalizedSlug) {
+      return "";
+    }
+
+    const deckPath = buildBrowseDeckRoute(normalizedSlug);
+    const envBase =
+      typeof import.meta.env?.VITE_PUBLIC_APP_URL === "string"
+        ? import.meta.env.VITE_PUBLIC_APP_URL.trim()
+        : "";
+
+    if (envBase) {
+      return `${envBase.replace(/\/+$/, "")}${deckPath}`;
+    }
+
+    if (typeof window !== "undefined") {
+      const origin = window.location?.origin || "";
+      if (origin.startsWith("http")) {
+        return `${origin}${deckPath}`;
+      }
+    }
+
+    return deckPath;
+  }, [normalizedSlug]);
+
+  const copyDeckLink = useCallback(async () => {
+    const publicUrl = resolvePublicDeckUrl();
+
+    if (!publicUrl) {
+      reportMessage("Public deck link is not available", "error");
+      return;
+    }
+
+    const copied = await copyTextToClipboard(publicUrl);
+    reportMessage(
+      copied ? "Public deck link copied" : "Failed to copy deck link",
+      copied ? "success" : "error",
+    );
+  }, [reportMessage, resolvePublicDeckUrl]);
+
   return {
     deck,
     isLoading,
@@ -412,6 +453,7 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     importing,
     refreshDeck,
     importDeckFromHub,
+    copyDeckLink,
     openBrowseDecks,
     clearMessage,
     previewWords,

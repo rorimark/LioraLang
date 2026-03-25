@@ -1,5 +1,6 @@
 import { memo, useCallback } from "react";
 import { Link } from "react-router";
+import { FiLink } from "react-icons/fi";
 import { Button, MetaBadge } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
 
@@ -78,6 +79,7 @@ export const BrowseDeckCardList = memo(
     deletingDeckId = "",
     canDeleteHubDecks = false,
     onImportDeck,
+    onCopyLink,
     onDeleteDeck,
   }) => {
     const handleImportDeck = useCallback(
@@ -120,6 +122,27 @@ export const BrowseDeckCardList = memo(
       [decks, onDeleteDeck],
     );
 
+    const handleCopyLink = useCallback(
+      (event) => {
+        const deckId = event.currentTarget.dataset.deckId;
+
+        if (!deckId) {
+          return;
+        }
+
+        const deck = decks.find((item) => String(item?.id) === String(deckId));
+
+        if (!deck) {
+          return;
+        }
+
+        if (typeof onCopyLink === "function") {
+          onCopyLink(deck);
+        }
+      },
+      [decks, onCopyLink],
+    );
+
     if (!Array.isArray(decks) || decks.length === 0) {
       return (
         <div className="browse-decks-panel__empty">
@@ -155,19 +178,34 @@ export const BrowseDeckCardList = memo(
               ? deck.slug.trim()
               : "";
           const deckLink = deckSlug ? buildBrowseDeckRoute(deckSlug) : "";
+          const canCopyLink = Boolean(deckLink);
 
           return (
             <article className="browse-decks-panel__card" key={deck.id}>
               <header className="browse-decks-panel__card-head">
-                <h3>
-                  {deckLink ? (
-                    <Link className="browse-decks-panel__card-link" to={deckLink}>
-                      {deck?.title || "Untitled deck"}
-                    </Link>
-                  ) : (
-                    deck?.title || "Untitled deck"
-                  )}
-                </h3>
+                <div className="browse-decks-panel__card-title">
+                  <h3>
+                    {deckLink ? (
+                      <Link className="browse-decks-panel__card-link" to={deckLink}>
+                        {deck?.title || "Untitled deck"}
+                      </Link>
+                    ) : (
+                      deck?.title || "Untitled deck"
+                    )}
+                  </h3>
+                  <Button
+                    data-deck-id={deck.id}
+                    onClick={handleCopyLink}
+                    disabled={!canCopyLink || isImporting || isDeleting}
+                    variant="ghost"
+                    size="sm"
+                    className="browse-decks-panel__copy-link"
+                    aria-label="Copy public deck link"
+                    title="Copy public deck link"
+                  >
+                    <FiLink />
+                  </Button>
+                </div>
                 <span className="browse-decks-panel__card-meta">
                   Added {createdAt}
                 </span>

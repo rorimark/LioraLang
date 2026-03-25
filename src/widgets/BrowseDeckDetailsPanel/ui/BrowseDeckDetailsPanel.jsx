@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { FiArrowLeft, FiLink } from "react-icons/fi";
 import { WordsTable } from "@entities/word";
 import {
   CardCatalogFilters,
@@ -89,6 +90,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
     importing,
     refreshDeck,
     importDeckFromHub,
+    copyDeckLink,
     openBrowseDecks,
     clearMessage,
     previewWords,
@@ -103,6 +105,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
     filters,
     levelOptions,
     partOfSpeechOptions,
+    tagOptions,
     paginatedWords,
     totalItems,
     totalPages,
@@ -136,10 +139,17 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
     };
   }, [deck]);
 
+  const showsWordLevels = levelOptions.length > 0;
+
   return (
     <Panel className="browse-deck-details">
       <div className="browse-deck-details__header">
-        <Button variant="ghost" onClick={openBrowseDecks}>
+        <Button
+          variant="secondary"
+          className="browse-deck-details__back-button"
+          onClick={openBrowseDecks}
+        >
+          <FiArrowLeft />
           Back to Browse
         </Button>
         <Button
@@ -174,7 +184,19 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
         <article className="browse-decks-panel__card browse-deck-details__card">
           <header className="browse-decks-panel__card-head">
             <div className="browse-deck-details__title">
-              <h2>{deck?.title || "Untitled deck"}</h2>
+              <div className="browse-deck-details__title-row">
+                <h2>{deck?.title || "Untitled deck"}</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="browse-deck-details__copy-link"
+                  onClick={copyDeckLink}
+                  aria-label="Copy public deck link"
+                  title="Copy public deck link"
+                >
+                  <FiLink />
+                </Button>
+              </div>
               <span className="browse-decks-panel__card-meta">
                 Added {derived.createdAt}
               </span>
@@ -274,6 +296,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
                   <WordsTable
                     words={paginatedWords}
                     languageLabels={previewLanguages}
+                    showLevelColumn={showsWordLevels}
                   />
 
                   <CardCatalogPagination
@@ -296,8 +319,9 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
                       sort={sort}
                       filters={filters}
                       resultsCount={totalItems}
-                      levelOptions={levelOptions}
+                      levelOptions={showsWordLevels ? levelOptions : []}
                       partOfSpeechOptions={partOfSpeechOptions}
+                      tagOptions={tagOptions}
                       sortOptions={SORT_OPTIONS}
                       onSearchChange={handleSearchChange}
                       onSortChange={handleSortChange}
@@ -328,8 +352,9 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               sort={sort}
               filters={filters}
               resultsCount={totalItems}
-              levelOptions={levelOptions}
+              levelOptions={showsWordLevels ? levelOptions : []}
               partOfSpeechOptions={partOfSpeechOptions}
+              tagOptions={tagOptions}
               sortOptions={SORT_OPTIONS}
               onSearchChange={handleSearchChange}
               onSortChange={handleSortChange}

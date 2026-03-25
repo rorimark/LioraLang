@@ -11,15 +11,51 @@
   gap: 10px;
 }
 
+.browse-deck-details__back-button {
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 40px;
+  padding-inline: 14px;
+  border-color: color-mix(in srgb, var(--color-border) 84%, var(--color-primary));
+  background: color-mix(in srgb, var(--color-surface-muted) 62%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.browse-deck-details__back-button svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+}
+
 .browse-deck-details__title {
   display: grid;
   gap: 4px;
+}
+
+.browse-deck-details__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .browse-deck-details__title h2 {
   margin: 0;
   font-size: 1.1rem;
   color: var(--color-text);
+}
+
+.browse-deck-details__copy-link {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.browse-deck-details__copy-link svg {
+  width: 16px;
+  height: 16px;
 }
 
 .browse-deck-details__warning,
