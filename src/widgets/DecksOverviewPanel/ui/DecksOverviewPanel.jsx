@@ -9,6 +9,8 @@ import "./DecksOverviewPanel.css";
 export const DecksOverviewPanel = memo(() => {
   const {
     decks,
+    totalDecksCount,
+    deckSearch,
     isLoading,
     error,
     message,
@@ -51,6 +53,7 @@ export const DecksOverviewPanel = memo(() => {
     handleJsonDeckNameChange,
     importFromPaste,
     refreshDecks,
+    handleDeckSearchChange,
     clearMessage,
   } = useDecksOverviewPanel();
 
@@ -97,6 +100,22 @@ export const DecksOverviewPanel = memo(() => {
         variant={messageVariant}
         onClose={clearMessage}
       />
+
+      <div className="decks-page-panel__search-row">
+        <label className="decks-page-panel__search-field">
+          <span>Find deck</span>
+          <input
+            type="search"
+            value={deckSearch}
+            onChange={(event) => handleDeckSearchChange(event.target.value)}
+            placeholder="Search by name, description, language or tag"
+            aria-label="Search decks"
+          />
+        </label>
+        <span className="decks-page-panel__search-meta">
+          {decks.length} / {totalDecksCount}
+        </span>
+      </div>
 
       {error && (
         <div className="decks-page-panel__message decks-page-panel__message--error">

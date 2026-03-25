@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlatformService } from "@app/providers";
 import { useDecks } from "@entities/deck";
@@ -9,6 +9,19 @@ import {
   buildDeckEditRoute,
   ROUTE_PATHS,
 } from "@shared/config/routes";
+
+const buildDeckSearchBlob = (deck) =>
+  [
+    deck?.name,
+    deck?.description,
+    deck?.sourceLanguage,
+    deck?.targetLanguage,
+    deck?.tertiaryLanguage,
+    deck?.tagsJson,
+  ]
+    .map((value) => (typeof value === "string" ? value : ""))
+    .join(" ")
+    .toLowerCase();
 
 export const useDecksOverviewPanel = () => {
   const navigate = useNavigate();
@@ -21,6 +34,7 @@ export const useDecksOverviewPanel = () => {
   const [publishingDeckId, setPublishingDeckId] = useState(null);
   const [exportingDeckId, setExportingDeckId] = useState(null);
   const [deletingDeckId, setDeletingDeckId] = useState(null);
+  const [deckSearch, setDeckSearch] = useState("");
   const [deleteState, setDeleteState] = useState({
     isOpen: false,
     deckId: null,
@@ -284,8 +298,29 @@ export const useDecksOverviewPanel = () => {
     setMessage("");
   }, []);
 
+  const normalizedDeckSearch = useMemo(
+    () => deckSearch.trim().toLowerCase(),
+    [deckSearch],
+  );
+
+  const filteredDecks = useMemo(() => {
+    if (!normalizedDeckSearch) {
+      return decks;
+    }
+
+    return decks.filter((deck) =>
+      buildDeckSearchBlob(deck).includes(normalizedDeckSearch),
+    );
+  }, [decks, normalizedDeckSearch]);
+
+  const handleDeckSearchChange = useCallback((value) => {
+    setDeckSearch(value);
+  }, []);
+
   return {
-    decks,
+    decks: filteredDecks,
+    totalDecksCount: decks.length,
+    deckSearch,
     isLoading,
     error,
     message,
@@ -307,6 +342,7 @@ export const useDecksOverviewPanel = () => {
     pasteError,
     deleteState,
     refreshDecks,
+    handleDeckSearchChange,
     openDeck,
     openCreateDeck,
     openEditDeck,
