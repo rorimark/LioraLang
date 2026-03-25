@@ -40,6 +40,7 @@ export const CardCatalogFilters = memo(
     resultsCount = 0,
     levelOptions,
     partOfSpeechOptions,
+    tagOptions,
     sortOptions,
     onSearchChange,
     onSortChange,
@@ -106,18 +107,20 @@ export const CardCatalogFilters = memo(
         </div>
 
         <ul className="card-catalog-filters__groups">
-          <FilterGroup title="Level">
-            {levelOptions.map((level) => (
-              <FilterItem
-                key={level}
-                name="level"
-                value={level}
-                label={level}
-                checked={filters.level.includes(level)}
-                onChange={handleFilterToggle}
-              />
-            ))}
-          </FilterGroup>
+          {levelOptions.length > 0 && (
+            <FilterGroup title="Level">
+              {levelOptions.map((level) => (
+                <FilterItem
+                  key={level}
+                  name="level"
+                  value={level}
+                  label={level}
+                  checked={filters.level.includes(level)}
+                  onChange={handleFilterToggle}
+                />
+              ))}
+            </FilterGroup>
+          )}
 
           <FilterGroup title="Part of speech">
             {partOfSpeechOptions.map((part) => (
@@ -131,6 +134,21 @@ export const CardCatalogFilters = memo(
               />
             ))}
           </FilterGroup>
+
+          {tagOptions.length > 0 && (
+            <FilterGroup title="Tags">
+              {tagOptions.map((tag) => (
+                <FilterItem
+                  key={tag}
+                  name="tags"
+                  value={tag}
+                  label={tag}
+                  checked={filters.tags.includes(tag)}
+                  onChange={handleFilterToggle}
+                />
+              ))}
+            </FilterGroup>
+          )}
         </ul>
       </fieldset>
     );

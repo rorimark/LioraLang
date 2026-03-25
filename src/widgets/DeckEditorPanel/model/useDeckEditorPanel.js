@@ -28,6 +28,7 @@ const PART_OF_SPEECH_OPTIONS = [
 const WORDS_PAGE_SIZE_OPTIONS = [10, 20, 50];
 const DEFAULT_WORDS_PAGE_SIZE = WORDS_PAGE_SIZE_OPTIONS[0];
 const MAX_TOTAL_TAGS = 10;
+const MAX_WORD_TAGS = 10;
 const LEVEL_OPTIONS_SET = new Set(LEVEL_OPTIONS);
 const PART_OF_SPEECH_OPTIONS_SET = new Set(PART_OF_SPEECH_OPTIONS);
 
@@ -88,6 +89,7 @@ const createDefaultDeckForm = (deckDefaults = {}) => {
     sourceLanguage: defaultLanguages.sourceLanguage,
     targetLanguage: defaultLanguages.targetLanguage,
     tertiaryLanguage: "",
+    usesWordLevels: true,
     tagsInput: buildDefaultDeckTagsInput(deckDefaults),
   };
 };
@@ -108,34 +110,72 @@ const createDefaultWordDraft = (deckDefaults = {}) => {
     part_of_speech: PART_OF_SPEECH_OPTIONS_SET.has(preferredPart)
       ? preferredPart
       : "noun",
-    example: "",
+    examplesInput: "",
+    tagsInput: "",
   };
 };
 
-const toEditableWord = (word, fallbackIndex) => ({
-  id: word?.id ?? `tmp-${fallbackIndex}`,
-  externalId: word?.externalId ?? "",
-  source: word?.source ?? "",
-  target: word?.target ?? "",
-  tertiary: word?.tertiary ?? "",
-  level: word?.level || "A1",
-  part_of_speech: word?.part_of_speech || "other",
-  examples: Array.isArray(word?.examples)
-    ? word.examples
-    : typeof word?.example === "string"
-      ? [word.example]
-      : [],
-  example: Array.isArray(word?.examples) ? word.examples[0] || "" : word?.example ?? "",
-});
+const resolveExamples = (word) => {
+  const dedupedExamples = [];
+  const seen = new Set();
+  const pushExample = (value) => {
+    if (typeof value !== "string") {
+      return;
+    }
 
-const toWordDraft = (word) => ({
+    const example = value.trim();
+
+    if (!example || seen.has(example)) {
+      return;
+    }
+
+    seen.add(example);
+    dedupedExamples.push(example);
+  };
+
+  if (Array.isArray(word?.examples)) {
+    word.examples.forEach(pushExample);
+  }
+
+  pushExample(word?.example);
+
+  return dedupedExamples;
+};
+
+const toEditableWord = (word, fallbackIndex) => {
+  const examples = resolveExamples(word);
+
+  return {
+    id: word?.id ?? `tmp-${fallbackIndex}`,
+    externalId: word?.externalId ?? "",
+    source: word?.source ?? "",
+    target: word?.target ?? "",
+    tertiary: word?.tertiary ?? "",
+    level: word?.level || "A1",
+    part_of_speech: word?.part_of_speech || "other",
+    tags: Array.isArray(word?.tags) ? parseTagsJson(word.tags) : [],
+    examples,
+    example: examples[0] || "",
+    tagsInput: Array.isArray(word?.tags) ? parseTagsJson(word.tags).join(", ") : "",
+  };
+};
+
+const toWordDraft = (word) => {
+  const examples = resolveExamples(word);
+
+  return {
   source: word?.source ?? "",
   target: word?.target ?? "",
   tertiary: word?.tertiary ?? "",
   level: word?.level || "A1",
   part_of_speech: word?.part_of_speech || "noun",
-  example: Array.isArray(word?.examples) ? word.examples[0] || "" : word?.example ?? "",
-});
+  examplesInput: examples.join("\n"),
+  tagsInput:
+    Array.isArray(word?.tags) && word.tags.length > 0
+      ? parseTagsJson(word.tags).join(", ")
+      : "",
+  };
+};
 
 const parseNumericId = (value) => {
   const parsed = Number(value);
@@ -208,6 +248,30 @@ const parseTagsInput = (value) => {
   return uniqueTags;
 };
 
+const parseExamplesInput = (value) => {
+  if (typeof value !== "string" || !value.trim()) {
+    return [];
+  }
+
+  const seen = new Set();
+  const uniqueExamples = [];
+
+  value
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .forEach((example) => {
+      if (seen.has(example)) {
+        return;
+      }
+
+      seen.add(example);
+      uniqueExamples.push(example);
+    });
+
+  return uniqueExamples;
+};
+
 export const useDeckEditorPanel = () => {
   const navigate = useNavigate();
   const deckRepository = usePlatformService("deckRepository");
@@ -256,6 +320,7 @@ export const useDeckEditorPanel = () => {
       sourceLanguage: deck?.sourceLanguage || DEFAULT_SOURCE_LANGUAGE,
       targetLanguage: deck?.targetLanguage || DEFAULT_TARGET_LANGUAGE,
       tertiaryLanguage: deck?.tertiaryLanguage || "",
+      usesWordLevels: deck?.usesWordLevels !== false,
       tagsInput: deckTags.join(", "),
     });
 
@@ -314,6 +379,7 @@ export const useDeckEditorPanel = () => {
         !currentState.name.trim() &&
         !currentState.description.trim() &&
         !currentState.tertiaryLanguage.trim() &&
+        currentState.usesWordLevels === defaultDeckForm.usesWordLevels &&
         !currentState.tagsInput.trim();
 
       return isPristine ? defaultDeckForm : currentState;
@@ -324,7 +390,8 @@ export const useDeckEditorPanel = () => {
         !currentState.source.trim() &&
         !currentState.target.trim() &&
         !currentState.tertiary.trim() &&
-        !currentState.example.trim();
+        !currentState.examplesInput.trim() &&
+        !currentState.tagsInput.trim();
 
       return isPristine ? defaultWordDraft : currentState;
     });
@@ -337,10 +404,10 @@ export const useDeckEditorPanel = () => {
   ]);
 
   const handleDeckFormChange = useCallback((event) => {
-    const { name, value } = event.target;
+    const { name, value, type, checked } = event.target;
     setDeckForm((currentState) => ({
       ...currentState,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }, []);
 
@@ -360,26 +427,24 @@ export const useDeckEditorPanel = () => {
       return;
     }
 
-    const normalizedExample = wordDraft.example.trim();
+    const normalizedExamples = parseExamplesInput(wordDraft.examplesInput);
+    const normalizedTags = parseTagsInput(wordDraft.tagsInput).slice(0, MAX_WORD_TAGS);
     const nextWord = {
       id: editingWordId ?? `tmp-${nextTempIdRef.current++}`,
       source: cleanedSource,
       target: wordDraft.target.trim(),
       tertiary: wordDraft.tertiary.trim(),
-      level: wordDraft.level || "A1",
+      level: deckForm.usesWordLevels ? wordDraft.level || "A1" : null,
       part_of_speech: wordDraft.part_of_speech || "other",
-      example: normalizedExample,
+      example: normalizedExamples[0] || "",
+      examples: normalizedExamples,
+      tags: normalizedTags,
+      tagsInput: normalizedTags.join(", "),
     };
 
     setWords((currentState) => {
       if (editingWordId === null) {
-        return [
-          ...currentState,
-          {
-            ...nextWord,
-            examples: normalizedExample ? [normalizedExample] : [],
-          },
-        ];
+        return [...currentState, nextWord];
       }
 
       return currentState.map((word) => {
@@ -387,21 +452,9 @@ export const useDeckEditorPanel = () => {
           return word;
         }
 
-        const existingExamples = Array.isArray(word.examples) ? word.examples : [];
-        const fallbackExample =
-          typeof word.example === "string" ? word.example.trim() : "";
-        const nextExamples = normalizedExample
-          ? [normalizedExample]
-          : existingExamples.length > 0
-            ? existingExamples
-            : fallbackExample
-              ? [fallbackExample]
-              : [];
-
         return {
           ...word,
           ...nextWord,
-          examples: nextExamples,
         };
       });
     });
@@ -409,7 +462,13 @@ export const useDeckEditorPanel = () => {
     setPreviewWordId(nextWord.id);
     setStatusMessage("");
     resetWordDraft();
-  }, [editingWordId, reportStatus, resetWordDraft, wordDraft]);
+  }, [
+    deckForm.usesWordLevels,
+    editingWordId,
+    reportStatus,
+    resetWordDraft,
+    wordDraft,
+  ]);
 
   const handleEditWord = useCallback(
     (wordId) => {
@@ -576,14 +635,16 @@ export const useDeckEditorPanel = () => {
         targetLanguage,
         tertiaryLanguage,
         tags: parseTagsInput(deckForm.tagsInput).slice(0, customTagsLimit),
+        usesWordLevels: deckForm.usesWordLevels,
         words: words.map((word, index) => ({
           id: parseNumericId(word.id),
           externalId: word.externalId || `manual-${index + 1}`,
           source: word.source,
           target: word.target,
           tertiary: hasTertiaryLanguage ? word.tertiary : "",
-          level: word.level,
+          level: deckForm.usesWordLevels ? word.level : null,
           part_of_speech: word.part_of_speech,
+          tags: Array.isArray(word.tags) ? word.tags : [],
           example: word.example,
           examples: Array.isArray(word.examples)
             ? word.examples
@@ -626,6 +687,7 @@ export const useDeckEditorPanel = () => {
     deckForm.sourceLanguage,
     deckForm.targetLanguage,
     deckForm.tertiaryLanguage,
+    deckForm.usesWordLevels,
     deckForm.tagsInput,
     deckRepository,
     navigate,
@@ -676,6 +738,7 @@ export const useDeckEditorPanel = () => {
     wordsRangeStart,
     wordsRangeEnd,
     languageLabels,
+    usesWordLevels: deckForm.usesWordLevels,
     levelOptions: LEVEL_OPTIONS,
     partOfSpeechOptions: PART_OF_SPEECH_OPTIONS,
     languageOptions: LANGUAGE_OPTIONS,

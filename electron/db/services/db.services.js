@@ -60,6 +60,30 @@ const normalizeDeckTags = (value) => {
   return toUniqueArray(value).slice(0, MAX_DECK_TAGS);
 };
 
+const normalizeDeckUsesWordLevels = (value, fallback = true) => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "number") {
+    return value !== 0;
+  }
+
+  if (typeof value === "string") {
+    const normalizedValue = value.trim().toLowerCase();
+
+    if (normalizedValue === "true" || normalizedValue === "1") {
+      return true;
+    }
+
+    if (normalizedValue === "false" || normalizedValue === "0") {
+      return false;
+    }
+  }
+
+  return fallback;
+};
+
 const getWordSchemaCompatibility = (db) => {
   const wordColumns = db.prepare("PRAGMA table_info(words)").all();
 
@@ -256,6 +280,17 @@ const buildDeckDescription = ({
   return tertiary ? `${source} -> ${target} -> ${tertiary}` : `${source} -> ${target}`;
 };
 
+const normalizeDeckRow = (row) => {
+  if (!row) {
+    return null;
+  }
+
+  return {
+    ...row,
+    usesWordLevels: normalizeDeckUsesWordLevels(row.usesWordLevels, true),
+  };
+};
+
 const normalizeEditableWord = (word, index) => {
   const source = toCleanString(word?.source);
 
@@ -376,6 +411,7 @@ export const listDecks = () => {
           decks.source_language AS sourceLanguage,
           decks.target_language AS targetLanguage,
           decks.tertiary_language AS tertiaryLanguage,
+          COALESCE(decks.uses_word_levels, 1) AS usesWordLevels,
           decks.tags_json AS tagsJson,
           decks.created_at AS createdAt,
           COUNT(words.id) AS wordsCount
@@ -385,13 +421,14 @@ export const listDecks = () => {
         ORDER BY decks.created_at DESC
       `,
     )
-    .all();
+    .all()
+    .map(normalizeDeckRow);
 };
 
 export const getDeckById = (deckId) => {
   const db = getDatabase();
 
-  return (
+  return normalizeDeckRow(
     db
       .prepare(
         `
@@ -402,6 +439,7 @@ export const getDeckById = (deckId) => {
             decks.source_language AS sourceLanguage,
             decks.target_language AS targetLanguage,
             decks.tertiary_language AS tertiaryLanguage,
+            COALESCE(decks.uses_word_levels, 1) AS usesWordLevels,
             decks.tags_json AS tagsJson,
             decks.created_at AS createdAt,
             COUNT(words.id) AS wordsCount
@@ -411,7 +449,7 @@ export const getDeckById = (deckId) => {
           GROUP BY decks.id
         `,
       )
-      .get(deckId) || null
+      .get(deckId),
   );
 };
 
@@ -512,6 +550,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
   const skippedCount = Number(normalizedWordsResult.skippedCount) || 0;
   const importedDeckDescription = toCleanString(importConfig.description);
   const importedDeckTags = normalizeDeckTags(importConfig.tags);
+  const usesWordLevels = persistedWords.some((word) => Boolean(word.level));
 
   const deckName = getUniqueDeckName(
     importConfig.deckName || fileName || "Imported Deck",
@@ -526,8 +565,9 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
         source_language,
         target_language,
         tertiary_language,
+        uses_word_levels,
         tags_json
-      ) VALUES (?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const insertWord = buildInsertWordStatement(db, wordSchemaCompatibility);
@@ -539,6 +579,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       sourceLanguage,
       targetLanguage,
       resolvedTertiaryLanguage || null,
+      usesWordLevels ? 1 : 0,
       JSON.stringify(includeTags ? importedDeckTags : []),
     );
 
@@ -653,6 +694,10 @@ export const saveDeck = (payload = {}) => {
   const targetLanguageKey = normalizeLanguageName(targetLanguage);
   const tertiaryLanguageKey = normalizeLanguageName(tertiaryLanguage);
   const tags = toCleanArray(payload?.tags);
+  const usesWordLevels = normalizeDeckUsesWordLevels(
+    payload?.usesWordLevels,
+    true,
+  );
   const description =
     toCleanString(payload?.description) ||
     buildDeckDescription({
@@ -703,8 +748,9 @@ export const saveDeck = (payload = {}) => {
         source_language,
         target_language,
         tertiary_language,
+        uses_word_levels,
         tags_json
-      ) VALUES (?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const updateDeck = db.prepare(
@@ -716,6 +762,7 @@ export const saveDeck = (payload = {}) => {
         source_language = ?,
         target_language = ?,
         tertiary_language = ?,
+        uses_word_levels = ?,
         tags_json = ?,
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
@@ -738,6 +785,7 @@ export const saveDeck = (payload = {}) => {
         sourceLanguage,
         targetLanguage,
         tertiaryLanguage || null,
+        usesWordLevels ? 1 : 0,
         JSON.stringify(tags),
         providedDeckId,
       );
@@ -752,6 +800,7 @@ export const saveDeck = (payload = {}) => {
         sourceLanguage,
         targetLanguage,
         tertiaryLanguage || null,
+        usesWordLevels ? 1 : 0,
         JSON.stringify(tags),
       );
       resolvedDeckId = Number(insertResult.lastInsertRowid);
@@ -775,7 +824,7 @@ export const saveDeck = (payload = {}) => {
             source: word.source,
             target: word.target,
             tertiary: word.tertiary,
-            level: word.level,
+            level: usesWordLevels ? word.level : null,
             partOfSpeech: word.partOfSpeech,
             tagsJson,
             examplesJson,
@@ -792,7 +841,7 @@ export const saveDeck = (payload = {}) => {
           source: word.source,
           target: word.target,
           tertiary: word.tertiary,
-          level: word.level,
+          level: usesWordLevels ? word.level : null,
           partOfSpeech: word.partOfSpeech,
           tagsJson,
           examplesJson,

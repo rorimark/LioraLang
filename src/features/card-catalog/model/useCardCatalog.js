@@ -20,9 +20,12 @@ export const SORT_OPTIONS = [
 export const PAGE_SIZE_OPTIONS = [10, 20, 50];
 
 const INITIAL_FILTERS = { level: [], partOfSpeech: [] };
+const INITIAL_FILTERS_WITH_TAGS = { level: [], partOfSpeech: [], tags: [] };
 
 const searchBlob = (word) =>
-  `${word.source} ${word.target} ${word.tertiary} ${word.part_of_speech}`.toLowerCase();
+  `${word.source} ${word.target} ${word.tertiary} ${word.part_of_speech} ${
+    Array.isArray(word.tags) ? word.tags.join(" ") : ""
+  }`.toLowerCase();
 
 const compareByLevelValue = (leftLevel, rightLevel) => {
   const leftValue = LEVEL_ORDER[leftLevel] ?? Number.MAX_SAFE_INTEGER;
@@ -45,7 +48,7 @@ const toggleFilterValue = (values, value) => {
 export const useCardCatalog = (words) => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(SORT_OPTIONS[0].value);
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [filters, setFilters] = useState(INITIAL_FILTERS_WITH_TAGS);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[1]);
 
@@ -59,14 +62,26 @@ export const useCardCatalog = (words) => {
 
   const levelOptions = useMemo(
     () =>
-      [...new Set(sourceWords.map((word) => word.level))].sort(
+      [...new Set(sourceWords.map((word) => word.level).filter(Boolean))].sort(
         compareByLevelValue,
       ),
     [sourceWords],
   );
 
   const partOfSpeechOptions = useMemo(
-    () => [...new Set(sourceWords.map((word) => word.part_of_speech))].sort(),
+    () => [...new Set(sourceWords.map((word) => word.part_of_speech).filter(Boolean))].sort(),
+    [sourceWords],
+  );
+
+  const tagOptions = useMemo(
+    () =>
+      [...new Set(
+        sourceWords.flatMap((word) =>
+          Array.isArray(word.tags)
+            ? word.tags.map((tag) => (typeof tag === "string" ? tag.trim() : "")).filter(Boolean)
+            : [],
+        ),
+      )].sort((left, right) => left.localeCompare(right)),
     [sourceWords],
   );
 
@@ -98,6 +113,7 @@ export const useCardCatalog = (words) => {
   const filteredWords = useMemo(() => {
     const selectedLevels = new Set(filters.level);
     const selectedParts = new Set(filters.partOfSpeech);
+    const selectedTags = new Set(filters.tags);
 
     const matched = sourceWords.filter((word) => {
       if (selectedLevels.size > 0 && !selectedLevels.has(word.level)) {
@@ -106,6 +122,22 @@ export const useCardCatalog = (words) => {
 
       if (selectedParts.size > 0 && !selectedParts.has(word.part_of_speech)) {
         return false;
+      }
+
+      if (selectedTags.size > 0) {
+        const wordTagKeys = new Set(
+          Array.isArray(word.tags)
+            ? word.tags
+                .map((tag) => (typeof tag === "string" ? tag.trim() : ""))
+                .filter(Boolean)
+            : [],
+        );
+
+        for (const selectedTag of selectedTags) {
+          if (!wordTagKeys.has(selectedTag)) {
+            return false;
+          }
+        }
       }
 
       if (normalizedSearch && !searchBlob(word).includes(normalizedSearch)) {
@@ -134,7 +166,7 @@ export const useCardCatalog = (words) => {
     });
 
     return matched;
-  }, [filters.level, filters.partOfSpeech, normalizedSearch, sort, sourceWords]);
+  }, [filters.level, filters.partOfSpeech, filters.tags, normalizedSearch, sort, sourceWords]);
 
   const totalItems = filteredWords.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
@@ -190,7 +222,7 @@ export const useCardCatalog = (words) => {
   const handleClearFilters = useCallback(() => {
     setSearch("");
     setSort(SORT_OPTIONS[0].value);
-    setFilters(INITIAL_FILTERS);
+    setFilters(INITIAL_FILTERS_WITH_TAGS);
     setCurrentPage(1);
   }, []);
 
@@ -201,6 +233,7 @@ export const useCardCatalog = (words) => {
     filters,
     levelOptions,
     partOfSpeechOptions,
+    tagOptions,
     paginatedWords,
     totalItems,
     totalPages,

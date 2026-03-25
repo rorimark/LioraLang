@@ -75,6 +75,14 @@ const toUniqueArray = (value) => {
 
 const normalizeTags = (value) => toUniqueArray(value).slice(0, MAX_DECK_TAGS);
 
+const normalizeDeckUsesWordLevels = (value, fallback = true) => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  return fallback;
+};
+
 const parseTagsFromDeck = (deck) => {
   if (!deck) {
     return [];
@@ -178,6 +186,7 @@ const toDeckListRow = (deck, wordsCountByDeckId = new Map()) => {
     sourceLanguage: deck.sourceLanguage || "",
     targetLanguage: deck.targetLanguage || "",
     tertiaryLanguage: deck.tertiaryLanguage || "",
+    usesWordLevels: normalizeDeckUsesWordLevels(deck.usesWordLevels, true),
     tagsJson: JSON.stringify(tags),
     createdAt: deck.createdAt || null,
     wordsCount: Number(wordsCountByDeckId.get(deck.id) || 0),
@@ -548,6 +557,9 @@ export const createWebDeckRepository = () => {
     });
 
     const nowMs = Date.now();
+    const usesWordLevels = normalizedWordsResult.words.some((word) =>
+      Boolean(toCleanString(word?.level).toUpperCase()),
+    );
 
     const importResult = await runReadwriteTransaction(
       [WEB_DB_STORES.decks, WEB_DB_STORES.words],
@@ -564,6 +576,7 @@ export const createWebDeckRepository = () => {
           sourceLanguage: importConfig.sourceLanguage,
           targetLanguage: importConfig.targetLanguage,
           tertiaryLanguage: importConfig.tertiaryLanguage || "",
+          usesWordLevels,
           tags: normalizeTags(importConfig.tags),
           createdAt: toIsoTimestamp(nowMs),
           createdAtMs: nowMs,
@@ -900,6 +913,10 @@ export const createWebDeckRepository = () => {
       const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
       const description = toCleanString(payload?.description);
       const tags = normalizeTags(payload?.tags);
+      const usesWordLevels = normalizeDeckUsesWordLevels(
+        payload?.usesWordLevels,
+        true,
+      );
       const sourceKey = toLanguageKey(sourceLanguage);
       const targetKey = toLanguageKey(targetLanguage);
       const tertiaryKey = toLanguageKey(tertiaryLanguage);
@@ -965,6 +982,7 @@ export const createWebDeckRepository = () => {
               sourceLanguage,
               targetLanguage,
               tertiaryLanguage,
+              usesWordLevels,
               tags,
               updatedAt: toIsoTimestamp(nowMs),
               updatedAtMs: nowMs,
@@ -979,6 +997,7 @@ export const createWebDeckRepository = () => {
                   sourceLanguage,
                   targetLanguage,
                   tertiaryLanguage,
+                  usesWordLevels,
                   tags,
                   createdAt: toIsoTimestamp(nowMs),
                   createdAtMs: nowMs,
