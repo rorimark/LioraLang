@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { WordsTable } from "@entities/word";
 import {
   CardCatalogFilters,
@@ -38,6 +38,7 @@ export const DeckDetailsPanel = memo(() => {
     filters,
     levelOptions,
     partOfSpeechOptions,
+    tagOptions,
     paginatedWords,
     totalItems,
     totalPages,
@@ -51,6 +52,16 @@ export const DeckDetailsPanel = memo(() => {
     handleToggleFilter,
     handleClearFilters,
   } = useDeckDetailsPanel();
+
+  const showsWordLevels =
+    deck?.usesWordLevels !== false && levelOptions.length > 0;
+  const resolvedSortOptions = useMemo(() => {
+    if (showsWordLevels) {
+      return SORT_OPTIONS;
+    }
+
+    return SORT_OPTIONS.filter((option) => !String(option?.value || "").startsWith("level-"));
+  }, [showsWordLevels]);
 
   if (isLoading) {
     return <DeckLoadingState />;
@@ -118,7 +129,11 @@ export const DeckDetailsPanel = memo(() => {
       <div className="dictionary-workspace">
         <div className="dictionary-table-area">
           <div className="dictionary-table-scroll">
-            <WordsTable words={paginatedWords} languageLabels={languageLabels} />
+            <WordsTable
+              words={paginatedWords}
+              languageLabels={languageLabels}
+              showLevelColumn={showsWordLevels}
+            />
           </div>
 
           <CardCatalogPagination
@@ -141,9 +156,10 @@ export const DeckDetailsPanel = memo(() => {
               sort={sort}
               filters={filters}
               resultsCount={totalItems}
-              levelOptions={levelOptions}
+              levelOptions={showsWordLevels ? levelOptions : []}
               partOfSpeechOptions={partOfSpeechOptions}
-              sortOptions={SORT_OPTIONS}
+              tagOptions={tagOptions}
+              sortOptions={resolvedSortOptions}
               onSearchChange={handleSearchChange}
               onSortChange={handleSortChange}
               onToggleFilter={handleToggleFilter}
@@ -169,9 +185,10 @@ export const DeckDetailsPanel = memo(() => {
               sort={sort}
               filters={filters}
               resultsCount={totalItems}
-              levelOptions={levelOptions}
+              levelOptions={showsWordLevels ? levelOptions : []}
               partOfSpeechOptions={partOfSpeechOptions}
-              sortOptions={SORT_OPTIONS}
+              tagOptions={tagOptions}
+              sortOptions={resolvedSortOptions}
               onSearchChange={handleSearchChange}
               onSortChange={handleSortChange}
               onToggleFilter={handleToggleFilter}

@@ -41,9 +41,12 @@ const resolveExamples = (word) => {
       return true;
     });
 };
-export const WordsTable = memo(({ words, languageLabels }) => {
+export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true }) => {
   const labels = resolveLanguageLabels(languageLabels);
-  const totalColumns = labels.hasTertiaryLanguage ? 6 : 5;
+  const totalColumns =
+    4 +
+    (showLevelColumn ? 1 : 0) +
+    (labels.hasTertiaryLanguage ? 1 : 0);
   const { expandedRowId, handleToggleRow } = useWordsTable();
 
   return (
@@ -52,7 +55,7 @@ export const WordsTable = memo(({ words, languageLabels }) => {
       <thead>
         <tr>
           <th>{labels.sourceLanguage}</th>
-          <th className="words-table__level">Level</th>
+          {showLevelColumn && <th className="words-table__level">Level</th>}
           <th>Part of speech</th>
           <th>{labels.targetLanguage}</th>
           {labels.hasTertiaryLanguage && <th>{labels.tertiaryLanguage}</th>}
@@ -103,9 +106,11 @@ export const WordsTable = memo(({ words, languageLabels }) => {
                       </span>
                     </span>
                   </td>
-                  <td className="words-table__level" data-label="Level">
-                    {word.level || "-"}
-                  </td>
+                  {showLevelColumn && (
+                    <td className="words-table__level" data-label="Level">
+                      {word.level || "-"}
+                    </td>
+                  )}
                   <td data-label="Part of speech">
                     <span className="words-table__cell-truncate">
                       {word.part_of_speech || "-"}
@@ -158,12 +163,14 @@ export const WordsTable = memo(({ words, languageLabels }) => {
                           </span>
                         </div>
                         <div className="words-table__details-grid">
-                          <div>
-                            <span className="words-table__details-label">Level</span>
-                            <span className="words-table__details-value">
-                              {word.level || "-"}
-                            </span>
-                          </div>
+                          {showLevelColumn && (
+                            <div>
+                              <span className="words-table__details-label">Level</span>
+                              <span className="words-table__details-value">
+                                {word.level || "-"}
+                              </span>
+                            </div>
+                          )}
                           <div>
                             <span className="words-table__details-label">
                               Part of speech

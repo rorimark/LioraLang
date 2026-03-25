@@ -6,12 +6,62 @@ const renderWordCell = (value) => {
   return value ? value : "-";
 };
 
+const resolveExamples = (word) => {
+  const examples = [];
+  const seen = new Set();
+  const pushExample = (value) => {
+    if (typeof value !== "string") {
+      return;
+    }
+
+    const example = value.trim();
+
+    if (!example || seen.has(example)) {
+      return;
+    }
+
+    seen.add(example);
+    examples.push(example);
+  };
+
+  if (Array.isArray(word?.examples)) {
+    word.examples.forEach(pushExample);
+  }
+
+  pushExample(word?.example);
+
+  return examples;
+};
+
+const renderWordTags = (tags) => {
+  if (!Array.isArray(tags) || tags.length === 0) {
+    return "-";
+  }
+
+  return tags.join(", ");
+};
+
+const renderExamplesPreview = (word) => {
+  const examples = resolveExamples(word);
+
+  if (examples.length === 0) {
+    return "-";
+  }
+
+  if (examples.length === 1) {
+    return examples[0];
+  }
+
+  return `${examples[0]} (+${examples.length - 1})`;
+};
+
 export const DeckEditorWordsTableSection = memo(() => {
   const {
     words,
     paginatedWords,
     previewWord,
     languageLabels,
+    usesWordLevels,
     wordsPage,
     wordsPageSize,
     wordsPageSizeOptions,
@@ -60,9 +110,9 @@ export const DeckEditorWordsTableSection = memo(() => {
                   {languageLabels.hasTertiaryLanguage && (
                     <th>{languageLabels.tertiaryLanguage}</th>
                   )}
-                  <th>Level</th>
+                  {usesWordLevels && <th>Level</th>}
                   <th>Part</th>
-                  <th>Example</th>
+                  <th>Examples</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -87,13 +137,15 @@ export const DeckEditorWordsTableSection = memo(() => {
                         {renderWordCell(word.tertiary)}
                       </td>
                     )}
-                    <td data-label="Level">{renderWordCell(word.level)}</td>
+                    {usesWordLevels && (
+                      <td data-label="Level">{renderWordCell(word.level)}</td>
+                    )}
                     <td data-label="Part">{renderWordCell(word.part_of_speech)}</td>
                     <td
-                      data-label="Example"
+                      data-label="Examples"
                       className="deck-editor-panel__cell--example"
                     >
-                      {renderWordCell(word.example)}
+                      {renderExamplesPreview(word)}
                     </td>
                     <td
                       data-label="Actions"
@@ -153,7 +205,19 @@ export const DeckEditorWordsTableSection = memo(() => {
                 </p>
               )}
               <p>
-                <strong>Example:</strong> {renderWordCell(previewWord.example)}
+                <strong>Examples:</strong>
+              </p>
+              {resolveExamples(previewWord).length === 0 ? (
+                <p>-</p>
+              ) : (
+                <ul className="deck-editor-panel__preview-list">
+                  {resolveExamples(previewWord).map((example, index) => (
+                    <li key={`${previewWord.id}-preview-example-${index}`}>{example}</li>
+                  ))}
+                </ul>
+              )}
+              <p>
+                <strong>Tags:</strong> {renderWordTags(previewWord.tags)}
               </p>
             </div>
           )}

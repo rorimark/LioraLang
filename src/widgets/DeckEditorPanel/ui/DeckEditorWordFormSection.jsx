@@ -6,6 +6,7 @@ export const DeckEditorWordFormSection = memo(() => {
     wordDraft,
     editingWordId,
     languageLabels,
+    usesWordLevels,
     levelOptions,
     partOfSpeechOptions,
     handleWordDraftChange,
@@ -56,20 +57,22 @@ export const DeckEditorWordFormSection = memo(() => {
           </label>
         )}
 
-        <label className="deck-editor-panel__field">
-          <span>Level</span>
-          <select
-            name="level"
-            value={wordDraft.level}
-            onChange={handleWordDraftChange}
-          >
-            {levelOptions.map((level) => (
-              <option key={level} value={level}>
-                {level}
-              </option>
-            ))}
-          </select>
-        </label>
+        {usesWordLevels && (
+          <label className="deck-editor-panel__field">
+            <span>Level</span>
+            <select
+              name="level"
+              value={wordDraft.level}
+              onChange={handleWordDraftChange}
+            >
+              {levelOptions.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
 
         <label className="deck-editor-panel__field">
           <span>Part of speech</span>
@@ -87,13 +90,24 @@ export const DeckEditorWordFormSection = memo(() => {
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">
-          <span>Example</span>
+          <span>Examples</span>
+          <textarea
+            name="examplesInput"
+            value={wordDraft.examplesInput}
+            onChange={handleWordDraftChange}
+            placeholder={"One example per line\nA short sentence with this word"}
+            rows={4}
+          />
+        </label>
+
+        <label className="deck-editor-panel__field deck-editor-panel__field--wide">
+          <span>Word tags (comma separated)</span>
           <input
             type="text"
-            name="example"
-            value={wordDraft.example}
+            name="tagsInput"
+            value={wordDraft.tagsInput}
             onChange={handleWordDraftChange}
-            placeholder="A short sentence with this word"
+            placeholder="school, grammar, php"
           />
         </label>
       </div>

@@ -31,6 +31,7 @@ export const initDb = () => {
       source_language TEXT,
       target_language TEXT,
       tertiary_language TEXT,
+      uses_word_levels INTEGER DEFAULT 1,
       tags_json TEXT DEFAULT '[]',
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -96,6 +97,7 @@ export const initDb = () => {
   ensureColumn(db, "decks", "target_language", "TEXT");
   ensureColumn(db, "decks", "tertiary_language", "TEXT");
   ensureColumn(db, "decks", "description", "TEXT");
+  ensureColumn(db, "decks", "uses_word_levels", "INTEGER DEFAULT 1");
   ensureColumn(db, "decks", "tags_json", "TEXT DEFAULT '[]'");
   ensureColumn(db, "decks", "created_at", "TEXT");
   ensureColumn(db, "decks", "updated_at", "TEXT");
@@ -138,6 +140,12 @@ export const initDb = () => {
       WHERE tertiary_text IS NULL
     `);
   }
+
+  db.exec(`
+    UPDATE decks
+    SET uses_word_levels = COALESCE(uses_word_levels, 1)
+    WHERE uses_word_levels IS NULL
+  `);
 
   db.exec(`
     UPDATE decks

@@ -85,6 +85,22 @@ export const DeckEditorSettingsSection = memo(() => {
           </select>
         </label>
 
+        <label className="deck-editor-panel__field deck-editor-panel__field--wide deck-editor-panel__field--toggle">
+          <span>Word levels</span>
+          <span className="deck-editor-panel__toggle">
+            <input
+              type="checkbox"
+              name="usesWordLevels"
+              checked={deckForm.usesWordLevels}
+              onChange={handleDeckFormChange}
+            />
+            <span className="deck-editor-panel__toggle-copy">
+              <strong>Enable CEFR levels</strong>
+              <small>Show and edit word difficulty levels for this deck.</small>
+            </span>
+          </span>
+        </label>
+
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">
           <span>Tags (comma separated)</span>
           <input
