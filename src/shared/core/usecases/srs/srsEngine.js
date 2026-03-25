@@ -1,3 +1,5 @@
+import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
+
 const SRS_CARD_STATES = Object.freeze({
   new: "new",
   learning: "learning",
@@ -32,8 +34,8 @@ const DEFAULT_SRS_SETTINGS = Object.freeze({
 const DEFAULT_STUDY_SETTINGS = Object.freeze({
   shuffleMode: "off",
   shuffleSeed: null,
-  dailyGoal: 20,
-  repeatWrongCards: true,
+  dailyGoal: DEFAULT_APP_PREFERENCES.studySession.dailyGoal,
+  repeatWrongCards: DEFAULT_APP_PREFERENCES.studySession.repeatWrongCards,
 });
 
 const MAX_INTERVAL_DAYS = 36500;

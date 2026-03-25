@@ -49,6 +49,11 @@ import {
 import { getAppSettings, updateAppSettings } from "./db/services/settings.services.js";
 import { getSrsSessionSnapshot, gradeSrsCard } from "./db/services/srs.services.js";
 import { getProgressOverview } from "./db/services/progress.services.js";
+import { DEFAULT_APP_PREFERENCES } from "../src/shared/config/appPreferencesDefaults.js";
+import {
+  isTrustedHubStorageUrl,
+  toOrigin,
+} from "../src/shared/config/hubRemoteImport.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -218,11 +223,13 @@ const REMOTE_IMPORT_TIMEOUT_MS = 35_000;
 const REMOTE_IMPORT_MAX_BYTES = 50 * 1024 * 1024;
 const APP_PREFERENCES_SETTINGS_KEY = "appPreferences";
 const LOG_LEVELS = {
+  off: "off",
   error: "error",
   warn: "warn",
   debug: "debug",
 };
 const LOG_LEVEL_PRIORITY = {
+  [LOG_LEVELS.off]: 0,
   [LOG_LEVELS.error]: 1,
   [LOG_LEVELS.warn]: 2,
   [LOG_LEVELS.debug]: 3,
@@ -235,63 +242,46 @@ const BACKUP_INTERVAL_MS = {
 };
 const DEFAULT_RUNTIME_APP_PREFERENCES = {
   studySession: {
-    dailyGoal: 20,
-    repeatWrongCards: true,
+    dailyGoal: DEFAULT_APP_PREFERENCES.studySession.dailyGoal,
+    repeatWrongCards: DEFAULT_APP_PREFERENCES.studySession.repeatWrongCards,
   },
   deckDefaults: {
-    sourceLanguage: "English",
-    targetLanguage: "Ukrainian",
-    level: "A1",
-    partOfSpeech: "noun",
+    sourceLanguage: DEFAULT_APP_PREFERENCES.deckDefaults.sourceLanguage,
+    targetLanguage: DEFAULT_APP_PREFERENCES.deckDefaults.targetLanguage,
+    level: DEFAULT_APP_PREFERENCES.deckDefaults.level,
+    partOfSpeech: DEFAULT_APP_PREFERENCES.deckDefaults.partOfSpeech,
     tags: [],
   },
   importExport: {
-    autoOpenLanguageReview: false,
-    duplicateStrategy: "skip",
-    exportFormat: "lioradeck",
-    includeExamples: true,
-    includeTags: true,
+    autoOpenLanguageReview:
+      DEFAULT_APP_PREFERENCES.importExport.autoOpenLanguageReview,
+    duplicateStrategy: DEFAULT_APP_PREFERENCES.importExport.duplicateStrategy,
+    exportFormat: DEFAULT_APP_PREFERENCES.importExport.exportFormat,
+    includeExamples: DEFAULT_APP_PREFERENCES.importExport.includeExamples,
+    includeTags: DEFAULT_APP_PREFERENCES.importExport.includeTags,
   },
   dataSafety: {
-    autoBackupInterval: "weekly",
-    maxBackups: 10,
-    confirmDestructive: true,
+    autoBackupInterval: DEFAULT_APP_PREFERENCES.dataSafety.autoBackupInterval,
+    maxBackups: DEFAULT_APP_PREFERENCES.dataSafety.maxBackups,
+    confirmDestructive: DEFAULT_APP_PREFERENCES.dataSafety.confirmDestructive,
   },
   desktop: {
-    launchAtStartup: false,
-    minimizeToTray: false,
-    hardwareAcceleration: true,
-    devMode: false,
-    updateChannel: "stable",
+    launchAtStartup: DEFAULT_APP_PREFERENCES.desktop.launchAtStartup,
+    minimizeToTray: DEFAULT_APP_PREFERENCES.desktop.minimizeToTray,
+    hardwareAcceleration: DEFAULT_APP_PREFERENCES.desktop.hardwareAcceleration,
+    devMode: DEFAULT_APP_PREFERENCES.desktop.devMode,
+    updateChannel: DEFAULT_APP_PREFERENCES.desktop.updateChannel,
   },
   privacy: {
-    analyticsEnabled: false,
-    crashReportsEnabled: true,
-    logLevel: LOG_LEVELS.error,
+    analyticsEnabled: DEFAULT_APP_PREFERENCES.privacy.analyticsEnabled,
+    crashReportsEnabled: DEFAULT_APP_PREFERENCES.privacy.crashReportsEnabled,
+    logLevel: DEFAULT_APP_PREFERENCES.privacy.logLevel,
   },
 };
 let appPreferencesCache = DEFAULT_RUNTIME_APP_PREFERENCES;
 
 const getDevServerUrl = () => {
   return process.env.VITE_DEV_SERVER_URL || "http://localhost:5175";
-};
-
-const toOrigin = (value) => {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  const normalizedValue = value.trim();
-
-  if (!normalizedValue) {
-    return "";
-  }
-
-  try {
-    return new URL(normalizedValue).origin;
-  } catch {
-    return "";
-  }
 };
 
 const getTrustedRemoteConnectSources = () => {
@@ -711,6 +701,15 @@ const resolveRemoteImportUrl = (value) => {
     const parsedUrl = new URL(normalizedUrl);
 
     if (!["https:", "http:"].includes(parsedUrl.protocol)) {
+      return null;
+    }
+
+    if (
+      !isTrustedHubStorageUrl(
+        parsedUrl,
+        toOrigin(process.env.VITE_SUPABASE_URL),
+      )
+    ) {
       return null;
     }
 

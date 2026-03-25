@@ -73,6 +73,41 @@ const LEARN_SESSION_CACHE = {
 const LEARN_SESSION_STORAGE_KEY = "learnSessionCache";
 let isSessionCacheHydrated = false;
 
+const buildSessionCacheKey = (deckId, signature) => {
+  const normalizedDeckId = String(deckId || "").trim();
+
+  if (!normalizedDeckId) {
+    return "";
+  }
+
+  return `${normalizedDeckId}::${JSON.stringify(signature || {})}`;
+};
+
+const buildSessionCacheSignature = ({
+  forceAllCards = false,
+  shuffleMode = SHUFFLE_MODE_OFF,
+  shuffleSeed = null,
+  spacedRepetitionSettings = {},
+  studySessionSettings = {},
+} = {}) => {
+  return {
+    forceAllCards: Boolean(forceAllCards),
+    shuffleMode,
+    shuffleSeed: Number.isInteger(shuffleSeed) ? shuffleSeed : null,
+    spacedRepetition: {
+      newCardsPerDay: Number(spacedRepetitionSettings?.newCardsPerDay) || 0,
+      maxReviewsPerDay: Number(spacedRepetitionSettings?.maxReviewsPerDay) || 0,
+      learningSteps: String(spacedRepetitionSettings?.learningSteps || ""),
+      easyBonus: Number(spacedRepetitionSettings?.easyBonus) || 0,
+      lapsePenalty: Number(spacedRepetitionSettings?.lapsePenalty) || 0,
+    },
+    studySession: {
+      dailyGoal: Number(studySessionSettings?.dailyGoal) || 0,
+      repeatWrongCards: Boolean(studySessionSettings?.repeatWrongCards),
+    },
+  };
+};
+
 const hydrateSessionCacheFromStorage = () => {
   if (isSessionCacheHydrated || typeof window === "undefined") {
     return;
@@ -506,15 +541,13 @@ export const useLearnFlashcardsPanel = () => {
   );
 
   const restoreCachedSession = useCallback(
-    (deckId) => {
-      const normalizedDeckId = String(deckId || "");
-
-      if (!normalizedDeckId) {
+    (sessionCacheKey) => {
+      if (!sessionCacheKey) {
         return false;
       }
 
       hydrateSessionCacheFromStorage();
-      const cached = LEARN_SESSION_CACHE.sessionsByDeckId[normalizedDeckId];
+      const cached = LEARN_SESSION_CACHE.sessionsByDeckId[sessionCacheKey];
 
       if (!cached || !cached.session) {
         return false;
@@ -523,7 +556,10 @@ export const useLearnFlashcardsPanel = () => {
       setSession(cached.session);
       setSessionError(cached.sessionError || "");
       setIsSessionLoading(false);
-      setSrsProgressCardWordId(normalizedDeckId, cached.session?.card?.wordId);
+      setSrsProgressCardWordId(
+        cached.deckId || String(cached.session?.deck?.id || ""),
+        cached.session?.card?.wordId,
+      );
       return true;
     },
     [setSrsProgressCardWordId],
@@ -542,6 +578,16 @@ export const useLearnFlashcardsPanel = () => {
           : resolveShuffleSeed(normalizedDeckId);
       const preferCache =
         typeof options?.preferCache === "boolean" ? options.preferCache : true;
+      const sessionCacheKey = buildSessionCacheKey(
+        normalizedDeckId,
+        buildSessionCacheSignature({
+          forceAllCards,
+          shuffleMode,
+          shuffleSeed,
+          spacedRepetitionSettings,
+          studySessionSettings,
+        }),
+      );
 
       if (!normalizedDeckId) {
         setSession(EMPTY_SESSION);
@@ -550,7 +596,7 @@ export const useLearnFlashcardsPanel = () => {
         return;
       }
 
-      if (preferCache && restoreCachedSession(normalizedDeckId)) {
+      if (preferCache && restoreCachedSession(sessionCacheKey)) {
         return;
       }
 
@@ -973,13 +1019,37 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
-    LEARN_SESSION_CACHE.sessionsByDeckId[selectedDeckId] = {
+    const sessionCacheKey = buildSessionCacheKey(
+      selectedDeckId,
+      buildSessionCacheSignature({
+        forceAllCards: isExtendedSession,
+        shuffleMode,
+        shuffleSeed: shuffleSeedByDeckRef.current[selectedDeckId],
+        spacedRepetitionSettings,
+        studySessionSettings,
+      }),
+    );
+
+    if (!sessionCacheKey) {
+      return;
+    }
+
+    LEARN_SESSION_CACHE.sessionsByDeckId[sessionCacheKey] = {
+      deckId: selectedDeckId,
       session,
       sessionError,
       updatedAtMs: Date.now(),
     };
     persistSessionCache();
-  }, [selectedDeckId, session, sessionError]);
+  }, [
+    isExtendedSession,
+    selectedDeckId,
+    session,
+    sessionError,
+    shuffleMode,
+    spacedRepetitionSettings,
+    studySessionSettings,
+  ]);
 
   useEffect(() => {
     LEARN_SESSION_CACHE.extendedSessionByDeckId = {

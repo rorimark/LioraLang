@@ -52,8 +52,6 @@ export const ProgressOverviewPanel = memo(() => {
     deckLoadRows,
     retentionSplit,
     milestones,
-    intensityCells,
-    intensitySummary,
     generatedAtLabel,
     totals,
   } = useProgressOverviewPanel();

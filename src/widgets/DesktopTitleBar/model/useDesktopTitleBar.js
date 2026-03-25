@@ -156,9 +156,7 @@ export const useDesktopTitleBar = () => {
       return undefined;
     }
 
-    if (
-      shortcutSettings.historyNavigation === HISTORY_SHORTCUT_MODES.disabled
-    ) {
+    if (historyShortcutMode === HISTORY_SHORTCUT_MODES.disabled) {
       return undefined;
     }
 
@@ -174,10 +172,9 @@ export const useDesktopTitleBar = () => {
       const isBackAction = event.code === "ArrowLeft";
       const isForwardAction = event.code === "ArrowRight";
       const isDarwin = platformClassName === "desktop-title-bar--darwin";
-      const usesSystemMode =
-        shortcutSettings.historyNavigation === HISTORY_SHORTCUT_MODES.system;
+      const usesSystemMode = historyShortcutMode === HISTORY_SHORTCUT_MODES.system;
       const usesAlternativeMode =
-        shortcutSettings.historyNavigation === HISTORY_SHORTCUT_MODES.alternative;
+        historyShortcutMode === HISTORY_SHORTCUT_MODES.alternative;
       const usesMetaModifier = isDarwin && usesSystemMode;
       const usesAltModifier =
         (isDarwin && usesAlternativeMode) || (!isDarwin && usesSystemMode);
