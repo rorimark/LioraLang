@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { useDeckEditorPanelContext } from "../model";
 
@@ -86,6 +86,30 @@ export const DeckEditorWordsTableSection = memo(() => {
       handleDeleteWord(event.currentTarget.dataset.wordId);
     },
     [handleDeleteWord],
+  );
+  const pagination = useMemo(
+    () => ({
+      currentPage: wordsPage,
+      totalPages: wordsTotalPages,
+      pageSize: wordsPageSize,
+      pageSizeOptions: wordsPageSizeOptions,
+      totalItems: words.length,
+      rangeStart: wordsRangeStart,
+      rangeEnd: wordsRangeEnd,
+      onPageChange: handleWordsPageChange,
+      onPageSizeChange: handleWordsPageSizeChange,
+    }),
+    [
+      handleWordsPageChange,
+      handleWordsPageSizeChange,
+      words.length,
+      wordsPage,
+      wordsPageSize,
+      wordsPageSizeOptions,
+      wordsRangeEnd,
+      wordsRangeStart,
+      wordsTotalPages,
+    ],
   );
 
   return (
@@ -175,17 +199,7 @@ export const DeckEditorWordsTableSection = memo(() => {
             </table>
           </div>
 
-          <CardCatalogPagination
-            currentPage={wordsPage}
-            totalPages={wordsTotalPages}
-            pageSize={wordsPageSize}
-            pageSizeOptions={wordsPageSizeOptions}
-            totalItems={words.length}
-            rangeStart={wordsRangeStart}
-            rangeEnd={wordsRangeEnd}
-            onPageChange={handleWordsPageChange}
-            onPageSizeChange={handleWordsPageSizeChange}
-          />
+          <CardCatalogPagination pagination={pagination} />
 
           {previewWord && (
             <div className="deck-editor-panel__preview">

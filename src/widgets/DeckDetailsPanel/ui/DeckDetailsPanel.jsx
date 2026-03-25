@@ -17,44 +17,10 @@ const DeckLoadingState = memo(() => {
 DeckLoadingState.displayName = "DeckLoadingState";
 
 export const DeckDetailsPanel = memo(() => {
-  const {
-    deck,
-    isLoading,
-    error,
-    refreshDeckWords,
-    message,
-    messageVariant,
-    isExporting,
-    exportDeck,
-    openEditDeck,
-    openDecksOverview,
-    clearMessage,
-    isNarrowFiltersViewport,
-    isFiltersExpanded,
-    toggleFilters,
-    languageLabels,
-    search,
-    sort,
-    filters,
-    levelOptions,
-    partOfSpeechOptions,
-    tagOptions,
-    paginatedWords,
-    totalItems,
-    totalPages,
-    resolvedPage,
-    pageSize,
-    visibleRange,
-    handleSearchChange,
-    handleSortChange,
-    handlePageChange,
-    handlePageSizeChange,
-    handleToggleFilter,
-    handleClearFilters,
-  } = useDeckDetailsPanel();
+  const panel = useDeckDetailsPanel();
 
   const showsWordLevels =
-    deck?.usesWordLevels !== false && levelOptions.length > 0;
+    panel.deck?.usesWordLevels !== false && panel.levelOptions.length > 0;
   const resolvedSortOptions = useMemo(() => {
     if (showsWordLevels) {
       return SORT_OPTIONS;
@@ -62,21 +28,95 @@ export const DeckDetailsPanel = memo(() => {
 
     return SORT_OPTIONS.filter((option) => !String(option?.value || "").startsWith("level-"));
   }, [showsWordLevels]);
+  const filterCatalog = useMemo(
+    () => ({
+      search: panel.search,
+      sort: panel.sort,
+      filters: panel.filters,
+      resultsCount: panel.totalItems,
+      levelOptions: showsWordLevels ? panel.levelOptions : [],
+      partOfSpeechOptions: panel.partOfSpeechOptions,
+      tagOptions: panel.tagOptions,
+      sortOptions: resolvedSortOptions,
+      onSearchChange: panel.handleSearchChange,
+      onSortChange: panel.handleSortChange,
+      onToggleFilter: panel.handleToggleFilter,
+      onClearFilters: panel.handleClearFilters,
+    }),
+    [
+      panel.filters,
+      panel.handleClearFilters,
+      panel.handleSearchChange,
+      panel.handleSortChange,
+      panel.handleToggleFilter,
+      panel.levelOptions,
+      panel.partOfSpeechOptions,
+      panel.search,
+      panel.sort,
+      panel.tagOptions,
+      panel.totalItems,
+      resolvedSortOptions,
+      showsWordLevels,
+    ],
+  );
+  const pagination = useMemo(
+    () => ({
+      currentPage: panel.resolvedPage,
+      totalPages: panel.totalPages,
+      pageSize: panel.pageSize,
+      pageSizeOptions: PAGE_SIZE_OPTIONS,
+      totalItems: panel.totalItems,
+      rangeStart: panel.visibleRange.start,
+      rangeEnd: panel.visibleRange.end,
+      onPageChange: panel.handlePageChange,
+      onPageSizeChange: panel.handlePageSizeChange,
+    }),
+    [
+      panel.handlePageChange,
+      panel.handlePageSizeChange,
+      panel.pageSize,
+      panel.resolvedPage,
+      panel.totalItems,
+      panel.totalPages,
+      panel.visibleRange.end,
+      panel.visibleRange.start,
+    ],
+  );
+  const statusAlert = useMemo(
+    () => ({
+      text: panel.message,
+      variant: panel.messageVariant,
+      onClose: panel.clearMessage,
+    }),
+    [panel.clearMessage, panel.message, panel.messageVariant],
+  );
+  const filtersDialog = useMemo(
+    () => ({
+      isOpen: panel.isFiltersExpanded,
+      title: "Filters",
+      description: "Narrow your results and sort the deck.",
+      confirmLabel: "Apply",
+      cancelLabel: "Close",
+      onConfirm: panel.toggleFilters,
+      onClose: panel.toggleFilters,
+    }),
+    [panel.isFiltersExpanded, panel.toggleFilters],
+  );
 
-  if (isLoading) {
+  if (panel.isLoading) {
     return <DeckLoadingState />;
   }
 
-  if (error || !deck) {
+  if (panel.error || !panel.deck) {
     return (
       <article className="panel cards-panel">
         <div className="cards-panel__status cards-panel__status--error">
-          {error || "Deck not found"}
+          {panel.error || "Deck not found"}
         </div>
         <button
           type="button"
           className="cards-panel__retry"
-          onClick={refreshDeckWords}
+          onClick={panel.refreshDeckWords}
         >
           Retry
         </button>
@@ -87,113 +127,65 @@ export const DeckDetailsPanel = memo(() => {
   return (
     <article className="panel cards-panel">
       <div className="cards-panel__header">
-        <h2>{deck.name}</h2>
-        <p>{deck.description || "Deck details and words catalog"}</p>
+        <h2>{panel.deck.name}</h2>
+        <p>{panel.deck.description || "Deck details and words catalog"}</p>
       </div>
 
       <div className="cards-panel__actions">
         <button
           type="button"
           className="cards-panel__button--secondary"
-          onClick={openDecksOverview}
+          onClick={panel.openDecksOverview}
         >
           Back to decks
         </button>
-        <button type="button" onClick={openEditDeck}>
+        <button type="button" onClick={panel.openEditDeck}>
           Edit deck
         </button>
-        <button type="button" onClick={exportDeck} disabled={isExporting}>
-          {isExporting ? "Exporting..." : "Export deck as JSON"}
+        <button type="button" onClick={panel.exportDeck} disabled={panel.isExporting}>
+          {panel.isExporting ? "Exporting..." : "Export deck as JSON"}
         </button>
-        <button type="button" onClick={refreshDeckWords}>
+        <button type="button" onClick={panel.refreshDeckWords}>
           Refresh words
         </button>
-        {isNarrowFiltersViewport && (
+        {panel.isNarrowFiltersViewport && (
           <button
             type="button"
             className="cards-panel__filters-button"
-            onClick={toggleFilters}
-            aria-expanded={isFiltersExpanded}
+            onClick={panel.toggleFilters}
+            aria-expanded={panel.isFiltersExpanded}
           >
-            {isFiltersExpanded ? "Hide filters" : "Show filters"}
+            {panel.isFiltersExpanded ? "Hide filters" : "Show filters"}
           </button>
         )}
       </div>
 
-      <InlineAlert
-        text={message}
-        variant={messageVariant}
-        onClose={clearMessage}
-      />
+      <InlineAlert alert={statusAlert} />
 
       <div className="dictionary-workspace">
         <div className="dictionary-table-area">
           <div className="dictionary-table-scroll">
             <WordsTable
-              words={paginatedWords}
-              languageLabels={languageLabels}
+              words={panel.paginatedWords}
+              languageLabels={panel.languageLabels}
               showLevelColumn={showsWordLevels}
             />
           </div>
 
-          <CardCatalogPagination
-            currentPage={resolvedPage}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            pageSizeOptions={PAGE_SIZE_OPTIONS}
-            totalItems={totalItems}
-            rangeStart={visibleRange.start}
-            rangeEnd={visibleRange.end}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
+          <CardCatalogPagination pagination={pagination} />
         </div>
 
         <aside className="dictionary-filters-aside">
-          {!isNarrowFiltersViewport && (
-            <CardCatalogFilters
-              search={search}
-              sort={sort}
-              filters={filters}
-              resultsCount={totalItems}
-              levelOptions={showsWordLevels ? levelOptions : []}
-              partOfSpeechOptions={partOfSpeechOptions}
-              tagOptions={tagOptions}
-              sortOptions={resolvedSortOptions}
-              onSearchChange={handleSearchChange}
-              onSortChange={handleSortChange}
-              onToggleFilter={handleToggleFilter}
-              onClearFilters={handleClearFilters}
-            />
+          {!panel.isNarrowFiltersViewport && (
+            <CardCatalogFilters catalog={filterCatalog} />
           )}
         </aside>
       </div>
 
-      {isNarrowFiltersViewport && (
-        <ActionModal
-          isOpen={isFiltersExpanded}
-          title="Filters"
-          description="Narrow your results and sort the deck."
-          confirmLabel="Apply"
-          cancelLabel="Close"
-          onConfirm={toggleFilters}
-          onClose={toggleFilters}
-        >
+      {panel.isNarrowFiltersViewport && (
+        <ActionModal dialog={filtersDialog}>
           <div className="dictionary-filters-modal">
-            <CardCatalogFilters
-              search={search}
-              sort={sort}
-              filters={filters}
-              resultsCount={totalItems}
-              levelOptions={showsWordLevels ? levelOptions : []}
-              partOfSpeechOptions={partOfSpeechOptions}
-              tagOptions={tagOptions}
-              sortOptions={resolvedSortOptions}
-              onSearchChange={handleSearchChange}
-              onSortChange={handleSortChange}
-              onToggleFilter={handleToggleFilter}
-              onClearFilters={handleClearFilters}
-            />
+            <CardCatalogFilters catalog={filterCatalog} />
           </div>
         </ActionModal>
       )}

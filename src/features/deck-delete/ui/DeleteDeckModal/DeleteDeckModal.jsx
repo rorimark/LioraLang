@@ -8,13 +8,16 @@ export const DeleteDeckModal = memo(
 
     return (
       <ActionModal
-        isOpen={isOpen}
-        title="Delete deck"
-        description={`Are you sure you want to delete "${normalizedDeckName}"? This action cannot be undone.`}
-        confirmLabel="Delete"
-        isConfirming={isDeleting}
-        onConfirm={onConfirm}
-        onClose={onClose}
+        dialog={{
+          isOpen,
+          title: "Delete deck",
+          description:
+            `Are you sure you want to delete "${normalizedDeckName}"? This action cannot be undone.`,
+          confirmLabel: "Delete",
+          isConfirming: isDeleting,
+          onConfirm,
+          onClose,
+        }}
       >
         <p className="delete-deck-modal__warning">
           All words in this deck will be removed.

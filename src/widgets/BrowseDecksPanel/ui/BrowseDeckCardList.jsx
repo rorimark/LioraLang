@@ -5,6 +5,8 @@ import { Button, MetaBadge } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
 
 const MAX_VISIBLE_TAGS = 4;
+const EMPTY_OBJECT = Object.freeze({});
+const EMPTY_ARRAY = Object.freeze([]);
 
 const formatFileSize = (bytes) => {
   if (!Number.isFinite(Number(bytes)) || Number(bytes) <= 0) {
@@ -72,16 +74,15 @@ const normalizeTags = (value) => {
   return uniqueTags;
 };
 
-export const BrowseDeckCardList = memo(
-  ({
-    decks,
-    importingDeckId = "",
-    deletingDeckId = "",
-    canDeleteHubDecks = false,
-    onImportDeck,
-    onCopyLink,
-    onDeleteDeck,
-  }) => {
+export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
+    const resolvedDeckList = deckList;
+    const resolvedDecks = Array.isArray(resolvedDeckList.decks)
+      ? resolvedDeckList.decks
+      : EMPTY_ARRAY;
+    const pendingState = resolvedDeckList.pendingState || EMPTY_OBJECT;
+    const permissions = resolvedDeckList.permissions || EMPTY_OBJECT;
+    const actions = resolvedDeckList.actions || EMPTY_OBJECT;
+
     const handleImportDeck = useCallback(
       (event) => {
         const deckId = event.currentTarget.dataset.deckId;
@@ -90,15 +91,17 @@ export const BrowseDeckCardList = memo(
           return;
         }
 
-        const deck = decks.find((item) => String(item?.id) === String(deckId));
+        const deck = resolvedDecks.find(
+          (item) => String(item?.id) === String(deckId),
+        );
 
         if (!deck) {
           return;
         }
 
-        onImportDeck(deck);
+        actions.onImportDeck?.(deck);
       },
-      [decks, onImportDeck],
+      [actions, resolvedDecks],
     );
 
     const handleDeleteDeck = useCallback(
@@ -109,17 +112,17 @@ export const BrowseDeckCardList = memo(
           return;
         }
 
-        const deck = decks.find((item) => String(item?.id) === String(deckId));
+        const deck = resolvedDecks.find(
+          (item) => String(item?.id) === String(deckId),
+        );
 
         if (!deck) {
           return;
         }
 
-        if (typeof onDeleteDeck === "function") {
-          onDeleteDeck(deck);
-        }
+        actions.onDeleteDeck?.(deck);
       },
-      [decks, onDeleteDeck],
+      [actions, resolvedDecks],
     );
 
     const handleCopyLink = useCallback(
@@ -130,20 +133,20 @@ export const BrowseDeckCardList = memo(
           return;
         }
 
-        const deck = decks.find((item) => String(item?.id) === String(deckId));
+        const deck = resolvedDecks.find(
+          (item) => String(item?.id) === String(deckId),
+        );
 
         if (!deck) {
           return;
         }
 
-        if (typeof onCopyLink === "function") {
-          onCopyLink(deck);
-        }
+        actions.onCopyLink?.(deck);
       },
-      [decks, onCopyLink],
+      [actions, resolvedDecks],
     );
 
-    if (!Array.isArray(decks) || decks.length === 0) {
+    if (resolvedDecks.length === 0) {
       return (
         <div className="browse-decks-panel__empty">
           No community decks found for your search.
@@ -153,15 +156,17 @@ export const BrowseDeckCardList = memo(
 
     return (
       <div className="browse-decks-panel__grid" aria-live="polite">
-        {decks.map((deck) => {
+        {resolvedDecks.map((deck) => {
           const languages = Array.isArray(deck?.languages) ? deck.languages : [];
           const tags = normalizeTags(deck?.tags);
           const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS);
           const hiddenTagsCount = Math.max(0, tags.length - visibleTags.length);
           const hasDescription =
             typeof deck?.description === "string" && deck.description.trim().length > 0;
-          const isImporting = String(importingDeckId) === String(deck?.id);
-          const isDeleting = String(deletingDeckId) === String(deck?.id);
+          const isImporting =
+            String(pendingState.importingDeckId) === String(deck?.id);
+          const isDeleting =
+            String(pendingState.deletingDeckId) === String(deck?.id);
           const fileSize = formatFileSize(deck?.latestVersion?.fileSizeBytes);
           const createdAt = formatDate(deck?.createdAt);
           const updatedAt = formatDate(
@@ -268,7 +273,7 @@ export const BrowseDeckCardList = memo(
 
               <div
                 className={
-                  canDeleteHubDecks
+                  permissions.canDeleteHubDecks
                     ? "browse-decks-panel__actions"
                     : "browse-decks-panel__actions browse-decks-panel__actions--single"
                 }
@@ -281,7 +286,7 @@ export const BrowseDeckCardList = memo(
                 >
                   {isImporting ? "Importing..." : "Import to Decks"}
                 </Button>
-                {canDeleteHubDecks ? (
+                  {permissions.canDeleteHubDecks ? (
                   <Button
                     data-deck-id={deck.id}
                     onClick={handleDeleteDeck}
@@ -297,7 +302,6 @@ export const BrowseDeckCardList = memo(
         })}
       </div>
     );
-  },
-);
+  });
 
 BrowseDeckCardList.displayName = "BrowseDeckCardList";

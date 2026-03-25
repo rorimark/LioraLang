@@ -2,18 +2,29 @@ import { memo } from "react";
 import { ActionModal } from "@shared/ui";
 import "./RenameDeckModal.css";
 
-export const RenameDeckModal = memo(
-  ({ isOpen, value, isRenaming, onValueChange, onConfirm, onClose }) => {
+const EMPTY_MODAL = Object.freeze({});
+
+export const RenameDeckModal = memo(({ modal = EMPTY_MODAL }) => {
+    const {
+      isOpen,
+      value,
+      isRenaming,
+      onValueChange,
+      onConfirm,
+      onClose,
+    } = modal;
     return (
       <ActionModal
-        isOpen={isOpen}
-        title="Rename deck"
-        description="Enter a new deck name."
-        confirmLabel="Save"
-        isConfirming={isRenaming}
-        isConfirmDisabled={!value?.trim()}
-        onConfirm={onConfirm}
-        onClose={onClose}
+        dialog={{
+          isOpen,
+          title: "Rename deck",
+          description: "Enter a new deck name.",
+          confirmLabel: "Save",
+          isConfirming: isRenaming,
+          isConfirmDisabled: !value?.trim(),
+          onConfirm,
+          onClose,
+        }}
       >
         <label className="rename-deck-modal__label" htmlFor="rename-deck-name">
           Deck name
@@ -28,7 +39,6 @@ export const RenameDeckModal = memo(
         />
       </ActionModal>
     );
-  },
-);
+  });
 
 RenameDeckModal.displayName = "RenameDeckModal";

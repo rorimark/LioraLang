@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { InlineAlert } from "@shared/ui";
 import {
   DeckEditorPanelProvider,
@@ -24,6 +24,14 @@ const DeckEditorPanelBody = memo(() => {
     goToDeckDetails,
     reloadDeck,
   } = useDeckEditorPanelContext();
+  const statusAlert = useMemo(
+    () => ({
+      text: statusMessage,
+      variant: statusVariant,
+      onClose: clearStatus,
+    }),
+    [clearStatus, statusMessage, statusVariant],
+  );
 
   if (isLoading) {
     return <article className="panel deck-editor-panel">Loading deck editor...</article>;
@@ -84,11 +92,7 @@ const DeckEditorPanelBody = memo(() => {
         </div>
       </header>
 
-      <InlineAlert
-        text={statusMessage}
-        variant={statusVariant}
-        onClose={clearStatus}
-      />
+      <InlineAlert alert={statusAlert} />
 
       <DeckEditorSettingsSection />
       <DeckEditorWordFormSection />

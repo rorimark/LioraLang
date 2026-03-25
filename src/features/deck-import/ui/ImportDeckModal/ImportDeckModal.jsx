@@ -2,28 +2,16 @@ import { memo } from "react";
 import { ActionModal } from "@shared/ui";
 import "./ImportDeckModal.css";
 
-export const ImportDeckModal = memo(
-  ({
-    isOpen,
-    isImporting,
-    selectedFileName,
-    selectedWordsCount = null,
-    deckNameDraft,
-    importLanguages,
-    languageOptions,
-    isLanguageReviewOpen = false,
-    onDeckNameChange,
-    onLanguageChange,
-    onOpenLanguageReview,
-    onCloseLanguageReview,
-    onToggleLanguageReview,
-    onConfirm,
-    onClose,
-  }) => {
-    const normalizedDeckName = deckNameDraft?.trim() || "";
-    const sourceLanguage = importLanguages?.sourceLanguage || "";
-    const targetLanguage = importLanguages?.targetLanguage || "";
-    const tertiaryLanguage = importLanguages?.tertiaryLanguage || "";
+export const ImportDeckModal = memo(({ modal }) => {
+    const resolvedModal = modal || {};
+    const selection = resolvedModal.selection || {};
+    const languageReview = resolvedModal.languageReview || {};
+    const actions = resolvedModal.actions || {};
+    const normalizedDeckName = selection.deckNameDraft?.trim() || "";
+    const sourceLanguage = languageReview.importLanguages?.sourceLanguage || "";
+    const targetLanguage = languageReview.importLanguages?.targetLanguage || "";
+    const tertiaryLanguage =
+      languageReview.importLanguages?.tertiaryLanguage || "";
     const detectedLanguages = [
       sourceLanguage,
       targetLanguage,
@@ -32,13 +20,16 @@ export const ImportDeckModal = memo(
 
     return (
       <ActionModal
-        isOpen={isOpen}
-        title="Import deck file"
-        description="Supports .lioradeck, .lioralang and .json. Review import details and confirm language mapping."
-        confirmLabel="Import"
-        isConfirming={isImporting}
-        onConfirm={onConfirm}
-        onClose={onClose}
+        dialog={{
+          isOpen: resolvedModal.isOpen,
+          title: "Import deck file",
+          description:
+            "Supports .lioradeck, .lioralang and .json. Review import details and confirm language mapping.",
+          confirmLabel: "Import",
+          isConfirming: resolvedModal.isImporting,
+          onConfirm: actions.onConfirm,
+          onClose: actions.onClose,
+        }}
       >
         <label className="import-deck-modal__label" htmlFor="import-deck-name">
           Deck name in Decks (optional)
@@ -47,8 +38,8 @@ export const ImportDeckModal = memo(
           id="import-deck-name"
           className="import-deck-modal__input"
           type="text"
-          value={deckNameDraft}
-          onChange={onDeckNameChange}
+          value={selection.deckNameDraft || ""}
+          onChange={actions.onDeckNameChange}
           placeholder="Use filename if empty"
         />
         <div className="import-deck-modal__language-review">
@@ -69,18 +60,18 @@ export const ImportDeckModal = memo(
             type="button"
             className="import-deck-modal__language-toggle"
             onClick={
-              isLanguageReviewOpen
-                ? onCloseLanguageReview || onToggleLanguageReview
-                : onOpenLanguageReview || onToggleLanguageReview
+              languageReview.isOpen
+                ? actions.onCloseLanguageReview || actions.onToggleLanguageReview
+                : actions.onOpenLanguageReview || actions.onToggleLanguageReview
             }
           >
-            {isLanguageReviewOpen
+            {languageReview.isOpen
               ? "Hide language check"
               : "Check or adjust languages"}
           </button>
         </div>
 
-        {isLanguageReviewOpen ? (
+        {languageReview.isOpen ? (
           <div className="import-deck-modal__languages">
             <label className="import-deck-modal__label" htmlFor="import-source-language">
               Source language
@@ -90,9 +81,9 @@ export const ImportDeckModal = memo(
               className="import-deck-modal__input"
               name="sourceLanguage"
               value={sourceLanguage}
-              onChange={onLanguageChange}
+              onChange={actions.onLanguageChange}
             >
-              {languageOptions.map((language) => (
+              {(languageReview.languageOptions || []).map((language) => (
                 <option key={`source-${language}`} value={language}>
                   {language}
                 </option>
@@ -107,9 +98,9 @@ export const ImportDeckModal = memo(
               className="import-deck-modal__input"
               name="targetLanguage"
               value={targetLanguage}
-              onChange={onLanguageChange}
+              onChange={actions.onLanguageChange}
             >
-              {languageOptions.map((language) => (
+              {(languageReview.languageOptions || []).map((language) => (
                 <option key={`target-${language}`} value={language}>
                   {language}
                 </option>
@@ -124,10 +115,10 @@ export const ImportDeckModal = memo(
               className="import-deck-modal__input"
               name="tertiaryLanguage"
               value={tertiaryLanguage}
-              onChange={onLanguageChange}
+              onChange={actions.onLanguageChange}
             >
               <option value="">None</option>
-              {languageOptions.map((language) => (
+              {(languageReview.languageOptions || []).map((language) => (
                 <option key={`tertiary-${language}`} value={language}>
                   {language}
                 </option>
@@ -136,11 +127,11 @@ export const ImportDeckModal = memo(
           </div>
         ) : null}
         <p className="import-deck-modal__preview">
-          Selected file: {selectedFileName || "-"}
+          Selected file: {selection.selectedFileName || "-"}
         </p>
-        {Number.isInteger(selectedWordsCount) && (
+        {Number.isInteger(selection.selectedWordsCount) && (
           <p className="import-deck-modal__preview">
-            Words in file: {selectedWordsCount}
+            Words in file: {selection.selectedWordsCount}
           </p>
         )}
         <p className="import-deck-modal__preview">
@@ -148,7 +139,6 @@ export const ImportDeckModal = memo(
         </p>
       </ActionModal>
     );
-  },
-);
+  });
 
 ImportDeckModal.displayName = "ImportDeckModal";
