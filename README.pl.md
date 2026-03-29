@@ -93,11 +93,21 @@ pnpm install
 pnpm run dev
 ```
 
+Tryb tylko web:
+
+```bash
+pnpm run dev:web
+```
+
+## Dokumentacja
+
+Pełny komplet dokumentacji technicznej znajduje się w [docs/README.md](docs/README.md).
+
 ### Build instalatorów
 
 ```bash
-pnpm run build
-pnpm run dist:test
+pnpm run build:desktop
+pnpm run dist:local
 ```
 
 Instalatory będą dostępne w folderze `release/`.
@@ -120,6 +130,6 @@ pnpm run rebuild:native
 ### Biały ekran w wersji packaged (`index-*.js/css` not found)
 
 ```bash
-pnpm run build
-pnpm run dist:test
+pnpm run build:desktop
+pnpm run dist:local
 ```

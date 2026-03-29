@@ -1,15 +1,31 @@
 # LioraLang Documentation
 
-This folder contains project documentation for the current version.
+Актуальный комплект документации по проекту на срезе `2026-03-18`.
 
-## Main document
+Эта папка теперь разбита на несколько логических документов, чтобы новый разработчик мог быстро понять продукт, архитектуру, платформенные отличия, каталог модулей и текущее состояние качества кода.
 
-- [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)
+## С чего начать
 
-## Additional docs
+1. [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md) - главный входной документ.
+2. [project-overview.md](./project-overview.md) - что это за продукт, для кого он и какие у него сильные/слабые стороны.
+3. [architecture.md](./architecture.md) - архитектура приложения, потоки данных, FSD и точки расширения.
+4. [platforms-and-storage.md](./platforms-and-storage.md) - различия web/desktop, Electron, IndexedDB, SQLite, Hub.
+5. [module-catalog.md](./module-catalog.md) - карта слоев, директорий, страниц, виджетов, фич и основных файлов.
+6. [code-audit.md](./code-audit.md) - аудит оптимизации, простоты кода, безопасности, FSD и рекомендаций.
+7. [onboarding.md](./onboarding.md) - запуск, сборка, отладка и правила расширения проекта.
+
+## Дополнительные документы, которые были в репозитории раньше
 
 - [architecture-dual-platform.md](./architecture-dual-platform.md)
 - [baseline.md](./baseline.md)
 - [smoke-checklist.md](./smoke-checklist.md)
 
-For a complete overview, start with `PROJECT_DOCUMENTATION.md`.
+## Что покрывает эта документация
+
+- назначение продукта;
+- различия между web и desktop сборками;
+- устройство React-части и Electron-части;
+- основные доменные сущности, use case-ы и хранилища;
+- публичные страницы, виджеты, фичи, сущности и shared-модули;
+- сильные стороны и технический долг;
+- рекомендации по упрощению, оптимизации и повышению безопасности.

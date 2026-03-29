@@ -93,11 +93,21 @@ pnpm install
 pnpm run dev
 ```
 
+Только web-режим:
+
+```bash
+pnpm run dev:web
+```
+
+## Документация
+
+Полный технический комплект документации находится в [docs/README.md](docs/README.md).
+
 ### Сборка инсталляторов
 
 ```bash
-pnpm run build
-pnpm run dist:test
+pnpm run build:desktop
+pnpm run dist:local
 ```
 
 Инсталляторы будут в папке `release/`.
@@ -120,6 +130,6 @@ pnpm run rebuild:native
 ### Белый экран в packaged-версии (`index-*.js/css` не найдены)
 
 ```bash
-pnpm run build
-pnpm run dist:test
+pnpm run build:desktop
+pnpm run dist:local
 ```
