@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 
 const MAX_QUEUED_ERRORS = 8;
 

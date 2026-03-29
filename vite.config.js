@@ -12,6 +12,10 @@ const PLATFORM_TARGETS = {
 };
 
 const resolvePlatformTarget = (mode) => {
+  if (mode === "test") {
+    return PLATFORM_TARGETS.web;
+  }
+
   const env = loadEnv(mode, __dirname, "");
   const requestedTarget =
     typeof env.VITE_APP_TARGET === "string"
@@ -48,6 +52,22 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     build: {
       manifest: isWebTarget ? "asset-manifest.json" : false,
+    },
+    test: {
+      environment: "jsdom",
+      setupFiles: path.resolve(__dirname, "vitest.setup.js"),
+      globals: true,
+      css: true,
+      coverage: {
+        provider: "v8",
+        reporter: ["text", "html"],
+        include: ["src/**/*.{js,jsx}"],
+        exclude: [
+          "src/main.jsx",
+          "src/**/*.test.{js,jsx}",
+          "src/**/*.spec.{js,jsx}",
+        ],
+      },
     },
     define: {
       __APP_TARGET__: JSON.stringify(platformTarget),

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   DEFAULT_SOURCE_LANGUAGE,

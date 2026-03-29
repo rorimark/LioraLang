@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { createElement, memo } from "react";
 import "./Panel.css";
 
 export const Panel = memo(({ as: Component = "article", className = "", ...props }) => {
@@ -6,7 +6,7 @@ export const Panel = memo(({ as: Component = "article", className = "", ...props
     .filter(Boolean)
     .join(" ");
 
-  return <Component className={resolvedClassName} {...props} />;
+  return createElement(Component, { className: resolvedClassName, ...props });
 });
 
 Panel.displayName = "Panel";

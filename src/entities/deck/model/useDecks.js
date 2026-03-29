@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 
 export const useDecks = () => {
   const deckRepository = usePlatformService("deckRepository");

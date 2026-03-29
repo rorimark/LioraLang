@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
 import { copyTextToClipboard } from "@shared/lib/clipboard";

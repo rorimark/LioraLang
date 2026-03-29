@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import {
   useAppPreferences,
 } from "@shared/lib/appPreferences";

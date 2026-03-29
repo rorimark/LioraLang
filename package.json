@@ -14,7 +14,7 @@
     "setup:web": "pnpm install",
     "setup:desktop": "pnpm install",
     "dev:electron": "wait-on tcp:5175 && VITE_DEV_SERVER_URL=http://localhost:5175 electron .",
-    "rebuild:native": "npm_config_runtime=electron npm_config_target=40.6.1 npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
+    "rebuild:native": "npm_config_runtime=electron npm_config_target=$(node -e \"const fs=require('node:fs'); const pkg=JSON.parse(fs.readFileSync('package.json','utf8')); process.stdout.write(pkg.optionalDependencies.electron);\") npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
     "build": "pnpm build:desktop",
     "build:desktop": "vite build --mode desktop",
     "build:web": "vite build --mode web",
@@ -28,13 +28,23 @@
     "dist:local:win": "pnpm build:desktop && electron-builder --win nsis --x64 --publish never && pnpm rebuild:native",
     "check:persistence": "node electron/scripts/run-persistence-check.cjs",
     "check:boundaries": "bash scripts/check-no-electron-imports.sh",
+    "check:layers": "node scripts/check-layer-imports.mjs",
     "lint": "eslint .",
+    "test": "node scripts/run-test-suite.mjs --watch",
+    "test:verbose": "node scripts/run-test-suite.mjs --watch --verbose",
+    "test:report": "node scripts/run-test-suite.mjs --watch --report",
+    "test:run": "node scripts/run-test-suite.mjs",
+    "test:run:verbose": "node scripts/run-test-suite.mjs --verbose",
+    "test:run:report": "node scripts/run-test-suite.mjs --report",
+    "test:coverage": "node scripts/run-test-suite.mjs --coverage",
+    "test:coverage:verbose": "node scripts/run-test-suite.mjs --coverage --verbose",
+    "test:coverage:report": "node scripts/run-test-suite.mjs --coverage --report",
     "preview": "pnpm preview:web",
     "preview:web": "pnpm build:web && vite preview --host --port 4175 --strictPort"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.98.0",
-    "@vercel/analytics": "^1.6.1",
+    "@vercel/analytics": "^2.0.1",
     "electron-updater": "^6.8.3",
     "ms": "^2.1.3",
     "react": "^19.2.0",
@@ -43,25 +53,32 @@
     "react-router": "^7.13.1"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.4",
     "@feature-sliced/eslint-config": "^0.1.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/coverage-v8": "^4.1.2",
     "concurrently": "^9.2.1",
-    "eslint": "^10.0.2",
+    "eslint": "^9.39.4",
     "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-boundaries": "^5.4.0",
+    "eslint-plugin-boundaries": "^6.0.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "fake-indexeddb": "^6.2.5",
     "globals": "^17.3.0",
+    "jsdom": "^29.0.1",
     "vite": "^8.0.0",
+    "vitest": "^4.1.2",
     "wait-on": "^9.0.1"
   },
   "optionalDependencies": {
-    "better-sqlite3": "^12.4.1",
-    "electron": "40.6.1",
+    "better-sqlite3": "^12.8.0",
+    "electron": "41.1.0",
     "electron-builder": "^26.0.12"
   },
   "pnpm": {
@@ -99,7 +116,7 @@
     "extraMetadata": {
       "main": "electron/main.js",
       "optionalDependencies": {
-        "better-sqlite3": "^12.4.1"
+        "better-sqlite3": "^12.8.0"
       }
     },
     "asar": true,

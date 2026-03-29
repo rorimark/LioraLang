@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { ROUTE_PATHS, buildBrowseDeckRoute } from "@shared/config/routes";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
