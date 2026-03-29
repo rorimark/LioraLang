@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { CardCatalogPagination } from "@features/card-catalog";
 import { Button, InlineAlert, Panel, TextInput } from "@shared/ui";
 import { useBrowseDecksPanel } from "../model";
 import { BrowseDeckCardList } from "./BrowseDeckCardList";
@@ -39,6 +40,27 @@ export const BrowseDecksPanel = memo(() => {
       onClose: panel.clearMessage,
     }),
     [panel.clearMessage, panel.message, panel.messageVariant],
+  );
+  const pagination = useMemo(
+    () => ({
+      currentPage: panel.currentPage,
+      totalPages: panel.totalPages,
+      pageSize: panel.decks.length,
+      pageSizeOptions: [],
+      totalItems: panel.totalDecks,
+      rangeStart: panel.visibleRange.start,
+      rangeEnd: panel.visibleRange.end,
+      onPageChange: panel.handlePageChange,
+    }),
+    [
+      panel.currentPage,
+      panel.decks.length,
+      panel.handlePageChange,
+      panel.totalDecks,
+      panel.totalPages,
+      panel.visibleRange.end,
+      panel.visibleRange.start,
+    ],
   );
 
   const isSearchActive = Boolean(panel.searchInput.trim());
@@ -109,27 +131,7 @@ export const BrowseDecksPanel = memo(() => {
 
       {panel.isConfigured ? (
         <footer className="browse-decks-panel__pagination">
-          <span>
-            {panel.totalDecks > 0
-              ? `Page ${panel.currentPage} of ${panel.totalPages} • ${panel.totalDecks} decks`
-              : "No decks available"}
-          </span>
-          <div className="browse-decks-panel__pagination-actions">
-            <Button
-              onClick={panel.goToPreviousPage}
-              disabled={panel.currentPage <= 1 || panel.isLoading}
-              size="sm"
-            >
-              Previous
-            </Button>
-            <Button
-              onClick={panel.goToNextPage}
-              disabled={panel.currentPage >= panel.totalPages || panel.isLoading}
-              size="sm"
-            >
-              Next
-            </Button>
-          </div>
+          <CardCatalogPagination pagination={pagination} />
         </footer>
       ) : null}
     </Panel>

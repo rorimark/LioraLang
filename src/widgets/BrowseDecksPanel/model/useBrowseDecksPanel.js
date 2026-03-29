@@ -94,6 +94,16 @@ export const useBrowseDecksPanel = () => {
 
     return Math.max(1, Math.ceil(totalDecks / BROWSE_PAGE_SIZE));
   }, [totalDecks]);
+  const visibleRange = useMemo(() => {
+    if (totalDecks <= 0) {
+      return { start: 0, end: 0 };
+    }
+
+    const start = (currentPage - 1) * BROWSE_PAGE_SIZE + 1;
+    const end = Math.min(start + Math.max(0, decks.length - 1), totalDecks);
+
+    return { start, end };
+  }, [currentPage, decks.length, totalDecks]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -194,6 +204,19 @@ export const useBrowseDecksPanel = () => {
   const goToNextPage = useCallback(() => {
     setCurrentPage((value) => Math.min(totalPages, value + 1));
   }, [totalPages]);
+
+  const handlePageChange = useCallback(
+    (page) => {
+      const nextPage = Number(page);
+
+      if (!Number.isFinite(nextPage)) {
+        return;
+      }
+
+      setCurrentPage(Math.max(1, Math.min(totalPages, nextPage)));
+    },
+    [totalPages],
+  );
 
   const importDeckFromHub = useCallback(async (deck) => {
     if (!deck?.id) {
@@ -393,9 +416,11 @@ export const useBrowseDecksPanel = () => {
     clearSearch,
     goToPreviousPage,
     goToNextPage,
+    handlePageChange,
     importDeckFromHub,
     deleteDeckFromHub,
     copyDeckLink,
     clearMessage,
+    visibleRange,
   };
 };

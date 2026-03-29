@@ -1,4 +1,6 @@
 const FALLBACK_DECK_ID = "local-json";
+const ELECTRON_INVOKE_PREFIX = /^Error invoking remote method '[^']+':\s*/i;
+const LEADING_ERROR_PREFIX = /^Error:\s*/i;
 let fallbackWordsPromise = null;
 const fallbackSrsStateByDeck = new Map();
 const pendingImportFileRequests = [];
@@ -13,6 +15,39 @@ let isNavigationBridgeInitialized = false;
 
 const getElectronApi = () =>
   typeof window !== "undefined" ? window.electronAPI : undefined;
+
+const normalizeElectronErrorMessage = (value, fallback = "Desktop action failed") => {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  let message = value.trim();
+
+  while (ELECTRON_INVOKE_PREFIX.test(message) || LEADING_ERROR_PREFIX.test(message)) {
+    message = message
+      .replace(ELECTRON_INVOKE_PREFIX, "")
+      .replace(LEADING_ERROR_PREFIX, "")
+      .trim();
+  }
+
+  if (!message) {
+    return fallback;
+  }
+
+  if (message === "Only the owner can delete this Hub deck") {
+    return "You can only delete Hub decks that you published.";
+  }
+
+  return message;
+};
+
+const invokeElectron = async (invocation, fallbackMessage) => {
+  try {
+    return await invocation();
+  } catch (error) {
+    throw new Error(normalizeElectronErrorMessage(error?.message, fallbackMessage));
+  }
+};
 
 const isElectronRuntime = () =>
   typeof navigator !== "undefined" &&
@@ -547,7 +582,10 @@ export const desktopApi = {
       throw new Error("Deck file import is available only in desktop mode");
     }
 
-    return getElectronApi().pickImportDeckJson();
+    return invokeElectron(
+      () => getElectronApi().pickImportDeckJson(),
+      "Failed to select import file",
+    );
   },
 
   async importDeckFromJson(payloadOrDeckName = "") {
@@ -562,10 +600,16 @@ export const desktopApi = {
     }
 
     if (typeof payloadOrDeckName === "string") {
-      return getElectronApi().importDeckFromJson({ deckName: payloadOrDeckName });
+      return invokeElectron(
+        () => getElectronApi().importDeckFromJson({ deckName: payloadOrDeckName }),
+        "Failed to import deck",
+      );
     }
 
-    return getElectronApi().importDeckFromJson(payloadOrDeckName || {});
+    return invokeElectron(
+      () => getElectronApi().importDeckFromJson(payloadOrDeckName || {}),
+      "Failed to import deck",
+    );
   },
 
   async importDeckFromUrl(payload = {}) {
@@ -579,7 +623,10 @@ export const desktopApi = {
       throw new Error("Hub import is available only in desktop mode");
     }
 
-    return getElectronApi().importDeckFromUrl(payload || {});
+    return invokeElectron(
+      () => getElectronApi().importDeckFromUrl(payload || {}),
+      "Failed to import deck",
+    );
   },
 
   async exportDeckPackage(deckId, settings = {}) {
@@ -593,10 +640,14 @@ export const desktopApi = {
       throw new Error("Deck export package is available only in desktop mode");
     }
 
-    return getElectronApi().exportDeckPackage({
-      deckId,
-      settings: settings || {},
-    });
+    return invokeElectron(
+      () =>
+        getElectronApi().exportDeckPackage({
+          deckId,
+          settings: settings || {},
+        }),
+      "Failed to export deck package",
+    );
   },
 
   async exportDeckToJson(deckId, settings = {}) {
@@ -610,10 +661,14 @@ export const desktopApi = {
       throw new Error("Deck export is available only in desktop mode");
     }
 
-    return getElectronApi().exportDeckToJson({
-      deckId,
-      settings: settings || {},
-    });
+    return invokeElectron(
+      () =>
+        getElectronApi().exportDeckToJson({
+          deckId,
+          settings: settings || {},
+        }),
+      "Failed to export deck",
+    );
   },
 
   async renameDeck(deckId, name) {
@@ -627,7 +682,10 @@ export const desktopApi = {
       throw new Error("Deck rename is available only in desktop mode");
     }
 
-    return getElectronApi().renameDeck({ deckId, name });
+    return invokeElectron(
+      () => getElectronApi().renameDeck({ deckId, name }),
+      "Failed to rename deck",
+    );
   },
 
   async deleteDeck(deckId) {
@@ -641,7 +699,10 @@ export const desktopApi = {
       throw new Error("Deck delete is available only in desktop mode");
     }
 
-    return getElectronApi().deleteDeck({ deckId });
+    return invokeElectron(
+      () => getElectronApi().deleteDeck({ deckId }),
+      "Failed to delete deck",
+    );
   },
 
   async saveDeck(payload) {
@@ -658,7 +719,10 @@ export const desktopApi = {
       throw new Error("Deck editing is available only in desktop mode");
     }
 
-    return getElectronApi().saveDeck(payload || {});
+    return invokeElectron(
+      () => getElectronApi().saveDeck(payload || {}),
+      "Failed to save deck",
+    );
   },
 
   async getSrsSession(deckId, settings = {}, options = {}) {

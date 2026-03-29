@@ -37,6 +37,9 @@ export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
     )
       ? resolvedPagination.pageSizeOptions
       : EMPTY_OPTIONS;
+    const showsPageSizeControl =
+      resolvedPageSizeOptions.length > 0
+      && typeof resolvedPagination.onPageSizeChange === "function";
 
     const visiblePages = useMemo(
       () =>
@@ -81,19 +84,21 @@ export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
             {resolvedPagination.totalItems}
           </span>
 
-          <label className="cards-pagination__size">
-            Rows
-            <select
-              value={resolvedPagination.pageSize}
-              onChange={handlePageSizeSelect}
-            >
-              {resolvedPageSizeOptions.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-          </label>
+          {showsPageSizeControl ? (
+            <label className="cards-pagination__size">
+              Rows
+              <select
+                value={resolvedPagination.pageSize}
+                onChange={handlePageSizeSelect}
+              >
+                {resolvedPageSizeOptions.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </div>
 
         <div className="cards-pagination__controls" aria-label="Table pagination">

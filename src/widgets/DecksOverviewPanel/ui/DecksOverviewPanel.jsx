@@ -1,8 +1,9 @@
 import { memo, useMemo } from "react";
+import { FiCode, FiFolderPlus, FiRefreshCw, FiUpload } from "react-icons/fi";
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
-import { InlineAlert } from "@shared/ui";
+import { Button, InlineAlert } from "@shared/ui";
 import { useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
 
@@ -110,36 +111,60 @@ export const DecksOverviewPanel = memo(() => {
       <div className="decks-page-panel__header">
         <h2>Your Decks</h2>
         <div className="decks-page-panel__controls">
-          <button
-            type="button"
-            className="decks-page-panel__refresh"
-            onClick={panel.openCreateDeck}
-          >
-            Create deck
-          </button>
-          <button
-            type="button"
-            className="decks-page-panel__refresh"
-            onClick={panel.openImportConfirm}
-            disabled={panel.isImporting}
-          >
-            {panel.isImporting ? "Importing..." : "Import deck file"}
-          </button>
-          <button
-            type="button"
-            className="decks-page-panel__refresh"
-            onClick={panel.openJsonImport}
-            disabled={panel.isImporting}
-          >
-            Create deck from JSON
-          </button>
-          <button
-            type="button"
-            className="decks-page-panel__refresh"
-            onClick={panel.refreshDecks}
-          >
-            Refresh decks
-          </button>
+          <div className="decks-page-panel__icon-action-wrap">
+            <Button
+              variant="ghost"
+              className="decks-page-panel__icon-action"
+              onClick={panel.openCreateDeck}
+              aria-label="Create deck"
+            >
+              <FiFolderPlus />
+            </Button>
+            <div className="decks-page-panel__tooltip" role="tooltip">
+              Create deck
+            </div>
+          </div>
+          <div className="decks-page-panel__icon-action-wrap">
+            <Button
+              variant="ghost"
+              className="decks-page-panel__icon-action"
+              onClick={panel.openImportConfirm}
+              disabled={panel.isImporting}
+              aria-label={panel.isImporting ? "Importing deck file" : "Import deck file"}
+            >
+              <FiUpload />
+            </Button>
+            <div className="decks-page-panel__tooltip" role="tooltip">
+              {panel.isImporting ? "Importing deck file" : "Import deck file"}
+            </div>
+          </div>
+          <div className="decks-page-panel__icon-action-wrap">
+            <Button
+              variant="ghost"
+              className="decks-page-panel__icon-action"
+              onClick={panel.openJsonImport}
+              disabled={panel.isImporting}
+              aria-label="Create deck from JSON"
+            >
+              <FiCode />
+            </Button>
+            <div className="decks-page-panel__tooltip" role="tooltip">
+              Create deck from JSON
+            </div>
+          </div>
+          <div className="decks-page-panel__icon-action-wrap">
+            <Button
+              variant="ghost"
+              className="decks-page-panel__icon-action"
+              onClick={panel.refreshDecks}
+              aria-label="Refresh decks"
+            >
+              <FiRefreshCw />
+            </Button>
+            <div className="decks-page-panel__tooltip" role="tooltip">
+              Refresh decks
+            </div>
+          </div>
         </div>
       </div>
 
@@ -147,7 +172,6 @@ export const DecksOverviewPanel = memo(() => {
 
       <div className="decks-page-panel__search-row">
         <label className="decks-page-panel__search-field">
-          <span>Find deck</span>
           <input
             type="search"
             value={panel.deckSearch}
@@ -156,9 +180,10 @@ export const DecksOverviewPanel = memo(() => {
             aria-label="Search decks"
           />
         </label>
-        <span className="decks-page-panel__search-meta">
-          {panel.decks.length} / {panel.totalDecksCount}
-        </span>
+        <div className="decks-page-panel__search-meta" aria-live="polite">
+          <strong>{panel.decks.length}</strong>
+          <span>/ {panel.totalDecksCount}</span>
+        </div>
       </div>
 
       {panel.error && (
