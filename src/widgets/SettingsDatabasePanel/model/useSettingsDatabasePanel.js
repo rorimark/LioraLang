@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useThemeSwitch } from "@features/theme-switch";
 import {

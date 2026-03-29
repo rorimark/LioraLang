@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { HISTORY_SHORTCUT_MODES, useShortcutSettings } from "@shared/lib/shortcutSettings";
 
 const DEFAULT_HISTORY_STATE = {

@@ -2,7 +2,7 @@
 import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "@app";
-import { PlatformProvider } from "@app/providers";
+import { PlatformProvider } from "@shared/providers";
 
 const isWebTarget = __APP_TARGET__ === "web";
 const shouldRenderAnalytics = isWebTarget && !import.meta.env.DEV;

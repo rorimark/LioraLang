@@ -4,14 +4,30 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
-violations="$(
-  rg -n \
-    --glob 'src/**/*.{js,jsx}' \
-    --glob '!src/shared/platform/**' \
-    --glob '!src/shared/api/**' \
-    "(from\\s+['\"][^'\"]*electron[^'\"]*['\"]|from\\s+['\"]@shared/api['\"]|from\\s+['\"][^'\"]*shared/api[^'\"]*['\"]|window\\.electronAPI)" \
-    src || true
-)"
+PATTERN="(from\\s+['\"][^'\"]*electron[^'\"]*['\"]|from\\s+['\"]@shared/api['\"]|from\\s+['\"][^'\"]*shared/api[^'\"]*['\"]|window\\.electronAPI)"
+
+if command -v rg >/dev/null 2>&1; then
+  violations="$(
+    rg -n \
+      --glob 'src/**/*.{js,jsx}' \
+      --glob '!src/shared/platform/**' \
+      --glob '!src/shared/api/**' \
+      "$PATTERN" \
+      src || true
+  )"
+else
+  violations="$(
+    find src \
+      -type f \
+      \( -name '*.js' -o -name '*.jsx' \) \
+      ! -path 'src/shared/platform/*' \
+      ! -path 'src/shared/platform/**/*' \
+      ! -path 'src/shared/api/*' \
+      ! -path 'src/shared/api/**/*' \
+      -print0 |
+      xargs -0 grep -nE "$PATTERN" 2>/dev/null || true
+  )"
+fi
 
 if [[ -n "$violations" ]]; then
   echo "Boundary check failed. Direct Electron/API usage found outside platform layer:"

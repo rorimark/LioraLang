@@ -3,7 +3,7 @@ import { DesktopTitleBar } from "@widgets/DesktopTitleBar";
 import { NavBar } from "@widgets/NavbBar";
 import { PageHeader } from "@widgets/PageHeader";
 import { RuntimeErrorPresenter } from "@features/runtime-error";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { preloadRoutesForOffline } from "@app/router/preloadRoutesForOffline";
 import { resolvePageMeta, ROUTE_PATHS } from "@shared/config/routes";
 import { registerWebPwa } from "@shared/lib/pwa";

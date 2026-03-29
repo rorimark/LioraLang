@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { APP_PREFERENCES_APP_KEY } from "./constants";
 import {
   DEFAULT_STARTUP_PREFERENCES,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import { useDeckWords } from "@entities/deck";
 import { useCardCatalog } from "@features/card-catalog";
 import { useAppPreferences } from "@shared/lib/appPreferences";

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { usePlatformService } from "@app/providers";
+import { usePlatformService } from "@shared/providers";
 import {
   DEFAULT_SHORTCUT_SETTINGS,
   SHORTCUT_SETTINGS_APP_KEY,
