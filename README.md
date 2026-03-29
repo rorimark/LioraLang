@@ -93,11 +93,21 @@ pnpm install
 pnpm run dev
 ```
 
+Web-only development:
+
+```bash
+pnpm run dev:web
+```
+
+## Documentation
+
+Full technical documentation is available in [docs/README.md](docs/README.md).
+
 ### Build installers
 
 ```bash
-pnpm run build
-pnpm run dist:test
+pnpm run build:desktop
+pnpm run dist:local
 ```
 
 Installer artifacts are generated in `release/`.
@@ -120,6 +130,6 @@ pnpm run rebuild:native
 ### White screen in packaged app (`index-*.js/css` not found)
 
 ```bash
-pnpm run build
-pnpm run dist:test
+pnpm run build:desktop
+pnpm run dist:local
 ```
