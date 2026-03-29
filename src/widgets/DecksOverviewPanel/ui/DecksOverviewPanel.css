@@ -42,21 +42,14 @@
 
 .decks-page-panel__search-row {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
 .decks-page-panel__search-field {
-  display: grid;
-  gap: 4px;
   flex: 1 1 auto;
   min-width: 0;
-}
-
-.decks-page-panel__search-field span {
-  color: var(--color-text-muted);
-  font-size: 0.78rem;
 }
 
 .decks-page-panel__search-field input {
@@ -72,49 +65,96 @@
 
 .decks-page-panel__search-meta {
   flex: 0 0 auto;
-  min-height: 40px;
+  min-height: 36px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 12px;
+  gap: 4px;
+  padding: 0 10px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: color-mix(in srgb, var(--color-surface-muted) 72%, var(--color-surface));
-  color: var(--color-text-muted);
-  font-size: 0.78rem;
+  line-height: 1;
 }
 
-.decks-page-panel__refresh {
-  width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
+.decks-page-panel__search-meta strong {
   color: var(--color-text);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 7px 10px;
+  font-size: 0.76rem;
+  font-weight: 700;
 }
 
-.decks-page-panel__refresh:hover {
-  background: var(--color-surface-muted);
+.decks-page-panel__search-meta span {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
 }
 
 .decks-page-panel__controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
-  width: min(420px, 100%);
 }
 
-.decks-page-panel__controls > * {
-  min-height: 36px;
+.decks-page-panel__icon-action-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.decks-page-panel__icon-action {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 12px;
+  color: var(--color-text-muted);
+}
+
+.decks-page-panel__icon-action:hover:not(:disabled) {
+  color: var(--color-text);
+}
+
+.decks-page-panel__icon-action svg {
+  width: 17px;
+  height: 17px;
+}
+
+.decks-page-panel__tooltip {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  transform: translate(-50%, 4px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 6;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-tooltip);
+  color: var(--color-text);
+  font-size: 0.72rem;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+.decks-page-panel__tooltip::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--color-surface);
+}
+
+.decks-page-panel__icon-action-wrap:hover .decks-page-panel__tooltip,
+.decks-page-panel__icon-action-wrap:focus-within .decks-page-panel__tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 @media (min-width: 1360px) {
   .decks-page-panel__controls {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    width: min(760px, 100%);
+    gap: 10px;
   }
 }
 
@@ -130,12 +170,8 @@
 
   .decks-page-panel__controls {
     width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: flex-start;
     gap: 8px;
-  }
-
-  .decks-page-panel__refresh {
-    min-height: 36px;
   }
 
   .decks-page-panel__search-row {
@@ -154,12 +190,14 @@
   }
 
   .decks-page-panel__controls {
-    grid-template-columns: 1fr;
+    justify-content: flex-start;
+    gap: 6px;
   }
 
-  .decks-page-panel__refresh {
-    font-size: 0.78rem;
-    padding: 8px 10px;
+  .decks-page-panel__icon-action {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
   }
 
   .decks-page-panel__search-field input {
@@ -177,20 +215,20 @@
     gap: 6px;
   }
 
-  .decks-page-panel__refresh {
-    min-height: 34px;
-    font-size: 0.74rem;
-    padding: 7px 9px;
+  .decks-page-panel__icon-action {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 10px;
   }
 }
 
 @media (hover: none) and (pointer: coarse) {
-  .decks-page-panel__refresh:hover {
-    background: var(--color-surface);
+  .decks-page-panel__icon-action:hover:not(:disabled) {
+    color: var(--color-text-muted);
   }
 
-  .decks-page-panel__refresh:active {
-    background: var(--color-surface-muted);
+  .decks-page-panel__tooltip {
+    display: none;
   }
-
 }

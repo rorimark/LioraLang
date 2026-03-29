@@ -16,6 +16,9 @@ let isRuntimeErrorBridgeInitialized = false;
 let isNavigationBridgeInitialized = false;
 let isUpdateStatusBridgeInitialized = false;
 
+const ELECTRON_INVOKE_PREFIX = /^Error invoking remote method '[^']+':\s*/i;
+const LEADING_ERROR_PREFIX = /^Error:\s*/i;
+
 const resolveHubConfig = () => {
   const supabaseUrl = typeof import.meta.env.VITE_SUPABASE_URL === "string"
     ? import.meta.env.VITE_SUPABASE_URL.trim()
@@ -38,6 +41,50 @@ const hasHubConfig = () => Boolean(resolveHubConfig());
 
 const getElectronApi = () =>
   typeof window !== "undefined" ? window.electronAPI : undefined;
+
+const normalizeElectronErrorMessage = (value, fallback = "Desktop action failed") => {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  let message = value.trim();
+
+  while (ELECTRON_INVOKE_PREFIX.test(message) || LEADING_ERROR_PREFIX.test(message)) {
+    message = message
+      .replace(ELECTRON_INVOKE_PREFIX, "")
+      .replace(LEADING_ERROR_PREFIX, "")
+      .trim();
+  }
+
+  if (!message) {
+    return fallback;
+  }
+
+  if (message === "Only the owner can delete this Hub deck") {
+    return "You can only delete Hub decks that you published.";
+  }
+
+  return message;
+};
+
+const normalizeElectronError = (error, fallback) => {
+  const message = normalizeElectronErrorMessage(error?.message, fallback);
+  const normalizedError = new Error(message);
+
+  if (error?.stack) {
+    normalizedError.stack = error.stack;
+  }
+
+  return normalizedError;
+};
+
+const invokeElectron = async (invocation, fallbackMessage) => {
+  try {
+    return await invocation();
+  } catch (error) {
+    throw normalizeElectronError(error, fallbackMessage);
+  }
+};
 
 const ensureElectronApi = () => {
   const electronApi = getElectronApi();
@@ -253,31 +300,52 @@ const initUpdateStatusBridge = () => {
 
 const createDeckRepository = () => {
   return {
-    listDecks: () => ensureElectronApi().listDecks(),
-    getDeckById: (deckId) => ensureElectronApi().getDeckById(deckId),
-    getDeckWords: (deckId) => ensureElectronApi().getDeckWords(deckId),
-    pickImportDeckJson: () => ensureElectronApi().pickImportDeckJson(),
+    listDecks: () => invokeElectron(() => ensureElectronApi().listDecks(), "Failed to load decks"),
+    getDeckById: (deckId) =>
+      invokeElectron(() => ensureElectronApi().getDeckById(deckId), "Failed to load deck"),
+    getDeckWords: (deckId) =>
+      invokeElectron(() => ensureElectronApi().getDeckWords(deckId), "Failed to load deck words"),
+    pickImportDeckJson: () =>
+      invokeElectron(
+        () => ensureElectronApi().pickImportDeckJson(),
+        "Failed to select import file",
+      ),
     importDeckFromJson: (payloadOrDeckName = "") => {
       const payload = typeof payloadOrDeckName === "string"
         ? { deckName: payloadOrDeckName }
         : payloadOrDeckName || {};
 
-      return ensureElectronApi().importDeckFromJson(payload);
+      return invokeElectron(
+        () => ensureElectronApi().importDeckFromJson(payload),
+        "Failed to import deck",
+      );
     },
-    importDeckFromUrl: (payload = {}) => ensureElectronApi().importDeckFromUrl(payload),
+    importDeckFromUrl: (payload = {}) =>
+      invokeElectron(() => ensureElectronApi().importDeckFromUrl(payload), "Failed to import deck"),
     exportDeckPackage: (deckId, settings = {}) =>
-      ensureElectronApi().exportDeckPackage({
-        deckId,
-        settings: settings || {},
-      }),
+      invokeElectron(
+        () =>
+          ensureElectronApi().exportDeckPackage({
+            deckId,
+            settings: settings || {},
+          }),
+        "Failed to export deck package",
+      ),
     exportDeckToJson: (deckId, settings = {}) =>
-      ensureElectronApi().exportDeckToJson({
-        deckId,
-        settings: settings || {},
-      }),
-    renameDeck: (deckId, name) => ensureElectronApi().renameDeck({ deckId, name }),
-    deleteDeck: (deckId) => ensureElectronApi().deleteDeck({ deckId }),
-    saveDeck: (payload) => ensureElectronApi().saveDeck(payload || {}),
+      invokeElectron(
+        () =>
+          ensureElectronApi().exportDeckToJson({
+            deckId,
+            settings: settings || {},
+          }),
+        "Failed to export deck",
+      ),
+    renameDeck: (deckId, name) =>
+      invokeElectron(() => ensureElectronApi().renameDeck({ deckId, name }), "Failed to rename deck"),
+    deleteDeck: (deckId) =>
+      invokeElectron(() => ensureElectronApi().deleteDeck({ deckId }), "Failed to delete deck"),
+    saveDeck: (payload) =>
+      invokeElectron(() => ensureElectronApi().saveDeck(payload || {}), "Failed to save deck"),
     subscribeDecksUpdated(callback) {
       const electronApi = getElectronApi();
 
@@ -332,47 +400,71 @@ const createHubRepository = () => {
     isConfigured: () => hasHubConfig(),
     async listDecks(payload) {
       const hubConfig = ensureHubConfig();
-      return ensureElectronApi().hubListDecks({
-        config: hubConfig,
-        ...(payload || {}),
-      });
+      return invokeElectron(
+        () =>
+          ensureElectronApi().hubListDecks({
+            config: hubConfig,
+            ...(payload || {}),
+          }),
+        "Failed to load community decks",
+      );
     },
     async getDeckBySlug(slug) {
       const hubConfig = ensureHubConfig();
-      return ensureElectronApi().hubGetDeckBySlug({
-        config: hubConfig,
-        slug,
-      });
+      return invokeElectron(
+        () =>
+          ensureElectronApi().hubGetDeckBySlug({
+            config: hubConfig,
+            slug,
+          }),
+        "Failed to load Hub deck",
+      );
     },
     async createDownloadUrl(filePath, expiresInSeconds) {
       const hubConfig = ensureHubConfig();
-      return ensureElectronApi().hubCreateDownloadUrl({
-        config: hubConfig,
-        filePath,
-        expiresInSeconds,
-      });
+      return invokeElectron(
+        () =>
+          ensureElectronApi().hubCreateDownloadUrl({
+            config: hubConfig,
+            filePath,
+            expiresInSeconds,
+          }),
+        "Failed to prepare deck download",
+      );
     },
     async publishDeck(payload) {
       const hubConfig = ensureHubConfig();
-      return ensureElectronApi().hubPublishDeck({
-        config: hubConfig,
-        ...(payload || {}),
-      });
+      return invokeElectron(
+        () =>
+          ensureElectronApi().hubPublishDeck({
+            config: hubConfig,
+            ...(payload || {}),
+          }),
+        "Failed to publish deck to Hub",
+      );
     },
     async incrementDeckDownloads(deckId, currentDownloadsCount) {
       const hubConfig = ensureHubConfig();
-      return ensureElectronApi().hubIncrementDeckDownloads({
-        config: hubConfig,
-        deckId,
-        currentDownloadsCount,
-      });
+      return invokeElectron(
+        () =>
+          ensureElectronApi().hubIncrementDeckDownloads({
+            config: hubConfig,
+            deckId,
+            currentDownloadsCount,
+          }),
+        "Failed to update deck downloads",
+      );
     },
     async deleteDeck(deckId) {
       const hubConfig = ensureHubConfig();
-      return ensureElectronApi().hubDeleteDeck({
-        config: hubConfig,
-        deckId,
-      });
+      return invokeElectron(
+        () =>
+          ensureElectronApi().hubDeleteDeck({
+            config: hubConfig,
+            deckId,
+          }),
+        "Failed to delete Hub deck",
+      );
     },
   };
 };

@@ -213,19 +213,8 @@
 }
 
 .browse-decks-panel__pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
   border-top: 1px solid var(--color-border);
   padding-top: 12px;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-}
-
-.browse-decks-panel__pagination-actions {
-  display: flex;
-  gap: 6px;
 }
 
 @media (max-width: 1024px) {
@@ -256,16 +245,7 @@
   }
 
   .browse-decks-panel__pagination {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .browse-decks-panel__pagination-actions {
-    width: 100%;
-  }
-
-  .browse-decks-panel__pagination-actions .ui-button {
-    flex: 1;
+    padding-top: 10px;
   }
 }
 
@@ -279,7 +259,6 @@
     gap: 6px;
   }
 
-  .browse-decks-panel__pagination-actions .ui-button,
   .browse-decks-panel__actions .ui-button {
     min-height: 34px;
     font-size: 0.76rem;
