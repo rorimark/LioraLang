@@ -1,6 +1,7 @@
 /* global __APP_TARGET__ */
 import { createBrowserRouter, createHashRouter, RouterProvider } from "react-router";
 import { routes } from "@app-router-routes";
+import { RouteHydrateFallback } from "@shared/ui";
 
 const isDesktopTarget = __APP_TARGET__ === "desktop";
 const router = isDesktopTarget
@@ -8,5 +9,5 @@ const router = isDesktopTarget
   : createBrowserRouter(routes);
 
 export const AppRouter = () => {
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router} fallbackElement={<RouteHydrateFallback />} />;
 };
