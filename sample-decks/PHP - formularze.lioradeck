@@ -1,0 +1,412 @@
+{
+  "format": "lioralang.deck",
+  "version": 1,
+  "exportedAt": "2026-03-16T19:02:54.125Z",
+  "deck": {
+    "name": "PHP - formularze",
+    "description": "Powtórzenie przed kartkówką z PHP: obsługa formularzy HTML, metody GET/POST, superglobalne tablice",
+    "sourceLanguage": "English",
+    "targetLanguage": "Polish",
+    "tertiaryLanguage": "",
+    "tags": [
+      "PHP",
+      "Form",
+      "GET",
+      "POST",
+      "Superglobal"
+    ]
+  },
+  "words": [
+    {
+      "id": "custom-223",
+      "source": "$_FILES",
+      "target": "Tablica superglobalna zawierająca informacje o przesłanych plikach. Zawiera klucze: name, type, tmp_name, error, size.",
+      "level": "A1",
+      "part_of_speech": "superglobal",
+      "tags": [],
+      "examples": [
+        "$nazwa_pliku = $_FILES['plik']['name'];",
+        "$tymczasowa_sciezka = $_FILES['plik']['tmp_name'];",
+        "move_uploaded_file($tymczasowa_sciezka, 'uploady/' . $nazwa_pliku);"
+      ]
+    },
+    {
+      "id": "custom-206",
+      "source": "$_GET",
+      "target": "Tablica superglobalna zawierająca dane przesłane metodą GET. Kluczami są wartości atrybutów 'name' pól formularza, wartościami - dane wprowadzone przez użytkownika.",
+      "level": "A1",
+      "part_of_speech": "superglobal",
+      "tags": [],
+      "examples": [
+        "// Dla URL: strona.php?imie=Jan&wiek=25",
+        "$imie = $_GET['imie']; // Jan",
+        "$wiek = $_GET['wiek']; // 25"
+      ]
+    },
+    {
+      "id": "custom-207",
+      "source": "$_POST",
+      "target": "Tablica superglobalna zawierająca dane przesłane metodą POST. Kluczami są wartości atrybutów 'name' pól formularza, wartościami - dane wprowadzone przez użytkownika.",
+      "level": "A1",
+      "part_of_speech": "superglobal",
+      "tags": [],
+      "examples": [
+        "// Po wysłaniu formularza POST z polem 'imie'",
+        "$imie = $_POST['imie']; // wartość wpisana w polu"
+      ]
+    },
+    {
+      "id": "custom-208",
+      "source": "$_REQUEST",
+      "target": "Tablica superglobalna łącząca dane z $_GET, $_POST i $_COOKIE. Rzadziej używana ze względów bezpieczeństwa - lepiej jawnie określać metodę.",
+      "level": "A1",
+      "part_of_speech": "superglobal",
+      "tags": [],
+      "examples": [
+        "$imie = $_REQUEST['imie']; // może pochodzić z GET, POST lub COOKIE"
+      ]
+    },
+    {
+      "id": "custom-202",
+      "source": "action",
+      "target": "Atrybut znacznika <form> określający adres URL, do którego zostaną wysłane dane formularza. Jeśli przetwarzanie odbywa się w tym samym pliku, ustawiamy pusty łańcuch (action=\"\").",
+      "level": "A1",
+      "part_of_speech": "html_attribute",
+      "tags": [],
+      "examples": [
+        "<form action=\"login.php\" method=\"post\">",
+        "<form action=\"\" method=\"get\">"
+      ]
+    },
+    {
+      "id": "custom-230",
+      "source": "atrybut value",
+      "target": "Atrybut określający domyślną wartość pola formularza. Dla pól tekstowych to wartość wyświetlana, dla opcji radio/checkbox - wartość wysyłana po zaznaczeniu.",
+      "level": "A1",
+      "part_of_speech": "html_attribute",
+      "tags": [],
+      "examples": [
+        "<input type=\"text\" name=\"miasto\" value=\"Warszawa\">",
+        "<input type=\"radio\" name=\"plec\" value=\"kobieta\">"
+      ]
+    },
+    {
+      "id": "custom-210",
+      "source": "empty()",
+      "target": "Funkcja sprawdzająca, czy zmienna jest pusta (0, null, '', false, pusta tablica). Przydatna do walidacji pól formularza.",
+      "level": "A1",
+      "part_of_speech": "function",
+      "tags": [],
+      "examples": [
+        "if (empty($_POST['imie'])) {",
+        "echo 'Pole imię nie może być puste';",
+        "}"
+      ]
+    },
+    {
+      "id": "custom-224",
+      "source": "enctype=\"multipart/form-data\"",
+      "target": "Atrybut formularza wymagany przy przesyłaniu plików. Określa kodowanie danych formularza.",
+      "level": "A1",
+      "part_of_speech": "html_attribute",
+      "tags": [],
+      "examples": [
+        "<form action=\"\" method=\"post\" enctype=\"multipart/form-data\">"
+      ]
+    },
+    {
+      "id": "custom-229",
+      "source": "filter_input()",
+      "target": "Funkcja do pobierania i filtrowania danych z zewnętrznych źródeł (GET, POST, COOKIE, SERVER). Bezpieczniejsza niż bezpośredni dostęp do $_POST/$_GET.",
+      "level": "A1",
+      "part_of_speech": "function",
+      "tags": [],
+      "examples": [
+        "$wiek = filter_input(INPUT_POST, 'wiek', FILTER_VALIDATE_INT);",
+        "if ($wiek === false) {",
+        "echo 'Wiek musi być liczbą całkowitą';",
+        "}"
+      ]
+    },
+    {
+      "id": "custom-201",
+      "source": "form",
+      "target": "Znacznik HTML tworzący formularz. Atrybuty: action (URL przetwarzający dane) i method (GET/POST).",
+      "level": "A1",
+      "part_of_speech": "html_tag",
+      "tags": [],
+      "examples": [
+        "<form action=\"\" method=\"post\">",
+        "<input type=\"text\" name=\"username\">",
+        "<input type=\"submit\" value=\"Wyślij\">",
+        "</form>"
+      ]
+    },
+    {
+      "id": "custom-204",
+      "source": "GET",
+      "target": "Metoda przesyłania danych, w której parametry są dołączane do URL po znaku '?'. Dane są widoczne w adresie, mają ograniczoną długość (ok. 1024 znaki) i nie nadają się do poufnych informacji. Można dodawać stronę do zakładek.",
+      "level": "A1",
+      "part_of_speech": "method",
+      "tags": [],
+      "examples": [
+        "// URL po wysłaniu formularza GET:",
+        "// strona.php?imie=Jan&wiek=25",
+        "<form action=\"strona.php\" method=\"get\">",
+        "<input type=\"text\" name=\"imie\">",
+        "<input type=\"text\" name=\"wiek\">",
+        "<input type=\"submit\">",
+        "</form>"
+      ]
+    },
+    {
+      "id": "custom-227",
+      "source": "GET parameters in URL",
+      "target": "Parametry GET są widoczne w URL po znaku '?' jako pary klucz=wartość, oddzielone '&'. Można je tworzyć ręcznie, bez formularza.",
+      "level": "A1",
+      "part_of_speech": "concept",
+      "tags": [],
+      "examples": [
+        "https://example.com/strona.php?produkt=komputer&kolor=czerwony",
+        "// W PHP: $_GET['produkt'] i $_GET['kolor']"
+      ]
+    },
+    {
+      "id": "custom-211",
+      "source": "htmlspecialchars()",
+      "target": "Funkcja zabezpieczająca przed atakami XSS (Cross-Site Scripting). Zamienia znaki specjalne HTML na encje, np. < na &lt;.",
+      "level": "A1",
+      "part_of_speech": "function",
+      "tags": [],
+      "examples": [
+        "$bezpieczne_imie = htmlspecialchars($_POST['imie']);",
+        "echo 'Witaj, ' . $bezpieczne_imie;"
+      ]
+    },
+    {
+      "id": "custom-219",
+      "source": "input type=\"checkbox\"",
+      "target": "Pole wyboru (checkbox). Umożliwia zaznaczenie/odznaczenie. Można zaznaczyć wiele opcji w grupie (używając name[] do tablicy).",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"checkbox\" name=\"zainteresowania[]\" value=\"sport\"> Sport",
+        "<input type=\"checkbox\" name=\"zainteresowania[]\" value=\"muzyka\"> Muzyka",
+        "// W PHP: $zainteresowania = $_POST['zainteresowania']; // tablica"
+      ]
+    },
+    {
+      "id": "custom-217",
+      "source": "input type=\"email\"",
+      "target": "Pole do wprowadzania adresu email. Przeglądarka może walidować poprawność składniową.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"email\" name=\"email\" required>"
+      ]
+    },
+    {
+      "id": "custom-222",
+      "source": "input type=\"file\"",
+      "target": "Pole do przesyłania plików. Wymaga ustawienia enctype=\"multipart/form-data\" w znaczniku <form>.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<form action=\"\" method=\"post\" enctype=\"multipart/form-data\">",
+        "<input type=\"file\" name=\"plik\">",
+        "</form>"
+      ]
+    },
+    {
+      "id": "custom-216",
+      "source": "input type=\"number\"",
+      "target": "Pole do wprowadzania liczb. Przeglądarka może dodać strzałki do zwiększania/zmniejszania wartości.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"number\" name=\"wiek\" min=\"0\" max=\"120\">"
+      ]
+    },
+    {
+      "id": "custom-215",
+      "source": "input type=\"password\"",
+      "target": "Pole do wprowadzania hasła. Wpisywane znaki są zasłonięte (np. kropkami). Dane są przesyłane zwykłym tekstem - konieczne użycie HTTPS.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"password\" name=\"haslo\">"
+      ]
+    },
+    {
+      "id": "custom-218",
+      "source": "input type=\"radio\"",
+      "target": "Pole opcji (przycisk opcji). Umożliwia wybór jednej z kilku wzajemnie wykluczających się opcji. Grupuje się je przez tę samą wartość atrybutu name.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"radio\" name=\"plec\" value=\"kobieta\"> Kobieta",
+        "<input type=\"radio\" name=\"plec\" value=\"mezczyzna\"> Mężczyzna"
+      ]
+    },
+    {
+      "id": "custom-214",
+      "source": "input type=\"text\"",
+      "target": "Pole tekstowe jednoliniowe. Podstawowy element formularza do wprowadzania krótkich tekstów.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"text\" name=\"imie\" placeholder=\"Wpisz imię\">"
+      ]
+    },
+    {
+      "id": "custom-209",
+      "source": "isset()",
+      "target": "Funkcja sprawdzająca, czy zmienna istnieje i nie ma wartości null. Używana do sprawdzenia, czy formularz został wysłany (czy pole istnieje w tablicy $_POST lub $_GET).",
+      "level": "A1",
+      "part_of_speech": "function",
+      "tags": [],
+      "examples": [
+        "if (isset($_POST['imie'])) {",
+        "echo 'Witaj, ' . $_POST['imie'];",
+        "}"
+      ]
+    },
+    {
+      "id": "custom-203",
+      "source": "method",
+      "target": "Atrybut określający sposób wysyłania danych z formularza na serwer. Wartości: GET (domyślna) lub POST.",
+      "level": "A1",
+      "part_of_speech": "html_attribute",
+      "tags": [],
+      "examples": [
+        "<form action=\"\" method=\"get\">",
+        "<form action=\"\" method=\"post\">"
+      ]
+    },
+    {
+      "id": "custom-212",
+      "source": "name attribute",
+      "target": "Atrybut pola formularza określający klucz w tablicy $_GET lub $_POST. Bez tego atrybutu dane z pola nie zostaną wysłane na serwer.",
+      "level": "A1",
+      "part_of_speech": "html_attribute",
+      "tags": [],
+      "examples": [
+        "<input type=\"text\" name=\"username\">",
+        "// W PHP: $_POST['username']"
+      ]
+    },
+    {
+      "id": "custom-205",
+      "source": "POST",
+      "target": "Metoda przesyłania danych, w której dane są przesyłane w ciele żądania HTTP. Dane nie są widoczne w URL, brak ograniczeń długości, można przesyłać pliki. Zalecana do danych poufnych (hasła) i dużych ilości informacji.",
+      "level": "A1",
+      "part_of_speech": "method",
+      "tags": [],
+      "examples": [
+        "<form action=\"\" method=\"post\">",
+        "<input type=\"password\" name=\"haslo\">",
+        "<input type=\"file\" name=\"dokument\">",
+        "<input type=\"submit\">",
+        "</form>"
+      ]
+    },
+    {
+      "id": "custom-228",
+      "source": "przykład z PDF - obliczenia",
+      "target": "Przykład z materiałów: formularz z dwoma polami liczbowymi, po wysłaniu wyświetlane są wyniki działań (suma, różnica).",
+      "level": "A1",
+      "part_of_speech": "example",
+      "tags": [],
+      "examples": [
+        "<form action=\"\" method=\"post\">",
+        "<input type=\"number\" name=\"liczba1\">",
+        "<input type=\"number\" name=\"liczba2\">",
+        "<input type=\"submit\" value=\"policz\">",
+        "</form>",
+        "<?php",
+        "if (isset($_POST['liczba1'], $_POST['liczba2'])) {",
+        "$a = $_POST['liczba1'];",
+        "$b = $_POST['liczba2'];",
+        "echo 'Suma: ' . ($a + $b);",
+        "echo 'Różnica: ' . ($a - $b);",
+        "}",
+        "?>"
+      ]
+    },
+    {
+      "id": "custom-220",
+      "source": "select",
+      "target": "Lista rozwijana (select). Umożliwia wybór jednej (domyślnie) lub wielu (z atrybutem multiple) opcji z listy.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<select name=\"miasto\">",
+        "<option value=\"warszawa\">Warszawa</option>",
+        "<option value=\"krakow\">Kraków</option>",
+        "</select>"
+      ]
+    },
+    {
+      "id": "custom-226",
+      "source": "sprawdzanie wysłania formularza",
+      "target": "Technika sprawdzania, czy formularz został wysłany. Najczęściej przez isset() na konkretnym polu lub przycisku submit.",
+      "level": "A1",
+      "part_of_speech": "concept",
+      "tags": [],
+      "examples": [
+        "if (isset($_POST['submit'])) {",
+        "// formularz wysłany",
+        "}",
+        "// lub",
+        "if ($_SERVER['REQUEST_METHOD'] === 'POST') {",
+        "// formularz wysłany metodą POST"
+      ]
+    },
+    {
+      "id": "custom-213",
+      "source": "submit button",
+      "target": "Przycisk typu 'submit' wysyłający formularz na serwer. Może mieć atrybut name, który również trafia do tablicy $_GET/$_POST.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<input type=\"submit\" value=\"Zaloguj\">",
+        "<button type=\"submit\" name=\"akcja\" value=\"wyslij\">Wyślij</button>"
+      ]
+    },
+    {
+      "id": "custom-221",
+      "source": "textarea",
+      "target": "Pole tekstowe wieloliniowe do wprowadzania dłuższych tekstów.",
+      "level": "A1",
+      "part_of_speech": "html_element",
+      "tags": [],
+      "examples": [
+        "<textarea name=\"opis\" rows=\"5\" cols=\"40\"></textarea>"
+      ]
+    },
+    {
+      "id": "custom-225",
+      "source": "walidacja formularza",
+      "target": "Proces sprawdzania poprawności danych wprowadzonych przez użytkownika przed ich przetworzeniem. Może być po stronie klienta (JavaScript) i serwera (PHP). Walidacja serwerowa jest niezbędna dla bezpieczeństwa.",
+      "level": "A1",
+      "part_of_speech": "concept",
+      "tags": [],
+      "examples": [
+        "if (empty($_POST['imie'])) {",
+        "$bledy[] = 'Imię jest wymagane';",
+        "} elseif (strlen($_POST['imie']) < 3) {",
+        "$bledy[] = 'Imię musi mieć co najmniej 3 znaki';",
+        "}"
+      ]
+    }
+  ]
+}
