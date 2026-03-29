@@ -4,7 +4,7 @@ import "./ActionModal.css";
 
 const EMPTY_DIALOG = Object.freeze({});
 
-export const ActionModal = memo(({ dialog = EMPTY_DIALOG }) => {
+export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => {
     const {
       isOpen,
       title,
@@ -15,7 +15,6 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG }) => {
       isConfirmDisabled = false,
       onConfirm,
       onClose,
-      children = null,
     } = dialog;
     const contentRef = useRef(null);
     const titleId = useId();
