@@ -1,3 +1,6 @@
+import { createSupabaseAuthRepository } from "@shared/api";
+import { createWebHubRepository } from "@shared/platform/web/model";
+
 const NOOP_UNSUBSCRIBE = () => {};
 const DEFAULT_HISTORY_STATE = {
   canGoBack: false,
@@ -18,26 +21,6 @@ let isUpdateStatusBridgeInitialized = false;
 
 const ELECTRON_INVOKE_PREFIX = /^Error invoking remote method '[^']+':\s*/i;
 const LEADING_ERROR_PREFIX = /^Error:\s*/i;
-
-const resolveHubConfig = () => {
-  const supabaseUrl = typeof import.meta.env.VITE_SUPABASE_URL === "string"
-    ? import.meta.env.VITE_SUPABASE_URL.trim()
-    : "";
-  const supabaseKey = typeof import.meta.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY === "string"
-    ? import.meta.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY.trim()
-    : "";
-
-  if (!supabaseUrl || !supabaseKey) {
-    return null;
-  }
-
-  return {
-    url: supabaseUrl,
-    publishableKey: supabaseKey,
-  };
-};
-
-const hasHubConfig = () => Boolean(resolveHubConfig());
 
 const getElectronApi = () =>
   typeof window !== "undefined" ? window.electronAPI : undefined;
@@ -94,18 +77,6 @@ const ensureElectronApi = () => {
   }
 
   return electronApi;
-};
-
-const ensureHubConfig = () => {
-  const hubConfig = resolveHubConfig();
-
-  if (!hubConfig) {
-    throw new Error(
-      "LLH is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY to .env.",
-    );
-  }
-
-  return hubConfig;
 };
 
 const normalizeImportFilePayload = (payload) => {
@@ -395,80 +366,6 @@ const createSettingsRepository = () => {
   };
 };
 
-const createHubRepository = () => {
-  return {
-    isConfigured: () => hasHubConfig(),
-    async listDecks(payload) {
-      const hubConfig = ensureHubConfig();
-      return invokeElectron(
-        () =>
-          ensureElectronApi().hubListDecks({
-            config: hubConfig,
-            ...(payload || {}),
-          }),
-        "Failed to load community decks",
-      );
-    },
-    async getDeckBySlug(slug) {
-      const hubConfig = ensureHubConfig();
-      return invokeElectron(
-        () =>
-          ensureElectronApi().hubGetDeckBySlug({
-            config: hubConfig,
-            slug,
-          }),
-        "Failed to load Hub deck",
-      );
-    },
-    async createDownloadUrl(filePath, expiresInSeconds) {
-      const hubConfig = ensureHubConfig();
-      return invokeElectron(
-        () =>
-          ensureElectronApi().hubCreateDownloadUrl({
-            config: hubConfig,
-            filePath,
-            expiresInSeconds,
-          }),
-        "Failed to prepare deck download",
-      );
-    },
-    async publishDeck(payload) {
-      const hubConfig = ensureHubConfig();
-      return invokeElectron(
-        () =>
-          ensureElectronApi().hubPublishDeck({
-            config: hubConfig,
-            ...(payload || {}),
-          }),
-        "Failed to publish deck to Hub",
-      );
-    },
-    async incrementDeckDownloads(deckId, currentDownloadsCount) {
-      const hubConfig = ensureHubConfig();
-      return invokeElectron(
-        () =>
-          ensureElectronApi().hubIncrementDeckDownloads({
-            config: hubConfig,
-            deckId,
-            currentDownloadsCount,
-          }),
-        "Failed to update deck downloads",
-      );
-    },
-    async deleteDeck(deckId) {
-      const hubConfig = ensureHubConfig();
-      return invokeElectron(
-        () =>
-          ensureElectronApi().hubDeleteDeck({
-            config: hubConfig,
-            deckId,
-          }),
-        "Failed to delete Hub deck",
-      );
-    },
-  };
-};
-
 const createSrsRepository = () => {
   return {
     getSrsSession: (deckId, settings, options) =>
@@ -657,9 +554,10 @@ const createRuntimeGateway = () => {
 
 export const createElectronPlatformServices = () => {
   return {
+    authRepository: createSupabaseAuthRepository(),
     deckRepository: createDeckRepository(),
     settingsRepository: createSettingsRepository(),
-    hubRepository: createHubRepository(),
+    hubRepository: createWebHubRepository(),
     srsRepository: createSrsRepository(),
     progressRepository: createProgressRepository(),
     systemRepository: createSystemRepository(),

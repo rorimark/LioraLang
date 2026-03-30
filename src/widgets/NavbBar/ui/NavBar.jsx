@@ -1,9 +1,10 @@
 import "./NavBar.css";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { NavTab } from "@shared/ui";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { NAV_ITEMS } from "@shared/config/routes";
+import { usePlatformService } from "@shared/providers";
 import { NavBarLearnShortcutsSlot } from "./NavBarLearnShortcutsSlot";
 import {
   IoLayersOutline,
@@ -24,7 +25,53 @@ const ICONS_BY_NAME = {
 };
 
 export const NavBar = memo(({ mobile = false }) => {
+  const authRepository = usePlatformService("authRepository");
+  const [accountLabel, setAccountLabel] = useState("Sign in / Sign up");
   const navItems = mobile ? NAV_ITEMS : desktopNavItems;
+
+  useEffect(() => {
+    if (!authRepository.isConfigured()) {
+      return undefined;
+    }
+
+    let isSubscribed = true;
+
+    authRepository
+      .getSnapshot()
+      .then((snapshot) => {
+        if (!isSubscribed) {
+          return;
+        }
+
+        setAccountLabel(
+          snapshot?.isAuthenticated
+            ? snapshot.displayName || snapshot.email || "Open account"
+            : "Sign in / Sign up",
+        );
+      })
+      .catch(() => {
+        if (isSubscribed) {
+          setAccountLabel("Sign in / Sign up");
+        }
+      });
+
+    const unsubscribe = authRepository.subscribe((snapshot) => {
+      if (!isSubscribed) {
+        return;
+      }
+
+      setAccountLabel(
+        snapshot?.isAuthenticated
+          ? snapshot.displayName || snapshot.email || "Open account"
+          : "Sign in / Sign up",
+      );
+    });
+
+    return () => {
+      isSubscribed = false;
+      unsubscribe?.();
+    };
+  }, [authRepository]);
 
   return (
     <nav
@@ -41,7 +88,7 @@ export const NavBar = memo(({ mobile = false }) => {
               to={ROUTE_PATHS.account}
               aria-label="Open account page"
             >
-              Sign in / Sign up
+              {accountLabel}
             </Link>
           </div>
         </div>
