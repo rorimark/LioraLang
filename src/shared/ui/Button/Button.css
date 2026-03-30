@@ -1,7 +1,7 @@
 .ui-button {
   appearance: none;
   border: 1px solid var(--color-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-text);
   cursor: pointer;
@@ -11,18 +11,20 @@
   gap: 6px;
   font-family: inherit;
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.1;
   padding: 8px 12px;
   transition:
     background-color 140ms ease,
     border-color 140ms ease,
     color 140ms ease,
+    box-shadow 140ms ease,
     opacity 140ms ease;
 }
 
 .ui-button:hover:not(:disabled) {
-  background: var(--color-surface-muted);
+  background: color-mix(in srgb, var(--color-text) 5%, var(--color-surface));
+  border-color: var(--color-border-strong);
 }
 
 .ui-button:disabled {
@@ -31,17 +33,19 @@
 }
 
 .ui-button--primary {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 88%, white 12%);
+  border-color: color-mix(in srgb, var(--color-primary) 80%, black 20%);
   color: var(--color-on-primary);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-primary) 24%, transparent);
 }
 
 .ui-button--primary:hover:not(:disabled) {
-  background: var(--color-primary-strong);
+  background: color-mix(in srgb, var(--color-primary-strong) 92%, white 8%);
+  border-color: color-mix(in srgb, var(--color-primary-strong) 80%, black 20%);
 }
 
 .ui-button--secondary {
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 75%, var(--color-surface-muted));
   border-color: var(--color-border);
   color: var(--color-text);
 }
@@ -57,13 +61,15 @@
 }
 
 .ui-button--danger {
-  background: var(--color-danger);
-  border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 86%, white 14%);
+  border-color: color-mix(in srgb, var(--color-danger) 76%, black 24%);
   color: var(--color-on-primary);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-danger) 18%, transparent);
 }
 
 .ui-button--danger:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-danger) 85%, #000);
+  background: color-mix(in srgb, var(--color-danger) 90%, black 10%);
+  border-color: color-mix(in srgb, var(--color-danger) 78%, black 22%);
 }
 
 .ui-button--sm {

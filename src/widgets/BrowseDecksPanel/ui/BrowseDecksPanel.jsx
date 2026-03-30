@@ -12,23 +12,15 @@ export const BrowseDecksPanel = memo(() => {
       decks: panel.decks,
       pendingState: {
         importingDeckId: panel.importingDeckId,
-        deletingDeckId: panel.deletingDeckId,
-      },
-      permissions: {
-        canDeleteHubDecks: panel.canDeleteHubDecks,
       },
       actions: {
         onImportDeck: panel.importDeckFromHub,
         onCopyLink: panel.copyDeckLink,
-        onDeleteDeck: panel.deleteDeckFromHub,
       },
     }),
     [
-      panel.canDeleteHubDecks,
       panel.copyDeckLink,
       panel.decks,
-      panel.deleteDeckFromHub,
-      panel.deletingDeckId,
       panel.importDeckFromHub,
       panel.importingDeckId,
     ],
