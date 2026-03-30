@@ -1,4 +1,5 @@
 /* global __APP_VERSION__ */
+import { createSupabaseAuthRepository } from "@shared/api";
 import {
   createWebDeckRepository,
   createWebHubRepository,
@@ -109,6 +110,7 @@ const createRuntimeGateway = () => {
 
 export const createWebPlatformServices = () => {
   return {
+    authRepository: createSupabaseAuthRepository(),
     deckRepository: createWebDeckRepository(),
     settingsRepository: createWebSettingsRepository(),
     hubRepository: createWebHubRepository(),

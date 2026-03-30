@@ -1,42 +1,302 @@
 .account-hub-panel {
   display: grid;
-  gap: 14px;
+  gap: 16px;
+  width: 100%;
+  align-content: start;
 }
 
-.account-hub-panel__head h2 {
+.account-hub-panel__tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.account-hub-panel__tabs-row .ui-tabs {
+  flex: 1;
+  min-width: 0;
+}
+
+.account-hub-panel__tabs-row .ui-button {
+  flex: 0 0 auto;
+}
+
+.account-hub-panel__top-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.account-hub-panel__section-head h3 {
   margin: 0;
 }
 
-.account-hub-panel__head p {
+.account-hub-panel__section-head p {
   margin: 8px 0 0;
+  color: var(--color-text-muted);
+}
+
+.account-hub-panel__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
+  justify-content: stretch;
+  align-items: start;
+  gap: 16px;
+}
+
+.account-hub-panel__card,
+.account-hub-panel__notice {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  align-content: start;
+  border: 1px solid color-mix(in srgb, var(--color-border) 88%, transparent);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.account-hub-panel__grid > .account-hub-panel__card:only-child,
+.account-hub-panel__grid > .account-hub-panel__notice:only-child {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.account-hub-panel__grid--single {
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: stretch;
+}
+
+.account-hub-panel__field {
+  display: grid;
+  gap: 8px;
+}
+
+.account-hub-panel__field > span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.account-hub-panel__section-head {
+  display: grid;
+  gap: 6px;
 }
 
 .account-hub-panel__actions {
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.account-hub-panel__providers {
+  display: grid;
+  gap: 10px;
+}
+
+.account-hub-panel__guest-note,
+.account-hub-panel__hint,
+.account-hub-panel__danger-box,
+.account-hub-panel__callout,
+.account-hub-panel__summary-list,
+.account-hub-panel__empty-state,
+.account-hub-panel__inline-error {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface) 76%, var(--color-surface-muted));
+}
+
+.account-hub-panel__hint,
+.account-hub-panel__danger-box,
+.account-hub-panel__empty-state,
+.account-hub-panel__inline-error {
+  padding: 12px 14px;
+  color: var(--color-text-muted);
+}
+
+.account-hub-panel__providers .ui-button {
+  justify-content: flex-start;
+  min-height: 40px;
+}
+
+.account-hub-panel__guest-note {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.account-hub-panel__guest-note p,
+.account-hub-panel__hint,
+.account-hub-panel__danger-box p,
+.account-hub-panel__empty-state,
+.account-hub-panel__inline-error {
+  margin: 0;
+}
+
+.account-hub-panel__badge-row {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.account-hub-panel__actions button {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: 0.84rem;
-  padding: 8px 12px;
-}
-
-.account-hub-panel__actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.account-hub-panel__list {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--color-text-muted);
+.account-hub-panel__summary-list {
   display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.account-hub-panel__summary-list > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.account-hub-panel__summary-list span {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.account-hub-panel__summary-list strong {
+  font-size: 0.82rem;
+  color: var(--color-text);
+}
+
+.account-hub-panel__callout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+}
+
+.account-hub-panel__callout svg {
+  color: var(--color-primary);
+}
+
+.account-hub-panel__callout p,
+.account-hub-panel__callout strong {
+  margin: 0;
+}
+
+.account-hub-panel__callout--stacked {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.account-hub-panel__hub-list {
+  display: grid;
+  gap: 12px;
+}
+
+.account-hub-panel__hub-item {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface) 94%, var(--color-surface-muted));
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.account-hub-panel__hub-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.account-hub-panel__hub-head strong {
+  font-size: 0.92rem;
+}
+
+.account-hub-panel__hub-main p {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+}
+
+.account-hub-panel__hub-badges,
+.account-hub-panel__hub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.account-hub-panel__link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
-  font-size: 0.88rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.account-hub-panel__inline-error {
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 28%, var(--color-border));
+  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
+}
+
+.account-hub-panel__danger-box strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text);
+}
+
+.account-hub-panel__loading {
+  color: var(--color-text-muted);
+}
+
+.account-hub-panel .ui-tabs {
+  margin-bottom: 2px;
+}
+
+@media (max-width: 1100px) {
+  .account-hub-panel {
+    width: 100%;
+  }
+
+  .account-hub-panel__grid {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+
+  .account-hub-panel__grid > .account-hub-panel__card:only-child,
+  .account-hub-panel__grid > .account-hub-panel__notice:only-child,
+  .account-hub-panel__grid--single {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .account-hub-panel__tabs-row {
+    display: grid;
+    gap: 10px;
+  }
+
+  .account-hub-panel__tabs-row .ui-button {
+    width: 100%;
+  }
+
+  .account-hub-panel__summary-list > div,
+  .account-hub-panel__callout,
+  .account-hub-panel__callout--stacked,
+  .account-hub-panel__hub-head {
+    grid-template-columns: 1fr;
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .account-hub-panel__top-actions {
+    justify-content: stretch;
+  }
+
+  .account-hub-panel__top-actions .ui-button {
+    width: 100%;
+  }
+
+  .account-hub-panel__actions,
+  .account-hub-panel__hub-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 }

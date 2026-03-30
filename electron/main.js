@@ -5,6 +5,7 @@ import {
   ipcMain,
   Menu,
   shell,
+  safeStorage,
   Tray,
   session,
 } from "electron";
@@ -66,6 +67,7 @@ import { createLogger } from "./main/logging.js";
 import { createAnalyticsManager } from "./main/analytics.js";
 import { createAppLifecycleManager } from "./main/appLifecycle.js";
 import { createMainState } from "./main/state.js";
+import { createSecureStorageService } from "./services/secureStorage.service.js";
 import {
   APP_HOMEPAGE_URL,
   SETTINGS_ROUTE_PATH,
@@ -146,6 +148,10 @@ const logger = createLogger({
 const logWarn = (...args) => logger.logWarn(...args);
 const logDebug = (...args) => logger.logDebug(...args);
 const logError = (...args) => logger.logError(...args);
+const authSecureStorage = createSecureStorageService({
+  app,
+  safeStorage,
+});
 
 const runtimeErrorManager = createRuntimeErrorManager({
   app,
@@ -377,6 +383,7 @@ const setupIpcHandlers = () => {
     sendDecksUpdated,
     sendAppSettingsUpdated,
     trackAnalyticsEvent,
+    authSecureStorage,
   });
 };
 
