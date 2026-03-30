@@ -103,7 +103,6 @@ export const AppLayout = () => {
         <div className="app-shell__main">
           <PageHeader
             title={pageMeta.title}
-            subtitle={pageMeta.subtitle}
             compact={isLearnPage}
           />
           <main
