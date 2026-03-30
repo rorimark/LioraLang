@@ -40,6 +40,13 @@ contextBridge.exposeInMainWorld("electronAPI", {
   hubIncrementDeckDownloads: (payload) =>
     ipcRenderer.invoke("hub:increment-downloads", payload),
   hubDeleteDeck: (payload) => ipcRenderer.invoke("hub:delete-deck", payload),
+  authStorageGetItem: (key) => ipcRenderer.invoke("auth-storage:get-item", key),
+  authStorageSetItem: (payload) =>
+    ipcRenderer.invoke("auth-storage:set-item", payload),
+  authStorageRemoveItem: (key) =>
+    ipcRenderer.invoke("auth-storage:remove-item", key),
+  isAuthStorageEncryptionAvailable: () =>
+    ipcRenderer.invoke("auth-storage:is-encryption-available"),
 
   onDecksUpdated: (callback) => {
     const listener = () => callback();

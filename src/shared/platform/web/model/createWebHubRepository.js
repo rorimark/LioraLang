@@ -6,9 +6,7 @@ import {
 } from "@shared/platform/web/db";
 
 const HUB_SYNC_ACTION_TYPES = {
-  publishDeck: "hub.publishDeck",
   incrementDeckDownloads: "hub.incrementDeckDownloads",
-  deleteDeck: "hub.deleteDeck",
 };
 
 const HUB_SYNC_PENDING_STATUS = "pending";
@@ -169,11 +167,6 @@ const markQueuedHubSyncActionFailed = async (record, error) => {
 };
 
 const processQueuedHubSyncAction = async (hubDecksApi, record) => {
-  if (record.actionType === HUB_SYNC_ACTION_TYPES.publishDeck) {
-    await hubDecksApi.publishDeck(record.payload || {});
-    return;
-  }
-
   if (record.actionType === HUB_SYNC_ACTION_TYPES.incrementDeckDownloads) {
     const deckId = record?.payload?.deckId;
     const currentDownloadsCount = record?.payload?.currentDownloadsCount;
@@ -182,28 +175,7 @@ const processQueuedHubSyncAction = async (hubDecksApi, record) => {
     return;
   }
 
-  if (record.actionType === HUB_SYNC_ACTION_TYPES.deleteDeck) {
-    const deckId = record?.payload?.deckId;
-
-    await hubDecksApi.deleteDeck({ deckId });
-    return;
-  }
-
   throw new Error(`Unsupported sync action: ${record.actionType}`);
-};
-
-const resolveOptimisticPublishResult = (payload = {}) => {
-  const wordsCount = Array.isArray(payload?.deckPackage?.words)
-    ? payload.deckPackage.words.length
-    : 0;
-  const title = toCleanString(payload?.deck?.name) || "Deck";
-
-  return {
-    queued: true,
-    title,
-    version: 0,
-    wordsCount,
-  };
 };
 
 const resolveOptimisticDownloadsResult = (currentDownloadsCount = 0) => {
@@ -292,6 +264,11 @@ export const createWebHubRepository = () => {
       scheduleFlushQueuedHubActions();
       return hubDecksApi.listDecks(payload);
     },
+    async listOwnDecks() {
+      const hubDecksApi = await getHubDecksApi();
+      scheduleFlushQueuedHubActions();
+      return hubDecksApi.listOwnDecks();
+    },
     async getDeckBySlug(slug) {
       const hubDecksApi = await getHubDecksApi();
       scheduleFlushQueuedHubActions();
@@ -304,25 +281,13 @@ export const createWebHubRepository = () => {
     },
     async publishDeck(payload = {}) {
       if (!isBrowserOnline()) {
-        await enqueueHubSyncAction(HUB_SYNC_ACTION_TYPES.publishDeck, payload);
-        scheduleFlushQueuedHubActions();
-        return resolveOptimisticPublishResult(payload);
+        throw new Error("Publishing to LioraLangHub requires an active internet connection.");
       }
 
-      try {
-        const hubDecksApi = await getHubDecksApi();
-        const publishResult = await hubDecksApi.publishDeck(payload);
-        scheduleFlushQueuedHubActions();
-        return publishResult;
-      } catch (error) {
-        if (!isOfflineLikeError(error)) {
-          throw error;
-        }
-
-        await enqueueHubSyncAction(HUB_SYNC_ACTION_TYPES.publishDeck, payload);
-        scheduleFlushQueuedHubActions();
-        return resolveOptimisticPublishResult(payload);
-      }
+      const hubDecksApi = await getHubDecksApi();
+      const publishResult = await hubDecksApi.publishDeck(payload);
+      scheduleFlushQueuedHubActions();
+      return publishResult;
     },
     async incrementDeckDownloads(deckId, currentDownloadsCount) {
       if (!isBrowserOnline()) {
@@ -361,25 +326,13 @@ export const createWebHubRepository = () => {
     },
     async deleteDeck(deckId) {
       if (!isBrowserOnline()) {
-        await enqueueHubSyncAction(HUB_SYNC_ACTION_TYPES.deleteDeck, { deckId });
-        scheduleFlushQueuedHubActions();
-        return { queued: true };
+        throw new Error("Deleting a Hub deck requires an active internet connection.");
       }
 
-      try {
-        const hubDecksApi = await getHubDecksApi();
-        const result = await hubDecksApi.deleteDeck({ deckId });
-        scheduleFlushQueuedHubActions();
-        return result;
-      } catch (error) {
-        if (!isOfflineLikeError(error)) {
-          throw error;
-        }
-
-        await enqueueHubSyncAction(HUB_SYNC_ACTION_TYPES.deleteDeck, { deckId });
-        scheduleFlushQueuedHubActions();
-        return { queued: true };
-      }
+      const hubDecksApi = await getHubDecksApi();
+      const result = await hubDecksApi.deleteDeck({ deckId });
+      scheduleFlushQueuedHubActions();
+      return result;
     },
   };
 };
