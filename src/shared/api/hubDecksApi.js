@@ -67,41 +67,63 @@ const buildDeckSlug = (title, id) => {
   return base || suffix;
 };
 
-const isAnonymousSignInDisabledError = (error) => {
-  if (!error || typeof error !== "object") {
+const isAnonymousUser = (user) => {
+  if (!user || typeof user !== "object") {
     return false;
   }
 
-  const message = toCleanString(error.message).toLowerCase();
-  return message.includes("anonymous sign-ins are disabled");
-};
-
-const resolveAnonymousSignInErrorMessage = (error) => {
-  if (isAnonymousSignInDisabledError(error)) {
-    return "Anonymous sign-ins are disabled in Supabase. Enable Auth > Providers > Anonymous.";
+  if (user.is_anonymous) {
+    return true;
   }
 
-  return toCleanString(error?.message) || "Failed to sign in to LioraLangHub";
+  const appMetadata =
+    user.app_metadata && typeof user.app_metadata === "object"
+      ? user.app_metadata
+      : {};
+
+  return toCleanString(appMetadata.provider) === "anonymous";
 };
 
-const ensureAnonymousSession = async (supabaseClient) => {
+const isUserEmailVerified = (user) => {
+  if (!user || typeof user !== "object") {
+    return false;
+  }
+
+  if (user.email_confirmed_at || user.confirmed_at || user.confirmedAt) {
+    return true;
+  }
+
+  if (Array.isArray(user.identities)) {
+    return user.identities.some((identity) => toCleanString(identity?.provider) !== "email");
+  }
+
+  return false;
+};
+
+const ensureAuthenticatedSession = async (supabaseClient) => {
   const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
 
   if (sessionError) {
-    throw new Error(sessionError.message || "Failed to resolve Hub session");
+    throw new Error(sessionError.message || "Failed to resolve account session");
   }
 
-  if (sessionData?.session?.user?.id) {
-    return sessionData.session.user;
+  const user = sessionData?.session?.user || null;
+
+  if (!user?.id || isAnonymousUser(user)) {
+    throw new Error("Sign in on the Account page to manage LioraLangHub decks.");
   }
 
-  const { data: signInData, error: signInError } = await supabaseClient.auth.signInAnonymously();
+  return user;
+};
 
-  if (signInError || !signInData?.user?.id) {
-    throw new Error(resolveAnonymousSignInErrorMessage(signInError));
+const ensureVerifiedOwnerSession = async (supabaseClient) => {
+  const user = await ensureAuthenticatedSession(supabaseClient);
+
+  if (!isUserEmailVerified(user)) {
+    throw new Error("Verify your email before publishing or managing Hub decks.");
   }
 
-  return signInData.user;
+  return user;
 };
 
 const sha256Hex = async (value) => {
@@ -377,6 +399,59 @@ export const hubDecksApi = {
     return toHubDeck(deck, latestVersion);
   },
 
+  async listOwnDecks() {
+    const supabase = ensureSupabaseClient();
+    const user = await ensureAuthenticatedSession(supabase);
+
+    const { data: decks, error: decksError } = await supabase
+      .from("hub_decks")
+      .select(
+        "id,slug,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
+      )
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(200);
+
+    if (decksError) {
+      throw new Error(decksError.message || "Failed to load your Hub decks");
+    }
+
+    const deckList = Array.isArray(decks) ? decks : [];
+    const deckIds = deckList
+      .map((deck) => (deck?.id ? String(deck.id) : ""))
+      .filter(Boolean);
+
+    if (deckIds.length === 0) {
+      return [];
+    }
+
+    const { data: versions, error: versionsError } = await supabase
+      .from("hub_deck_versions")
+      .select("deck_id,version,file_path,file_format,file_size_bytes,created_at")
+      .in("deck_id", deckIds)
+      .order("version", { ascending: false });
+
+    if (versionsError) {
+      throw new Error(versionsError.message || "Failed to load your Hub deck versions");
+    }
+
+    const latestVersionByDeckId = new Map();
+
+    (Array.isArray(versions) ? versions : []).forEach((version) => {
+      const deckId = String(version?.deck_id || "");
+
+      if (!deckId || latestVersionByDeckId.has(deckId)) {
+        return;
+      }
+
+      latestVersionByDeckId.set(deckId, version);
+    });
+
+    return deckList.map((deck) =>
+      toHubDeck(deck, latestVersionByDeckId.get(String(deck?.id || ""))),
+    );
+  },
+
   async createDownloadUrl(filePath, expiresInSeconds = DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS) {
     const supabase = ensureSupabaseClient();
     const normalizedFilePath = toCleanString(filePath);
@@ -454,7 +529,7 @@ export const hubDecksApi = {
     deckPackage,
   } = {}) {
     const supabase = ensureSupabaseClient();
-    const user = await ensureAnonymousSession(supabase);
+    const user = await ensureVerifiedOwnerSession(supabase);
     const publishableDeck = toPublishableDeck(deck);
     validatePublishableDeck(publishableDeck);
     const packageMetadata = validateDeckPackageObject(deckPackage);
@@ -638,7 +713,7 @@ export const hubDecksApi = {
 
   async deleteDeck({ deckId } = {}) {
     const supabase = ensureSupabaseClient();
-    const user = await ensureAnonymousSession(supabase);
+    const user = await ensureVerifiedOwnerSession(supabase);
     const normalizedDeckId = toCleanString(deckId);
 
     if (!normalizedDeckId) {
