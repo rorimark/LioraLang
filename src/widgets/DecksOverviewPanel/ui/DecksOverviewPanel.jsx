@@ -109,16 +109,30 @@ export const DecksOverviewPanel = memo(() => {
   return (
     <article className="panel decks-page-panel">
       <div className="decks-page-panel__header">
-        <h2>Your Decks</h2>
-        <div className="decks-page-panel__controls">
+        <div className="decks-page-panel__header-search">
+          <label className="decks-page-panel__search-field">
+            <input
+              type="search"
+              value={panel.deckSearch}
+              onChange={(event) => panel.handleDeckSearchChange(event.target.value)}
+              placeholder="Search by name, description, language or tag"
+              aria-label="Search decks"
+            />
+          </label>
+          <div className="decks-page-panel__search-meta" aria-live="polite">
+            <strong>{panel.decks.length}</strong>
+            <span>/ {panel.totalDecksCount}</span>
+          </div>
+        </div>
+        <div className="decks-page-panel__controls" aria-label="Deck actions">
           <div className="decks-page-panel__icon-action-wrap">
             <Button
               variant="ghost"
-              className="decks-page-panel__icon-action"
+              className="decks-page-panel__icon-action decks-page-panel__icon-action--create"
               onClick={panel.openCreateDeck}
               aria-label="Create deck"
             >
-              <FiFolderPlus />
+              <FiFolderPlus size={16} strokeWidth={2.1} />
             </Button>
             <div className="decks-page-panel__tooltip" role="tooltip">
               Create deck
@@ -127,12 +141,12 @@ export const DecksOverviewPanel = memo(() => {
           <div className="decks-page-panel__icon-action-wrap">
             <Button
               variant="ghost"
-              className="decks-page-panel__icon-action"
+              className="decks-page-panel__icon-action decks-page-panel__icon-action--import"
               onClick={panel.openImportConfirm}
               disabled={panel.isImporting}
               aria-label={panel.isImporting ? "Importing deck file" : "Import deck file"}
             >
-              <FiUpload />
+              <FiUpload size={16} strokeWidth={2.1} />
             </Button>
             <div className="decks-page-panel__tooltip" role="tooltip">
               {panel.isImporting ? "Importing deck file" : "Import deck file"}
@@ -141,12 +155,12 @@ export const DecksOverviewPanel = memo(() => {
           <div className="decks-page-panel__icon-action-wrap">
             <Button
               variant="ghost"
-              className="decks-page-panel__icon-action"
+              className="decks-page-panel__icon-action decks-page-panel__icon-action--json"
               onClick={panel.openJsonImport}
               disabled={panel.isImporting}
               aria-label="Create deck from JSON"
             >
-              <FiCode />
+              <FiCode size={16} strokeWidth={2.1} />
             </Button>
             <div className="decks-page-panel__tooltip" role="tooltip">
               Create deck from JSON
@@ -155,11 +169,11 @@ export const DecksOverviewPanel = memo(() => {
           <div className="decks-page-panel__icon-action-wrap">
             <Button
               variant="ghost"
-              className="decks-page-panel__icon-action"
+              className="decks-page-panel__icon-action decks-page-panel__icon-action--refresh"
               onClick={panel.refreshDecks}
               aria-label="Refresh decks"
             >
-              <FiRefreshCw />
+              <FiRefreshCw size={16} strokeWidth={2.1} />
             </Button>
             <div className="decks-page-panel__tooltip" role="tooltip">
               Refresh decks
@@ -169,22 +183,6 @@ export const DecksOverviewPanel = memo(() => {
       </div>
 
       <InlineAlert alert={statusAlert} />
-
-      <div className="decks-page-panel__search-row">
-        <label className="decks-page-panel__search-field">
-          <input
-            type="search"
-            value={panel.deckSearch}
-            onChange={(event) => panel.handleDeckSearchChange(event.target.value)}
-            placeholder="Search by name, description, language or tag"
-            aria-label="Search decks"
-          />
-        </label>
-        <div className="decks-page-panel__search-meta" aria-live="polite">
-          <strong>{panel.decks.length}</strong>
-          <span>/ {panel.totalDecksCount}</span>
-        </div>
-      </div>
 
       {panel.error && (
         <div className="decks-page-panel__message decks-page-panel__message--error">

@@ -1,4 +1,5 @@
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { FiMoreVertical } from "react-icons/fi";
 import { formatDeckCreatedAt } from "@shared/lib/date";
 import { MetaBadge } from "@shared/ui";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
@@ -67,7 +68,11 @@ const buildDeckTags = (deck) => {
   parseTagsJson(deck?.tagsJson).forEach((tag) => {
     const tagKey = normalizeTagKey(tag);
 
-    if (!tagKey || seenCustomTagKeys.has(tagKey) || seenLanguageKeys.has(tagKey)) {
+    if (
+      !tagKey ||
+      seenCustomTagKeys.has(tagKey) ||
+      seenLanguageKeys.has(tagKey)
+    ) {
       return;
     }
 
@@ -119,79 +124,159 @@ const splitDeckTags = (tags, limit = MAX_VISIBLE_TAGS) => {
 };
 
 export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
-    const resolvedTable = table;
-    const resolvedDecks = Array.isArray(resolvedTable.decks)
-      ? resolvedTable.decks
-      : EMPTY_ARRAY;
-    const actions = resolvedTable.actions || EMPTY_OBJECT;
-    const pendingState = resolvedTable.pendingState || EMPTY_OBJECT;
-    const tableRef = useRef(null);
+  const resolvedTable = table;
+  const resolvedDecks = Array.isArray(resolvedTable.decks)
+    ? resolvedTable.decks
+    : EMPTY_ARRAY;
+  const actions = resolvedTable.actions || EMPTY_OBJECT;
+  const pendingState = resolvedTable.pendingState || EMPTY_OBJECT;
+  const tableRef = useRef(null);
+  const [openMenuDeckId, setOpenMenuDeckId] = useState(null);
 
-    useDeckTagsPopover(tableRef);
+  useDeckTagsPopover(tableRef);
 
-    const handleOpenDeck = useCallback(
-      (event) => {
-        actions.onOpenDeck?.(event.currentTarget.dataset.deckId);
-      },
-      [actions],
+  useEffect(() => {
+    if (!openMenuDeckId) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      const menuContainer = event.target.closest("[data-deck-menu-id]");
+
+      if (menuContainer?.dataset.deckMenuId === String(openMenuDeckId)) {
+        return;
+      }
+
+      setOpenMenuDeckId(null);
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpenMenuDeckId(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [openMenuDeckId]);
+
+  const handleToggleMenu = useCallback((event) => {
+    event.stopPropagation();
+    const { deckId } = event.currentTarget.dataset;
+
+    setOpenMenuDeckId((currentDeckId) =>
+      String(currentDeckId) === String(deckId) ? null : deckId,
     );
+  }, []);
 
-    const handleExportDeck = useCallback(
-      (event) => {
-        actions.onExportDeck?.(event.currentTarget.dataset.deckId);
-      },
-      [actions],
-    );
+  const handleRowOpen = useCallback(
+    (event) => {
+      actions.onOpenDeck?.(event.currentTarget.dataset.deckId);
+    },
+    [actions],
+  );
 
-    const handleEditDeck = useCallback(
-      (event) => {
-        actions.onEditDeck?.(event.currentTarget.dataset.deckId);
-      },
-      [actions],
-    );
+  const handleRowKeyDown = useCallback(
+    (event) => {
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
 
-    const handlePublishDeck = useCallback(
-      (event) => {
-        actions.onPublishDeck?.(event.currentTarget.dataset.deckId);
-      },
-      [actions],
-    );
+      event.preventDefault();
+      actions.onOpenDeck?.(event.currentTarget.dataset.deckId);
+    },
+    [actions],
+  );
 
-    const handleDeleteDeck = useCallback(
-      (event) => {
-        actions.onDeleteDeck?.(
-          event.currentTarget.dataset.deckId,
-          event.currentTarget.dataset.deckName,
-        );
-      },
-      [actions],
-    );
+  const stopEventPropagation = useCallback((event) => {
+    event.stopPropagation();
+  }, []);
 
-    return (
-      <table ref={tableRef} className="decks-table" aria-label="Decks table">
-        <thead>
+  const handleOpenDeck = useCallback(
+    (deckId) => {
+      actions.onOpenDeck?.(deckId);
+      setOpenMenuDeckId(null);
+    },
+    [actions],
+  );
+
+  const handleExportDeck = useCallback(
+    (deckId) => {
+      actions.onExportDeck?.(deckId);
+      setOpenMenuDeckId(null);
+    },
+    [actions],
+  );
+
+  const handleEditDeck = useCallback(
+    (deckId) => {
+      actions.onEditDeck?.(deckId);
+      setOpenMenuDeckId(null);
+    },
+    [actions],
+  );
+
+  const handlePublishDeck = useCallback(
+    (deckId) => {
+      actions.onPublishDeck?.(deckId);
+      setOpenMenuDeckId(null);
+    },
+    [actions],
+  );
+
+  const handleDeleteDeck = useCallback(
+    (deckId, deckName) => {
+      actions.onDeleteDeck?.(deckId, deckName);
+      setOpenMenuDeckId(null);
+    },
+    [actions],
+  );
+
+  return (
+    <table ref={tableRef} className="decks-table" aria-label="Decks table">
+      <thead>
+        <tr>
+          <th>Deck</th>
+          <th>Tags</th>
+          <th>Words</th>
+          <th>Date added</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {resolvedDecks.length === 0 ? (
           <tr>
-            <th>Deck</th>
-            <th>Tags</th>
-            <th>Words</th>
-            <th>Date added</th>
-            <th>Actions</th>
+            <td colSpan={5} className="decks-table__empty">
+              No decks found. Create one or import a deck file.
+            </td>
           </tr>
-        </thead>
-
-        <tbody>
-          {resolvedDecks.length === 0 ? (
-            <tr>
-              <td colSpan={5} className="decks-table__empty">
-                No decks found. Create one or import a deck file.
-              </td>
-            </tr>
-          ) : resolvedDecks.map((deck) => {
+        ) : (
+          resolvedDecks.map((deck) => {
             const deckTags = buildDeckTags(deck);
             const { visibleTags, hiddenTags } = splitDeckTags(deckTags);
+            const isMenuOpen = String(openMenuDeckId) === String(deck.id);
+            const isPublishing =
+              String(pendingState.publishingDeckId) === String(deck.id);
+            const isExporting =
+              String(pendingState.exportingDeckId) === String(deck.id);
+            const isDeleting =
+              String(pendingState.deletingDeckId) === String(deck.id);
 
             return (
-              <tr key={deck.id}>
+              <tr
+                key={deck.id}
+                className="decks-table__row"
+                data-deck-id={deck.id}
+                onClick={handleRowOpen}
+                onKeyDown={handleRowKeyDown}
+                tabIndex={0}
+              >
                 <td data-label="Deck">{deck.name}</td>
                 <td data-label="Tags" className="decks-table__tags-cell">
                   <div className="decks-table__tags-wrap">
@@ -210,6 +295,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                           tabIndex={0}
                           aria-describedby={`deck-tags-tooltip-${deck.id}`}
                           aria-label={`Show all tags for ${deck.name}`}
+                          onClick={stopEventPropagation}
+                          onKeyDown={stopEventPropagation}
                         >
                           <span className="decks-table__tags-more">...</span>
                           <span
@@ -217,13 +304,15 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             role="tooltip"
                             className="decks-table__tags-tooltip"
                           >
-                            {deckTags.map((tag) => (
-                              <MetaBadge
-                                key={`${deck.id}-tooltip-${tag.key}`}
-                                text={tag.text}
-                                accent={tag.accent}
-                              />
-                            ))}
+                            <span className="decks-table__tags-tooltip-content">
+                              {deckTags.map((tag) => (
+                                <MetaBadge
+                                  key={`${deck.id}-tooltip-${tag.key}`}
+                                  text={tag.text}
+                                  accent={tag.accent}
+                                />
+                              ))}
+                            </span>
                           </span>
                         </span>
                       )}
@@ -231,70 +320,143 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                   </div>
                 </td>
                 <td data-label="Words">{deck.wordsCount ?? 0}</td>
-                <td data-label="Date added">{formatDeckCreatedAt(deck.createdAt)}</td>
+                <td data-label="Date added">
+                  {formatDeckCreatedAt(deck.createdAt)}
+                </td>
                 <td data-label="Actions" className="decks-table__actions-cell">
-                  <div className="decks-table__actions">
-                    <button
-                      type="button"
-                      data-deck-id={deck.id}
-                      onClick={handleOpenDeck}
-                    >
-                      Open
-                    </button>
-                    <button
-                      type="button"
-                      data-deck-id={deck.id}
-                      onClick={handleEditDeck}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="decks-table__button--publish"
-                      data-deck-id={deck.id}
-                      onClick={handlePublishDeck}
-                      disabled={
-                        String(pendingState.publishingDeckId) === String(deck.id)
-                      }
-                    >
-                      {String(pendingState.publishingDeckId) === String(deck.id)
-                        ? "Publishing..."
-                        : "Publish"}
-                    </button>
-                    <button
-                      type="button"
-                      data-deck-id={deck.id}
-                      onClick={handleExportDeck}
-                      disabled={
-                        String(pendingState.exportingDeckId) === String(deck.id)
-                      }
-                    >
-                      {String(pendingState.exportingDeckId) === String(deck.id)
-                        ? "Exporting..."
-                        : "Export"}
-                    </button>
-                    <button
-                      type="button"
-                      className="decks-table__button--danger"
-                      data-deck-name={deck.name}
-                      data-deck-id={deck.id}
-                      onClick={handleDeleteDeck}
-                      disabled={
-                        String(pendingState.deletingDeckId) === String(deck.id)
-                      }
-                    >
-                      {String(pendingState.deletingDeckId) === String(deck.id)
-                        ? "Deleting..."
-                        : "Delete"}
-                    </button>
+                  <div
+                    className={`decks-table__actions ${isMenuOpen ? "decks-table__actions--open" : ""}`}
+                    data-deck-menu-id={deck.id}
+                  >
+                    <div className="decks-table__actions-desktop">
+                      <button
+                        type="button"
+                        data-deck-id={deck.id}
+                        className="decks-table__menu-trigger"
+                        aria-label={`Open actions for ${deck.name}`}
+                        aria-expanded={isMenuOpen}
+                        aria-haspopup="menu"
+                        onClick={handleToggleMenu}
+                        onKeyDown={stopEventPropagation}
+                      >
+                        <FiMoreVertical aria-hidden="true" />
+                      </button>
+
+                      {isMenuOpen && (
+                        <div
+                          className="decks-table__menu"
+                          role="menu"
+                          aria-label={`Actions for ${deck.name}`}
+                          onClick={stopEventPropagation}
+                          onKeyDown={stopEventPropagation}
+                        >
+                          <button
+                            type="button"
+                            role="menuitem"
+                            onClick={() => handleOpenDeck(deck.id)}
+                          >
+                            Open
+                          </button>
+                          <button
+                            type="button"
+                            role="menuitem"
+                            onClick={() => handleEditDeck(deck.id)}
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            type="button"
+                            role="menuitem"
+                            onClick={() => handleExportDeck(deck.id)}
+                            disabled={isExporting}
+                          >
+                            {isExporting ? "Exporting..." : "Export"}
+                          </button>
+                          <button
+                            type="button"
+                            role="menuitem"
+                            className="decks-table__button--publish"
+                            onClick={() => handlePublishDeck(deck.id)}
+                            disabled={isPublishing}
+                          >
+                            {isPublishing ? "Publishing..." : "Publish"}
+                          </button>
+                          <button
+                            type="button"
+                            role="menuitem"
+                            className="decks-table__button--danger"
+                            onClick={() => handleDeleteDeck(deck.id, deck.name)}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? "Deleting..." : "Delete"}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="decks-table__actions-mobile">
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleOpenDeck(deck.id);
+                        }}
+                      >
+                        Open
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleEditDeck(deck.id);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleExportDeck(deck.id);
+                        }}
+                        disabled={isExporting}
+                      >
+                        {isExporting ? "Exporting..." : "Export"}
+                      </button>
+                      <button
+                        type="button"
+                        className="decks-table__button--publish"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handlePublishDeck(deck.id);
+                        }}
+                        disabled={isPublishing}
+                      >
+                        {isPublishing ? "Publishing..." : "Publish"}
+                      </button>
+
+                      <button
+                        type="button"
+                        className="decks-table__button--danger"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleDeleteDeck(deck.id, deck.name);
+                        }}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
                   </div>
                 </td>
               </tr>
             );
-          })}
-        </tbody>
-      </table>
-    );
-  });
+          })
+        )}
+      </tbody>
+    </table>
+  );
+});
 
 DecksTable.displayName = "DecksTable";

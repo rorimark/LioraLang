@@ -10,7 +10,7 @@
   height: 100%;
   gap: var(--ui-nav-bar-gap);
   padding: var(--ui-nav-bar-padding);
-  border-radius: 18px;
+  border-radius: 14px;
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
   box-shadow: var(--shadow-sm);
@@ -26,12 +26,14 @@
 .nav-bar__logo {
   width: var(--ui-nav-bar-logo-size);
   height: var(--ui-nav-bar-logo-size);
-  border-radius: 12px;
+  border-radius: 10px;
   display: grid;
   place-content: center;
   font-weight: 700;
   color: var(--color-on-primary);
-  background: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 16%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-primary) 24%, var(--color-border));
+  color: var(--color-primary-strong);
 }
 
 .nav-bar__brand strong {
@@ -109,8 +111,8 @@
 
 .nav-bar__shortcuts {
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface-muted);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-surface) 70%, var(--color-surface-muted));
   padding: var(--ui-nav-shortcuts-padding);
   display: grid;
   gap: 8px;
@@ -145,7 +147,7 @@
   min-width: 26px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 74%, var(--color-surface-muted));
   color: var(--color-text);
   font-size: 0.68rem;
   font-family: inherit;
@@ -163,7 +165,7 @@
   bottom: max(12px, env(safe-area-inset-bottom));
   z-index: 800;
   padding: 7px;
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   box-shadow: var(--shadow-md);
