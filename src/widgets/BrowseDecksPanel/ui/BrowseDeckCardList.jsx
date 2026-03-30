@@ -80,7 +80,6 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
       ? resolvedDeckList.decks
       : EMPTY_ARRAY;
     const pendingState = resolvedDeckList.pendingState || EMPTY_OBJECT;
-    const permissions = resolvedDeckList.permissions || EMPTY_OBJECT;
     const actions = resolvedDeckList.actions || EMPTY_OBJECT;
 
     const handleImportDeck = useCallback(
@@ -100,27 +99,6 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
         }
 
         actions.onImportDeck?.(deck);
-      },
-      [actions, resolvedDecks],
-    );
-
-    const handleDeleteDeck = useCallback(
-      (event) => {
-        const deckId = event.currentTarget.dataset.deckId;
-
-        if (!deckId) {
-          return;
-        }
-
-        const deck = resolvedDecks.find(
-          (item) => String(item?.id) === String(deckId),
-        );
-
-        if (!deck) {
-          return;
-        }
-
-        actions.onDeleteDeck?.(deck);
       },
       [actions, resolvedDecks],
     );
@@ -165,8 +143,6 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
             typeof deck?.description === "string" && deck.description.trim().length > 0;
           const isImporting =
             String(pendingState.importingDeckId) === String(deck?.id);
-          const isDeleting =
-            String(pendingState.deletingDeckId) === String(deck?.id);
           const fileSize = formatFileSize(deck?.latestVersion?.fileSizeBytes);
           const createdAt = formatDate(deck?.createdAt);
           const updatedAt = formatDate(
@@ -201,7 +177,7 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                   <Button
                     data-deck-id={deck.id}
                     onClick={handleCopyLink}
-                    disabled={!canCopyLink || isImporting || isDeleting}
+                    disabled={!canCopyLink || isImporting}
                     variant="ghost"
                     size="sm"
                     className="browse-decks-panel__copy-link"
@@ -271,31 +247,15 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                 </dl>
               </div>
 
-              <div
-                className={
-                  permissions.canDeleteHubDecks
-                    ? "browse-decks-panel__actions"
-                    : "browse-decks-panel__actions browse-decks-panel__actions--single"
-                }
-              >
+              <div className="browse-decks-panel__actions browse-decks-panel__actions--single">
                 <Button
                   data-deck-id={deck.id}
                   onClick={handleImportDeck}
-                  disabled={isImporting || isDeleting || !deck?.latestVersion?.filePath}
+                  disabled={isImporting || !deck?.latestVersion?.filePath}
                   variant="primary"
                 >
                   {isImporting ? "Importing..." : "Import to Decks"}
                 </Button>
-                  {permissions.canDeleteHubDecks ? (
-                  <Button
-                    data-deck-id={deck.id}
-                    onClick={handleDeleteDeck}
-                    disabled={isImporting || isDeleting}
-                    variant="danger"
-                  >
-                    {isDeleting ? "Deleting..." : "Delete from Hub"}
-                  </Button>
-                ) : null}
               </div>
             </article>
           );

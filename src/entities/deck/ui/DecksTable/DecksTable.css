@@ -7,6 +7,7 @@
   border-radius: 14px;
   overflow: visible;
   background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .decks-table th,
@@ -34,6 +35,8 @@
 
 .decks-table thead th:last-child {
   border-top-right-radius: 14px;
+  text-align: right;
+  padding-right: 18px;
 }
 
 .decks-table tbody tr:last-child td {
@@ -52,8 +55,27 @@
   background: var(--color-surface-muted);
 }
 
+.decks-table__row {
+  position: relative;
+  cursor: pointer;
+  transition: background 0.16s ease;
+}
+
 .decks-table tbody tr:hover {
   background: var(--color-primary-soft);
+}
+
+.decks-table__row:hover,
+.decks-table__row:focus-within {
+  z-index: 6;
+}
+
+.decks-table__row:focus-visible {
+  outline: none;
+}
+
+.decks-table__row:focus-visible td {
+  background: color-mix(in srgb, var(--color-primary-soft) 78%, var(--color-surface));
 }
 
 .decks-table__empty {
@@ -64,8 +86,13 @@
 
 .decks-table__tags-cell {
   position: relative;
+  z-index: 1;
   vertical-align: top;
   overflow: visible;
+}
+
+.decks-table__tags-cell:focus-within {
+  z-index: 7;
 }
 
 .decks-table__tags-wrap {
@@ -93,6 +120,12 @@
   white-space: nowrap;
 }
 
+.decks-table__tags-more-wrap:hover,
+.decks-table__tags-more-wrap:focus-within,
+.decks-table__tags-more-wrap--open {
+  z-index: 40;
+}
+
 .decks-table__tags-more {
   display: inline-flex;
   align-items: center;
@@ -118,22 +151,21 @@
 .decks-table__tags-tooltip {
   position: absolute;
   z-index: 30;
-  top: calc(100% + 6px);
+  top: calc(100% + 8px);
   right: 0;
-  width: min(320px, 40vw);
-  max-height: 180px;
-  overflow: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
+  width: min(340px, 42vw);
+  max-width: min(340px, calc(100vw - 32px));
+  overflow: visible;
+  border: 1px solid color-mix(in srgb, var(--color-border) 88%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-surface-muted));
   color: var(--color-text);
   font-size: 0.74rem;
   line-height: 1.35;
-  box-shadow: var(--shadow-tooltip);
-  padding: 8px 10px;
+  box-shadow:
+    0 16px 34px rgba(15, 15, 15, 0.16),
+    0 1px 0 rgba(255, 255, 255, 0.18) inset;
+  padding: 0;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-2px);
@@ -141,8 +173,47 @@
   pointer-events: none;
 }
 
+.decks-table__tags-tooltip::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 88%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--color-border) 88%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-surface-muted));
+  transform: rotate(45deg);
+}
+
+.decks-table__tags-tooltip-content {
+  position: relative;
+  z-index: 2;
+  max-height: 220px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 6px;
+  padding: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.decks-table__tags-tooltip .meta-badge {
+  padding: 5px 9px;
+  font-size: 0.7rem;
+  background: var(--color-surface);
+}
+
 .decks-table__tags-more-wrap--align-left .decks-table__tags-tooltip {
   left: 0;
+  right: auto;
+}
+
+.decks-table__tags-more-wrap--align-left .decks-table__tags-tooltip::before {
+  left: 14px;
   right: auto;
 }
 
@@ -161,53 +232,113 @@
 
 
 .decks-table__actions {
+  position: relative;
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding-right: 6px;
 }
 
-.decks-table__actions button {
-  border: 1px solid var(--color-border);
+.decks-table__actions-desktop {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.decks-table__actions-mobile {
+  display: none;
+}
+
+.decks-table__menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
   border-radius: 8px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.78rem;
+  background: transparent;
+  color: var(--color-text-muted);
   cursor: pointer;
-  padding: 6px 10px;
-  white-space: nowrap;
+  transition: background 0.16s ease, color 0.16s ease, opacity 0.16s ease;
 }
 
-.decks-table__actions button:hover:not(:disabled) {
-  background: var(--color-surface-muted);
+.decks-table__menu-trigger svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2.3;
 }
 
-.decks-table__actions button:disabled {
+.decks-table__menu-trigger:hover,
+.decks-table__menu-trigger:focus-visible,
+.decks-table__actions--open .decks-table__menu-trigger {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+  color: var(--color-text);
+}
+
+.decks-table__menu-trigger:focus-visible {
+  outline: none;
+}
+
+.decks-table__menu-trigger:disabled,
+.decks-table__menu button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.decks-table__actions .decks-table__button--danger {
-  border-color: var(--color-danger);
-  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
-  color: var(--color-danger);
-  font-size: 0.76rem;
-  padding: 6px 10px;
+.decks-table__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 180px;
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+  border: none;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface) 96%, black 4%);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  backdrop-filter: blur(16px);
 }
 
-.decks-table__actions .decks-table__button--publish {
-  border-color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
+.decks-table__menu button {
+  width: 100%;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.79rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  padding: 9px 10px;
+  white-space: nowrap;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.decks-table__menu button:hover:not(:disabled),
+.decks-table__menu button:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+
+.decks-table__menu .decks-table__button--danger {
+  color: var(--color-danger);
+}
+
+.decks-table__menu .decks-table__button--publish {
   color: var(--color-primary-strong);
 }
 
-.decks-table__actions .decks-table__button--publish:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 20%, var(--color-surface));
+.decks-table__menu .decks-table__button--publish:hover:not(:disabled),
+.decks-table__menu .decks-table__button--publish:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
 }
 
-.decks-table__actions .decks-table__button--danger:hover:not(:disabled) {
-  border-color: var(--color-danger);
-  background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
+.decks-table__menu .decks-table__button--danger:hover:not(:disabled),
+.decks-table__menu .decks-table__button--danger:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 @media (max-width: 1024px) {
@@ -258,21 +389,59 @@
 
   .decks-table__actions-cell {
     grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .decks-table__actions-cell::before {
-    content: none;
+    gap: 6px;
   }
 
   .decks-table__actions {
     justify-content: flex-start;
-    width: 100%;
+    padding-right: 0;
   }
 
-  .decks-table__actions button {
-    padding: 7px 10px;
+  .decks-table__actions-desktop {
+    display: none;
+  }
+
+  .decks-table__actions-mobile {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .decks-table__actions-mobile button {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
     font-size: 0.78rem;
+    cursor: pointer;
+    padding: 7px 10px;
+    white-space: nowrap;
+  }
+
+  .decks-table__actions-mobile button:hover:not(:disabled) {
+    background: var(--color-surface-muted);
+  }
+
+  .decks-table__actions-mobile button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .decks-table__actions-mobile .decks-table__button--publish {
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
+    color: var(--color-primary-strong);
+  }
+
+  .decks-table__actions-mobile .decks-table__button--danger {
+    border-color: var(--color-danger);
+    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
+    color: var(--color-danger);
+  }
+
+  .decks-table__menu {
+    left: 0;
+    right: auto;
   }
 
   .decks-table__tags-tooltip {
@@ -314,12 +483,17 @@
   }
 
   .decks-table__actions {
+    justify-content: flex-start;
+    padding-right: 0;
+  }
+
+  .decks-table__actions-mobile {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
   }
 
-  .decks-table__actions button {
+  .decks-table__actions-mobile button {
     width: 100%;
     min-height: 34px;
     padding: 6px 8px;
@@ -344,16 +518,21 @@
   }
 
   .decks-table__actions {
+    justify-content: flex-start;
+    padding-right: 0;
+  }
+
+  .decks-table__actions-mobile {
     grid-template-columns: 1fr;
   }
 
-  .decks-table__actions button {
+  .decks-table__actions-mobile button {
     min-height: 34px;
     font-size: 0.72rem;
     padding: 6px 7px;
   }
 
-  .decks-table__actions .decks-table__button--danger {
+  .decks-table__actions-mobile .decks-table__button--danger {
     font-size: 0.72rem;
     padding: 6px 7px;
   }
@@ -380,27 +559,27 @@
     background: var(--color-surface-muted);
   }
 
-  .decks-table__actions button:hover:not(:disabled) {
+  .decks-table__actions-mobile button:hover:not(:disabled) {
     background: var(--color-surface);
   }
 
-  .decks-table__actions button:active:not(:disabled) {
+  .decks-table__actions-mobile button:active:not(:disabled) {
     background: var(--color-surface-muted);
   }
 
-  .decks-table__actions .decks-table__button--publish:hover:not(:disabled) {
+  .decks-table__actions-mobile .decks-table__button--publish:hover:not(:disabled) {
     background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
   }
 
-  .decks-table__actions .decks-table__button--publish:active:not(:disabled) {
+  .decks-table__actions-mobile .decks-table__button--publish:active:not(:disabled) {
     background: color-mix(in srgb, var(--color-primary) 20%, var(--color-surface));
   }
 
-  .decks-table__actions .decks-table__button--danger:hover:not(:disabled) {
+  .decks-table__actions-mobile .decks-table__button--danger:hover:not(:disabled) {
     background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
   }
 
-  .decks-table__actions .decks-table__button--danger:active:not(:disabled) {
+  .decks-table__actions-mobile .decks-table__button--danger:active:not(:disabled) {
     background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
   }
 }

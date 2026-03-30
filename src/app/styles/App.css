@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Sora:wght@400;500;600;700&display=swap&subset=latin,cyrillic");
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap&subset=latin,cyrillic");
 @import url("@shared/config/variables.css");
 
 *,
@@ -22,6 +22,9 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) var(--color-bg);
   overflow: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 :root {
@@ -70,7 +73,7 @@ body {
 }
 
 :where(:focus-visible) {
-  outline: 2px solid var(--ui-focus-ring-color);
+  outline: 2px solid color-mix(in srgb, var(--ui-focus-ring-color) 48%, transparent);
   outline-offset: 2px;
 }
 
@@ -169,7 +172,7 @@ body {
 }
 
 .kpi-card {
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   padding: var(--ui-kpi-card-padding-y) var(--ui-kpi-card-padding-x);
@@ -198,7 +201,7 @@ body {
 }
 
 .panel {
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   padding: var(--ui-panel-padding);

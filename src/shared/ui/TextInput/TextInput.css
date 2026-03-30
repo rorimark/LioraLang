@@ -1,18 +1,21 @@
 .ui-input {
   width: 100%;
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted));
   color: var(--color-text);
   font-family: inherit;
   font-size: 0.84rem;
   padding: 10px 12px;
   min-width: 0;
+  transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 
 .ui-input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .ui-input:disabled {
