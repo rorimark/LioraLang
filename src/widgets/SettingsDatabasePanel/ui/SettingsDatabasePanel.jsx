@@ -1,4 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router";
+import { FiChevronRight } from "react-icons/fi";
 import {
   AppPreferencesSection,
   ImportExportSettingsSection,
@@ -7,11 +9,14 @@ import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import"
 import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
 import { ThemeSwitch } from "@features/theme-switch";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import { SETTINGS_SECTION_IDS, SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
+import { usePlatformService } from "@shared/providers";
 import {
   ActionModal,
   Button,
   InlineAlert,
+  MetaBadge,
   Panel,
   SectionHeader,
   Tabs,
@@ -41,8 +46,80 @@ const resolveSectionClassName = (tabKey, highlightedTab) => {
   return "settings-page-panel__section";
 };
 
+const EMPTY_ACCOUNT_SNAPSHOT = Object.freeze({
+  isAuthenticated: false,
+  isEmailVerified: false,
+  email: "",
+  displayName: "",
+});
+
 export const SettingsDatabasePanel = memo(() => {
   const panel = useSettingsDatabasePanel();
+  const authRepository = usePlatformService("authRepository");
+  const [accountSnapshot, setAccountSnapshot] = useState(EMPTY_ACCOUNT_SNAPSHOT);
+
+  useEffect(() => {
+    if (!authRepository?.isConfigured?.()) {
+      return undefined;
+    }
+
+    let isSubscribed = true;
+
+    authRepository
+      .getSnapshot()
+      .then((snapshot) => {
+        if (isSubscribed) {
+          setAccountSnapshot(snapshot || EMPTY_ACCOUNT_SNAPSHOT);
+        }
+      })
+      .catch(() => {
+        if (isSubscribed) {
+          setAccountSnapshot(EMPTY_ACCOUNT_SNAPSHOT);
+        }
+      });
+
+    const unsubscribe = authRepository.subscribe((snapshot) => {
+      if (isSubscribed) {
+        setAccountSnapshot(snapshot || EMPTY_ACCOUNT_SNAPSHOT);
+      }
+    });
+
+    return () => {
+      isSubscribed = false;
+      unsubscribe?.();
+    };
+  }, [authRepository]);
+
+  const accountEntry = useMemo(() => {
+    if (!authRepository?.isConfigured?.()) {
+      return {
+        title: "Accounts unavailable",
+        description:
+          "Add Supabase config to enable sign in, publishing, and Hub management.",
+        badge: "Unavailable",
+        badgeAccent: false,
+      };
+    }
+
+    if (!accountSnapshot.isAuthenticated) {
+      return {
+        title: "Sign in or create account",
+        description:
+          "Browse stays open for guests. Sign in to publish and manage Hub decks.",
+        badge: "Guest",
+        badgeAccent: false,
+      };
+    }
+
+    return {
+      title: accountSnapshot.displayName || accountSnapshot.email || "Open account",
+      description: accountSnapshot.isEmailVerified
+        ? "Verified account. Manage profile, Hub decks, and account security."
+        : "Verify your email to publish and manage Hub decks.",
+      badge: accountSnapshot.isEmailVerified ? "Verified" : "Verify email",
+      badgeAccent: accountSnapshot.isEmailVerified,
+    };
+  }, [accountSnapshot, authRepository]);
 
   const settingsNavItems = useMemo(() => {
     const items = [
@@ -267,6 +344,27 @@ export const SettingsDatabasePanel = memo(() => {
           />
 
           <div className="settings-page-panel__stack">
+            <div className="settings-page-panel__slot">
+              <h4>Account</h4>
+              <Link
+                to={ROUTE_PATHS.account}
+                className="settings-page-panel__account-entry"
+                aria-label="Open account settings"
+              >
+                <div className="settings-page-panel__account-entry-main">
+                  <div className="settings-page-panel__account-entry-copy">
+                    <strong>{accountEntry.title}</strong>
+                    <span>{accountEntry.description}</span>
+                  </div>
+                  <MetaBadge
+                    text={accountEntry.badge}
+                    accent={accountEntry.badgeAccent}
+                  />
+                </div>
+                <FiChevronRight aria-hidden="true" />
+              </Link>
+            </div>
+
             <div className="settings-page-panel__slot">
               <h4>Appearance</h4>
               <ThemeSwitch control={themeControl} />
