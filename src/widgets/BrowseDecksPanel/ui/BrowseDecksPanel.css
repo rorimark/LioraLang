@@ -66,55 +66,66 @@
 
 .browse-decks-panel__grid {
   display: grid;
-  gap: 10px;
+  gap: 14px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .browse-decks-panel__card {
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--color-surface);
-  padding: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
 }
 
 .browse-decks-panel__card-head {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
 }
 
 .browse-decks-panel__card-title {
   min-width: 0;
   flex: 1;
+  display: grid;
+  gap: 6px;
+}
+
+.browse-decks-panel__card-title-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 
 .browse-decks-panel__card-head h3 {
   margin: 0;
-  font-size: 0.94rem;
-  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  font-size: 1rem;
+  line-height: 1.25;
   color: var(--color-text);
   overflow-wrap: anywhere;
 }
 
 .browse-decks-panel__copy-link {
-  width: 30px;
-  min-width: 30px;
-  height: 30px;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
   padding: 0;
-  border-radius: 9px;
+  border-radius: 8px;
   align-self: center;
+  opacity: 0.86;
 }
 
 .browse-decks-panel__copy-link svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 
 .browse-decks-panel__card-link {
@@ -138,14 +149,35 @@
 .browse-decks-panel__card-meta {
   color: var(--color-text-muted);
   font-size: 0.74rem;
+  line-height: 1.2;
+}
+
+.browse-decks-panel__date-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface) 72%, var(--color-surface-muted));
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .browse-decks-panel__description {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 0.8rem;
-  line-height: 1.4;
-  min-height: 2.8em;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  min-height: 3.6em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .browse-decks-panel__description--empty {
@@ -155,34 +187,35 @@
 .browse-decks-panel__badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
 }
 
 .browse-decks-panel__card-footer {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   margin-top: auto;
 }
 
 .browse-decks-panel__badges .meta-badge {
-  padding: 4px 8px;
-  font-size: 0.68rem;
+  padding: 4px 9px;
+  font-size: 0.7rem;
 }
 
 .browse-decks-panel__stats {
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
-.browse-decks-panel__stats div {
+.browse-decks-panel__stat {
   border: 1px solid var(--color-border);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--color-surface-muted);
-  padding: 8px;
+  padding: 10px 11px;
   display: grid;
-  gap: 4px;
+  gap: 5px;
+  min-width: 0;
 }
 
 .browse-decks-panel__stats dt {
@@ -196,8 +229,10 @@
 .browse-decks-panel__stats dd {
   margin: 0;
   color: var(--color-text);
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .browse-decks-panel__actions {
@@ -223,10 +258,6 @@
   .browse-decks-panel__grid {
     grid-template-columns: 1fr;
   }
-
-  .browse-decks-panel__stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 760px) {
@@ -244,6 +275,15 @@
   .browse-decks-panel__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
+  }
+
+  .browse-decks-panel__card-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .browse-decks-panel__date-pill {
+    align-self: flex-start;
   }
 
   .browse-decks-panel__pagination {
@@ -268,8 +308,21 @@
   }
 
   .browse-decks-panel__card {
-    padding: 10px;
-    gap: 8px;
+    padding: 11px;
+    gap: 10px;
+  }
+
+  .browse-decks-panel__card-title-row {
+    align-items: flex-start;
+  }
+
+  .browse-decks-panel__card-head h3 {
+    font-size: 0.94rem;
+  }
+
+  .browse-decks-panel__description {
+    min-height: 4.1em;
+    -webkit-line-clamp: 4;
   }
 
   .browse-decks-panel__stats {

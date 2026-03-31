@@ -36,7 +36,7 @@
   background: color-mix(in srgb, var(--color-primary) 88%, white 12%);
   border-color: color-mix(in srgb, var(--color-primary) 80%, black 20%);
   color: var(--color-on-primary);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-primary) 24%, transparent);
+  box-shadow: none;
 }
 
 .ui-button--primary:hover:not(:disabled) {
@@ -64,7 +64,7 @@
   background: color-mix(in srgb, var(--color-danger) 86%, white 14%);
   border-color: color-mix(in srgb, var(--color-danger) 76%, black 24%);
   color: var(--color-on-primary);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-danger) 18%, transparent);
+  box-shadow: none;
 }
 
 .ui-button--danger:hover:not(:disabled) {
