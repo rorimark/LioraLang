@@ -101,6 +101,7 @@
   gap: 8px;
   min-width: 0;
   flex: 1;
+  justify-items: start;
 }
 
 .settings-page-panel__account-entry-copy {

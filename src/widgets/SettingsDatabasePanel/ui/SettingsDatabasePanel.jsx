@@ -93,6 +93,7 @@ export const SettingsDatabasePanel = memo(() => {
   const accountEntry = useMemo(() => {
     if (!authRepository?.isConfigured?.()) {
       return {
+        sectionTitle: "Sign in",
         title: "Accounts unavailable",
         description:
           "Add Supabase config to enable sign in, publishing, and Hub management.",
@@ -103,6 +104,7 @@ export const SettingsDatabasePanel = memo(() => {
 
     if (!accountSnapshot.isAuthenticated) {
       return {
+        sectionTitle: "Sign in",
         title: "Sign in or create account",
         description:
           "Browse stays open for guests. Sign in to publish and manage Hub decks.",
@@ -112,6 +114,7 @@ export const SettingsDatabasePanel = memo(() => {
     }
 
     return {
+      sectionTitle: "Account",
       title: accountSnapshot.displayName || accountSnapshot.email || "Open account",
       description: accountSnapshot.isEmailVerified
         ? "Verified account. Manage profile, Hub decks, and account security."
@@ -345,7 +348,7 @@ export const SettingsDatabasePanel = memo(() => {
 
           <div className="settings-page-panel__stack">
             <div className="settings-page-panel__slot">
-              <h4>Account</h4>
+              <h4>{accountEntry.sectionTitle}</h4>
               <Link
                 to={ROUTE_PATHS.account}
                 className="settings-page-panel__account-entry"
