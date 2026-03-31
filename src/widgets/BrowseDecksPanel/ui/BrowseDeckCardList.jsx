@@ -165,31 +165,34 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
             <article className="browse-decks-panel__card" key={deck.id}>
               <header className="browse-decks-panel__card-head">
                 <div className="browse-decks-panel__card-title">
-                  <h3>
-                    {deckLink ? (
-                      <Link className="browse-decks-panel__card-link" to={deckLink}>
-                        {deck?.title || "Untitled deck"}
-                      </Link>
-                    ) : (
-                      deck?.title || "Untitled deck"
-                    )}
-                  </h3>
-                  <Button
-                    data-deck-id={deck.id}
-                    onClick={handleCopyLink}
-                    disabled={!canCopyLink || isImporting}
-                    variant="ghost"
-                    size="sm"
-                    className="browse-decks-panel__copy-link"
-                    aria-label="Copy public deck link"
-                    title="Copy public deck link"
-                  >
-                    <FiLink />
-                  </Button>
+                  <div className="browse-decks-panel__card-title-row">
+                    <h3>
+                      {deckLink ? (
+                        <Link className="browse-decks-panel__card-link" to={deckLink}>
+                          {deck?.title || "Untitled deck"}
+                        </Link>
+                      ) : (
+                        deck?.title || "Untitled deck"
+                      )}
+                    </h3>
+                    <Button
+                      data-deck-id={deck.id}
+                      onClick={handleCopyLink}
+                      disabled={!canCopyLink || isImporting}
+                      variant="ghost"
+                      size="sm"
+                      className="browse-decks-panel__copy-link"
+                      aria-label="Copy public deck link"
+                      title="Copy public deck link"
+                    >
+                      <FiLink />
+                    </Button>
+                  </div>
+                  <span className="browse-decks-panel__card-meta">
+                    Added {createdAt}
+                  </span>
                 </div>
-                <span className="browse-decks-panel__card-meta">
-                  Added {createdAt}
-                </span>
+                <span className="browse-decks-panel__date-pill">{createdAt}</span>
               </header>
 
               <p
@@ -228,19 +231,19 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                 </div>
 
                 <dl className="browse-decks-panel__stats">
-                  <div>
+                  <div className="browse-decks-panel__stat">
                     <dt>Words</dt>
                     <dd>{wordsCount}</dd>
                   </div>
-                  <div>
+                  <div className="browse-decks-panel__stat">
                     <dt>Downloads</dt>
                     <dd>{downloadsCount}</dd>
                   </div>
-                  <div>
+                  <div className="browse-decks-panel__stat">
                     <dt>Updated</dt>
                     <dd>{updatedAt}</dd>
                   </div>
-                  <div>
+                  <div className="browse-decks-panel__stat">
                     <dt>Package</dt>
                     <dd>{fileSize}</dd>
                   </div>
