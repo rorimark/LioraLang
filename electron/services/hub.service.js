@@ -5,81 +5,29 @@ import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import { app } from "electron";
 import {
+  buildDeckSlug,
+  HUB_DOWNLOADS_RPC_NAME,
+  isInvalidHubFilePath,
+  isRpcMissingError,
   normalizeTextArray,
+  resolveDownloadsCountFromRpcData,
   resolveExistingDeckByTitle,
+  sanitizeFileName,
+  toCleanString,
+  toCountNumber,
+  toHubDeck,
   toPublishableDeck,
   validatePublishableDeck,
-} from "./hub-helpers.js";
+} from "../../src/shared/core/usecases/hub/index.js";
 import { validateDeckPackageObject } from "./hub-package.js";
 
 const HUB_STORAGE_BUCKET = "decks";
 const DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS = 120;
-const INCREMENT_DOWNLOADS_RPC_NAME = "increment_hub_deck_downloads";
 const MAX_HUB_PACKAGE_BYTES = 50 * 1024 * 1024;
 const HUB_AUTH_STORAGE_DIR = path.join("hub", "auth");
 
 const supabaseClientCache = new Map();
 const hubAuthStorageCache = new Map();
-
-const toCleanString = (value) => {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  return value.trim();
-};
-
-const toShortId = (value) => {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  return value.replace(/-/g, "").slice(0, 6);
-};
-
-const toSlug = (value) => {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "");
-};
-
-const buildDeckSlug = (title, id) => {
-  const base = toSlug(typeof title === "string" ? title : "");
-  const suffix = toShortId(typeof id === "string" ? id : String(id || ""));
-
-  if (base && suffix) {
-    return `${base}-${suffix}`;
-  }
-
-  return base || suffix;
-};
-
-const toCountNumber = (value, fallback = 0) => {
-  const numberValue = Number(value);
-
-  if (!Number.isFinite(numberValue)) {
-    return fallback;
-  }
-
-  return Math.max(0, Math.trunc(numberValue));
-};
-
-const sanitizeFileName = (value) => {
-  const normalizedName = toCleanString(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9._-]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return normalizedName || "deck";
-};
 
 const ensureDirectoryExists = (directoryPath) => {
   if (!fs.existsSync(directoryPath)) {
@@ -248,54 +196,6 @@ const resolveAnonymousSignInErrorMessage = (error) => {
   return toCleanString(error?.message) || "Failed to sign in to LioraLangHub";
 };
 
-const isRpcMissingError = (error) => {
-  if (!error || typeof error !== "object") {
-    return false;
-  }
-
-  if (error.code === "PGRST202") {
-    return true;
-  }
-
-  const message = typeof error.message === "string" ? error.message.toLowerCase() : "";
-
-  return message.includes("does not exist") && message.includes(INCREMENT_DOWNLOADS_RPC_NAME);
-};
-
-const resolveDownloadsCountFromRpcData = (data, fallback = 0) => {
-  if (Array.isArray(data)) {
-    if (data.length === 0) {
-      return toCountNumber(fallback, 0);
-    }
-
-    const firstRow = data[0];
-
-    if (firstRow && typeof firstRow === "object") {
-      if (Object.hasOwn(firstRow, "downloads_count")) {
-        return toCountNumber(firstRow.downloads_count, fallback);
-      }
-
-      if (Object.hasOwn(firstRow, INCREMENT_DOWNLOADS_RPC_NAME)) {
-        return toCountNumber(firstRow[INCREMENT_DOWNLOADS_RPC_NAME], fallback);
-      }
-    }
-
-    return toCountNumber(firstRow, fallback);
-  }
-
-  if (data && typeof data === "object") {
-    if (Object.hasOwn(data, "downloads_count")) {
-      return toCountNumber(data.downloads_count, fallback);
-    }
-
-    if (Object.hasOwn(data, INCREMENT_DOWNLOADS_RPC_NAME)) {
-      return toCountNumber(data[INCREMENT_DOWNLOADS_RPC_NAME], fallback);
-    }
-  }
-
-  return toCountNumber(data, fallback);
-};
-
 const ensureAnonymousSession = async (supabaseClient) => {
   const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
 
@@ -314,61 +214,6 @@ const ensureAnonymousSession = async (supabaseClient) => {
   }
 
   return signInData.user;
-};
-
-const toHubDeck = (deck, latestVersion) => {
-  const targetLanguages = normalizeTextArray(deck?.target_languages);
-  const languages = [deck?.source_language, ...targetLanguages]
-    .map((item) => toCleanString(item))
-    .filter(Boolean);
-  const uniqueLanguageKeys = new Set();
-  const uniqueLanguages = [];
-
-  languages.forEach((language) => {
-    const key = language.toLowerCase();
-
-    if (!key || uniqueLanguageKeys.has(key)) {
-      return;
-    }
-
-    uniqueLanguageKeys.add(key);
-    uniqueLanguages.push(language);
-  });
-
-  const slug =
-    toCleanString(deck?.slug || "") ||
-    buildDeckSlug(deck?.title, deck?.id);
-
-  return {
-    id: toCleanString(deck?.id ? String(deck.id) : ""),
-    slug,
-    title: toCleanString(deck?.title),
-    description: toCleanString(deck?.description),
-    sourceLanguage: toCleanString(deck?.source_language),
-    targetLanguages,
-    languages: uniqueLanguages,
-    tags: normalizeTextArray(deck?.tags),
-    wordsCount: Number.isFinite(Number(deck?.words_count))
-      ? Number(deck.words_count)
-      : 0,
-    downloadsCount: Number.isFinite(Number(deck?.downloads_count))
-      ? Number(deck.downloads_count)
-      : 0,
-    createdAt: toCleanString(deck?.created_at),
-    latestVersion: latestVersion
-      ? {
-          version: Number.isFinite(Number(latestVersion?.version))
-            ? Number(latestVersion.version)
-            : 1,
-          filePath: toCleanString(latestVersion?.file_path),
-          fileFormat: toCleanString(latestVersion?.file_format) || "lioradeck",
-          fileSizeBytes: Number.isFinite(Number(latestVersion?.file_size_bytes))
-            ? Number(latestVersion.file_size_bytes)
-            : 0,
-          createdAt: toCleanString(latestVersion?.created_at),
-        }
-      : null,
-  };
 };
 
 const sha256Hex = (buffer) =>
@@ -449,7 +294,11 @@ export const listHubDecks = async ({
 
   return {
     items: deckList.map((deck) =>
-      toHubDeck(deck, latestVersionByDeckId.get(toCleanString(deck?.id ? String(deck.id) : ""))),
+      toHubDeck(
+        deck,
+        latestVersionByDeckId.get(toCleanString(deck?.id ? String(deck.id) : "")),
+        normalizeTextArray,
+      ),
     ),
     total: Number.isFinite(Number(count)) ? Number(count) : 0,
     page: normalizedPage,
@@ -491,7 +340,7 @@ export const getHubDeckBySlug = async ({ config, slug } = {}) => {
 
   const latestVersion = Array.isArray(versions) ? versions[0] : null;
 
-  return toHubDeck(deck, latestVersion);
+  return toHubDeck(deck, latestVersion, normalizeTextArray);
 };
 
 export const createHubDeckDownloadUrl = async ({
@@ -506,11 +355,7 @@ export const createHubDeckDownloadUrl = async ({
     throw new Error("Hub deck file path is required");
   }
 
-  if (
-    normalizedFilePath.includes("..") ||
-    normalizedFilePath.startsWith("/") ||
-    normalizedFilePath.includes("\0")
-  ) {
+  if (isInvalidHubFilePath(normalizedFilePath)) {
     throw new Error("Hub deck file path is invalid");
   }
 
@@ -540,7 +385,7 @@ export const incrementHubDeckDownloads = async ({
   const fallbackCurrentDownloads = toCountNumber(currentDownloadsCount, 0);
   const fallbackNextDownloads = fallbackCurrentDownloads + 1;
   const { data: rpcData, error: rpcError } = await supabase.rpc(
-    INCREMENT_DOWNLOADS_RPC_NAME,
+    HUB_DOWNLOADS_RPC_NAME,
     {
       p_deck_id: normalizedDeckId,
     },
@@ -619,13 +464,17 @@ export const publishHubDeck = async ({
   const shouldUpdateSlug = !toCleanString(existingDeck?.slug);
 
   if (!hubDeckId) {
+    const nextDeckId = crypto.randomUUID();
+    const nextSlug = buildDeckSlug(publishableDeck.title, nextDeckId);
     const {
       data: insertedDeck,
       error: insertDeckError,
     } = await supabase
       .from("hub_decks")
       .insert({
+        id: nextDeckId,
         owner_id: user.id,
+        slug: nextSlug,
         title: publishableDeck.title,
         description: publishableDeck.description,
         source_language: publishableDeck.sourceLanguage,
@@ -642,14 +491,6 @@ export const publishHubDeck = async ({
     }
 
     hubDeckId = insertedDeck.id;
-    const nextSlug = buildDeckSlug(publishableDeck.title, hubDeckId);
-
-    if (nextSlug) {
-      await supabase
-        .from("hub_decks")
-        .update({ slug: nextSlug })
-        .eq("id", hubDeckId);
-    }
   } else {
     const { error: updateDeckError } = await supabase
       .from("hub_decks")
