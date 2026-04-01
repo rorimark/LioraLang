@@ -115,8 +115,8 @@
 Файлы:
 
 - `eslint.config.js`
-- `src/shared/lib/appPreferences/useStartupPreferences.js`
-- `src/shared/lib/appPreferences/useAppPreferences.js`
+- `packages/shared/src/lib/appPreferences/useStartupPreferences.js`
+- `packages/shared/src/lib/appPreferences/useAppPreferences.js`
 - `src/entities/deck/model/useDecks.js`
 
 Проблема:
@@ -133,8 +133,8 @@
 Где смотреть:
 
 - `eslint.config.js:1`
-- `src/shared/lib/appPreferences/useStartupPreferences.js:2`
-- `src/shared/lib/appPreferences/useAppPreferences.js:2`
+- `packages/shared/src/lib/appPreferences/useStartupPreferences.js:2`
+- `packages/shared/src/lib/appPreferences/useAppPreferences.js:2`
 - `src/entities/deck/model/useDecks.js:2`
 
 Рекомендация:
@@ -146,8 +146,8 @@
 
 Файлы:
 
-- `src/shared/api/desktopApi.js`
-- `src/shared/platform/electron/createElectronPlatformServices.js`
+- `packages/shared/src/api/desktopApi.js`
+- `packages/shared/src/platform/electron/createElectronPlatformServices.js`
 
 Проблема:
 
@@ -162,10 +162,10 @@
 
 Где смотреть:
 
-- `src/shared/api/desktopApi.js:1`
-- `src/shared/api/desktopApi.js:475`
-- `src/shared/platform/electron/createElectronPlatformServices.js:1`
-- `src/shared/platform/electron/createElectronPlatformServices.js:566`
+- `packages/shared/src/api/desktopApi.js:1`
+- `packages/shared/src/api/desktopApi.js:475`
+- `packages/shared/src/platform/electron/createElectronPlatformServices.js:1`
+- `packages/shared/src/platform/electron/createElectronPlatformServices.js:566`
 
 Рекомендация:
 
@@ -191,14 +191,14 @@
 | --- | ---: |
 | `electron/main.js` | 3180 |
 | `electron/db/services/srs.services.js` | 1387 |
-| `src/shared/platform/web/model/createWebDeckRepository.js` | 1061 |
+| `packages/shared/src/platform/web/model/createWebDeckRepository.js` | 1061 |
 | `src/widgets/LearnFlashcardsPanel/model/useLearnFlashcardsPanel.js` | 1039 |
-| `src/shared/core/usecases/srs/srsEngine.js` | 961 |
-| `src/shared/api/desktopApi.js` | 954 |
+| `packages/shared/src/core/usecases/srs/srsEngine.js` | 961 |
+| `packages/shared/src/api/desktopApi.js` | 954 |
 | `electron/services/hub.service.js` | 835 |
 | `electron/db/services/db.services.js` | 828 |
 | `src/widgets/DeckEditorPanel/model/useDeckEditorPanel.js` | 696 |
-| `src/shared/core/usecases/importExport/deckPackage.js` | 633 |
+| `packages/shared/src/core/usecases/importExport/deckPackage.js` | 633 |
 
 ### Что вынести в отдельные модули в первую очередь
 
@@ -285,8 +285,8 @@
 
 Примеры:
 
-- `src/shared/hooks/useThrottleDebounce.js:1` - `useThrottle` пустой;
-- `src/shared/lib/theme/theme.js:44` и `src/shared/lib/theme/theme.js:96` - `saveThemeMode` и `saveTheme` пустые;
+- `packages/shared/src/hooks/useThrottleDebounce.js:1` - `useThrottle` пустой;
+- `packages/shared/src/lib/theme/theme.js:44` и `packages/shared/src/lib/theme/theme.js:96` - `saveThemeMode` и `saveTheme` пустые;
 - `src/main.jsx:18` - `StrictMode` закомментирован.
 
 Это не ломает приложение напрямую, но создаёт ощущение незавершённого слоя и усложняет понимание того, что реально является production API.

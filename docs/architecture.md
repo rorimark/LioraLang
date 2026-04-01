@@ -72,10 +72,10 @@
 
 Это самая сильная архитектурная идея проекта.
 
-`src/shared/platform/createPlatformServices.js` выбирает target implementation:
+`packages/shared/src/platform/createPlatformServices.js` выбирает target implementation:
 
-- `src/shared/platform/target/web.js`
-- `src/shared/platform/target/desktop.js`
+- `packages/shared/src/platform/target/web.js`
+- `packages/shared/src/platform/target/desktop.js`
 
 Дальше UI работает только с интерфейсами сервисов:
 

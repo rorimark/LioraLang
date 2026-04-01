@@ -81,8 +81,7 @@ export const createRuntimePreferencesManager = ({
       tags: [],
     },
     importExport: {
-      autoOpenLanguageReview:
-        defaultAppPreferences.importExport.autoOpenLanguageReview,
+      autoOpenLanguageReview: defaultAppPreferences.importExport.autoOpenLanguageReview,
       duplicateStrategy: defaultAppPreferences.importExport.duplicateStrategy,
       exportFormat: defaultAppPreferences.importExport.exportFormat,
       includeExamples: defaultAppPreferences.importExport.includeExamples,
