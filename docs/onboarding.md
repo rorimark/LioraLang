@@ -8,7 +8,7 @@ LioraLang - это не два разных приложения, а один Re
 
 - UI и доменная логика в `src`;
 - Electron shell и SQLite - в `electron`;
-- web persistence - в `src/shared/platform/web`;
+- web persistence - в `packages/shared/src/platform/web`;
 - общий контракт между ними - platform services.
 
 ## Быстрый старт
@@ -87,23 +87,23 @@ pnpm dist:local:win
 Desktop:
 
 1. `electron/preload.cjs`
-2. `src/shared/platform/electron/createElectronPlatformServices.js`
+2. `packages/shared/src/platform/electron/createElectronPlatformServices.js`
 3. `electron/main.js`
 4. `electron/db/services/*`
 
 Web:
 
-1. `src/shared/platform/web/createWebPlatformServices.js`
-2. `src/shared/platform/web/model/*`
-3. `src/shared/platform/web/db/webDb.js`
+1. `packages/shared/src/platform/web/createWebPlatformServices.js`
+2. `packages/shared/src/platform/web/model/*`
+3. `packages/shared/src/platform/web/db/webDb.js`
 
 ### Если нужно понять доменную логику
 
 Смотри:
 
-- `src/shared/core/usecases/srs/srsEngine.js`
-- `src/shared/core/usecases/importExport/deckPackage.js`
-- `src/shared/core/usecases/progress/buildProgressOverview.js`
+- `packages/shared/src/core/usecases/srs/srsEngine.js`
+- `packages/shared/src/core/usecases/importExport/deckPackage.js`
+- `packages/shared/src/core/usecases/progress/buildProgressOverview.js`
 
 ## Как правильно добавлять новый код
 

@@ -12,18 +12,25 @@ if command -v rg >/dev/null 2>&1; then
       --glob 'src/**/*.{js,jsx}' \
       --glob '!src/shared/platform/**' \
       --glob '!src/shared/api/**' \
+      --glob 'packages/shared/src/**/*.{js,jsx}' \
+      --glob '!packages/shared/src/platform/**' \
+      --glob '!packages/shared/src/api/**' \
       "$PATTERN" \
-      src || true
+      src packages/shared/src || true
   )"
 else
   violations="$(
-    find src \
+    find src packages/shared/src \
       -type f \
       \( -name '*.js' -o -name '*.jsx' \) \
       ! -path 'src/shared/platform/*' \
       ! -path 'src/shared/platform/**/*' \
       ! -path 'src/shared/api/*' \
       ! -path 'src/shared/api/**/*' \
+      ! -path 'packages/shared/src/platform/*' \
+      ! -path 'packages/shared/src/platform/**/*' \
+      ! -path 'packages/shared/src/api/*' \
+      ! -path 'packages/shared/src/api/**/*' \
       -print0 |
       xargs -0 grep -nE "$PATTERN" 2>/dev/null || true
   )"

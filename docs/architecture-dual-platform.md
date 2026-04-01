@@ -11,15 +11,15 @@ One codebase, two full targets:
 1. `src/**` does not import `electron/*` directly.
 2. UI (`pages/widgets/features/entities`) does not import `@shared/api` directly.
 3. Platform calls go through `@app/providers -> usePlatformService(...)`.
-4. Only `src/shared/platform/**` can adapt platform specifics.
+4. Only `packages/shared/src/platform/**` can adapt platform specifics.
 
 ## Runtime Composition
 
 1. `PlatformProvider` is mounted in app root.
 2. Provider resolves services via `@shared/platform`.
 3. `@platform-target` alias is injected by Vite:
-   - `desktop` target -> `src/shared/platform/target/desktop.js`
-   - `web` target -> `src/shared/platform/target/web.js`
+   - `desktop` target -> `packages/shared/src/platform/target/desktop.js`
+   - `web` target -> `packages/shared/src/platform/target/web.js`
 
 ## Service Contract (current)
 

@@ -1,5 +1,5 @@
 import { getDatabase } from "../db.js";
-import { DEFAULT_APP_PREFERENCES } from "../../../src/shared/config/appPreferencesDefaults.js";
+import { DEFAULT_APP_PREFERENCES } from "../../shared/appPreferencesDefaults.js";
 
 const CARD_STATES = {
   new: "new",

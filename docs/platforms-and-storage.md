@@ -61,13 +61,13 @@ SQLite хранит:
 
 ### Главные файлы
 
-- `src/shared/platform/web/createWebPlatformServices.js`
-- `src/shared/platform/web/model/createWebDeckRepository.js`
-- `src/shared/platform/web/model/createWebSettingsRepository.js`
-- `src/shared/platform/web/model/createWebSrsRepository.js`
-- `src/shared/platform/web/model/createWebProgressRepository.js`
-- `src/shared/platform/web/model/createWebHubRepository.js`
-- `src/shared/platform/web/db/webDb.js`
+- `packages/shared/src/platform/web/createWebPlatformServices.js`
+- `packages/shared/src/platform/web/model/createWebDeckRepository.js`
+- `packages/shared/src/platform/web/model/createWebSettingsRepository.js`
+- `packages/shared/src/platform/web/model/createWebSrsRepository.js`
+- `packages/shared/src/platform/web/model/createWebProgressRepository.js`
+- `packages/shared/src/platform/web/model/createWebHubRepository.js`
+- `packages/shared/src/platform/web/db/webDb.js`
 - `public/sw.js`
 
 ### Web storage
@@ -106,7 +106,7 @@ IndexedDB stores:
 
 Hub работает через Supabase и используется в обеих платформах:
 
-- web напрямую через `src/shared/api/hubDecksApi.js`;
+- web напрямую через `packages/shared/src/api/hubDecksApi.js`;
 - desktop через `electron/services/hub.service.js`.
 
 Функции Hub:
@@ -133,7 +133,7 @@ Hub работает через Supabase и используется в обеи
 
 Общий use case лежит в:
 
-- `src/shared/core/usecases/importExport/deckPackage.js`
+- `packages/shared/src/core/usecases/importExport/deckPackage.js`
 - desktop-эквивалент и DB-связка - `electron/db/services/import-export.js`
 
 Поддерживаются:

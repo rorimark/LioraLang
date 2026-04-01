@@ -13,7 +13,7 @@
 | `src/widgets` | крупные экранные блоки | 72 |
 | `src/features` | отдельные пользовательские фичи | 61 |
 | `src/entities` | доменные сущности | 13 |
-| `src/shared` | общие UI/lib/config/platform/core модули | 95 |
+| `packages/shared/src` | общие UI/lib/config/platform/core модули | 95 |
 | `electron` | main/preload/SQLite/services | 28 |
 | `public` | manifest, offline page, icons, sw | 9 |
 | `scripts` | release и boundary scripts | 3 |
@@ -120,7 +120,7 @@
 | `api/wordsApi.js` | получение fallback words |
 | `lib/wordsStorage.js` | утилиты вокруг локальных слов |
 
-## `src/shared`
+## `packages/shared/src`
 
 ### `shared/ui`
 
@@ -226,11 +226,11 @@
 2. `src/app/App.jsx`
 3. `src/app/layouts/AppLayout.jsx`
 4. `src/app/router/routes.base.jsx`
-5. `src/shared/platform/createPlatformServices.js`
-6. `src/shared/platform/web/createWebPlatformServices.js`
-7. `src/shared/platform/electron/createElectronPlatformServices.js`
-8. `src/shared/core/usecases/srs/srsEngine.js`
-9. `src/shared/core/usecases/importExport/deckPackage.js`
+5. `packages/shared/src/platform/createPlatformServices.js`
+6. `packages/shared/src/platform/web/createWebPlatformServices.js`
+7. `packages/shared/src/platform/electron/createElectronPlatformServices.js`
+8. `packages/shared/src/core/usecases/srs/srsEngine.js`
+9. `packages/shared/src/core/usecases/importExport/deckPackage.js`
 10. `electron/main.js`
 11. `electron/preload.cjs`
 12. `electron/db/services/*.js`

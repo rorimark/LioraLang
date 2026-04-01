@@ -83,11 +83,8 @@ import {
 } from "./main/themeConfig.js";
 import { createWindowThemeManager } from "./main/windowTheme.js";
 import { createWindowBroadcast } from "./main/windowBroadcast.js";
-import { DEFAULT_APP_PREFERENCES } from "../src/shared/config/appPreferencesDefaults.js";
-import {
-  isTrustedHubStorageUrl,
-  toOrigin,
-} from "../src/shared/config/hubRemoteImport.js";
+import { DEFAULT_APP_PREFERENCES } from "./shared/appPreferencesDefaults.js";
+import { isTrustedHubStorageUrl, toOrigin } from "./shared/hubRemoteImport.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -95,7 +92,15 @@ const APP_ICON_PATH =
   process.platform === "win32"
     ? path.join(__dirname, "assets", "icon.ico")
     : path.join(__dirname, "assets", "icon.png");
-const APP_THEME_CSS_PATH = path.join(__dirname, "..", "src", "shared", "config", "variables.css");
+const APP_THEME_CSS_PATH = path.join(
+  __dirname,
+  "..",
+  "packages",
+  "shared",
+  "src",
+  "config",
+  "variables.css",
+);
 const { windowTitleBarTheme: WINDOW_TITLE_BAR_THEME, fatalStartupErrorTheme: FATAL_STARTUP_ERROR_THEME } =
   createThemeConfig({
     fs,

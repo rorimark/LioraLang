@@ -31,8 +31,8 @@ const resolvePlatformTarget = (mode) => {
 
 const resolvePlatformTargetAliasPath = (target) =>
   target === PLATFORM_TARGETS.web
-    ? path.resolve(__dirname, "src/shared/platform/target/web.js")
-    : path.resolve(__dirname, "src/shared/platform/target/desktop.js");
+    ? path.resolve(__dirname, "packages/shared/src/platform/target/web.js")
+    : path.resolve(__dirname, "packages/shared/src/platform/target/desktop.js");
 
 const resolveRouterRoutesAliasPath = (target) =>
   target === PLATFORM_TARGETS.web
@@ -61,7 +61,7 @@ export default defineConfig(({ mode }) => {
       coverage: {
         provider: "v8",
         reporter: ["text", "html"],
-        include: ["src/**/*.{js,jsx}"],
+        include: ["src/**/*.{js,jsx}", "packages/shared/src/**/*.{js,jsx}"],
         exclude: [
           "src/main.jsx",
           "src/**/*.test.{js,jsx}",
@@ -81,8 +81,8 @@ export default defineConfig(({ mode }) => {
         "@widgets": path.resolve(__dirname, "src/widgets"),
         "@features": path.resolve(__dirname, "src/features"),
         "@entities": path.resolve(__dirname, "src/entities"),
-        "@shared": path.resolve(__dirname, "src/shared"),
-        "@platform": path.resolve(__dirname, "src/shared/platform"),
+        "@shared": path.resolve(__dirname, "packages/shared/src"),
+        "@platform": path.resolve(__dirname, "packages/shared/src/platform"),
         "@platform-target": resolvePlatformTargetAliasPath(platformTarget),
         "@app-router-routes": resolveRouterRoutesAliasPath(platformTarget),
       },
