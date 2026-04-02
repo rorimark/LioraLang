@@ -60,6 +60,11 @@
   width: 100%;
 }
 
+.account-hub-panel__card > form {
+  display: grid;
+  gap: 14px;
+}
+
 .account-hub-panel__grid--single {
   grid-template-columns: minmax(0, 1fr);
   justify-content: stretch;
@@ -136,12 +141,16 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .account-hub-panel__summary-list {
   display: grid;
   gap: 12px;
   padding: 14px;
+  margin: 0;
 }
 
 .account-hub-panel__summary-list > div {
@@ -151,14 +160,16 @@
   gap: 14px;
 }
 
-.account-hub-panel__summary-list span {
+.account-hub-panel__summary-list dt {
   font-size: 0.78rem;
   color: var(--color-text-muted);
+  margin: 0;
 }
 
-.account-hub-panel__summary-list strong {
+.account-hub-panel__summary-list dd {
   font-size: 0.82rem;
   color: var(--color-text);
+  margin: 0;
 }
 
 .account-hub-panel__callout {
@@ -185,6 +196,9 @@
 .account-hub-panel__hub-list {
   display: grid;
   gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .account-hub-panel__hub-item {
@@ -218,6 +232,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.account-hub-panel__hub-badges {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .account-hub-panel__link-button {

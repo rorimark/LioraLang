@@ -46,7 +46,7 @@ export const AccountHubPanel = memo(() => {
       ) : null}
 
       {panel.isConfigured && panel.isAuthLoading ? (
-        <div className="account-hub-panel__loading">Loading account session...</div>
+        <p className="account-hub-panel__loading">Loading account session...</p>
       ) : null}
 
       {panel.isConfigured && !panel.isAuthLoading && !panel.authState.isAuthenticated ? (
@@ -58,14 +58,19 @@ export const AccountHubPanel = memo(() => {
             ariaLabel="Account access modes"
           />
 
-          <div className="account-hub-panel__grid">
+          <section className="account-hub-panel__grid" aria-label="Account access">
             <Panel className="account-hub-panel__card" as="section">
               {panel.activeTab === "sign-in" ? (
-                <>
-                  <div className="account-hub-panel__section-head">
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    panel.handleSignIn();
+                  }}
+                >
+                  <header className="account-hub-panel__section-head">
                     <h3>Sign in</h3>
                     <p>Use your LioraLang account to publish and manage Hub decks.</p>
-                  </div>
+                  </header>
                   <label className="account-hub-panel__field">
                     <span>Email</span>
                     <TextInput
@@ -86,25 +91,36 @@ export const AccountHubPanel = memo(() => {
                       autoComplete="current-password"
                     />
                   </label>
-                  <div className="account-hub-panel__actions">
+                  <footer className="account-hub-panel__actions">
                     <Button
                       variant="primary"
-                      onClick={panel.handleSignIn}
+                      type="submit"
                       isLoading={panel.pendingAction === "sign-in"}
                     >
                       Sign in
                     </Button>
-                    <Button variant="ghost" onClick={() => panel.setActiveTab("reset")}>Forgot password?</Button>
-                  </div>
-                </>
+                    <Button
+                      variant="ghost"
+                      type="button"
+                      onClick={() => panel.setActiveTab("reset")}
+                    >
+                      Forgot password?
+                    </Button>
+                  </footer>
+                </form>
               ) : null}
 
               {panel.activeTab === "sign-up" ? (
-                <>
-                  <div className="account-hub-panel__section-head">
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    panel.handleSignUp();
+                  }}
+                >
+                  <header className="account-hub-panel__section-head">
                     <h3>Create account</h3>
                     <p>Email verification is required before you can publish or manage Hub decks.</p>
-                  </div>
+                  </header>
                   <label className="account-hub-panel__field">
                     <span>Display name</span>
                     <TextInput
@@ -134,24 +150,29 @@ export const AccountHubPanel = memo(() => {
                       autoComplete="new-password"
                     />
                   </label>
-                  <div className="account-hub-panel__actions">
+                  <footer className="account-hub-panel__actions">
                     <Button
                       variant="primary"
-                      onClick={panel.handleSignUp}
+                      type="submit"
                       isLoading={panel.pendingAction === "sign-up"}
                     >
                       Create account
                     </Button>
-                  </div>
-                </>
+                  </footer>
+                </form>
               ) : null}
 
               {panel.activeTab === "reset" ? (
-                <>
-                  <div className="account-hub-panel__section-head">
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    panel.handlePasswordResetRequest();
+                  }}
+                >
+                  <header className="account-hub-panel__section-head">
                     <h3>Reset password</h3>
                     <p>We’ll send you a recovery link so you can set a new password securely.</p>
-                  </div>
+                  </header>
                   <label className="account-hub-panel__field">
                     <span>Email</span>
                     <TextInput
@@ -162,26 +183,26 @@ export const AccountHubPanel = memo(() => {
                       autoComplete="email"
                     />
                   </label>
-                  <div className="account-hub-panel__actions">
+                  <footer className="account-hub-panel__actions">
                     <Button
                       variant="primary"
-                      onClick={panel.handlePasswordResetRequest}
+                      type="submit"
                       isLoading={panel.pendingAction === "reset-password"}
                     >
                       Send reset email
                     </Button>
-                  </div>
-                </>
+                  </footer>
+                </form>
               ) : null}
             </Panel>
 
             <Panel className="account-hub-panel__card" as="section">
-              <div className="account-hub-panel__section-head">
+              <header className="account-hub-panel__section-head">
                 <h3>Continue with a provider</h3>
                 <p>OAuth is available on web now. Desktop social sign-in is the next secure step.</p>
-              </div>
+              </header>
 
-              <div className="account-hub-panel__providers">
+              <nav className="account-hub-panel__providers" aria-label="Social sign-in providers">
                 {panel.socialProviders.map((provider) => (
                   <Button
                     key={provider.key}
@@ -193,26 +214,26 @@ export const AccountHubPanel = memo(() => {
                     {provider.label}
                   </Button>
                 ))}
-              </div>
+              </nav>
 
               {panel.isDesktopMode ? (
-                <div className="account-hub-panel__hint">
+                <aside className="account-hub-panel__hint">
                   Email and password already work in the desktop app. Google and GitHub will be added there after we wire a secure browser callback flow.
-                </div>
+                </aside>
               ) : null}
 
-              <div className="account-hub-panel__guest-note">
+              <aside className="account-hub-panel__guest-note">
                 <MetaBadge text="Guest mode" accent={false} />
                 <p>Browse and import remain available without an account. Publishing and Hub management require a verified account.</p>
-              </div>
+              </aside>
             </Panel>
-          </div>
+          </section>
         </>
       ) : null}
 
       {panel.isConfigured && !panel.isAuthLoading && panel.authState.isAuthenticated ? (
         <>
-          <div className="account-hub-panel__tabs-row">
+          <header className="account-hub-panel__tabs-row">
             <Tabs
               items={panel.signedInTabs}
               activeKey={panel.activeTab}
@@ -227,41 +248,43 @@ export const AccountHubPanel = memo(() => {
               <FiLogOut />
               Sign out
             </Button>
-          </div>
+          </header>
 
-          <div className="account-hub-panel__grid account-hub-panel__grid--single">
+          <section className="account-hub-panel__grid account-hub-panel__grid--single" aria-label="Account management panels">
             <Panel className="account-hub-panel__card" as="section">
               {panel.activeTab === "overview" ? (
                 <>
-                  <div className="account-hub-panel__section-head">
+                  <header className="account-hub-panel__section-head">
                     <h3>{panel.authState.displayName || "Your account"}</h3>
                     <p>{panel.authState.email || "No email available"}</p>
-                  </div>
-                  <div className="account-hub-panel__badge-row">
+                  </header>
+                  <ul className="account-hub-panel__badge-row" aria-label="Account status badges">
                     {panel.accountBadges.map((badge) => (
-                      <MetaBadge key={badge.key} text={badge.text} accent={badge.accent} />
+                      <li key={badge.key}>
+                        <MetaBadge text={badge.text} accent={badge.accent} />
+                      </li>
                     ))}
-                  </div>
-                  <div className="account-hub-panel__summary-list">
+                  </ul>
+                  <dl className="account-hub-panel__summary-list">
                     <div>
-                      <span>Hub access</span>
-                      <strong>
+                      <dt>Hub access</dt>
+                      <dd>
                         {panel.authState.isEmailVerified
                           ? "Publish and manage enabled"
                           : "Verify email to publish and manage"}
-                      </strong>
+                      </dd>
                     </div>
                     <div>
-                      <span>Password recovery</span>
-                      <strong>Email reset links are enabled</strong>
+                      <dt>Password recovery</dt>
+                      <dd>Email reset links are enabled</dd>
                     </div>
                     <div>
-                      <span>Sync</span>
-                      <strong>Planned after auth rollout is stable</strong>
+                      <dt>Sync</dt>
+                      <dd>Planned after auth rollout is stable</dd>
                     </div>
-                  </div>
+                  </dl>
                   {!panel.authState.isEmailVerified ? (
-                    <div className="account-hub-panel__callout">
+                    <aside className="account-hub-panel__callout">
                       <FiMail />
                       <div>
                         <strong>Verify your email</strong>
@@ -276,17 +299,22 @@ export const AccountHubPanel = memo(() => {
                         <FiRefreshCw />
                         Resend email
                       </Button>
-                    </div>
+                    </aside>
                   ) : null}
                 </>
               ) : null}
 
               {panel.activeTab === "profile" ? (
-                <>
-                  <div className="account-hub-panel__section-head">
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    panel.handleSaveProfile();
+                  }}
+                >
+                  <header className="account-hub-panel__section-head">
                     <h3>Profile</h3>
                     <p>Update the name shown in your account and future Hub ownership UI.</p>
-                  </div>
+                  </header>
                   <label className="account-hub-panel__field">
                     <span>Display name</span>
                     <TextInput
@@ -299,26 +327,31 @@ export const AccountHubPanel = memo(() => {
                     <span>Email</span>
                     <TextInput value={panel.authState.email} disabled />
                   </label>
-                  <div className="account-hub-panel__actions">
+                  <footer className="account-hub-panel__actions">
                     <Button
                       variant="primary"
-                      onClick={panel.handleSaveProfile}
+                      type="submit"
                       isLoading={panel.pendingAction === "save-profile"}
                     >
                       Save profile
                     </Button>
-                  </div>
-                </>
+                  </footer>
+                </form>
               ) : null}
 
               {panel.activeTab === "security" ? (
-                <>
-                  <div className="account-hub-panel__section-head">
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    panel.handleUpdatePassword();
+                  }}
+                >
+                  <header className="account-hub-panel__section-head">
                     <h3>Security</h3>
                     <p>Keep your account safe with a strong password and a verified email.</p>
-                  </div>
+                  </header>
                   {!panel.authState.isEmailVerified ? (
-                    <div className="account-hub-panel__callout account-hub-panel__callout--stacked">
+                    <aside className="account-hub-panel__callout account-hub-panel__callout--stacked">
                       <div>
                         <strong>Email confirmation is still pending</strong>
                         <p>Confirm your inbox before you publish, update, or delete Hub decks.</p>
@@ -332,7 +365,7 @@ export const AccountHubPanel = memo(() => {
                         <FiRefreshCw />
                         Resend verification
                       </Button>
-                    </div>
+                    </aside>
                   ) : null}
                   <label className="account-hub-panel__field">
                     <span>New password</span>
@@ -354,57 +387,61 @@ export const AccountHubPanel = memo(() => {
                       autoComplete="new-password"
                     />
                   </label>
-                  <div className="account-hub-panel__actions">
+                  <footer className="account-hub-panel__actions">
                     <Button
                       variant="primary"
-                      onClick={panel.handleUpdatePassword}
+                      type="submit"
                       isLoading={panel.pendingAction === "update-password"}
                     >
                       <FiShield />
                       {panel.isRecoveryFlow ? "Finish recovery" : "Update password"}
                     </Button>
-                    <Button variant="ghost" onClick={panel.handlePasswordResetRequest}>
+                    <Button variant="ghost" type="button" onClick={panel.handlePasswordResetRequest}>
                       Send another reset email
                     </Button>
-                  </div>
-                </>
+                  </footer>
+                </form>
               ) : null}
 
               {panel.activeTab === "hub" ? (
                 <>
-                  <div className="account-hub-panel__section-head">
+                  <header className="account-hub-panel__section-head">
                     <h3>My Hub decks</h3>
                     <p>Manage the public decks attached to this account.</p>
-                  </div>
+                  </header>
 
                   {panel.isOwnDecksLoading ? (
-                    <div className="account-hub-panel__loading">Loading your Hub decks...</div>
+                    <p className="account-hub-panel__loading">Loading your Hub decks...</p>
                   ) : null}
 
                   {panel.ownDecksError ? (
-                    <div className="account-hub-panel__inline-error">{panel.ownDecksError}</div>
+                    <p className="account-hub-panel__inline-error">{panel.ownDecksError}</p>
                   ) : null}
 
                   {!panel.isOwnDecksLoading && !panel.ownDecksError && panel.ownDecks.length === 0 ? (
-                    <div className="account-hub-panel__empty-state">
+                    <p className="account-hub-panel__empty-state">
                       You have not published any Hub decks with this account yet.
-                    </div>
+                    </p>
                   ) : null}
 
-                  <div className="account-hub-panel__hub-list">
+                  <ul className="account-hub-panel__hub-list">
                     {panel.ownDecks.map((deck) => (
-                      <article className="account-hub-panel__hub-item" key={deck.id}>
-                        <div className="account-hub-panel__hub-main">
-                          <div className="account-hub-panel__hub-head">
+                      <li className="account-hub-panel__hub-item" key={deck.id}>
+                        <article className="account-hub-panel__hub-main">
+                          <header className="account-hub-panel__hub-head">
                             <strong>{deck.title || "Untitled deck"}</strong>
-                            <div className="account-hub-panel__hub-badges">
-                              <MetaBadge text={renderDeckVersion(deck)} accent={false} />
-                              <MetaBadge text={renderDeckMeta(deck)} accent={false} />
-                            </div>
-                          </div>
+                            <ul className="account-hub-panel__hub-badges" aria-label={`Deck metadata for ${deck.title || "Untitled deck"}`}>
+                              <li>
+                                <MetaBadge text={renderDeckVersion(deck)} accent={false} />
+                              </li>
+                              <li>
+                                <MetaBadge text={renderDeckMeta(deck)} accent={false} />
+                              </li>
+                            </ul>
+                          </header>
                           <p>{deck.description || "No public description yet."}</p>
-                        </div>
-                        <div className="account-hub-panel__hub-actions">
+                        </article>
+                        <footer className="account-hub-panel__hub-actions">
                           <Button
                             variant="secondary"
                             size="sm"
@@ -425,26 +462,27 @@ export const AccountHubPanel = memo(() => {
                           <Button
                             variant="danger"
                             size="sm"
+                            type="button"
                             onClick={() => panel.handleDeleteHubDeck(deck)}
                             isLoading={panel.deletingHubDeckId === String(deck.id)}
                           >
                             <FiTrash2 />
                             Delete
                           </Button>
-                        </div>
-                      </article>
+                        </footer>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </>
               ) : null}
 
               {panel.activeTab === "delete" ? (
                 <>
-                  <div className="account-hub-panel__section-head">
+                  <header className="account-hub-panel__section-head">
                     <h3>Delete account</h3>
                     <p>This action will ultimately remove your public Hub decks as well.</p>
-                  </div>
-                  <div className="account-hub-panel__danger-box">
+                  </header>
+                  <aside className="account-hub-panel__danger-box">
                     <strong>Secure account deletion still needs one server-side step.</strong>
                     <p>
                       We can’t safely delete Supabase auth users from the client with just a publishable key. The next step is a protected Edge Function that performs the deletion with service-role privileges.
@@ -452,11 +490,11 @@ export const AccountHubPanel = memo(() => {
                     <p>
                       Once that function exists, this tab will delete your account and remove every public deck owned by it.
                     </p>
-                  </div>
+                  </aside>
                 </>
               ) : null}
             </Panel>
-          </div>
+          </section>
         </>
       ) : null}
     </article>
