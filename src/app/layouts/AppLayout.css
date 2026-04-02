@@ -136,7 +136,7 @@
         var(--mobile-side-nav-width) + 12px + var(--mobile-side-nav-edge-gap) + env(safe-area-inset-right)
       )
       var(--mobile-content-padding-y)
-      var(--mobile-content-padding-x);
+      calc(var(--mobile-content-padding-x) + env(safe-area-inset-left));
   }
 
   .app-shell__content--learn {
@@ -146,7 +146,7 @@
         var(--mobile-side-nav-width) + 12px + var(--mobile-side-nav-edge-gap) + env(safe-area-inset-right)
       )
       var(--mobile-content-padding-y)
-      var(--mobile-content-padding-x);
+      calc(var(--mobile-content-padding-x) + env(safe-area-inset-left));
     overflow: hidden;
   }
 
