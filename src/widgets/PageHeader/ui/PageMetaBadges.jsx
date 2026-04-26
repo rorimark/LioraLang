@@ -1,9 +1,7 @@
 import { memo, useMemo } from "react";
 import { MetaBadge } from "@shared/ui";
 
-const STATIC_BADGES = [{ key: "focus", label: "Focus mode", accent: true }];
-
-export const PageMetaBadges = memo(({ badges = STATIC_BADGES }) => {
+export const PageMetaBadges = memo(() => {
   const formattedDate = useMemo(
     () =>
       new Intl.DateTimeFormat("en-US", {
@@ -17,9 +15,6 @@ export const PageMetaBadges = memo(({ badges = STATIC_BADGES }) => {
   return (
     <div className="page-header__meta">
       <MetaBadge text={formattedDate} />
-      {badges.map((badge) => (
-        <MetaBadge key={badge.key} text={badge.label} accent={badge.accent} />
-      ))}
     </div>
   );
 });
