@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
 import { CardCatalogPagination } from "@features/card-catalog";
-import { Button, InlineAlert, Panel, TextInput } from "@shared/ui";
+import { InlineAlert, Panel, SearchField } from "@shared/ui";
 import { useBrowseDecksPanel } from "../model";
 import { BrowseDeckCardList } from "./BrowseDeckCardList";
 import "./BrowseDecksPanel.css";
@@ -55,8 +55,6 @@ export const BrowseDecksPanel = memo(() => {
     ],
   );
 
-  const isSearchActive = Boolean(panel.searchInput.trim());
-
   return (
     <Panel className="browse-decks-panel">
       {/* <header className="browse-decks-panel__header">
@@ -88,24 +86,15 @@ export const BrowseDecksPanel = memo(() => {
 
       {panel.isConfigured ? (
         <div className="browse-decks-panel__toolbar">
-          <label className="browse-decks-panel__search" htmlFor="browse-search">
-            <span className="sr-only">Search decks</span>
-            <TextInput
-              id="browse-search"
-              type="search"
-              placeholder="Search decks by title..."
-              value={panel.searchInput}
-              onChange={panel.handleSearchInputChange}
-            />
-          </label>
-          <Button
-            className="browse-decks-panel__clear"
-            onClick={panel.clearSearch}
-            disabled={!isSearchActive}
-            size="sm"
-          >
-            Clear
-          </Button>
+          <SearchField
+            id="browse-search"
+            className="browse-decks-panel__search"
+            value={panel.searchInput}
+            onChange={panel.handleSearchInputChange}
+            onClear={panel.clearSearch}
+            placeholder="Search decks by title..."
+            ariaLabel="Search decks"
+          />
         </div>
       ) : null}
 

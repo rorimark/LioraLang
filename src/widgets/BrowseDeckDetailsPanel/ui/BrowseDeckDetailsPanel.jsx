@@ -1,5 +1,15 @@
 import { memo, useMemo } from "react";
-import { FiArrowLeft, FiLink } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiCalendar,
+  FiDownload,
+  FiFilter,
+  FiHardDrive,
+  FiLink,
+  FiPackage,
+  FiRefreshCw,
+  FiType,
+} from "react-icons/fi";
 import { WordsTable } from "@entities/word";
 import {
   CardCatalogFilters,
@@ -195,7 +205,8 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           onClick={panel.refreshDeck}
           disabled={!panel.isConfigured || panel.isLoading}
         >
-          Refresh
+          <FiRefreshCw aria-hidden />
+          <span>Refresh</span>
         </Button>
       </div>
 
@@ -268,19 +279,31 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
 
             <dl className="browse-decks-panel__stats">
               <div>
-                <dt>Words</dt>
+                <dt>
+                  <FiType aria-hidden />
+                  <span>Words</span>
+                </dt>
                 <dd>{derived.wordsCount}</dd>
               </div>
               <div>
-                <dt>Downloads</dt>
+                <dt>
+                  <FiDownload aria-hidden />
+                  <span>Downloads</span>
+                </dt>
                 <dd>{derived.downloadsCount}</dd>
               </div>
               <div>
-                <dt>Updated</dt>
+                <dt>
+                  <FiCalendar aria-hidden />
+                  <span>Updated</span>
+                </dt>
                 <dd>{derived.updatedAt}</dd>
               </div>
               <div>
-                <dt>Package</dt>
+                <dt>
+                  <FiPackage aria-hidden />
+                  <span>Package</span>
+                </dt>
                 <dd>{derived.fileSize}</dd>
               </div>
             </dl>
@@ -292,7 +315,8 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               disabled={panel.importing || !panel.deck.latestVersion?.filePath}
               variant="primary"
             >
-              {panel.importing ? "Importing..." : "Import to Decks"}
+              {panel.importing ? <FiHardDrive aria-hidden /> : <FiDownload aria-hidden />}
+              <span>{panel.importing ? "Importing..." : "Import to Decks"}</span>
             </Button>
           </div>
         </article>
@@ -301,7 +325,10 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
       {panel.isConfigured && !panel.isLoading && !panel.error && panel.deck ? (
         <>
           <header className="browse-deck-details__preview-head">
-            <h3>Words preview</h3>
+            <h3>
+              <FiType aria-hidden />
+              <span>Words preview</span>
+            </h3>
             <span>{panel.totalItems} words</span>
           </header>
 
@@ -320,7 +347,8 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
                     onClick={panel.toggleFilters}
                     aria-expanded={panel.isFiltersExpanded}
                   >
-                    {panel.isFiltersExpanded ? "Hide filters" : "Show filters"}
+                    <FiFilter aria-hidden />
+                    <span>{panel.isFiltersExpanded ? "Hide filters" : "Show filters"}</span>
                   </Button>
                 </div>
               )}

@@ -41,17 +41,6 @@
   min-width: 0;
 }
 
-.decks-page-panel__search-field input {
-  width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: 0.82rem;
-  padding: 9px 12px;
-}
-
 .decks-page-panel__search-meta {
   flex: 0 0 auto;
   min-height: 36px;
@@ -202,11 +191,6 @@
     width: 38px;
     min-width: 38px;
     height: 38px;
-  }
-
-  .decks-page-panel__search-field input {
-    font-size: 0.78rem;
-    padding: 8px 10px;
   }
 
   .decks-page-panel__header-tools {
