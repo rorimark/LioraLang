@@ -1,4 +1,11 @@
 import { memo, useMemo } from "react";
+import {
+  FiArrowLeft,
+  FiDownload,
+  FiEdit3,
+  FiRefreshCw,
+  FiSliders,
+} from "react-icons/fi";
 import { WordsTable } from "@entities/word";
 import {
   CardCatalogFilters,
@@ -137,16 +144,20 @@ export const DeckDetailsPanel = memo(() => {
           className="cards-panel__button--secondary"
           onClick={panel.openDecksOverview}
         >
-          Back to decks
+          <FiArrowLeft aria-hidden />
+          <span>Back to decks</span>
         </button>
         <button type="button" onClick={panel.openEditDeck}>
-          Edit deck
+          <FiEdit3 aria-hidden />
+          <span>Edit deck</span>
         </button>
         <button type="button" onClick={panel.exportDeck} disabled={panel.isExporting}>
-          {panel.isExporting ? "Exporting..." : "Export deck as JSON"}
+          <FiDownload aria-hidden />
+          <span>{panel.isExporting ? "Exporting..." : "Export deck as JSON"}</span>
         </button>
         <button type="button" onClick={panel.refreshDeckWords}>
-          Refresh words
+          <FiRefreshCw aria-hidden />
+          <span>Refresh words</span>
         </button>
         {panel.isNarrowFiltersViewport && (
           <button
@@ -155,7 +166,8 @@ export const DeckDetailsPanel = memo(() => {
             onClick={panel.toggleFilters}
             aria-expanded={panel.isFiltersExpanded}
           >
-            {panel.isFiltersExpanded ? "Hide filters" : "Show filters"}
+            <FiSliders aria-hidden />
+            <span>{panel.isFiltersExpanded ? "Hide filters" : "Show filters"}</span>
           </button>
         )}
       </div>

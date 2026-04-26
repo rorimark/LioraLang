@@ -60,6 +60,10 @@
 }
 
 .cards-panel__actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
@@ -68,6 +72,17 @@
   font-family: inherit;
   font-size: 0.8rem;
   padding: 7px 10px;
+  white-space: nowrap;
+}
+
+.cards-panel__actions button svg {
+  flex: 0 0 auto;
+  width: 0.92rem;
+  height: 0.92rem;
+}
+
+.cards-panel__actions button span {
+  min-width: 0;
 }
 
 .cards-panel__button--secondary {
@@ -201,6 +216,7 @@
     min-height: 34px;
     font-size: 0.76rem;
     padding: 6px 8px;
+    white-space: normal;
   }
 
   .dictionary-filters-toggle {

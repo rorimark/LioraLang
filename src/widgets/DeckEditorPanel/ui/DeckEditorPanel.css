@@ -31,6 +31,10 @@
 
 .deck-editor-panel__toolbar button,
 .deck-editor-panel__word-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
@@ -39,6 +43,7 @@
   font-size: 0.8rem;
   cursor: pointer;
   padding: 7px 11px;
+  white-space: nowrap;
 }
 
 .deck-editor-panel__toolbar button:hover,
@@ -61,6 +66,14 @@
   color: var(--color-danger);
 }
 
+.deck-editor-panel__toolbar button svg,
+.deck-editor-panel__word-actions button svg,
+.deck-editor-panel__table-actions button svg {
+  flex: 0 0 auto;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
 .deck-editor-panel__section {
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -75,6 +88,30 @@
   font-size: 0.98rem;
 }
 
+.deck-editor-panel__section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deck-editor-panel__section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  flex: 0 0 auto;
+}
+
+.deck-editor-panel__section-icon svg {
+  width: 0.96rem;
+  height: 0.96rem;
+}
+
 .deck-editor-panel__section-header p {
   margin: 4px 0 0;
   color: var(--color-text-muted);
@@ -83,6 +120,9 @@
 
 .deck-editor-panel__section-meta {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: var(--color-text-muted);
   font-size: 0.8rem;
 }
@@ -237,6 +277,10 @@
 }
 
 .deck-editor-panel__table-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
@@ -298,6 +342,9 @@
 
 .deck-editor-panel__preview h4 {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: 0.88rem;
 }
 

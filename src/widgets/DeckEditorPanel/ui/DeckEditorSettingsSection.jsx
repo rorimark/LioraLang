@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { FiBookOpen, FiSettings } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
 
 export const DeckEditorSettingsSection = memo(() => {
@@ -12,7 +13,12 @@ export const DeckEditorSettingsSection = memo(() => {
   return (
     <section className="deck-editor-panel__section">
       <header className="deck-editor-panel__section-header">
-        <h3>Deck settings</h3>
+        <div className="deck-editor-panel__section-title">
+          <span className="deck-editor-panel__section-icon" aria-hidden>
+            <FiSettings />
+          </span>
+          <h3>Deck settings</h3>
+        </div>
         <p>Define deck name and translation directions.</p>
       </header>
 
@@ -113,7 +119,10 @@ export const DeckEditorSettingsSection = memo(() => {
         </label>
       </div>
 
-      <p className="deck-editor-panel__section-meta">{words.length} words in deck</p>
+      <p className="deck-editor-panel__section-meta">
+        <FiBookOpen aria-hidden />
+        <span>{words.length} words in deck</span>
+      </p>
     </section>
   );
 });
