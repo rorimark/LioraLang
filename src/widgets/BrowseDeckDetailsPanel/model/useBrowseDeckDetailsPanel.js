@@ -92,6 +92,11 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
   const [importing, setImporting] = useState(false);
+  const [postImportModal, setPostImportModal] = useState({
+    isOpen: false,
+    deckId: "",
+    deckName: "",
+  });
   const [refreshToken, setRefreshToken] = useState(0);
   const [previewWords, setPreviewWords] = useState([]);
   const [previewLanguages, setPreviewLanguages] = useState({
@@ -301,6 +306,50 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     setMessage("");
   }, []);
 
+  const openPostImportModal = useCallback((result, fallbackDeckName = "") => {
+    const normalizedDeckId =
+      typeof result?.deckId === "string" || typeof result?.deckId === "number"
+        ? String(result.deckId).trim()
+        : "";
+
+    if (!normalizedDeckId) {
+      return;
+    }
+
+    const normalizedDeckName =
+      typeof result?.deckName === "string" && result.deckName.trim()
+        ? result.deckName.trim()
+        : fallbackDeckName || "Imported deck";
+
+    setPostImportModal({
+      isOpen: true,
+      deckId: normalizedDeckId,
+      deckName: normalizedDeckName,
+    });
+  }, []);
+
+  const closePostImportModal = useCallback(() => {
+    setPostImportModal((currentState) => {
+      if (!currentState.isOpen) {
+        return currentState;
+      }
+
+      return {
+        ...currentState,
+        isOpen: false,
+      };
+    });
+  }, []);
+
+  const goToLearnAfterImport = useCallback(() => {
+    const importedDeckId = String(postImportModal.deckId || "").trim();
+    closePostImportModal();
+
+    navigate(ROUTE_PATHS.learn, {
+      state: importedDeckId ? { importedDeckId } : null,
+    });
+  }, [closePostImportModal, navigate, postImportModal.deckId]);
+
   const toggleFilters = useCallback(() => {
     setIsFiltersExpanded((currentState) => !currentState);
   }, []);
@@ -350,6 +399,7 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
         },
       });
       const importMessage = resolveImportMessage(result, deck.title);
+      let resolvedStatus = importMessage;
 
       try {
         const incrementResult = await hubRepository.incrementDeckDownloads(
@@ -378,16 +428,16 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
         });
 
         if (isDownloadsIncrementQueued) {
-          const queuedMessage = withDownloadsCounterQueuedWarning(importMessage);
-          reportMessage(queuedMessage.text, queuedMessage.variant);
-          return;
+          resolvedStatus = withDownloadsCounterQueuedWarning(importMessage);
+        } else {
+          resolvedStatus = importMessage;
         }
-
-        reportMessage(importMessage.text, importMessage.variant);
       } catch {
-        const warningMessage = withDownloadsCounterWarning(importMessage);
-        reportMessage(warningMessage.text, warningMessage.variant);
+        resolvedStatus = withDownloadsCounterWarning(importMessage);
       }
+
+      reportMessage(resolvedStatus.text, resolvedStatus.variant);
+      openPostImportModal(result, deck.title);
     } catch (importError) {
       reportMessage(importError?.message || "Failed to import deck from Hub", "error");
     } finally {
@@ -400,6 +450,7 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     deck,
     deckRepository,
     hubRepository,
+    openPostImportModal,
     reportMessage,
   ]);
 
@@ -451,11 +502,14 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     message,
     messageVariant,
     importing,
+    postImportModal,
     refreshDeck,
     importDeckFromHub,
     copyDeckLink,
     openBrowseDecks,
     clearMessage,
+    closePostImportModal,
+    goToLearnAfterImport,
     previewWords,
     previewLanguages,
     isPreviewLoading,

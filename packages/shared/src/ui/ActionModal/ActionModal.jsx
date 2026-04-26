@@ -15,6 +15,7 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
       isConfirmDisabled = false,
       onConfirm,
       onClose,
+      renderActions,
     } = dialog;
     const contentRef = useRef(null);
     const titleId = useId();
@@ -67,19 +68,30 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
 
           {children}
 
-          <div className="action-modal__actions">
-            <button type="button" onClick={onClose} data-autofocus>
-              {cancelLabel}
-            </button>
-            <button
-              type="button"
-              className="action-modal__confirm"
-              onClick={onConfirm}
-              disabled={isConfirming || isConfirmDisabled}
-            >
-              {isConfirming ? "Processing..." : confirmLabel}
-            </button>
-          </div>
+          {typeof renderActions === "function" ? (
+            renderActions({
+              confirmLabel,
+              cancelLabel,
+              isConfirming,
+              isConfirmDisabled,
+              onConfirm,
+              onClose,
+            })
+          ) : (
+            <div className="action-modal__actions">
+              <button type="button" onClick={onClose} data-autofocus>
+                {cancelLabel}
+              </button>
+              <button
+                type="button"
+                className="action-modal__confirm"
+                onClick={onConfirm}
+                disabled={isConfirming || isConfirmDisabled}
+              >
+                {isConfirming ? "Processing..." : confirmLabel}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );

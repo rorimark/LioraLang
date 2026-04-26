@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import { buildBrowseDeckRoute } from "@shared/config/routes";
+import { ROUTE_PATHS, buildBrowseDeckRoute } from "@shared/config/routes";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
 
 const BROWSE_PAGE_SIZE = 6;
@@ -68,6 +69,7 @@ const withDownloadsCounterQueuedWarning = (message) => {
 };
 
 export const useBrowseDecksPanel = () => {
+  const navigate = useNavigate();
   const deckRepository = usePlatformService("deckRepository");
   const hubRepository = usePlatformService("hubRepository");
   const { appPreferences } = useAppPreferences();
@@ -82,6 +84,11 @@ export const useBrowseDecksPanel = () => {
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
   const [importingDeckId, setImportingDeckId] = useState("");
+  const [postImportModal, setPostImportModal] = useState({
+    isOpen: false,
+    deckId: "",
+    deckName: "",
+  });
   const requestIdRef = useRef(0);
 
   const isConfigured = hubRepository.isConfigured();
@@ -183,6 +190,50 @@ export const useBrowseDecksPanel = () => {
     setMessage("");
   }, []);
 
+  const openPostImportModal = useCallback((result, fallbackDeckName = "") => {
+    const normalizedDeckId =
+      typeof result?.deckId === "string" || typeof result?.deckId === "number"
+        ? String(result.deckId).trim()
+        : "";
+
+    if (!normalizedDeckId) {
+      return;
+    }
+
+    const normalizedDeckName =
+      typeof result?.deckName === "string" && result.deckName.trim()
+        ? result.deckName.trim()
+        : fallbackDeckName || "Imported deck";
+
+    setPostImportModal({
+      isOpen: true,
+      deckId: normalizedDeckId,
+      deckName: normalizedDeckName,
+    });
+  }, []);
+
+  const closePostImportModal = useCallback(() => {
+    setPostImportModal((currentState) => {
+      if (!currentState.isOpen) {
+        return currentState;
+      }
+
+      return {
+        ...currentState,
+        isOpen: false,
+      };
+    });
+  }, []);
+
+  const goToLearnAfterImport = useCallback(() => {
+    const importedDeckId = String(postImportModal.deckId || "").trim();
+    closePostImportModal();
+
+    navigate(ROUTE_PATHS.learn, {
+      state: importedDeckId ? { importedDeckId } : null,
+    });
+  }, [closePostImportModal, navigate, postImportModal.deckId]);
+
   const refreshDecks = useCallback(() => {
     setRefreshToken((value) => value + 1);
   }, []);
@@ -253,6 +304,7 @@ export const useBrowseDecksPanel = () => {
         },
       });
       const importMessage = resolveImportMessage(result, deck.title);
+      let resolvedStatus = importMessage;
 
       try {
         const incrementResult = await hubRepository.incrementDeckDownloads(
@@ -287,16 +339,16 @@ export const useBrowseDecksPanel = () => {
         });
 
         if (isDownloadsIncrementQueued) {
-          const queuedMessage = withDownloadsCounterQueuedWarning(importMessage);
-          reportMessage(queuedMessage.text, queuedMessage.variant);
-          return;
+          resolvedStatus = withDownloadsCounterQueuedWarning(importMessage);
+        } else {
+          resolvedStatus = importMessage;
         }
-
-        reportMessage(importMessage.text, importMessage.variant);
       } catch {
-        const warningMessage = withDownloadsCounterWarning(importMessage);
-        reportMessage(warningMessage.text, warningMessage.variant);
+        resolvedStatus = withDownloadsCounterWarning(importMessage);
       }
+
+      reportMessage(resolvedStatus.text, resolvedStatus.variant);
+      openPostImportModal(result, deck.title);
     } catch (importError) {
       reportMessage(importError.message || "Failed to import deck from Hub", "error");
     } finally {
@@ -308,6 +360,7 @@ export const useBrowseDecksPanel = () => {
     appPreferences.importExport.includeTags,
     deckRepository,
     hubRepository,
+    openPostImportModal,
     reportMessage,
   ]);
 
@@ -363,6 +416,7 @@ export const useBrowseDecksPanel = () => {
     totalPages,
     totalDecks,
     importingDeckId,
+    postImportModal,
     message,
     messageVariant,
     refreshDecks,
@@ -374,6 +428,8 @@ export const useBrowseDecksPanel = () => {
     importDeckFromHub,
     copyDeckLink,
     clearMessage,
+    closePostImportModal,
+    goToLearnAfterImport,
     visibleRange,
   };
 };

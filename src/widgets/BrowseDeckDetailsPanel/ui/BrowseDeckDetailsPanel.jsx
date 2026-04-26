@@ -17,6 +17,7 @@ import {
   PAGE_SIZE_OPTIONS,
   SORT_OPTIONS,
 } from "@features/card-catalog";
+import { PostImportChoiceModal } from "@features/deck-import";
 import { ActionModal, Button, InlineAlert, MetaBadge, Panel } from "@shared/ui";
 import { useBrowseDeckDetailsPanel } from "../model";
 import "@widgets/BrowseDecksPanel/ui/BrowseDecksPanel.css";
@@ -187,6 +188,21 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
       onClose: panel.toggleFilters,
     }),
     [panel.isFiltersExpanded, panel.toggleFilters],
+  );
+  const postImportModal = useMemo(
+    () => ({
+      isOpen: panel.postImportModal.isOpen,
+      deckName: panel.postImportModal.deckName,
+      onClose: panel.closePostImportModal,
+      onContinueBrowsing: panel.closePostImportModal,
+      onGoToLearn: panel.goToLearnAfterImport,
+    }),
+    [
+      panel.closePostImportModal,
+      panel.goToLearnAfterImport,
+      panel.postImportModal.deckName,
+      panel.postImportModal.isOpen,
+    ],
   );
 
   return (
@@ -388,6 +404,8 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           </div>
         </ActionModal>
       ) : null}
+
+      <PostImportChoiceModal modal={postImportModal} />
     </Panel>
   );
 });

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useDecks, useDeckWords } from "@entities/deck";
 import { ROUTE_PATHS } from "@shared/config/routes";
@@ -325,6 +325,7 @@ const buildCompletionMessage = (session) => {
 
 export const useLearnFlashcardsPanel = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const srsRepository = usePlatformService("srsRepository");
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const { appPreferences } = useAppPreferences();
@@ -699,6 +700,40 @@ export const useLearnFlashcardsPanel = () => {
       };
     });
   }, [selectedDeckId]);
+
+  useEffect(() => {
+    const routeState =
+      location.state && typeof location.state === "object" ? location.state : null;
+    const importedDeckId =
+      typeof routeState?.importedDeckId === "string" || typeof routeState?.importedDeckId === "number"
+        ? String(routeState.importedDeckId).trim()
+        : "";
+
+    if (!importedDeckId) {
+      return;
+    }
+
+    setLearnProgress((prevState) => ({
+      ...prevState,
+      selectedDeckId: importedDeckId,
+      isBackVisible: false,
+    }));
+
+    const nextState = { ...routeState };
+    delete nextState.importedDeckId;
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: location.search,
+        hash: location.hash,
+      },
+      {
+        replace: true,
+        state: Object.keys(nextState).length > 0 ? nextState : null,
+      },
+    );
+  }, [location.hash, location.pathname, location.search, location.state, navigate]);
 
   useEffect(() => {
     if (isBrowseMode) {
