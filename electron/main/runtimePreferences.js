@@ -70,6 +70,7 @@ export const createRuntimePreferencesManager = ({
 }) => {
   const defaultRuntimeAppPreferences = {
     studySession: {
+      defaultStudyMode: defaultAppPreferences.studySession.defaultStudyMode,
       dailyGoal: defaultAppPreferences.studySession.dailyGoal,
       repeatWrongCards: defaultAppPreferences.studySession.repeatWrongCards,
     },
@@ -129,6 +130,9 @@ export const createRuntimePreferencesManager = ({
 
     return {
       studySession: {
+        defaultStudyMode: ["review", "srs"].includes(raw?.studySession?.defaultStudyMode)
+          ? raw.studySession.defaultStudyMode
+          : defaultRuntimeAppPreferences.studySession.defaultStudyMode,
         dailyGoal: toIntegerInRange(
           raw?.studySession?.dailyGoal,
           1,

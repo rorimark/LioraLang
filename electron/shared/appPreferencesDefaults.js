@@ -1,5 +1,6 @@
 export const DEFAULT_APP_PREFERENCES = {
   studySession: Object.freeze({
+    defaultStudyMode: "review",
     dailyGoal: 20,
     autoFlipDelay: "off",
     shuffleMode: "per_session",
@@ -50,5 +51,4 @@ export const DEFAULT_APP_PREFERENCES = {
     crashReportsEnabled: true,
     logLevel: "off",
   }),
-
 };

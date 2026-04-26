@@ -13,6 +13,21 @@ export const DEFAULT_LEARN_PROGRESS = {
   lastBrowseWordIdByDeck: {},
 };
 
+const isStoredViewMode = (value) => value === "browse" || value === "srs";
+
+const resolveNormalizedViewMode = (
+  value,
+  fallbackViewMode = DEFAULT_LEARN_PROGRESS.viewMode,
+) => {
+  if (isStoredViewMode(value)) {
+    return value;
+  }
+
+  return isStoredViewMode(fallbackViewMode)
+    ? fallbackViewMode
+    : DEFAULT_LEARN_PROGRESS.viewMode;
+};
+
 const normalizeWordId = (wordId) => {
   if (typeof wordId === "string") {
     const normalized = wordId.trim();
@@ -48,11 +63,40 @@ const normalizeLastCardWordIdByDeck = (value) => {
   }, {});
 };
 
-export const normalizeLearnProgress = (value) => {
-  const viewMode =
-    value?.viewMode === "browse" || value?.viewMode === "srs"
-      ? value.viewMode
-      : DEFAULT_LEARN_PROGRESS.viewMode;
+const readStoredLearnProgressPayload = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const raw = window.sessionStorage.getItem(LEARN_PROGRESS_SESSION_KEY);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch {
+    // ignore storage failures
+  }
+
+  try {
+    const raw = window.localStorage.getItem(LEARN_PROGRESS_LOCAL_KEY);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch {
+    // ignore storage failures
+  }
+
+  return null;
+};
+
+export const normalizeLearnProgress = (
+  value,
+  fallbackViewMode = DEFAULT_LEARN_PROGRESS.viewMode,
+) => {
+  const viewMode = resolveNormalizedViewMode(
+    value?.viewMode,
+    fallbackViewMode,
+  );
 
   const legacyMap = normalizeLastCardWordIdByDeck(
     value?.lastCardWordIdByDeck,
@@ -120,38 +164,37 @@ export const createLearnProgressSettingsPatch = (value) => {
   };
 };
 
-export const readLearnProgressFromSession = () => {
-  if (typeof window === "undefined") {
-    return DEFAULT_LEARN_PROGRESS;
+export const hasStoredLearnProgressViewMode = () => {
+  const payload = readStoredLearnProgressPayload();
+  return isStoredViewMode(payload?.viewMode);
+};
+
+export const readLearnProgressFromSession = (
+  fallbackViewMode = DEFAULT_LEARN_PROGRESS.viewMode,
+) => {
+  const payload = readStoredLearnProgressPayload();
+
+  if (!payload) {
+    return {
+      ...DEFAULT_LEARN_PROGRESS,
+      viewMode: resolveNormalizedViewMode(undefined, fallbackViewMode),
+    };
   }
 
-  try {
-    const raw = window.sessionStorage.getItem(LEARN_PROGRESS_SESSION_KEY);
-    if (raw) {
-      const parsed = normalizeLearnProgress(JSON.parse(raw));
-      debugLogData("learn.session.read", {
-        key: LEARN_PROGRESS_SESSION_KEY,
-        source: "session",
-        value: parsed,
-      });
-      return parsed;
-    }
+  const storageKey =
+    typeof window !== "undefined" &&
+    window.sessionStorage.getItem(LEARN_PROGRESS_SESSION_KEY)
+      ? LEARN_PROGRESS_SESSION_KEY
+      : LEARN_PROGRESS_LOCAL_KEY;
+  const parsed = normalizeLearnProgress(payload, fallbackViewMode);
 
-    const fallback = window.localStorage.getItem(LEARN_PROGRESS_LOCAL_KEY);
-    if (!fallback) {
-      return DEFAULT_LEARN_PROGRESS;
-    }
+  debugLogData("learn.session.read", {
+    key: storageKey,
+    source: storageKey === LEARN_PROGRESS_SESSION_KEY ? "session" : "local",
+    value: parsed,
+  });
 
-    const parsed = normalizeLearnProgress(JSON.parse(fallback));
-    debugLogData("learn.session.read", {
-      key: LEARN_PROGRESS_LOCAL_KEY,
-      source: "local",
-      value: parsed,
-    });
-    return parsed;
-  } catch {
-    return DEFAULT_LEARN_PROGRESS;
-  }
+  return parsed;
 };
 
 export const writeLearnProgressToSession = (value) => {

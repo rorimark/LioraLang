@@ -74,6 +74,18 @@ export const AppPreferencesSection = memo(({
 
         <div className="app-preferences-section__grid app-preferences-section__grid--fields">
           <label className="app-preferences-section__field">
+            <span>Default study mode</span>
+            <select
+              name="studySession.defaultStudyMode"
+              value={appPreferences.studySession.defaultStudyMode}
+              onChange={handleSelectFieldChange}
+            >
+              <option value="review">Review</option>
+              <option value="srs">SRS</option>
+            </select>
+          </label>
+
+          <label className="app-preferences-section__field">
             <span>Daily goal (cards)</span>
             <input
               type="number"
