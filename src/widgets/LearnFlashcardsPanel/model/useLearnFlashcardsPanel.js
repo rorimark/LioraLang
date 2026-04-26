@@ -10,11 +10,18 @@ import {
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
 import {
+  hasStoredLearnProgressViewMode,
   readLearnProgressFromSession,
   readBrowseProgressFromStorage,
   writeBrowseProgressToStorage,
   writeLearnProgressToSession,
 } from "./learnProgressStorage";
+import {
+  LEARN_VIEW_MODE_BROWSE,
+  LEARN_VIEW_MODE_SRS,
+  resolveLoopedBrowseIndex,
+  resolvePreferredLearnViewMode,
+} from "./learnViewMode";
 
 const EMPTY_SESSION = {
   deck: null,
@@ -60,9 +67,6 @@ const AUTO_FLIP_DELAY_TO_MS = {
 
 const SHUFFLE_MODE_OFF = "off";
 const SHUFFLE_MODE_PER_SESSION = "per_session";
-const LEARN_VIEW_MODE_SRS = "srs";
-const LEARN_VIEW_MODE_BROWSE = "browse";
-
 const createShuffleSeed = () => Math.floor(Math.random() * 2_147_483_646) + 1;
 
 const LEARN_SESSION_CACHE = {
@@ -325,8 +329,11 @@ export const useLearnFlashcardsPanel = () => {
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const { appPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
+  const preferredLearnViewMode = resolvePreferredLearnViewMode(
+    appPreferences?.studySession?.defaultStudyMode,
+  );
   const [learnProgress, setLearnProgress] = useState(() => {
-    const baseProgress = readLearnProgressFromSession();
+    const baseProgress = readLearnProgressFromSession(preferredLearnViewMode);
     const persistedBrowse = readBrowseProgressFromStorage();
 
     return {
@@ -337,6 +344,9 @@ export const useLearnFlashcardsPanel = () => {
       },
     };
   });
+  const [hasPersistedViewMode, setHasPersistedViewMode] = useState(() =>
+    hasStoredLearnProgressViewMode(),
+  );
   const [extendedSessionByDeckId, setExtendedSessionByDeckId] = useState(
     () => LEARN_SESSION_CACHE.extendedSessionByDeckId || {},
   );
@@ -356,9 +366,10 @@ export const useLearnFlashcardsPanel = () => {
   const autoFlipDelayMs =
     AUTO_FLIP_DELAY_TO_MS[studySessionSettings.autoFlipDelay] || 0;
   const learnViewMode =
-    learnProgress.viewMode === LEARN_VIEW_MODE_BROWSE
-      ? LEARN_VIEW_MODE_BROWSE
-      : LEARN_VIEW_MODE_SRS;
+    learnProgress.viewMode === LEARN_VIEW_MODE_BROWSE ||
+    learnProgress.viewMode === LEARN_VIEW_MODE_SRS
+      ? learnProgress.viewMode
+      : preferredLearnViewMode;
   const isBrowseMode = learnViewMode === LEARN_VIEW_MODE_BROWSE;
 
   const selectedDeckId = useMemo(() => {
@@ -476,8 +487,26 @@ export const useLearnFlashcardsPanel = () => {
     deckWords.length > 0
       ? `${browseWordIndex + 1} / ${deckWords.length}`
       : "";
-  const canBrowsePrev = browseWordIndex > 0;
-  const canBrowseNext = browseWordIndex < deckWords.length - 1;
+  const canBrowsePrev = deckWords.length > 1;
+  const canBrowseNext = deckWords.length > 1;
+
+  useEffect(() => {
+    if (hasPersistedViewMode) {
+      return;
+    }
+
+    setLearnProgress((prevState) => {
+      if (prevState.viewMode === preferredLearnViewMode) {
+        return prevState;
+      }
+
+      return {
+        ...prevState,
+        viewMode: preferredLearnViewMode,
+        isBackVisible: false,
+      };
+    });
+  }, [hasPersistedViewMode, preferredLearnViewMode]);
 
   useEffect(() => {
     if (!isBrowseMode || !selectedDeckId) {
@@ -730,6 +759,7 @@ export const useLearnFlashcardsPanel = () => {
     const nextMode =
       mode === LEARN_VIEW_MODE_BROWSE ? LEARN_VIEW_MODE_BROWSE : LEARN_VIEW_MODE_SRS;
 
+    setHasPersistedViewMode(true);
     setLearnProgress((prevState) => ({
       ...prevState,
       viewMode: nextMode,
@@ -831,11 +861,17 @@ export const useLearnFlashcardsPanel = () => {
   }, [isBrowseMode, loadSession, resolveShuffleSeed, selectedDeckId]);
 
   const handleBrowsePrev = useCallback(() => {
-    if (!isBrowseMode || !selectedDeckId || !canBrowsePrev) {
+    if (!isBrowseMode || !selectedDeckId || deckWords.length === 0) {
       return;
     }
 
-    const nextWord = deckWords[browseWordIndex - 1];
+    const nextWord = deckWords[
+      resolveLoopedBrowseIndex({
+        currentIndex: browseWordIndex,
+        total: deckWords.length,
+        direction: -1,
+      })
+    ];
     if (!nextWord) {
       return;
     }
@@ -847,7 +883,6 @@ export const useLearnFlashcardsPanel = () => {
     }));
   }, [
     browseWordIndex,
-    canBrowsePrev,
     deckWords,
     isBrowseMode,
     selectedDeckId,
@@ -855,11 +890,17 @@ export const useLearnFlashcardsPanel = () => {
   ]);
 
   const handleBrowseNext = useCallback(() => {
-    if (!isBrowseMode || !selectedDeckId || !canBrowseNext) {
+    if (!isBrowseMode || !selectedDeckId || deckWords.length === 0) {
       return;
     }
 
-    const nextWord = deckWords[browseWordIndex + 1];
+    const nextWord = deckWords[
+      resolveLoopedBrowseIndex({
+        currentIndex: browseWordIndex,
+        total: deckWords.length,
+        direction: 1,
+      })
+    ];
     if (!nextWord) {
       return;
     }
@@ -871,7 +912,6 @@ export const useLearnFlashcardsPanel = () => {
     }));
   }, [
     browseWordIndex,
-    canBrowseNext,
     deckWords,
     isBrowseMode,
     selectedDeckId,

@@ -7,6 +7,7 @@ vi.mock("@shared/lib/debug", () => ({
 import {
   areLearnProgressEqual,
   DEFAULT_LEARN_PROGRESS,
+  hasStoredLearnProgressViewMode,
   LEARN_BROWSE_PROGRESS_KEY,
   LEARN_PROGRESS_LOCAL_KEY,
   LEARN_PROGRESS_SESSION_KEY,
@@ -95,6 +96,25 @@ describe("learnProgressStorage", () => {
       });
     });
 
+    it("uses the provided fallback mode only when nothing was stored yet", () => {
+      expect(readLearnProgressFromSession("browse")).toMatchObject({
+        viewMode: "browse",
+      });
+
+      window.localStorage.setItem(
+        LEARN_PROGRESS_LOCAL_KEY,
+        JSON.stringify({
+          viewMode: "srs",
+          selectedDeckId: "5",
+        }),
+      );
+
+      expect(readLearnProgressFromSession("browse")).toMatchObject({
+        selectedDeckId: "5",
+        viewMode: "srs",
+      });
+    });
+
     it("writes one normalized payload to both storages", () => {
       writeLearnProgressToSession({
         selectedDeckId: "9",
@@ -141,6 +161,21 @@ describe("learnProgressStorage", () => {
         4: "15",
         8: "18",
       });
+    });
+  });
+
+  describe("hasStoredLearnProgressViewMode", () => {
+    it("detects whether a persisted learn mode already exists", () => {
+      expect(hasStoredLearnProgressViewMode()).toBe(false);
+
+      window.sessionStorage.setItem(
+        LEARN_PROGRESS_SESSION_KEY,
+        JSON.stringify({
+          viewMode: "srs",
+        }),
+      );
+
+      expect(hasStoredLearnProgressViewMode()).toBe(true);
     });
   });
 });

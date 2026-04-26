@@ -18,6 +18,7 @@ const PART_OF_SPEECH_OPTIONS = new Set([
 ]);
 const AUTO_FLIP_OPTIONS = new Set(["off", "1s", "2s", "3s"]);
 const SHUFFLE_MODE_OPTIONS = new Set(["off", "per_session", "always"]);
+const DEFAULT_STUDY_MODE_OPTIONS = new Set(["review", "srs"]);
 const DUPLICATE_STRATEGY_OPTIONS = new Set(["skip", "update", "keep_both"]);
 const EXPORT_FORMAT_OPTIONS = new Set(["lioradeck", "json"]);
 const FONT_SCALE_OPTIONS = new Set(["small", "normal", "large"]);
@@ -90,6 +91,11 @@ const normalizeTags = (value) => {
 export const normalizeAppPreferences = (value = {}) => {
   return {
     studySession: {
+      defaultStudyMode: toOneOf(
+        value?.studySession?.defaultStudyMode,
+        DEFAULT_STUDY_MODE_OPTIONS,
+        DEFAULT_APP_PREFERENCES.studySession.defaultStudyMode,
+      ),
       dailyGoal: toNumberInRange(value?.studySession?.dailyGoal, {
         fallback: DEFAULT_APP_PREFERENCES.studySession.dailyGoal,
         min: 1,

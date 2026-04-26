@@ -105,17 +105,6 @@ export const LearnFlashcardsPanel = memo(() => {
             <button
               type="button"
               className={
-                modeSwitch.learnViewMode === "srs"
-                  ? "learn-page-panel__mode-button learn-page-panel__mode-button--active"
-                  : "learn-page-panel__mode-button"
-              }
-              onClick={modeSwitch.switchToSrsMode}
-            >
-              SRS
-            </button>
-            <button
-              type="button"
-              className={
                 modeSwitch.learnViewMode === "browse"
                   ? "learn-page-panel__mode-button learn-page-panel__mode-button--active"
                   : "learn-page-panel__mode-button"
@@ -123,6 +112,17 @@ export const LearnFlashcardsPanel = memo(() => {
               onClick={modeSwitch.switchToBrowseMode}
             >
               Review
+            </button>
+            <button
+              type="button"
+              className={
+                modeSwitch.learnViewMode === "srs"
+                  ? "learn-page-panel__mode-button learn-page-panel__mode-button--active"
+                  : "learn-page-panel__mode-button"
+              }
+              onClick={modeSwitch.switchToSrsMode}
+            >
+              SRS
             </button>
           </div>
           {panel.hasDecks && panel.currentWord ? (

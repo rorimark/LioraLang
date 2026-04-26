@@ -1,5 +1,6 @@
 export const DEFAULT_APP_PREFERENCES = Object.freeze({
   studySession: Object.freeze({
+    defaultStudyMode: "review",
     dailyGoal: 20,
     autoFlipDelay: "off",
     shuffleMode: "per_session",
