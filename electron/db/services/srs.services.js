@@ -1031,6 +1031,23 @@ const pickNewCardRow = (db, deckId, shuffleSettings) => {
     .get(deckId);
 };
 
+const pickFutureScheduledCardRow = (db, deckId, nowIso) => {
+  return db
+    .prepare(
+      `
+        SELECT ${CARD_FIELDS_SELECT}
+        FROM words
+        INNER JOIN review_cards ON review_cards.word_id = words.id
+        WHERE words.deck_id = ?
+          AND review_cards.state IN ('learning', 'relearning', 'review')
+          AND review_cards.due_at > ?
+        ORDER BY review_cards.due_at ASC, words.id ASC
+        LIMIT 1
+      `,
+    )
+    .get(deckId, nowIso);
+};
+
 const pickNextCardRow = (db, deckId, nowIso, limits, options = {}) => {
   const forceAllCards = Boolean(options?.forceAllCards);
   const shuffleSettings = normalizeStudySessionSettings(options?.settings || {});
@@ -1065,7 +1082,15 @@ const pickNextCardRow = (db, deckId, nowIso, limits, options = {}) => {
   }
 
   if (forceAllCards || limits.newLeft > 0) {
-    return pickNewCardRow(db, deckId, shuffleSettings);
+    const newRow = pickNewCardRow(db, deckId, shuffleSettings);
+
+    if (newRow) {
+      return newRow;
+    }
+  }
+
+  if (forceAllCards) {
+    return pickFutureScheduledCardRow(db, deckId, nowIso);
   }
 
   return null;
@@ -1173,7 +1198,6 @@ const resolveSessionLimits = (
   todayCounters,
   queueCounters = null,
 ) => {
-  const dailyGoal = studySessionSettings.dailyGoal;
   const dueReviewCount = Math.max(0, Number(queueCounters?.reviewDueCount) || 0);
   const reviewLeftRaw = Math.max(
     0,
@@ -1183,6 +1207,7 @@ const resolveSessionLimits = (
     0,
     srsSettings.newCardsPerDay - todayCounters.newStudiedToday,
   );
+  const dailyGoal = studySessionSettings.dailyGoal;
   const dailyLeft = Math.max(0, dailyGoal - todayCounters.totalStudiedToday);
   const reviewBudget = Math.min(reviewLeftRaw, Math.min(dailyLeft, dueReviewCount));
   const dailyLeftAfterReviews = Math.max(0, dailyLeft - reviewBudget);
