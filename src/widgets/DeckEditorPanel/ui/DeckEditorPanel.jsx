@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { FiArrowLeft, FiExternalLink, FiRefreshCw, FiSave } from "react-icons/fi";
 import { InlineAlert } from "@shared/ui";
 import {
   DeckEditorPanelProvider,
@@ -43,14 +44,16 @@ const DeckEditorPanelBody = memo(() => {
         <div className="deck-editor-panel__error">{loadError}</div>
         <div className="deck-editor-panel__toolbar">
           <button type="button" onClick={reloadDeck}>
-            Retry
+            <FiRefreshCw aria-hidden />
+            <span>Retry</span>
           </button>
           <button
             type="button"
             className="deck-editor-panel__button--secondary"
             onClick={goToDecks}
           >
-            Back to decks
+            <FiArrowLeft aria-hidden />
+            <span>Back to decks</span>
           </button>
         </div>
       </article>
@@ -75,7 +78,8 @@ const DeckEditorPanelBody = memo(() => {
             className="deck-editor-panel__button--secondary"
             onClick={goToDecks}
           >
-            Back to decks
+            <FiArrowLeft aria-hidden />
+            <span>Back to decks</span>
           </button>
           {isEditMode && (
             <button
@@ -83,11 +87,13 @@ const DeckEditorPanelBody = memo(() => {
               className="deck-editor-panel__button--secondary"
               onClick={goToDeckDetails}
             >
-              Open details
+              <FiExternalLink aria-hidden />
+              <span>Open details</span>
             </button>
           )}
           <button type="button" onClick={handleSaveDeck} disabled={isSaving}>
-            {isSaving ? "Saving..." : "Save deck"}
+            <FiSave aria-hidden />
+            <span>{isSaving ? "Saving..." : "Save deck"}</span>
           </button>
         </div>
       </header>

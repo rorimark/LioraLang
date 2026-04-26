@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { FiEdit3, FiPlus, FiRotateCcw, FiSave } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
 
 export const DeckEditorWordFormSection = memo(() => {
@@ -17,7 +18,12 @@ export const DeckEditorWordFormSection = memo(() => {
   return (
     <section className="deck-editor-panel__section">
       <header className="deck-editor-panel__section-header">
-        <h3>{editingWordId ? "Edit word" : "Add words"}</h3>
+        <div className="deck-editor-panel__section-title">
+          <span className="deck-editor-panel__section-icon" aria-hidden>
+            {editingWordId ? <FiEdit3 /> : <FiPlus />}
+          </span>
+          <h3>{editingWordId ? "Edit word" : "Add words"}</h3>
+        </div>
         <p>Add one word card at a time and keep quality high.</p>
       </header>
 
@@ -114,14 +120,16 @@ export const DeckEditorWordFormSection = memo(() => {
 
       <div className="deck-editor-panel__word-actions">
         <button type="button" onClick={handleUpsertWordDraft}>
-          {editingWordId ? "Save word changes" : "Add word"}
+          {editingWordId ? <FiSave aria-hidden /> : <FiPlus aria-hidden />}
+          <span>{editingWordId ? "Save word changes" : "Add word"}</span>
         </button>
         <button
           type="button"
           className="deck-editor-panel__button--secondary"
           onClick={resetWordDraft}
         >
-          Clear form
+          <FiRotateCcw aria-hidden />
+          <span>Clear form</span>
         </button>
       </div>
     </section>

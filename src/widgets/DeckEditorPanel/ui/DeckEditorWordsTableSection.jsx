@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
+import { FiEdit3, FiEye, FiList, FiTrash2 } from "react-icons/fi";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { useDeckEditorPanelContext } from "../model";
 
@@ -115,7 +116,12 @@ export const DeckEditorWordsTableSection = memo(() => {
   return (
     <section className="deck-editor-panel__section">
       <header className="deck-editor-panel__section-header">
-        <h3>Words table</h3>
+        <div className="deck-editor-panel__section-title">
+          <span className="deck-editor-panel__section-icon" aria-hidden>
+            <FiList />
+          </span>
+          <h3>Words table</h3>
+        </div>
         <p>Review all entries and keep deck clean.</p>
       </header>
 
@@ -181,7 +187,8 @@ export const DeckEditorWordsTableSection = memo(() => {
                           data-word-id={word.id}
                           onClick={onEditClick}
                         >
-                          Edit
+                          <FiEdit3 aria-hidden />
+                          <span>Edit</span>
                         </button>
                         <button
                           type="button"
@@ -189,7 +196,8 @@ export const DeckEditorWordsTableSection = memo(() => {
                           data-word-id={word.id}
                           onClick={onDeleteClick}
                         >
-                          Delete
+                          <FiTrash2 aria-hidden />
+                          <span>Delete</span>
                         </button>
                       </div>
                     </td>
@@ -203,7 +211,10 @@ export const DeckEditorWordsTableSection = memo(() => {
 
           {previewWord && (
             <div className="deck-editor-panel__preview">
-              <h4>Preview</h4>
+              <h4>
+                <FiEye aria-hidden />
+                <span>Preview</span>
+              </h4>
               <p>
                 <strong>{languageLabels.sourceLanguage}:</strong>{" "}
                 {renderWordCell(previewWord.source)}
