@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { PostImportChoiceModal } from "@features/deck-import";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { InlineAlert, Panel, SearchField } from "@shared/ui";
 import { useBrowseDecksPanel } from "../model";
@@ -52,6 +53,21 @@ export const BrowseDecksPanel = memo(() => {
       panel.totalPages,
       panel.visibleRange.end,
       panel.visibleRange.start,
+    ],
+  );
+  const postImportModal = useMemo(
+    () => ({
+      isOpen: panel.postImportModal.isOpen,
+      deckName: panel.postImportModal.deckName,
+      onClose: panel.closePostImportModal,
+      onContinueBrowsing: panel.closePostImportModal,
+      onGoToLearn: panel.goToLearnAfterImport,
+    }),
+    [
+      panel.closePostImportModal,
+      panel.goToLearnAfterImport,
+      panel.postImportModal.deckName,
+      panel.postImportModal.isOpen,
     ],
   );
 
@@ -115,6 +131,8 @@ export const BrowseDecksPanel = memo(() => {
           <CardCatalogPagination pagination={pagination} />
         </footer>
       ) : null}
+
+      <PostImportChoiceModal modal={postImportModal} />
     </Panel>
   );
 });

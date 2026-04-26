@@ -4,6 +4,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const usePlatformServiceMock = vi.fn();
 const useAppPreferencesMock = vi.fn();
 const copyTextToClipboardMock = vi.fn();
+const navigateMock = vi.fn();
+
+vi.mock("react-router", () => ({
+  useNavigate: () => navigateMock,
+}));
 
 vi.mock("@shared/providers", () => ({
   usePlatformService: (...args) => usePlatformServiceMock(...args),
@@ -52,6 +57,7 @@ describe("useBrowseDecksPanel", () => {
     it("imports a public deck and refreshes its download count in place", async () => {
       const deckRepository = {
         importDeckFromUrl: vi.fn().mockResolvedValue({
+          deckId: 77,
           deckName: "Travel & Tourism",
           importedCount: 24,
           skippedCount: 0,
@@ -97,6 +103,53 @@ describe("useBrowseDecksPanel", () => {
       expect(result.current.decks[0].downloadsCount).toBe(4);
       expect(result.current.message).toBe('Imported "Travel & Tourism": 24 words');
       expect(result.current.messageVariant).toBe("success");
+      expect(result.current.postImportModal).toEqual({
+        isOpen: true,
+        deckId: "77",
+        deckName: "Travel & Tourism",
+      });
+    });
+
+    it("navigates to learn with the imported deck when the user confirms the prompt", async () => {
+      const deckRepository = {
+        importDeckFromUrl: vi.fn().mockResolvedValue({
+          deckId: 91,
+          deckName: "Travel & Tourism",
+          importedCount: 24,
+          skippedCount: 0,
+        }),
+      };
+      const hubRepository = {
+        isConfigured: vi.fn(() => true),
+        listDecks: vi.fn().mockResolvedValue(createListResponse([createHubDeck()])),
+        createDownloadUrl: vi
+          .fn()
+          .mockResolvedValue("https://example.com/travel.lioradeck"),
+        incrementDeckDownloads: vi.fn().mockResolvedValue({ count: 4 }),
+      };
+      usePlatformServiceMock.mockImplementation((serviceName) =>
+        serviceName === "deckRepository" ? deckRepository : hubRepository,
+      );
+
+      const { useBrowseDecksPanel } = await import("./useBrowseDecksPanel.js");
+      const { result } = renderHook(() => useBrowseDecksPanel());
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      await act(async () => {
+        await result.current.importDeckFromHub(result.current.decks[0]);
+      });
+
+      act(() => {
+        result.current.goToLearnAfterImport();
+      });
+
+      expect(navigateMock).toHaveBeenCalledWith("/app/learn", {
+        state: { importedDeckId: "91" },
+      });
+      expect(result.current.postImportModal.isOpen).toBe(false);
     });
   });
 

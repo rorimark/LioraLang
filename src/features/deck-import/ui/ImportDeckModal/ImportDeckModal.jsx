@@ -4,9 +4,21 @@ import "./ImportDeckModal.css";
 
 export const ImportDeckModal = memo(({ modal }) => {
     const resolvedModal = modal || {};
-    const selection = resolvedModal.selection || {};
-    const languageReview = resolvedModal.languageReview || {};
-    const actions = resolvedModal.actions || {};
+    const selection = resolvedModal.selection || resolvedModal;
+    const languageReview = resolvedModal.languageReview || {
+      isOpen: resolvedModal.isLanguageReviewOpen,
+      importLanguages: resolvedModal.importLanguages,
+      languageOptions: resolvedModal.languageOptions,
+    };
+    const actions = resolvedModal.actions || {
+      onConfirm: resolvedModal.onConfirm,
+      onClose: resolvedModal.onClose,
+      onDeckNameChange: resolvedModal.onDeckNameChange,
+      onLanguageChange: resolvedModal.onLanguageChange,
+      onOpenLanguageReview: resolvedModal.onOpenLanguageReview,
+      onCloseLanguageReview: resolvedModal.onCloseLanguageReview,
+      onToggleLanguageReview: resolvedModal.onToggleLanguageReview,
+    };
     const normalizedDeckName = selection.deckNameDraft?.trim() || "";
     const sourceLanguage = languageReview.importLanguages?.sourceLanguage || "";
     const targetLanguage = languageReview.importLanguages?.targetLanguage || "";
