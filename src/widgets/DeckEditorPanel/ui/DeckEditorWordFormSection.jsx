@@ -24,7 +24,6 @@ export const DeckEditorWordFormSection = memo(() => {
           </span>
           <h3>{editingWordId ? "Edit word" : "Add words"}</h3>
         </div>
-        <p>Add one word card at a time and keep quality high.</p>
       </header>
 
       <div className="deck-editor-panel__word-grid">

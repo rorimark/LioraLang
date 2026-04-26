@@ -19,7 +19,6 @@ export const DeckEditorSettingsSection = memo(() => {
           </span>
           <h3>Deck settings</h3>
         </div>
-        <p>Define deck name and translation directions.</p>
       </header>
 
       <div className="deck-editor-panel__settings-grid">
@@ -102,7 +101,6 @@ export const DeckEditorSettingsSection = memo(() => {
             />
             <span className="deck-editor-panel__toggle-copy">
               <strong>Enable CEFR levels</strong>
-              <small>Show and edit word difficulty levels for this deck.</small>
             </span>
           </span>
         </label>

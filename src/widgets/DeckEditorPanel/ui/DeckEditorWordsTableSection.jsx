@@ -122,7 +122,6 @@ export const DeckEditorWordsTableSection = memo(() => {
           </span>
           <h3>Words table</h3>
         </div>
-        <p>Review all entries and keep deck clean.</p>
       </header>
 
       {words.length === 0 ? (
