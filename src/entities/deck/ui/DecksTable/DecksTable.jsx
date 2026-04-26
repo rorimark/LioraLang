@@ -1,5 +1,12 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { FiMoreVertical } from "react-icons/fi";
+import {
+  FiDownload,
+  FiEdit3,
+  FiFolder,
+  FiMoreVertical,
+  FiSend,
+  FiTrash2,
+} from "react-icons/fi";
 import { formatDeckCreatedAt } from "@shared/lib/date";
 import { MetaBadge } from "@shared/ui";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
@@ -355,14 +362,16 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             role="menuitem"
                             onClick={() => handleOpenDeck(deck.id)}
                           >
-                            Open
+                            <FiFolder aria-hidden />
+                            <span>Open</span>
                           </button>
                           <button
                             type="button"
                             role="menuitem"
                             onClick={() => handleEditDeck(deck.id)}
                           >
-                            Edit
+                            <FiEdit3 aria-hidden />
+                            <span>Edit</span>
                           </button>
 
                           <button
@@ -371,7 +380,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             onClick={() => handleExportDeck(deck.id)}
                             disabled={isExporting}
                           >
-                            {isExporting ? "Exporting..." : "Export"}
+                            <FiDownload aria-hidden />
+                            <span>{isExporting ? "Exporting..." : "Export"}</span>
                           </button>
                           <button
                             type="button"
@@ -380,7 +390,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             onClick={() => handlePublishDeck(deck.id)}
                             disabled={isPublishing}
                           >
-                            {isPublishing ? "Publishing..." : "Publish"}
+                            <FiSend aria-hidden />
+                            <span>{isPublishing ? "Publishing..." : "Publish"}</span>
                           </button>
                           <button
                             type="button"
@@ -389,7 +400,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             onClick={() => handleDeleteDeck(deck.id, deck.name)}
                             disabled={isDeleting}
                           >
-                            {isDeleting ? "Deleting..." : "Delete"}
+                            <FiTrash2 aria-hidden />
+                            <span>{isDeleting ? "Deleting..." : "Delete"}</span>
                           </button>
                         </div>
                       )}
@@ -403,7 +415,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                           handleOpenDeck(deck.id);
                         }}
                       >
-                        Open
+                        <FiFolder aria-hidden />
+                        <span>Open</span>
                       </button>
                       <button
                         type="button"
@@ -412,7 +425,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                           handleEditDeck(deck.id);
                         }}
                       >
-                        Edit
+                        <FiEdit3 aria-hidden />
+                        <span>Edit</span>
                       </button>
                       <button
                         type="button"
@@ -422,7 +436,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         }}
                         disabled={isExporting}
                       >
-                        {isExporting ? "Exporting..." : "Export"}
+                        <FiDownload aria-hidden />
+                        <span>{isExporting ? "Exporting..." : "Export"}</span>
                       </button>
                       <button
                         type="button"
@@ -433,7 +448,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         }}
                         disabled={isPublishing}
                       >
-                        {isPublishing ? "Publishing..." : "Publish"}
+                        <FiSend aria-hidden />
+                        <span>{isPublishing ? "Publishing..." : "Publish"}</span>
                       </button>
 
                       <button
@@ -445,7 +461,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         }}
                         disabled={isDeleting}
                       >
-                        {isDeleting ? "Deleting..." : "Delete"}
+                        <FiTrash2 aria-hidden />
+                        <span>{isDeleting ? "Deleting..." : "Delete"}</span>
                       </button>
                     </div>
                   </div>
