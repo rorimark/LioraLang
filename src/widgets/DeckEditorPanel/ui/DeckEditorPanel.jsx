@@ -65,11 +65,6 @@ const DeckEditorPanelBody = memo(() => {
       <header className="deck-editor-panel__header">
         <div>
           <h2>{isEditMode ? "Edit deck" : "Create deck"}</h2>
-          <p>
-            {isEditMode
-              ? "Update deck settings and maintain words."
-              : "Build a new deck and fill it with words."}
-          </p>
         </div>
 
         <div className="deck-editor-panel__toolbar">

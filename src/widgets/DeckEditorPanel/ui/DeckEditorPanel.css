@@ -17,12 +17,6 @@
   color: var(--color-text);
 }
 
-.deck-editor-panel__header p {
-  margin: 6px 0 0;
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
-}
-
 .deck-editor-panel__toolbar {
   display: flex;
   gap: 8px;
@@ -112,12 +106,6 @@
   height: 0.96rem;
 }
 
-.deck-editor-panel__section-header p {
-  margin: 4px 0 0;
-  color: var(--color-text-muted);
-  font-size: 0.82rem;
-}
-
 .deck-editor-panel__section-meta {
   margin: 0;
   display: inline-flex;
@@ -185,8 +173,6 @@
 }
 
 .deck-editor-panel__toggle-copy {
-  display: grid;
-  gap: 2px;
   min-width: 0;
 }
 
@@ -194,12 +180,6 @@
   font-size: 0.84rem;
   font-weight: 600;
   color: var(--color-text);
-}
-
-.deck-editor-panel__toggle-copy small {
-  font-size: 0.74rem;
-  line-height: 1.3;
-  color: var(--color-text-muted);
 }
 
 .deck-editor-panel__field--wide {
