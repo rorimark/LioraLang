@@ -352,6 +352,7 @@ const buildSessionCounters = ({ words, cardsByWordId, nowMs }) => {
   const dueLearning = [];
   const dueReview = [];
   const dueNew = [];
+  const futureScheduled = [];
 
   words.forEach((word) => {
     const rawCard = cardsByWordId.get(Number(word.id));
@@ -370,11 +371,15 @@ const buildSessionCounters = ({ words, cardsByWordId, nowMs }) => {
       return card.dueAtMs <= nowMs;
     })();
 
+    const candidate = { word, card };
+
     if (!isDue) {
+      if (cardState !== SRS_CARD_STATES.new && Number.isFinite(card.dueAtMs)) {
+        futureScheduled.push(candidate);
+      }
+
       return;
     }
-
-    const candidate = { word, card };
 
     if (cardState === SRS_CARD_STATES.review) {
       dueReview.push(candidate);
@@ -394,6 +399,7 @@ const buildSessionCounters = ({ words, cardsByWordId, nowMs }) => {
     dueLearning,
     dueReview,
     dueNew,
+    futureScheduled,
   };
 };
 
@@ -468,6 +474,25 @@ const resolveNextCard = ({ queueCounters, limits, studySettings, forceAllCards }
 
     if (dueNew.length > 0) {
       return dueNew[0];
+    }
+  }
+
+  if (forceAllCards) {
+    const futureScheduled = queueCounters.futureScheduled
+      .slice()
+      .sort((first, second) => {
+        const firstDue = Number(first.card?.dueAtMs) || 0;
+        const secondDue = Number(second.card?.dueAtMs) || 0;
+
+        if (firstDue !== secondDue) {
+          return firstDue - secondDue;
+        }
+
+        return Number(first.word?.id || 0) - Number(second.word?.id || 0);
+      });
+
+    if (futureScheduled.length > 0) {
+      return futureScheduled[0];
     }
   }
 

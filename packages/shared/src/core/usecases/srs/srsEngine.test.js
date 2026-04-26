@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   DEFAULT_STUDY_SETTINGS,
   SRS_CARD_STATES,
+  buildSrsSessionSnapshot,
   buildRatingPreview,
   normalizeReviewCard,
   normalizeSrsSettings,
@@ -152,6 +153,127 @@ describe("srsEngine", () => {
         hard: "15m",
         good: "24h",
         easy: "3d",
+      });
+    });
+  });
+
+  describe("buildSrsSessionSnapshot", () => {
+    it("stops the default session at the daily limit and offers an extra session", () => {
+      const nowMs = Date.UTC(2026, 2, 29, 12, 0, 0);
+
+      const session = buildSrsSessionSnapshot({
+        deck: { id: 1, name: "Deck" },
+        words: [
+          { id: 1, source: "alpha", target: "alfa" },
+          { id: 2, source: "beta", target: "beta" },
+        ],
+        cardsByWordId: new Map([
+          [
+            1,
+            {
+              state: "review",
+              dueAtMs: nowMs - 60_000,
+              dueAt: new Date(nowMs - 60_000).toISOString(),
+              intervalDays: 3,
+              easeFactor: 2.5,
+              reps: 2,
+              lapses: 0,
+            },
+          ],
+          [
+            2,
+            {
+              state: "review",
+              dueAtMs: nowMs - 120_000,
+              dueAt: new Date(nowMs - 120_000).toISOString(),
+              intervalDays: 2,
+              easeFactor: 2.5,
+              reps: 1,
+              lapses: 0,
+            },
+          ],
+        ]),
+        todayLogs: [
+          { queueType: "review", wordId: 99 },
+          { queueType: "review", wordId: 98 },
+        ],
+        srsSettings: normalizeSrsSettings({
+          newCardsPerDay: 1,
+          maxReviewsPerDay: 1,
+        }),
+        studySettings: normalizeStudySettings({
+          dailyGoal: 1,
+          repeatWrongCards: false,
+        }),
+        forceAllCards: false,
+        nowMs,
+      });
+
+      expect(session.card).toBeNull();
+      expect(session.completionState).toEqual({
+        done: true,
+        reason: "daily-limit",
+        canStartNewSession: true,
+      });
+    });
+
+    it("continues an extra session with the nearest future scheduled card", () => {
+      const nowMs = Date.UTC(2026, 2, 29, 12, 0, 0);
+
+      const session = buildSrsSessionSnapshot({
+        deck: { id: 1, name: "Deck" },
+        words: [
+          { id: 1, source: "alpha", target: "alfa" },
+          { id: 2, source: "beta", target: "beta" },
+        ],
+        cardsByWordId: new Map([
+          [
+            1,
+            {
+              state: "review",
+              dueAtMs: nowMs + 60_000,
+              dueAt: new Date(nowMs + 60_000).toISOString(),
+              intervalDays: 3,
+              easeFactor: 2.5,
+              reps: 2,
+              lapses: 0,
+            },
+          ],
+          [
+            2,
+            {
+              state: "review",
+              dueAtMs: nowMs + 15 * 60_000,
+              dueAt: new Date(nowMs + 15 * 60_000).toISOString(),
+              intervalDays: 2,
+              easeFactor: 2.5,
+              reps: 1,
+              lapses: 0,
+            },
+          ],
+        ]),
+        todayLogs: [],
+        srsSettings: normalizeSrsSettings({
+          newCardsPerDay: 1,
+          maxReviewsPerDay: 1,
+        }),
+        studySettings: normalizeStudySettings({
+          dailyGoal: 1,
+          repeatWrongCards: false,
+        }),
+        forceAllCards: true,
+        nowMs,
+      });
+
+      expect(session.card).toMatchObject({
+        wordId: 1,
+        state: SRS_CARD_STATES.review,
+      });
+      expect(session.sessionMode).toBe("extended");
+      expect(session.completionState).toEqual({
+        done: false,
+        reason: "",
+        canStartNewSession: false,
       });
     });
   });
