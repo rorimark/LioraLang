@@ -50,18 +50,12 @@
 }
 
 .browse-decks-panel__toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
   min-width: 0;
 }
 
 .browse-decks-panel__search {
-  flex: 1;
-}
-
-.browse-decks-panel__search .ui-input {
-  width: 100%;
+  min-width: 0;
 }
 
 .browse-decks-panel__grid {
@@ -126,6 +120,13 @@
 .browse-decks-panel__copy-link svg {
   width: 14px;
   height: 14px;
+}
+
+.browse-decks-panel__actions .ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 }
 
 .browse-decks-panel__card-link {
@@ -220,10 +221,19 @@
 
 .browse-decks-panel__stats dt {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--color-text-muted);
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+.browse-decks-panel__stats dt svg {
+  width: 0.78rem;
+  height: 0.78rem;
+  flex: 0 0 auto;
 }
 
 .browse-decks-panel__stats dd {
@@ -267,9 +277,7 @@
   }
 
   .browse-decks-panel__toolbar {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: stretch;
+    display: block;
   }
 
   .browse-decks-panel__stats {
@@ -297,8 +305,7 @@
   }
 
   .browse-decks-panel__toolbar {
-    grid-template-columns: 1fr;
-    gap: 6px;
+    display: block;
   }
 
   .browse-decks-panel__actions .ui-button {

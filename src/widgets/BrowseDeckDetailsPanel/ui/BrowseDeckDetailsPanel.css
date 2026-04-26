@@ -45,6 +45,15 @@
   color: var(--color-text);
 }
 
+.browse-deck-details__header .ui-button,
+.browse-deck-details__preview-actions .ui-button,
+.browse-decks-panel__actions .ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
 .browse-deck-details__copy-link {
   width: 32px;
   min-width: 32px;
@@ -87,6 +96,9 @@
 
 .browse-deck-details__preview-head h3 {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: 0.95rem;
 }
 

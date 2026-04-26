@@ -3,7 +3,7 @@ import { FiCode, FiFolderPlus, FiRefreshCw, FiUpload } from "react-icons/fi";
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
-import { Button, InlineAlert } from "@shared/ui";
+import { Button, InlineAlert, SearchField } from "@shared/ui";
 import { useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
 
@@ -109,15 +109,14 @@ export const DecksOverviewPanel = memo(() => {
   return (
     <article className="panel decks-page-panel">
       <div className="decks-page-panel__header">
-        <label className="decks-page-panel__search-field">
-          <input
-            type="search"
-            value={panel.deckSearch}
-            onChange={(event) => panel.handleDeckSearchChange(event.target.value)}
-            placeholder="Search by name, description, language or tag"
-            aria-label="Search decks"
-          />
-        </label>
+        <SearchField
+          className="decks-page-panel__search-field"
+          value={panel.deckSearch}
+          onChange={(event) => panel.handleDeckSearchChange(event.target.value)}
+          onClear={() => panel.handleDeckSearchChange("")}
+          placeholder="Search by name, description, language or tag"
+          ariaLabel="Search decks"
+        />
         <div className="decks-page-panel__header-tools">
           <div className="decks-page-panel__search-meta" aria-live="polite">
             <strong>{panel.decks.length}</strong>

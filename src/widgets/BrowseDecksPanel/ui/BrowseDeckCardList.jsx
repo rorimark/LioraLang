@@ -1,6 +1,13 @@
 import { memo, useCallback } from "react";
 import { Link } from "react-router";
-import { FiLink } from "react-icons/fi";
+import {
+  FiCalendar,
+  FiDownload,
+  FiHardDrive,
+  FiLink,
+  FiPackage,
+  FiType,
+} from "react-icons/fi";
 import { Button, MetaBadge } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
 
@@ -232,19 +239,31 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
 
                 <dl className="browse-decks-panel__stats">
                   <div className="browse-decks-panel__stat">
-                    <dt>Words</dt>
+                    <dt>
+                      <FiType aria-hidden />
+                      <span>Words</span>
+                    </dt>
                     <dd>{wordsCount}</dd>
                   </div>
                   <div className="browse-decks-panel__stat">
-                    <dt>Downloads</dt>
+                    <dt>
+                      <FiDownload aria-hidden />
+                      <span>Downloads</span>
+                    </dt>
                     <dd>{downloadsCount}</dd>
                   </div>
                   <div className="browse-decks-panel__stat">
-                    <dt>Updated</dt>
+                    <dt>
+                      <FiCalendar aria-hidden />
+                      <span>Updated</span>
+                    </dt>
                     <dd>{updatedAt}</dd>
                   </div>
                   <div className="browse-decks-panel__stat">
-                    <dt>Package</dt>
+                    <dt>
+                      <FiPackage aria-hidden />
+                      <span>Package</span>
+                    </dt>
                     <dd>{fileSize}</dd>
                   </div>
                 </dl>
@@ -257,7 +276,8 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                   disabled={isImporting || !deck?.latestVersion?.filePath}
                   variant="primary"
                 >
-                  {isImporting ? "Importing..." : "Import to Decks"}
+                  {isImporting ? <FiHardDrive aria-hidden /> : <FiDownload aria-hidden />}
+                  <span>{isImporting ? "Importing..." : "Import to Decks"}</span>
                 </Button>
               </div>
             </article>
