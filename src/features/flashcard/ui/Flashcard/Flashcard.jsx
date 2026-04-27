@@ -3,6 +3,7 @@ import "./Flashcard.css";
 
 const EMPTY_CARD = Object.freeze({});
 const EMPTY_BADGES = Object.freeze([]);
+const EMPTY_DETAILS = Object.freeze([]);
 
 export const Flashcard = memo(({ card = EMPTY_CARD }) => {
     const {
@@ -11,6 +12,7 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
       backLabel = "Back",
       backText,
       backMetaBadges = EMPTY_BADGES,
+      backDetails = EMPTY_DETAILS,
       isFlipped = false,
       onFlip,
       disabled = false,
@@ -34,7 +36,9 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
             aria-hidden={isFlipped}
           >
             <span className="flashcard__label">{frontLabel}</span>
-            <strong className="flashcard__text">{frontText || "-"}</strong>
+            <span className="flashcard__content">
+              <strong className="flashcard__text">{frontText || "-"}</strong>
+            </span>
             <span className="flashcard__hint">Tap to reveal answer</span>
           </span>
 
@@ -61,7 +65,18 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
                 </span>
               )}
             </span>
-            <strong className="flashcard__text">{backText || "-"}</strong>
+            <span className="flashcard__content">
+              <strong className="flashcard__text">{backText || "-"}</strong>
+              {backDetails.length > 0 && (
+                <span className="flashcard__details" aria-label="Examples">
+                  {backDetails.map((detail, index) => (
+                    <span key={`${detail}-${index}`} className="flashcard__detail-line">
+                      {detail}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </span>
             <span className="flashcard__hint">Tap to see front side</span>
           </span>
         </span>

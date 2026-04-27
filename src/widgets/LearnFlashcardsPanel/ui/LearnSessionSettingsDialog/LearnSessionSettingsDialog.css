@@ -1,0 +1,403 @@
+.learn-session-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.learn-session-dialog__overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: var(--color-overlay);
+}
+
+.learn-session-dialog__content {
+  position: relative;
+  width: min(780px, 100%);
+  max-height: min(88vh, 860px);
+  min-height: 0;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 94%, var(--color-surface-muted));
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.learn-session-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.learn-session-dialog__title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.learn-session-dialog__title-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.learn-session-dialog__title-icon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.learn-session-dialog__title-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.learn-session-dialog__title-copy h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.04rem;
+}
+
+.learn-session-dialog__title-copy p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.learn-session-dialog__close {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-transparent);
+  color: var(--color-text-muted);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.learn-session-dialog__close > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.learn-session-dialog__body {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 18px;
+  padding: 16px;
+}
+
+.learn-session-dialog__section {
+  display: grid;
+  gap: 12px;
+}
+
+.learn-session-dialog__section-head {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.learn-session-dialog__section-title {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+  font-size: 0.92rem;
+}
+
+.learn-session-dialog__section-title > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+}
+
+.learn-session-dialog__options-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.learn-session-dialog__options-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.learn-session-dialog__option-card {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 12px 13px;
+  display: grid;
+  gap: 8px;
+  text-align: left;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 100ms ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.learn-session-dialog__option-card--active {
+  border-color: color-mix(in srgb, var(--color-primary) 58%, var(--color-border));
+  background: color-mix(in srgb, var(--color-primary-soft) 56%, var(--color-surface));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 26%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+.learn-session-dialog__option-card--active .learn-session-dialog__option-head strong {
+  color: var(--color-text);
+}
+
+.learn-session-dialog__option-card--disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.learn-session-dialog__option-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.learn-session-dialog__option-head strong {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.learn-session-dialog__option-card > span:last-child {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.42;
+}
+
+.learn-session-dialog__option-indicator,
+.learn-session-dialog__option-badge {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 5px 8px;
+}
+
+.learn-session-dialog__option-indicator {
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+  background: color-mix(in srgb, var(--color-primary-soft) 54%, var(--color-surface));
+  color: var(--color-primary-strong);
+}
+
+.learn-session-dialog__option-badge {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+.learn-session-dialog__fields-grid,
+.learn-session-dialog__toggle-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.learn-session-dialog__fields-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.learn-session-dialog__field,
+.learn-session-dialog__toggle {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+}
+
+.learn-session-dialog__field {
+  display: grid;
+  gap: 8px;
+  padding: 12px 13px;
+}
+
+.learn-session-dialog__field span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+}
+
+.learn-session-dialog__field span > svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
+.learn-session-dialog__field input,
+.learn-session-dialog__field select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.84rem;
+  padding: 8px 10px;
+}
+
+.learn-session-dialog__toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 13px;
+}
+
+.learn-session-dialog__toggle input {
+  margin-top: 2px;
+}
+
+.learn-session-dialog__toggle--centered {
+  align-items: center;
+}
+
+.learn-session-dialog__toggle--centered input {
+  margin-top: 0;
+}
+
+.learn-session-dialog__toggle--centered .learn-session-dialog__toggle-copy {
+  justify-content: center;
+}
+
+.learn-session-dialog__toggle-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.learn-session-dialog__toggle-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.learn-session-dialog__toggle-title > svg {
+  width: 15px;
+  height: 15px;
+  color: var(--color-text-muted);
+  flex: 0 0 auto;
+}
+
+.learn-session-dialog__toggle strong {
+  color: var(--color-text);
+  font-size: 0.84rem;
+}
+
+.learn-session-dialog__toggle small {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.42;
+}
+
+.learn-session-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 820px) {
+  .learn-session-dialog__options-grid--two,
+  .learn-session-dialog__fields-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .learn-session-dialog {
+    padding: 0;
+    align-items: end;
+  }
+
+  .learn-session-dialog__content {
+    width: 100%;
+    max-height: min(92vh, 920px);
+    border-radius: 18px 18px 0 0;
+    border-bottom: 0;
+  }
+
+  .learn-session-dialog__header {
+    padding: 14px 14px 12px;
+  }
+
+  .learn-session-dialog__body {
+    padding: 14px;
+    gap: 16px;
+  }
+
+  .learn-session-dialog__footer {
+    padding: 12px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .learn-session-dialog__close:hover {
+    background: var(--color-surface-muted);
+    color: var(--color-text);
+  }
+
+  .learn-session-dialog__option-card:hover:not(:disabled):not(.learn-session-dialog__option-card--active) {
+    background: var(--color-surface-muted);
+    border-color: var(--color-border-strong);
+  }
+
+  .learn-session-dialog__option-card--active:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--color-primary) 48%, var(--color-border));
+    background: color-mix(in srgb, var(--color-primary-soft) 42%, var(--color-surface));
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .learn-session-dialog .ui-button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-surface) 75%, var(--color-surface-muted));
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .learn-session-dialog__option-card:active:not(:disabled):not(.learn-session-dialog__option-card--active) {
+    background: color-mix(in srgb, var(--color-primary-soft) 44%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-primary) 38%, var(--color-border));
+    transform: scale(0.995);
+  }
+
+  .learn-session-dialog__option-card--active:active:not(:disabled) {
+    background: color-mix(in srgb, var(--color-primary-soft) 62%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-primary) 62%, var(--color-border));
+    transform: scale(0.995);
+  }
+}

@@ -541,6 +541,9 @@ const buildSessionPayload = ({
     deck: {
       id: deck.id,
       name: deck.name,
+      sourceLanguage: toCleanString(deck?.sourceLanguage),
+      targetLanguage: toCleanString(deck?.targetLanguage),
+      tertiaryLanguage: toCleanString(deck?.tertiaryLanguage),
     },
     sessionMode: forceAllCards ? "extended" : "default",
     card: selectedCard,

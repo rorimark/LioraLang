@@ -72,6 +72,8 @@ export const createRuntimePreferencesManager = ({
     studySession: {
       defaultStudyMode: defaultAppPreferences.studySession.defaultStudyMode,
       dailyGoal: defaultAppPreferences.studySession.dailyGoal,
+      autoFlipDelay: defaultAppPreferences.studySession.autoFlipDelay,
+      shuffleMode: defaultAppPreferences.studySession.shuffleMode,
       repeatWrongCards: defaultAppPreferences.studySession.repeatWrongCards,
     },
     deckDefaults: {
@@ -139,6 +141,12 @@ export const createRuntimePreferencesManager = ({
           999,
           defaultRuntimeAppPreferences.studySession.dailyGoal,
         ),
+        autoFlipDelay: ["off", "1s", "2s", "3s"].includes(raw?.studySession?.autoFlipDelay)
+          ? raw.studySession.autoFlipDelay
+          : defaultRuntimeAppPreferences.studySession.autoFlipDelay,
+        shuffleMode: ["off", "per_session", "always"].includes(raw?.studySession?.shuffleMode)
+          ? raw.studySession.shuffleMode
+          : defaultRuntimeAppPreferences.studySession.shuffleMode,
         repeatWrongCards: toBoolean(
           raw?.studySession?.repeatWrongCards,
           defaultRuntimeAppPreferences.studySession.repeatWrongCards,
