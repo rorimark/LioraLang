@@ -25,7 +25,6 @@ const SIGNED_IN_TAB_ITEMS = [
   { key: "profile", label: "Profile" },
   { key: "security", label: "Security" },
   { key: "hub", label: "My Hub decks" },
-  { key: "delete", label: "Delete account" },
 ];
 
 const SOCIAL_PROVIDERS = [
@@ -148,6 +147,7 @@ const resolveAuthRedirectPayload = () => {
 export const useAccountHubPanel = () => {
   const authRepository = usePlatformService("authRepository");
   const hubRepository = usePlatformService("hubRepository");
+  const syncRepository = usePlatformService("syncRepository");
   const runtimeGateway = usePlatformService("runtimeGateway");
   const [authState, setAuthState] = useState(DEFAULT_AUTH_STATE);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -166,6 +166,16 @@ export const useAccountHubPanel = () => {
   const [isOwnDecksLoading, setIsOwnDecksLoading] = useState(false);
   const [ownDecksError, setOwnDecksError] = useState("");
   const [deletingHubDeckId, setDeletingHubDeckId] = useState("");
+  const [syncStatus, setSyncStatus] = useState({
+    configured: false,
+    signedIn: false,
+    syncing: false,
+    online: true,
+    lastErrorMessage: "",
+    lastSuccessfulSyncAt: "",
+    pendingDeckChanges: 0,
+    pendingProgressChanges: 0,
+  });
   const handledRedirectRef = useRef(false);
   const syncProfileRef = useRef(false);
 
@@ -264,6 +274,45 @@ export const useAccountHubPanel = () => {
       unsubscribe?.();
     };
   }, [authRepository, isConfigured, reportStatus]);
+
+  useEffect(() => {
+    if (!syncRepository?.isConfigured?.()) {
+      setSyncStatus((currentStatus) => ({
+        ...currentStatus,
+        configured: false,
+      }));
+      return undefined;
+    }
+
+    let isSubscribed = true;
+
+    syncRepository
+      .getStatus()
+      .then((nextStatus) => {
+        if (isSubscribed && nextStatus) {
+          setSyncStatus(nextStatus);
+        }
+      })
+      .catch(() => {
+        if (isSubscribed) {
+          setSyncStatus((currentStatus) => ({
+            ...currentStatus,
+            configured: true,
+          }));
+        }
+      });
+
+    const unsubscribe = syncRepository.subscribe((nextStatus) => {
+      if (isSubscribed && nextStatus) {
+        setSyncStatus(nextStatus);
+      }
+    });
+
+    return () => {
+      isSubscribed = false;
+      unsubscribe?.();
+    };
+  }, [syncRepository]);
 
   useEffect(() => {
     if (syncProfileRef.current && authState.isAuthenticated) {
@@ -500,11 +549,111 @@ export const useAccountHubPanel = () => {
   );
   const signedOutTabs = useMemo(() => SIGNED_OUT_TAB_ITEMS, []);
   const signedInTabs = useMemo(() => SIGNED_IN_TAB_ITEMS, []);
+  const syncOverview = useMemo(() => {
+    if (!syncStatus.configured) {
+      return {
+        label: "Unavailable",
+        text: "Supabase sync is not configured yet.",
+      };
+    }
+
+    if (!authState.isAuthenticated) {
+      return {
+        label: "Guest mode",
+        text: "Sign in to sync progress and decks across devices.",
+      };
+    }
+
+    if (!syncStatus.online) {
+      return {
+        label: "Offline",
+        text: "Changes stay local and will sync when the device is online again.",
+      };
+    }
+
+    if (syncStatus.lastErrorMessage) {
+      return {
+        label: "Needs attention",
+        text: syncStatus.lastErrorMessage,
+      };
+    }
+
+    if (syncStatus.syncing) {
+      return {
+        label: "Syncing",
+        text: "Sync is running in the background right now.",
+      };
+    }
+
+    if (syncStatus.lastSuccessfulSyncAt) {
+      return {
+        label: "Synced",
+        text: "Decks and study progress are connected across your signed-in devices.",
+      };
+    }
+
+    return {
+      label: "Ready",
+      text: "Sync is available and will start once there are changes to exchange.",
+    };
+  }, [
+    authState.isAuthenticated,
+    syncStatus.configured,
+    syncStatus.lastErrorMessage,
+    syncStatus.lastSuccessfulSyncAt,
+    syncStatus.online,
+    syncStatus.syncing,
+  ]);
+
+  const overviewCards = useMemo(() => {
+    return [
+      {
+        key: "verification",
+        title: "Email verification",
+        value: authState.isEmailVerified ? "Verified" : "Confirmation pending",
+        note: authState.isEmailVerified
+          ? "Publishing and Hub management are enabled."
+          : "Confirm your email before publishing or deleting Hub decks.",
+      },
+      {
+        key: "sync",
+        title: "Sync",
+        value: syncOverview.label,
+        note: syncOverview.text,
+      },
+      {
+        key: "hub-decks",
+        title: "Published Hub decks",
+        value: String(ownDecks.length),
+        note:
+          ownDecks.length > 0
+            ? "Manage links and delete published decks from this account."
+            : "No Hub decks are attached to this account yet.",
+      },
+      {
+        key: "provider",
+        title: "Sign-in method",
+        value: authState.provider === "email" ? "Email and password" : authState.provider,
+        note: isDesktopMode ? "Desktop session" : "Web session",
+      },
+    ];
+  }, [
+    authState.isEmailVerified,
+    authState.provider,
+    isDesktopMode,
+    ownDecks.length,
+    syncOverview.label,
+    syncOverview.text,
+  ]);
+
   const accountBadges = useMemo(() => {
     const badges = [];
 
     if (authState.provider) {
-      badges.push({ key: "provider", text: authState.provider });
+      badges.push({
+        key: "provider",
+        text: authState.provider === "email" ? "Email" : authState.provider,
+      });
     }
 
     badges.push({
@@ -533,6 +682,9 @@ export const useAccountHubPanel = () => {
     signedInTabs,
     socialProviders: SOCIAL_PROVIDERS,
     accountBadges,
+    syncStatus,
+    syncOverview,
+    overviewCards,
     email,
     password,
     displayName,

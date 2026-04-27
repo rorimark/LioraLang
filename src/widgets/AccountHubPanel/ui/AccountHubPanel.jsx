@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router";
-import { FiCopy, FiExternalLink, FiLogOut, FiMail, FiRefreshCw, FiShield, FiTrash2 } from "react-icons/fi";
+import { FiCheckCircle, FiCopy, FiExternalLink, FiLogOut, FiMail, FiRefreshCw, FiShield, FiTrash2 } from "react-icons/fi";
 import { Button, InlineAlert, MetaBadge, Panel, Tabs, TextInput } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
 import { useAccountHubPanel } from "../model";
@@ -265,24 +265,15 @@ export const AccountHubPanel = memo(() => {
                       </li>
                     ))}
                   </ul>
-                  <dl className="account-hub-panel__summary-list">
-                    <div>
-                      <dt>Hub access</dt>
-                      <dd>
-                        {panel.authState.isEmailVerified
-                          ? "Publish and manage enabled"
-                          : "Verify email to publish and manage"}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>Password recovery</dt>
-                      <dd>Email reset links are enabled</dd>
-                    </div>
-                    <div>
-                      <dt>Sync</dt>
-                      <dd>Planned after auth rollout is stable</dd>
-                    </div>
-                  </dl>
+                  <div className="account-hub-panel__overview-grid">
+                    {panel.overviewCards.map((card) => (
+                      <article className="account-hub-panel__overview-card" key={card.key}>
+                        <span>{card.title}</span>
+                        <strong>{card.value}</strong>
+                        <p>{card.note}</p>
+                      </article>
+                    ))}
+                  </div>
                   {!panel.authState.isEmailVerified ? (
                     <aside className="account-hub-panel__callout">
                       <FiMail />
@@ -301,6 +292,15 @@ export const AccountHubPanel = memo(() => {
                       </Button>
                     </aside>
                   ) : null}
+                  {panel.authState.isEmailVerified ? (
+                    <aside className="account-hub-panel__callout account-hub-panel__callout--success">
+                      <FiCheckCircle />
+                      <div>
+                        <strong>Account ready</strong>
+                        <p>Your verified account can publish, manage, and sync across devices.</p>
+                      </div>
+                    </aside>
+                  ) : null}
                 </>
               ) : null}
 
@@ -313,7 +313,7 @@ export const AccountHubPanel = memo(() => {
                 >
                   <header className="account-hub-panel__section-head">
                     <h3>Profile</h3>
-                    <p>Update the name shown in your account and future Hub ownership UI.</p>
+                    <p>Update the account name shown in your profile and Hub ownership UI.</p>
                   </header>
                   <label className="account-hub-panel__field">
                     <span>Display name</span>
@@ -348,7 +348,7 @@ export const AccountHubPanel = memo(() => {
                 >
                   <header className="account-hub-panel__section-head">
                     <h3>Security</h3>
-                    <p>Keep your account safe with a strong password and a verified email.</p>
+                    <p>Update your password and keep publishing access protected.</p>
                   </header>
                   {!panel.authState.isEmailVerified ? (
                     <aside className="account-hub-panel__callout account-hub-panel__callout--stacked">
@@ -407,7 +407,7 @@ export const AccountHubPanel = memo(() => {
                 <>
                   <header className="account-hub-panel__section-head">
                     <h3>My Hub decks</h3>
-                    <p>Manage the public decks attached to this account.</p>
+                    <p>Manage public decks published from this account.</p>
                   </header>
 
                   {panel.isOwnDecksLoading ? (
@@ -429,7 +429,10 @@ export const AccountHubPanel = memo(() => {
                       <li className="account-hub-panel__hub-item" key={deck.id}>
                         <article className="account-hub-panel__hub-main">
                           <header className="account-hub-panel__hub-head">
-                            <strong>{deck.title || "Untitled deck"}</strong>
+                            <div className="account-hub-panel__hub-title-block">
+                              <strong>{deck.title || "Untitled deck"}</strong>
+                              <p>{deck.description || "No public description yet."}</p>
+                            </div>
                             <ul className="account-hub-panel__hub-badges" aria-label={`Deck metadata for ${deck.title || "Untitled deck"}`}>
                               <li>
                                 <MetaBadge text={renderDeckVersion(deck)} accent={false} />
@@ -439,7 +442,6 @@ export const AccountHubPanel = memo(() => {
                               </li>
                             </ul>
                           </header>
-                          <p>{deck.description || "No public description yet."}</p>
                         </article>
                         <footer className="account-hub-panel__hub-actions">
                           <Button
@@ -476,23 +478,6 @@ export const AccountHubPanel = memo(() => {
                 </>
               ) : null}
 
-              {panel.activeTab === "delete" ? (
-                <>
-                  <header className="account-hub-panel__section-head">
-                    <h3>Delete account</h3>
-                    <p>This action will ultimately remove your public Hub decks as well.</p>
-                  </header>
-                  <aside className="account-hub-panel__danger-box">
-                    <strong>Secure account deletion still needs one server-side step.</strong>
-                    <p>
-                      We can’t safely delete Supabase auth users from the client with just a publishable key. The next step is a protected Edge Function that performs the deletion with service-role privileges.
-                    </p>
-                    <p>
-                      Once that function exists, this tab will delete your account and remove every public deck owned by it.
-                    </p>
-                  </aside>
-                </>
-              ) : null}
             </Panel>
           </section>
         </>

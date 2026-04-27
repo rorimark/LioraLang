@@ -1,6 +1,6 @@
 .account-hub-panel {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   width: 100%;
   align-content: start;
 }
@@ -21,17 +21,12 @@
   flex: 0 0 auto;
 }
 
-.account-hub-panel__top-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .account-hub-panel__section-head h3 {
   margin: 0;
 }
 
 .account-hub-panel__section-head p {
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   color: var(--color-text-muted);
 }
 
@@ -46,12 +41,11 @@
 .account-hub-panel__card,
 .account-hub-panel__notice {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   padding: 16px;
   align-content: start;
-  border: 1px solid color-mix(in srgb, var(--color-border) 88%, transparent);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
+  background: color-mix(in srgb, var(--color-surface-muted) 20%, var(--color-surface));
 }
 
 .account-hub-panel__grid > .account-hub-panel__card:only-child,
@@ -100,18 +94,16 @@
 
 .account-hub-panel__guest-note,
 .account-hub-panel__hint,
-.account-hub-panel__danger-box,
 .account-hub-panel__callout,
-.account-hub-panel__summary-list,
+.account-hub-panel__overview-card,
 .account-hub-panel__empty-state,
 .account-hub-panel__inline-error {
-  border: 1px solid var(--color-border);
+  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
   border-radius: 12px;
   background: color-mix(in srgb, var(--color-surface) 76%, var(--color-surface-muted));
 }
 
 .account-hub-panel__hint,
-.account-hub-panel__danger-box,
 .account-hub-panel__empty-state,
 .account-hub-panel__inline-error {
   padding: 12px 14px;
@@ -131,7 +123,6 @@
 
 .account-hub-panel__guest-note p,
 .account-hub-panel__hint,
-.account-hub-panel__danger-box p,
 .account-hub-panel__empty-state,
 .account-hub-panel__inline-error {
   margin: 0;
@@ -146,30 +137,34 @@
   list-style: none;
 }
 
-.account-hub-panel__summary-list {
+.account-hub-panel__overview-grid {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.account-hub-panel__overview-card {
+  display: grid;
+  gap: 6px;
   padding: 14px;
-  margin: 0;
 }
 
-.account-hub-panel__summary-list > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.account-hub-panel__summary-list dt {
-  font-size: 0.78rem;
+.account-hub-panel__overview-card span {
   color: var(--color-text-muted);
-  margin: 0;
+  font-size: 0.8rem;
 }
 
-.account-hub-panel__summary-list dd {
-  font-size: 0.82rem;
+.account-hub-panel__overview-card strong {
   color: var(--color-text);
   margin: 0;
+  font-size: 0.98rem;
+}
+
+.account-hub-panel__overview-card p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
 }
 
 .account-hub-panel__callout {
@@ -182,6 +177,16 @@
 
 .account-hub-panel__callout svg {
   color: var(--color-primary);
+}
+
+.account-hub-panel__callout--success {
+  grid-template-columns: auto minmax(0, 1fr);
+  border-color: color-mix(in srgb, var(--color-success, #79c579) 28%, var(--color-border));
+  background: color-mix(in srgb, var(--color-success-soft, rgba(121, 197, 121, 0.12)) 48%, var(--color-surface));
+}
+
+.account-hub-panel__callout--success svg {
+  color: var(--color-success, #79c579);
 }
 
 .account-hub-panel__callout p,
@@ -204,11 +209,10 @@
 .account-hub-panel__hub-item {
   display: grid;
   gap: 12px;
-  border: 1px solid var(--color-border);
+  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
   border-radius: 12px;
   background: color-mix(in srgb, var(--color-surface) 94%, var(--color-surface-muted));
   padding: 14px;
-  box-shadow: var(--shadow-sm);
 }
 
 .account-hub-panel__hub-head {
@@ -218,13 +222,20 @@
   gap: 12px;
 }
 
+.account-hub-panel__hub-title-block {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
 .account-hub-panel__hub-head strong {
   font-size: 0.92rem;
 }
 
-.account-hub-panel__hub-main p {
-  margin: 8px 0 0;
+.account-hub-panel__hub-title-block p {
+  margin: 0;
   color: var(--color-text-muted);
+  line-height: 1.45;
 }
 
 .account-hub-panel__hub-badges,
@@ -235,9 +246,20 @@
 }
 
 .account-hub-panel__hub-badges {
+  display: grid;
+  justify-items: end;
+  align-content: start;
+  gap: 6px;
+  flex: 0 0 auto;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.account-hub-panel__hub-badges li {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .account-hub-panel__link-button {
@@ -253,12 +275,6 @@
   color: var(--color-danger);
   border-color: color-mix(in srgb, var(--color-danger) 28%, var(--color-border));
   background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
-}
-
-.account-hub-panel__danger-box strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--color-text);
 }
 
 .account-hub-panel__loading {
@@ -297,7 +313,7 @@
     width: 100%;
   }
 
-  .account-hub-panel__summary-list > div,
+  .account-hub-panel__overview-grid,
   .account-hub-panel__callout,
   .account-hub-panel__callout--stacked,
   .account-hub-panel__hub-head {
@@ -306,12 +322,12 @@
     justify-content: stretch;
   }
 
-  .account-hub-panel__top-actions {
-    justify-content: stretch;
+  .account-hub-panel__hub-badges {
+    justify-items: start;
   }
 
-  .account-hub-panel__top-actions .ui-button {
-    width: 100%;
+  .account-hub-panel__hub-badges li {
+    justify-content: flex-start;
   }
 
   .account-hub-panel__actions,
