@@ -297,6 +297,8 @@ export const useBrowseDecksPanel = () => {
         sourceLanguage: deck.sourceLanguage || "",
         targetLanguage,
         tertiaryLanguage,
+        originKind: "hub",
+        originRef: deck.id,
         settings: {
           duplicateStrategy: appPreferences.importExport.duplicateStrategy,
           includeExamples: appPreferences.importExport.includeExamples,

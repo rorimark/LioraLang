@@ -1,0 +1,14 @@
+.deck-tag-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.deck-tag-badges--inline {
+  display: contents;
+}
+
+.deck-tag-badges .meta-badge {
+  padding: 4px 9px;
+  font-size: 0.7rem;
+}
