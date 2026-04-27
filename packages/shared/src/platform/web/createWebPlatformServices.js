@@ -1,9 +1,11 @@
 /* global __APP_VERSION__ */
 import { createSupabaseAuthRepository } from "@shared/api";
+import { createSyncRepository } from "@shared/sync";
 import {
   createWebDeckRepository,
   createWebHubRepository,
   createWebSettingsRepository,
+  createWebSyncLocalRepository,
 } from "./model";
 
 const NOOP_UNSUBSCRIBE = () => {};
@@ -109,14 +111,34 @@ const createRuntimeGateway = () => {
 };
 
 export const createWebPlatformServices = () => {
+  const authRepository = createSupabaseAuthRepository();
+  const deckRepository = createWebDeckRepository();
+  const settingsRepository = createWebSettingsRepository();
+  const runtimeGateway = createRuntimeGateway();
+  const syncLocalRepository = createWebSyncLocalRepository({
+    platform: "web",
+    deviceName: "Web browser",
+    appVersion: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "",
+  });
+
   return {
-    authRepository: createSupabaseAuthRepository(),
-    deckRepository: createWebDeckRepository(),
-    settingsRepository: createWebSettingsRepository(),
+    authRepository,
+    deckRepository,
+    settingsRepository,
     hubRepository: createWebHubRepository(),
     srsRepository: createLazySrsRepository(),
     progressRepository: createLazyProgressRepository(),
+    syncRepository: createSyncRepository({
+      authRepository,
+      deckRepository,
+      settingsRepository,
+      syncLocalRepository,
+      runtimeGateway,
+      platform: "web",
+      deviceName: "Web browser",
+      appVersion: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "",
+    }),
     systemRepository: createSystemRepository(),
-    runtimeGateway: createRuntimeGateway(),
+    runtimeGateway,
   };
 };

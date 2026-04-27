@@ -50,6 +50,18 @@ import {
 import { getAppSettings, updateAppSettings } from "./db/services/settings.services.js";
 import { getSrsSessionSnapshot, gradeSrsCard } from "./db/services/srs.services.js";
 import { getProgressOverview } from "./db/services/progress.services.js";
+import {
+  activateProgressProfile,
+  applyRemoteProgressEvents,
+  ensureSyncDeviceIdentity,
+  getNextDeviceSequence,
+  getSyncProfileState,
+  getSyncRuntimeState,
+  listPendingProgressEvents,
+  markProgressEventsSynced,
+  setSyncProfileState,
+  updateSyncRuntimeState,
+} from "./db/services/sync.services.js";
 import { createImportWorkflow } from "./main/importWorkflow.js";
 import { createNavigationManager } from "./main/navigation.js";
 import { createRuntimeErrorManager } from "./main/runtimeErrors.js";
@@ -370,6 +382,16 @@ const setupIpcHandlers = () => {
     getSrsSessionSnapshot,
     gradeSrsCard,
     getProgressOverview,
+    getSyncRuntimeState,
+    updateSyncRuntimeState,
+    getSyncProfileState,
+    setSyncProfileState,
+    activateProgressProfile,
+    ensureSyncDeviceIdentity,
+    getNextDeviceSequence,
+    listPendingProgressEvents,
+    markProgressEventsSynced,
+    applyRemoteProgressEvents,
     getDatabasePath,
     changeDatabasePath,
     verifyAppIntegrityAndRepair,

@@ -151,6 +151,10 @@ describe("deckPackage", () => {
         includeTags: false,
         description: "Imported description",
         tags: [],
+        syncId: "",
+        originKind: "local",
+        originRef: "",
+        contentHash: "",
       });
     });
   });
@@ -185,6 +189,9 @@ describe("deckPackage", () => {
           description: "Phrases for school",
           sourceLanguage: "English",
           targetLanguage: "Polish",
+          syncId: "550e8400-e29b-41d4-a716-446655440000",
+          originKind: "account",
+          originRef: "library-deck-1",
           tagsJson: JSON.stringify(["school", "School", "learning"]),
         },
         words: [
@@ -209,9 +216,13 @@ describe("deckPackage", () => {
           sourceLanguage: "English",
           targetLanguage: "Polish",
           tertiaryLanguage: "",
+          syncId: "550e8400-e29b-41d4-a716-446655440000",
+          originKind: "account",
+          originRef: "library-deck-1",
           tags: ["school", "learning"],
         },
       });
+      expect(result.deck.contentHash).toMatch(/^deckh_[0-9a-f]{8}$/);
       expect(result.words[0]).toEqual({
         id: "word-1",
         source: "exam",
@@ -230,6 +241,9 @@ describe("deckPackage", () => {
         sourceLanguage: "English",
         targetLanguage: "Polish",
         tags: ["school", "learning"],
+        syncId: "550e8400-e29b-41d4-a716-446655440000",
+        originKind: "account",
+        originRef: "library-deck-1",
       });
 
       vi.useRealTimers();

@@ -1,5 +1,11 @@
-import { createSupabaseAuthRepository } from "@shared/api";
+import {
+  createSupabaseAuthRepository,
+  getCurrentSupabaseAuthUser,
+} from "@shared/api";
+import { buildUserProfileScope, GUEST_PROFILE_SCOPE } from "@shared/core/usecases/sync";
 import { createWebHubRepository } from "@shared/platform/web/model";
+import { createSyncRepository } from "@shared/sync";
+import { createElectronSyncLocalRepository } from "./createElectronSyncLocalRepository";
 
 const NOOP_UNSUBSCRIBE = () => {};
 const DEFAULT_HISTORY_STATE = {
@@ -149,6 +155,20 @@ const normalizeNavigationPayload = (payload) => {
         ? Number(payload.highlightToken)
         : 0,
   };
+};
+
+const resolveCurrentProfileScope = async () => {
+  try {
+    const user = await getCurrentSupabaseAuthUser();
+
+    if (user?.id) {
+      return buildUserProfileScope(user.id);
+    }
+  } catch {
+    // Ignore auth lookup failures and fall back to guest mode.
+  }
+
+  return GUEST_PROFILE_SCOPE;
 };
 
 const initImportFileBridge = () => {
@@ -368,26 +388,31 @@ const createSettingsRepository = () => {
 
 const createSrsRepository = () => {
   return {
-    getSrsSession: (deckId, settings, options) =>
+    getSrsSession: async (deckId, settings, options) =>
       ensureElectronApi().getSrsSession({
         deckId,
         settings,
         forceAllCards: Boolean(options?.forceAllCards),
+        profileScope: await resolveCurrentProfileScope(),
       }),
-    gradeSrsCard: (payload = {}) =>
+    gradeSrsCard: async (payload = {}) =>
       ensureElectronApi().gradeSrsCard({
         deckId: payload?.deckId,
         wordId: payload?.wordId,
         rating: payload?.rating,
         settings: payload?.settings || {},
         forceAllCards: Boolean(payload?.forceAllCards),
+        profileScope: await resolveCurrentProfileScope(),
       }),
   };
 };
 
 const createProgressRepository = () => {
   return {
-    getProgressOverview: () => ensureElectronApi().getProgressOverview(),
+    getProgressOverview: async () =>
+      ensureElectronApi().getProgressOverview({
+        profileScope: await resolveCurrentProfileScope(),
+      }),
   };
 };
 
@@ -553,14 +578,29 @@ const createRuntimeGateway = () => {
 };
 
 export const createElectronPlatformServices = () => {
+  const authRepository = createSupabaseAuthRepository();
+  const deckRepository = createDeckRepository();
+  const settingsRepository = createSettingsRepository();
+  const runtimeGateway = createRuntimeGateway();
+  const syncLocalRepository = createElectronSyncLocalRepository();
+
   return {
-    authRepository: createSupabaseAuthRepository(),
-    deckRepository: createDeckRepository(),
-    settingsRepository: createSettingsRepository(),
+    authRepository,
+    deckRepository,
+    settingsRepository,
     hubRepository: createWebHubRepository(),
     srsRepository: createSrsRepository(),
     progressRepository: createProgressRepository(),
+    syncRepository: createSyncRepository({
+      authRepository,
+      deckRepository,
+      settingsRepository,
+      syncLocalRepository,
+      runtimeGateway,
+      platform: "desktop",
+      deviceName: "Desktop app",
+    }),
     systemRepository: createSystemRepository(),
-    runtimeGateway: createRuntimeGateway(),
+    runtimeGateway,
   };
 };

@@ -47,6 +47,11 @@ describe("createWebDeckRepository", () => {
       wordsCount: 1,
       tagsJson: JSON.stringify(["education", "school"]),
     });
+    expect(result.deck.syncId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    );
+    expect(result.deck.originKind).toBe("local");
+    expect(result.deck.contentHash).toMatch(/^deckh_[0-9a-f]{8}$/);
 
     expect(result.words).toEqual([
       expect.objectContaining({
@@ -113,6 +118,9 @@ describe("createWebDeckRepository", () => {
           name: "Education",
           sourceLanguage: "English",
           targetLanguage: "Polish",
+          syncId: "550e8400-e29b-41d4-a716-446655440000",
+          originKind: "account",
+          originRef: "library-1",
           tags: ["school"],
         },
         words: [
@@ -140,6 +148,9 @@ describe("createWebDeckRepository", () => {
     const [deck] = await repository.listDecks();
     const words = await repository.getDeckWords(deck.id);
 
+    expect(deck.syncId).toBe("550e8400-e29b-41d4-a716-446655440000");
+    expect(deck.originKind).toBe("account");
+    expect(deck.originRef).toBe("library-1");
     expect(words[0]).toMatchObject({
       source: "notebook",
       tags: ["supplies"],

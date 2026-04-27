@@ -2,6 +2,12 @@ import {
   DEFAULT_SOURCE_LANGUAGE,
   DEFAULT_TARGET_LANGUAGE,
 } from "../../../config/languages.js";
+import {
+  buildDeckContentHash,
+  normalizeDeckOriginKind,
+  normalizeDeckOriginRef,
+  normalizeDeckSyncId,
+} from "../sync/deckIdentity.js";
 
 const DECK_PACKAGE_FORMAT = "lioralang.deck";
 const DECK_PACKAGE_VERSION = 1;
@@ -234,13 +240,26 @@ const parseDeckPackagePayload = (value) => {
     rawDeck?.tertiaryLanguage || rawDeck?.tertiary_language,
   );
   const deckTags = normalizeTags(rawDeck?.tags ?? rawDeck?.tagsJson);
+  const deckSyncId = normalizeDeckSyncId(rawDeck?.syncId ?? rawDeck?.sync_id);
+  const deckOriginKind = normalizeDeckOriginKind(
+    rawDeck?.originKind ?? rawDeck?.origin_kind,
+  );
+  const deckOriginRef = normalizeDeckOriginRef(
+    rawDeck?.originRef ?? rawDeck?.origin_ref,
+  );
+  const deckContentHash = toSafeString(
+    rawDeck?.contentHash ?? rawDeck?.content_hash,
+  );
   const hasDeckMetadata = Boolean(
     deckName ||
     deckDescription ||
     deckSourceLanguage ||
     deckTargetLanguage ||
     deckTertiaryLanguage ||
-    deckTags.length > 0,
+    deckTags.length > 0 ||
+    deckSyncId ||
+    deckOriginRef ||
+    deckContentHash,
   );
   const deck = hasDeckMetadata
     ? {
@@ -250,6 +269,10 @@ const parseDeckPackagePayload = (value) => {
         targetLanguage: deckTargetLanguage,
         tertiaryLanguage: deckTertiaryLanguage,
         tags: deckTags,
+        syncId: deckSyncId,
+        originKind: deckOriginKind,
+        originRef: deckOriginRef,
+        contentHash: deckContentHash,
       }
     : null;
 
@@ -425,6 +448,10 @@ export const getDeckImportMetadata = ({
       tertiaryLanguage: "",
       tags: [],
       description: "",
+      syncId: "",
+      originKind: "local",
+      originRef: "",
+      contentHash: "",
       format: "",
       version: null,
     };
@@ -440,6 +467,10 @@ export const getDeckImportMetadata = ({
     tertiaryLanguage: parsedPackage?.deck?.tertiaryLanguage || "",
     tags: normalizeTags(parsedPackage?.deck?.tags),
     description: toSafeString(parsedPackage?.deck?.description, MAX_DESCRIPTION_LENGTH),
+    syncId: normalizeDeckSyncId(parsedPackage?.deck?.syncId),
+    originKind: normalizeDeckOriginKind(parsedPackage?.deck?.originKind),
+    originRef: normalizeDeckOriginRef(parsedPackage?.deck?.originRef),
+    contentHash: toSafeString(parsedPackage?.deck?.contentHash),
     format: toCleanString(parsedPackage?.format),
     version: parsedPackage?.version ?? null,
   };
@@ -554,6 +585,18 @@ export const resolveImportConfig = ({
     includeTags: settings.includeTags,
     description: toSafeString(parsedPackage?.deck?.description, MAX_DESCRIPTION_LENGTH),
     tags: settings.includeTags ? normalizeTags(parsedPackage?.deck?.tags) : [],
+    syncId:
+      normalizeDeckSyncId(payload?.syncId) ||
+      normalizeDeckSyncId(parsedPackage?.deck?.syncId),
+    originKind: normalizeDeckOriginKind(
+      payload?.originKind || parsedPackage?.deck?.originKind,
+    ),
+    originRef:
+      normalizeDeckOriginRef(payload?.originRef) ||
+      normalizeDeckOriginRef(parsedPackage?.deck?.originRef),
+    contentHash:
+      toSafeString(payload?.contentHash) ||
+      toSafeString(parsedPackage?.deck?.contentHash),
   };
 };
 
@@ -588,6 +631,16 @@ export const buildExportDeckPackage = ({
   const safeDeck = deck || {};
   const safeWords = Array.isArray(words) ? words : [];
   const hasTertiaryLanguage = Boolean(toCleanString(safeDeck.tertiaryLanguage));
+  const normalizedDeckTags = parseTagsValue(
+    Array.isArray(safeDeck.tags) ? safeDeck.tags : safeDeck.tagsJson,
+  );
+  const contentHash = buildDeckContentHash({
+    deck: {
+      ...safeDeck,
+      tags: normalizedDeckTags,
+    },
+    words: safeWords,
+  });
 
   const wordsPayload = safeWords.map((word, index) => {
     const payload = {
@@ -620,11 +673,13 @@ export const buildExportDeckPackage = ({
       sourceLanguage: toSafeString(safeDeck.sourceLanguage),
       targetLanguage: toSafeString(safeDeck.targetLanguage),
       tertiaryLanguage: toSafeString(safeDeck.tertiaryLanguage),
+      syncId: normalizeDeckSyncId(safeDeck.syncId),
+      originKind: normalizeDeckOriginKind(safeDeck.originKind),
+      originRef: normalizeDeckOriginRef(safeDeck.originRef),
+      contentHash,
       ...(includeTags
         ? {
-            tags: parseTagsValue(
-              Array.isArray(safeDeck.tags) ? safeDeck.tags : safeDeck.tagsJson,
-            ),
+            tags: normalizedDeckTags,
           }
         : {}),
     },

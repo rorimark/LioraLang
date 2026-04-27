@@ -1,5 +1,5 @@
 const WEB_DB_NAME = "lioralang-web";
-const WEB_DB_VERSION = 2;
+const WEB_DB_VERSION = 3;
 
 export const WEB_DB_STORES = {
   decks: "decks",
@@ -110,6 +110,44 @@ const openWebDb = () => {
         reviewLogsStore.createIndex("reviewedAtMs", "reviewedAtMs", {
           unique: false,
         });
+        reviewLogsStore.createIndex("profileScope", "profileScope", {
+          unique: false,
+        });
+        reviewLogsStore.createIndex("opId", "opId", {
+          unique: false,
+        });
+        reviewLogsStore.createIndex("syncStatus", "syncStatus", {
+          unique: false,
+        });
+        reviewLogsStore.createIndex("profileReviewedAtMs", ["profileScope", "reviewedAtMs"], {
+          unique: false,
+        });
+      } else {
+        const reviewLogsStore = openRequest.transaction.objectStore(WEB_DB_STORES.reviewLogs);
+
+        if (!reviewLogsStore.indexNames.contains("profileScope")) {
+          reviewLogsStore.createIndex("profileScope", "profileScope", {
+            unique: false,
+          });
+        }
+
+        if (!reviewLogsStore.indexNames.contains("opId")) {
+          reviewLogsStore.createIndex("opId", "opId", {
+            unique: false,
+          });
+        }
+
+        if (!reviewLogsStore.indexNames.contains("syncStatus")) {
+          reviewLogsStore.createIndex("syncStatus", "syncStatus", {
+            unique: false,
+          });
+        }
+
+        if (!reviewLogsStore.indexNames.contains("profileReviewedAtMs")) {
+          reviewLogsStore.createIndex("profileReviewedAtMs", ["profileScope", "reviewedAtMs"], {
+            unique: false,
+          });
+        }
       }
 
       if (!database.objectStoreNames.contains(WEB_DB_STORES.settings)) {

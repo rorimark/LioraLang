@@ -10,6 +10,13 @@ import {
   normalizeStudySettings,
   resolveScheduleOutcome,
 } from "@shared/core/usecases/srs";
+import { getCurrentSupabaseAuthUser } from "@shared/api";
+import {
+  buildUserProfileScope,
+  createDeckSyncId,
+  GUEST_PROFILE_SCOPE,
+  normalizeProfileScope,
+} from "@shared/core/usecases/sync";
 import {
   WEB_DB_STORES,
   idbRequest,
@@ -17,6 +24,17 @@ import {
   runReadwriteTransaction,
   toLocalDayKey,
 } from "@shared/platform/web/db";
+import { createWebSyncLocalRepository } from "./createWebSyncLocalRepository";
+
+let webSyncLocalRepository = null;
+
+const getWebSyncLocalRepository = () => {
+  if (!webSyncLocalRepository) {
+    webSyncLocalRepository = createWebSyncLocalRepository();
+  }
+
+  return webSyncLocalRepository;
+};
 
 const parsePositiveInteger = (value) => {
   const numericValue = Number(value);
@@ -38,8 +56,23 @@ const toIsoTimestamp = (timestampMs) => {
   return date.toISOString();
 };
 
-const loadDeckLearningData = async (deckId, dayKey) => {
+const resolveCurrentProfileScope = async () => {
+  try {
+    const user = await getCurrentSupabaseAuthUser();
+
+    if (user?.id) {
+      return buildUserProfileScope(user.id);
+    }
+  } catch {
+    // Ignore auth lookup failures and fall back to guest mode.
+  }
+
+  return GUEST_PROFILE_SCOPE;
+};
+
+const loadDeckLearningData = async (deckId, dayKey, profileScope) => {
   const normalizedDeckId = parsePositiveInteger(deckId);
+  const normalizedProfileScope = normalizeProfileScope(profileScope);
 
   if (!normalizedDeckId) {
     throw new Error("Invalid deck id");
@@ -74,10 +107,14 @@ const loadDeckLearningData = async (deckId, dayKey) => {
         words: Array.isArray(words) ? words : [],
         cardsByWordId: new Map(
           (Array.isArray(cards) ? cards : [])
+            .filter((card) => normalizeProfileScope(card?.profileScope) === normalizedProfileScope)
             .map((card) => [parsePositiveInteger(card?.wordId), card])
             .filter(([wordId]) => Boolean(wordId)),
         ),
-        todayLogs: Array.isArray(todayLogs) ? todayLogs : [],
+        todayLogs: (Array.isArray(todayLogs) ? todayLogs : []).filter(
+          (logRecord) =>
+            normalizeProfileScope(logRecord?.profileScope) === normalizedProfileScope,
+        ),
       };
     },
   );
@@ -91,12 +128,15 @@ const getSrsSessionSnapshotInternal = async ({
 }) => {
   const nowMs = Date.now();
   const dayKey = toLocalDayKey(nowMs);
-  const data = await loadDeckLearningData(deckId, dayKey);
+  const data = await loadDeckLearningData(deckId, dayKey, studySettings.profileScope);
 
   return buildSrsSessionSnapshot({
     deck: {
       id: data.deck.id,
       name: data.deck.name,
+      sourceLanguage: data.deck.sourceLanguage,
+      targetLanguage: data.deck.targetLanguage,
+      tertiaryLanguage: data.deck.tertiaryLanguage,
     },
     words: data.words,
     cardsByWordId: data.cardsByWordId,
@@ -114,8 +154,14 @@ export const createWebSrsRepository = () => {
       return EMPTY_SRS_SESSION;
     }
 
+    const profileScope = await resolveCurrentProfileScope();
+    await getWebSyncLocalRepository().activateProfile(profileScope);
+
     const srsSettings = normalizeSrsSettings(settings);
-    const studySettings = normalizeStudySettings(settings);
+    const studySettings = {
+      ...normalizeStudySettings(settings),
+      profileScope,
+    };
 
     return getSrsSessionSnapshotInternal({
       deckId,
@@ -138,15 +184,25 @@ export const createWebSrsRepository = () => {
       throw new Error("Invalid word id");
     }
 
+    const profileScope = normalizeProfileScope(await resolveCurrentProfileScope());
     const settingsSource = payload?.settings || {};
     const srsSettings = normalizeSrsSettings(settingsSource);
-    const studySettings = normalizeStudySettings(settingsSource);
+    const studySettings = {
+      ...normalizeStudySettings(settingsSource),
+      profileScope,
+    };
     const forceAllCards = Boolean(payload?.forceAllCards);
     const nowMs = Date.now();
+    const syncLocalRepository = getWebSyncLocalRepository();
+    await syncLocalRepository.activateProfile(profileScope);
+    const { deviceId } = await syncLocalRepository.ensureDeviceIdentity();
+    const deviceSeq = await syncLocalRepository.nextDeviceSequence(profileScope);
+    const opId = createDeckSyncId();
 
     await runReadwriteTransaction(
-      [WEB_DB_STORES.words, WEB_DB_STORES.reviewCards, WEB_DB_STORES.reviewLogs],
+      [WEB_DB_STORES.decks, WEB_DB_STORES.words, WEB_DB_STORES.reviewCards, WEB_DB_STORES.reviewLogs],
       async ({ getStore }) => {
+        const decksStore = getStore(WEB_DB_STORES.decks);
         const wordsStore = getStore(WEB_DB_STORES.words);
         const reviewCardsStore = getStore(WEB_DB_STORES.reviewCards);
         const reviewLogsStore = getStore(WEB_DB_STORES.reviewLogs);
@@ -157,6 +213,12 @@ export const createWebSrsRepository = () => {
 
         if (!word || parsePositiveInteger(word.deckId) !== deckId) {
           throw new Error("Word does not belong to selected deck");
+        }
+
+        const deck = await idbRequest(decksStore.get(deckId));
+
+        if (!deck?.syncId) {
+          throw new Error("Deck sync metadata is missing. Reopen the deck and try again.");
         }
 
         const previousCard = normalizeReviewCard(existingCard || { state: SRS_CARD_STATES.new });
@@ -180,6 +242,7 @@ export const createWebSrsRepository = () => {
           easeFactor: nextCard.easeFactor,
           reps: nextCard.reps,
           lapses: nextCard.lapses,
+          profileScope,
           createdAtMs: Number(existingCard?.createdAtMs) || nowMs,
           updatedAtMs: nowMs,
         });
@@ -193,6 +256,31 @@ export const createWebSrsRepository = () => {
           reviewedAtMs: nowMs,
           dayKey: toLocalDayKey(nowMs),
           wasCorrect: rating !== SRS_CARD_RATINGS.again,
+          prevState: previousCard.state,
+          nextState: nextCard.state,
+          prevIntervalDays: previousCard.intervalDays,
+          nextIntervalDays: nextCard.intervalDays,
+          prevEaseFactor: previousCard.easeFactor,
+          nextEaseFactor: nextCard.easeFactor,
+          profileScope,
+          opId,
+          deviceId,
+          deviceSeq,
+          deckSyncId: String(deck.syncId || "").toLowerCase(),
+          wordExternalId: String(word.externalId || ""),
+          payload: {
+            previousCard,
+            nextCard,
+            settings: {
+              srsSettings,
+              studySettings,
+            },
+          },
+          syncStatus: "pending",
+          syncedAt: "",
+          serverSeq: 0,
+          createdAtMs: nowMs,
+          updatedAtMs: nowMs,
         });
       },
     );

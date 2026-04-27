@@ -2,6 +2,7 @@ export const SETTINGS_TAB_QUERY_KEY = "tab";
 
 export const SETTINGS_TAB_KEYS = {
   general: "general",
+  sync: "sync",
   importExport: "import-export",
   storageIntegrity: "storage-integrity",
   learningCore: "learning-core",
@@ -12,6 +13,7 @@ export const SETTINGS_TAB_KEYS = {
 
 export const SETTINGS_SECTION_IDS = {
   [SETTINGS_TAB_KEYS.general]: "settings-general",
+  [SETTINGS_TAB_KEYS.sync]: "settings-sync",
   [SETTINGS_TAB_KEYS.importExport]: "settings-import-export",
   [SETTINGS_TAB_KEYS.storageIntegrity]: "settings-storage-integrity",
   [SETTINGS_TAB_KEYS.learningCore]: "settings-learning-core",
