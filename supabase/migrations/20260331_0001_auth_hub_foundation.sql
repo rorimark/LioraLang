@@ -68,10 +68,12 @@ on conflict (id) do update
 set display_name = coalesce(excluded.display_name, public.profiles.display_name);
 
 -- Hub tables
-drop table if exists public.hub_deck_versions cascade;
-drop table if exists public.hub_decks cascade;
+-- IMPORTANT:
+-- This migration may be executed on an existing project. It must never drop
+-- published Hub metadata, otherwise all Hub decks disappear from the catalog.
+-- Keep this section additive and idempotent.
 
-create table public.hub_decks (
+create table if not exists public.hub_decks (
   id uuid primary key default gen_random_uuid(),
   owner_id uuid not null references auth.users(id) on delete cascade,
   slug text not null unique,
@@ -87,6 +89,47 @@ create table public.hub_decks (
   updated_at timestamptz not null default now()
 );
 
+alter table public.hub_decks
+  add column if not exists owner_id uuid references auth.users(id) on delete cascade,
+  add column if not exists slug text,
+  add column if not exists title text,
+  add column if not exists description text,
+  add column if not exists source_language text,
+  add column if not exists target_languages text[] not null default '{}',
+  add column if not exists tags text[] not null default '{}',
+  add column if not exists words_count integer not null default 0,
+  add column if not exists downloads_count integer not null default 0,
+  add column if not exists is_published boolean not null default true,
+  add column if not exists created_at timestamptz not null default now(),
+  add column if not exists updated_at timestamptz not null default now();
+
+alter table public.hub_decks
+  alter column target_languages set default '{}',
+  alter column tags set default '{}',
+  alter column words_count set default 0,
+  alter column downloads_count set default 0,
+  alter column is_published set default true,
+  alter column created_at set default now(),
+  alter column updated_at set default now();
+
+update public.hub_decks
+set
+  target_languages = coalesce(target_languages, '{}'),
+  tags = coalesce(tags, '{}'),
+  words_count = coalesce(words_count, 0),
+  downloads_count = coalesce(downloads_count, 0),
+  is_published = coalesce(is_published, true),
+  created_at = coalesce(created_at, now()),
+  updated_at = coalesce(updated_at, created_at, now())
+where
+  target_languages is null
+  or tags is null
+  or words_count is null
+  or downloads_count is null
+  or is_published is null
+  or created_at is null
+  or updated_at is null;
+
 create index if not exists hub_decks_owner_id_idx
   on public.hub_decks(owner_id);
 
@@ -101,7 +144,7 @@ create trigger hub_decks_touch_updated_at
 before update on public.hub_decks
 for each row execute procedure public.touch_updated_at();
 
-create table public.hub_deck_versions (
+create table if not exists public.hub_deck_versions (
   id uuid primary key default gen_random_uuid(),
   deck_id uuid not null references public.hub_decks(id) on delete cascade,
   version integer not null,
@@ -113,6 +156,26 @@ create table public.hub_deck_versions (
   created_at timestamptz not null default now(),
   unique (deck_id, version)
 );
+
+alter table public.hub_deck_versions
+  add column if not exists deck_id uuid references public.hub_decks(id) on delete cascade,
+  add column if not exists version integer,
+  add column if not exists file_path text,
+  add column if not exists file_format text,
+  add column if not exists file_size_bytes bigint,
+  add column if not exists checksum_sha256 text,
+  add column if not exists words_count integer not null default 0,
+  add column if not exists created_at timestamptz not null default now();
+
+alter table public.hub_deck_versions
+  alter column words_count set default 0,
+  alter column created_at set default now();
+
+update public.hub_deck_versions
+set
+  words_count = coalesce(words_count, 0),
+  created_at = coalesce(created_at, now())
+where words_count is null or created_at is null;
 
 create index if not exists hub_deck_versions_deck_id_idx
   on public.hub_deck_versions(deck_id);
