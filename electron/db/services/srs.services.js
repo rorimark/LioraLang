@@ -1,5 +1,15 @@
 import { getDatabase } from "../db.js";
 import { DEFAULT_APP_PREFERENCES } from "../../shared/appPreferencesDefaults.js";
+import {
+  activateProgressProfile,
+  ensureSyncDeviceIdentity,
+  getNextDeviceSequence,
+} from "./sync.services.js";
+import {
+  createDeckSyncId,
+  GUEST_PROFILE_SCOPE,
+  normalizeProfileScope,
+} from "../../../packages/shared/src/core/usecases/sync/index.js";
 
 const CARD_STATES = {
   new: "new",
@@ -731,24 +741,25 @@ const CARD_FIELDS_SELECT = `
   review_cards.lapses AS lapses
 `;
 
-const getTodayCounters = (db, deckId) => {
-  const baseWhere = "deck_id = ? AND DATE(reviewed_at, 'localtime') = DATE('now', 'localtime')";
+const getTodayCounters = (db, deckId, profileScope) => {
+  const baseWhere =
+    "deck_id = ? AND profile_scope = ? AND DATE(reviewed_at, 'localtime') = DATE('now', 'localtime')";
   const totalStudiedToday =
     db
       .prepare(`SELECT COUNT(*) AS total FROM review_logs WHERE ${baseWhere}`)
-      .get(deckId)?.total || 0;
+      .get(deckId, profileScope)?.total || 0;
   const reviewedToday =
     db
       .prepare(
         `SELECT COUNT(*) AS total FROM review_logs WHERE ${baseWhere} AND queue_type = 'review'`,
       )
-      .get(deckId)?.total || 0;
+      .get(deckId, profileScope)?.total || 0;
   const newStudiedToday =
     db
       .prepare(
         `SELECT COUNT(DISTINCT word_id) AS total FROM review_logs WHERE ${baseWhere} AND queue_type = 'new'`,
       )
-      .get(deckId)?.total || 0;
+      .get(deckId, profileScope)?.total || 0;
 
   return {
     totalStudiedToday: Number(totalStudiedToday) || 0,
@@ -1140,6 +1151,9 @@ const buildSession = ({
     deck: {
       id: deck.id,
       name: deck.name,
+      sourceLanguage: deck.sourceLanguage,
+      targetLanguage: deck.targetLanguage,
+      tertiaryLanguage: deck.tertiaryLanguage,
     },
     sessionMode: forceAllCards ? "extended" : "default",
     card,
@@ -1229,6 +1243,7 @@ export const getSrsSessionSnapshot = ({
   deckId,
   settings = {},
   forceAllCards = false,
+  profileScope = GUEST_PROFILE_SCOPE,
 }) => {
   const numericDeckId = Number(deckId);
 
@@ -1237,12 +1252,14 @@ export const getSrsSessionSnapshot = ({
   }
 
   const db = getDatabase();
+  const normalizedProfileScope = normalizeProfileScope(profileScope);
+  activateProgressProfile(normalizedProfileScope);
   const deck = getDeckOrThrow(db, numericDeckId);
   const srsSettings = normalizeSrsSettings(settings);
   const studySessionSettings = normalizeStudySessionSettings(settings);
   const now = new Date();
   const nowIso = now.toISOString();
-  const todayCounters = getTodayCounters(db, numericDeckId);
+  const todayCounters = getTodayCounters(db, numericDeckId, normalizedProfileScope);
   const queueCounters = getQueueCounters(db, numericDeckId, nowIso);
   const limits = resolveSessionLimits(
     srsSettings,
@@ -1277,6 +1294,7 @@ export const gradeSrsCard = ({
   rating,
   settings = {},
   forceAllCards = false,
+  profileScope = GUEST_PROFILE_SCOPE,
 }) => {
   const numericDeckId = Number(deckId);
   const numericWordId = Number(wordId);
@@ -1291,17 +1309,30 @@ export const gradeSrsCard = ({
 
   const normalizedRating = normalizeRatingValue(rating);
   const db = getDatabase();
+  const normalizedProfileScope = normalizeProfileScope(profileScope);
+  activateProgressProfile(normalizedProfileScope);
   const srsSettings = normalizeSrsSettings(settings);
   const studySessionSettings = normalizeStudySessionSettings(settings);
   const now = new Date();
   const nowIso = now.toISOString();
+  const syncRuntimeState = ensureSyncDeviceIdentity({
+    platform: "desktop",
+  });
+  const deviceId = syncRuntimeState.deviceId || createDeckSyncId();
+  const deviceSeq = getNextDeviceSequence(normalizedProfileScope);
+  const opId = createDeckSyncId();
 
   const mutateTransaction = db.transaction(() => {
     const wordRow = db
       .prepare(
         `
-          SELECT words.id AS wordId, words.deck_id AS deckId
+          SELECT
+            words.id AS wordId,
+            words.deck_id AS deckId,
+            words.external_id AS externalId,
+            decks.sync_id AS deckSyncId
           FROM words
+          INNER JOIN decks ON decks.id = words.deck_id
           WHERE words.id = ? AND words.deck_id = ?
         `,
       )
@@ -1320,8 +1351,8 @@ export const gradeSrsCard = ({
             due_at AS dueAt,
             interval_days AS intervalDays,
             ease_factor AS easeFactor,
-            reps,
-            lapses
+          reps,
+          lapses
           FROM review_cards
           WHERE word_id = ?
         `,
@@ -1348,8 +1379,9 @@ export const gradeSrsCard = ({
           ease_factor,
           reps,
           lapses,
-          last_reviewed_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          last_reviewed_at,
+          profile_scope
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(word_id) DO UPDATE SET
           state = excluded.state,
           learning_step = excluded.learning_step,
@@ -1358,7 +1390,8 @@ export const gradeSrsCard = ({
           ease_factor = excluded.ease_factor,
           reps = excluded.reps,
           lapses = excluded.lapses,
-          last_reviewed_at = excluded.last_reviewed_at
+          last_reviewed_at = excluded.last_reviewed_at,
+          profile_scope = excluded.profile_scope
       `,
     ).run(
       numericWordId,
@@ -1370,6 +1403,7 @@ export const gradeSrsCard = ({
       outcome.reps,
       outcome.lapses,
       nowIso,
+      normalizedProfileScope,
     );
 
     db.prepare(
@@ -1385,8 +1419,20 @@ export const gradeSrsCard = ({
           prev_interval_days,
           next_interval_days,
           prev_ease_factor,
-          next_ease_factor
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          next_ease_factor,
+          profile_scope,
+          op_id,
+          device_id,
+          device_seq,
+          deck_sync_id,
+          word_external_id,
+          payload_json,
+          sync_status,
+          synced_at,
+          server_seq,
+          created_at,
+          updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NULL, 0, ?, ?)
       `,
     ).run(
       numericWordId,
@@ -1400,6 +1446,22 @@ export const gradeSrsCard = ({
       outcome.intervalDays,
       currentCard.easeFactor,
       outcome.easeFactor,
+      normalizedProfileScope,
+      opId,
+      deviceId,
+      deviceSeq,
+      toCleanString(wordRow.deckSyncId).toLowerCase(),
+      toCleanString(wordRow.externalId),
+      JSON.stringify({
+        previousCard: currentCard,
+        nextCard: outcome,
+        settings: {
+          srsSettings,
+          studySessionSettings,
+        },
+      }),
+      nowIso,
+      nowIso,
     );
   });
 
@@ -1409,5 +1471,6 @@ export const gradeSrsCard = ({
     deckId: numericDeckId,
     settings,
     forceAllCards: Boolean(forceAllCards),
+    profileScope: normalizedProfileScope,
   });
 };

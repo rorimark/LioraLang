@@ -9,6 +9,7 @@ export const registerStudyIpcHandlers = ({
       deckId: payload?.deckId,
       settings: payload?.settings || {},
       forceAllCards: Boolean(payload?.forceAllCards),
+      profileScope: payload?.profileScope,
     });
   });
 
@@ -19,10 +20,13 @@ export const registerStudyIpcHandlers = ({
       rating: payload?.rating,
       settings: payload?.settings || {},
       forceAllCards: Boolean(payload?.forceAllCards),
+      profileScope: payload?.profileScope,
     });
   });
 
-  ipcMain.handle("progress:get-overview", () => {
-    return getProgressOverview();
+  ipcMain.handle("progress:get-overview", (_, payload) => {
+    return getProgressOverview({
+      profileScope: payload?.profileScope,
+    });
   });
 };

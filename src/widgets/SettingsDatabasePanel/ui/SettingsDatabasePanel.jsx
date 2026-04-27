@@ -8,6 +8,7 @@ import {
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { IntegrityRepairModal } from "@features/integrity-repair";
 import { ShortcutSettingsSection } from "@features/shortcut-settings";
+import { SyncSettingsSection } from "@features/sync-settings";
 import { ThemeSwitch } from "@features/theme-switch";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { SETTINGS_SECTION_IDS, SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
@@ -26,6 +27,7 @@ import "./SettingsDatabasePanel.css";
 
 const BASE_SETTINGS_NAV_ITEMS = [
   { key: SETTINGS_TAB_KEYS.general, label: "General" },
+  { key: SETTINGS_TAB_KEYS.sync, label: "Sync" },
   { key: SETTINGS_TAB_KEYS.learningCore, label: "Learning Core" },
   { key: SETTINGS_TAB_KEYS.deckDefaults, label: "Deck Defaults" },
   { key: SETTINGS_TAB_KEYS.workspaceSafety, label: "Workspace and Safety" },
@@ -412,6 +414,25 @@ export const SettingsDatabasePanel = memo(() => {
           activeTabKey={activeSettingsTab}
           isDesktopMode={panel.isDesktopMode}
         />
+      ) : null}
+
+      {activeSettingsTab === SETTINGS_TAB_KEYS.sync ? (
+        <section
+          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.sync]}
+          className={resolveSectionClassName(
+            SETTINGS_TAB_KEYS.sync,
+            resolvedHighlightedTab,
+          )}
+        >
+          <header className="settings-page-panel__section-head">
+            <SectionHeader
+              title="Sync"
+              description="Track sync health, pending changes, and conflict safety across your devices."
+            />
+          </header>
+
+          <SyncSettingsSection />
+        </section>
       ) : null}
 
       {activeSettingsTab === SETTINGS_TAB_KEYS.importExport ? (

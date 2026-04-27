@@ -64,3 +64,19 @@ export const getSupabaseClient = () => {
 
   return cachedSupabaseClient;
 };
+
+export const getCurrentSupabaseAuthUser = async () => {
+  const client = getSupabaseClient();
+
+  if (!client) {
+    return null;
+  }
+
+  const { data, error } = await client.auth.getUser();
+
+  if (error) {
+    throw new Error(error.message || "Failed to resolve current Supabase user");
+  }
+
+  return data?.user || null;
+};

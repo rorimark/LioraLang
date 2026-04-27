@@ -1,4 +1,6 @@
 import { getDatabase } from "../db.js";
+import { GUEST_PROFILE_SCOPE, normalizeProfileScope } from "../../../packages/shared/src/core/usecases/sync/index.js";
+import { activateProgressProfile } from "./sync.services.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -134,8 +136,12 @@ const buildMilestones = ({
   return milestones.slice(0, 4);
 };
 
-export const getProgressOverview = () => {
+export const getProgressOverview = ({
+  profileScope = GUEST_PROFILE_SCOPE,
+} = {}) => {
   const db = getDatabase();
+  const normalizedProfileScope = normalizeProfileScope(profileScope);
+  activateProgressProfile(normalizedProfileScope);
   const last7Days = buildRecentDays(7);
   const last14Days = buildRecentDays(14);
 
@@ -147,11 +153,12 @@ export const getProgressOverview = () => {
           COUNT(*) AS reviews,
           SUM(CASE WHEN rating <> 'again' THEN 1 ELSE 0 END) AS successful
         FROM review_logs
-        WHERE DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', '-13 days')
+        WHERE profile_scope = ?
+          AND DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', '-13 days')
         GROUP BY DATE(reviewed_at, 'localtime')
       `,
     )
-    .all();
+    .all(normalizedProfileScope);
 
   const dailyByDay = new Map(
     last14DailyRows.map((row) => [
@@ -200,22 +207,23 @@ export const getProgressOverview = () => {
         `
           SELECT COUNT(*) AS total
           FROM review_cards
-          WHERE state = 'review' AND interval_days >= 21
+          WHERE profile_scope = ? AND state = 'review' AND interval_days >= 21
         `,
       )
-      .get()?.total || 0;
+      .get(normalizedProfileScope)?.total || 0;
 
   const dayKeys = db
     .prepare(
       `
         SELECT DATE(reviewed_at, 'localtime') AS day
         FROM review_logs
+        WHERE profile_scope = ?
         GROUP BY DATE(reviewed_at, 'localtime')
         ORDER BY day DESC
         LIMIT 365
       `,
     )
-    .all()
+    .all(normalizedProfileScope)
     .map((row) => String(row.day || ""))
     .filter(Boolean);
 
@@ -238,14 +246,15 @@ export const getProgressOverview = () => {
         LEFT JOIN (
           SELECT deck_id, COUNT(*) AS reviews7d
           FROM review_logs
-          WHERE DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', '-6 days')
+          WHERE profile_scope = ?
+            AND DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', '-6 days')
           GROUP BY deck_id
         ) AS review_stats ON review_stats.deck_id = decks.id
         ORDER BY reviews7d DESC, cards DESC, decks.name COLLATE NOCASE ASC
         LIMIT 6
       `,
     )
-    .all()
+    .all(normalizedProfileScope)
     .map((row) => ({
       id: Number(row.id),
       name: String(row.name || "Deck"),
@@ -261,11 +270,12 @@ export const getProgressOverview = () => {
           COUNT(*) AS total,
           SUM(CASE WHEN rating <> 'again' THEN 1 ELSE 0 END) AS successful
         FROM review_logs
-        WHERE DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', '-29 days')
+        WHERE profile_scope = ?
+          AND DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', '-29 days')
         GROUP BY queue_type
       `,
     )
-    .all();
+    .all(normalizedProfileScope);
 
   const queueMap = new Map(
     queueRows.map((row) => [
@@ -294,7 +304,9 @@ export const getProgressOverview = () => {
   const decksCount = db.prepare("SELECT COUNT(*) AS total FROM decks").get()?.total || 0;
   const wordsCount = db.prepare("SELECT COUNT(*) AS total FROM words").get()?.total || 0;
   const totalReviews =
-    db.prepare("SELECT COUNT(*) AS total FROM review_logs").get()?.total || 0;
+    db
+      .prepare("SELECT COUNT(*) AS total FROM review_logs WHERE profile_scope = ?")
+      .get(normalizedProfileScope)?.total || 0;
 
   return {
     generatedAt: new Date().toISOString(),

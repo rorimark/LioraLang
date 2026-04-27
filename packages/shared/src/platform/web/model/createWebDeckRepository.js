@@ -21,6 +21,13 @@ import {
   validateDeckPackageObject,
   validateImportLanguages,
 } from "@shared/platform/web/lib";
+import {
+  buildDeckContentHash,
+  DECK_ORIGIN_KINDS,
+  normalizeDeckOriginKind,
+  normalizeDeckOriginRef,
+  resolveDeckSyncId,
+} from "@shared/core/usecases/sync";
 
 const MAX_DECK_TAGS = 10;
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
@@ -86,6 +93,14 @@ const normalizeDeckUsesWordLevels = (value, fallback = true) => {
 
   return fallback;
 };
+
+const normalizeDeckOriginPayload = ({
+  originKind,
+  originRef,
+} = {}) => ({
+  originKind: normalizeDeckOriginKind(originKind, DECK_ORIGIN_KINDS.local),
+  originRef: normalizeDeckOriginRef(originRef),
+});
 
 const parseTagsFromDeck = (deck) => {
   if (!deck) {
@@ -191,6 +206,10 @@ const toDeckListRow = (deck, wordsCountByDeckId = new Map()) => {
     targetLanguage: deck.targetLanguage || "",
     tertiaryLanguage: deck.tertiaryLanguage || "",
     usesWordLevels: normalizeDeckUsesWordLevels(deck.usesWordLevels, true),
+    syncId: toCleanString(deck.syncId),
+    originKind: normalizeDeckOriginKind(deck.originKind),
+    originRef: normalizeDeckOriginRef(deck.originRef),
+    contentHash: toCleanString(deck.contentHash),
     tagsJson: JSON.stringify(tags),
     createdAt: deck.createdAt || null,
     wordsCount: Number(wordsCountByDeckId.get(deck.id) || 0),
@@ -253,6 +272,24 @@ const createWordRecord = ({
     updatedAt: toIsoTimestamp(nowMs),
     updatedAtMs: nowMs,
   };
+};
+
+const buildDeckContentHashFromState = ({
+  deck,
+  words,
+} = {}) => {
+  return buildDeckContentHash({
+    deck: {
+      name: deck?.name,
+      description: deck?.description,
+      sourceLanguage: deck?.sourceLanguage,
+      targetLanguage: deck?.targetLanguage,
+      tertiaryLanguage: deck?.tertiaryLanguage,
+      usesWordLevels: normalizeDeckUsesWordLevels(deck?.usesWordLevels, true),
+      tags: Array.isArray(deck?.tags) ? deck.tags : parseTagsFromDeck(deck),
+    },
+    words: Array.isArray(words) ? words : [],
+  });
 };
 
 const triggerDeckPackageDownload = ({
@@ -478,12 +515,86 @@ const generateImportToken = () => {
   return `web-import-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 };
 
+let syncMetadataReadyPromise = null;
+
+const ensureDeckSyncMetadata = async () => {
+  if (syncMetadataReadyPromise) {
+    return syncMetadataReadyPromise;
+  }
+
+  syncMetadataReadyPromise = runReadwriteTransaction(
+    [WEB_DB_STORES.decks, WEB_DB_STORES.words],
+    async ({ getStore }) => {
+      const decksStore = getStore(WEB_DB_STORES.decks);
+      const wordsStore = getStore(WEB_DB_STORES.words);
+      const [decks, words] = await Promise.all([
+        idbRequest(decksStore.getAll()),
+        idbRequest(wordsStore.getAll()),
+      ]);
+      const wordsByDeckId = new Map();
+
+      words.forEach((word) => {
+        const deckId = parseNumericId(word?.deckId);
+
+        if (!deckId) {
+          return;
+        }
+
+        const currentWords = wordsByDeckId.get(deckId) || [];
+        currentWords.push(toDeckWordRow(word));
+        wordsByDeckId.set(deckId, currentWords);
+      });
+
+      const seenSyncIds = new Set();
+
+      decks.forEach((deck) => {
+        const nextSyncId = resolveDeckSyncId({
+          currentSyncId: deck?.syncId,
+          existingSyncIds: [...seenSyncIds],
+        });
+        seenSyncIds.add(nextSyncId);
+
+        const nextOriginKind = normalizeDeckOriginKind(deck?.originKind);
+        const nextOriginRef = normalizeDeckOriginRef(deck?.originRef);
+        const nextContentHash = buildDeckContentHashFromState({
+          deck,
+          words: wordsByDeckId.get(parseNumericId(deck?.id)) || [],
+        });
+
+        if (
+          toCleanString(deck?.syncId) === nextSyncId &&
+          normalizeDeckOriginKind(deck?.originKind) === nextOriginKind &&
+          normalizeDeckOriginRef(deck?.originRef) === nextOriginRef &&
+          toCleanString(deck?.contentHash) === nextContentHash
+        ) {
+          return;
+        }
+
+        decksStore.put({
+          ...deck,
+          syncId: nextSyncId,
+          originKind: nextOriginKind,
+          originRef: nextOriginRef,
+          contentHash: nextContentHash,
+        });
+      });
+    },
+  ).catch((error) => {
+    syncMetadataReadyPromise = null;
+    throw error;
+  });
+
+  return syncMetadataReadyPromise;
+};
+
 const getDeckByIdInternal = async (deckId) => {
   const normalizedDeckId = parseNumericId(deckId);
 
   if (!normalizedDeckId) {
     return null;
   }
+
+  await ensureDeckSyncMetadata();
 
   return runReadonlyTransaction(
     [WEB_DB_STORES.decks, WEB_DB_STORES.words],
@@ -509,6 +620,8 @@ const getDeckWordsInternal = async (deckId) => {
   if (!normalizedDeckId) {
     return [];
   }
+
+  await ensureDeckSyncMetadata();
 
   return runReadonlyTransaction(WEB_DB_STORES.words, async ({ getStore }) => {
     const words = await idbRequest(
@@ -543,6 +656,8 @@ export const createWebDeckRepository = () => {
     payload = {},
     fallbackFileName = "Imported Deck",
   }) => {
+    await ensureDeckSyncMetadata();
+
     const fallbackDeckName = toCleanString(fallbackFileName).replace(/\.[^/.]+$/, "") || "Imported Deck";
     const importConfig = resolveImportConfig({
       payload,
@@ -570,6 +685,7 @@ export const createWebDeckRepository = () => {
     const usesWordLevels = normalizedWordsResult.words.some((word) =>
       Boolean(toCleanString(word?.level).toUpperCase()),
     );
+    const originPayload = normalizeDeckOriginPayload(importConfig);
 
     const importResult = await runReadwriteTransaction(
       [WEB_DB_STORES.decks, WEB_DB_STORES.words],
@@ -578,6 +694,24 @@ export const createWebDeckRepository = () => {
         const wordsStore = getStore(WEB_DB_STORES.words);
         const existingDecks = await idbRequest(decksStore.getAll());
         const uniqueDeckName = resolveUniqueDeckName(importConfig.deckName, existingDecks);
+        const deckSyncId = resolveDeckSyncId({
+          currentSyncId: importConfig.syncId,
+          existingSyncIds: existingDecks
+            .map((deck) => toCleanString(deck?.syncId))
+            .filter(Boolean),
+        });
+        const deckContentHash = buildDeckContentHashFromState({
+          deck: {
+            name: uniqueDeckName,
+            description: normalizedDeckDescription,
+            sourceLanguage: importConfig.sourceLanguage,
+            targetLanguage: importConfig.targetLanguage,
+            tertiaryLanguage: importConfig.tertiaryLanguage,
+            usesWordLevels,
+            tags: normalizeTags(importConfig.tags),
+          },
+          words: normalizedWordsResult.words,
+        });
 
         const deckRecord = {
           name: uniqueDeckName,
@@ -588,6 +722,10 @@ export const createWebDeckRepository = () => {
           tertiaryLanguage: importConfig.tertiaryLanguage || "",
           usesWordLevels,
           tags: normalizeTags(importConfig.tags),
+          syncId: deckSyncId,
+          originKind: originPayload.originKind,
+          originRef: originPayload.originRef,
+          contentHash: deckContentHash,
           createdAt: toIsoTimestamp(nowMs),
           createdAtMs: nowMs,
           updatedAt: toIsoTimestamp(nowMs),
@@ -661,6 +799,8 @@ export const createWebDeckRepository = () => {
 
   return {
     async listDecks() {
+      await ensureDeckSyncMetadata();
+
       return runReadonlyTransaction(
         [WEB_DB_STORES.decks, WEB_DB_STORES.words],
         async ({ getStore }) => {
@@ -817,6 +957,8 @@ export const createWebDeckRepository = () => {
     },
 
     async renameDeck(deckId, nextName) {
+      await ensureDeckSyncMetadata();
+
       const normalizedDeckId = parseNumericId(deckId);
       const cleanedName = toCleanString(nextName);
 
@@ -850,10 +992,24 @@ export const createWebDeckRepository = () => {
           throw new Error("Deck with this name already exists");
         }
 
+        const deckWords = (
+          await idbRequest(
+            getStore(WEB_DB_STORES.words).index("deckId").getAll(normalizedDeckId),
+          )
+        ).map((word) => toDeckWordRow(word));
+        const contentHash = buildDeckContentHashFromState({
+          deck: {
+            ...deck,
+            name: cleanedName,
+          },
+          words: deckWords,
+        });
+
         decksStore.put({
           ...deck,
           name: cleanedName,
           nameKey: toLanguageKey(cleanedName),
+          contentHash,
           updatedAt: toIsoTimestamp(),
           updatedAtMs: Date.now(),
         });
@@ -864,6 +1020,8 @@ export const createWebDeckRepository = () => {
     },
 
     async deleteDeck(deckId) {
+      await ensureDeckSyncMetadata();
+
       const normalizedDeckId = parseNumericId(deckId);
 
       if (!normalizedDeckId) {
@@ -916,6 +1074,8 @@ export const createWebDeckRepository = () => {
     },
 
     async saveDeck(payload = {}) {
+      await ensureDeckSyncMetadata();
+
       const providedDeckId = parseNumericId(payload?.deckId);
       const deckName = toCleanString(payload?.name);
       const sourceLanguage = toCleanString(payload?.sourceLanguage);
@@ -981,6 +1141,32 @@ export const createWebDeckRepository = () => {
             throw new Error("Deck with this name already exists");
           }
 
+          const deckSyncId = resolveDeckSyncId({
+            currentSyncId: existingDeck?.syncId || payload?.syncId,
+            existingSyncIds: decks
+              .filter((deck) => Number(deck?.id) !== Number(providedDeckId || 0))
+              .map((deck) => toCleanString(deck?.syncId))
+              .filter(Boolean),
+          });
+          const originPayload = normalizeDeckOriginPayload(
+            existingDeck || {
+              originKind: payload?.originKind,
+              originRef: payload?.originRef,
+            },
+          );
+          const contentHash = buildDeckContentHashFromState({
+            deck: {
+              name: deckName,
+              description,
+              sourceLanguage,
+              targetLanguage,
+              tertiaryLanguage,
+              usesWordLevels,
+              tags,
+            },
+            words: normalizedWords,
+          });
+
           let resolvedDeckId = providedDeckId;
 
           if (resolvedDeckId) {
@@ -994,6 +1180,10 @@ export const createWebDeckRepository = () => {
               tertiaryLanguage,
               usesWordLevels,
               tags,
+              syncId: deckSyncId,
+              originKind: originPayload.originKind,
+              originRef: originPayload.originRef,
+              contentHash,
               updatedAt: toIsoTimestamp(nowMs),
               updatedAtMs: nowMs,
             });
@@ -1009,6 +1199,10 @@ export const createWebDeckRepository = () => {
                   tertiaryLanguage,
                   usesWordLevels,
                   tags,
+                  syncId: deckSyncId,
+                  originKind: originPayload.originKind,
+                  originRef: originPayload.originRef,
+                  contentHash,
                   createdAt: toIsoTimestamp(nowMs),
                   createdAtMs: nowMs,
                   updatedAt: toIsoTimestamp(nowMs),

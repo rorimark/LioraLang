@@ -146,6 +146,14 @@ export const createImportWorkflow = ({
       sourceLanguage,
       targetLanguage,
       tertiaryLanguage,
+      syncId:
+        typeof payload?.syncId === "string" ? payload.syncId.trim() : "",
+      originKind:
+        typeof payload?.originKind === "string" ? payload.originKind.trim() : "",
+      originRef:
+        typeof payload?.originRef === "string" ? payload.originRef.trim() : "",
+      contentHash:
+        typeof payload?.contentHash === "string" ? payload.contentHash.trim() : "",
       duplicateStrategy,
       includeExamples,
       includeTags,
