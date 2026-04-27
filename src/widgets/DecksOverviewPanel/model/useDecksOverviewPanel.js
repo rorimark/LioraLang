@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useDecks } from "@entities/deck";
@@ -27,6 +27,7 @@ export const useDecksOverviewPanel = () => {
   const navigate = useNavigate();
   const deckRepository = usePlatformService("deckRepository");
   const hubRepository = usePlatformService("hubRepository");
+  const syncRepository = usePlatformService("syncRepository");
   const { decks, isLoading, error, refreshDecks } = useDecks();
   const { appPreferences } = useAppPreferences();
   const [message, setMessage] = useState("");
@@ -35,16 +36,39 @@ export const useDecksOverviewPanel = () => {
   const [exportingDeckId, setExportingDeckId] = useState(null);
   const [deletingDeckId, setDeletingDeckId] = useState(null);
   const [deckSearch, setDeckSearch] = useState("");
+  const [syncStatus, setSyncStatus] = useState(null);
   const [deleteState, setDeleteState] = useState({
     isOpen: false,
     deckId: null,
     deckName: "",
+    deckSyncId: "",
   });
 
   const reportMessage = useCallback((text, variant = "info") => {
     setMessage(text);
     setMessageVariant(variant);
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void syncRepository.getStatus().then((nextStatus) => {
+      if (isMounted) {
+        setSyncStatus(nextStatus);
+      }
+    });
+
+    const unsubscribe = syncRepository.subscribe((nextStatus) => {
+      if (isMounted) {
+        setSyncStatus(nextStatus);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, [syncRepository]);
 
   const {
     isImporting,
@@ -238,7 +262,16 @@ export const useDecksOverviewPanel = () => {
     reportMessage,
   ]);
 
-  const deleteDeckById = useCallback(async (deckId, deckName = "") => {
+  const canManageSyncedLibrary = Boolean(
+    syncStatus?.configured && syncStatus?.signedIn,
+  );
+
+  const deleteDeckById = useCallback(async ({
+    deckId,
+    deckName = "",
+    deckSyncId = "",
+    mode = "local",
+  } = {}) => {
     if (!deckId) {
       return;
     }
@@ -247,20 +280,80 @@ export const useDecksOverviewPanel = () => {
     setDeletingDeckId(deckId);
 
     try {
-      await deckRepository.deleteDeck(deckId);
       const deletedName = deckName?.trim() || "Deck";
-      reportMessage(`Deck deleted: ${deletedName}`, "danger");
+
+      if (
+        mode === "remove-device" &&
+        canManageSyncedLibrary &&
+        typeof syncRepository?.removeDeckFromDevice === "function" &&
+        deckSyncId
+      ) {
+        await syncRepository.removeDeckFromDevice({
+          id: deckId,
+          name: deckName,
+          syncId: deckSyncId,
+        });
+        reportMessage(`Removed from this device: ${deletedName}`, "warning");
+      } else if (
+        mode === "delete-library" &&
+        canManageSyncedLibrary &&
+        typeof syncRepository?.deleteDeckFromSyncedLibrary === "function" &&
+        deckSyncId
+      ) {
+        const result = await syncRepository.deleteDeckFromSyncedLibrary({
+          id: deckId,
+          name: deckName,
+          syncId: deckSyncId,
+        });
+
+        if (result?.queued) {
+          reportMessage(
+            `Queued "${deletedName}" for removal from your synced library. It will finish when you're online.`,
+            "warning",
+          );
+        } else {
+          reportMessage(
+            `Deleted from synced library: ${deletedName}`,
+            "danger",
+          );
+        }
+      } else {
+        await deckRepository.deleteDeck(deckId);
+        reportMessage(`Deck deleted: ${deletedName}`, "danger");
+      }
+
       await refreshDecks();
+      return true;
     } catch (deleteError) {
       reportMessage(deleteError.message || "Failed to delete deck", "error");
+      return false;
     } finally {
       setDeletingDeckId(null);
     }
-  }, [deckRepository, refreshDecks, reportMessage]);
+  }, [
+    canManageSyncedLibrary,
+    deckRepository,
+    refreshDecks,
+    reportMessage,
+    syncRepository,
+  ]);
 
-  const openDeleteModal = useCallback((deckId, deckName = "") => {
+  const openDeleteModal = useCallback((deck) => {
+    const deckId = Number(deck?.id);
+    const deckName = typeof deck?.name === "string" ? deck.name : "";
+    const deckSyncId = typeof deck?.syncId === "string" ? deck.syncId : "";
+
+    if (!deckId) {
+      return;
+    }
+
     if (!appPreferences.dataSafety.confirmDestructive) {
-      void deleteDeckById(deckId, deckName);
+      void deleteDeckById({
+        deckId,
+        deckName,
+        deckSyncId,
+        mode: canManageSyncedLibrary && deckSyncId ? "remove-device" : "local",
+      });
       return;
     }
 
@@ -268,8 +361,14 @@ export const useDecksOverviewPanel = () => {
       isOpen: true,
       deckId,
       deckName,
+      deckSyncId,
+      mode: canManageSyncedLibrary && deckSyncId ? "remove-device" : "local",
     });
-  }, [appPreferences.dataSafety.confirmDestructive, deleteDeckById]);
+  }, [
+    appPreferences.dataSafety.confirmDestructive,
+    canManageSyncedLibrary,
+    deleteDeckById,
+  ]);
 
   const closeDeleteModal = useCallback(() => {
     if (!deletingDeckId) {
@@ -277,22 +376,39 @@ export const useDecksOverviewPanel = () => {
         isOpen: false,
         deckId: null,
         deckName: "",
+        deckSyncId: "",
       }));
     }
   }, [deletingDeckId]);
 
-  const confirmDeleteDeck = useCallback(async () => {
+  const confirmDeleteDeck = useCallback(async (mode = "local") => {
     if (!deleteState.deckId) {
       return;
     }
 
-    await deleteDeckById(deleteState.deckId, deleteState.deckName);
+    const didDelete = await deleteDeckById({
+      deckId: deleteState.deckId,
+      deckName: deleteState.deckName,
+      deckSyncId: deleteState.deckSyncId,
+      mode,
+    });
+
+    if (!didDelete) {
+      return;
+    }
+
     setDeleteState(() => ({
       isOpen: false,
       deckId: null,
       deckName: "",
+      deckSyncId: "",
     }));
-  }, [deleteDeckById, deleteState.deckId, deleteState.deckName]);
+  }, [
+    deleteDeckById,
+    deleteState.deckId,
+    deleteState.deckName,
+    deleteState.deckSyncId,
+  ]);
 
   const clearMessage = useCallback(() => {
     setMessage("");
@@ -328,6 +444,7 @@ export const useDecksOverviewPanel = () => {
     publishingDeckId,
     exportingDeckId,
     deletingDeckId,
+    canManageSyncedLibrary,
     isImporting,
     selectedImportFileName,
     selectedImportWordsCount,

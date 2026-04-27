@@ -185,21 +185,10 @@
   opacity: 0;
 }
 
-.browse-decks-panel__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
 .browse-decks-panel__card-footer {
   display: grid;
   gap: 12px;
   margin-top: auto;
-}
-
-.browse-decks-panel__badges .meta-badge {
-  padding: 4px 9px;
-  font-size: 0.7rem;
 }
 
 .browse-decks-panel__stats {
@@ -291,7 +280,7 @@
   }
 
   .browse-decks-panel__date-pill {
-    align-self: flex-start;
+    display: none;
   }
 
   .browse-decks-panel__pagination {

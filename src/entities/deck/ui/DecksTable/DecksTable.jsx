@@ -8,7 +8,7 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import { formatDeckCreatedAt } from "@shared/lib/date";
-import { MetaBadge } from "@shared/ui";
+import { DeckTagBadges } from "../DeckTagBadges/DeckTagBadges";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
 import "./DecksTable.css";
 
@@ -237,8 +237,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
   );
 
   const handleDeleteDeck = useCallback(
-    (deckId, deckName) => {
-      actions.onDeleteDeck?.(deckId, deckName);
+    (deck) => {
+      actions.onDeleteDeck?.(deck);
       setOpenMenuDeckId(null);
     },
     [actions],
@@ -287,14 +287,12 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                 <td data-label="Deck">{deck.name}</td>
                 <td data-label="Tags" className="decks-table__tags-cell">
                   <div className="decks-table__tags-wrap">
-                    <div className="decks-table__tags">
-                      {visibleTags.map((tag) => (
-                        <MetaBadge
-                          key={`${deck.id}-${tag.key}`}
-                          text={tag.text}
-                          accent={tag.accent}
-                        />
-                      ))}
+                    <div className="decks-table__tags-row">
+                      <DeckTagBadges
+                        className="decks-table__tags"
+                        badges={visibleTags}
+                        inline
+                      />
 
                       {hiddenTags.length > 0 && (
                         <span
@@ -311,15 +309,10 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             role="tooltip"
                             className="decks-table__tags-tooltip"
                           >
-                            <span className="decks-table__tags-tooltip-content">
-                              {deckTags.map((tag) => (
-                                <MetaBadge
-                                  key={`${deck.id}-tooltip-${tag.key}`}
-                                  text={tag.text}
-                                  accent={tag.accent}
-                                />
-                              ))}
-                            </span>
+                            <DeckTagBadges
+                              className="decks-table__tags-tooltip-content"
+                              badges={deckTags}
+                            />
                           </span>
                         </span>
                       )}
@@ -397,7 +390,9 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             type="button"
                             role="menuitem"
                             className="decks-table__button--danger"
-                            onClick={() => handleDeleteDeck(deck.id, deck.name)}
+                            onClick={() =>
+                              handleDeleteDeck(deck)
+                            }
                             disabled={isDeleting}
                           >
                             <FiTrash2 aria-hidden />
@@ -457,7 +452,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         className="decks-table__button--danger"
                         onClick={(event) => {
                           event.stopPropagation();
-                          handleDeleteDeck(deck.id, deck.name);
+                          handleDeleteDeck(deck);
                         }}
                         disabled={isDeleting}
                       >

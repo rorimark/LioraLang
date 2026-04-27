@@ -10,6 +10,7 @@ import {
   FiRefreshCw,
   FiType,
 } from "react-icons/fi";
+import { DeckTagBadges } from "@entities/deck";
 import { WordsTable } from "@entities/word";
 import {
   CardCatalogFilters,
@@ -18,7 +19,7 @@ import {
   SORT_OPTIONS,
 } from "@features/card-catalog";
 import { PostImportChoiceModal } from "@features/deck-import";
-import { ActionModal, Button, InlineAlert, MetaBadge, Panel } from "@shared/ui";
+import { ActionModal, Button, InlineAlert, Panel } from "@shared/ui";
 import { useBrowseDeckDetailsPanel } from "../model";
 import "@widgets/BrowseDecksPanel/ui/BrowseDecksPanel.css";
 import "@widgets/DeckDetailsPanel/ui/DeckDetailsPanel.css";
@@ -96,10 +97,23 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   const derived = useMemo(() => {
     const tags = normalizeTags(panel.deck?.tags);
     const languages = Array.isArray(panel.deck?.languages) ? panel.deck.languages : [];
+    const badgeItems = [
+      ...languages.map((language) => ({
+        key: `${panel.deck?.id}-lang-${language}`,
+        text: language,
+        accent: false,
+      })),
+      ...tags.map((tag) => ({
+        key: `${panel.deck?.id}-tag-${tag}`,
+        text: tag,
+        accent: false,
+      })),
+    ];
 
     return {
       tags,
       languages,
+      badgeItems,
       createdAt: formatDate(panel.deck?.createdAt),
       fileSize: formatFileSize(panel.deck?.latestVersion?.fileSizeBytes),
       wordsCount: Number.isFinite(Number(panel.deck?.wordsCount))
@@ -276,22 +290,10 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           </p>
 
           <div className="browse-decks-panel__card-footer">
-            <div className="browse-decks-panel__badges">
-              {derived.languages.map((language) => (
-                <MetaBadge
-                  key={`${panel.deck.id}-lang-${language}`}
-                  text={language}
-                  accent={false}
-                />
-              ))}
-              {derived.tags.map((tag) => (
-                <MetaBadge
-                  key={`${panel.deck.id}-tag-${tag}`}
-                  text={tag}
-                  accent={false}
-                />
-              ))}
-            </div>
+            <DeckTagBadges
+              className="browse-decks-panel__badges"
+              badges={derived.badgeItems}
+            />
 
             <dl className="browse-decks-panel__stats">
               <div>

@@ -8,7 +8,8 @@ import {
   FiPackage,
   FiType,
 } from "react-icons/fi";
-import { Button, MetaBadge } from "@shared/ui";
+import { DeckTagBadges } from "@entities/deck";
+import { Button } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
 
 const MAX_VISIBLE_TAGS = 4;
@@ -146,6 +147,25 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
           const tags = normalizeTags(deck?.tags);
           const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS);
           const hiddenTagsCount = Math.max(0, tags.length - visibleTags.length);
+          const badgeItems = [
+            ...languages.map((language) => ({
+              key: `${deck.id}-lang-${language}`,
+              text: language,
+              accent: false,
+            })),
+            ...visibleTags.map((tag) => ({
+              key: `${deck.id}-tag-${tag}`,
+              text: tag,
+              accent: false,
+            })),
+            ...(hiddenTagsCount > 0
+              ? [{
+                key: `${deck.id}-tag-more`,
+                text: `+${hiddenTagsCount}`,
+                accent: false,
+              }]
+              : []),
+          ];
           const hasDescription =
             typeof deck?.description === "string" && deck.description.trim().length > 0;
           const isImporting =
@@ -214,28 +234,10 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
               </p>
 
               <div className="browse-decks-panel__card-footer">
-                <div className="browse-decks-panel__badges">
-                  {languages.map((language) => (
-                    <MetaBadge
-                      key={`${deck.id}-lang-${language}`}
-                      text={language}
-                      accent={false}
-                    />
-                  ))}
-                  {visibleTags.map((tag) => (
-                    <MetaBadge
-                      key={`${deck.id}-tag-${tag}`}
-                      text={tag}
-                      accent={false}
-                    />
-                  ))}
-                  {hiddenTagsCount > 0 ? (
-                    <MetaBadge
-                      text={`+${hiddenTagsCount}`}
-                      accent={false}
-                    />
-                  ) : null}
-                </div>
+                <DeckTagBadges
+                  className="browse-decks-panel__badges"
+                  badges={badgeItems}
+                />
 
                 <dl className="browse-decks-panel__stats">
                   <div className="browse-decks-panel__stat">

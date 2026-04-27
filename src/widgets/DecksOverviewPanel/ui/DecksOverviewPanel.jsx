@@ -198,8 +198,17 @@ export const DecksOverviewPanel = memo(() => {
       <DeleteDeckModal
         isOpen={panel.deleteState?.isOpen}
         deckName={panel.deleteState?.deckName || ""}
+        isSyncedDeck={Boolean(panel.deleteState?.deckSyncId)}
+        canManageSyncedLibrary={panel.canManageSyncedLibrary}
         isDeleting={Boolean(panel.deletingDeckId)}
-        onConfirm={panel.confirmDeleteDeck}
+        onConfirmLocal={() =>
+          panel.confirmDeleteDeck(
+            panel.canManageSyncedLibrary && panel.deleteState?.deckSyncId
+              ? "remove-device"
+              : "local",
+          )
+        }
+        onConfirmLibrary={() => panel.confirmDeleteDeck("delete-library")}
         onClose={panel.closeDeleteModal}
       />
 
