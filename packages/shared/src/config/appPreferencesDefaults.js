@@ -51,4 +51,10 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
     crashReportsEnabled: true,
     logLevel: "off",
   }),
+  sync: Object.freeze({
+    autoSync: true,
+    syncOnLaunch: true,
+    notifyOnError: true,
+    keepLocalCopyOnConflict: true,
+  }),
 });

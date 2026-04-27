@@ -276,5 +276,30 @@ describe("srsEngine", () => {
         canStartNewSession: false,
       });
     });
+
+    it("preserves deck language labels in the SRS session payload", () => {
+      const session = buildSrsSessionSnapshot({
+        deck: {
+          id: 1,
+          name: "Deck",
+          sourceLanguage: "German",
+          targetLanguage: "Polish",
+          tertiaryLanguage: "English",
+        },
+        words: [{ id: 1, source: "haus", target: "dom", tertiary: "house" }],
+        cardsByWordId: new Map(),
+        todayLogs: [],
+        srsSettings: normalizeSrsSettings({}),
+        studySettings: normalizeStudySettings({}),
+        forceAllCards: false,
+        nowMs: Date.UTC(2026, 2, 29, 12, 0, 0),
+      });
+
+      expect(session.deck).toMatchObject({
+        sourceLanguage: "German",
+        targetLanguage: "Polish",
+        tertiaryLanguage: "English",
+      });
+    });
   });
 });

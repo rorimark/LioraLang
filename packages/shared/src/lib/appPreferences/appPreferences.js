@@ -265,6 +265,24 @@ export const normalizeAppPreferences = (value = {}) => {
         DEFAULT_APP_PREFERENCES.privacy.logLevel,
       ),
     },
+    sync: {
+      autoSync: toBoolean(
+        value?.sync?.autoSync,
+        DEFAULT_APP_PREFERENCES.sync.autoSync,
+      ),
+      syncOnLaunch: toBoolean(
+        value?.sync?.syncOnLaunch,
+        DEFAULT_APP_PREFERENCES.sync.syncOnLaunch,
+      ),
+      notifyOnError: toBoolean(
+        value?.sync?.notifyOnError,
+        DEFAULT_APP_PREFERENCES.sync.notifyOnError,
+      ),
+      keepLocalCopyOnConflict: toBoolean(
+        value?.sync?.keepLocalCopyOnConflict,
+        DEFAULT_APP_PREFERENCES.sync.keepLocalCopyOnConflict,
+      ),
+    },
   };
 };
 
