@@ -11,19 +11,12 @@ const buildShareHtml = ({
   shareUrl,
   browseUrl,
   imageUrl,
-  shouldAutoRedirect = true,
 }) => {
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeAttribute(description);
   const safeShareUrl = escapeAttribute(shareUrl);
   const safeBrowseUrl = escapeAttribute(browseUrl);
   const safeImageUrl = escapeAttribute(imageUrl);
-  const redirectScript = shouldAutoRedirect
-    ? `
-    <script>
-      window.location.replace(${JSON.stringify(browseUrl)});
-    </script>`
-    : "";
 
   return `<!doctype html>
 <html lang="en">
@@ -91,7 +84,6 @@ const buildShareHtml = ({
         background: rgba(125, 153, 243, 0.14);
       }
     </style>
-    ${redirectScript}
   </head>
   <body>
     <main>
@@ -101,16 +93,6 @@ const buildShareHtml = ({
     </main>
   </body>
 </html>`;
-};
-
-const previewCrawlerPattern =
-  /(bot|crawler|spider|preview|facebookexternalhit|telegrambot|twitterbot|discordbot|slackbot|whatsapp|linkedinbot|vkshare|skypeuripreview|applebot)/i;
-
-const isPreviewCrawler = (request) => {
-  const userAgent = request.headers["user-agent"];
-  const normalizedUserAgent = Array.isArray(userAgent) ? userAgent.join(" ") : String(userAgent || "");
-
-  return previewCrawlerPattern.test(normalizedUserAgent);
 };
 
 export default async function handler(request, response) {
@@ -131,7 +113,6 @@ export default async function handler(request, response) {
       shareUrl,
       browseUrl,
       imageUrl,
-      shouldAutoRedirect: !isPreviewCrawler(request),
     }),
   );
 }
