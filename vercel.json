@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/share/decks/:deckSlug", "destination": "/api/share-deck?deckSlug=:deckSlug" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

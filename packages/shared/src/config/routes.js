@@ -1,6 +1,7 @@
 export const ROUTE_PATHS = {
   root: "/",
   landing: "/",
+  shareDeck: "/share/decks/:deckSlug",
   appRoot: "/app",
   learn: "/app/learn",
   browse: "/app/browse",
@@ -15,6 +16,7 @@ export const ROUTE_PATHS = {
 };
 
 export const LEGACY_ROUTE_PATHS = {
+  shareDeck: "/share/decks/:deckSlug",
   learn: "/learn",
   browse: "/browse",
   decks: "/decks",
@@ -64,6 +66,16 @@ export const buildBrowseDeckRoute = (deckSlug) => {
   }
 
   return `${ROUTE_PATHS.browse}/${routeParam}`;
+};
+
+export const buildShareDeckRoute = (deckSlug) => {
+  const routeParam = toRouteParam(deckSlug);
+
+  if (!routeParam) {
+    return ROUTE_PATHS.browse;
+  }
+
+  return `/share/decks/${routeParam}`;
 };
 
 export const NAV_ITEMS = [

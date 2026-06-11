@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import { ROUTE_PATHS, buildBrowseDeckRoute } from "@shared/config/routes";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
+import { buildPublicDeckShareUrl } from "@shared/lib/share";
 
 const BROWSE_PAGE_SIZE = 6;
 const SEARCH_DEBOUNCE_MS = 280;
@@ -373,24 +374,10 @@ export const useBrowseDecksPanel = () => {
       return "";
     }
 
-    const deckPath = buildBrowseDeckRoute(slug);
-    const envBase =
-      typeof import.meta.env?.VITE_PUBLIC_APP_URL === "string"
-        ? import.meta.env.VITE_PUBLIC_APP_URL.trim()
-        : "";
-
-    if (envBase) {
-      return `${envBase.replace(/\/+$/, "")}${deckPath}`;
-    }
-
-    if (typeof window !== "undefined") {
-      const origin = window.location?.origin || "";
-      if (origin.startsWith("http")) {
-        return `${origin}${deckPath}`;
-      }
-    }
-
-    return deckPath;
+    return buildPublicDeckShareUrl(slug, {
+      envBaseUrl: import.meta.env?.VITE_PUBLIC_APP_URL,
+      origin: typeof window !== "undefined" ? window.location?.origin : "",
+    });
   }, []);
 
   const copyDeckLink = useCallback(async (deck) => {
