@@ -191,6 +191,6 @@ export const resolveDeckShareContext = async (request) => {
     pageDescription,
     browseUrl: buildAbsoluteUrl(baseUrl, buildBrowseDeckRoute(deckSlug)),
     shareUrl: buildAbsoluteUrl(baseUrl, buildShareDeckRoute(deckSlug)),
-    imageUrl: buildAbsoluteUrl(baseUrl, `/api/og-deck-image?deckSlug=${encodeURIComponent(deckSlug)}`),
+    imageUrl: buildAbsoluteUrl(baseUrl, "/og/deck-share-preview.png"),
   };
 };

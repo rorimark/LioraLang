@@ -38,6 +38,8 @@ const buildShareHtml = ({
     <meta property="og:description" content="${safeDescription}" />
     <meta property="og:url" content="${safeShareUrl}" />
     <meta property="og:image" content="${safeImageUrl}" />
+    <meta property="og:image:secure_url" content="${safeImageUrl}" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="${safeTitle}" />
@@ -45,6 +47,7 @@ const buildShareHtml = ({
     <meta name="twitter:title" content="${safeTitle}" />
     <meta name="twitter:description" content="${safeDescription}" />
     <meta name="twitter:image" content="${safeImageUrl}" />
+    <meta name="twitter:image:src" content="${safeImageUrl}" />
     <meta name="twitter:image:alt" content="${safeTitle}" />
     <link rel="canonical" href="${safeBrowseUrl}" />
     <style>
