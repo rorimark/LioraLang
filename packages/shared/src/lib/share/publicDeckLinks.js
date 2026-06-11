@@ -53,12 +53,43 @@ const buildAbsoluteUrl = (path, options = {}) => {
   return `${baseUrl}${normalizedPath}`;
 };
 
+const appendQueryParams = (path, params = {}) => {
+  const normalizedPath = toCleanString(path);
+
+  if (!normalizedPath) {
+    return "";
+  }
+
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    const normalizedKey = toCleanString(key);
+    const normalizedValue = toCleanString(value);
+
+    if (!normalizedKey || !normalizedValue) {
+      return;
+    }
+
+    searchParams.set(normalizedKey, normalizedValue);
+  });
+
+  const queryString = searchParams.toString();
+
+  if (!queryString) {
+    return normalizedPath;
+  }
+
+  return `${normalizedPath}?${queryString}`;
+};
+
 export const buildPublicDeckBrowseUrl = (deckSlug, options = {}) => {
   const route = buildBrowseDeckRoute(deckSlug);
   return buildAbsoluteUrl(route, options);
 };
 
 export const buildPublicDeckShareUrl = (deckSlug, options = {}) => {
-  const route = buildShareDeckRoute(deckSlug);
+  const route = appendQueryParams(buildShareDeckRoute(deckSlug), {
+    preview: options.previewKey,
+  });
   return buildAbsoluteUrl(route, options);
 };

@@ -48,6 +48,13 @@ const toCleanString = (value) => {
   return value.trim();
 };
 
+const buildDeckSharePreviewKey = (deck) => {
+  const versionToken =
+    deck?.latestVersion?.version != null ? `v${String(deck.latestVersion.version).trim()}` : "";
+  const timestampToken = Date.now().toString(36);
+  return [versionToken, timestampToken].filter(Boolean).join("-");
+};
+
 const isDesktopUserAgent = () => {
   if (typeof navigator === "undefined" || typeof navigator.userAgent !== "string") {
     return false;
@@ -503,6 +510,7 @@ export const useAccountHubPanel = () => {
     const publicUrl = buildPublicDeckShareUrl(deck?.slug, {
       envBaseUrl: import.meta.env?.VITE_PUBLIC_APP_URL,
       origin: typeof window !== "undefined" ? window.location?.origin : "",
+      previewKey: buildDeckSharePreviewKey(deck),
     });
 
     if (!publicUrl) {

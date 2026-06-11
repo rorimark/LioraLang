@@ -82,6 +82,13 @@ const withDownloadsCounterQueuedWarning = (message) => {
   };
 };
 
+const buildDeckSharePreviewKey = (deck) => {
+  const versionToken =
+    deck?.latestVersion?.version != null ? `v${String(deck.latestVersion.version).trim()}` : "";
+  const timestampToken = Date.now().toString(36);
+  return [versionToken, timestampToken].filter(Boolean).join("-");
+};
+
 export const useBrowseDeckDetailsPanel = (deckSlug) => {
   const navigate = useNavigate();
   const deckRepository = usePlatformService("deckRepository");
@@ -465,8 +472,9 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     return buildPublicDeckShareUrl(normalizedSlug, {
       envBaseUrl: import.meta.env?.VITE_PUBLIC_APP_URL,
       origin: typeof window !== "undefined" ? window.location?.origin : "",
+      previewKey: buildDeckSharePreviewKey(deck),
     });
-  }, [normalizedSlug]);
+  }, [deck, normalizedSlug]);
 
   const copyDeckLink = useCallback(async () => {
     const publicUrl = resolvePublicDeckUrl();

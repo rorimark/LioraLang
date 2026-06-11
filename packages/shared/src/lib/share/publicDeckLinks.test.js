@@ -31,6 +31,15 @@ describe("publicDeckLinks", () => {
     ).toBe("https://liora.example.com/share/decks/german-body-parts");
   });
 
+  it("builds absolute public share url with preview key", () => {
+    expect(
+      buildPublicDeckShareUrl("german-body-parts", {
+        envBaseUrl: "https://liora.example.com/",
+        previewKey: "v1-mb4sd4",
+      }),
+    ).toBe("https://liora.example.com/share/decks/german-body-parts?preview=v1-mb4sd4");
+  });
+
   it("falls back to relative route without base url", () => {
     expect(buildPublicDeckShareUrl("php-forms")).toBe("/share/decks/php-forms");
   });

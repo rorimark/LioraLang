@@ -174,6 +174,7 @@ export const loadDeckBySlug = async (slug) => {
 
 export const resolveDeckShareContext = async (request) => {
   const baseUrl = resolveBaseUrl(request);
+  const requestUrl = resolveRequestUrl(request, baseUrl);
   const deckSlug = resolveDeckSlug(request, baseUrl);
   const deck = deckSlug ? await loadDeckBySlug(deckSlug.toLowerCase()) : null;
   const deckTitle = toCleanString(deck?.title) || "Community Deck";
@@ -190,7 +191,10 @@ export const resolveDeckShareContext = async (request) => {
     pageTitle,
     pageDescription,
     browseUrl: buildAbsoluteUrl(baseUrl, buildBrowseDeckRoute(deckSlug)),
-    shareUrl: buildAbsoluteUrl(baseUrl, buildShareDeckRoute(deckSlug)),
+    shareUrl:
+      requestUrl && baseUrl
+        ? `${baseUrl}${requestUrl.pathname}${requestUrl.search}`
+        : buildAbsoluteUrl(baseUrl, buildShareDeckRoute(deckSlug)),
     imageUrl: buildAbsoluteUrl(baseUrl, "/og/deck-share-preview.png"),
   };
 };
