@@ -21,6 +21,11 @@ const normalizeBaseUrl = (value) => {
   return normalizedValue.replace(/\/+$/, "");
 };
 
+const firstHeaderValue = (value) => {
+  const normalizedValue = Array.isArray(value) ? value[0] : value;
+  return toCleanString(normalizedValue).split(",")[0]?.trim() || "";
+};
+
 export const resolveBaseUrl = (request) => {
   const envBaseUrl = normalizeBaseUrl(globalThis.process?.env?.VITE_PUBLIC_APP_URL || "");
 
@@ -28,9 +33,9 @@ export const resolveBaseUrl = (request) => {
     return envBaseUrl;
   }
 
-  const forwardedProto = toCleanString(request.headers["x-forwarded-proto"]);
-  const forwardedHost = toCleanString(request.headers["x-forwarded-host"]);
-  const host = forwardedHost || toCleanString(request.headers.host);
+  const forwardedProto = firstHeaderValue(request.headers["x-forwarded-proto"]);
+  const forwardedHost = firstHeaderValue(request.headers["x-forwarded-host"]);
+  const host = forwardedHost || firstHeaderValue(request.headers.host);
 
   if (!host) {
     return "";
@@ -38,6 +43,25 @@ export const resolveBaseUrl = (request) => {
 
   const protocol = forwardedProto || "https";
   return `${protocol}://${host}`;
+};
+
+const resolveRequestUrl = (request, baseUrl) => {
+  const rawUrl = toCleanString(request.url);
+
+  if (!rawUrl) {
+    return null;
+  }
+
+  try {
+    return new URL(rawUrl, baseUrl || "https://liora.local");
+  } catch {
+    return null;
+  }
+};
+
+export const resolveDeckSlug = (request, baseUrl) => {
+  const requestUrl = resolveRequestUrl(request, baseUrl);
+  return toCleanString(requestUrl?.searchParams.get("deckSlug"));
 };
 
 export const buildAbsoluteUrl = (baseUrl, path) => {
@@ -149,9 +173,8 @@ export const loadDeckBySlug = async (slug) => {
 };
 
 export const resolveDeckShareContext = async (request) => {
-  const rawSlug = request.query?.deckSlug;
-  const deckSlug = Array.isArray(rawSlug) ? toCleanString(rawSlug[0]) : toCleanString(rawSlug);
   const baseUrl = resolveBaseUrl(request);
+  const deckSlug = resolveDeckSlug(request, baseUrl);
   const deck = deckSlug ? await loadDeckBySlug(deckSlug.toLowerCase()) : null;
   const deckTitle = toCleanString(deck?.title) || "Community Deck";
   const pageTitle = `${deckTitle} · ${APP_NAME}`;

@@ -11,12 +11,19 @@ const buildShareHtml = ({
   shareUrl,
   browseUrl,
   imageUrl,
+  shouldAutoRedirect = true,
 }) => {
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeAttribute(description);
   const safeShareUrl = escapeAttribute(shareUrl);
   const safeBrowseUrl = escapeAttribute(browseUrl);
   const safeImageUrl = escapeAttribute(imageUrl);
+  const redirectScript = shouldAutoRedirect
+    ? `
+    <script>
+      window.location.replace(${JSON.stringify(browseUrl)});
+    </script>`
+    : "";
 
   return `<!doctype html>
 <html lang="en">
@@ -25,7 +32,6 @@ const buildShareHtml = ({
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>${safeTitle}</title>
     <meta name="description" content="${safeDescription}" />
-    <meta name="robots" content="noindex,nofollow" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${APP_NAME}" />
     <meta property="og:title" content="${safeTitle}" />
@@ -35,13 +41,12 @@ const buildShareHtml = ({
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="${safeTitle}" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${safeTitle}" />
     <meta name="twitter:description" content="${safeDescription}" />
     <meta name="twitter:image" content="${safeImageUrl}" />
     <meta name="twitter:image:alt" content="${safeTitle}" />
     <link rel="canonical" href="${safeBrowseUrl}" />
-    <meta http-equiv="refresh" content="0;url=${safeBrowseUrl}" />
     <style>
       :root { color-scheme: dark; }
       body {
@@ -83,9 +88,7 @@ const buildShareHtml = ({
         background: rgba(125, 153, 243, 0.14);
       }
     </style>
-    <script>
-      window.location.replace(${JSON.stringify(browseUrl)});
-    </script>
+    ${redirectScript}
   </head>
   <body>
     <main>
@@ -95,6 +98,16 @@ const buildShareHtml = ({
     </main>
   </body>
 </html>`;
+};
+
+const previewCrawlerPattern =
+  /(bot|crawler|spider|preview|facebookexternalhit|telegrambot|twitterbot|discordbot|slackbot|whatsapp|linkedinbot|vkshare|skypeuripreview|applebot)/i;
+
+const isPreviewCrawler = (request) => {
+  const userAgent = request.headers["user-agent"];
+  const normalizedUserAgent = Array.isArray(userAgent) ? userAgent.join(" ") : String(userAgent || "");
+
+  return previewCrawlerPattern.test(normalizedUserAgent);
 };
 
 export default async function handler(request, response) {
@@ -115,6 +128,7 @@ export default async function handler(request, response) {
       shareUrl,
       browseUrl,
       imageUrl,
+      shouldAutoRedirect: !isPreviewCrawler(request),
     }),
   );
 }
