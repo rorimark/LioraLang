@@ -19,6 +19,7 @@ import {
   SORT_OPTIONS,
 } from "@features/card-catalog";
 import { PostImportChoiceModal } from "@features/deck-import";
+import { usePageMeta } from "@shared/lib/seo";
 import { ActionModal, Button, InlineAlert, Panel } from "@shared/ui";
 import { useBrowseDeckDetailsPanel } from "../model";
 import "@widgets/BrowseDecksPanel/ui/BrowseDecksPanel.css";
@@ -93,6 +94,14 @@ const normalizeTags = (value) => {
 
 export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   const panel = useBrowseDeckDetailsPanel(deckSlug);
+
+  usePageMeta({
+    title: panel.deck?.title ? `${panel.deck.title} - LioraLang` : "Community Deck - LioraLang",
+    description:
+      typeof panel.deck?.description === "string" && panel.deck.description.trim().length > 0
+        ? panel.deck.description.trim()
+        : "Explore a shared deck and import it to your library.",
+  });
 
   const derived = useMemo(() => {
     const tags = normalizeTags(panel.deck?.tags);

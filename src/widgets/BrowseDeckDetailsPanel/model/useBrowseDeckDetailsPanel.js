@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { usePlatformService } from "@shared/providers";
-import { ROUTE_PATHS, buildBrowseDeckRoute } from "@shared/config/routes";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
+import { buildPublicDeckShareUrl } from "@shared/lib/share";
 import {
   normalizeWordsForImport,
   parseDeckPackageFileText,
@@ -461,24 +462,10 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
       return "";
     }
 
-    const deckPath = buildBrowseDeckRoute(normalizedSlug);
-    const envBase =
-      typeof import.meta.env?.VITE_PUBLIC_APP_URL === "string"
-        ? import.meta.env.VITE_PUBLIC_APP_URL.trim()
-        : "";
-
-    if (envBase) {
-      return `${envBase.replace(/\/+$/, "")}${deckPath}`;
-    }
-
-    if (typeof window !== "undefined") {
-      const origin = window.location?.origin || "";
-      if (origin.startsWith("http")) {
-        return `${origin}${deckPath}`;
-      }
-    }
-
-    return deckPath;
+    return buildPublicDeckShareUrl(normalizedSlug, {
+      envBaseUrl: import.meta.env?.VITE_PUBLIC_APP_URL,
+      origin: typeof window !== "undefined" ? window.location?.origin : "",
+    });
   }, [normalizedSlug]);
 
   const copyDeckLink = useCallback(async () => {

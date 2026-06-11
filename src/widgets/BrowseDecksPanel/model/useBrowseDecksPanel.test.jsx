@@ -91,6 +91,8 @@ describe("useBrowseDecksPanel", () => {
         downloadUrl: "https://example.com/travel.lioradeck",
         fileName: "travel.lioradeck",
         deckName: "Travel & Tourism",
+        originKind: "hub",
+        originRef: "deck-1",
         sourceLanguage: "English",
         targetLanguage: "Polish",
         tertiaryLanguage: "German",
@@ -178,7 +180,7 @@ describe("useBrowseDecksPanel", () => {
       });
 
       expect(copyTextToClipboardMock).toHaveBeenCalledWith(
-        "http://localhost:3000/app/browse/travel-tourism",
+        "http://localhost:3000/share/decks/travel-tourism",
       );
       expect(result.current.messageVariant).toBe("success");
     });

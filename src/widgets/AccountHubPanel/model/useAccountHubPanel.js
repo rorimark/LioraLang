@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePlatformService } from "@shared/providers";
-import { buildBrowseDeckRoute } from "@shared/config/routes";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
+import { buildPublicDeckShareUrl } from "@shared/lib/share";
 
 const DEFAULT_AUTH_STATE = Object.freeze({
   session: null,
@@ -54,34 +54,6 @@ const isDesktopUserAgent = () => {
   }
 
   return navigator.userAgent.includes("Electron");
-};
-
-const buildPublicDeckUrl = (slug) => {
-  const normalizedSlug = toCleanString(slug);
-
-  if (!normalizedSlug) {
-    return "";
-  }
-
-  const deckPath = buildBrowseDeckRoute(normalizedSlug);
-  const envBase =
-    typeof import.meta.env?.VITE_PUBLIC_APP_URL === "string"
-      ? import.meta.env.VITE_PUBLIC_APP_URL.trim()
-      : "";
-
-  if (envBase) {
-    return `${envBase.replace(/\/+$/, "")}${deckPath}`;
-  }
-
-  if (typeof window !== "undefined") {
-    const origin = window.location?.origin || "";
-
-    if (origin.startsWith("http")) {
-      return `${origin}${deckPath}`;
-    }
-  }
-
-  return deckPath;
 };
 
 const stripAuthParamsFromUrl = () => {
@@ -528,7 +500,10 @@ export const useAccountHubPanel = () => {
   }, [clearStatus, hubRepository, reportStatus]);
 
   const handleCopyDeckLink = useCallback(async (deck) => {
-    const publicUrl = buildPublicDeckUrl(deck?.slug);
+    const publicUrl = buildPublicDeckShareUrl(deck?.slug, {
+      envBaseUrl: import.meta.env?.VITE_PUBLIC_APP_URL,
+      origin: typeof window !== "undefined" ? window.location?.origin : "",
+    });
 
     if (!publicUrl) {
       reportStatus("Public deck link is not available.", "error");
