@@ -367,9 +367,15 @@ export const createSyncRepository = ({
       keepLocalCopyOnConflict: preferences.keepLocalCopyOnConflict,
       pendingDeckChanges,
       pendingProgressChanges,
-      lastSuccessfulSyncAt: toCleanString(profileState?.lastSuccessfulSyncAt),
-      lastSuccessfulPushAt: toCleanString(profileState?.lastSuccessfulPushAt),
-      lastSuccessfulPullAt: toCleanString(profileState?.lastSuccessfulPullAt),
+      lastSuccessfulSyncAt:
+        toCleanString(profileState?.lastSuccessfulSyncAt) ||
+        toCleanString(status?.lastSuccessfulSyncAt),
+      lastSuccessfulPushAt:
+        toCleanString(profileState?.lastSuccessfulPushAt) ||
+        toCleanString(status?.lastSuccessfulPushAt),
+      lastSuccessfulPullAt:
+        toCleanString(profileState?.lastSuccessfulPullAt) ||
+        toCleanString(status?.lastSuccessfulPullAt),
       lastErrorAt: toCleanString(profileState?.lastErrorAt),
       lastErrorMessage: toCleanString(profileState?.lastErrorMessage),
       autoResolvedConflictsCount: toPositiveInteger(profileState?.autoResolvedConflictsCount, 0),
@@ -861,10 +867,15 @@ export const createSyncRepository = ({
 
       setStatus({ phase: "pushing-progress", lastSummary: "Pushing local study progress…" });
       const pushedProgress = await pushLocalProgress(profileScope);
+      const completedAt = toIsoTimestamp();
 
       await persistProfileState(profileScope, (currentProfileState) => ({
         ...currentProfileState,
-        lastSuccessfulSyncAt: toIsoTimestamp(),
+        lastSuccessfulSyncAt: completedAt,
+        lastSuccessfulPullAt:
+          toCleanString(currentProfileState?.lastSuccessfulPullAt) || completedAt,
+        lastSuccessfulPushAt:
+          toCleanString(currentProfileState?.lastSuccessfulPushAt) || completedAt,
         lastErrorAt: "",
         lastErrorMessage: "",
         autoResolvedConflictsCount:
@@ -875,6 +886,11 @@ export const createSyncRepository = ({
       setStatus({
         syncing: false,
         phase: "idle",
+        lastSuccessfulSyncAt: completedAt,
+        lastSuccessfulPullAt: completedAt,
+        lastSuccessfulPushAt: completedAt,
+        lastErrorAt: "",
+        lastErrorMessage: "",
         lastSummary: `Synced ${pushedDecks} deck change${pushedDecks === 1 ? "" : "s"} and ${pushedProgress} progress event${pushedProgress === 1 ? "" : "s"}.`,
       });
       return {
