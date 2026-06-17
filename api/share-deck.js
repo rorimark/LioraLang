@@ -5,6 +5,16 @@ import {
   resolveDeckShareContext,
 } from "./_deckShareMeta.js";
 
+const PREVIEW_CRAWLER_PATTERN =
+  /bot|crawler|spider|preview|telegrambot|discordbot|facebookexternalhit|facebot|twitterbot|whatsapp|slackbot|linkedinbot|skypeuripreview|vkshare|applebot/i;
+
+const resolveUserAgent = (request) => {
+  const userAgent = request.headers["user-agent"];
+  return Array.isArray(userAgent) ? userAgent[0] || "" : userAgent || "";
+};
+
+const isPreviewCrawler = (request) => PREVIEW_CRAWLER_PATTERN.test(resolveUserAgent(request));
+
 const buildShareHtml = ({
   title,
   description,
@@ -104,8 +114,18 @@ export default async function handler(request, response) {
     imageUrl,
   } = await resolveDeckShareContext(request);
 
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("Vary", "User-Agent");
+
+  if (!isPreviewCrawler(request)) {
+    response.writeHead(302, {
+      Location: browseUrl,
+    });
+    response.end();
+    return;
+  }
+
   response.setHeader("Content-Type", "text/html; charset=utf-8");
-  response.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400");
   response.status(200).send(
     buildShareHtml({
       title: pageTitle,
