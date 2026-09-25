@@ -7,28 +7,46 @@ import {
   FiDatabase,
   FiDownload,
   FiGlobe,
-  FiGrid,
   FiLayers,
   FiMonitor,
   FiRepeat,
   FiShield,
   FiStar,
   FiTrendingUp,
-  FiUsers,
 } from "react-icons/fi";
+import { MetaBadge, Panel } from "@shared/ui";
 import { useLandingMockPanel } from "../model/useLandingMockPanel";
+import { LandingAppPreview } from "./LandingAppPreview";
+import { LandingPhonePreview } from "./LandingPhonePreview";
 import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";
 
+const ICONS = {
+  srs: FiRepeat,
+  offline: FiDatabase,
+  platforms: FiMonitor,
+  deck: FiLayers,
+  study: FiBookOpen,
+  control: FiShield,
+  web: FiGlobe,
+  desktop: FiDownload,
+};
+
+// The landing is built from the app's own parts (Panel, MetaBadge, the
+// ui-button styles and the design tokens) so leaving it for the app does
+// not feel like changing products.
 export const LandingMockPanel = memo(() => {
   const {
     heroHighlights,
     featureCards,
     startOptions,
     hubHighlights,
-    visualTiles,
     mobileSteps,
+    sectionLinks,
+    previewNavItems,
+    previewCard,
+    previewRatings,
     contactLinks,
     openWebTo,
     desktopReleaseUrl,
@@ -36,328 +54,272 @@ export const LandingMockPanel = memo(() => {
     handlePrefetchApp,
   } = useLandingMockPanel();
 
-  const iconMap = {
-    srs: FiRepeat,
-    offline: FiDatabase,
-    platforms: FiMonitor,
-    deck: FiLayers,
-    study: FiBookOpen,
-    control: FiShield,
-    web: FiGlobe,
-    desktop: FiDownload,
-    hub: FiUsers,
-    analytics: FiTrendingUp,
-    cadence: FiClock,
-    layout: FiGrid,
+  const prefetchProps = {
+    onMouseEnter: handlePrefetchApp,
+    onFocus: handlePrefetchApp,
+    onTouchStart: handlePrefetchApp,
   };
 
   return (
     <article className="landing-shell">
-      <header className="landing-hero">
-        <div className="landing-hero__inner">
-          <div className="landing-hero__content">
-            <span className="landing-hero__eyebrow">LioraLang</span>
-            <h1>Stop forgetting words after one review.</h1>
-            <p className="landing-hero__lead">
-              A clean spaced repetition workspace that turns vocab into a daily habit.
-            </p>
-            <div className="landing-hero__actions">
-              <Link
-                to={openWebTo}
-                className="landing-cta landing-cta--primary"
-                onMouseEnter={handlePrefetchApp}
-                onFocus={handlePrefetchApp}
-                onTouchStart={handlePrefetchApp}
-              >
-                Open web app
-              </Link>
-              <a
-                href={desktopReleaseUrl}
-                className="landing-cta landing-cta--secondary"
-                target="_blank"
-                rel={EXTERNAL_LINK_REL}
-              >
-                Download desktop
-              </a>
-            </div>
-            <div className="landing-hero__highlights" aria-label="Key product highlights">
-              {heroHighlights.map((item) => {
-                const Icon = item.iconKey ? iconMap[item.iconKey] : null;
-                return (
-                  <div key={item.title} className="landing-hero__chip">
-                    {Icon ? (
-                      <span className="landing-hero__chip-icon" aria-hidden>
-                        <Icon />
-                      </span>
-                    ) : null}
-                    <span>{item.title}</span>
-                    <strong>{item.subtitle}</strong>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+      <header className="landing-topbar">
+        <div className="landing-topbar__inner">
+          <Link to="/" className="landing-brand" aria-label="LioraLang home">
+            <span className="landing-logo" aria-hidden>
+              LL
+            </span>
+            <span className="landing-brand__text">
+              <strong>LioraLang</strong>
+              <span>Flashcards and spaced repetition</span>
+            </span>
+          </Link>
 
-          <div className="landing-hero__visual" aria-hidden="true">
-            <div className="landing-hero__stack">
-              <div className="landing-hero__card landing-hero__card--front">
-                <span>Front</span>
-                <h3>abstraction</h3>
-                <p>pojęcie abstrakcyjne</p>
-              </div>
-              <div className="landing-hero__card landing-hero__card--back">
-                <span>Back</span>
-                <h3>example</h3>
-                <p>Abstract ideas shape design decisions.</p>
-              </div>
-            </div>
-            <div className="landing-hero__dashboard">
-              <div className="landing-hero__stat">
-                <span>Due</span>
-                <strong>18</strong>
-              </div>
-              <div className="landing-hero__stat">
-                <span>Learning</span>
-                <strong>42</strong>
-              </div>
-              <div className="landing-hero__stat">
-                <span>Streak</span>
-                <strong>7d</strong>
-              </div>
-            </div>
-            <div className="landing-hero__phone">
-              <div className="landing-hero__phone-screen">
-                <div className="landing-hero__phone-pill">Today</div>
-                <div className="landing-hero__phone-card" />
-                <div className="landing-hero__phone-card landing-hero__phone-card--light" />
-              </div>
-            </div>
+          <nav className="landing-topbar__nav" aria-label="Page sections">
+            {sectionLinks.map((link) => (
+              <a key={link.id} href={`#${link.id}`}>
+                {link.title}
+              </a>
+            ))}
+          </nav>
+
+          <div className="landing-topbar__actions">
+            <a
+              href={desktopReleaseUrl}
+              className="ui-button ui-button--secondary landing-button landing-topbar__secondary"
+              target="_blank"
+              rel={EXTERNAL_LINK_REL}
+            >
+              Download
+            </a>
+            <Link
+              to={openWebTo}
+              className="ui-button ui-button--primary landing-button"
+              {...prefetchProps}
+            >
+              Open web app
+            </Link>
           </div>
         </div>
       </header>
 
-      <section className="landing-strip" aria-label="Product snapshots">
-        {visualTiles.map((tile) => {
-          const Icon = tile.iconKey ? iconMap[tile.iconKey] : null;
-          return (
-            <article key={tile.title} className="landing-strip__tile">
-              <span className="landing-strip__icon" aria-hidden>
-                {Icon ? <Icon /> : null}
-              </span>
-              <div className="landing-strip__text">
-                <h3>{tile.title}</h3>
-                <p>{tile.subtitle}</p>
-              </div>
-            </article>
-          );
-        })}
+      <section className="landing-hero" aria-labelledby="landing-title">
+        <div className="landing-hero__content">
+          <MetaBadge text="Web · macOS · Windows · Offline-first" />
+          <h1 id="landing-title">Stop forgetting words after one review.</h1>
+          <p className="landing-hero__lead">
+            Build decks from the words you actually need, review them on a spaced
+            repetition schedule, and keep every card on your own device.
+          </p>
+          <div className="landing-hero__actions">
+            <Link
+              to={openWebTo}
+              className="ui-button ui-button--primary landing-button landing-button--lg"
+              {...prefetchProps}
+            >
+              Open web app
+            </Link>
+            <a
+              href={desktopReleaseUrl}
+              className="ui-button ui-button--secondary landing-button landing-button--lg"
+              target="_blank"
+              rel={EXTERNAL_LINK_REL}
+            >
+              <FiDownload aria-hidden />
+              Download desktop
+            </a>
+          </div>
+          <ul className="landing-hero__highlights" aria-label="Key product highlights">
+            {heroHighlights.map((item) => {
+              const Icon = ICONS[item.iconKey];
+              return (
+                <li key={item.title} className="landing-highlight">
+                  <span className="landing-icon-tile" aria-hidden>
+                    {Icon ? <Icon /> : null}
+                  </span>
+                  <span className="landing-highlight__text">
+                    <span>{item.title}</span>
+                    <strong>{item.subtitle}</strong>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <LandingAppPreview
+          navItems={previewNavItems}
+          card={previewCard}
+          ratings={previewRatings}
+        />
       </section>
 
-      <section className="landing-section" aria-label="Core capabilities">
-        <div className="landing-section__head">
-          <h2>Everything you need, nothing you don’t.</h2>
-          <p>Short, focused features that keep learning clean and fast.</p>
-        </div>
-        <div className="landing-feature-grid">
+      <section id="features" className="landing-section" aria-labelledby="features-title">
+        <header className="landing-section__head">
+          <p className="landing-eyebrow">Features</p>
+          <h2 id="features-title">Everything you need, nothing you don’t.</h2>
+          <p>Short, focused tools that keep learning clean and fast.</p>
+        </header>
+        <div className="landing-grid landing-grid--three">
           {featureCards.map((card) => {
-            const Icon = card.iconKey ? iconMap[card.iconKey] : null;
+            const Icon = ICONS[card.iconKey];
             return (
-              <article key={card.title} className="landing-feature">
-                <div className="landing-feature__header">
-                  {Icon ? (
-                    <span className="landing-feature__icon" aria-hidden>
-                      <Icon />
-                    </span>
-                  ) : null}
+              <Panel key={card.title} className="landing-feature">
+                <div className="landing-feature__head">
+                  <span className="landing-icon-tile" aria-hidden>
+                    {Icon ? <Icon /> : null}
+                  </span>
                   <h3>{card.title}</h3>
                 </div>
-                <div className="landing-feature__tags">
+                <div className="landing-feature__badges">
                   {card.points.map((point) => (
-                    <span key={point}>{point}</span>
+                    <MetaBadge key={point} text={point} />
                   ))}
                 </div>
-              </article>
+              </Panel>
             );
           })}
         </div>
       </section>
 
-      <section className="landing-band" aria-label="Ways to start">
-        <div className="landing-band__col">
-          <h2>Pick your entry point</h2>
-          <div className="landing-start-grid">
-            {startOptions.map((option) => {
-              const Icon = option.iconKey ? iconMap[option.iconKey] : null;
-              return (
-                <div key={option.title} className="landing-start-row">
-                  <div className="landing-start-row__icon" aria-hidden>
-                    {Icon ? <Icon /> : null}
-                  </div>
-                  <div className="landing-start-row__content">
-                    <strong>{option.title}</strong>
-                    <span>{option.description}</span>
-                  </div>
-                  {option.to ? (
-                    <Link
-                      to={option.to}
-                      className="landing-start-row__action"
-                      onMouseEnter={handlePrefetchApp}
-                      onFocus={handlePrefetchApp}
-                      onTouchStart={handlePrefetchApp}
-                    >
-                      {option.actionLabel}
-                    </Link>
-                  ) : (
-                    <a
-                      href={option.href}
-                      className="landing-start-row__action"
-                      target="_blank"
-                      rel={EXTERNAL_LINK_REL}
-                    >
-                      {option.actionLabel}
-                    </a>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <section id="hub" className="landing-section" aria-label="Ways to start and the deck hub">
+        <div className="landing-grid landing-grid--two">
+          <Panel className="landing-card">
+            <header className="landing-card__head">
+              <p className="landing-eyebrow">Get started</p>
+              <h2>Pick your entry point</h2>
+            </header>
+            <ul className="landing-start-list">
+              {startOptions.map((option) => {
+                const Icon = ICONS[option.iconKey];
+                const actionClassName =
+                  "ui-button ui-button--secondary ui-button--sm landing-button";
+                return (
+                  <li key={option.title} className="landing-start-row">
+                    <span className="landing-icon-tile" aria-hidden>
+                      {Icon ? <Icon /> : null}
+                    </span>
+                    <span className="landing-start-row__text">
+                      <strong>{option.title}</strong>
+                      <span>{option.description}</span>
+                    </span>
+                    {option.to ? (
+                      <Link to={option.to} className={actionClassName} {...prefetchProps}>
+                        {option.actionLabel}
+                      </Link>
+                    ) : (
+                      <a
+                        href={option.href}
+                        className={actionClassName}
+                        target="_blank"
+                        rel={EXTERNAL_LINK_REL}
+                      >
+                        {option.actionLabel}
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </Panel>
 
-        <div className="landing-band__col landing-band__col--accent">
-          <h2>LioraLangHub</h2>
-          <p className="landing-band__lead">Community decks with one-click import.</p>
-          <div className="landing-band__icons" aria-hidden>
-            <span>
-              <FiUsers /> Shared decks
-            </span>
-            <span>
-              <FiLayers /> Curated packs
-            </span>
-            <span>
-              <FiDownload /> One-click import
-            </span>
-          </div>
-          <ul className="landing-mini-list landing-mini-list--checks">
-            {hubHighlights.map((item) => (
-              <li key={item}>
-                <FiCheck />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <Panel className="landing-card">
+            <header className="landing-card__head">
+              <p className="landing-eyebrow">LioraLangHub</p>
+              <h2>Community decks, one click away</h2>
+              <p>Find a deck someone already built, import it, and start reviewing.</p>
+            </header>
+            <ul className="landing-checks">
+              {hubHighlights.map((item) => (
+                <li key={item}>
+                  <span className="landing-checks__mark" aria-hidden>
+                    <FiCheck />
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </Panel>
         </div>
       </section>
 
-      <section className="landing-band landing-band--phone" aria-label="Mobile usage">
-        <div className="landing-phone-layout">
-          <div className="landing-phone-copy">
-            <article className="landing-phone-card">
-              <h2>Use it on your phone</h2>
-              <p className="landing-band__lead">
-                Add LioraLang to your home screen and use it like a native app.
-              </p>
-              <ol className="landing-mini-list landing-mini-list--steps">
-                {mobileSteps.map((step, index) => (
-                  <li key={step}>
-                    <span className="landing-step-index">{index + 1}</span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </article>
-
-            <article className="landing-phone-card">
-              <h2>Why it becomes a daily habit</h2>
-              <ul className="landing-mini-list">
-                <li>
-                  <FiStar /> One clear queue that tells you what matters today.
-                </li>
-                <li>
-                  <FiClock /> Short sessions that fit commutes and breaks.
-                </li>
-                <li>
-                  <FiTrendingUp /> Visible progress so motivation stays real.
-                </li>
-              </ul>
-            </article>
-          </div>
-
-          <div className="landing-phone-visual" aria-hidden>
-            <div className="landing-phone-visual__bezel">
-              <div className="landing-phone-visual__screen">
-                <div className="landing-phone-visual__status">
-                  <span>9:41</span>
-                  <span>5G</span>
-                </div>
-                <div className="landing-phone-visual__page-title">Flashcards</div>
-                <div className="landing-phone-visual__row">
-                  <span className="landing-phone-visual__select">Travel & Tourism</span>
-                  <span className="landing-phone-visual__refresh">Refresh</span>
-                </div>
-                <div className="landing-phone-visual__flashcard">
-                  <span className="landing-phone-visual__pill">Front</span>
-                  <strong className="landing-phone-visual__word">guidebook</strong>
-                  <span className="landing-phone-visual__hint">Tap to reveal answer</span>
-                </div>
-                <div className="landing-phone-visual__button">Show answer</div>
-                <div className="landing-phone-visual__panel">Reveal the answer to see grading.</div>
-                <div className="landing-phone-visual__nav">
-                  <span className="landing-phone-visual__nav-item landing-phone-visual__nav-item--active">
-                    Learn
+      <section id="mobile" className="landing-section" aria-labelledby="mobile-title">
+        <Panel className="landing-card landing-mobile">
+          <div className="landing-mobile__copy">
+            <header className="landing-card__head">
+              <p className="landing-eyebrow">On your phone</p>
+              <h2 id="mobile-title">Install it like an app</h2>
+              <p>LioraLang runs from your home screen and keeps working offline.</p>
+            </header>
+            <ol className="landing-steps">
+              {mobileSteps.map((step, index) => (
+                <li key={step}>
+                  <span className="landing-steps__index" aria-hidden>
+                    {index + 1}
                   </span>
-                  <span className="landing-phone-visual__nav-item">Decks</span>
-                  <span className="landing-phone-visual__nav-item">Browse</span>
-                  <span className="landing-phone-visual__nav-item">Progress</span>
-                </div>
-              </div>
-            </div>
+                  {step}
+                </li>
+              ))}
+            </ol>
+            <ul className="landing-habits">
+              <li>
+                <FiStar aria-hidden /> One clear queue that tells you what matters today.
+              </li>
+              <li>
+                <FiClock aria-hidden /> Short sessions that fit commutes and breaks.
+              </li>
+              <li>
+                <FiTrendingUp aria-hidden /> Visible progress that keeps motivation real.
+              </li>
+            </ul>
           </div>
-        </div>
+          <LandingPhonePreview
+            navItems={previewNavItems}
+            card={previewCard}
+            ratings={previewRatings}
+          />
+        </Panel>
       </section>
 
       <footer className="landing-footer">
         <div className="landing-footer__brand">
-          <strong>LioraLang</strong>
-          <span>Offline-first language learning with spaced repetition.</span>
+          <span className="landing-logo" aria-hidden>
+            LL
+          </span>
+          <span>
+            <strong>LioraLang</strong>
+            <span>Offline-first language learning with spaced repetition.</span>
+          </span>
         </div>
-        <div className="landing-footer__links">
-          <span className="landing-footer__label">Connect</span>
-          <ul>
-            {contactLinks.map((link) => (
-              <li key={link.title}>
-                <a
-                  href={link.href}
-                  target={link.openInNewTab ? "_blank" : undefined}
-                  rel={link.openInNewTab ? EXTERNAL_LINK_REL : undefined}
-                >
-                  {link.title}
-                </a>
-                <span>{link.description}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="landing-footer__cta">
-          <span className="landing-footer__label">Get started</span>
-          <div className="landing-footer__cta-actions">
-            <Link
-              to={openWebTo}
-              className="landing-footer__action"
-              onMouseEnter={handlePrefetchApp}
-              onFocus={handlePrefetchApp}
-              onTouchStart={handlePrefetchApp}
-            >
-              Open LioraLang
-            </Link>
-            <a
-              href={githubRepoUrl}
-              className="landing-footer__secondary"
-              target="_blank"
-              rel={EXTERNAL_LINK_REL}
-            >
-              View on GitHub
-            </a>
-          </div>
+        <ul className="landing-footer__links">
+          {contactLinks.map((link) => (
+            <li key={link.title}>
+              <a
+                href={link.href}
+                target={link.openInNewTab ? "_blank" : undefined}
+                rel={link.openInNewTab ? EXTERNAL_LINK_REL : undefined}
+              >
+                {link.title}
+              </a>
+              <span>{link.description}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="landing-footer__actions">
+          <Link
+            to={openWebTo}
+            className="ui-button ui-button--primary landing-button"
+            {...prefetchProps}
+          >
+            Open LioraLang
+          </Link>
+          <a
+            href={githubRepoUrl}
+            className="ui-button ui-button--ghost landing-button"
+            target="_blank"
+            rel={EXTERNAL_LINK_REL}
+          >
+            View on GitHub
+          </a>
         </div>
       </footer>
     </article>

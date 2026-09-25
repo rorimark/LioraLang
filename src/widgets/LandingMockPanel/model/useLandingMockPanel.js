@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
-import { ROUTE_PATHS } from "@shared/config/routes";
+import { NAV_ITEMS, ROUTE_PATHS } from "@shared/config/routes";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
 const HERO_HIGHLIGHTS = [
@@ -74,22 +74,27 @@ const MOBILE_STEPS = [
   "Launch it like a native app and keep learning offline-first.",
 ];
 
-const VISUAL_TILES = [
-  {
-    title: "Session flow",
-    subtitle: "Smooth queue, no jumps",
-    iconKey: "cadence",
-  },
-  {
-    title: "Deck overview",
-    subtitle: "Tags and metadata",
-    iconKey: "layout",
-  },
-  {
-    title: "Progress",
-    subtitle: "Track what sticks",
-    iconKey: "analytics",
-  },
+const SECTION_LINKS = [
+  { id: "features", title: "Features" },
+  { id: "hub", title: "Hub" },
+  { id: "mobile", title: "Mobile" },
+];
+
+// What the hero preview shows: one card mid-review, as the Learn page
+// renders it, with the grading buttons and their next intervals.
+const PREVIEW_CARD = {
+  language: "Polish",
+  level: "B1",
+  front: "abstraction",
+  back: "pojęcie abstrakcyjne",
+  example: "Abstract ideas shape design decisions.",
+};
+
+const PREVIEW_RATINGS = [
+  { label: "Again", interval: "10m", tone: "danger" },
+  { label: "Hard", interval: "15m", tone: "warning" },
+  { label: "Good", interval: "24h", tone: "neutral" },
+  { label: "Easy", interval: "3d", tone: "success" },
 ];
 
 const CONTACT_LINKS = [
@@ -124,7 +129,10 @@ export const useLandingMockPanel = () => {
     startOptions: START_OPTIONS,
     hubHighlights: HUB_HIGHLIGHTS,
     mobileSteps: MOBILE_STEPS,
-    visualTiles: VISUAL_TILES,
+    sectionLinks: SECTION_LINKS,
+    previewNavItems: NAV_ITEMS,
+    previewCard: PREVIEW_CARD,
+    previewRatings: PREVIEW_RATINGS,
     contactLinks: CONTACT_LINKS,
     openWebTo: ROUTE_PATHS.learn,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,
