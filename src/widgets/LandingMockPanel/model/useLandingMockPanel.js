@@ -1,121 +1,37 @@
 import { useCallback } from "react";
 import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
-import { NAV_ITEMS, ROUTE_PATHS } from "@shared/config/routes";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
-const HERO_HIGHLIGHTS = [
+// One row per page of the app, in the order of its navigation. The icon keys
+// match NAV_ITEMS so the landing shows the same icons as the sidebar.
+const APP_SECTIONS = [
   {
-    title: "Offline-first",
-    subtitle: "Local data stays yours",
-    iconKey: "offline",
+    key: "learn",
+    title: "Learn",
+    text: "One queue a day. Flip the card, grade it Again, Hard, Good or Easy, move on. Space and 1–4 on the keyboard.",
   },
   {
-    title: "Flexible decks",
-    subtitle: "Any language setup",
-    iconKey: "deck",
+    key: "decks",
+    title: "Decks",
+    text: "Your own decks for any language pair, with levels, tags and example sentences. Import and export as JSON.",
   },
   {
-    title: "SRS grading",
-    subtitle: "Again · Hard · Good · Easy",
-    iconKey: "srs",
+    key: "browse",
+    title: "Browse",
+    text: "LioraLangHub: decks other learners published, imported in one click. Publish yours the same way.",
   },
   {
-    title: "Platforms",
-    subtitle: "Web · macOS · Windows",
-    iconKey: "platforms",
-  },
-];
-
-const FEATURE_CARDS = [
-  {
-    title: "Deck studio",
-    points: ["Multi-language", "Tags", "Examples", "Levels"],
-    iconKey: "deck",
-  },
-  {
-    title: "Study engine",
-    points: ["Stable queue", "Daily goals", "Keyboard flow"],
-    iconKey: "study",
-  },
-  {
-    title: "Data control",
-    points: ["Import/export", "Integrity checks", "Local DB tools"],
-    iconKey: "control",
+    key: "progress",
+    title: "Progress",
+    text: "Reviews per day, recall, streaks and your most active decks, so you can see what is sticking.",
   },
 ];
 
-const START_OPTIONS = [
-  {
-    title: "Web app",
-    description: "Open instantly with full features.",
-    actionLabel: "Open in browser",
-    to: ROUTE_PATHS.learn,
-    iconKey: "web",
-  },
-  {
-    title: "Desktop app",
-    description: "Offline mode with local SQLite storage.",
-    actionLabel: "Download builds",
-    href: EXTERNAL_LINKS.githubReleases,
-    iconKey: "desktop",
-  },
-];
-
-const HUB_HIGHLIGHTS = [
-  "Browse community decks",
-  "Import in one click",
-  "Publish your own packs",
-  "Keep a clean local library",
-];
-
-const MOBILE_STEPS = [
-  "Open LioraLang in Safari or Chrome on your phone.",
-  "Tap Share or the browser menu, then choose Add to Home Screen.",
-  "Launch it like a native app and keep learning offline-first.",
-];
-
-const SECTION_LINKS = [
-  { id: "features", title: "Features" },
-  { id: "hub", title: "Hub" },
-  { id: "mobile", title: "Mobile" },
-];
-
-// What the hero preview shows: one card mid-review, as the Learn page
-// renders it, with the grading buttons and their next intervals.
-const PREVIEW_CARD = {
-  language: "Polish",
-  level: "B1",
-  front: "abstraction",
-  back: "pojęcie abstrakcyjne",
-  example: "Abstract ideas shape design decisions.",
-};
-
-const PREVIEW_RATINGS = [
-  { label: "Again", interval: "10m", tone: "danger" },
-  { label: "Hard", interval: "15m", tone: "warning" },
-  { label: "Good", interval: "24h", tone: "neutral" },
-  { label: "Easy", interval: "3d", tone: "success" },
-];
-
-const CONTACT_LINKS = [
-  {
-    title: "GitHub repository",
-    description: "Source code, roadmap, and release notes.",
-    href: EXTERNAL_LINKS.githubRepo,
-    openInNewTab: true,
-  },
-  {
-    title: "Issues and feature requests",
-    description: "Report bugs or suggest improvements.",
-    href: EXTERNAL_LINKS.githubIssues,
-    openInNewTab: true,
-  },
-  {
-    title: "Contact",
-    description: "Direct feedback and partnership requests.",
-    href: EXTERNAL_LINKS.contactEmail,
-    openInNewTab: false,
-  },
+const FOOTER_LINKS = [
+  { title: "GitHub", href: EXTERNAL_LINKS.githubRepo, isExternal: true },
+  { title: "Issues", href: EXTERNAL_LINKS.githubIssues, isExternal: true },
+  { title: "Contact", href: EXTERNAL_LINKS.contactEmail, isExternal: false },
 ];
 
 export const useLandingMockPanel = () => {
@@ -124,16 +40,8 @@ export const useLandingMockPanel = () => {
   }, []);
 
   return {
-    heroHighlights: HERO_HIGHLIGHTS,
-    featureCards: FEATURE_CARDS,
-    startOptions: START_OPTIONS,
-    hubHighlights: HUB_HIGHLIGHTS,
-    mobileSteps: MOBILE_STEPS,
-    sectionLinks: SECTION_LINKS,
-    previewNavItems: NAV_ITEMS,
-    previewCard: PREVIEW_CARD,
-    previewRatings: PREVIEW_RATINGS,
-    contactLinks: CONTACT_LINKS,
+    appSections: APP_SECTIONS,
+    footerLinks: FOOTER_LINKS,
     openWebTo: ROUTE_PATHS.learn,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,
     githubRepoUrl: EXTERNAL_LINKS.githubRepo,
