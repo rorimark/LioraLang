@@ -15,6 +15,8 @@ import { useReviewTimeline } from "../model/useReviewTimeline";
 import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";
+// The app's own icon, the same one the desktop build and the PWA install use.
+const APP_ICON_SRC = "/icons/icon-192.png";
 
 // The sidebar's own icons, so each row reads as the page it describes.
 const SECTION_ICONS = {
@@ -153,9 +155,7 @@ export const LandingMockPanel = memo(() => {
       <header className="landing-topbar">
         <div className="landing-topbar__inner">
           <Link to="/" className="landing-brand">
-            <span className="landing-logo" aria-hidden>
-              LL
-            </span>
+            <img src={APP_ICON_SRC} alt="" className="landing-logo" width="32" height="32" />
             <strong>LioraLang</strong>
           </Link>
           <nav className="landing-topbar__actions" aria-label="LioraLang">
@@ -270,9 +270,7 @@ export const LandingMockPanel = memo(() => {
 
       <footer className="landing-footer">
         <span className="landing-brand landing-brand--muted">
-          <span className="landing-logo landing-logo--sm" aria-hidden>
-            LL
-          </span>
+          <img src={APP_ICON_SRC} alt="" className="landing-logo landing-logo--sm" width="22" height="22" />
           LioraLang
         </span>
         <ul>

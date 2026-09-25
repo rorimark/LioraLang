@@ -25,24 +25,15 @@
 /* === Small shared pieces === */
 
 .landing-logo {
-  display: grid;
-  place-content: center;
+  display: block;
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 24%, var(--color-border));
-  background: color-mix(in srgb, var(--color-primary) 16%, var(--color-surface));
-  color: var(--color-primary-strong);
-  font-size: 0.82rem;
-  font-weight: 700;
+  width: 32px;
+  height: 32px;
 }
 
 .landing-logo--sm {
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  font-size: 0.6rem;
+  width: 22px;
+  height: 22px;
 }
 
 .landing-brand {
