@@ -554,3 +554,35 @@
     transition: none;
   }
 }
+
+/* On a phone: back and details become icon keys, and Save takes the rest
+   of the row, where the thumb is. */
+@media (max-width: 640px) {
+  .deck-editor-panel__toolbar {
+    display: flex;
+    gap: 8px;
+  }
+
+  .deck-editor-panel__toolbar button {
+    min-height: 44px;
+  }
+
+  .deck-editor-panel__toolbar .deck-editor-panel__button--secondary {
+    flex: none;
+    width: 48px;
+    padding: 0;
+  }
+
+  .deck-editor-panel__toolbar .deck-editor-panel__button--secondary span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .deck-editor-panel__toolbar button:not([class]) {
+    flex: 1;
+  }
+}

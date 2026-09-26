@@ -336,7 +336,7 @@
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
   .decks-table {
     display: block;
     max-width: 100%;
@@ -465,7 +465,7 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
   .decks-table tbody {
     gap: 8px;
   }
@@ -506,7 +506,7 @@
 
 }
 
-@media (max-width: 520px) {
+@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
   .decks-table td {
     grid-template-columns: 1fr;
     gap: 6px;
@@ -665,5 +665,125 @@
 @media (prefers-reduced-motion: reduce) {
   .decks-table__actions-mobile button {
     transition: none;
+  }
+}
+
+/* A narrow table (a phone on its side, a small tablet) drops the date: the
+   name, tags and size are what you pick a deck by. */
+@media (max-width: 900px) and (orientation: landscape) {
+  .decks-table th:nth-child(4),
+  .decks-table td:nth-child(4) {
+    display: none;
+  }
+}
+
+/* ===== Deck cards on an upright phone =====
+   Each deck is one compact card: the name, a line with its size and date,
+   its tags, and a row of keys with Open first. The field labels of the
+   table are dropped; the values say what they are. */
+@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
+  .decks-table tbody {
+    gap: 12px;
+  }
+
+  .decks-table tbody tr {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas:
+      "name name name"
+      "words date ."
+      "tags tags tags"
+      "actions actions actions";
+    align-items: center;
+    column-gap: 10px;
+    padding: 14px 14px 12px;
+    border-bottom-width: var(--edge-width);
+    border-radius: 18px;
+  }
+
+  .decks-table tbody tr:nth-child(odd),
+  .decks-table tbody tr:nth-child(even) {
+    background: var(--color-surface);
+  }
+
+  .decks-table td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .decks-table td::before {
+    content: none;
+  }
+
+  .decks-table td:nth-child(1) {
+    grid-area: name;
+    font-size: 1.05rem;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  .decks-table td:nth-child(2) {
+    grid-area: tags;
+    margin-top: 10px;
+  }
+
+  .decks-table td:nth-child(3) {
+    grid-area: words;
+    margin-top: 4px;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .decks-table td:nth-child(3)::after {
+    content: " words";
+  }
+
+  .decks-table td:nth-child(4) {
+    grid-area: date;
+    margin-top: 4px;
+    color: var(--color-text-subtle);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .decks-table td:nth-child(5) {
+    grid-area: actions;
+    margin-top: 12px;
+  }
+
+  .decks-table__actions-mobile {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* Open is the one worth a label; the rest are keys with icons, named for
+     screen readers by the text they keep. */
+  .decks-table__actions-mobile button:first-child {
+    flex: 1;
+    border-color: var(--color-primary-strong);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .decks-table__actions-mobile button:not(:first-child) {
+    flex: none;
+    width: 46px;
+    padding: 0;
+  }
+
+  .decks-table__actions-mobile button:not(:first-child) span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .decks-table__actions-mobile button svg {
+    width: 18px;
+    height: 18px;
   }
 }

@@ -195,6 +195,17 @@ body {
   padding: var(--ui-panel-padding);
 }
 
+/* A page's own panel is not a box: its content sits straight on the
+   page, and only the things inside it (tables, cards, forms) are framed.
+   One level of framing instead of a box in a box in a box. */
+.page > .panel.panel {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
 .panel > h2 {
   margin: 0;
   color: var(--color-text);

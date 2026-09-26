@@ -279,3 +279,31 @@
     transition: none;
   }
 }
+
+/* On a phone the toolbar is one row that scrolls sideways, not a column of
+   full-width buttons pushing the words off the screen. */
+@media (max-width: 640px) {
+  .cards-panel__actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-inline: -16px;
+    padding: 2px 16px 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-padding-inline: 16px;
+  }
+
+  .cards-panel__actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cards-panel__actions button {
+    flex: none;
+    width: auto;
+    min-height: 40px;
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+}
