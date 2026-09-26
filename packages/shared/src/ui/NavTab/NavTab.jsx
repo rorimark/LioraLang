@@ -5,6 +5,7 @@ export const NavTab = ({
   to = "/",
   title = "TabTitle",
   icon: Icon,
+  activeIcon: ActiveIcon,
   compact = false,
   draggable = false,
   ...props
@@ -19,8 +20,17 @@ export const NavTab = ({
       draggable={draggable}
       {...props}
     >
-      {Icon && <Icon />}
-      <span>{title}</span>
+      {({ isActive }) => {
+        // The section you are in shows its filled icon.
+        const ShownIcon = isActive && ActiveIcon ? ActiveIcon : Icon;
+
+        return (
+          <>
+            {ShownIcon && <ShownIcon aria-hidden="true" />}
+            <span>{title}</span>
+          </>
+        );
+      }}
     </NavLink>
   );
 };

@@ -56,8 +56,8 @@
   text-align: center;
 }
 
-.nav-tab--compact.is-active svg {
-  background: var(--color-primary-soft);
+.nav-tab--compact {
+  position: relative;
 }
 
 @media (hover: hover) {

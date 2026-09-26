@@ -58,6 +58,25 @@
   flex: 1;
 }
 
+/* The section you are in: its filled icon in blue, and a short blue mark
+   at the rail's edge, like a tab on the side of a card box. */
+.nav-bar--rail .nav-tab--compact::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 4px;
+  height: 0;
+  border-radius: 0 4px 4px 0;
+  background: var(--color-primary);
+  transform: translateY(-50%);
+  transition: height 260ms var(--motion-spring);
+}
+
+.nav-bar--rail .nav-tab--compact.is-active::before {
+  height: 28px;
+}
+
 .nav-bar__footer {
   margin-top: auto;
 }
@@ -112,20 +131,21 @@
   position: relative;
 }
 
-/* The indicator is the pill behind the icon, and slides between tabs. */
+/* The section you are in: a short blue mark on the bar's top edge, above
+   its filled icon. It slides from tab to tab. */
 .nav-bar__mobile-indicator {
   position: absolute;
-  top: 6px;
+  top: -8px;
   left: 0;
-  width: 52px;
-  height: 30px;
-  border-radius: 12px;
-  background: var(--color-primary-soft);
+  width: 28px;
+  height: 4px;
+  border-radius: 0 0 4px 4px;
+  background: var(--color-primary);
   opacity: 0;
   pointer-events: none;
   transform: translate3d(
-    calc(var(--nav-mobile-indicator-x, 0px) + var(--nav-mobile-indicator-width, 52px) / 2 - 26px),
-    var(--nav-mobile-indicator-y, 0px),
+    calc(var(--nav-mobile-indicator-x, 0px) + var(--nav-mobile-indicator-width, 28px) / 2 - 14px),
+    0,
     0
   );
   transition:
@@ -153,15 +173,15 @@
   -webkit-user-drag: none;
 }
 
-/* The sliding indicator draws the pill here. */
-.nav-bar--mobile .nav-tab--compact.is-active svg,
+/* No hover pill on a touch bar: the mark above the icon is the state. */
 .nav-bar--mobile .nav-tab--compact:hover svg {
   background: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-bar__logo,
-  .nav-bar__mobile-indicator {
+  .nav-bar__mobile-indicator,
+  .nav-bar--rail .nav-tab--compact::before {
     transition: none;
   }
 }

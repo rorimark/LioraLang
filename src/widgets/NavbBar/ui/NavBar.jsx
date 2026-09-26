@@ -5,6 +5,12 @@ import { AppIcon, NavTab } from "@shared/ui";
 import { NAV_ITEMS, ROUTE_PATHS } from "@shared/config/routes";
 import { usePlatformService } from "@shared/providers";
 import {
+  IoBook,
+  IoGlobe,
+  IoLayers,
+  IoPersonCircle,
+  IoSettings,
+  IoStatsChart,
   IoPersonCircleOutline,
   IoLayersOutline,
   IoGlobeOutline,
@@ -22,6 +28,14 @@ const ICONS_BY_NAME = {
   decks: IoBookOutline,
   progress: IoStatsChartOutline,
   settings: IoSettingsOutline,
+};
+
+const ACTIVE_ICONS_BY_NAME = {
+  learn: IoLayers,
+  browse: IoGlobe,
+  decks: IoBook,
+  progress: IoStatsChart,
+  settings: IoSettings,
 };
 
 const SIGNED_OUT_ACCOUNT = Object.freeze({ title: "Sign in", label: "Sign in or sign up" });
@@ -62,6 +76,7 @@ const NavItemsList = memo(
             <NavTab
               to={item.to}
               icon={ICONS_BY_NAME[item.icon]}
+              activeIcon={ACTIVE_ICONS_BY_NAME[item.icon]}
               title={item.title}
               compact={compact}
               draggable={compact ? false : undefined}
@@ -123,6 +138,7 @@ const AccountRailLink = memo(({ pathname }) => {
     <NavTab
       to={ROUTE_PATHS.account}
       icon={IoPersonCircleOutline}
+      activeIcon={IoPersonCircle}
       title={account.title}
       aria-label={account.label}
       compact
@@ -159,6 +175,7 @@ const DesktopNavBar = memo(() => {
             <NavTab
               to={settingsNavItem.to}
               icon={ICONS_BY_NAME[settingsNavItem.icon]}
+              activeIcon={ACTIVE_ICONS_BY_NAME[settingsNavItem.icon]}
               title={settingsNavItem.title}
               compact
               onClick={(event) => {
