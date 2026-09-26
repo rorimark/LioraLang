@@ -8,3 +8,7 @@ export {
   normalizeShortcutSettings,
 } from "./shortcutSettings";
 export { useShortcutSettings } from "./useShortcutSettings";
+export {
+  resolveLearnFlipKeyLabel,
+  resolveLearnRatingKeyLabels,
+} from "./learnShortcutLabels";

@@ -7,24 +7,26 @@
   overflow: hidden;
 }
 
+/* Three shapes, one per way of holding the screen:
+   - wide: a narrow rail on the left, the page takes the rest;
+   - phone upright: a tab bar along the bottom;
+   - phone on its side: the rail again, icons only, so no height is lost. */
 .app-shell {
-  --mobile-content-padding-x: 16px;
-  --mobile-content-padding-y: 10px;
-  --mobile-nav-offset: calc(env(safe-area-inset-bottom) + 72px);
-  --mobile-learn-nav-offset: calc(env(safe-area-inset-bottom) + 84px);
+  --rail-width: 88px;
+  --bottom-bar-height: 0px;
+  --content-pad-x: clamp(16px, 2.4vw, 40px);
   flex: 1;
   height: 100%;
   min-height: 0;
   display: grid;
-  grid-template-columns: 272px minmax(0, 1fr);
+  grid-template-columns: calc(var(--rail-width) + env(safe-area-inset-left)) minmax(0, 1fr);
 }
 
 .app-shell__sidebar {
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  border-right: 1px solid var(--color-border);
-  padding: var(--ui-sidebar-padding);
+  padding-left: env(safe-area-inset-left);
 }
 
 .app-shell__main {
@@ -40,36 +42,37 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0 var(--ui-content-padding-x) var(--ui-content-padding-bottom);
+  padding:
+    0
+    max(var(--content-pad-x), env(safe-area-inset-right))
+    calc(var(--content-pad-x) + var(--bottom-bar-height))
+    calc(var(--content-pad-x) - 12px);
 }
 
 .app-shell__content--learn {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding:
-    var(--ui-content-padding-learn-top)
-    var(--ui-content-padding-x)
-    var(--ui-content-padding-bottom);
+  overflow: hidden;
+  padding-top: max(14px, env(safe-area-inset-top));
+  padding-bottom: calc(max(18px, env(safe-area-inset-bottom)) + var(--bottom-bar-height));
 }
 
 .app-shell__content--learn > .page.learn-page {
   flex: 1;
   height: 100%;
   min-height: 0;
+  padding-top: 0;
 }
-
 
 .app-shell__mobile-nav {
   display: none;
-  height: 0;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
   .app-shell {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr);
+    --bottom-bar-height: calc(64px + env(safe-area-inset-bottom));
+    --content-pad-x: 16px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .app-shell__sidebar {
@@ -77,81 +80,26 @@
   }
 
   .app-shell__content {
-    padding:
-      var(--mobile-content-padding-y)
-      var(--mobile-content-padding-x)
-      calc(var(--mobile-nav-offset) + var(--mobile-content-padding-y));
+    padding-left: max(var(--content-pad-x), env(safe-area-inset-left));
   }
 
   .app-shell__content--learn {
-    padding:
-      var(--mobile-content-padding-y)
-      var(--mobile-content-padding-x)
-      var(--mobile-learn-nav-offset);
-    overflow: hidden;
-  }
-
-  .app-shell__content--learn .page.learn-page {
-    padding-top: 0;
-    gap: 0;
+    padding-bottom: calc(12px + var(--bottom-bar-height));
   }
 
   .app-shell__mobile-nav {
     display: block;
-    height: 0;
   }
 }
 
-@media (max-width: 640px) {
+@media (orientation: landscape) and (max-height: 540px) {
   .app-shell {
-    --mobile-content-padding-x: 12px;
-    --mobile-content-padding-y: 8px;
-    --mobile-nav-offset: calc(env(safe-area-inset-bottom) + 68px);
-    --mobile-learn-nav-offset: calc(env(safe-area-inset-bottom) + 80px);
+    --rail-width: 64px;
+    --content-pad-x: 16px;
   }
 
   .app-shell__content--learn {
-    padding:
-      var(--mobile-content-padding-y)
-      var(--mobile-content-padding-x)
-      var(--mobile-learn-nav-offset);
-  }
-}
-
-@media (max-width: 960px) and (orientation: landscape) and (max-height: 560px) {
-  .app-shell {
-    --mobile-content-padding-x: 10px;
-    --mobile-content-padding-y: 8px;
-    --mobile-nav-offset: calc(env(safe-area-inset-bottom) + 10px);
-    --mobile-learn-nav-offset: calc(env(safe-area-inset-bottom) + 10px);
-    --mobile-side-nav-width: 86px;
-    --mobile-side-nav-edge-gap: 8px;
-    --mobile-landscape-header-height: 40px;
-  }
-
-  .app-shell__content {
-    padding:
-      var(--mobile-content-padding-y)
-      calc(
-        var(--mobile-side-nav-width) + 12px + var(--mobile-side-nav-edge-gap) + env(safe-area-inset-right)
-      )
-      var(--mobile-content-padding-y)
-      calc(var(--mobile-content-padding-x) + env(safe-area-inset-left));
-  }
-
-  .app-shell__content--learn {
-    padding:
-      var(--mobile-content-padding-y)
-      calc(
-        var(--mobile-side-nav-width) + 12px + var(--mobile-side-nav-edge-gap) + env(safe-area-inset-right)
-      )
-      var(--mobile-content-padding-y)
-      calc(var(--mobile-content-padding-x) + env(safe-area-inset-left));
-    overflow: hidden;
-  }
-
-  .app-shell__content--learn .page.learn-page {
-    padding-top: 0;
-    gap: 0;
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
   }
 }

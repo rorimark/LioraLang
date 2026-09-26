@@ -4,8 +4,8 @@ import { Link, useLocation } from "react-router";
 import { AppIcon, NavTab } from "@shared/ui";
 import { NAV_ITEMS, ROUTE_PATHS } from "@shared/config/routes";
 import { usePlatformService } from "@shared/providers";
-import { NavBarLearnShortcutsSlot } from "./NavBarLearnShortcutsSlot";
 import {
+  IoPersonCircleOutline,
   IoLayersOutline,
   IoGlobeOutline,
   IoBookOutline,
@@ -24,10 +24,15 @@ const ICONS_BY_NAME = {
   settings: IoSettingsOutline,
 };
 
-const resolveAccountLabel = (snapshot) =>
+const SIGNED_OUT_ACCOUNT = Object.freeze({ title: "Sign in", label: "Sign in or sign up" });
+
+const resolveAccount = (snapshot) =>
   snapshot?.isAuthenticated
-    ? snapshot.displayName || snapshot.email || "Open account"
-    : "Sign in / Sign up";
+    ? {
+        title: "Account",
+        label: `Account: ${snapshot.displayName || snapshot.email || "signed in"}`,
+      }
+    : SIGNED_OUT_ACCOUNT;
 
 const NavItemsList = memo(
   ({
@@ -78,9 +83,9 @@ const NavItemsList = memo(
 
 NavItemsList.displayName = "NavItemsList";
 
-const AccountLinkLabel = memo(() => {
+const AccountRailLink = memo(({ pathname }) => {
   const authRepository = usePlatformService("authRepository");
-  const [accountLabel, setAccountLabel] = useState("Sign in / Sign up");
+  const [account, setAccount] = useState(SIGNED_OUT_ACCOUNT);
 
   useEffect(() => {
     if (!authRepository.isConfigured()) {
@@ -88,25 +93,25 @@ const AccountLinkLabel = memo(() => {
     }
 
     let isSubscribed = true;
-    const updateLabel = (nextSnapshot) => {
+    const updateAccount = (nextSnapshot) => {
       if (!isSubscribed) {
         return;
       }
 
-      const nextLabel = resolveAccountLabel(nextSnapshot);
-      setAccountLabel((previousValue) =>
-        previousValue === nextLabel ? previousValue : nextLabel,
+      const nextAccount = resolveAccount(nextSnapshot);
+      setAccount((previousAccount) =>
+        previousAccount.label === nextAccount.label ? previousAccount : nextAccount,
       );
     };
 
     authRepository
       .getSnapshot()
-      .then(updateLabel)
+      .then(updateAccount)
       .catch(() => {
-        updateLabel(null);
+        updateAccount(null);
       });
 
-    const unsubscribe = authRepository.subscribe(updateLabel);
+    const unsubscribe = authRepository.subscribe(updateAccount);
 
     return () => {
       isSubscribed = false;
@@ -115,54 +120,56 @@ const AccountLinkLabel = memo(() => {
   }, [authRepository]);
 
   return (
-    <Link
-      className="nav-bar__account-link"
+    <NavTab
       to={ROUTE_PATHS.account}
-      aria-label="Open account page"
-    >
-      {accountLabel}
-    </Link>
+      icon={IoPersonCircleOutline}
+      title={account.title}
+      aria-label={account.label}
+      compact
+      onClick={(event) => {
+        if (pathname === ROUTE_PATHS.account) {
+          event.preventDefault();
+        }
+      }}
+    />
   );
 });
 
-AccountLinkLabel.displayName = "AccountLinkLabel";
+AccountRailLink.displayName = "AccountRailLink";
 
+// On wide screens the navigation is a narrow rail: the page gets the width,
+// and every section is one icon with its name under it.
 const DesktopNavBar = memo(() => {
   const { pathname } = useLocation();
 
   return (
-    <nav className="nav-bar nav-bar--desktop" aria-label="Primary navigation">
-      <div className="nav-bar__brand">
-        <AppIcon size={38} className="nav-bar__logo" />
-        <div>
-          <strong>LioraLang</strong>
-          <AccountLinkLabel />
-        </div>
-      </div>
+    <nav className="nav-bar nav-bar--rail" aria-label="Primary navigation">
+      <Link className="nav-bar__brand" to={ROUTE_PATHS.learn} aria-label="LioraLang, learn">
+        <AppIcon size={40} className="nav-bar__logo" />
+      </Link>
 
-      <NavItemsList items={desktopNavItems} pathname={pathname} />
+      <NavItemsList items={desktopNavItems} compact pathname={pathname} />
 
-      {settingsNavItem ? (
-        <>
-          <NavBarLearnShortcutsSlot />
-          <div className="nav-bar__footer">
-            <ul className="nav-bar__list">
-              <li className="nav-bar__list-item">
-                <NavTab
-                  to={settingsNavItem.to}
-                  icon={ICONS_BY_NAME[settingsNavItem.icon]}
-                  title={settingsNavItem.title}
-                  onClick={(event) => {
-                    if (pathname === settingsNavItem.to) {
-                      event.preventDefault();
-                    }
-                  }}
-                />
-              </li>
-            </ul>
-          </div>
-        </>
-      ) : null}
+      <ul className="nav-bar__list nav-bar__footer">
+        <li className="nav-bar__list-item">
+          <AccountRailLink pathname={pathname} />
+        </li>
+        {settingsNavItem ? (
+          <li className="nav-bar__list-item">
+            <NavTab
+              to={settingsNavItem.to}
+              icon={ICONS_BY_NAME[settingsNavItem.icon]}
+              title={settingsNavItem.title}
+              compact
+              onClick={(event) => {
+                if (pathname === settingsNavItem.to) {
+                  event.preventDefault();
+                }
+              }}
+            />
+          </li>
+        ) : null}
+      </ul>
     </nav>
   );
 });

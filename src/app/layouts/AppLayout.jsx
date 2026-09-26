@@ -101,10 +101,9 @@ export const AppLayout = () => {
         </aside>
 
         <div className="app-shell__main">
-          <PageHeader
-            title={pageMeta.title}
-            compact={isLearnPage}
-          />
+          {/* Learn has its own strip above the card; a page title there would
+              only take height from the card. */}
+          {isLearnPage ? null : <PageHeader title={pageMeta.title} />}
           <main
             className={
               isLearnPage ? "app-shell__content app-shell__content--learn" : "app-shell__content"
