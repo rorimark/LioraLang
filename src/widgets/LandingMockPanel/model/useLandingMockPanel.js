@@ -3,29 +3,21 @@ import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
-// One row per page of the app, in the order of its navigation. The icon keys
-// match NAV_ITEMS so the landing shows the same icons as the sidebar.
-const APP_SECTIONS = [
-  {
-    key: "learn",
-    title: "Learn",
-    text: "One queue a day. Flip the card, grade it Again, Hard, Good or Easy, move on. Space and 1–4 on the keyboard.",
-  },
-  {
-    key: "decks",
-    title: "Decks",
-    text: "Your own decks for any language pair, with levels, tags and example sentences. Import and export as JSON.",
-  },
-  {
-    key: "browse",
-    title: "Browse",
-    text: "LioraLangHub: decks other learners published, imported in one click. Publish yours the same way.",
-  },
-  {
-    key: "progress",
-    title: "Progress",
-    text: "Reviews per day, recall, streaks and your most active decks, so you can see what is sticking.",
-  },
+// Languages covered by the decks bundled in sample-decks/.
+const DECK_LANGUAGES = ["English", "Polish", "German", "Russian", "Ukrainian"];
+
+// Three of the bundled decks with their real word counts, for the deck
+// library illustration.
+const SAMPLE_DECKS = [
+  { name: "Travel & Tourism", pair: "EN · PL · RU", words: 200, tone: "blue" },
+  { name: "False Friends & Cognates", pair: "PL · UK", words: 250, tone: "green" },
+  { name: "Business & Startup Culture", pair: "DE · PL", words: 200, tone: "amber" },
+];
+
+const PLATFORMS = [
+  { key: "web", title: "Web", text: "Any browser, nothing to install" },
+  { key: "desktop", title: "macOS & Windows", text: "Desktop app, fully offline" },
+  { key: "phone", title: "Phone", text: "Add to Home Screen" },
 ];
 
 const FOOTER_LINKS = [
@@ -40,11 +32,13 @@ export const useLandingMockPanel = () => {
   }, []);
 
   return {
-    appSections: APP_SECTIONS,
+    deckLanguages: DECK_LANGUAGES,
+    sampleDecks: SAMPLE_DECKS,
+    platforms: PLATFORMS,
     footerLinks: FOOTER_LINKS,
     openWebTo: ROUTE_PATHS.learn,
+    browseTo: ROUTE_PATHS.browse,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,
-    githubRepoUrl: EXTERNAL_LINKS.githubRepo,
     handlePrefetchApp: prefetchApp,
   };
 };

@@ -1,515 +1,971 @@
-/* Built from the app's tokens and its own study components. The page leans
-   on type, rules and whitespace rather than tiles and badges. */
+/* LioraLang landing: bright and friendly, built on two things the product
+   already owns: the blue of its icon and the four grade colours of its
+   Again / Hard / Good / Easy buttons. Tokens are scoped to .lp so the app
+   screens are untouched. */
 
-.landing-shell {
-  --landing-width: 1120px;
-  --landing-gutter: clamp(18px, 4vw, 32px);
+.lp {
+  --lp-blue: #2563eb;
+  --lp-blue-edge: #1a47b8;
+  --lp-blue-soft: #e3edff;
+  --lp-green: #2fbf52;
+  --lp-green-edge: #22963f;
+  --lp-green-soft: #ddf7e4;
+  --lp-amber: #ffb400;
+  --lp-amber-edge: #d69500;
+  --lp-amber-soft: #fff1cc;
+  --lp-red: #ff5a5f;
+  --lp-red-edge: #d93d42;
+  --lp-red-soft: #ffe3e3;
+
+  --lp-bg: #ffffff;
+  --lp-surface: #ffffff;
+  --lp-ink: #28303f;
+  --lp-ink-soft: #6b7385;
+  --lp-line: #e3e6ee;
+  --lp-line-strong: #cfd4df;
+  --lp-on-color: #ffffff;
+
+  --lp-font: "Nunito Variable", "Sora", system-ui, sans-serif;
+  --lp-width: 1080px;
+  --lp-gutter: clamp(18px, 4vw, 32px);
 
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  color: var(--color-text);
+  background: var(--lp-bg);
+  color: var(--lp-ink);
+  font-family: var(--lp-font);
 }
 
-.landing-shell :where(h1, h2, h3, p, ul, ol, dl, dd) {
+:root[theme="dark"] .lp {
+  --lp-bg: #0f1a2d;
+  --lp-surface: #16233a;
+  --lp-ink: #eef3ff;
+  --lp-ink-soft: #9fb0cf;
+  --lp-line: #24334f;
+  --lp-line-strong: #33466a;
+  --lp-blue: #4f86ff;
+  --lp-blue-edge: #2d5fd6;
+  --lp-blue-soft: #1c2d52;
+  --lp-green-soft: #16392a;
+  --lp-amber-soft: #3a2f12;
+  --lp-red-soft: #3d1f24;
+}
+
+.lp :where(h1, h2, h3, p, ul, ol) {
   margin: 0;
 }
 
-.landing-shell :where(section, footer) {
-  width: 100%;
-  max-width: calc(var(--landing-width) + 2 * var(--landing-gutter));
-  margin-inline: auto;
-  padding-inline: var(--landing-gutter);
-}
+/* The four grade colours, as reusable fills. */
+.lp-tone-blue { --tone: var(--lp-blue); --tone-edge: var(--lp-blue-edge); --tone-soft: var(--lp-blue-soft); }
+.lp-tone-green { --tone: var(--lp-green); --tone-edge: var(--lp-green-edge); --tone-soft: var(--lp-green-soft); }
+.lp-tone-amber { --tone: var(--lp-amber); --tone-edge: var(--lp-amber-edge); --tone-soft: var(--lp-amber-soft); }
+.lp-tone-red { --tone: var(--lp-red); --tone-edge: var(--lp-red-edge); --tone-soft: var(--lp-red-soft); }
 
-/* === Small shared pieces === */
+/* === Chunky buttons: a thick bottom edge that presses down === */
 
-.landing-logo {
-  display: block;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-}
-
-.landing-logo--sm {
-  width: 22px;
-  height: 22px;
-}
-
-.landing-brand {
+.lp-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--color-text);
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 2px solid transparent;
+  border-bottom-width: 5px;
+  border-radius: 16px;
+  font-family: var(--lp-font);
   font-size: 0.98rem;
-  text-decoration: none;
-}
-
-.landing-brand--muted {
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
-  font-weight: 600;
-}
-
-.landing-button {
-  min-height: 40px;
-  padding-inline: 14px;
-  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 80ms ease,
+    border-bottom-width 80ms ease,
+    filter 120ms ease;
 }
 
-.landing-button--lg {
-  min-height: 46px;
-  padding-inline: 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
+.lp-btn:hover {
+  filter: brightness(1.06);
 }
 
-.landing-text-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.lp-btn:active {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+}
+
+.lp-btn--primary {
+  background: var(--lp-blue);
+  border-color: var(--lp-blue-edge);
+  color: var(--lp-on-color);
+}
+
+.lp-btn--secondary {
+  background: var(--lp-surface);
+  border-color: var(--lp-line-strong);
+  color: var(--lp-blue);
+}
+
+.lp-btn--inverse {
+  background: #ffffff;
+  border-color: #c9d8ff;
+  color: var(--lp-blue-edge);
+}
+
+.lp-btn--sm {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 13px;
+  font-size: 0.82rem;
+}
+
+.lp a:focus-visible,
+.lp button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--lp-blue) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.lp-link {
   width: fit-content;
-  color: var(--color-primary);
-  font-size: 0.92rem;
-  font-weight: 600;
+  color: var(--lp-blue);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-decoration: none;
+  border-bottom: 3px solid var(--lp-blue-soft);
 }
 
-.landing-text-link svg {
-  transition: transform 140ms ease;
-}
-
-.landing-text-link:hover svg {
-  transform: translateX(3px);
+.lp-link:hover {
+  border-color: var(--lp-blue);
 }
 
 /* === Top bar === */
 
-.landing-topbar {
+.lp-topbar {
   position: sticky;
   top: 0;
   z-index: 20;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  background: color-mix(in srgb, var(--color-bg) 94%, var(--color-surface));
-  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--lp-line);
+  background: var(--lp-bg);
 }
 
-.landing-topbar__inner {
+.lp-topbar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  max-width: calc(var(--landing-width) + 2 * var(--landing-gutter));
+  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
   margin-inline: auto;
-  padding: calc(10px + env(safe-area-inset-top)) var(--landing-gutter) 10px;
+  padding: calc(10px + env(safe-area-inset-top)) var(--lp-gutter) 10px;
 }
 
-.landing-topbar__actions {
-  display: flex;
+.lp-brand {
+  display: inline-flex;
   align-items: center;
-  gap: 18px;
-}
-
-.landing-topbar__link {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
+  gap: 10px;
+  color: var(--lp-blue);
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
   text-decoration: none;
 }
 
-.landing-topbar__link:hover {
-  color: var(--color-text);
+.lp-brand img {
+  display: block;
 }
 
-/* === Hero: the pitch beside a session you can actually study === */
+.lp-brand--small {
+  font-size: 1.15rem;
+}
 
-.landing-hero {
+/* === Hero === */
+
+.lp-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
-  /* Top-aligned: the demo grows as answers are logged, and the pitch
-     beside it must not move while the visitor is using it. */
-  align-items: start;
-  gap: clamp(32px, 6vw, 88px);
-  padding-block: clamp(48px, 8vw, 104px) clamp(48px, 7vw, 88px);
-}
-
-.landing-hero__copy {
-  display: grid;
-  gap: 22px;
-  min-width: 0;
-  padding-top: clamp(0px, 3vw, 40px);
-}
-
-.landing-hero h1 {
-  max-width: 12ch;
-  font-weight: 600;
-  font-size: clamp(2.4rem, 5.6vw, 4.4rem);
-  line-height: 1;
-  letter-spacing: -0.045em;
-}
-
-.landing-hero__lead {
-  max-width: 44ch;
-  color: var(--color-text-muted);
-  font-size: clamp(1rem, 1.3vw, 1.1rem);
-  line-height: 1.65;
-}
-
-.landing-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-  gap: 14px 24px;
-  margin-top: 6px;
+  gap: clamp(32px, 6vw, 80px);
+  width: 100%;
+  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
+  margin-inline: auto;
+  padding: clamp(40px, 7vw, 96px) var(--lp-gutter) clamp(48px, 7vw, 96px);
 }
 
-.landing-hero__note {
-  color: var(--color-text-subtle);
-  font-size: 0.84rem;
-}
-
-/* === The demo session === */
-
-.landing-demo {
+.lp-hero__copy {
   display: grid;
-  gap: 12px;
-  min-width: 0;
-  padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-md);
-}
-
-.landing-demo__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2px 4px;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.landing-demo__count {
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-}
-
-/* The Flashcard fills whatever box it is given. */
-.landing-demo__card {
-  height: 290px;
-  margin: -8px;
-}
-
-.landing-demo__ratings {
-  height: 58px;
-}
-
-.landing-demo__hint {
-  min-height: 1.3em;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
+  justify-items: center;
+  gap: 20px;
   text-align: center;
 }
 
-.landing-demo__done {
-  display: grid;
-  justify-items: start;
-  gap: 10px;
-  padding: 28px 8px;
+.lp-hero h1 {
+  max-width: 16ch;
+  font-size: clamp(2rem, 3.8vw, 2.9rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-.landing-demo__done strong {
-  font-size: 1.15rem;
+.lp-hero__copy > p {
+  max-width: 40ch;
+  color: var(--lp-ink-soft);
+  font-size: 1.12rem;
   font-weight: 600;
-}
-
-.landing-demo__done p {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
   line-height: 1.55;
 }
 
-.landing-demo__log {
+.lp-hero__actions {
   display: grid;
-  padding: 10px 4px 2px;
-  border-top: 1px solid var(--color-border);
-  list-style: none;
-}
-
-.landing-demo__log li {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 12px;
-  padding-block: 4px;
-  font-size: 0.8rem;
+  width: min(100%, 340px);
+  margin-top: 10px;
 }
 
-.landing-demo__log li span:nth-child(2) {
-  color: var(--color-text-muted);
+/* The hero art echoes the app icon: a blue disc with two tilted cards. */
+.lp-hero-art {
+  position: relative;
+  width: min(100%, 440px);
+  aspect-ratio: 1;
+  justify-self: center;
 }
 
-.landing-demo__log li span:nth-child(3) {
-  min-width: 72px;
-  color: var(--color-primary);
-  font-weight: 600;
+.lp-hero-art__disc {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: var(--lp-blue-soft);
+}
+
+.lp-card {
+  position: absolute;
+  display: grid;
+  align-content: space-between;
+  width: 46%;
+  aspect-ratio: 3 / 4;
+  padding: 18px;
+  border: 3px solid;
+  border-bottom-width: 9px;
+  border-radius: 24px;
+}
+
+.lp-card--back {
+  top: 12%;
+  left: 47%;
+  justify-items: end;
   text-align: right;
+  transform: rotate(12deg);
+  background: var(--lp-surface);
+  border-color: var(--lp-line-strong);
+  color: var(--lp-ink);
 }
 
-/* === Page blocks === */
-
-.landing-block {
-  padding-block: clamp(40px, 6vw, 72px);
-  border-top: 1px solid var(--color-border);
+.lp-card--front {
+  top: 24%;
+  left: 12%;
+  transform: rotate(-8deg);
+  background: var(--lp-blue);
+  border-color: var(--lp-blue-edge);
+  color: var(--lp-on-color);
 }
 
-.landing-block__title,
-.landing-timeline__copy h2 {
-  font-weight: 600;
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
+.lp-card__label {
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-/* === Timeline === */
+.lp-card__word {
+  font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
 
-.landing-timeline {
+/* Grade stickers around the cards. */
+.lp-sticker {
+  position: absolute;
+  z-index: 2;
   display: grid;
-  gap: clamp(32px, 5vw, 56px);
+  justify-items: center;
+  padding: 8px 16px;
+  border: 2px solid var(--tone-edge);
+  border-bottom-width: 5px;
+  border-radius: 14px;
+  background: var(--tone);
+  color: var(--lp-on-color);
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1.1;
+  animation: lp-float 5s ease-in-out infinite;
 }
 
-.landing-timeline__copy {
-  display: grid;
-  gap: 14px;
-  max-width: 60ch;
+.lp-sticker small {
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.9;
 }
 
-.landing-timeline__copy p {
-  color: var(--color-text-muted);
-  font-size: 1rem;
-  line-height: 1.65;
+.lp-sticker--a { top: 10%; left: 0; transform: rotate(-10deg); animation-delay: -1s; }
+.lp-sticker--b { top: 2%; right: 2%; transform: rotate(8deg); animation-delay: -2.2s; }
+.lp-sticker--c { bottom: 16%; right: 0; transform: rotate(-6deg); animation-delay: -3.1s; }
+.lp-sticker--d { bottom: 2%; left: 2%; transform: rotate(7deg); animation-delay: -0.4s; }
+
+@keyframes lp-float {
+  50% {
+    translate: 0 -7px;
+  }
 }
 
-.landing-timeline__chart {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-  align-items: end;
-  gap: clamp(6px, 1.4vw, 16px);
+/* === Languages strip === */
+
+.lp-langs {
+  border-block: 2px solid var(--lp-line);
+}
+
+.lp-langs__inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
+  margin-inline: auto;
+  padding: 18px var(--lp-gutter);
+}
+
+.lp-langs__label {
+  color: var(--lp-ink-soft);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lp-langs ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
   padding: 0;
   list-style: none;
 }
 
-.landing-timeline__column {
-  display: grid;
-  grid-template-rows: auto 180px auto auto;
-  justify-items: center;
-  min-width: 0;
+.lp-langs li {
+  color: var(--lp-ink);
+  font-size: 1.05rem;
+  font-weight: 800;
 }
 
-/* No row gap: the bars stand on the rule drawn by the label below them. */
-.landing-timeline__gap {
-  padding-bottom: 8px;
-  font-size: 0.9rem;
+/* === Try it === */
+
+.lp-try {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: clamp(56px, 8vw, 96px) var(--lp-gutter) clamp(32px, 5vw, 56px);
+  text-align: center;
+}
+
+.lp-try h2,
+.lp-feature h2,
+.lp-cta h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.lp-try h2,
+.lp-feature h2 {
+  color: var(--lp-blue);
+}
+
+.lp-try > p {
+  color: var(--lp-ink-soft);
+  font-size: 1.08rem;
   font-weight: 600;
+}
+
+/* The demo reuses the app's Flashcard and SrsRatingControls and restyles
+   them here only, in the landing's chunky manner. */
+.lp-demo {
+  display: grid;
+  gap: 14px;
+  width: min(100%, 520px);
+  margin-top: 20px;
+  text-align: left;
+}
+
+.lp-demo__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  color: var(--lp-ink-soft);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.lp-demo__progress {
+  height: 14px;
+  border-radius: 999px;
+  background: var(--lp-line);
+  overflow: hidden;
+}
+
+.lp-demo__progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lp-green);
+  transition: width 300ms ease;
+}
+
+.lp-demo__count {
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-demo__card {
+  height: 300px;
+  margin: -8px;
+}
+
+.lp-demo .flashcard__face {
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 6px;
+  border-radius: 22px;
+  box-shadow: none;
+  font-family: var(--lp-font);
+}
+
+.lp-demo .flashcard__face--front {
+  background: var(--lp-surface);
+}
+
+.lp-demo .flashcard__face--back {
+  background: var(--lp-blue-soft);
+  border-color: color-mix(in srgb, var(--lp-blue) 40%, var(--lp-line-strong));
+}
+
+.lp-demo .flashcard__text {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.lp-demo .flashcard__label {
+  font-weight: 800;
+}
+
+.lp-demo__ratings {
+  height: 62px;
+}
+
+.lp-demo .srs-rating-controls__button {
+  border: 2px solid var(--tone-edge, var(--lp-line-strong));
+  border-bottom-width: 5px;
+  border-radius: 14px;
+  background: var(--tone, var(--lp-surface));
+  color: var(--lp-on-color);
+  font-family: var(--lp-font);
+  transition:
+    transform 80ms ease,
+    border-bottom-width 80ms ease,
+    opacity 120ms ease;
+}
+
+.lp-demo .srs-rating-controls__button:active:not(:disabled) {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+}
+
+.lp-demo .srs-rating-controls__button:hover:not(:disabled) {
+  background: var(--tone);
+  filter: brightness(1.06);
+}
+
+.lp-demo .srs-rating-controls__button:disabled {
+  opacity: 0.35;
+}
+
+.lp-demo .srs-rating-controls__label {
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.lp-demo .srs-rating-controls__value {
+  color: inherit;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.lp-demo .srs-rating-controls__button--danger { --tone: var(--lp-red); --tone-edge: var(--lp-red-edge); }
+.lp-demo .srs-rating-controls__button--warning { --tone: var(--lp-amber); --tone-edge: var(--lp-amber-edge); }
+.lp-demo .srs-rating-controls__button--neutral { --tone: var(--lp-blue); --tone-edge: var(--lp-blue-edge); }
+.lp-demo .srs-rating-controls__button--success { --tone: var(--lp-green); --tone-edge: var(--lp-green-edge); }
+
+.lp-demo__hint {
+  min-height: 1.4em;
+  color: var(--lp-ink-soft);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lp-demo__done {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 6px;
+  border-radius: 22px;
+  background: var(--lp-surface);
+}
+
+.lp-demo__done strong {
+  color: var(--lp-green);
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.lp-demo__done p {
+  color: var(--lp-ink-soft);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.lp-demo__log {
+  display: grid;
+  gap: 6px;
+  margin: 4px 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-demo__log li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 90px;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.lp-demo__log li > span:last-child {
+  color: var(--lp-ink-soft);
+  text-align: right;
+}
+
+.lp-demo__grade {
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: var(--lp-on-color);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.lp-grade-again { background: var(--lp-red); }
+.lp-grade-hard { background: var(--lp-amber); }
+.lp-grade-good { background: var(--lp-blue); }
+.lp-grade-easy { background: var(--lp-green); }
+
+/* === Feature rows, alternating sides === */
+
+.lp-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 7vw, 96px);
+  width: 100%;
+  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
+  margin-inline: auto;
+  padding: clamp(48px, 7vw, 88px) var(--lp-gutter);
+}
+
+.lp-feature + .lp-feature {
+  border-top: 2px solid var(--lp-line);
+}
+
+.lp-feature--reversed .lp-feature__art {
+  order: 2;
+}
+
+.lp-feature__copy {
+  display: grid;
+  gap: 18px;
+}
+
+.lp-feature__copy p {
+  max-width: 44ch;
+  color: var(--lp-ink-soft);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.lp-art {
+  width: min(100%, 440px);
+  justify-self: center;
+}
+
+.lp-feature__art {
+  display: grid;
+}
+
+/* Chart: the gap before each review, from the real scheduler. */
+.lp-chart {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  align-items: end;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-chart li {
+  display: grid;
+  grid-template-rows: auto 220px auto;
+  justify-items: center;
+}
+
+.lp-chart__gap {
+  padding-bottom: 6px;
+  font-size: 0.78rem;
+  font-weight: 900;
   white-space: nowrap;
 }
 
-/* The bar grows from the baseline; its height is the gap before the next
-   review, on the square-root scale worked out in the model. */
-.landing-timeline__bar {
+.lp-chart__bar {
   align-self: end;
   width: 100%;
-  max-width: 56px;
-  height: max(6px, calc(var(--height) * 100%));
-  border: 1px solid var(--color-primary-border);
-  border-radius: 6px 6px 0 0;
-  background: var(--color-primary-soft);
+  height: max(10px, calc(var(--height) * 100%));
+  border: 2px solid var(--lp-blue-edge);
+  border-bottom-width: 5px;
+  border-radius: 10px;
+  background: var(--lp-blue);
 }
 
-.landing-timeline__column:last-child .landing-timeline__bar {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
+.lp-chart li:nth-child(-n + 4) .lp-chart__bar {
+  border-color: var(--lp-amber-edge);
+  background: var(--lp-amber);
 }
 
-.landing-timeline__review {
-  width: 100%;
+.lp-chart li:last-child .lp-chart__bar {
+  border-color: var(--lp-green-edge);
+  background: var(--lp-green);
+}
+
+.lp-chart__day {
   padding-top: 8px;
-  border-top: 1px solid var(--color-border-strong);
-  color: var(--color-text-muted);
-  font-size: 0.74rem;
-  text-align: center;
+  color: var(--lp-ink-soft);
+  font-size: 0.7rem;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.landing-timeline__day {
-  padding-top: 4px;
-  color: var(--color-text-subtle);
-  font-size: 0.72rem;
-  white-space: nowrap;
-}
-
-/* === What is in the app === */
-
-.landing-sections {
+/* Decks: three stacked deck cards. */
+.lp-decks-art {
   display: grid;
-  margin-top: 28px;
+  gap: 14px;
 }
 
-.landing-sections__row {
+.lp-deck {
+  position: relative;
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 24px;
-  padding-block: 20px;
-  border-top: 1px solid var(--color-border);
+  gap: 6px;
+  padding: 20px 20px 16px;
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 6px;
+  border-radius: 20px;
+  background: var(--lp-surface);
+  overflow: hidden;
+  transform: rotate(calc((var(--i) - 1) * -2deg)) translateX(calc((var(--i) - 1) * 14px));
 }
 
-.landing-sections__row:last-child {
-  border-bottom: 1px solid var(--color-border);
+.lp-deck__top {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 8px;
+  background: var(--tone);
 }
 
-.landing-sections__row dt {
+.lp-deck strong {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.lp-deck__meta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--lp-ink-soft);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.lp-deck__meta span:last-child {
+  color: var(--tone-edge);
+  font-weight: 900;
+}
+
+/* Hub: a deck card with its import button and the result. */
+.lp-hub-art {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.lp-hub-card {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 22px;
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 6px;
+  border-radius: 22px;
+  background: var(--lp-surface);
+  transform: rotate(-2deg);
+}
+
+.lp-hub-card__row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  font-size: 1.05rem;
-  font-weight: 600;
 }
 
-.landing-sections__row dt svg {
+.lp-hub-card__row strong {
+  font-size: 1.12rem;
+  font-weight: 900;
+}
+
+.lp-hub-card__pill {
   flex-shrink: 0;
-  color: var(--color-text-muted);
-  font-size: 1.15rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--lp-amber-soft);
+  color: var(--lp-amber-edge);
+  font-size: 0.78rem;
+  font-weight: 900;
 }
 
-.landing-sections__row dd {
-  max-width: 62ch;
-  color: var(--color-text-muted);
-  font-size: 0.98rem;
-  line-height: 1.6;
+.lp-hub-card__langs {
+  color: var(--lp-ink-soft);
+  font-weight: 700;
 }
 
-/* === Where it runs === */
-
-.landing-platforms {
+.lp-hub-card__button {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(24px, 4vw, 48px);
-  margin-top: 28px;
+  place-content: center;
+  min-height: 46px;
+  margin-top: 6px;
+  border: 2px solid var(--lp-blue-edge);
+  border-bottom-width: 5px;
+  border-radius: 14px;
+  background: var(--lp-blue);
+  color: var(--lp-on-color);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.landing-platforms > div {
+.lp-hub-arrow {
+  width: 4px;
+  height: 34px;
+  border-radius: 999px;
+  background: repeating-linear-gradient(var(--lp-line-strong) 0 6px, transparent 6px 12px);
+}
+
+.lp-hub-done {
+  padding: 10px 20px;
+  border: 2px solid var(--tone-edge);
+  border-bottom-width: 5px;
+  border-radius: 14px;
+  background: var(--tone);
+  color: var(--lp-on-color);
+  font-weight: 900;
+  transform: rotate(2deg);
+}
+
+/* Platforms: three chunky tiles. */
+.lp-platforms-art {
   display: grid;
-  align-content: start;
-  gap: 10px;
+  gap: 12px;
 }
 
-.landing-platforms h3 {
-  font-size: 1.02rem;
-  font-weight: 600;
+.lp-platform {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 6px;
+  border-radius: 20px;
+  background: var(--lp-surface);
 }
 
-.landing-platforms p {
-  color: var(--color-text-muted);
-  font-size: 0.92rem;
-  line-height: 1.6;
+.lp-platform__icon {
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--tone);
+  color: var(--lp-on-color);
+  font-size: 1.6rem;
+}
+
+.lp-platform > span:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.lp-platform strong {
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.lp-platform > span:last-child > span {
+  color: var(--lp-ink-soft);
+  font-weight: 700;
+}
+
+/* === Closing call to action === */
+
+.lp-cta {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  margin-top: clamp(24px, 4vw, 48px);
+  padding: clamp(56px, 8vw, 96px) var(--lp-gutter);
+  background: var(--lp-blue);
+  color: var(--lp-on-color);
+  text-align: center;
+}
+
+.lp-cta .lp-btn {
+  width: min(100%, 340px);
 }
 
 /* === Footer === */
 
-.landing-footer {
+.lp-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: auto;
-  padding-block: 28px calc(28px + env(safe-area-inset-bottom));
-  border-top: 1px solid var(--color-border);
+  width: 100%;
+  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
+  margin-inline: auto;
+  padding: 28px var(--lp-gutter) calc(28px + env(safe-area-inset-bottom));
 }
 
-.landing-footer ul {
+.lp-footer ul {
   display: flex;
-  gap: 20px;
+  gap: 22px;
   padding: 0;
   list-style: none;
 }
 
-.landing-footer a {
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
+.lp-footer a {
+  color: var(--lp-ink-soft);
+  font-weight: 800;
   text-decoration: none;
 }
 
-.landing-footer a:hover {
-  color: var(--color-text);
-}
-
-.landing-shell a:focus-visible,
-.landing-shell button:focus-visible {
-  outline: 2px solid var(--ui-focus-ring-color);
-  outline-offset: 2px;
+.lp-footer a:hover {
+  color: var(--lp-blue);
 }
 
 /* === Responsive === */
 
-@media (max-width: 960px) {
-  .landing-hero {
+@media (max-width: 860px) {
+  .lp-hero,
+  .lp-feature {
     grid-template-columns: 1fr;
   }
 
-  .landing-demo {
-    width: 100%;
-    max-width: 520px;
+  .lp-hero-art {
+    width: min(100%, 360px);
   }
 
-  .landing-platforms {
-    grid-template-columns: 1fr;
+  .lp-feature--reversed .lp-feature__art {
+    order: 0;
   }
 
-  /* SrsRatingControls switches to two rows under 960px. */
-  .landing-demo__ratings {
-    height: 96px;
+  .lp-feature__copy {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .lp-demo__ratings {
+    height: 104px;
   }
 }
 
-@media (max-width: 640px) {
-  .landing-sections__row {
-    grid-template-columns: 1fr;
-    gap: 8px;
+@media (max-width: 520px) {
+  .lp-brand {
+    font-size: 1.4rem;
   }
 
-  .landing-hero__actions .landing-button--lg {
-    flex: 1 1 100%;
+  .lp-langs__inner {
+    justify-content: center;
+    text-align: center;
   }
 
-  .landing-demo__card {
-    height: 250px;
+  .lp-langs ul {
+    justify-content: center;
   }
 
-  .landing-timeline__column {
-    grid-template-rows: auto 140px auto auto;
+  .lp-demo__card {
+    height: 260px;
   }
 
-  .landing-timeline__gap {
-    font-size: 0.72rem;
+  .lp-chart {
+    gap: 5px;
   }
 
-  /* "Review 1" does not fit an eighth of a phone; the day below says when. */
-  .landing-timeline__review {
-    font-size: 0;
-    padding-top: 0;
+  .lp-chart li {
+    grid-template-rows: auto 170px auto;
   }
 
-  .landing-timeline__day {
-    padding-top: 6px;
-    font-size: 0.62rem;
+  .lp-chart__gap {
+    font-size: 0.66rem;
+  }
+
+  .lp-chart__day {
+    font-size: 0.58rem;
+  }
+
+  .lp-card {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .lp-deck {
+    transform: rotate(calc((var(--i) - 1) * -1.5deg));
+  }
+
+  .lp-sticker {
+    padding: 6px 12px;
+    font-size: 0.82rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .landing-text-link svg {
+  .lp-sticker {
+    animation: none;
+  }
+
+  .lp-btn,
+  .lp-demo .srs-rating-controls__button,
+  .lp-demo__progress span {
     transition: none;
   }
 }

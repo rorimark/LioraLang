@@ -1,30 +1,22 @@
 import { memo } from "react";
 import { Link } from "react-router";
-import {
-  IoArrowForward,
-  IoBookOutline,
-  IoGlobeOutline,
-  IoLayersOutline,
-  IoStatsChartOutline,
-} from "react-icons/io5";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLandingMockPanel } from "../model/useLandingMockPanel";
 import { useLandingDemoSession } from "../model/useLandingDemoSession";
 import { useReviewTimeline } from "../model/useReviewTimeline";
+import {
+  DecksIllustration,
+  HeroIllustration,
+  HubIllustration,
+  PlatformsIllustration,
+} from "./LandingIllustrations";
+import "@fontsource-variable/nunito";
 import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";
 // The app's own icon, the same one the desktop build and the PWA install use.
 const APP_ICON_SRC = "/icons/icon-192.png";
-
-// The sidebar's own icons, so each row reads as the page it describes.
-const SECTION_ICONS = {
-  learn: IoLayersOutline,
-  decks: IoBookOutline,
-  browse: IoGlobeOutline,
-  progress: IoStatsChartOutline,
-};
 
 const DemoSession = memo(() => {
   const {
@@ -41,108 +33,107 @@ const DemoSession = memo(() => {
   } = useLandingDemoSession();
 
   return (
-    <section className="landing-demo" aria-label="Try a study session">
-      <header className="landing-demo__head">
+    <div className="lp-demo">
+      <div className="lp-demo__head">
         <span>{deckName}</span>
-        <span className="landing-demo__count">
-          {isDone ? "Done" : `${position} / ${total}`}
+        <span className="lp-demo__progress" aria-hidden>
+          <span style={{ width: `${((isDone ? total : position - 1) / total) * 100}%` }} />
         </span>
-      </header>
+        <span className="lp-demo__count">{isDone ? total : position - 1}/{total}</span>
+      </div>
 
       {isDone ? (
-        <div className="landing-demo__done">
-          <strong>That is the whole loop.</strong>
+        <div className="lp-demo__done">
+          <strong>Nice work.</strong>
           <p>
-            Each word now has its own next review. In the app they come back on
-            that day, mixed with whatever else is due.
+            Every word now has its own next review. In the app each one comes
+            back on that day.
           </p>
-          <button type="button" className="ui-button ui-button--secondary" onClick={handleRestart}>
+          <ol className="lp-demo__log" aria-label="Your answers">
+            {log.map((entry) => (
+              <li key={entry.word}>
+                <span>{entry.word}</span>
+                <span className={`lp-demo__grade lp-grade-${entry.rating.toLowerCase()}`}>
+                  {entry.rating}
+                </span>
+                <span>back in {entry.interval}</span>
+              </li>
+            ))}
+          </ol>
+          <button type="button" className="lp-btn lp-btn--secondary" onClick={handleRestart}>
             Study them again
           </button>
         </div>
       ) : (
         <>
-          <div className="landing-demo__card">
+          <div className="lp-demo__card">
             <Flashcard card={card} />
           </div>
-          <div className="landing-demo__ratings">
+          <div className="lp-demo__ratings">
             <SrsRatingControls
               ratingOptions={ratingOptions}
               onRate={handleRate}
               disabled={!canRate}
             />
           </div>
-          <p className="landing-demo__hint" aria-live="polite">
+          <p className="lp-demo__hint" aria-live="polite">
             {canRate
-              ? "How well did you know it? The number is when it comes back."
-              : "Tap the card to see the answer."}
+              ? "How well did you know it? The time is when it comes back."
+              : "Tap the card to flip it."}
           </p>
         </>
       )}
-
-      {log.length > 0 && (
-        <ol className="landing-demo__log" aria-label="Your answers">
-          {log.map((entry) => (
-            <li key={entry.word}>
-              <span>{entry.word}</span>
-              <span>{entry.rating}</span>
-              <span>back in {entry.interval}</span>
-            </li>
-          ))}
-        </ol>
-      )}
-    </section>
+    </div>
   );
 });
 
 DemoSession.displayName = "DemoSession";
 
-const ReviewTimeline = memo(() => {
-  const { points, reviews, months } = useReviewTimeline();
+const TimelineChart = memo(() => {
+  const { points } = useReviewTimeline();
 
   return (
-    <section className="landing-block landing-timeline" aria-labelledby="timeline-title">
-      <div className="landing-timeline__copy">
-        <h2 id="timeline-title">
-          {reviews} reviews, {months} months.
-        </h2>
-        <p>
-          This is the schedule the app runs for a new word you answer Good every
-          time. The first days are short learning steps. After that each gap is
-          about two and a half times the last, so the words you already know
-          stop taking up your day.
-        </p>
-      </div>
-
-      <ol className="landing-timeline__chart">
-        {points.map((point) => (
-          <li
-            key={point.review}
-            className="landing-timeline__column"
-            style={{ "--height": point.height }}
-          >
-            <span className="landing-timeline__gap">{point.gapLabel}</span>
-            <span className="landing-timeline__bar" aria-hidden />
-            <span className="landing-timeline__review">Review {point.review}</span>
-            <span className="landing-timeline__day">day {point.day}</span>
-          </li>
-        ))}
-      </ol>
-    </section>
+    <ol className="lp-art lp-chart" aria-label="Days between reviews of one word">
+      {points.map((point) => (
+        <li key={point.review} style={{ "--height": point.height }}>
+          <span className="lp-chart__gap">{point.gapLabel}</span>
+          <span className="lp-chart__bar" aria-hidden />
+          <span className="lp-chart__day">day {point.day}</span>
+        </li>
+      ))}
+    </ol>
   );
 });
 
-ReviewTimeline.displayName = "ReviewTimeline";
+TimelineChart.displayName = "TimelineChart";
+
+const FeatureRow = memo(({ title, children, art, isReversed = false, id }) => (
+  <section
+    className={`lp-feature${isReversed ? " lp-feature--reversed" : ""}`}
+    aria-labelledby={id}
+  >
+    <div className="lp-feature__art">{art}</div>
+    <div className="lp-feature__copy">
+      <h2 id={id}>{title}</h2>
+      {children}
+    </div>
+  </section>
+));
+
+FeatureRow.displayName = "FeatureRow";
 
 export const LandingMockPanel = memo(() => {
   const {
-    appSections,
+    deckLanguages,
+    sampleDecks,
+    platforms,
     footerLinks,
     openWebTo,
+    browseTo,
     desktopReleaseUrl,
-    githubRepoUrl,
     handlePrefetchApp,
   } = useLandingMockPanel();
+  const { reviews, months } = useReviewTimeline();
 
   const prefetchProps = {
     onMouseEnter: handlePrefetchApp,
@@ -151,127 +142,118 @@ export const LandingMockPanel = memo(() => {
   };
 
   return (
-    <article className="landing-shell">
-      <header className="landing-topbar">
-        <div className="landing-topbar__inner">
-          <Link to="/" className="landing-brand">
-            <img src={APP_ICON_SRC} alt="" className="landing-logo" width="32" height="32" />
-            <strong>LioraLang</strong>
+    <article className="lp">
+      <header className="lp-topbar">
+        <div className="lp-topbar__inner">
+          <Link to="/" className="lp-brand">
+            <img src={APP_ICON_SRC} alt="" width="36" height="36" />
+            <span>lioralang</span>
           </Link>
-          <nav className="landing-topbar__actions" aria-label="LioraLang">
-            <a
-              href={githubRepoUrl}
-              className="landing-topbar__link"
-              target="_blank"
-              rel={EXTERNAL_LINK_REL}
-            >
-              GitHub
-            </a>
-            <Link
-              to={openWebTo}
-              className="ui-button ui-button--primary landing-button"
-              {...prefetchProps}
-            >
-              Open web app
-            </Link>
-          </nav>
+          <Link to={openWebTo} className="lp-btn lp-btn--primary lp-btn--sm" {...prefetchProps}>
+            Open web app
+          </Link>
         </div>
       </header>
 
-      <section className="landing-hero" aria-labelledby="landing-title">
-        <div className="landing-hero__copy">
-          <h1 id="landing-title">Stop forgetting words after one review.</h1>
-          <p className="landing-hero__lead">
-            LioraLang is a flashcard app with spaced repetition. You grade each
-            card, and it decides when you see it again: soon if you struggled,
-            weeks later if you knew it.
+      <section className="lp-hero" aria-labelledby="lp-title">
+        <HeroIllustration />
+        <div className="lp-hero__copy">
+          <h1 id="lp-title">The flashcard app that knows when you’ll forget.</h1>
+          <p>
+            Grade each word, and LioraLang brings it back right before it slips
+            away. Free, and your cards stay on your device.
           </p>
-          <div className="landing-hero__actions">
-            <Link
-              to={openWebTo}
-              className="ui-button ui-button--primary landing-button landing-button--lg"
-              {...prefetchProps}
-            >
-              Open web app
+          <div className="lp-hero__actions">
+            <Link to={openWebTo} className="lp-btn lp-btn--primary" {...prefetchProps}>
+              Start learning
             </Link>
             <a
               href={desktopReleaseUrl}
-              className="landing-text-link"
+              className="lp-btn lp-btn--secondary"
               target="_blank"
               rel={EXTERNAL_LINK_REL}
             >
-              Download for macOS or Windows
-              <IoArrowForward aria-hidden />
+              Download for desktop
             </a>
           </div>
-          <p className="landing-hero__note">Free. No account needed. Your cards stay on your device.</p>
         </div>
+      </section>
 
+      <div className="lp-langs">
+        <div className="lp-langs__inner">
+          <span className="lp-langs__label">Ready-made decks in</span>
+          <ul>
+            {deckLanguages.map((language) => (
+              <li key={language}>{language}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <section className="lp-try" aria-labelledby="lp-try-title">
+        <h2 id="lp-try-title">Try it right now.</h2>
+        <p>Six real words from the Travel &amp; Tourism deck. No sign-up.</p>
         <DemoSession />
       </section>
 
-      <ReviewTimeline />
+      <FeatureRow
+        id="lp-memory"
+        title="Learn it once. Remember it for months."
+        art={<TimelineChart />}
+      >
+        <p>
+          Answer Good and a new word comes back tomorrow, then in three days,
+          then weeks later. {reviews} reviews carry it across {months} months,
+          so the words you know stop crowding your day.
+        </p>
+      </FeatureRow>
 
-      <section className="landing-block" aria-labelledby="inside-title">
-        <h2 id="inside-title" className="landing-block__title">
-          What is in the app
-        </h2>
-        <dl className="landing-sections">
-          {appSections.map((section) => {
-            const Icon = SECTION_ICONS[section.key];
-            return (
-              <div key={section.key} className="landing-sections__row">
-                <dt>
-                  {Icon ? <Icon aria-hidden /> : null}
-                  {section.title}
-                </dt>
-                <dd>{section.text}</dd>
-              </div>
-            );
-          })}
-        </dl>
+      <FeatureRow
+        id="lp-decks"
+        title="Your words. Your decks."
+        art={<DecksIllustration decks={sampleDecks} />}
+        isReversed
+      >
+        <p>
+          Make a deck for any language pair, add levels, tags and example
+          sentences, and study only what you actually need. Import and export
+          as JSON whenever you like.
+        </p>
+      </FeatureRow>
+
+      <FeatureRow id="lp-hub" title="Somebody already made that deck." art={<HubIllustration />}>
+        <p>
+          LioraLangHub is full of decks other learners published. Find one,
+          import it in a click, and start reviewing. Share your own the same way.
+        </p>
+        <Link to={browseTo} className="lp-link" {...prefetchProps}>
+          Browse the hub
+        </Link>
+      </FeatureRow>
+
+      <FeatureRow
+        id="lp-anywhere"
+        title="Learn wherever you are."
+        art={<PlatformsIllustration platforms={platforms} />}
+        isReversed
+      >
+        <p>
+          Use it in the browser, install the desktop app for macOS or Windows,
+          or add it to your phone’s home screen. It keeps working offline.
+        </p>
+      </FeatureRow>
+
+      <section className="lp-cta" aria-labelledby="lp-cta-title">
+        <h2 id="lp-cta-title">Your first review takes a minute.</h2>
+        <Link to={openWebTo} className="lp-btn lp-btn--inverse" {...prefetchProps}>
+          Start learning
+        </Link>
       </section>
 
-      <section className="landing-block" aria-labelledby="platforms-title">
-        <h2 id="platforms-title" className="landing-block__title">
-          Where it runs
-        </h2>
-        <div className="landing-platforms">
-          <div>
-            <h3>In the browser</h3>
-            <p>Everything, with nothing to install. Cards are kept in the browser’s storage.</p>
-            <Link to={openWebTo} className="landing-text-link" {...prefetchProps}>
-              Open web app
-              <IoArrowForward aria-hidden />
-            </Link>
-          </div>
-          <div>
-            <h3>macOS and Windows</h3>
-            <p>A desktop app with a local SQLite database, fully offline.</p>
-            <a
-              href={desktopReleaseUrl}
-              className="landing-text-link"
-              target="_blank"
-              rel={EXTERNAL_LINK_REL}
-            >
-              Download builds
-              <IoArrowForward aria-hidden />
-            </a>
-          </div>
-          <div>
-            <h3>On your phone</h3>
-            <p>
-              Open the web app in Safari or Chrome, then choose Add to Home
-              Screen. It opens like an app and works offline.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <footer className="landing-footer">
-        <span className="landing-brand landing-brand--muted">
-          <img src={APP_ICON_SRC} alt="" className="landing-logo landing-logo--sm" width="22" height="22" />
-          LioraLang
+      <footer className="lp-footer">
+        <span className="lp-brand lp-brand--small">
+          <img src={APP_ICON_SRC} alt="" width="24" height="24" />
+          <span>lioralang</span>
         </span>
         <ul>
           {footerLinks.map((link) => (
