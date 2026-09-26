@@ -1,6 +1,7 @@
 import { memo, useRef } from "react";
 import { IoCheckmark } from "react-icons/io5";
 import { Link } from "react-router";
+import { AppIcon } from "@shared/ui";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLandingMockPanel } from "../model/useLandingMockPanel";
@@ -17,8 +18,6 @@ import "@fontsource-variable/nunito";
 import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";
-// The app's own icon, the same one the desktop build and the PWA install use.
-const APP_ICON_SRC = "/icons/icon-192.png";
 
 const DemoSession = memo(() => {
   const {
@@ -159,7 +158,7 @@ export const LandingMockPanel = memo(() => {
       <header className="lp-topbar">
         <div className="lp-topbar__inner">
           <Link to="/" className="lp-brand">
-            <img src={APP_ICON_SRC} alt="" width="36" height="36" />
+            <AppIcon size={36} />
             <span>lioralang</span>
           </Link>
           <Link to={openWebTo} className="lp-btn lp-btn--primary lp-btn--sm" {...prefetchProps}>
@@ -278,7 +277,7 @@ export const LandingMockPanel = memo(() => {
 
       <footer className="lp-footer">
         <span className="lp-brand lp-brand--small">
-          <img src={APP_ICON_SRC} alt="" width="24" height="24" />
+          <AppIcon size={24} />
           <span>lioralang</span>
         </span>
         <p className="lp-footer__credit">

@@ -1,7 +1,7 @@
 import "./NavBar.css";
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { NavTab } from "@shared/ui";
+import { AppIcon, NavTab } from "@shared/ui";
 import { NAV_ITEMS, ROUTE_PATHS } from "@shared/config/routes";
 import { usePlatformService } from "@shared/providers";
 import { NavBarLearnShortcutsSlot } from "./NavBarLearnShortcutsSlot";
@@ -133,7 +133,7 @@ const DesktopNavBar = memo(() => {
   return (
     <nav className="nav-bar nav-bar--desktop" aria-label="Primary navigation">
       <div className="nav-bar__brand">
-        <span className="nav-bar__logo">LL</span>
+        <AppIcon size={38} className="nav-bar__logo" />
         <div>
           <strong>LioraLang</strong>
           <AccountLinkLabel />

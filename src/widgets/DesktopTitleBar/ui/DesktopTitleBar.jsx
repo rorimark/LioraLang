@@ -1,5 +1,6 @@
 import { memo, useMemo } from "react";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
+import { AppIcon } from "@shared/ui";
 import { useDesktopTitleBar } from "../model";
 import "./DesktopTitleBar.css";
 
@@ -75,7 +76,7 @@ export const DesktopTitleBar = memo(() => {
       </div>
 
       <div className="desktop-title-bar__center" aria-hidden="true">
-        <span className="desktop-title-bar__logo">LL</span>
+        <AppIcon size={22} className="desktop-title-bar__logo" />
         <strong>LioraLang</strong>
       </div>
 

@@ -24,16 +24,10 @@
 }
 
 .nav-bar__logo {
+  display: block;
+  flex-shrink: 0;
   width: var(--ui-nav-bar-logo-size);
   height: var(--ui-nav-bar-logo-size);
-  border-radius: 10px;
-  display: grid;
-  place-content: center;
-  font-weight: 700;
-  color: var(--color-on-primary);
-  background: color-mix(in srgb, var(--color-primary) 16%, var(--color-surface));
-  border: 1px solid color-mix(in srgb, var(--color-primary) 24%, var(--color-border));
-  color: var(--color-primary-strong);
 }
 
 .nav-bar__brand strong {

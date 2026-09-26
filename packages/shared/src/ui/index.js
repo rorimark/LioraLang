@@ -11,3 +11,4 @@ export { TextInput } from "./TextInput/TextInput";
 export { Tabs } from "./Tabs/Tabs";
 export { Panel } from "./Panel/Panel";
 export { SectionHeader } from "./SectionHeader/SectionHeader";
+export { AppIcon } from "./AppIcon/AppIcon";

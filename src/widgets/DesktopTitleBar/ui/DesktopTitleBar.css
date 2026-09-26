@@ -133,15 +133,9 @@
 }
 
 .desktop-title-bar__logo {
+  display: block;
   width: 22px;
   height: 22px;
-  border-radius: 7px;
-  display: grid;
-  place-items: center;
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  font-size: 0.64rem;
-  font-weight: 700;
 }
 
 .desktop-title-bar--darwin .desktop-title-bar__history {
