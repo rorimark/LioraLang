@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   DEFAULT_SRS_SETTINGS,
   DEFAULT_STUDY_SETTINGS,
@@ -52,6 +52,35 @@ export const useLandingDemoSession = () => {
     },
     [word],
   );
+
+  // The same keys as the Learn page: Space flips, 1 to 4 grade. Ignored while
+  // the visitor is typing somewhere or holding a modifier.
+  useEffect(() => {
+    if (isDone) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable]")) {
+        return;
+      }
+
+      if (event.code === "Space") {
+        event.preventDefault();
+        handleFlip();
+        return;
+      }
+
+      const ratingIndex = ["1", "2", "3", "4"].indexOf(event.key);
+      if (ratingIndex >= 0 && isFlipped) {
+        event.preventDefault();
+        handleRate(RATING_OPTIONS[ratingIndex].key);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleFlip, handleRate, isDone, isFlipped]);
 
   const handleRestart = useCallback(() => {
     setIndex(0);

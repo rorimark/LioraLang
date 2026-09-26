@@ -1,10 +1,12 @@
-import { memo } from "react";
+import { memo, useRef } from "react";
+import { IoCheckmark } from "react-icons/io5";
 import { Link } from "react-router";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLandingMockPanel } from "../model/useLandingMockPanel";
 import { useLandingDemoSession } from "../model/useLandingDemoSession";
 import { useReviewTimeline } from "../model/useReviewTimeline";
+import { useRevealOnScroll } from "../model/useRevealOnScroll";
 import {
   DecksIllustration,
   HeroIllustration,
@@ -44,6 +46,9 @@ const DemoSession = memo(() => {
 
       {isDone ? (
         <div className="lp-demo__done">
+          <span className="lp-demo__badge" aria-hidden>
+            <IoCheckmark />
+          </span>
           <strong>Nice work.</strong>
           <p>
             Every word now has its own next review. In the app each one comes
@@ -80,6 +85,9 @@ const DemoSession = memo(() => {
             {canRate
               ? "How well did you know it? The time is when it comes back."
               : "Tap the card to flip it."}
+            <span className="lp-demo__keys">
+              <kbd>Space</kbd> flips, <kbd>1</kbd>–<kbd>4</kbd> grade
+            </span>
           </p>
         </>
       )}
@@ -112,8 +120,10 @@ const FeatureRow = memo(({ title, children, art, isReversed = false, id }) => (
     className={`lp-feature${isReversed ? " lp-feature--reversed" : ""}`}
     aria-labelledby={id}
   >
-    <div className="lp-feature__art">{art}</div>
-    <div className="lp-feature__copy">
+    <div className="lp-feature__art" data-reveal>
+      {art}
+    </div>
+    <div className="lp-feature__copy" data-reveal>
       <h2 id={id}>{title}</h2>
       {children}
     </div>
@@ -126,6 +136,9 @@ export const LandingMockPanel = memo(() => {
   const {
     deckLanguages,
     sampleDecks,
+    sampleDeckStats,
+    sampleDecksUrl,
+    authorUrl,
     platforms,
     footerLinks,
     openWebTo,
@@ -134,6 +147,8 @@ export const LandingMockPanel = memo(() => {
     handlePrefetchApp,
   } = useLandingMockPanel();
   const { reviews, months } = useReviewTimeline();
+  const rootRef = useRef(null);
+  useRevealOnScroll(rootRef);
 
   const prefetchProps = {
     onMouseEnter: handlePrefetchApp,
@@ -142,7 +157,7 @@ export const LandingMockPanel = memo(() => {
   };
 
   return (
-    <article className="lp">
+    <article className="lp" ref={rootRef}>
       <header className="lp-topbar">
         <div className="lp-topbar__inner">
           <Link to="/" className="lp-brand">
@@ -158,7 +173,9 @@ export const LandingMockPanel = memo(() => {
       <section className="lp-hero" aria-labelledby="lp-title">
         <HeroIllustration />
         <div className="lp-hero__copy">
-          <h1 id="lp-title">The flashcard app that knows when you’ll forget.</h1>
+          <h1 id="lp-title">
+            The flashcard app that knows when you’ll <em>forget.</em>
+          </h1>
           <p>
             Grade each word, and LioraLang brings it back right before it slips
             away. Free, and your cards stay on your device.
@@ -181,10 +198,12 @@ export const LandingMockPanel = memo(() => {
 
       <div className="lp-langs">
         <div className="lp-langs__inner">
-          <span className="lp-langs__label">Ready-made decks in</span>
+          <span className="lp-langs__label">Any language pair. Sample decks in</span>
           <ul>
             {deckLanguages.map((language) => (
-              <li key={language}>{language}</li>
+              <li key={language.name} className={`lp-tone-${language.tone}`}>
+                {language.name}
+              </li>
             ))}
           </ul>
         </div>
@@ -194,6 +213,24 @@ export const LandingMockPanel = memo(() => {
         <h2 id="lp-try-title">Try it right now.</h2>
         <p>Six real words from the Travel &amp; Tourism deck. No sign-up.</p>
         <DemoSession />
+      </section>
+
+      <section className="lp-stats" aria-label="Sample decks" data-reveal>
+        <ul>
+          {sampleDeckStats.map((stat) => (
+            <li key={stat.label} className={`lp-tone-${stat.tone}`}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </li>
+          ))}
+        </ul>
+        <p>
+          Free sample decks to download and import, from travel phrases to
+          false friends.{" "}
+          <a href={sampleDecksUrl} className="lp-link" target="_blank" rel={EXTERNAL_LINK_REL}>
+            Get a sample deck
+          </a>
+        </p>
       </section>
 
       <FeatureRow
@@ -244,6 +281,14 @@ export const LandingMockPanel = memo(() => {
       </FeatureRow>
 
       <section className="lp-cta" aria-labelledby="lp-cta-title">
+        <span className="lp-sticker lp-tone-green lp-cta__sticker lp-cta__sticker--l" aria-hidden>
+          Easy
+          <small>3d</small>
+        </span>
+        <span className="lp-sticker lp-tone-amber lp-cta__sticker lp-cta__sticker--r" aria-hidden>
+          Good
+          <small>24h</small>
+        </span>
         <h2 id="lp-cta-title">Your first review takes a minute.</h2>
         <Link to={openWebTo} className="lp-btn lp-btn--inverse" {...prefetchProps}>
           Start learning
@@ -255,6 +300,12 @@ export const LandingMockPanel = memo(() => {
           <img src={APP_ICON_SRC} alt="" width="24" height="24" />
           <span>lioralang</span>
         </span>
+        <p className="lp-footer__credit">
+          Made by{" "}
+          <a href={authorUrl} target="_blank" rel={EXTERNAL_LINK_REL}>
+            Mark Storchovyi
+          </a>
+        </p>
         <ul>
           {footerLinks.map((link) => (
             <li key={link.title}>
