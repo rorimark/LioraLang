@@ -1,11 +1,13 @@
 import { memo, useMemo } from "react";
-import { FiEye, FiSliders } from "react-icons/fi";
+import { FiChevronDown, FiChevronLeft, FiChevronRight, FiSliders } from "react-icons/fi";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
-import { useLearnFlashcardsPanel } from "../model";
+import { useLearnFlashcardsPanel, useLeavingCard } from "../model";
 import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
 import { LearnSessionSettingsDialog } from "./LearnSessionSettingsDialog/LearnSessionSettingsDialog";
 import "./LearnFlashcardsPanel.css";
+
+const GRADE_LABELS = { again: "Again", hard: "Hard", good: "Good", easy: "Easy" };
 
 export const LearnFlashcardsPanel = memo(() => {
   const panel = useLearnFlashcardsPanel();
@@ -107,17 +109,25 @@ export const LearnFlashcardsPanel = memo(() => {
     ],
   );
 
+  const { leavingCard, lastDoneCard, clearLeavingCard } = useLeavingCard(
+    panel.currentWord ? flashcard : null,
+    panel.cardMove,
+  );
+  const cardKey = panel.currentWord
+    ? String(panel.currentWord.wordId ?? panel.currentWord.id ?? "")
+    : "";
+  const flipKey = panel.shortcutKeyLabels.flip;
+  const hasCard = panel.hasDecks && !panel.isWordsLoading && Boolean(panel.currentWord);
+  const leftCount = Math.max(panel.sessionStats.dueTotal - (panel.currentWord ? 1 : 0), 0);
+
   return (
-    <article className="panel learn-page-panel">
-      <div className="learn-page-panel__header">
-        <div className="learn-page-panel__deck-control">
-          <label
-            className="learn-page-panel__deck-label"
-            htmlFor="learn-deck-select"
-          >
-            Choose deck
+    <article className="learn-desk">
+      <header className="learn-desk__strip">
+        <div className="learn-desk__deck">
+          <label className="learn-desk__deck-label" htmlFor="learn-deck-select">
+            Deck
           </label>
-          <div className="learn-page-panel__deck-row">
+          <span className="learn-desk__deck-select">
             <select
               id="learn-deck-select"
               value={deckSelector.selectedDeckId}
@@ -135,151 +145,191 @@ export const LearnFlashcardsPanel = memo(() => {
                 </option>
               ))}
             </select>
-          </div>
+            <FiChevronDown aria-hidden="true" />
+          </span>
+          {panel.hasDecks && panel.currentDeck ? (
+            <span className="learn-desk__direction">{panel.directionSummary}</span>
+          ) : null}
         </div>
 
-        <div className="learn-page-panel__header-actions">
-          <div className="learn-page-panel__session-trigger-wrap">
-            <button
-              type="button"
-              className="learn-page-panel__session-trigger"
-              onClick={sessionControl.onOpen}
-              aria-label="Open session settings"
-              aria-haspopup="dialog"
-              aria-expanded={sessionControl.isOpen}
-            >
-              <FiSliders aria-hidden="true" />
-              <span className="learn-page-panel__session-trigger-label">Session</span>
-            </button>
-          </div>
-          {panel.hasDecks && panel.currentWord ? (
-            <div className="learn-page-panel__meta-chips">
-              {panel.isBrowseMode ? (
-                <span className="learn-page-panel__meta-chip">
-                  Card: {panel.browseProgressLabel || "-"}
-                </span>
-              ) : (
-                <>
-                  <span className="learn-page-panel__meta-chip">
-                    State: {panel.currentWord.state}
-                  </span>
-                  <span className="learn-page-panel__meta-chip">
-                    Mode: {panel.sessionMode === "extended" ? "extra" : "daily"}
-                  </span>
-                </>
-              )}
-            </div>
-          ) : null}
-          {panel.isExtendedSession && !panel.isBrowseMode ? (
-            <span className="learn-page-panel__mode-badge">Extra session</span>
-          ) : null}
-        </div>
-      </div>
+        {panel.hasDecks ? (
+          <SessionReceipt
+            receipt={panel.sessionReceipt}
+            isBrowseMode={panel.isBrowseMode}
+            browseProgressLabel={panel.browseProgressLabel}
+          />
+        ) : null}
+
+        {panel.isExtendedSession && !panel.isBrowseMode ? (
+          <span className="learn-desk__tag">Extra session</span>
+        ) : null}
+
+        <button
+          type="button"
+          className="learn-desk__session"
+          onClick={sessionControl.onOpen}
+          aria-label="Open session settings"
+          title="Session settings"
+          aria-haspopup="dialog"
+          aria-expanded={sessionControl.isOpen}
+        >
+          <FiSliders aria-hidden="true" />
+        </button>
+      </header>
 
       {panel.decksError && (
-        <div className="learn-page-panel__status learn-page-panel__status--error">
+        <div className="learn-desk__status learn-desk__status--error" role="alert">
           {panel.decksError}
         </div>
       )}
       {panel.wordsError && (
-        <div className="learn-page-panel__status learn-page-panel__status--error">
+        <div className="learn-desk__status learn-desk__status--error" role="alert">
           {panel.wordsError}
         </div>
       )}
 
-      {!panel.hasDecks ? (
-        <LearnEmptyDeckState
-          onCreateDeck={panel.openDeckCreatePage}
-          onOpenBrowse={panel.openBrowsePage}
-        />
-      ) : panel.isWordsLoading ? (
-        <div className="learn-page-panel__status learn-page-panel__status--fill">
-          {panel.isBrowseMode ? "Loading cards..." : "Building SRS queue..."}
-        </div>
-      ) : !panel.currentWord ? (
-        <div className="learn-page-panel__status learn-page-panel__status--fill">
-          <div className="learn-page-panel__done">
-            <span>{panel.completionMessage || "No cards available for this deck."}</span>
+      <div className="learn-desk__stage">
+        {!panel.hasDecks ? (
+          <LearnEmptyDeckState
+            onCreateDeck={panel.openDeckCreatePage}
+            onOpenBrowse={panel.openBrowsePage}
+          />
+        ) : panel.isWordsLoading ? (
+          <div className="learn-desk__note-card" aria-live="polite">
+            <p>{panel.isBrowseMode ? "Laying out the cards..." : "Building today's queue..."}</p>
+          </div>
+        ) : !panel.currentWord ? (
+          <div className="learn-desk__note-card learn-desk__note-card--done" aria-live="polite">
+            <strong>{panel.completionMessage || "No cards available for this deck."}</strong>
             {panel.canStartNewSession && (
               <button
                 type="button"
-                className="learn-page-panel__start-session"
+                className="learn-desk__key learn-desk__key--primary"
                 onClick={panel.handleStartNewSession}
               >
                 Start new session
               </button>
             )}
           </div>
-        </div>
-      ) : (
-        <>
-          <div className="learn-page-panel__card-stage">
-            <div className="learn-page-panel__card-viewport">
-              <Flashcard
-                card={flashcard}
-              />
-            </div>
-          </div>
+        ) : null}
 
-          <div
-            className={`learn-page-panel__controls-dock${
-              panel.isBrowseMode ? " learn-page-panel__controls-dock--browse" : ""
-            }`}
-          >
-            <div className="learn-page-panel__ratings" aria-live="polite">
-              {panel.isBrowseMode ? (
-                <div className="learn-page-panel__rating-placeholder learn-page-panel__rating-placeholder--actions">
-                  <button
-                    type="button"
-                    className="learn-page-panel__nav-button"
-                    onClick={browseNavigation.onBrowsePrev}
-                    disabled={!browseNavigation.canBrowsePrev || panel.isRatingPending}
-                  >
-                    Previous
-                  </button>
-                  <button
-                    type="button"
-                    className="learn-page-panel__flip-button"
-                    onClick={panel.toggleBackVisibility}
-                    disabled={panel.isRatingPending}
-                  >
-                    {panel.isBackVisible ? "Hide answer" : "Show answer"}
-                  </button>
-                  <button
-                    type="button"
-                    className="learn-page-panel__nav-button"
-                    onClick={browseNavigation.onBrowseNext}
-                    disabled={!browseNavigation.canBrowseNext || panel.isRatingPending}
-                  >
-                    Next
-                  </button>
+        {hasCard ? (
+          <>
+            {panel.isBrowseMode ? null : (
+              <div className="learn-desk__side" aria-hidden="true">
+                <span className="learn-desk__pile">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="learn-desk__count">
+                  {leftCount}
+                  <small>left</small>
+                </span>
+              </div>
+            )}
+
+            <div className="learn-desk__center">
+              <div className="learn-desk__table">
+                <span className="learn-desk__stack" aria-hidden="true">
+                  <i />
+                  <i />
+                </span>
+                <div className="learn-desk__card" key={cardKey}>
+                  <Flashcard card={flashcard} variant="index" />
                 </div>
-              ) : panel.isBackVisible ? (
-                <SrsRatingControls
-                  ratingOptions={panel.ratingOptions}
-                  onRate={panel.handleRateCard}
-                  disabled={panel.isRatingPending}
-                />
-              ) : (
-                <div className="learn-page-panel__rating-placeholder learn-page-panel__rating-placeholder--reveal">
+                {leavingCard ? (
+                  <div
+                    key={leavingCard.token}
+                    className={`learn-desk__leaving learn-desk__leaving--${leavingCard.kind}`}
+                    onAnimationEnd={clearLeavingCard}
+                    aria-hidden="true"
+                    inert
+                  >
+                    <Flashcard card={leavingCard.card} variant="index" />
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="learn-desk__dock" aria-live="polite">
+                {panel.isBrowseMode ? (
+                  <div className="learn-desk__browse">
+                    <button
+                      type="button"
+                      className="learn-desk__key learn-desk__key--icon"
+                      onClick={browseNavigation.onBrowsePrev}
+                      disabled={!browseNavigation.canBrowsePrev || panel.isRatingPending}
+                      aria-label="Previous card"
+                    >
+                      <FiChevronLeft aria-hidden="true" />
+                    </button>
+                    <button
+                      type="button"
+                      className="learn-desk__key learn-desk__key--reveal"
+                      onClick={panel.toggleBackVisibility}
+                      disabled={panel.isRatingPending}
+                    >
+                      <span>{panel.isBackVisible ? "Hide answer" : "Show answer"}</span>
+                      {flipKey ? <kbd>{flipKey}</kbd> : null}
+                    </button>
+                    <button
+                      type="button"
+                      className="learn-desk__key learn-desk__key--icon"
+                      onClick={browseNavigation.onBrowseNext}
+                      disabled={!browseNavigation.canBrowseNext || panel.isRatingPending}
+                      aria-label="Next card"
+                    >
+                      <FiChevronRight aria-hidden="true" />
+                    </button>
+                  </div>
+                ) : panel.isBackVisible ? (
+                  <SrsRatingControls
+                    variant="stickers"
+                    ratingOptions={panel.ratingOptions}
+                    onRate={panel.handleRateCard}
+                    disabled={panel.isRatingPending}
+                    keyLabels={panel.shortcutKeyLabels.ratings}
+                  />
+                ) : (
                   <button
                     type="button"
-                    className="learn-page-panel__flip-button"
+                    className="learn-desk__key learn-desk__key--reveal"
                     onClick={panel.toggleBackVisibility}
                     disabled={panel.isRatingPending}
+                    aria-keyshortcuts={flipKey || undefined}
                   >
-                    <FiEye aria-hidden="true" />
                     <span>Show answer</span>
+                    {flipKey ? <kbd>{flipKey}</kbd> : null}
                   </button>
-                  <span className="learn-page-panel__reveal-hint">
-                    Reveal the answer to grade this card.
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        </>
-      )}
+
+            {panel.isBrowseMode ? null : (
+              <div className="learn-desk__side" aria-hidden="true">
+                <span className="learn-desk__pile learn-desk__pile--done">
+                  <i />
+                  <i />
+                  <i>
+                    {lastDoneCard ? (
+                      <>
+                        <b>{lastDoneCard.text}</b>
+                        <em className={`learn-desk__grade learn-desk__grade--${lastDoneCard.kind}`}>
+                          {GRADE_LABELS[lastDoneCard.kind] || lastDoneCard.kind}
+                        </em>
+                      </>
+                    ) : null}
+                  </i>
+                </span>
+                <span className="learn-desk__count">
+                  {panel.sessionReceipt.done}
+                  <small>done</small>
+                </span>
+              </div>
+            )}
+          </>
+        ) : null}
+      </div>
 
       <LearnSessionSettingsDialog sessionControl={sessionControl} />
     </article>
@@ -287,3 +337,43 @@ export const LearnFlashcardsPanel = memo(() => {
 });
 
 LearnFlashcardsPanel.displayName = "LearnFlashcardsPanel";
+
+// One tick per card in today's queue, coloured by the grade it got; a plain
+// bar when the queue is too long for ticks, and a position while browsing.
+const SessionReceipt = memo(({ receipt, isBrowseMode, browseProgressLabel }) => {
+  if (isBrowseMode) {
+    return browseProgressLabel ? (
+      <span className="learn-desk__receipt">
+        <span className="learn-desk__receipt-count">{browseProgressLabel}</span>
+      </span>
+    ) : null;
+  }
+
+  if (receipt.total === 0) {
+    return null;
+  }
+
+  const label = `${receipt.done} of ${receipt.total} cards done today`;
+
+  return (
+    <span className="learn-desk__receipt" role="img" aria-label={label} title={label}>
+      {receipt.ticks ? (
+        <span className="learn-desk__ticks">
+          {receipt.ticks.map((tick, index) => (
+            <i key={index} className={`learn-desk__tick learn-desk__tick--${tick}`} />
+          ))}
+        </span>
+      ) : (
+        <span className="learn-desk__bar">
+          <i style={{ width: `${(receipt.done / receipt.total) * 100}%` }} />
+        </span>
+      )}
+      <span className="learn-desk__receipt-count">
+        {receipt.done}
+        <small> / {receipt.total}</small>
+      </span>
+    </span>
+  );
+});
+
+SessionReceipt.displayName = "SessionReceipt";

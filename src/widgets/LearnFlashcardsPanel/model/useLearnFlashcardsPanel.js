@@ -7,8 +7,11 @@ import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   LEARN_FLIP_SHORTCUT_MODES,
   LEARN_RATING_SHORTCUT_MODES,
+  resolveLearnFlipKeyLabel,
+  resolveLearnRatingKeyLabels,
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
+import { buildSessionReceipt } from "./sessionReceipt";
 import {
   hasStoredLearnProgressViewMode,
   readLearnProgressFromSession,
@@ -398,6 +401,15 @@ export const useLearnFlashcardsPanel = () => {
   const { decks, isLoading: isDecksLoading, error: decksError } = useDecks();
   const { appPreferences, updateAppPreferences } = useAppPreferences();
   const { shortcutSettings } = useShortcutSettings();
+  // The last thing that took a card off the desk: a grade, or a step back or
+  // forward while browsing. The view animates the card away from it.
+  const [cardMove, setCardMove] = useState(null);
+  const cardMoveTokenRef = useRef(0);
+  const [gradesByDeckId, setGradesByDeckId] = useState({});
+  const announceCardMove = useCallback((kind) => {
+    cardMoveTokenRef.current += 1;
+    setCardMove({ token: cardMoveTokenRef.current, kind });
+  }, []);
   const preferredLearnViewMode = resolvePreferredLearnViewMode(
     appPreferences?.studySession?.defaultStudyMode,
   );
@@ -1062,6 +1074,11 @@ export const useLearnFlashcardsPanel = () => {
           forceAllCards: isExtendedSession,
         });
 
+        announceCardMove(rating);
+        setGradesByDeckId((prevValue) => ({
+          ...prevValue,
+          [selectedDeckId]: [...(prevValue[selectedDeckId] || []), rating],
+        }));
         setSession(nextSession || EMPTY_SESSION);
         setLearnProgress((prevState) => ({
           ...prevState,
@@ -1075,6 +1092,7 @@ export const useLearnFlashcardsPanel = () => {
       }
     },
     [
+      announceCardMove,
       currentWord,
       isBrowseMode,
       isRatingPending,
@@ -1126,12 +1144,14 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
+    announceCardMove("prev");
     setBrowseProgressCardWordId(selectedDeckId, nextWord.id);
     setLearnProgress((prevState) => ({
       ...prevState,
       isBackVisible: false,
     }));
   }, [
+    announceCardMove,
     browseWordIndex,
     deckWords,
     isBrowseMode,
@@ -1155,12 +1175,14 @@ export const useLearnFlashcardsPanel = () => {
       return;
     }
 
+    announceCardMove("next");
     setBrowseProgressCardWordId(selectedDeckId, nextWord.id);
     setLearnProgress((prevState) => ({
       ...prevState,
       isBackVisible: false,
     }));
   }, [
+    announceCardMove,
     browseWordIndex,
     deckWords,
     isBrowseMode,
@@ -1388,6 +1410,38 @@ export const useLearnFlashcardsPanel = () => {
       !isExtendedSession,
   );
 
+  const sessionStats = session?.stats || EMPTY_SESSION.stats;
+  const sessionReceipt = useMemo(
+    () =>
+      buildSessionReceipt({
+        studied: sessionStats.totalStudiedToday,
+        remaining: sessionStats.dueTotal,
+        grades: gradesByDeckId[selectedDeckId] || [],
+        hasCurrentCard: Boolean(currentWord),
+      }),
+    [
+      currentWord,
+      gradesByDeckId,
+      selectedDeckId,
+      sessionStats.dueTotal,
+      sessionStats.totalStudiedToday,
+    ],
+  );
+  const shortcutKeyLabels = useMemo(() => {
+    if (!shortcutSettings.showLearnShortcuts) {
+      return { flip: "", ratings: {} };
+    }
+
+    return {
+      flip: resolveLearnFlipKeyLabel(shortcutSettings.learnFlip),
+      ratings: resolveLearnRatingKeyLabels(shortcutSettings.learnRating),
+    };
+  }, [
+    shortcutSettings.learnFlip,
+    shortcutSettings.learnRating,
+    shortcutSettings.showLearnShortcuts,
+  ]);
+
   return {
     deck: isBrowseMode ? deckDetails : session?.deck || null,
     sessionMode: session?.sessionMode || EMPTY_SESSION.sessionMode,
@@ -1415,7 +1469,10 @@ export const useLearnFlashcardsPanel = () => {
     sessionSettings,
     exerciseMode: sessionSettings.exerciseMode,
     isSessionSettingsOpen,
-    sessionStats: session?.stats || EMPTY_SESSION.stats,
+    sessionStats,
+    sessionReceipt,
+    cardMove,
+    shortcutKeyLabels,
     sessionLimits: session?.limits || EMPTY_SESSION.limits,
     completionMessage: isBrowseMode ? "" : buildCompletionMessage(session),
     canStartNewSession: isBrowseMode ? false : canStartNewSession,

@@ -5,7 +5,19 @@ const EMPTY_CARD = Object.freeze({});
 const EMPTY_BADGES = Object.freeze([]);
 const EMPTY_DETAILS = Object.freeze([]);
 
-export const Flashcard = memo(({ card = EMPTY_CARD }) => {
+// A word is set as a headline; a sentence cannot be, so the longer the text
+// the smaller and lighter it is set.
+const resolveTextLengthClass = (text) => {
+  const length = typeof text === "string" ? text.trim().length : 0;
+
+  if (length > 120) {
+    return " flashcard__text--xlong";
+  }
+
+  return length > 32 ? " flashcard__text--long" : "";
+};
+
+export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
     const {
       frontLabel = "Front",
       frontText,
@@ -16,11 +28,20 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
       isFlipped = false,
       onFlip,
       disabled = false,
+      frontNote = "",
     } = card;
+    const className = [
+      "flashcard",
+      variant ? `flashcard--${variant}` : "",
+      isFlipped ? "flashcard--flipped" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
       <button
         type="button"
-        className={isFlipped ? "flashcard flashcard--flipped" : "flashcard"}
+        className={className}
         onClick={onFlip}
         disabled={disabled}
         aria-label={
@@ -37,9 +58,14 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
           >
             <span className="flashcard__label">{frontLabel}</span>
             <span className="flashcard__content">
-              <strong className="flashcard__text">{frontText || "-"}</strong>
+              <strong className={`flashcard__text${resolveTextLengthClass(frontText)}`}>
+                {frontText || "-"}
+              </strong>
             </span>
-            <span className="flashcard__hint">Tap to reveal answer</span>
+            <span className="flashcard__foot">
+              <span className="flashcard__note">{frontNote}</span>
+              <span className="flashcard__hint">Tap to reveal answer</span>
+            </span>
           </span>
 
           <span
@@ -66,7 +92,9 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
               )}
             </span>
             <span className="flashcard__content">
-              <strong className="flashcard__text">{backText || "-"}</strong>
+              <strong className={`flashcard__text${resolveTextLengthClass(backText)}`}>
+                {backText || "-"}
+              </strong>
               {backDetails.length > 0 && (
                 <span className="flashcard__details" aria-label="Examples">
                   {backDetails.map((detail, index) => (
@@ -77,7 +105,10 @@ export const Flashcard = memo(({ card = EMPTY_CARD }) => {
                 </span>
               )}
             </span>
-            <span className="flashcard__hint">Tap to see front side</span>
+            <span className="flashcard__foot">
+              <span className="flashcard__note" />
+              <span className="flashcard__hint">Tap to see front side</span>
+            </span>
           </span>
         </span>
       </button>

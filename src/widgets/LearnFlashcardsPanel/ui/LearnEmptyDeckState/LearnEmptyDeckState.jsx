@@ -1,32 +1,22 @@
 import { memo } from "react";
 
-export const LearnEmptyDeckState = memo(
-  ({ onCreateDeck, onOpenBrowse }) => {
-    return (
-      <div className="learn-page-panel__status learn-page-panel__status--fill">
-        <div className="learn-page-panel__empty-state">
-          <strong>No decks yet.</strong>
-          <span>Create your first deck or import one from Browse.</span>
-          <div className="learn-page-panel__empty-actions">
-            <button
-              type="button"
-              className="learn-page-panel__empty-action learn-page-panel__empty-action--primary"
-              onClick={onCreateDeck}
-            >
-              Create deck
-            </button>
-            <button
-              type="button"
-              className="learn-page-panel__empty-action"
-              onClick={onOpenBrowse}
-            >
-              Open Browse
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  },
-);
+export const LearnEmptyDeckState = memo(({ onCreateDeck, onOpenBrowse }) => (
+  <div className="learn-desk__note-card learn-desk__note-card--empty">
+    <strong>No decks yet.</strong>
+    <p>Make your first deck, or take one that other learners published.</p>
+    <div className="learn-desk__note-actions">
+      <button
+        type="button"
+        className="learn-desk__key learn-desk__key--primary"
+        onClick={onCreateDeck}
+      >
+        Create deck
+      </button>
+      <button type="button" className="learn-desk__key" onClick={onOpenBrowse}>
+        Browse the hub
+      </button>
+    </div>
+  </div>
+));
 
 LearnEmptyDeckState.displayName = "LearnEmptyDeckState";

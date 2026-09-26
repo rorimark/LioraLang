@@ -44,15 +44,21 @@
   --color-overlay: rgba(16, 24, 40, 0.42);
 
   --flashcard-front-bg: #ffffff;
-  --flashcard-back-bg: #e3edff;
+  --flashcard-back-bg: #2563eb;
+  --flashcard-back-edge: #1a47b8;
+  --flashcard-on-back: #ffffff;
   --flashcard-label-bg: #f1f4fa;
   --flashcard-border: #cfd4df;
+  /* The ruled lines and the red header line of a paper index card. */
+  --flashcard-rule: rgba(37, 99, 235, 0.1);
+  --flashcard-header-rule: rgba(255, 90, 95, 0.6);
 
   /* Depth comes mostly from edges; shadows only lift floating layers. */
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
   --shadow-md: 0 24px 60px rgba(16, 24, 40, 0.16);
   --shadow-tooltip: 0 12px 30px rgba(16, 24, 40, 0.18);
   --shadow-flashcard: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-card: 0 1px 0 rgba(16, 24, 40, 0.04), 0 22px 44px -22px rgba(16, 24, 40, 0.34);
 
   --radius-control: 12px;
   --radius-panel: 20px;
@@ -101,12 +107,16 @@
   --color-overlay: rgba(3, 8, 18, 0.62);
 
   --flashcard-front-bg: #16233a;
-  --flashcard-back-bg: #1c2d52;
+  --flashcard-back-bg: #2f6bff;
+  --flashcard-back-edge: #1d4fcf;
   --flashcard-label-bg: #1b2a47;
   --flashcard-border: #33466a;
+  --flashcard-rule: rgba(120, 160, 255, 0.08);
+  --flashcard-header-rule: rgba(255, 110, 115, 0.5);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 26px 60px rgba(0, 0, 0, 0.5);
   --shadow-tooltip: 0 14px 32px rgba(0, 0, 0, 0.5);
   --shadow-flashcard: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.2), 0 24px 48px -20px rgba(0, 0, 0, 0.72);
 }
