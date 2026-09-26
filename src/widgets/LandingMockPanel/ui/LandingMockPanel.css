@@ -343,10 +343,9 @@
 }
 
 .lp-langs__inner {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px 28px;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
   max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
   margin-inline: auto;
   padding: 18px var(--lp-gutter);
@@ -363,13 +362,11 @@
 .lp-langs ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 26px;
+  justify-content: center;
+  gap: 10px;
+  max-width: 720px;
   padding: 0;
   list-style: none;
-}
-
-.lp-langs ul {
-  gap: 10px;
 }
 
 .lp-langs li {
@@ -1058,15 +1055,6 @@
 
   .lp-brand {
     font-size: 1.4rem;
-  }
-
-  .lp-langs__inner {
-    justify-content: center;
-    text-align: center;
-  }
-
-  .lp-langs ul {
-    justify-content: center;
   }
 
   .lp-demo__card {

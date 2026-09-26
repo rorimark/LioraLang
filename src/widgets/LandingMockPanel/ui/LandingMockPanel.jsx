@@ -197,7 +197,9 @@ export const LandingMockPanel = memo(() => {
 
       <div className="lp-langs">
         <div className="lp-langs__inner">
-          <span className="lp-langs__label">Any language pair, like</span>
+          <span className="lp-langs__label">
+            {deckLanguages.length} languages, any pair
+          </span>
           <ul>
             {deckLanguages.map((language) => (
               <li key={language.name} className={`lp-tone-${language.tone}`}>

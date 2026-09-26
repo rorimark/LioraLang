@@ -1,16 +1,16 @@
 import { useCallback } from "react";
 import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
+import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
-// A few examples: decks take any language pair.
-const DECK_LANGUAGES = [
-  { name: "English", tone: "blue" },
-  { name: "Polish", tone: "red" },
-  { name: "German", tone: "amber" },
-  { name: "Russian", tone: "green" },
-  { name: "Ukrainian", tone: "blue" },
-];
+// Every language a deck can use, straight from the app's own list, so the
+// landing never promises fewer or more than the deck editor offers.
+const LANGUAGE_TONES = ["blue", "red", "amber", "green"];
+const DECK_LANGUAGES = LANGUAGE_OPTIONS.map((name, index) => ({
+  name,
+  tone: LANGUAGE_TONES[index % LANGUAGE_TONES.length],
+}));
 
 const AUTHOR_URL = "https://mark-storchovyi.com";
 
