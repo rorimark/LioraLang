@@ -462,3 +462,95 @@
     padding: 6px 7px;
   }
 }
+
+/* === Keys ===
+   Saving and adding a word are the actions this screen exists for, so they
+   are the filled blue keys; going back and clearing stay neutral. */
+.deck-editor-panel__toolbar button,
+.deck-editor-panel__word-actions button,
+.deck-editor-panel__table-actions button {
+  border-color: var(--color-border-strong);
+  border-bottom: var(--edge-width) solid var(--color-border-strong);
+  background: var(--color-surface);
+  font-weight: 800;
+  transition:
+    transform 160ms var(--motion-spring),
+    border-bottom-width 160ms var(--motion-spring),
+    background-color 140ms ease,
+    filter 140ms ease;
+}
+
+.deck-editor-panel__table-actions button {
+  border-bottom-width: 3px;
+}
+
+.deck-editor-panel__toolbar button:not([class]),
+.deck-editor-panel__word-actions button:not([class]) {
+  border-color: var(--color-primary-strong);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.deck-editor-panel__toolbar .deck-editor-panel__button--secondary,
+.deck-editor-panel__word-actions .deck-editor-panel__button--secondary {
+  color: var(--color-text-muted);
+}
+
+.deck-editor-panel__table-actions .deck-editor-panel__button--danger {
+  border-color: var(--color-grade-again-edge);
+  background: var(--color-grade-again);
+  color: var(--color-on-primary);
+  font-weight: 800;
+}
+
+/* Touch devices keep a sticky :hover; the filled danger key stays filled. */
+.deck-editor-panel__table-actions .deck-editor-panel__button--danger:is(:hover, :active) {
+  background: var(--color-grade-again);
+}
+
+@media (hover: hover) {
+  .deck-editor-panel__toolbar button:hover:not(:disabled),
+  .deck-editor-panel__word-actions button:hover:not(:disabled),
+  .deck-editor-panel__table-actions button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-bottom-width: calc(var(--edge-width) + 1px);
+  }
+
+  .deck-editor-panel__toolbar button:not([class]):hover:not(:disabled),
+  .deck-editor-panel__word-actions button:not([class]):hover:not(:disabled),
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+
+  .deck-editor-panel__toolbar button:not([class]):hover:not(:disabled),
+  .deck-editor-panel__word-actions button:not([class]):hover:not(:disabled) {
+    background: var(--color-primary);
+  }
+
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover:not(:disabled) {
+    background: var(--color-grade-again);
+  }
+}
+
+.deck-editor-panel__toolbar button:active:not(:disabled),
+.deck-editor-panel__word-actions button:active:not(:disabled),
+.deck-editor-panel__table-actions button:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  transition-duration: 60ms;
+}
+
+.deck-editor-panel__toolbar button:focus-visible,
+.deck-editor-panel__word-actions button:focus-visible,
+.deck-editor-panel__table-actions button:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-editor-panel__toolbar button,
+  .deck-editor-panel__word-actions button,
+  .deck-editor-panel__table-actions button {
+    transition: none;
+  }
+}
