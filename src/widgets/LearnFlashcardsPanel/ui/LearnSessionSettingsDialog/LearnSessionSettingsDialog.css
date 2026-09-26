@@ -401,3 +401,56 @@
     transform: scale(0.995);
   }
 }
+
+/* === Keys ===
+   Options are keys too: the chosen one is the pressed-in blue key, the
+   others lift on hover. Visual layer only; layout stays above. */
+.learn-session-dialog__section-title {
+  font-weight: 900;
+}
+
+.learn-session-dialog__option-card {
+  border: 2px solid var(--color-border);
+  border-bottom-width: var(--edge-width);
+  box-shadow: none;
+  transition:
+    transform 160ms var(--motion-spring),
+    border-color 140ms ease,
+    background-color 140ms ease;
+}
+
+.learn-session-dialog__option-head strong {
+  font-weight: 900;
+}
+
+@media (hover: hover) {
+  .learn-session-dialog__option-card:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: var(--color-border-strong);
+  }
+}
+
+.learn-session-dialog__option-card--active,
+.learn-session-dialog__option-card--active:hover:not(:disabled) {
+  border-color: var(--color-primary-border);
+  border-bottom-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  box-shadow: none;
+  transform: none;
+}
+
+.learn-session-dialog__option-card--active .learn-session-dialog__option-head strong {
+  color: var(--color-primary);
+}
+
+.learn-session-dialog__option-indicator {
+  border-color: var(--color-primary-strong);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-session-dialog__option-card {
+    transition: none;
+  }
+}

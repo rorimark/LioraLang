@@ -1096,3 +1096,130 @@
     min-height: 100%;
   }
 }
+
+/* === Keys ===
+   The visual layer only: colour, borders and motion. Sizes and layout stay in
+   the rules above, per breakpoint, so every screen keeps its geometry. */
+
+.learn-page-panel__deck-control label {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.learn-page-panel__deck-control select {
+  border: 2px solid var(--color-border);
+  border-bottom-width: 3px;
+  border-radius: var(--radius-control);
+  font-weight: 800;
+}
+
+.learn-page-panel__deck-control select:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-soft);
+}
+
+.learn-page-panel__session-trigger,
+.learn-page-panel__nav-button,
+.learn-page-panel__flip-button {
+  border: 2px solid var(--color-border-strong);
+  border-bottom-width: var(--edge-width);
+  border-radius: 14px;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: 800;
+  box-shadow: none;
+  transition:
+    transform 160ms var(--motion-spring),
+    border-bottom-width 160ms var(--motion-spring),
+    filter 140ms ease,
+    background-color 140ms ease;
+}
+
+.learn-page-panel__session-trigger-label {
+  font-weight: 800;
+}
+
+/* Showing the answer is the one thing to do next: the blue key. */
+.learn-page-panel__flip-button,
+.learn-page-panel__rating-placeholder--reveal .learn-page-panel__flip-button {
+  border-color: var(--color-primary-strong);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .learn-page-panel__session-trigger:hover,
+  .learn-page-panel__nav-button:hover:not(:disabled),
+  .learn-page-panel__flip-button:hover:not(:disabled),
+  .learn-page-panel__rating-placeholder--reveal .learn-page-panel__flip-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-bottom-width: calc(var(--edge-width) + 2px);
+    box-shadow: none;
+    filter: brightness(1.05);
+  }
+
+  .learn-page-panel__session-trigger:hover,
+  .learn-page-panel__nav-button:hover:not(:disabled) {
+    background: var(--color-surface);
+    border-color: var(--color-border-strong);
+  }
+
+  .learn-page-panel__flip-button:hover:not(:disabled),
+  .learn-page-panel__rating-placeholder--reveal .learn-page-panel__flip-button:hover:not(:disabled) {
+    background: var(--color-primary);
+    border-color: var(--color-primary-strong);
+  }
+}
+
+.learn-page-panel__session-trigger:active,
+.learn-page-panel__nav-button:active:not(:disabled),
+.learn-page-panel__flip-button:active:not(:disabled) {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+  box-shadow: none;
+  transition-duration: 60ms;
+}
+
+.learn-page-panel__nav-button:disabled,
+.learn-page-panel__flip-button:disabled {
+  opacity: 0.45;
+}
+
+.learn-page-panel__session-trigger:focus-visible,
+.learn-page-panel__nav-button:focus-visible,
+.learn-page-panel__flip-button:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+/* The tray under the card holds the keys; it recedes so they stand out. */
+.learn-page-panel__rating-placeholder {
+  border: 0;
+  border-radius: 18px;
+  background: var(--color-surface-muted);
+  font-weight: 700;
+}
+
+.learn-page-panel__button-hint {
+  border: 1px solid currentColor;
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-weight: 800;
+  opacity: 0.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-page-panel__session-trigger,
+  .learn-page-panel__nav-button,
+  .learn-page-panel__flip-button {
+    transition: none;
+  }
+}
+
+.learn-page-panel__rating-placeholder--actions .learn-page-panel__flip-button {
+  font-weight: 800;
+}

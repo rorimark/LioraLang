@@ -38,7 +38,9 @@
   gap: 12px;
   padding: 24px;
   border-radius: 22px;
-  border: 1px solid var(--flashcard-border);
+  /* A card you can pick up: a firm outline and a deeper bottom edge. */
+  border: 2px solid var(--flashcard-border);
+  border-bottom-width: 6px;
   box-shadow: var(--shadow-flashcard);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -82,11 +84,12 @@
   display: inline-flex;
   width: fit-content;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--flashcard-label-bg);
   color: var(--color-text-muted);
   font-size: 0.74rem;
-  letter-spacing: 0.06em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 5px 10px;
 }
@@ -101,7 +104,7 @@
 .flashcard__meta-badge {
   text-transform: none;
   letter-spacing: 0;
-  font-weight: 500;
+  font-weight: 800;
   white-space: nowrap;
 }
 
@@ -113,7 +116,9 @@
 
 .flashcard__text {
   font-size: clamp(1.62rem, 3.25vw, 2.75rem);
-  line-height: 1.24;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: var(--color-text);
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -215,4 +220,10 @@
   .flashcard__hint {
     font-size: 0.72rem;
   }
+}
+
+/* A word on the front is a headline; a sentence on the back is read, so it
+   is set lighter. */
+.flashcard__face--back .flashcard__text {
+  font-weight: 700;
 }
