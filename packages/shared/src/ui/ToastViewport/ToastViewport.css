@@ -145,3 +145,35 @@
     animation: none;
   }
 }
+
+/* A toast is a small card in the grade colours: the tone shows in its
+   thicker bottom edge, the text stays bold enough to read at a glance. */
+.toast-item {
+  border-radius: var(--radius-control);
+  border-bottom-width: var(--edge-width);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-tooltip);
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 10px 12px;
+}
+
+.toast-item--error,
+.toast-item--danger {
+  border-bottom-color: var(--color-grade-again-edge);
+}
+
+.toast-item--success {
+  border-bottom-color: var(--color-grade-easy-edge);
+}
+
+.toast-item--warning {
+  border-bottom-color: var(--color-grade-hard-edge);
+}
+
+.toast-item__action {
+  border: 2px solid var(--color-border-strong);
+  border-bottom-width: 3px;
+  border-radius: 10px;
+  font-weight: 800;
+}
