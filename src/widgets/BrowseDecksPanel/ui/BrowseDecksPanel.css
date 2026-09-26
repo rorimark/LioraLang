@@ -333,3 +333,45 @@
     font-size: 0.78rem;
   }
 }
+
+/* === Hub cards ===
+   A deck card is a panel with the landing's thicker bottom edge. The card
+   itself is not a button, so it only warms its border on hover; the import
+   key inside it is what presses. */
+.browse-decks-panel__card {
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-panel);
+  box-shadow: none;
+  padding: 16px;
+  transition: border-color 160ms ease;
+}
+
+@media (hover: hover) {
+  .browse-decks-panel__card:hover {
+    border-color: var(--color-primary-border);
+  }
+}
+
+.browse-decks-panel__card-head h3 {
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.browse-decks-panel__date-pill,
+.browse-decks-panel__stats dt {
+  font-weight: 800;
+}
+
+.browse-decks-panel__stat {
+  border-color: transparent;
+}
+
+.browse-decks-panel__stats dd {
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .browse-decks-panel__card {
+    transition: none;
+  }
+}
