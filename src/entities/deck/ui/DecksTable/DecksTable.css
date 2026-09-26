@@ -594,3 +594,33 @@
 .decks-table tbody td:first-child {
   font-weight: 800;
 }
+
+/* The row menu floats like a dialog: a panel border, a soft shadow, and the
+   bolder type the rest of the app uses for things you can press. */
+.decks-table__menu {
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-tooltip);
+  animation: decks-table-menu-in 160ms var(--motion-spring);
+  transform-origin: top right;
+}
+
+.decks-table__menu button {
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+@keyframes decks-table-menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decks-table__menu {
+    animation: none;
+  }
+}

@@ -236,3 +236,79 @@
     padding: 0 12px;
   }
 }
+
+/* === Keys ===
+   Each place to delete from is a big key; the one that deletes everywhere
+   carries the red of "Again", the grade for something gone wrong. */
+.delete-deck-modal__deck {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-muted);
+}
+
+.delete-deck-modal__deck-copy strong {
+  font-weight: 900;
+}
+
+.delete-deck-modal__section-label {
+  font-weight: 800;
+}
+
+.delete-deck-modal__choice {
+  border: 2px solid var(--color-border-strong);
+  border-bottom: var(--edge-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  transition:
+    transform 160ms var(--motion-spring),
+    border-bottom-width 160ms var(--motion-spring),
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.delete-deck-modal__choice strong {
+  font-weight: 900;
+}
+
+.delete-deck-modal__choice.delete-deck-modal__choice--danger {
+  border-color: color-mix(in srgb, var(--color-grade-again) 45%, var(--color-border));
+  border-bottom-color: var(--color-grade-again-edge);
+  background: color-mix(in srgb, var(--color-grade-again) 7%, var(--color-surface));
+}
+
+.delete-deck-modal__choice:hover:not(:disabled),
+.delete-deck-modal__choice:focus-visible:not(:disabled) {
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .delete-deck-modal__choice:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-bottom-width: calc(var(--edge-width) + 1px);
+  }
+}
+
+.delete-deck-modal__choice:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  transition-duration: 60ms;
+}
+
+.delete-deck-modal__choice:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+.delete-deck-modal__cancel {
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .delete-deck-modal__choice {
+    transition: none;
+  }
+}
+
+.delete-deck-modal__choice--danger:is(:hover, :focus-visible):not(:disabled) {
+  border-bottom-color: var(--color-grade-again-edge);
+}

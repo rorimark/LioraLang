@@ -90,3 +90,105 @@
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+/* === Keys ===
+   A dialog is a panel lifted above the page: the same 2px border and radius
+   as the panels, and key buttons with the confirm action filled blue. */
+.action-modal__content {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  padding: 20px;
+  gap: 14px;
+  animation: action-modal-in 220ms var(--motion-spring);
+}
+
+.action-modal__overlay {
+  animation: action-modal-fade 160ms ease;
+}
+
+.action-modal__header h3 {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.action-modal__close {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-control);
+  font-size: 1.3rem;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.action-modal__close:hover {
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+.action-modal__close:focus-visible,
+.action-modal__actions button:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+.action-modal__actions button {
+  min-height: 40px;
+  padding: 8px 16px;
+  border-color: var(--color-border-strong);
+  border-bottom: var(--edge-width) solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  font-size: 0.9rem;
+  font-weight: 800;
+  transition:
+    transform 160ms var(--motion-spring),
+    border-bottom-width 160ms var(--motion-spring),
+    background-color 140ms ease,
+    filter 140ms ease;
+}
+
+.action-modal__actions .action-modal__confirm {
+  border-color: var(--color-primary-strong) !important;
+  background: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
+}
+
+@media (hover: hover) {
+  .action-modal__actions button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-bottom-width: calc(var(--edge-width) + 1px);
+  }
+
+  .action-modal__actions .action-modal__confirm:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+}
+
+.action-modal__actions button:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  transition-duration: 60ms;
+}
+
+@keyframes action-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+@keyframes action-modal-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-modal__content,
+  .action-modal__overlay {
+    animation: none;
+  }
+
+  .action-modal__actions button {
+    transition: none;
+  }
+}
