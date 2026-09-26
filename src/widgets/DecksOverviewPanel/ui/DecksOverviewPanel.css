@@ -48,9 +48,9 @@
   align-items: center;
   gap: 4px;
   padding: 0 10px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--color-surface-muted) 72%, var(--color-surface));
+  background: var(--color-surface-muted);
   line-height: 1;
 }
 
@@ -82,20 +82,19 @@
 }
 
 .decks-page-panel__icon-action {
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
   padding: 0;
-  border-radius: 10px;
-  border-color: color-mix(in srgb, var(--color-border) 82%, transparent);
-  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted));
-  color: var(--color-text-muted);
+  border-radius: var(--radius-control);
+  color: var(--color-primary);
 }
 
-.decks-page-panel__icon-action:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--color-border) 92%, transparent);
-  background: color-mix(in srgb, var(--color-surface-muted) 78%, var(--color-surface));
-  color: var(--color-text);
+/* Creating a deck is the main action on this page: the one blue key. */
+.decks-page-panel__icon-action--create {
+  border-color: var(--color-primary-strong);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 .decks-page-panel__icon-action svg {
