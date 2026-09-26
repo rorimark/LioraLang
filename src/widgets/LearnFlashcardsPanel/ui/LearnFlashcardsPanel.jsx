@@ -188,7 +188,11 @@ export const LearnFlashcardsPanel = memo(() => {
         </div>
       )}
 
-      <div className="learn-desk__stage">
+      <div
+        className={
+          panel.isBrowseMode ? "learn-desk__stage learn-desk__stage--browse" : "learn-desk__stage"
+        }
+      >
         {!panel.hasDecks ? (
           <LearnEmptyDeckState
             onCreateDeck={panel.openDeckCreatePage}
@@ -235,7 +239,16 @@ export const LearnFlashcardsPanel = memo(() => {
                   <i />
                   <i />
                 </span>
-                <div className="learn-desk__card" key={cardKey}>
+                <div
+                  // Stepping back brings the previous card in from the side it
+                  // left by, while the current one goes back into the deck.
+                  className={
+                    panel.cardMove?.kind === "prev"
+                      ? "learn-desk__card learn-desk__card--from-prev"
+                      : "learn-desk__card"
+                  }
+                  key={cardKey}
+                >
                   <Flashcard card={flashcard} variant="index" />
                 </div>
                 {leavingCard ? (
