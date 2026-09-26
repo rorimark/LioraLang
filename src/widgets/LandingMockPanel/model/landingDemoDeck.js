@@ -1,5 +1,4 @@
-// Six words from sample-decks/Travel & Tourism.lioradeck, as shipped in the
-// repository, so the demo studies real deck content.
+// Six travel words for the landing's demo session.
 export const LANDING_DEMO_DECK = Object.freeze({
   name: "Travel & Tourism",
   sourceLanguage: "English",

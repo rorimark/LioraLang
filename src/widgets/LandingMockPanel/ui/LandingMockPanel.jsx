@@ -135,9 +135,7 @@ FeatureRow.displayName = "FeatureRow";
 export const LandingMockPanel = memo(() => {
   const {
     deckLanguages,
-    sampleDecks,
-    sampleDeckStats,
-    sampleDecksUrl,
+    exampleDecks,
     authorUrl,
     platforms,
     footerLinks,
@@ -198,7 +196,7 @@ export const LandingMockPanel = memo(() => {
 
       <div className="lp-langs">
         <div className="lp-langs__inner">
-          <span className="lp-langs__label">Any language pair. Sample decks in</span>
+          <span className="lp-langs__label">Any language pair, like</span>
           <ul>
             {deckLanguages.map((language) => (
               <li key={language.name} className={`lp-tone-${language.tone}`}>
@@ -211,27 +209,10 @@ export const LandingMockPanel = memo(() => {
 
       <section className="lp-try" aria-labelledby="lp-try-title">
         <h2 id="lp-try-title">Try it right now.</h2>
-        <p>Six real words from the Travel &amp; Tourism deck. No sign-up.</p>
+        <p>Six words, a real review session, no sign-up.</p>
         <DemoSession />
       </section>
 
-      <section className="lp-stats" aria-label="Sample decks" data-reveal>
-        <ul>
-          {sampleDeckStats.map((stat) => (
-            <li key={stat.label} className={`lp-tone-${stat.tone}`}>
-              <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
-            </li>
-          ))}
-        </ul>
-        <p>
-          Free sample decks to download and import, from travel phrases to
-          false friends.{" "}
-          <a href={sampleDecksUrl} className="lp-link" target="_blank" rel={EXTERNAL_LINK_REL}>
-            Get a sample deck
-          </a>
-        </p>
-      </section>
 
       <FeatureRow
         id="lp-memory"
@@ -248,7 +229,7 @@ export const LandingMockPanel = memo(() => {
       <FeatureRow
         id="lp-decks"
         title="Your words. Your decks."
-        art={<DecksIllustration decks={sampleDecks} />}
+        art={<DecksIllustration decks={exampleDecks} />}
         isReversed
       >
         <p>

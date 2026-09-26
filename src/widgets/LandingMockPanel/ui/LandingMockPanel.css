@@ -644,56 +644,6 @@
 .lp-grade-good { background: var(--lp-blue); }
 .lp-grade-easy { background: var(--lp-green); }
 
-/* === Sample-deck figures === */
-
-.lp-stats {
-  display: grid;
-  justify-items: center;
-  gap: 20px;
-  width: 100%;
-  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
-  margin-inline: auto;
-  padding: clamp(24px, 4vw, 40px) var(--lp-gutter) clamp(40px, 6vw, 64px);
-  text-align: center;
-}
-
-.lp-stats ul {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  width: min(100%, 720px);
-  padding: 0;
-  list-style: none;
-}
-
-.lp-stats li {
-  display: grid;
-  gap: 2px;
-  padding: 18px 12px;
-  border: 2px solid var(--tone-edge);
-  border-bottom-width: 6px;
-  border-radius: 20px;
-  background: var(--tone-soft);
-}
-
-.lp-stats strong {
-  color: var(--tone-edge);
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  font-weight: 900;
-  line-height: 1;
-}
-
-.lp-stats li span {
-  font-weight: 800;
-}
-
-.lp-stats p {
-  max-width: 52ch;
-  color: var(--lp-ink-soft);
-  font-weight: 600;
-  line-height: 1.7;
-}
-
 /* === Feature rows, alternating sides === */
 
 .lp-feature {
@@ -971,7 +921,6 @@
 .lp-deck,
 .lp-platform,
 .lp-hub-card,
-.lp-stats li,
 .lp-langs li {
   transition: translate 160ms ease;
 }
@@ -979,7 +928,6 @@
 .lp-deck:hover,
 .lp-platform:hover,
 .lp-hub-card:hover,
-.lp-stats li:hover,
 .lp-langs li:hover {
   translate: 0 -4px;
 }
@@ -1096,19 +1044,6 @@
 }
 
 @media (max-width: 520px) {
-  .lp-stats ul {
-    gap: 8px;
-  }
-
-  .lp-stats li {
-    padding: 14px 6px;
-    border-radius: 16px;
-  }
-
-  .lp-stats li span {
-    font-size: 0.82rem;
-  }
-
   .lp-footer {
     justify-content: center;
     text-align: center;
