@@ -4,6 +4,8 @@
    screens are untouched. */
 
 .lp {
+  /* Slight overshoot, for things that move because they were touched. */
+  --lp-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --lp-blue: #2563eb;
   --lp-blue-edge: #1a47b8;
   --lp-blue-soft: #e3edff;
@@ -81,19 +83,54 @@
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   transition:
-    transform 80ms ease,
-    border-bottom-width 80ms ease,
-    filter 120ms ease;
+    transform 180ms var(--lp-spring),
+    border-bottom-width 180ms var(--lp-spring),
+    filter 160ms ease;
 }
 
-.lp-btn:hover {
-  filter: brightness(1.06);
+/* A key being lifted: the button rises and its bottom edge thickens, so
+   the press that follows has somewhere to go. */
+@media (hover: hover) {
+  .lp-btn:hover {
+    transform: translateY(-2px);
+    border-bottom-width: 7px;
+    filter: brightness(1.06);
+  }
 }
 
 .lp-btn:active {
   transform: translateY(3px);
   border-bottom-width: 2px;
+  transition-duration: 60ms;
+}
+
+/* A soft glint crosses the filled buttons on hover. */
+.lp-btn--primary::after,
+.lp-btn--inverse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.28) 50%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .lp-btn--primary:hover::after,
+  .lp-btn--inverse:hover::after {
+    transform: translateX(110%);
+    transition: transform 650ms ease;
+  }
 }
 
 .lp-btn--primary {
@@ -137,11 +174,43 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
-  border-bottom: 3px solid var(--lp-blue-soft);
+  padding-bottom: 3px;
 }
 
-.lp-link:hover {
-  border-color: var(--lp-blue);
+/* A pale track with the accent filling it from the left on hover. */
+.lp-link,
+.lp-footer a {
+  background:
+    linear-gradient(var(--lp-blue), var(--lp-blue)) left bottom / 0 3px no-repeat,
+    linear-gradient(var(--lp-blue-soft), var(--lp-blue-soft)) left bottom / 100% 3px
+      no-repeat;
+  transition:
+    background-size 280ms var(--lp-spring),
+    color 160ms ease;
+}
+
+.lp-footer a {
+  padding-bottom: 2px;
+  background-size:
+    0 2px,
+    0 2px;
+}
+
+@media (hover: hover) {
+  .lp-link:hover,
+  .lp-footer a:hover {
+    background-size:
+      100% 3px,
+      100% 3px;
+  }
+}
+
+@media (hover: hover) {
+  .lp-footer a:hover {
+    background-size:
+      100% 2px,
+      0 2px;
+  }
 }
 
 /* === Top bar === */
@@ -502,19 +571,38 @@
   color: var(--lp-on-color);
   font-family: var(--lp-font);
   transition:
-    transform 80ms ease,
-    border-bottom-width 80ms ease,
+    transform 180ms var(--lp-spring),
+    border-bottom-width 180ms var(--lp-spring),
+    filter 160ms ease,
     opacity 120ms ease;
+  animation: lp-pop-in 320ms var(--lp-spring) both;
+}
+
+.lp-demo .srs-rating-controls__button:nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.lp-demo .srs-rating-controls__button:nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.lp-demo .srs-rating-controls__button:nth-child(4) {
+  animation-delay: 120ms;
+}
+
+@media (hover: hover) {
+  .lp-demo .srs-rating-controls__button:hover:not(:disabled) {
+    background: var(--tone);
+    transform: translateY(-2px);
+    border-bottom-width: 7px;
+    filter: brightness(1.06);
+  }
 }
 
 .lp-demo .srs-rating-controls__button:active:not(:disabled) {
   transform: translateY(3px);
   border-bottom-width: 2px;
-}
-
-.lp-demo .srs-rating-controls__button:hover:not(:disabled) {
-  background: var(--tone);
-  filter: brightness(1.06);
+  transition-duration: 60ms;
 }
 
 .lp-demo .srs-rating-controls__button:disabled {
@@ -903,9 +991,11 @@
     color 160ms ease;
 }
 
-.lp-platform:hover .lp-platform__go {
-  color: var(--lp-blue);
-  transform: translateX(3px);
+@media (hover: hover) {
+  .lp-platform:hover .lp-platform__go {
+    color: var(--lp-blue);
+    transform: translateX(3px);
+  }
 }
 
 /* The hub picture is a link as a whole; it keeps its own look. */
@@ -965,14 +1055,89 @@
 .lp-platform,
 .lp-hub-card,
 .lp-langs li {
-  transition: translate 160ms ease;
+  transition:
+    translate 220ms var(--lp-spring),
+    rotate 220ms var(--lp-spring),
+    transform 260ms var(--lp-spring);
 }
 
-.lp-deck:hover,
-.lp-platform:hover,
-.lp-art-link:hover .lp-hub-card,
-.lp-langs li:hover {
-  translate: 0 -4px;
+@media (hover: hover) {
+  .lp-platform:hover {
+    translate: 0 -4px;
+  }
+}
+
+/* Tilted cards straighten up as they lift. */
+@media (hover: hover) {
+  .lp-deck:hover {
+    translate: 0 -6px;
+    transform: rotate(0deg) translateX(calc((var(--i) - 1) * 14px));
+  }
+}
+
+@media (hover: hover) {
+  .lp-art-link:hover .lp-hub-card {
+    translate: 0 -6px;
+    transform: rotate(0deg);
+  }
+}
+
+@media (hover: hover) {
+  .lp-langs li:hover {
+    translate: 0 -4px;
+    rotate: -3deg;
+  }
+}
+
+@media (hover: hover) {
+  .lp-langs li:nth-child(even):hover {
+    rotate: 3deg;
+  }
+}
+
+.lp-platform__icon {
+  transition: transform 300ms var(--lp-spring);
+}
+
+@media (hover: hover) {
+  .lp-platform:hover .lp-platform__icon {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+/* The review chart grows bar by bar when its section appears. */
+.lp-chart__bar {
+  transform-origin: bottom;
+}
+
+[data-revealed] .lp-chart__bar {
+  animation: lp-grow 700ms var(--lp-spring) both;
+  animation-delay: calc(var(--bar, 0) * 70ms + 150ms);
+}
+
+@keyframes lp-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* The next card in the demo slides in after a grade. */
+.lp-demo__card {
+  animation: lp-card-in 360ms var(--lp-spring) both;
+}
+
+@keyframes lp-card-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px) rotate(1.5deg);
+  }
+}
+
+@keyframes lp-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
 }
 
 /* === Closing call to action === */
@@ -1050,8 +1215,10 @@
   text-decoration: none;
 }
 
-.lp-footer a:hover {
-  color: var(--lp-blue);
+@media (hover: hover) {
+  .lp-footer a:hover {
+    color: var(--lp-blue);
+  }
 }
 
 /* === Responsive === */
@@ -1139,7 +1306,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lp-sticker,
-  .lp-demo__badge {
+  .lp-demo__badge,
+  .lp-demo__card,
+  .lp-demo .srs-rating-controls__button,
+  [data-revealed] .lp-chart__bar {
     animation: none;
   }
 
@@ -1148,6 +1318,9 @@
   }
 
   .lp-btn,
+  .lp-btn::after,
+  .lp-link,
+  .lp-platform__icon,
   .lp-demo .srs-rating-controls__button,
   .lp-demo__progress span,
   .lp-platform,

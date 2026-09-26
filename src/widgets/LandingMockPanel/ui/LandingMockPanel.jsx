@@ -74,7 +74,8 @@ const DemoSession = memo(() => {
         </div>
       ) : (
         <>
-          <div className="lp-demo__card">
+          {/* Keyed by position, so each new word slides in. */}
+          <div className="lp-demo__card" key={position}>
             <Flashcard card={card} />
           </div>
           {/* One clear step at a time: recall, then show the answer, then
@@ -121,8 +122,8 @@ const TimelineChart = memo(() => {
 
   return (
     <ol className="lp-art lp-chart" aria-label="Days between reviews of one word">
-      {points.map((point) => (
-        <li key={point.review} style={{ "--height": point.height }}>
+      {points.map((point, index) => (
+        <li key={point.review} style={{ "--height": point.height, "--bar": index }}>
           <span className="lp-chart__gap">{point.gapLabel}</span>
           <span className="lp-chart__bar" aria-hidden />
           <span className="lp-chart__day">day {point.day}</span>
