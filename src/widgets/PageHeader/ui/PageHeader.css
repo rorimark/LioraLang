@@ -12,18 +12,18 @@
     var(--ui-page-header-padding-top)
     var(--ui-page-header-padding-x)
     var(--ui-page-header-padding-bottom);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  background: color-mix(in srgb, var(--color-bg) 94%, var(--color-surface));
+  border-bottom: 2px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
   backdrop-filter: blur(12px);
 }
 
 .page-header__left > h1 {
   margin: 0;
   font-family: var(--font-ui);
-  font-weight: 600;
+  font-weight: 900;
   font-size: var(--ui-page-header-title-size);
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: var(--color-text);
 }
 
@@ -31,8 +31,8 @@
   margin: 0 0 6px;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-weight: 800;
   font-size: 0.72rem;
 }
 

@@ -1,17 +1,17 @@
 .meta-badge {
   border-radius: 999px;
-  border: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--color-surface) 76%, var(--color-surface-muted));
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
   color: var(--color-text-muted);
   padding: var(--ui-meta-badge-padding-y) var(--ui-meta-badge-padding-x);
   font-size: var(--ui-meta-badge-font-size);
-  font-weight: 500;
+  font-weight: 800;
   line-height: 1;
   white-space: nowrap;
 }
 
 .meta-badge--accent {
-  border-color: var(--color-accent);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
   background: var(--color-accent-soft);
   color: var(--color-accent-strong);
 }

@@ -76,6 +76,16 @@ body {
   --ui-shortcut-check-min-height: 34px;
 }
 
+/* Native controls do not inherit the page font on their own. Zero
+   specificity, so every component's own rules still win. */
+:where(button, input, select, textarea) {
+  font-family: inherit;
+}
+
+:root {
+  accent-color: var(--color-primary);
+}
+
 :where(:focus-visible) {
   outline: 2px solid color-mix(in srgb, var(--ui-focus-ring-color) 48%, transparent);
   outline-offset: 2px;

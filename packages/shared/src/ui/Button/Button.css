@@ -1,87 +1,115 @@
+/* Buttons are keys: a 2px border with a thicker bottom edge in a darker
+   shade. Hover lifts the key, a press pushes it down. Filled buttons carry
+   the primary action; the quieter variants keep the shape without the fill. */
 .ui-button {
+  --button-bg: var(--color-surface);
+  --button-border: var(--color-border-strong);
+  --button-edge: var(--color-border-strong);
+  --button-text: var(--color-text);
+
   appearance: none;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 2px solid var(--button-border);
+  border-bottom: var(--edge-width) solid var(--button-edge);
+  border-radius: var(--radius-control);
+  background: var(--button-bg);
+  color: var(--button-text);
   font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 800;
   line-height: 1.1;
-  padding: 8px 12px;
+  cursor: pointer;
   transition:
+    transform 160ms var(--motion-spring),
+    border-bottom-width 160ms var(--motion-spring),
     background-color 140ms ease,
     border-color 140ms ease,
     color 140ms ease,
-    box-shadow 140ms ease,
+    filter 140ms ease,
     opacity 140ms ease;
 }
 
-.ui-button:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-text) 5%, var(--color-surface));
-  border-color: var(--color-border-strong);
+@media (hover: hover) {
+  .ui-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-bottom-width: calc(var(--edge-width) + 1px);
+    filter: brightness(1.04);
+  }
+}
+
+.ui-button:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  transition-duration: 60ms;
 }
 
 .ui-button:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .ui-button--primary {
-  background: color-mix(in srgb, var(--color-primary) 88%, white 12%);
-  border-color: color-mix(in srgb, var(--color-primary) 80%, black 20%);
-  color: var(--color-on-primary);
-  box-shadow: none;
-}
-
-.ui-button--primary:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-primary-strong) 92%, white 8%);
-  border-color: color-mix(in srgb, var(--color-primary-strong) 80%, black 20%);
+  --button-bg: var(--color-primary);
+  --button-border: var(--color-primary-strong);
+  --button-edge: var(--color-primary-strong);
+  --button-text: var(--color-on-primary);
 }
 
 .ui-button--secondary {
-  background: color-mix(in srgb, var(--color-surface) 75%, var(--color-surface-muted));
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-.ui-button--ghost {
-  background: var(--color-transparent);
-  border-color: var(--color-transparent);
-  color: var(--color-text-muted);
+  --button-bg: var(--color-surface);
+  --button-text: var(--color-primary);
 }
 
-.ui-button--ghost:hover:not(:disabled) {
-  background: var(--color-surface-muted);
-  color: var(--color-text);
+.ui-button--ghost {
+  --button-bg: var(--color-transparent);
+  --button-border: var(--color-transparent);
+  --button-edge: var(--color-transparent);
+  --button-text: var(--color-text-muted);
+}
+
+@media (hover: hover) {
+  .ui-button--ghost:hover:not(:disabled) {
+    --button-bg: var(--color-surface-muted);
+    --button-text: var(--color-text);
+
+    transform: none;
+    border-bottom-width: var(--edge-width);
+  }
 }
 
 .ui-button--danger {
-  background: color-mix(in srgb, var(--color-danger) 86%, white 14%);
-  border-color: color-mix(in srgb, var(--color-danger) 76%, black 24%);
-  color: var(--color-on-primary);
-  box-shadow: none;
-}
-
-.ui-button--danger:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-danger) 90%, black 10%);
-  border-color: color-mix(in srgb, var(--color-danger) 78%, black 22%);
+  --button-bg: var(--color-grade-again);
+  --button-border: var(--color-grade-again-edge);
+  --button-edge: var(--color-grade-again-edge);
+  --button-text: var(--color-on-primary);
 }
 
 .ui-button--sm {
-  font-size: 0.76rem;
-  padding: 7px 10px;
+  min-height: 34px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
 }
 
 .ui-button--md {
-  font-size: 0.82rem;
-  padding: 8px 12px;
+  font-size: 0.9rem;
 }
 
 .ui-button--full {
   width: 100%;
+}
+
+.ui-button:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-button {
+    transition: none;
+  }
 }
