@@ -280,30 +280,67 @@
   }
 }
 
-/* On a phone the toolbar is one row that scrolls sideways, not a column of
-   full-width buttons pushing the words off the screen. */
+/* On a phone the toolbar is one row that fits without scrolling: Edit deck
+   is the labelled key and takes the room; back, export, refresh and the
+   filters are square icon keys, named for screen readers by their text. */
 @media (max-width: 640px) {
   .cards-panel__actions {
     display: flex;
     flex-wrap: nowrap;
     gap: 8px;
-    margin-inline: -16px;
-    padding: 2px 16px 6px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-padding-inline: 16px;
-  }
-
-  .cards-panel__actions::-webkit-scrollbar {
-    display: none;
+    width: 100%;
   }
 
   .cards-panel__actions button {
     flex: none;
+    width: 46px;
+    min-height: 46px;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+
+  .cards-panel__actions button svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .cards-panel__actions button:not(:nth-child(2)) span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .cards-panel__actions button:nth-child(2) {
+    flex: 1;
     width: auto;
-    min-height: 40px;
-    padding: 7px 12px;
-    font-size: 0.82rem;
+    padding: 0 14px;
+    border-color: var(--color-primary-strong);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  /* Touch keeps a sticky :hover; the filled key stays filled. */
+  .cards-panel__actions button:nth-child(2):is(:hover, :active):not(:disabled) {
+    background: var(--color-primary);
+  }
+}
+
+@media (max-width: 380px) {
+  .cards-panel__actions {
+    gap: 6px;
+  }
+
+  .cards-panel__actions button {
+    width: 42px;
+    min-height: 44px;
+  }
+
+  .cards-panel__actions button:nth-child(2) {
+    gap: 6px;
+    padding: 0 8px;
     white-space: nowrap;
   }
 }
