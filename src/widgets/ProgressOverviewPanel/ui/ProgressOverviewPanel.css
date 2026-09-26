@@ -75,7 +75,7 @@
 .progress-overview__meta span {
   color: var(--color-text-muted);
   font-size: 0.72rem;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 999px;
   padding: 3px 8px;
   background: var(--color-surface-muted);
@@ -87,7 +87,7 @@
 }
 
 .progress-overview__chart-wrap {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   background: var(--color-surface-muted);
   padding: 10px 10px 8px;
@@ -107,7 +107,7 @@
   transform: translateX(-50%);
   background: color-mix(in srgb, var(--color-surface) 50%, transparent);
   backdrop-filter: blur(3px);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   padding: 6px 8px;
   box-shadow: var(--shadow-tooltip);
@@ -208,7 +208,7 @@
   margin-top: 12px;
   margin-bottom: 6px;
   padding: 6px 8px 8px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   background: color-mix(in srgb, var(--color-surface) 92%, var(--color-accent-soft));
 }
@@ -291,7 +291,7 @@
 .progress-overview__bar-row {
   display: grid;
   gap: 6px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   padding: 8px;
@@ -317,7 +317,7 @@
   min-width: 24px;
   height: 20px;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text-muted);
   font-size: 0.68rem;
@@ -344,7 +344,7 @@
   height: 6px;
   border-radius: 999px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   overflow: hidden;
 }
 
@@ -390,7 +390,7 @@
   height: clamp(46px, 6.5vw, 62px);
   border-radius: 50%;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   display: grid;
   place-items: center;
   color: var(--color-text);
@@ -415,7 +415,7 @@
 }
 
 .progress-overview__milestones li {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   color: var(--color-text);
@@ -430,7 +430,7 @@
 }
 
 .progress-overview__totals-card {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   padding: 10px 12px;
   background: var(--color-surface-muted);
@@ -457,7 +457,7 @@
 }
 
 .progress-overview__state button {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   color: var(--color-text);
@@ -600,4 +600,37 @@
   .progress-overview__kpi-trend {
     font-size: 0.72rem;
   }
+}
+
+/* The four headline numbers each keep a colour from the grade palette, on
+   the number and on the card's bottom edge, so they are told apart at a
+   glance: reviews blue, recall green, streak amber, mature cards deep blue. */
+.progress-overview__kpi-card:not(.progress-overview__placeholder) {
+  --kpi-tone: var(--color-grade-good);
+  --kpi-edge: var(--color-grade-good-edge);
+
+  border-bottom-color: var(--kpi-edge);
+}
+
+.progress-overview__kpi-card:nth-child(2) {
+  --kpi-tone: var(--color-grade-easy);
+  --kpi-edge: var(--color-grade-easy-edge);
+}
+
+.progress-overview__kpi-card:nth-child(3) {
+  --kpi-tone: var(--color-grade-hard);
+  --kpi-edge: var(--color-grade-hard-edge);
+}
+
+.progress-overview__kpi-card:nth-child(4) {
+  --kpi-tone: var(--color-primary-strong);
+  --kpi-edge: var(--color-primary-strong);
+}
+
+.progress-overview__kpi-card:not(.progress-overview__placeholder) strong {
+  color: var(--kpi-tone);
+}
+
+:root[theme="dark"] .progress-overview__kpi-card:nth-child(4) {
+  --kpi-tone: var(--color-primary);
 }

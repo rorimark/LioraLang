@@ -24,7 +24,7 @@
   display: inline-flex;
   width: fit-content;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface-muted);
   color: var(--color-text);
   font-size: 0.78rem;
@@ -44,7 +44,7 @@
 .cards-panel__retry {
   width: fit-content;
   border-radius: var(--radius-control);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface-muted);
   color: var(--color-text);
   cursor: pointer;
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
   color: var(--color-text);

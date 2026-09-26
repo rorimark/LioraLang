@@ -19,7 +19,7 @@
   justify-content: space-between;
   gap: 10px;
   border-radius: 10px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface-muted);
   color: var(--color-text);
   font-size: 0.82rem;

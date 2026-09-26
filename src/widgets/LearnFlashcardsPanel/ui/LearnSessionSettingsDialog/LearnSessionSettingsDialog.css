@@ -51,7 +51,7 @@
   display: inline-grid;
   place-items: center;
   flex-shrink: 0;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text);
 }
@@ -144,7 +144,7 @@
 
 .learn-session-dialog__option-card {
   width: 100%;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 14px;
   background: var(--color-surface);
   color: var(--color-text);
@@ -215,7 +215,7 @@
 }
 
 .learn-session-dialog__option-badge {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface-muted);
   color: var(--color-text-muted);
 }
@@ -232,7 +232,7 @@
 
 .learn-session-dialog__field,
 .learn-session-dialog__toggle {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 14px;
   background: var(--color-surface);
 }
@@ -260,7 +260,7 @@
 .learn-session-dialog__field input,
 .learn-session-dialog__field select {
   width: 100%;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   color: var(--color-text);

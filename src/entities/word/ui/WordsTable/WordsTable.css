@@ -5,7 +5,7 @@
   border-collapse: separate;
   border-spacing: 0;
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 14px;
   background: var(--color-surface);
 }
@@ -169,7 +169,7 @@
 .words-table__details {
   display: grid;
   gap: 12px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   background: var(--color-surface);
   padding: 12px;
@@ -191,7 +191,7 @@
 
 .words-table__details-grid > div,
 .words-table__details-examples {
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   padding: 10px 12px;
@@ -257,7 +257,7 @@
 
   .words-table tbody tr {
     display: block;
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
     border-radius: 12px;
     background: var(--color-surface);
     overflow: hidden;
@@ -327,7 +327,7 @@
   }
 
   .words-table__row-details {
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
     border-radius: 12px;
     background: var(--color-surface);
   }

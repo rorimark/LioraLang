@@ -125,7 +125,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 999px;
   background: color-mix(in srgb, var(--color-surface) 76%, var(--color-surface-muted));
   color: var(--color-text-muted);
@@ -358,7 +358,7 @@
   .decks-table tbody tr {
     display: block;
     width: 100%;
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
     border-radius: 12px;
     background: var(--color-surface);
     overflow: visible;
@@ -410,7 +410,7 @@
     justify-content: center;
     gap: 6px;
     width: 100%;
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
     border-radius: 8px;
     background: var(--color-surface);
     color: var(--color-text);

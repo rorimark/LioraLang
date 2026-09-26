@@ -20,7 +20,7 @@
 
 .decks-page-panel__message {
   border-radius: 10px;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   background: var(--color-surface-muted);
   color: var(--color-text);
   font-size: 0.82rem;
@@ -130,7 +130,7 @@
   transition: opacity 120ms ease, transform 120ms ease;
   z-index: 6;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 8px;
   box-shadow: var(--shadow-tooltip);
   color: var(--color-text);

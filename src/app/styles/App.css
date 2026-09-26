@@ -82,6 +82,10 @@ body {
   font-family: inherit;
 }
 
+:where(select) {
+  font-weight: 700;
+}
+
 :root {
   accent-color: var(--color-primary);
 }

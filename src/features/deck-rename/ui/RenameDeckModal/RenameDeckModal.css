@@ -5,7 +5,7 @@
 
 .rename-deck-modal__input {
   width: 100%;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 9px;
   background: var(--color-surface);
   color: var(--color-text);

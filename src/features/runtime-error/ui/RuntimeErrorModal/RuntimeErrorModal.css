@@ -65,7 +65,7 @@
 
 .runtime-error-modal__details {
   margin: 0;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   padding: 6px 8px;
@@ -96,7 +96,7 @@
 
 .runtime-error-modal__details-body {
   margin: 8px 0 0;
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-surface-muted);
   color: var(--color-text-muted);
