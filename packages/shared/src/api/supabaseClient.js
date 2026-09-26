@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { supabaseAuthLock } from "./supabaseAuthLock";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
 const supabasePublishableKey =
@@ -59,6 +60,7 @@ export const getSupabaseClient = () => {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: false,
+      lock: supabaseAuthLock,
     },
   });
 
