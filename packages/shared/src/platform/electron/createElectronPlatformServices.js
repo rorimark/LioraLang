@@ -1,6 +1,7 @@
 import {
   createSupabaseAuthRepository,
   getCurrentSupabaseAuthUser,
+  createSupabaseSyncApi,
 } from "@shared/api";
 import { buildUserProfileScope, GUEST_PROFILE_SCOPE } from "@shared/core/usecases/sync";
 import { createWebHubRepository } from "@shared/platform/web/model";
@@ -592,6 +593,7 @@ export const createElectronPlatformServices = () => {
     srsRepository: createSrsRepository(),
     progressRepository: createProgressRepository(),
     syncRepository: createSyncRepository({
+      syncApi: createSupabaseSyncApi(),
       authRepository,
       deckRepository,
       settingsRepository,

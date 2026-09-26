@@ -1,5 +1,5 @@
 /* global __APP_VERSION__ */
-import { createSupabaseAuthRepository } from "@shared/api";
+import { createSupabaseAuthRepository, createSupabaseSyncApi } from "@shared/api";
 import { createSyncRepository } from "@shared/sync";
 import {
   createWebDeckRepository,
@@ -129,6 +129,7 @@ export const createWebPlatformServices = () => {
     srsRepository: createLazySrsRepository(),
     progressRepository: createLazyProgressRepository(),
     syncRepository: createSyncRepository({
+      syncApi: createSupabaseSyncApi(),
       authRepository,
       deckRepository,
       settingsRepository,

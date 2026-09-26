@@ -1,4 +1,3 @@
-import { createSupabaseSyncApi } from "@shared/api";
 import {
   buildUserProfileScope,
   createDeckSyncId,
@@ -246,7 +245,10 @@ const toSaveDeckPayloadFromPackage = ({
   };
 };
 
+// The remote API is passed in by the platform layer, which is the only place
+// allowed to reach @shared/api (rules/code-and-components-rules.md §3).
 export const createSyncRepository = ({
+  syncApi,
   authRepository,
   deckRepository,
   settingsRepository,
@@ -255,7 +257,10 @@ export const createSyncRepository = ({
   platform = "app",
   deviceName = "LioraLang",
 } = {}) => {
-  const syncApi = createSupabaseSyncApi();
+  if (!syncApi) {
+    throw new Error("createSyncRepository needs a syncApi from the platform layer");
+  }
+
   const subscribers = new Set();
   let status = buildStatus({
     configured: syncApi.isConfigured(),
