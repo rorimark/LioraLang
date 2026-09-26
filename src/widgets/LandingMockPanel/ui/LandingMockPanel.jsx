@@ -20,6 +20,7 @@ import "./LandingMockPanel.css";
 const EXTERNAL_LINK_REL = "noopener noreferrer";
 
 const DemoSession = memo(() => {
+  const demoRef = useRef(null);
   const {
     deckName,
     card,
@@ -31,10 +32,10 @@ const DemoSession = memo(() => {
     log,
     handleRate,
     handleRestart,
-  } = useLandingDemoSession();
+  } = useLandingDemoSession(demoRef);
 
   return (
-    <div className="lp-demo">
+    <div className="lp-demo" ref={demoRef}>
       <div className="lp-demo__head">
         <span>{deckName}</span>
         <span className="lp-demo__progress" aria-hidden>

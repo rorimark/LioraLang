@@ -24,7 +24,19 @@ const NEW_CARD_PREVIEW = buildRatingPreview({
   nowMs: 0,
 });
 
-export const useLandingDemoSession = () => {
+// Keys belong to the page unless the demo is on screen: a visitor scrolling
+// with Space, or pressing it on a focused link or button, must get what the
+// browser normally does, not a card flipping out of sight.
+const INTERACTIVE_SELECTOR =
+  "a, button, input, textarea, select, summary, [contenteditable], [role='button']";
+
+const isOnScreen = (element) => {
+  if (!element) return false;
+  const { top, bottom } = element.getBoundingClientRect();
+  return bottom > 0 && top < window.innerHeight;
+};
+
+export const useLandingDemoSession = (demoRef) => {
   const { words } = LANDING_DEMO_DECK;
   const [index, setIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -53,17 +65,19 @@ export const useLandingDemoSession = () => {
     [word],
   );
 
-  // The same keys as the Learn page: Space flips, 1 to 4 grade. Ignored while
-  // the visitor is typing somewhere or holding a modifier.
+  // The same keys as the Learn page: Space flips, 1 to 4 grade. Only while
+  // the demo is visible, with no modifier held and no control focused (a
+  // focused button already answers Space by itself).
   useEffect(() => {
     if (isDone) return undefined;
 
     const handleKeyDown = (event) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
       const target = event.target;
-      if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable]")) {
+      if (target instanceof HTMLElement && target.closest(INTERACTIVE_SELECTOR)) {
         return;
       }
+      if (!isOnScreen(demoRef?.current)) return;
 
       if (event.code === "Space") {
         event.preventDefault();
@@ -80,7 +94,7 @@ export const useLandingDemoSession = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleFlip, handleRate, isDone, isFlipped]);
+  }, [demoRef, handleFlip, handleRate, isDone, isFlipped]);
 
   const handleRestart = useCallback(() => {
     setIndex(0);
