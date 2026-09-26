@@ -21,10 +21,17 @@ const EXAMPLE_DECKS = [
   { name: "Business & Startup Culture", pair: "DE · PL", words: 200, tone: "amber" },
 ];
 
+// Each platform card leads somewhere: the web app, or the desktop download.
+// A phone installs the web app from its browser, so it opens the app too.
 const PLATFORMS = [
-  { key: "web", title: "Web", text: "Any browser, nothing to install" },
-  { key: "desktop", title: "macOS & Windows", text: "Desktop app, fully offline" },
-  { key: "phone", title: "Phone", text: "Add to Home Screen" },
+  { key: "web", title: "Web", text: "Any browser, nothing to install", to: ROUTE_PATHS.learn },
+  {
+    key: "desktop",
+    title: "macOS & Windows",
+    text: "Desktop app, fully offline",
+    href: EXTERNAL_LINKS.githubReleases,
+  },
+  { key: "phone", title: "Phone", text: "Add to Home Screen", to: ROUTE_PATHS.learn },
 ];
 
 const FOOTER_LINKS = [

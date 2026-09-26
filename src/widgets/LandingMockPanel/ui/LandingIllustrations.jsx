@@ -1,8 +1,15 @@
 import { memo } from "react";
-import { IoDesktopOutline, IoGlobeOutline, IoPhonePortraitOutline } from "react-icons/io5";
+import { Link } from "react-router";
+import {
+  IoArrowForward,
+  IoDesktopOutline,
+  IoGlobeOutline,
+  IoPhonePortraitOutline,
+} from "react-icons/io5";
 
 // Illustrations drawn from the product's own pieces: cards, the four grades,
-// decks. Decorative only; the headings and copy beside them carry the meaning.
+// decks. The headings and copy beside them carry the meaning; the hub and
+// platform pictures are also links to where they point.
 
 const STICKERS = [
   { label: "Again", value: "10m", tone: "red", className: "lp-sticker--a" },
@@ -57,9 +64,11 @@ export const DecksIllustration = memo(({ decks }) => (
 
 DecksIllustration.displayName = "DecksIllustration";
 
-export const HubIllustration = memo(() => (
-  <div className="lp-art lp-hub-art" aria-hidden="true">
-    <span className="lp-hub-card">
+// The whole illustration opens the hub, so its Import button is not a dead
+// control.
+export const HubIllustration = memo(({ to }) => (
+  <Link to={to} className="lp-art lp-hub-art lp-art-link" aria-label="Browse the hub">
+    <span className="lp-hub-card" aria-hidden="true">
       <span className="lp-hub-card__row">
         <strong>Game of Thrones B1–C2</strong>
         <span className="lp-hub-card__pill">250 words</span>
@@ -67,9 +76,11 @@ export const HubIllustration = memo(() => (
       <span className="lp-hub-card__langs">English · Polish · Russian</span>
       <span className="lp-hub-card__button">Import</span>
     </span>
-    <span className="lp-hub-arrow" />
-    <span className="lp-hub-done lp-tone-green">In your library</span>
-  </div>
+    <span className="lp-hub-arrow" aria-hidden="true" />
+    <span className="lp-hub-done lp-tone-green" aria-hidden="true">
+      In your library
+    </span>
+  </Link>
 ));
 
 HubIllustration.displayName = "HubIllustration";
@@ -84,19 +95,34 @@ export const PlatformsIllustration = memo(({ platforms }) => (
   <div className="lp-art lp-platforms-art">
     {platforms.map((platform, index) => {
       const Icon = PLATFORM_ICONS[platform.key];
-      return (
-        <div
-          key={platform.key}
-          className={`lp-platform lp-tone-${["blue", "green", "amber"][index % 3]}`}
-        >
+      const className = `lp-platform lp-tone-${["blue", "green", "amber"][index % 3]}`;
+      const content = (
+        <>
           <span className="lp-platform__icon" aria-hidden>
             {Icon ? <Icon /> : null}
           </span>
-          <span>
+          <span className="lp-platform__text">
             <strong>{platform.title}</strong>
             <span>{platform.text}</span>
           </span>
-        </div>
+          <IoArrowForward className="lp-platform__go" aria-hidden />
+        </>
+      );
+
+      return platform.href ? (
+        <a
+          key={platform.key}
+          className={className}
+          href={platform.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {content}
+        </a>
+      ) : (
+        <Link key={platform.key} className={className} to={platform.to}>
+          {content}
+        </Link>
       );
     })}
   </div>

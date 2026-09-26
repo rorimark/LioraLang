@@ -889,6 +889,36 @@
   border-bottom-width: 6px;
   border-radius: 20px;
   background: var(--lp-surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.lp-platform__go {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 1.2rem;
+  color: var(--lp-ink-soft);
+  transition:
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.lp-platform:hover .lp-platform__go {
+  color: var(--lp-blue);
+  transform: translateX(3px);
+}
+
+/* The hub picture is a link as a whole; it keeps its own look. */
+.lp-art-link {
+  color: inherit;
+  text-decoration: none;
+  border-radius: 24px;
+}
+
+.lp-platform:focus-visible,
+.lp-art-link:focus-visible {
+  outline: 3px solid var(--lp-blue);
+  outline-offset: 4px;
 }
 
 .lp-platform__icon {
@@ -903,7 +933,7 @@
   font-size: 1.6rem;
 }
 
-.lp-platform > span:last-child {
+.lp-platform__text {
   display: grid;
   gap: 2px;
 }
@@ -913,7 +943,7 @@
   font-weight: 900;
 }
 
-.lp-platform > span:last-child > span {
+.lp-platform__text > span {
   color: var(--lp-ink-soft);
   font-weight: 700;
 }
@@ -940,7 +970,7 @@
 
 .lp-deck:hover,
 .lp-platform:hover,
-.lp-hub-card:hover,
+.lp-art-link:hover .lp-hub-card,
 .lp-langs li:hover {
   translate: 0 -4px;
 }
@@ -1119,7 +1149,12 @@
 
   .lp-btn,
   .lp-demo .srs-rating-controls__button,
-  .lp-demo__progress span {
+  .lp-demo__progress span,
+  .lp-platform,
+  .lp-platform__go,
+  .lp-hub-card,
+  .lp-deck,
+  .lp-langs li {
     transition: none;
   }
 }

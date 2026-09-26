@@ -260,7 +260,7 @@ export const LandingMockPanel = memo(() => {
         </p>
       </FeatureRow>
 
-      <FeatureRow id="lp-hub" title="Somebody already made that deck." art={<HubIllustration />}>
+      <FeatureRow id="lp-hub" title="Somebody already made that deck." art={<HubIllustration to={browseTo} />}>
         <p>
           LioraLangHub is full of decks other learners published. Find one,
           import it in a click, and start reviewing. Share your own the same way.
