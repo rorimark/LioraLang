@@ -568,14 +568,15 @@
 .lp-demo__badge {
   display: grid;
   place-content: center;
-  width: 64px;
-  height: 64px;
+  flex: none;
+  width: 48px;
+  height: 48px;
   border: 3px solid var(--lp-green-edge);
-  border-bottom-width: 7px;
+  border-bottom-width: 6px;
   border-radius: 50%;
   background: var(--lp-green);
   color: var(--lp-on-color);
-  font-size: 2rem;
+  font-size: 1.5rem;
   animation: lp-pop 420ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
 }
 
@@ -594,6 +595,12 @@
   border-bottom-width: 6px;
   border-radius: 22px;
   background: var(--lp-surface);
+}
+
+.lp-demo__done-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .lp-demo__done strong {

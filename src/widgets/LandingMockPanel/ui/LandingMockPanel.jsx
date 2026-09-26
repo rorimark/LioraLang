@@ -45,10 +45,12 @@ const DemoSession = memo(() => {
 
       {isDone ? (
         <div className="lp-demo__done">
-          <span className="lp-demo__badge" aria-hidden>
-            <IoCheckmark />
-          </span>
-          <strong>Nice work.</strong>
+          <div className="lp-demo__done-head">
+            <span className="lp-demo__badge" aria-hidden>
+              <IoCheckmark />
+            </span>
+            <strong>Nice work.</strong>
+          </div>
           <p>
             Every word now has its own next review. In the app each one comes
             back on that day.
