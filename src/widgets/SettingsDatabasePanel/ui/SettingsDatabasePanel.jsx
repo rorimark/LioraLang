@@ -12,6 +12,7 @@ import {
   FiRefreshCw,
   FiSearch,
   FiSliders,
+  FiUser,
   FiX,
 } from "react-icons/fi";
 import {
@@ -51,8 +52,8 @@ const SETTINGS_SECTIONS = [
   {
     key: SETTINGS_TAB_KEYS.general,
     title: "General",
-    description: "Account, theme, display and keys.",
-    keywords: "appearance theme keyboard account about version reset",
+    description: "Theme, display, keys and version.",
+    keywords: "appearance theme keyboard about version reset",
     icon: FiSliders,
   },
   {
@@ -185,6 +186,9 @@ export const SettingsDatabasePanel = memo(() => {
     };
   }, [accountSnapshot, authRepository]);
 
+  const accountInitial = accountSnapshot.isAuthenticated
+    ? (accountSnapshot.displayName || accountSnapshot.email || "").trim().charAt(0).toUpperCase()
+    : "";
   const settingsNavItems = useMemo(
     () =>
       SETTINGS_SECTIONS.filter((section) => !section.desktopOnly || panel.isDesktopMode).map(
@@ -382,23 +386,6 @@ export const SettingsDatabasePanel = memo(() => {
       case SETTINGS_TAB_KEYS.general:
         return (
           <>
-            <SettingGroup title="Account" keywords="sign in profile hub">
-              <SettingRow
-                label={accountEntry.title}
-                hint={accountEntry.description}
-                keywords="account sign in login profile"
-                control={
-                  <Link
-                    to={ROUTE_PATHS.account}
-                    className="ui-button ui-button--secondary ui-button--sm settings__link-key"
-                  >
-                    <span>{accountEntry.badge}</span>
-                    <FiChevronRight aria-hidden="true" />
-                  </Link>
-                }
-              />
-            </SettingGroup>
-
             <SettingGroup title="Appearance" keywords="display look">
               <ThemeSwitch control={themeControl} />
               <DisplayPreferences />
@@ -556,6 +543,23 @@ export const SettingsDatabasePanel = memo(() => {
       <SettingsSearch query={query}>
         <div className="settings" data-view={view}>
           <nav className="settings__nav" aria-label="Settings sections">
+            {/* The account is who is using the app, not one setting among
+                many, so it sits apart, above everything else. */}
+            <Link
+              to={ROUTE_PATHS.account}
+              className="settings__account"
+              aria-label={`${accountEntry.title}. ${accountEntry.badge}. Open account`}
+            >
+              <span className="settings__avatar" aria-hidden="true">
+                {accountInitial || <FiUser />}
+              </span>
+              <span className="settings__account-copy">
+                <strong>{accountEntry.title}</strong>
+                <span>{accountEntry.description}</span>
+              </span>
+              <span className="settings__account-badge">{accountEntry.badge}</span>
+            </Link>
+
             <label className="settings__search">
               <FiSearch aria-hidden="true" />
               <input
