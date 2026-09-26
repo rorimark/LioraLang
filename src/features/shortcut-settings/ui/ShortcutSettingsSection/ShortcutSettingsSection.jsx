@@ -1,8 +1,16 @@
-import { memo } from "react";
+import { memo, useId } from "react";
+import { SettingRow, SettingSegmented, SettingSelect, SettingSwitch } from "@shared/ui";
 import { useShortcutSettingsSection } from "../../model";
-import "./ShortcutSettingsSection.css";
 
-export const ShortcutSettingsSection = memo(({ compact = false }) => {
+// "(Default)" belongs in a long list; in a row of three segments it only
+// crowds the key names.
+const toSegments = (options) =>
+  options.map((option) => ({
+    value: option.value,
+    label: option.label.replace(/\s*\(Default\)$/, "").replace(/^Disabled$/, "Off"),
+  }));
+
+export const ShortcutSettingsSection = memo(() => {
   const {
     historyShortcutMode,
     learnFlipShortcutMode,
@@ -16,75 +24,77 @@ export const ShortcutSettingsSection = memo(({ compact = false }) => {
     handleRatingShortcutChange,
     handleShowLearnShortcutsChange,
   } = useShortcutSettingsSection();
+  const historyId = useId();
+  const ratingId = useId();
+  const hintsId = useId();
 
   return (
-    <section
-      className={
-        compact
-          ? "shortcut-settings-section shortcut-settings-section--compact"
-          : "shortcut-settings-section"
-      }
-    >
-      {!compact && (
-        <div className="shortcut-settings-section__head">
-          <h3>Shortcuts</h3>
-          <p>Saved automatically and applied instantly.</p>
-        </div>
-      )}
-
-      <label className="shortcut-settings-section__field">
-        <span className="shortcut-settings-section__label">
-          History navigation
-        </span>
-        <select
-          value={historyShortcutMode}
-          onChange={handleHistoryShortcutChange}
-        >
-          {historyOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="shortcut-settings-section__field">
-        <span className="shortcut-settings-section__label">Flip flashcard</span>
-        <select
-          value={learnFlipShortcutMode}
-          onChange={handleFlipShortcutChange}
-        >
-          {flipOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="shortcut-settings-section__field">
-        <span className="shortcut-settings-section__label">Rate flashcard</span>
-        <select
-          value={learnRatingShortcutMode}
-          onChange={handleRatingShortcutChange}
-        >
-          {ratingOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="shortcut-settings-section__check">
-        <input
-          type="checkbox"
-          checked={showLearnShortcuts}
-          onChange={handleShowLearnShortcutsChange}
-        />
-        <span>Show shortcut hints</span>
-      </label>
-    </section>
+    <>
+      <SettingRow
+        label="Flip the card"
+        keywords="keyboard keys shortcut space enter"
+        control={
+          <SettingSegmented
+            name="learn-flip-shortcut"
+            value={learnFlipShortcutMode}
+            options={toSegments(flipOptions)}
+            onChange={handleFlipShortcutChange}
+            ariaLabel="Flip the card"
+          />
+        }
+      />
+      <SettingRow
+        label="Grade the card"
+        hint="Again, Hard, Good, Easy, in that order."
+        keywords="keyboard keys shortcut rating"
+        controlId={ratingId}
+        control={
+          <SettingSelect
+            id={ratingId}
+            value={learnRatingShortcutMode}
+            onChange={handleRatingShortcutChange}
+          >
+            {ratingOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </SettingSelect>
+        }
+      />
+      <SettingRow
+        label="Back and forward"
+        hint="Move through the pages you opened."
+        keywords="keyboard keys shortcut history navigation"
+        controlId={historyId}
+        control={
+          <SettingSelect
+            id={historyId}
+            value={historyShortcutMode}
+            onChange={handleHistoryShortcutChange}
+          >
+            {historyOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </SettingSelect>
+        }
+      />
+      <SettingRow
+        label="Show keys on buttons"
+        hint="The key for each action appears on its button in Learn."
+        keywords="keyboard hints shortcut"
+        controlId={hintsId}
+        control={
+          <SettingSwitch
+            id={hintsId}
+            checked={showLearnShortcuts}
+            onChange={handleShowLearnShortcutsChange}
+          />
+        }
+      />
+    </>
   );
 });
 

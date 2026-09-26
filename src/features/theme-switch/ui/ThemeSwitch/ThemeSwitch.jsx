@@ -1,25 +1,29 @@
 import { memo } from "react";
-import "./ThemeSwitch.css";
+import { SettingRow, SettingSegmented } from "@shared/ui";
 
 export const ThemeSwitch = memo(({ control }) => {
-    const resolvedControl = control || {};
+  const resolvedControl = control || {};
+  const options = (resolvedControl.themeModeOptions || []).map((option) => ({
+    value: option.value,
+    label: option.label.replace(/\s*\(Default\)$/, ""),
+  }));
 
-    return (
-      <label className="theme-switch">
-        <span className="theme-switch__label">Color scheme</span>
-        <select
-          className="theme-switch__select"
+  return (
+    <SettingRow
+      label="Theme"
+      hint="System follows your device."
+      keywords="color colour scheme dark light mode appearance"
+      control={
+        <SettingSegmented
+          name="theme-mode"
           value={resolvedControl.themeMode}
+          options={options}
           onChange={resolvedControl.onThemeModeChange}
-        >
-          {(resolvedControl.themeModeOptions || []).map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </label>
-    );
-  });
+          ariaLabel="Theme"
+        />
+      }
+    />
+  );
+});
 
 ThemeSwitch.displayName = "ThemeSwitch";

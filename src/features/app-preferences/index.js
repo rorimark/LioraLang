@@ -1,2 +1,8 @@
-export { AppPreferencesSection } from "./ui";
-export { ImportExportSettingsSection } from "./ui";
+export {
+  DeckDefaultPreferences,
+  DisplayPreferences,
+  ImportExportPreferences,
+  LearningPreferences,
+  PrivacyPreferences,
+  SafetyPreferences,
+} from "./ui";

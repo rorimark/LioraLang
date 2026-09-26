@@ -1,225 +1,376 @@
+/* ===== Settings =====
+   Wide: the list of sections on the left, the open section on the right,
+   both always visible. Narrow (an upright phone): one pane at a time, the
+   list first and the section after a tap, with a way back; searching
+   shows matching settings from every section at once. The layout follows
+   the width the settings actually get, not the window. */
+
 .settings-page-panel {
+  /* The container is the panel, not .settings, so the queries below can
+     reshape .settings itself. */
+  container: settings / inline-size;
   display: grid;
-  gap: 14px;
-  width: 100%;
-  min-width: 0;
+  gap: 16px;
 }
 
-.settings-page-panel__section {
-  border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--color-transparent));
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--color-surface-muted) 24%, var(--color-surface));
-  padding: 14px;
+.settings {
   display: grid;
-  gap: 12px;
-  min-width: 0;
-  scroll-margin-top: 14px;
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background-color 180ms ease;
-}
-
-.settings-page-panel__section--active {
-  border-color: var(--color-primary-border);
-  box-shadow: none;
-  background: color-mix(in srgb, var(--color-primary-soft) 16%, var(--color-surface));
-}
-
-.settings-page-panel__section--danger {
-  border-color: color-mix(in srgb, var(--color-danger) 30%, var(--color-border));
-  background: color-mix(in srgb, var(--color-danger) 7%, var(--color-surface));
-}
-
-.settings-page-panel__section-grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: clamp(230px, 28cqi, 300px) minmax(0, 1fr);
   align-items: start;
-  grid-auto-rows: min-content;
+  gap: clamp(20px, 3vw, 44px);
 }
 
-.settings-page-panel__section-grid--actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: flex-start;
-}
+/* ---------- section list ---------- */
 
-.settings-page-panel__stack {
+.settings__nav {
+  position: sticky;
+  top: 12px;
   display: grid;
   gap: 12px;
-  grid-template-columns: 1fr;
-  align-items: start;
-}
-
-.settings-page-panel__slot {
-  padding: 0;
-  display: grid;
-  gap: 10px;
   min-width: 0;
-  align-content: start;
-  align-self: start;
 }
 
-.settings-page-panel__slot h4 {
-  margin: 0;
-  color: var(--color-text);
-  font-size: 0.86rem;
-}
-
-.settings-page-panel__account-entry {
+.settings__search {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted));
-  color: inherit;
-  text-decoration: none;
-  transition:
-    border-color 160ms ease,
-    background-color 160ms ease,
-    transform 160ms ease;
 }
 
-.settings-page-panel__account-entry:hover,
-.settings-page-panel__account-entry:focus-visible {
-  border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
-  background: color-mix(in srgb, var(--color-primary-soft) 16%, var(--color-surface));
-}
-
-.settings-page-panel__account-entry:focus-visible {
-  outline: none;
-}
-
-.settings-page-panel__account-entry-main {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
-  flex: 1;
-  justify-items: start;
-}
-
-.settings-page-panel__account-entry-copy {
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-}
-
-.settings-page-panel__account-entry-copy strong {
-  color: var(--color-text);
-  font-size: 0.92rem;
-  line-height: 1.2;
-}
-
-.settings-page-panel__account-entry-copy span {
-  color: var(--color-text-muted);
-  font-size: 0.82rem;
-  line-height: 1.35;
-}
-
-.settings-page-panel__account-entry svg {
-  flex: 0 0 auto;
+.settings__search > svg {
+  position: absolute;
+  left: 14px;
+  width: 17px;
+  height: 17px;
   color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+.settings__search input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 42px;
+  border: 2px solid var(--color-border-strong);
+  border-radius: 14px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 700;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.settings__search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.settings__search input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-soft);
+}
+
+.settings__search button {
+  position: absolute;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.settings__search button:hover {
+  background: var(--color-surface-muted);
+}
+
+.settings__sections {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.settings__section-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 8px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  color: var(--color-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.settings__section-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.settings__section-icon svg {
   width: 18px;
   height: 18px;
 }
 
-.settings-page-panel__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.settings__section-copy {
+  display: grid;
+  gap: 1px;
   min-width: 0;
 }
 
-.settings-page-panel__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
+.settings__section-copy strong {
+  font-size: 0.95rem;
+  font-weight: 900;
 }
 
-.settings-page-panel__meta strong {
+.settings__section-copy span {
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings__section-chevron {
+  display: none;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+}
+
+@media (hover: hover) {
+  .settings__section-link:hover {
+    background: var(--color-surface);
+  }
+}
+
+.settings__section-link.is-active {
+  border-color: var(--color-border);
+  border-bottom-width: 4px;
+  background: var(--color-surface);
+}
+
+.settings__section-link.is-active .settings__section-icon {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* Opened from the desktop app menu: the section flashes once. */
+.settings__section-link.is-highlighted {
+  animation: settings-flash 900ms ease 2;
+}
+
+@keyframes settings-flash {
+  50% {
+    border-color: var(--color-primary-border);
+    background: var(--color-primary-soft);
+  }
+}
+
+.settings__section-link:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 1px;
+}
+
+/* ---------- open section ---------- */
+
+.settings__content {
+  min-width: 0;
+  max-width: 780px;
+}
+
+.settings__section,
+.settings__results {
+  display: grid;
+  gap: 26px;
+  animation: settings-in 220ms ease both;
+}
+
+.settings__section-head h2,
+.settings__result-title {
+  margin: 0;
   color: var(--color-text);
+  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.7rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.settings__section-head p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
   font-weight: 600;
 }
 
-.settings-page-panel__meta-separator {
+.settings__back {
+  display: none;
+}
+
+.settings__result {
+  display: grid;
+  gap: 16px;
+}
+
+.settings__result-title {
+  font-size: 1.1rem;
+}
+
+/* A section with nothing left after a search is not shown. */
+.settings__result:not(:has(.setting-row, .setting-content)) {
+  display: none;
+}
+
+.settings__empty {
+  margin: 0;
+  padding: 28px 20px;
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-panel);
   color: var(--color-text-muted);
+  font-weight: 700;
+  text-align: center;
 }
 
-.settings-page-panel__actions .ui-button {
-  width: auto;
-  min-width: 200px;
-  max-width: 100%;
+.settings__results:has(.setting-row, .setting-content) .settings__empty {
+  display: none;
 }
 
-.settings-page-panel__path {
-  border: 1px dashed var(--color-border);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--color-surface-muted) 22%, var(--color-surface));
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-  padding: 8px 10px;
-  word-break: break-all;
+.settings__value {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 960px) {
-  .settings-page-panel {
-    width: 100%;
-  }
+.settings__row-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
-  .settings-page-panel__section-grid {
-    grid-template-columns: 1fr;
-  }
+.settings__link-key {
+  gap: 4px;
+  text-decoration: none;
+}
 
-  .settings-page-panel__actions button,
-  .settings-page-panel__path-action {
-    width: 100%;
-    min-width: 0;
+.settings__link-key svg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes settings-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }
 
-@media (max-width: 760px) {
-  .settings-page-panel {
-    gap: 10px;
+/* ---------- one pane at a time ---------- */
+
+@container settings (max-width: 700px) {
+  .settings {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 
-  .settings-page-panel__section {
-    padding: 10px;
-    gap: 8px;
+  .settings__nav {
+    position: static;
   }
 
-  .settings-page-panel__actions .ui-button {
-    min-height: 36px;
-    font-size: 0.78rem;
-    padding: 7px 10px;
+  .settings__content {
+    max-width: none;
   }
 
-  .settings-page-panel__account-entry {
-    padding: 12px;
-    gap: 10px;
+  /* The list reads as a list: each section a full-width row with a
+     chevron, its current values under the name. */
+  .settings__sections {
+    gap: 0;
+    border: 2px solid var(--color-border);
+    border-bottom-width: var(--edge-width);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
+    overflow: hidden;
   }
 
-  .settings-page-panel__account-entry-main {
-    gap: 6px;
+  .settings__sections li + li {
+    border-top: 2px solid var(--color-border);
   }
 
-  .settings-page-panel__account-entry-copy strong {
-    font-size: 0.88rem;
+  .settings__section-link,
+  .settings__section-link.is-active {
+    min-height: 64px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 0;
+    background: none;
   }
 
-  .settings-page-panel__account-entry-copy span {
-    font-size: 0.78rem;
+  .settings__section-link.is-active .settings__section-icon {
+    background: var(--color-surface-muted);
+    color: var(--color-text-muted);
   }
 
-  .settings-page-panel__path {
-    font-size: 0.76rem;
+  .settings__section-link:active {
+    background: var(--color-surface-muted);
+  }
+
+  .settings__section-chevron {
+    display: block;
+  }
+
+  .settings[data-view="list"] .settings__content,
+  .settings[data-view="section"] .settings__nav,
+  .settings[data-view="results"] .settings__sections {
+    display: none;
+  }
+
+  .settings__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    justify-self: start;
+    min-height: 40px;
+    margin: -6px 0 -12px -6px;
+    padding: 0 12px 0 4px;
+    border-radius: 12px;
+    color: var(--color-primary);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .settings__back svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .settings__back:focus-visible {
+    outline: 3px solid var(--color-primary-border);
+  }
+
+  .settings__section,
+  .settings__results {
+    gap: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings__section,
+  .settings__results,
+  .settings__section-link.is-highlighted {
+    animation: none;
   }
 }

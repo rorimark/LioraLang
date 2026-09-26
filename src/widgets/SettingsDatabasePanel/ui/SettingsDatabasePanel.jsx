@@ -1,9 +1,26 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router";
-import { FiChevronRight } from "react-icons/fi";
+import { Link, useSearchParams } from "react-router";
 import {
-  AppPreferencesSection,
-  ImportExportSettingsSection,
+  FiArchive,
+  FiBookOpen,
+  FiChevronLeft,
+  FiChevronRight,
+  FiDownload,
+  FiHardDrive,
+  FiLayers,
+  FiLock,
+  FiRefreshCw,
+  FiSearch,
+  FiSliders,
+  FiX,
+} from "react-icons/fi";
+import {
+  DeckDefaultPreferences,
+  DisplayPreferences,
+  ImportExportPreferences,
+  LearningPreferences,
+  PrivacyPreferences,
+  SafetyPreferences,
 } from "@features/app-preferences";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { IntegrityRepairModal } from "@features/integrity-repair";
@@ -11,42 +28,84 @@ import { ShortcutSettingsSection } from "@features/shortcut-settings";
 import { SyncSettingsSection } from "@features/sync-settings";
 import { ThemeSwitch } from "@features/theme-switch";
 import { ROUTE_PATHS } from "@shared/config/routes";
-import { SETTINGS_SECTION_IDS, SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
+import { SETTINGS_TAB_KEYS, SETTINGS_TAB_QUERY_KEY } from "@shared/config/settingsTabs";
+import { useAppPreferences } from "@shared/lib/appPreferences";
 import { usePlatformService } from "@shared/providers";
 import {
   ActionModal,
   Button,
   InlineAlert,
-  MetaBadge,
   Panel,
-  SectionHeader,
-  Tabs,
+  SettingGroup,
+  SettingRow,
+  SettingsScope,
+  SettingsSearch,
 } from "@shared/ui";
 import { useSettingsDatabasePanel } from "../model";
+import { buildSettingsSummaries } from "../model/settingsSummaries";
 import "./SettingsDatabasePanel.css";
 
-const BASE_SETTINGS_NAV_ITEMS = [
-  { key: SETTINGS_TAB_KEYS.general, label: "General" },
-  { key: SETTINGS_TAB_KEYS.sync, label: "Sync" },
-  { key: SETTINGS_TAB_KEYS.learningCore, label: "Learning Core" },
-  { key: SETTINGS_TAB_KEYS.deckDefaults, label: "Deck Defaults" },
-  { key: SETTINGS_TAB_KEYS.workspaceSafety, label: "Workspace and Safety" },
+// The sections, in the order people look for them. The keys are the tab
+// keys the desktop app menu and links already use.
+const SETTINGS_SECTIONS = [
+  {
+    key: SETTINGS_TAB_KEYS.general,
+    title: "General",
+    description: "Account, theme, display and keys.",
+    keywords: "appearance theme keyboard account about version reset",
+    icon: FiSliders,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.learningCore,
+    title: "Learning",
+    description: "Sessions, and how often words come back.",
+    keywords: "study srs spaced repetition review",
+    icon: FiLayers,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.deckDefaults,
+    title: "New decks",
+    description: "What a new deck starts with. Each deck can change it.",
+    keywords: "deck defaults language level tags",
+    icon: FiBookOpen,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.sync,
+    title: "Sync",
+    description: "Your decks and progress across devices.",
+    keywords: "cloud devices account",
+    icon: FiRefreshCw,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.importExport,
+    title: "Import and export",
+    description: "Deck files in and out.",
+    keywords: "file json lioradeck",
+    icon: FiDownload,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.workspaceSafety,
+    title: "Backups and safety",
+    description: "Automatic backups and confirmations.",
+    keywords: "backup data protect",
+    icon: FiArchive,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.advancedDesktop,
+    title: "Privacy",
+    description: "Diagnostics, and options for developers.",
+    keywords: "analytics crash logs developer desktop",
+    icon: FiLock,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.storageIntegrity,
+    title: "Storage",
+    description: "Where the database lives, and checking it.",
+    keywords: "database folder integrity files",
+    icon: FiHardDrive,
+    desktopOnly: true,
+  },
 ];
-
-const APP_PREFERENCES_TAB_KEYS = new Set([
-  SETTINGS_TAB_KEYS.learningCore,
-  SETTINGS_TAB_KEYS.deckDefaults,
-  SETTINGS_TAB_KEYS.workspaceSafety,
-  SETTINGS_TAB_KEYS.advancedDesktop,
-]);
-
-const resolveSectionClassName = (tabKey, highlightedTab) => {
-  if (highlightedTab === tabKey) {
-    return "settings-page-panel__section settings-page-panel__section--active";
-  }
-
-  return "settings-page-panel__section";
-};
 
 const EMPTY_ACCOUNT_SNAPSHOT = Object.freeze({
   isAuthenticated: false,
@@ -126,25 +185,16 @@ export const SettingsDatabasePanel = memo(() => {
     };
   }, [accountSnapshot, authRepository]);
 
-  const settingsNavItems = useMemo(() => {
-    const items = [
-      ...BASE_SETTINGS_NAV_ITEMS,
-      {
-        key: SETTINGS_TAB_KEYS.advancedDesktop,
-        label: panel.isDesktopMode ? "Desktop and Privacy" : "Privacy",
-      },
-      { key: SETTINGS_TAB_KEYS.importExport, label: "Import and Export" },
-    ];
-
-    if (panel.isDesktopMode) {
-      items.push({
-        key: SETTINGS_TAB_KEYS.storageIntegrity,
-        label: "Storage and Integrity",
-      });
-    }
-
-    return items;
-  }, [panel.isDesktopMode]);
+  const settingsNavItems = useMemo(
+    () =>
+      SETTINGS_SECTIONS.filter((section) => !section.desktopOnly || panel.isDesktopMode).map(
+        (section) =>
+          section.key === SETTINGS_TAB_KEYS.advancedDesktop && panel.isDesktopMode
+            ? { ...section, title: "Desktop and privacy" }
+            : section,
+      ),
+    [panel.isDesktopMode],
+  );
   const availableSettingsTabs = useMemo(
     () => new Set(settingsNavItems.map((item) => item.key)),
     [settingsNavItems],
@@ -157,7 +207,6 @@ export const SettingsDatabasePanel = memo(() => {
     ),
     [availableSettingsTabs, panel.highlightedSettingsTab],
   );
-  const [activeSettingsTab, setActiveSettingsTab] = useState(panel.selectedSettingsTab);
   const themeControl = useMemo(
     () => ({
       themeMode: panel.themeMode,
@@ -287,39 +336,216 @@ export const SettingsDatabasePanel = memo(() => {
     ],
   );
 
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState("");
+  const isSearching = query.trim().length > 0;
+  const hasRequestedTab = searchParams.has(SETTINGS_TAB_QUERY_KEY);
+  const activeSettingsTab = availableSettingsTabs.has(panel.selectedSettingsTab)
+    ? panel.selectedSettingsTab
+    : SETTINGS_TAB_KEYS.general;
+  const activeSection =
+    settingsNavItems.find((section) => section.key === activeSettingsTab) || settingsNavItems[0];
+  const { appPreferences } = useAppPreferences();
+  const summaries = useMemo(
+    () =>
+      buildSettingsSummaries({
+        appPreferences,
+        themeMode: panel.themeMode,
+        isDesktopMode: panel.isDesktopMode,
+      }),
+    [appPreferences, panel.isDesktopMode, panel.themeMode],
+  );
+
+  // A phone shows one pane at a time: the list of sections, or the one you
+  // opened. Wide screens show both, so the list never hides.
+  const view = isSearching ? "results" : hasRequestedTab ? "section" : "list";
+
   useEffect(() => {
-    const nextTab = availableSettingsTabs.has(panel.selectedSettingsTab)
-      ? panel.selectedSettingsTab
-      : SETTINGS_TAB_KEYS.general;
-
-    if (typeof window === "undefined") {
-      return undefined;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setActiveSettingsTab((currentTab) => {
-        if (currentTab === nextTab) {
-          return currentTab;
-        }
-
-        return nextTab;
-      });
-    }, 0);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [availableSettingsTabs, panel.selectedSettingsTab]);
-
-  const handleQuickNavClick = useCallback((nextTabKey) => {
-    if (!nextTabKey) {
+    if (isSearching || !hasRequestedTab || typeof window === "undefined") {
       return;
     }
 
-    setActiveSettingsTab(nextTabKey);
+    window.scrollTo?.({ top: 0 });
+    document.querySelector(".app-shell__content")?.scrollTo?.({ top: 0 });
+  }, [activeSettingsTab, hasRequestedTab, isSearching]);
+
+  const handleQueryChange = useCallback((event) => {
+    setQuery(event.target.value);
   }, []);
 
-  const isAppPreferencesTab = APP_PREFERENCES_TAB_KEYS.has(activeSettingsTab);
+  const clearQuery = useCallback(() => {
+    setQuery("");
+  }, []);
+
+  const renderSectionBody = (sectionKey) => {
+    switch (sectionKey) {
+      case SETTINGS_TAB_KEYS.general:
+        return (
+          <>
+            <SettingGroup title="Account" keywords="sign in profile hub">
+              <SettingRow
+                label={accountEntry.title}
+                hint={accountEntry.description}
+                keywords="account sign in login profile"
+                control={
+                  <Link
+                    to={ROUTE_PATHS.account}
+                    className="ui-button ui-button--secondary ui-button--sm settings__link-key"
+                  >
+                    <span>{accountEntry.badge}</span>
+                    <FiChevronRight aria-hidden="true" />
+                  </Link>
+                }
+              />
+            </SettingGroup>
+
+            <SettingGroup title="Appearance" keywords="display look">
+              <ThemeSwitch control={themeControl} />
+              <DisplayPreferences />
+            </SettingGroup>
+
+            <SettingGroup
+              title="Keyboard"
+              description="Saved as you change them."
+              keywords="shortcuts keys hotkeys"
+            >
+              <ShortcutSettingsSection />
+            </SettingGroup>
+
+            <SettingGroup title="About" keywords="version update">
+              <SettingRow
+                label="Version"
+                hint={panel.appPlatformLabel}
+                keywords="about build"
+                control={<strong className="settings__value">{panel.appVersionLabel}</strong>}
+              />
+              {panel.isDesktopMode ? (
+                <SettingRow
+                  label="Updates"
+                  keywords="update download new version"
+                  control={
+                    <Button
+                      onClick={panel.checkForUpdates}
+                      disabled={panel.isCheckingUpdates}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      {panel.isCheckingUpdates ? "Checking..." : "Check now"}
+                    </Button>
+                  }
+                />
+              ) : null}
+              <SettingRow
+                label="Reset all settings"
+                hint="Preferences, keys and theme go back to their defaults. Your decks stay."
+                keywords="defaults restore"
+                tone="danger"
+                control={
+                  <Button
+                    onClick={panel.openResetSettingsConfirm}
+                    disabled={panel.isResetAllDisabled}
+                    variant="danger"
+                    size="sm"
+                  >
+                    {panel.isResettingSettings ? "Resetting..." : "Reset"}
+                  </Button>
+                }
+              />
+            </SettingGroup>
+          </>
+        );
+      case SETTINGS_TAB_KEYS.learningCore:
+        return <LearningPreferences />;
+      case SETTINGS_TAB_KEYS.deckDefaults:
+        return <DeckDefaultPreferences />;
+      case SETTINGS_TAB_KEYS.sync:
+        return <SyncSettingsSection />;
+      case SETTINGS_TAB_KEYS.importExport:
+        return (
+          <>
+            <SettingGroup title="Add a deck" keywords="import new">
+              <SettingRow
+                label="Import a deck file"
+                hint="A .lioradeck or .json file."
+                keywords="import upload open"
+                control={
+                  <Button
+                    onClick={panel.openImportConfirm}
+                    disabled={panel.isImporting}
+                    variant="primary"
+                    size="sm"
+                  >
+                    {panel.isImporting ? "Importing..." : "Choose file"}
+                  </Button>
+                }
+              />
+              <SettingRow
+                label="Create a deck from JSON"
+                hint="Paste the words as JSON text."
+                keywords="paste json text"
+                control={
+                  <Button
+                    onClick={panel.openJsonImport}
+                    disabled={panel.isImporting}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Paste JSON
+                  </Button>
+                }
+              />
+            </SettingGroup>
+            <ImportExportPreferences />
+          </>
+        );
+      case SETTINGS_TAB_KEYS.workspaceSafety:
+        return <SafetyPreferences />;
+      case SETTINGS_TAB_KEYS.advancedDesktop:
+        return <PrivacyPreferences isDesktopMode={panel.isDesktopMode} />;
+      case SETTINGS_TAB_KEYS.storageIntegrity:
+        return (
+          <SettingGroup title="Database" keywords="storage files">
+            <SettingRow
+              label="Location"
+              hint={panel.dbPath || "Loading..."}
+              keywords="database path folder"
+              control={
+                <span className="settings__row-keys">
+                  <Button onClick={panel.openDbFolder} variant="secondary" size="sm">
+                    Open folder
+                  </Button>
+                  <Button
+                    onClick={panel.changeDbLocation}
+                    disabled={panel.isChangingDbLocation}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    {panel.isChangingDbLocation ? "Moving..." : "Move"}
+                  </Button>
+                </span>
+              }
+            />
+            <SettingRow
+              label="Check files"
+              hint="Looks for damaged or missing deck data, and offers to repair it."
+              keywords="integrity verify repair"
+              control={
+                <Button
+                  onClick={panel.verifyIntegrity}
+                  disabled={panel.isVerifyingIntegrity}
+                  variant="secondary"
+                  size="sm"
+                >
+                  {panel.isVerifyingIntegrity ? "Checking..." : "Check"}
+                </Button>
+              }
+            />
+          </SettingGroup>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <Panel className="settings-page-panel">
@@ -327,206 +553,98 @@ export const SettingsDatabasePanel = memo(() => {
 
       <ActionModal dialog={updatePromptDialog} />
 
-      <Tabs
-        ariaLabel="Settings sections"
-        items={settingsNavItems}
-        activeKey={activeSettingsTab}
-        highlightedKey={resolvedHighlightedTab}
-        onSelect={handleQuickNavClick}
-      />
+      <SettingsSearch query={query}>
+        <div className="settings" data-view={view}>
+          <nav className="settings__nav" aria-label="Settings sections">
+            <label className="settings__search">
+              <FiSearch aria-hidden="true" />
+              <input
+                type="search"
+                value={query}
+                onChange={handleQueryChange}
+                placeholder="Search settings"
+                aria-label="Search settings"
+                autoComplete="off"
+                enterKeyHint="search"
+              />
+              {isSearching ? (
+                <button type="button" onClick={clearQuery} aria-label="Clear search">
+                  <FiX aria-hidden="true" />
+                </button>
+              ) : null}
+            </label>
 
-      {activeSettingsTab === SETTINGS_TAB_KEYS.general ? (
-        <section
-          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.general]}
-          className={resolveSectionClassName(
-            SETTINGS_TAB_KEYS.general,
-            resolvedHighlightedTab,
-          )}
-        >
-          <SectionHeader
-            title="General"
-            description="Theme, shortcuts, and everyday interface behavior."
-          />
+            <ul className="settings__sections">
+              {settingsNavItems.map((section) => {
+                const Icon = section.icon;
+                const isActive = section.key === activeSettingsTab;
+                const className = [
+                  "settings__section-link",
+                  isActive ? "is-active" : "",
+                  resolvedHighlightedTab === section.key ? "is-highlighted" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ");
 
-          <div className="settings-page-panel__stack">
-            <div className="settings-page-panel__slot">
-              <h4>{accountEntry.sectionTitle}</h4>
-              <Link
-                to={ROUTE_PATHS.account}
-                className="settings-page-panel__account-entry"
-                aria-label="Open account settings"
-              >
-                <div className="settings-page-panel__account-entry-main">
-                  <div className="settings-page-panel__account-entry-copy">
-                    <strong>{accountEntry.title}</strong>
-                    <span>{accountEntry.description}</span>
-                  </div>
-                  <MetaBadge
-                    text={accountEntry.badge}
-                    accent={accountEntry.badgeAccent}
-                  />
-                </div>
-                <FiChevronRight aria-hidden="true" />
-              </Link>
-            </div>
+                return (
+                  <li key={section.key}>
+                    <Link
+                      className={className}
+                      to={`${ROUTE_PATHS.settings}?${SETTINGS_TAB_QUERY_KEY}=${section.key}`}
+                      aria-current={isActive ? "page" : undefined}
+                      onClick={clearQuery}
+                    >
+                      <span className="settings__section-icon" aria-hidden="true">
+                        <Icon />
+                      </span>
+                      <span className="settings__section-copy">
+                        <strong>{section.title}</strong>
+                        <span>{summaries[section.key] || section.description}</span>
+                      </span>
+                      <FiChevronRight className="settings__section-chevron" aria-hidden="true" />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
-            <div className="settings-page-panel__slot">
-              <h4>Appearance</h4>
-              <ThemeSwitch control={themeControl} />
-            </div>
-
-            <div className="settings-page-panel__slot">
-              <h4>Shortcuts</h4>
-              <ShortcutSettingsSection compact />
-            </div>
-
-            {panel.isDesktopMode ? (
-              <div className="settings-page-panel__slot">
-                <h4>Updates</h4>
-                <div className="settings-page-panel__actions">
-                  <Button
-                    onClick={panel.checkForUpdates}
-                    disabled={panel.isCheckingUpdates}
-                    variant="secondary"
+          <div className="settings__content">
+            {isSearching ? (
+              <div className="settings__results">
+                {settingsNavItems.map((section) => (
+                  <SettingsScope
+                    key={section.key}
+                    title={section.title}
+                    keywords={section.keywords}
                   >
-                    {panel.isCheckingUpdates ? "Checking..." : "Check for updates"}
-                  </Button>
-                </div>
+                    <section className="settings__result">
+                      <h2 className="settings__result-title">{section.title}</h2>
+                      {renderSectionBody(section.key)}
+                    </section>
+                  </SettingsScope>
+                ))}
+                <p className="settings__empty">
+                  Nothing matches “{query.trim()}”. Try another word, like “theme” or
+                  “backup”.
+                </p>
               </div>
-            ) : null}
-
-            <div className="settings-page-panel__slot">
-              <h4>About</h4>
-              <div className="settings-page-panel__meta">
-                <span>Version</span>
-                <strong>{panel.appVersionLabel}</strong>
-                <span className="settings-page-panel__meta-separator">•</span>
-                <span>{panel.appPlatformLabel}</span>
-              </div>
-            </div>
+            ) : (
+              <section className="settings__section" key={activeSection.key}>
+                <Link className="settings__back" to={ROUTE_PATHS.settings}>
+                  <FiChevronLeft aria-hidden="true" />
+                  <span>All settings</span>
+                </Link>
+                <header className="settings__section-head">
+                  <h2>{activeSection.title}</h2>
+                  <p>{activeSection.description}</p>
+                </header>
+                {renderSectionBody(activeSection.key)}
+              </section>
+            )}
           </div>
-        </section>
-      ) : null}
-
-      {isAppPreferencesTab ? (
-        <AppPreferencesSection
-          highlightedTab={resolvedHighlightedTab}
-          activeTabKey={activeSettingsTab}
-          isDesktopMode={panel.isDesktopMode}
-        />
-      ) : null}
-
-      {activeSettingsTab === SETTINGS_TAB_KEYS.sync ? (
-        <section
-          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.sync]}
-          className={resolveSectionClassName(
-            SETTINGS_TAB_KEYS.sync,
-            resolvedHighlightedTab,
-          )}
-        >
-          <header className="settings-page-panel__section-head">
-            <SectionHeader
-              title="Sync"
-              description="Track sync health, pending changes, and conflict safety across your devices."
-            />
-          </header>
-
-          <SyncSettingsSection />
-        </section>
-      ) : null}
-
-      {activeSettingsTab === SETTINGS_TAB_KEYS.importExport ? (
-        <section
-          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.importExport]}
-          className={resolveSectionClassName(
-            SETTINGS_TAB_KEYS.importExport,
-            resolvedHighlightedTab,
-          )}
-        >
-          <SectionHeader
-            title="Deck Import and Export"
-            description="Import local deck files and define default import/export behavior."
-          />
-
-          <div className="settings-page-panel__actions">
-            <Button
-              onClick={panel.openImportConfirm}
-              disabled={panel.isImporting}
-              variant="primary"
-            >
-              {panel.isImporting ? "Importing..." : "Import deck file"}
-            </Button>
-            <Button onClick={panel.openJsonImport} disabled={panel.isImporting}>
-              Create deck from JSON
-            </Button>
-          </div>
-
-          <ImportExportSettingsSection />
-        </section>
-      ) : null}
-
-      {panel.isDesktopMode && activeSettingsTab === SETTINGS_TAB_KEYS.storageIntegrity ? (
-        <section
-          id={SETTINGS_SECTION_IDS[SETTINGS_TAB_KEYS.storageIntegrity]}
-          className={resolveSectionClassName(
-            SETTINGS_TAB_KEYS.storageIntegrity,
-            resolvedHighlightedTab,
-          )}
-        >
-          <SectionHeader
-            title="Storage and Integrity"
-            description="Control database location and run file/database integrity checks."
-          />
-
-          <div className="settings-page-panel__path">
-            DB: {panel.dbPath || "Loading..."}
-          </div>
-
-          <div className="settings-page-panel__section-grid settings-page-panel__section-grid--actions">
-            <div className="settings-page-panel__actions">
-              <Button
-                onClick={panel.changeDbLocation}
-                disabled={panel.isChangingDbLocation}
-              >
-                {panel.isChangingDbLocation
-                  ? "Changing database location..."
-                  : "Change database location"}
-              </Button>
-
-              <Button onClick={panel.openDbFolder}>Open database folder</Button>
-              <Button
-                onClick={panel.verifyIntegrity}
-                disabled={panel.isVerifyingIntegrity}
-              >
-                {panel.isVerifyingIntegrity
-                  ? "Checking integrity..."
-                  : "Check file integrity"}
-              </Button>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      {activeSettingsTab === SETTINGS_TAB_KEYS.general ? (
-        <section className="settings-page-panel__section settings-page-panel__section--danger">
-          <SectionHeader
-            title="Reset"
-            description="Restore all settings to the default configuration."
-          />
-
-          <div className="settings-page-panel__actions">
-            <Button
-              onClick={panel.openResetSettingsConfirm}
-              disabled={panel.isResetAllDisabled}
-              variant="danger"
-            >
-              {panel.isResettingSettings
-                ? "Resetting settings..."
-                : "Reset all settings to defaults"}
-            </Button>
-          </div>
-        </section>
-      ) : null}
+        </div>
+      </SettingsSearch>
 
       <ImportDeckModal modal={importModal} />
 

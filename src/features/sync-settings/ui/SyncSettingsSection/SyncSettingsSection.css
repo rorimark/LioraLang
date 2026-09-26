@@ -1,172 +1,132 @@
 .sync-settings-section {
   display: grid;
-  gap: 14px;
+  gap: 22px;
 }
 
-.sync-settings-section__toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
+/* The state of sync, in the tone of that state, with its one action. */
 .sync-settings-section__summary {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  background: color-mix(in srgb, var(--color-surface-muted) 24%, var(--color-surface));
+  gap: 14px;
+  padding: 16px 18px;
+  --tone: var(--color-text-muted);
+  --tone-soft: var(--color-surface-muted);
 }
 
 .sync-settings-section__summary--accent {
-  border-color: color-mix(in srgb, var(--color-primary) 34%, var(--color-border));
-  background: color-mix(in srgb, var(--color-primary-soft) 16%, var(--color-surface));
+  --tone: var(--color-primary);
+  --tone-soft: var(--color-primary-soft);
 }
 
 .sync-settings-section__summary--success {
-  border-color: color-mix(in srgb, var(--color-success, #79c579) 28%, var(--color-border));
-  background: color-mix(in srgb, var(--color-success-soft, rgba(121, 197, 121, 0.12)) 48%, var(--color-surface));
+  --tone: var(--color-success);
+  --tone-soft: color-mix(in srgb, var(--color-grade-easy) 14%, var(--color-surface));
 }
 
 .sync-settings-section__summary--warning {
-  border-color: color-mix(in srgb, var(--color-warning, #d8b158) 34%, var(--color-border));
-  background: color-mix(in srgb, var(--color-warning-soft, rgba(216, 177, 88, 0.12)) 52%, var(--color-surface));
+  --tone: var(--color-warning);
+  --tone-soft: var(--color-accent-soft);
 }
 
 .sync-settings-section__summary--danger {
-  border-color: color-mix(in srgb, var(--color-danger) 34%, var(--color-border));
-  background: color-mix(in srgb, var(--color-danger) 8%, var(--color-surface));
+  --tone: var(--color-danger);
+  --tone-soft: color-mix(in srgb, var(--color-grade-again) 12%, var(--color-surface));
 }
 
 .sync-settings-section__summary-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-surface-muted));
-  font-size: 18px;
-  color: var(--color-text-muted);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--tone-soft);
+  color: var(--tone);
+  font-size: 20px;
 }
 
 .sync-settings-section__summary-copy {
   display: grid;
-  gap: 4px;
+  gap: 2px;
+  min-width: 0;
 }
 
-.sync-settings-section__summary-copy p,
-.sync-settings-section__summary-copy span {
-  margin: 0;
+.sync-settings-section__summary-copy strong {
+  color: var(--tone);
+  font-size: 1rem;
+  font-weight: 900;
 }
 
 .sync-settings-section__summary-copy span {
   color: var(--color-text-muted);
   font-size: 0.86rem;
+  font-weight: 600;
 }
 
-.sync-settings-section__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.sync-settings-section__error {
+  padding: 0 18px 14px;
 }
 
-.sync-settings-section__actions .ui-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sync-settings-section__stats-grid,
-.sync-settings-section__meta-grid {
+.sync-settings-section__stats {
+  margin: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.sync-settings-section__stat,
-.sync-settings-section__meta-item,
-.sync-settings-section__check {
-  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--color-surface-muted) 24%, var(--color-surface));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  border-top: 2px solid var(--color-border);
 }
 
 .sync-settings-section__stat {
   display: grid;
-  gap: 8px;
-  padding: 14px 16px;
-}
-
-.sync-settings-section__stat--danger {
-  border-color: color-mix(in srgb, var(--color-danger) 30%, var(--color-border));
-}
-
-.sync-settings-section__stat-head,
-.sync-settings-section__meta-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sync-settings-section__stat-head span,
-.sync-settings-section__meta-item span {
-  color: var(--color-text-muted);
-  font-size: 0.88rem;
-}
-
-.sync-settings-section__stat strong,
-.sync-settings-section__meta-item strong {
-  color: var(--color-text);
-  font-size: 1rem;
-}
-
-.sync-settings-section__meta-item {
-  padding: 14px 16px;
-}
-
-.sync-settings-section__meta-item > div {
-  display: grid;
   gap: 4px;
+  padding: 12px 18px;
+  border-bottom: 2px solid var(--color-border);
+  min-width: 0;
 }
 
-.sync-settings-section__checks-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+.sync-settings-section__stats .sync-settings-section__stat:nth-last-child(-n + 2) {
+  border-bottom: 0;
 }
 
-.sync-settings-section__check {
+.sync-settings-section__stat dt {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  color: var(--color-text);
+  gap: 6px;
+  color: var(--color-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.sync-settings-section__check input {
+.sync-settings-section__stat dd {
   margin: 0;
-  flex: 0 0 auto;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 0.98rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-@media (max-width: 820px) {
-  .sync-settings-section__toolbar {
-    align-items: stretch;
+.sync-settings-section__stat--danger dd {
+  color: var(--color-danger);
+}
+
+@container setting-group (max-width: 480px) {
+  .sync-settings-section__summary {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 14px;
   }
 
-  .sync-settings-section__actions,
-  .sync-settings-section__actions .ui-button {
+  .sync-settings-section__summary .ui-button {
+    grid-column: 1 / -1;
     width: 100%;
   }
 
-  .sync-settings-section__stats-grid,
-  .sync-settings-section__meta-grid,
-  .sync-settings-section__checks-grid {
-    grid-template-columns: 1fr;
+  .sync-settings-section__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sync-settings-section__stat {
+    padding: 12px 14px;
   }
 }
