@@ -14,7 +14,6 @@ import {
   HubIllustration,
   PlatformsIllustration,
 } from "./LandingIllustrations";
-import "@fontsource-variable/nunito";
 import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";

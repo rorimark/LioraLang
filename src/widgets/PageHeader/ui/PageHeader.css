@@ -19,7 +19,7 @@
 
 .page-header__left > h1 {
   margin: 0;
-  font-family: "Sora", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: var(--ui-page-header-title-size);
   line-height: 1.05;

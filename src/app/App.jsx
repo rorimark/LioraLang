@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import "@fontsource-variable/nunito";
 import "./styles/App.css";
 import { AppRouter } from "@app/router";
 import { useStartupPreferences } from "@shared/lib/appPreferences";

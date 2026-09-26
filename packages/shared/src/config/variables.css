@@ -1,45 +1,64 @@
 :root {
+  /* The landing's palette, so the app and its front page are one product:
+     a clear blue for action, and the grade colours (red, amber, green) for
+     how a review went. Each strong colour has an "edge" shade, drawn under
+     pressable things as a thicker bottom border. */
   --color-transparent: transparent;
   --color-on-primary: #ffffff;
 
-  --color-bg: #f7f6f3;
+  --color-bg: #f4f6fb;
   --color-surface: #ffffff;
-  --color-surface-muted: #f1eee7;
-  --color-border: #ddd8cc;
+  --color-surface-muted: #eef2f9;
+  --color-border: #e3e6ee;
 
-  --color-text: #26251f;
-  --color-text-muted: #6a665c;
-  --color-text-subtle: #8b867b;
-  --color-border-strong: #cfc9bc;
+  --color-text: #28303f;
+  --color-text-muted: #5f6879;
+  --color-text-subtle: #858da0;
+  --color-border-strong: #cfd4df;
 
-  --color-primary: #4871d9;
-  --color-primary-strong: #365fc6;
-  --color-primary-soft: #edf2ff;
-  --color-primary-border: #cad7fb;
+  --color-primary: #2563eb;
+  --color-primary-strong: #1a47b8;
+  --color-primary-soft: #e3edff;
+  --color-primary-border: #bcd0ff;
 
-  --color-accent: #b7791f;
-  --color-accent-soft: #f4e7cf;
-  --color-accent-strong: #7a5111;
+  --color-accent: #d69500;
+  --color-accent-soft: #fff1cc;
+  --color-accent-strong: #8a5f00;
 
-  --color-danger: #c64949;
-  --color-success: #2f8f5b;
-  --color-warning: #a26817;
+  --color-danger: #e5484d;
+  --color-success: #1f9e46;
+  --color-warning: #b77900;
 
-  --color-titlebar: #f0ece2;
-  --color-titlebar-symbol: #26251f;
-  --color-overlay: rgba(15, 15, 15, 0.34);
+  /* Grade colours, shared by the rating buttons and progress. */
+  --color-grade-again: #ff5a5f;
+  --color-grade-again-edge: #d93d42;
+  --color-grade-hard: #ffb400;
+  --color-grade-hard-edge: #d69500;
+  --color-grade-good: #2563eb;
+  --color-grade-good-edge: #1a47b8;
+  --color-grade-easy: #2fbf52;
+  --color-grade-easy-edge: #22963f;
+
+  --color-titlebar: #eaeef6;
+  --color-titlebar-symbol: #28303f;
+  --color-overlay: rgba(16, 24, 40, 0.42);
 
   --flashcard-front-bg: #ffffff;
-  --flashcard-back-bg: #f3f1eb;
-  --flashcard-label-bg: #f7f5ef;
-  --flashcard-border: #e3dfd5;
+  --flashcard-back-bg: #e3edff;
+  --flashcard-label-bg: #f1f4fa;
+  --flashcard-border: #cfd4df;
 
-  --shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.06), 0 10px 28px rgba(15, 15, 15, 0.06);
-  --shadow-md: 0 22px 56px rgba(15, 15, 15, 0.12);
-  --shadow-tooltip: 0 14px 34px rgba(15, 15, 15, 0.16);
-  --shadow-flashcard: 0 18px 38px rgba(15, 15, 15, 0.11);
+  /* Depth comes mostly from edges; shadows only lift floating layers. */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 24px 60px rgba(16, 24, 40, 0.16);
+  --shadow-tooltip: 0 12px 30px rgba(16, 24, 40, 0.18);
+  --shadow-flashcard: 0 1px 2px rgba(16, 24, 40, 0.06);
 
-  --radius-control: 8px;
+  --radius-control: 12px;
+  --radius-panel: 20px;
+  --edge-width: 4px;
+  --motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-ui: "Nunito Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-size-section-title: 1.08rem;
 
   /* Backward-compatible aliases. */
@@ -51,40 +70,43 @@
 }
 
 :root[theme="dark"] {
-  --color-bg: #171717;
-  --color-surface: #1f1f1f;
-  --color-surface-muted: #282828;
-  --color-border: #343434;
+  --color-bg: #0c1628;
+  --color-surface: #14213a;
+  --color-surface-muted: #1b2a47;
+  --color-border: #24334f;
 
-  --color-text: #ebebea;
-  --color-text-muted: #a7a39a;
-  --color-text-subtle: #807b72;
-  --color-border-strong: #454545;
+  --color-text: #eef3ff;
+  --color-text-muted: #a9b8d6;
+  --color-text-subtle: #7f91b3;
+  --color-border-strong: #33466a;
 
-  --color-primary: #7aa2ff;
-  --color-primary-strong: #5f89ec;
-  --color-primary-soft: #222c42;
-  --color-primary-border: #31456e;
+  --color-primary: #4f86ff;
+  --color-primary-strong: #2d5fd6;
+  --color-primary-soft: #1c2d52;
+  --color-primary-border: #2d4476;
 
-  --color-accent: #d9aa52;
-  --color-accent-soft: #3c2f1d;
-  --color-accent-strong: #f1c36d;
+  --color-accent: #ffc233;
+  --color-accent-soft: #3a2f12;
+  --color-accent-strong: #ffd978;
 
-  --color-danger: #eb7777;
-  --color-success: #5fc98c;
-  --color-warning: #d9aa52;
+  --color-danger: #ff7a7e;
+  --color-success: #4fd576;
+  --color-warning: #ffc233;
 
-  --color-titlebar: #111111;
-  --color-titlebar-symbol: #f3f2ef;
-  --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-grade-good: #4f86ff;
+  --color-grade-good-edge: #2d5fd6;
 
-  --flashcard-front-bg: #1b1b1b;
-  --flashcard-back-bg: #232323;
-  --flashcard-label-bg: #242424;
-  --flashcard-border: #353535;
+  --color-titlebar: #091120;
+  --color-titlebar-symbol: #eef3ff;
+  --color-overlay: rgba(3, 8, 18, 0.62);
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.22), 0 12px 28px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 26px 58px rgba(0, 0, 0, 0.34);
-  --shadow-tooltip: 0 16px 34px rgba(0, 0, 0, 0.36);
-  --shadow-flashcard: 0 20px 40px rgba(0, 0, 0, 0.28);
+  --flashcard-front-bg: #16233a;
+  --flashcard-back-bg: #1c2d52;
+  --flashcard-label-bg: #1b2a47;
+  --flashcard-border: #33466a;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 26px 60px rgba(0, 0, 0, 0.5);
+  --shadow-tooltip: 0 14px 32px rgba(0, 0, 0, 0.5);
+  --shadow-flashcard: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
