@@ -161,7 +161,13 @@ describe("useBrowseDecksPanel", () => {
       const deckRepository = {};
       const hubRepository = {
         isConfigured: () => true,
-        listDecks: vi.fn().mockResolvedValue(createListResponse([createHubDeck()])),
+        listDecks: vi.fn().mockResolvedValue(
+          createListResponse([
+            createHubDeck({
+              latestVersion: { filePath: "decks/travel.lioradeck", version: 3 },
+            }),
+          ]),
+        ),
       };
       usePlatformServiceMock.mockImplementation((serviceName) =>
         serviceName === "deckRepository" ? deckRepository : hubRepository,
@@ -179,8 +185,12 @@ describe("useBrowseDecksPanel", () => {
         await result.current.copyDeckLink(result.current.decks[0]);
       });
 
+      // The preview key carries the deck version plus a time token, so
+      // messengers fetch a fresh link preview after the deck is updated.
       expect(copyTextToClipboardMock).toHaveBeenCalledWith(
-        "http://localhost:3000/share/decks/travel-tourism",
+        expect.stringMatching(
+          /^http:\/\/localhost:3000\/share\/decks\/travel-tourism\?preview=v3-[0-9a-z]+$/,
+        ),
       );
       expect(result.current.messageVariant).toBe("success");
     });
