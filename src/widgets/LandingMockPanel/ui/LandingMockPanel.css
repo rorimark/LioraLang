@@ -1032,8 +1032,14 @@
     grid-template-columns: 1fr;
   }
 
+  /* One column: the promise and the button come first, where the thumb and
+     the eye already are; the illustration follows. */
+  .lp-hero__copy {
+    order: -1;
+  }
+
   .lp-hero-art {
-    width: min(100%, 360px);
+    width: min(100%, 320px);
   }
 
   .lp-feature--reversed .lp-feature__art {
