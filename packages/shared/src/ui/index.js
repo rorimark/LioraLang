@@ -12,3 +12,15 @@ export { Tabs } from "./Tabs/Tabs";
 export { Panel } from "./Panel/Panel";
 export { SectionHeader } from "./SectionHeader/SectionHeader";
 export { AppIcon } from "./AppIcon/AppIcon";
+export {
+  SettingContent,
+  SettingGroup,
+  SettingRow,
+  SettingSegmented,
+  SettingSelect,
+  SettingStepper,
+  SettingSwitch,
+  SettingsScope,
+  SettingsSearch,
+} from "./Settings/Settings";
+export { useIsSettingsSearching } from "./Settings/settingsSearchContext";
