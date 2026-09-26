@@ -1,7 +1,6 @@
 /* global __APP_TARGET__ */
 import { createBrowserRouter, createHashRouter, RouterProvider } from "react-router";
 import { routes } from "@app-router-routes";
-import { RouteHydrateFallback } from "@shared/ui";
 
 const isDesktopTarget = __APP_TARGET__ === "desktop";
 const router = isDesktopTarget
@@ -9,5 +8,7 @@ const router = isDesktopTarget
   : createBrowserRouter(routes);
 
 export const AppRouter = () => {
-  return <RouterProvider router={router} fallbackElement={<RouteHydrateFallback />} />;
+  // Loading states come from each route's HydrateFallback; React Router 7
+  // has no fallbackElement prop.
+  return <RouterProvider router={router} />;
 };

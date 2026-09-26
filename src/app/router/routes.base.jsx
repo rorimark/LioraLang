@@ -16,10 +16,10 @@ export const loadRouteComponent = (loader) => async () => {
     throw new Error("Route component is missing default export");
   }
 
-  return {
-    Component,
-    HydrateFallback: RouteHydrateFallback,
-  };
+  // HydrateFallback is not returned here: a lazy route's fallback has to be
+  // on the route object before it loads, so it is set there (or on the
+  // parent route), and returning it again makes React Router warn.
+  return { Component };
 };
 
 export const appRoute = {
@@ -80,10 +80,16 @@ export const legacyRoutes = [
   { path: LEGACY_ROUTE_PATHS.deckCreate, element: <Navigate to={ROUTE_PATHS.deckCreate} replace /> },
   {
     path: LEGACY_ROUTE_PATHS.deckEdit,
+    HydrateFallback: RouteHydrateFallback,
+    // The loader always redirects; nothing is rendered here.
+    element: null,
     loader: ({ params }) => redirect(buildDeckEditRoute(params?.deckId)),
   },
   {
     path: LEGACY_ROUTE_PATHS.deckDetails,
+    HydrateFallback: RouteHydrateFallback,
+    // The loader always redirects; nothing is rendered here.
+    element: null,
     loader: ({ params }) => redirect(buildDeckDetailsRoute(params?.deckId)),
   },
   { path: LEGACY_ROUTE_PATHS.progress, element: <Navigate to={ROUTE_PATHS.progress} replace /> },
