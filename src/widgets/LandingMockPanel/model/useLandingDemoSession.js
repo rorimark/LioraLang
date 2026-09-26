@@ -46,6 +46,7 @@ export const useLandingDemoSession = (demoRef) => {
   const word = isDone ? null : words[index];
 
   const handleFlip = useCallback(() => setIsFlipped((value) => !value), []);
+  const handleReveal = useCallback(() => setIsFlipped(true), []);
 
   const handleRate = useCallback(
     (ratingKey) => {
@@ -135,6 +136,7 @@ export const useLandingDemoSession = (demoRef) => {
     isDone,
     log,
     handleRate,
+    handleReveal,
     handleRestart,
   };
 };

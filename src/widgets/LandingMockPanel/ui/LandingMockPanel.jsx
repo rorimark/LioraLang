@@ -31,6 +31,7 @@ const DemoSession = memo(() => {
     isDone,
     log,
     handleRate,
+    handleReveal,
     handleRestart,
   } = useLandingDemoSession(demoRef);
 
@@ -76,19 +77,35 @@ const DemoSession = memo(() => {
           <div className="lp-demo__card">
             <Flashcard card={card} />
           </div>
+          {/* One clear step at a time: recall, then show the answer, then
+              grade. The grades only appear once there is something to grade. */}
           <div className="lp-demo__ratings">
-            <SrsRatingControls
-              ratingOptions={ratingOptions}
-              onRate={handleRate}
-              disabled={!canRate}
-            />
+            {canRate ? (
+              <SrsRatingControls ratingOptions={ratingOptions} onRate={handleRate} />
+            ) : (
+              <button
+                type="button"
+                className="lp-btn lp-btn--primary lp-demo__reveal"
+                onClick={handleReveal}
+              >
+                Show answer
+              </button>
+            )}
           </div>
           <p className="lp-demo__hint" aria-live="polite">
             {canRate
               ? "How well did you know it? The time is when it comes back."
-              : "Tap the card to flip it."}
+              : "Think of the translation, then check yourself."}
             <span className="lp-demo__keys">
-              <kbd>Space</kbd> flips, <kbd>1</kbd>–<kbd>4</kbd> grade
+              {canRate ? (
+                <>
+                  <kbd>1</kbd>–<kbd>4</kbd> grade
+                </>
+              ) : (
+                <>
+                  <kbd>Space</kbd> shows the answer
+                </>
+              )}
             </span>
           </p>
         </>
