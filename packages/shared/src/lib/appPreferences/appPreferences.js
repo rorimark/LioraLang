@@ -119,14 +119,14 @@ export const normalizeAppPreferences = (value = {}) => {
     spacedRepetition: {
       newCardsPerDay: toNumberInRange(value?.spacedRepetition?.newCardsPerDay, {
         fallback: DEFAULT_APP_PREFERENCES.spacedRepetition.newCardsPerDay,
-        min: 1,
+        min: 0,
         max: 999,
       }),
       maxReviewsPerDay: toNumberInRange(
         value?.spacedRepetition?.maxReviewsPerDay,
         {
           fallback: DEFAULT_APP_PREFERENCES.spacedRepetition.maxReviewsPerDay,
-          min: 1,
+          min: 0,
           max: 2000,
         },
       ),
@@ -140,7 +140,7 @@ export const normalizeAppPreferences = (value = {}) => {
       }),
       lapsePenalty: toNumberInRange(value?.spacedRepetition?.lapsePenalty, {
         fallback: DEFAULT_APP_PREFERENCES.spacedRepetition.lapsePenalty,
-        min: 10,
+        min: 0,
         max: 100,
       }),
     },

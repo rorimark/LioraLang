@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 
 const toTags = (value) => {
@@ -111,7 +112,12 @@ export const useAppPreferencesSection = () => {
     [updateAppPreferences],
   );
 
+  const resetSrsDefaults = useCallback(() => {
+    updateAppPreferences({ spacedRepetition: { ...DEFAULT_APP_PREFERENCES.spacedRepetition } });
+  }, [updateAppPreferences]);
+
   return {
+    resetSrsDefaults,
     appPreferences,
     handleBooleanFieldChange,
     handleSelectFieldChange,

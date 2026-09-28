@@ -185,6 +185,7 @@ export const LearnFlashcardsPanel = memo(() => {
       {panel.wordsError && (
         <div className="learn-desk__status learn-desk__status--error" role="alert">
           {panel.wordsError}
+          {!panel.isBrowseMode && <button type="button" className="learn-desk__key" onClick={panel.refreshSession} disabled={panel.isRatingPending}>Refresh session</button>}
         </div>
       )}
 
@@ -205,13 +206,18 @@ export const LearnFlashcardsPanel = memo(() => {
         ) : !panel.currentWord ? (
           <div className="learn-desk__note-card learn-desk__note-card--done" aria-live="polite">
             <strong>{panel.completionMessage || "No cards available for this deck."}</strong>
+            {!panel.isBrowseMode && panel.nextDueAt && (
+              <p>Next {panel.nextLearningDueAt ? "learning step" : "review"}: <time dateTime={panel.nextLearningDueAt || panel.nextDueAt}>
+                {new Date(panel.nextLearningDueAt || panel.nextDueAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+              </time>. This session updates automatically.</p>
+            )}
             {panel.canStartNewSession && (
               <button
                 type="button"
                 className="learn-desk__key learn-desk__key--primary"
                 onClick={panel.handleStartNewSession}
               >
-                Start new session
+                Study remaining due cards
               </button>
             )}
           </div>
@@ -336,7 +342,7 @@ export const LearnFlashcardsPanel = memo(() => {
                 </span>
                 <span className="learn-desk__count">
                   {panel.sessionReceipt.done}
-                  <small>done</small>
+                  <small>studied</small>
                 </span>
               </div>
             )}
@@ -366,7 +372,7 @@ const SessionReceipt = memo(({ receipt, isBrowseMode, browseProgressLabel }) => 
     return null;
   }
 
-  const label = `${receipt.done} of ${receipt.total} cards done today`;
+  const label = `${receipt.done} cards studied today; ${receipt.total - receipt.done} cards due now`;
 
   return (
     <span className="learn-desk__receipt" role="img" aria-label={label} title={label}>
@@ -383,7 +389,7 @@ const SessionReceipt = memo(({ receipt, isBrowseMode, browseProgressLabel }) => 
       )}
       <span className="learn-desk__receipt-count">
         {receipt.done}
-        <small> / {receipt.total}</small>
+        <small> studied · {receipt.total - receipt.done} due</small>
       </span>
     </span>
   );

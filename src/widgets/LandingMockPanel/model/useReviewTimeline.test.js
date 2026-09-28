@@ -7,17 +7,17 @@ describe("buildReviewTimeline", () => {
 
     expect(timeline.reviews).toBe(8);
     expect(timeline.points.map((point) => point.gapLabel)).toEqual([
-      "+1d",
-      "+3d",
-      "+1d",
       "+3d",
       "+8d",
       "+20d",
       "+50d",
       "+125d",
+      "+313d",
+      "+783d",
+      "+1958d",
     ]);
-    expect(timeline.points.at(-1).day).toBe(211);
-    expect(timeline.months).toBe(7);
+    expect(timeline.points.at(-1).day).toBe(3260);
+    expect(timeline.months).toBe(109);
   });
 
   it("scales each bar by its gap, with the longest gap at full height", () => {
@@ -25,7 +25,6 @@ describe("buildReviewTimeline", () => {
 
     expect(heights.at(-1)).toBe(1);
     expect(Math.min(...heights)).toBeGreaterThan(0);
-    // Learning steps (+1d, +3d, +1d, +3d) first, then every gap grows.
-    expect(heights.slice(3)).toEqual([...heights.slice(3)].sort((a, b) => a - b));
+    expect(heights).toEqual([...heights].sort((a, b) => a - b));
   });
 });

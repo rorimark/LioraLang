@@ -30,6 +30,7 @@ export const SrsRatingControls = memo(
               className={toneClassName}
               onClick={() => onRate(option.key)}
               disabled={disabled}
+              aria-label={`${option.label}: ${option.description || option.label}. Next review in ${option.value}.`}
               aria-keyshortcuts={keyLabel || undefined}
             >
               <span className="srs-rating-controls__label">{option.label}</span>

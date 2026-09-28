@@ -1,6 +1,7 @@
 import { memo, useId } from "react";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import {
+  Button,
   SettingGroup,
   SettingRow,
   SettingSegmented,
@@ -156,6 +157,7 @@ export const LearningPreferences = memo(() => {
     handleSelectFieldChange,
     handleNumberFieldChange,
     handleTextFieldChange,
+    resetSrsDefaults,
   } = useAppPreferencesSection();
   const { studySession, spacedRepetition } = appPreferences;
   const stepsId = useId();
@@ -179,7 +181,7 @@ export const LearningPreferences = memo(() => {
         />
         <SettingRow
           label="Daily goal"
-          hint="How many cards you aim to study a day."
+          hint="A target for distinct cards studied today. It never blocks due reviews."
           keywords="cards target"
           control={
             <SettingStepper
@@ -222,8 +224,8 @@ export const LearningPreferences = memo(() => {
           }
         />
         <SwitchRow
-          label="Repeat missed cards now"
-          hint="A card you mark Again comes back in this session, not after the first learning step."
+          label="Repeat missed cards sooner"
+          hint="Again brings the card back after one minute, with a break to test recall."
           keywords="wrong again repeat"
           name="studySession.repeatWrongCards"
           checked={studySession.repeatWrongCards}
@@ -237,14 +239,19 @@ export const LearningPreferences = memo(() => {
         keywords="srs schedule interval algorithm"
       >
         <SettingRow
+          label="Recommended schedule"
+          hint="Use the current defaults for future answers. Your saved progress and due dates stay intact."
+          control={<Button type="button" onClick={resetSrsDefaults}>Use recommended settings</Button>}
+        />
+        <SettingRow
           label="New words a day"
-          hint="The most new words brought in on one day."
+          hint="New words introduced per deck each day. Set 0 to focus on reviews."
           keywords="new cards per day limit"
           control={
             <SettingStepper
               name="spacedRepetition.newCardsPerDay"
               value={spacedRepetition.newCardsPerDay}
-              min={1}
+              min={0}
               max={999}
               step={5}
               onChange={handleNumberFieldChange}
@@ -254,13 +261,13 @@ export const LearningPreferences = memo(() => {
         />
         <SettingRow
           label="Reviews a day"
-          hint="The most reviews on one day; the rest wait until tomorrow."
+          hint="Distinct review cards per deck each day. Learning steps always continue."
           keywords="max reviews per day limit"
           control={
             <SettingStepper
               name="spacedRepetition.maxReviewsPerDay"
               value={spacedRepetition.maxReviewsPerDay}
-              min={1}
+              min={0}
               max={2000}
               step={10}
               onChange={handleNumberFieldChange}
@@ -270,7 +277,7 @@ export const LearningPreferences = memo(() => {
         />
         <SettingRow
           label="Learning steps"
-          hint="The waits between the first reviews of a new word, separated by commas: 10m, 1d, 3d."
+          hint="Default: 10m. Again waits 10 minutes, Hard 1 day, Good 3 days, Easy 7 days. Add steps separated by commas for more practice."
           keywords="intervals minutes days"
           controlId={stepsId}
           wide
@@ -305,14 +312,14 @@ export const LearningPreferences = memo(() => {
           }
         />
         <SettingRow
-          label="Lapse penalty"
+          label="Interval retained after forgetting"
           hint="A forgotten word keeps this share of its wait."
           keywords="forgot again interval"
           control={
             <SettingStepper
               name="spacedRepetition.lapsePenalty"
               value={spacedRepetition.lapsePenalty}
-              min={10}
+              min={0}
               max={100}
               step={5}
               unit="%"

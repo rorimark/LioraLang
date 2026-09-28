@@ -1,4 +1,5 @@
 import {
+  assertGradeAllowed,
   EMPTY_SRS_SESSION,
   SRS_CARD_RATINGS,
   SRS_CARD_STATES,
@@ -95,7 +96,11 @@ const loadDeckLearningData = async (deckId, dayKey, profileScope) => {
         idbRequest(decksStore.get(normalizedDeckId)),
         idbRequest(wordsStore.index("deckId").getAll(normalizedDeckId)),
         idbRequest(reviewCardsStore.index("deckId").getAll(normalizedDeckId)),
-        idbRequest(reviewLogsStore.index("deckDayKey").getAll([normalizedDeckId, dayKey])),
+        idbRequest(
+          reviewLogsStore
+            .index("deckDayKey")
+            .getAll([normalizedDeckId, dayKey]),
+        ),
       ]);
 
       if (!deck) {
@@ -107,13 +112,18 @@ const loadDeckLearningData = async (deckId, dayKey, profileScope) => {
         words: Array.isArray(words) ? words : [],
         cardsByWordId: new Map(
           (Array.isArray(cards) ? cards : [])
-            .filter((card) => normalizeProfileScope(card?.profileScope) === normalizedProfileScope)
+            .filter(
+              (card) =>
+                normalizeProfileScope(card?.profileScope) ===
+                normalizedProfileScope,
+            )
             .map((card) => [parsePositiveInteger(card?.wordId), card])
             .filter(([wordId]) => Boolean(wordId)),
         ),
         todayLogs: (Array.isArray(todayLogs) ? todayLogs : []).filter(
           (logRecord) =>
-            normalizeProfileScope(logRecord?.profileScope) === normalizedProfileScope,
+            normalizeProfileScope(logRecord?.profileScope) ===
+            normalizedProfileScope,
         ),
       };
     },
@@ -128,24 +138,31 @@ const getSrsSessionSnapshotInternal = async ({
 }) => {
   const nowMs = Date.now();
   const dayKey = toLocalDayKey(nowMs);
-  const data = await loadDeckLearningData(deckId, dayKey, studySettings.profileScope);
+  const data = await loadDeckLearningData(
+    deckId,
+    dayKey,
+    studySettings.profileScope,
+  );
 
-  return buildSrsSessionSnapshot({
-    deck: {
-      id: data.deck.id,
-      name: data.deck.name,
-      sourceLanguage: data.deck.sourceLanguage,
-      targetLanguage: data.deck.targetLanguage,
-      tertiaryLanguage: data.deck.tertiaryLanguage,
-    },
-    words: data.words,
-    cardsByWordId: data.cardsByWordId,
-    todayLogs: data.todayLogs,
-    srsSettings,
-    studySettings,
-    forceAllCards,
-    nowMs,
-  });
+  return {
+    ...buildSrsSessionSnapshot({
+      deck: {
+        id: data.deck.id,
+        name: data.deck.name,
+        sourceLanguage: data.deck.sourceLanguage,
+        targetLanguage: data.deck.targetLanguage,
+        tertiaryLanguage: data.deck.tertiaryLanguage,
+      },
+      words: data.words,
+      cardsByWordId: data.cardsByWordId,
+      todayLogs: data.todayLogs,
+      srsSettings,
+      studySettings,
+      forceAllCards,
+      nowMs,
+    }),
+    profileScope: studySettings.profileScope,
+  };
 };
 
 export const createWebSrsRepository = () => {
@@ -184,7 +201,17 @@ export const createWebSrsRepository = () => {
       throw new Error("Invalid word id");
     }
 
-    const profileScope = normalizeProfileScope(await resolveCurrentProfileScope());
+    const profileScope = normalizeProfileScope(
+      await resolveCurrentProfileScope(),
+    );
+    if (
+      payload.expectedProfileScope !== undefined &&
+      payload.expectedProfileScope !== profileScope
+    ) {
+      throw new Error(
+        "Your account changed. Refresh the session before rating a card.",
+      );
+    }
     const settingsSource = payload?.settings || {};
     const srsSettings = normalizeSrsSettings(settingsSource);
     const studySettings = {
@@ -196,11 +223,17 @@ export const createWebSrsRepository = () => {
     const syncLocalRepository = getWebSyncLocalRepository();
     await syncLocalRepository.activateProfile(profileScope);
     const { deviceId } = await syncLocalRepository.ensureDeviceIdentity();
-    const deviceSeq = await syncLocalRepository.nextDeviceSequence(profileScope);
+    const deviceSeq =
+      await syncLocalRepository.nextDeviceSequence(profileScope);
     const opId = createDeckSyncId();
 
     await runReadwriteTransaction(
-      [WEB_DB_STORES.decks, WEB_DB_STORES.words, WEB_DB_STORES.reviewCards, WEB_DB_STORES.reviewLogs],
+      [
+        WEB_DB_STORES.decks,
+        WEB_DB_STORES.words,
+        WEB_DB_STORES.reviewCards,
+        WEB_DB_STORES.reviewLogs,
+      ],
       async ({ getStore }) => {
         const decksStore = getStore(WEB_DB_STORES.decks);
         const wordsStore = getStore(WEB_DB_STORES.words);
@@ -218,10 +251,27 @@ export const createWebSrsRepository = () => {
         const deck = await idbRequest(decksStore.get(deckId));
 
         if (!deck?.syncId) {
-          throw new Error("Deck sync metadata is missing. Reopen the deck and try again.");
+          throw new Error(
+            "Deck sync metadata is missing. Reopen the deck and try again.",
+          );
         }
 
-        const previousCard = normalizeReviewCard(existingCard || { state: SRS_CARD_STATES.new });
+        if (
+          existingCard &&
+          normalizeProfileScope(existingCard.profileScope) !== profileScope
+        ) {
+          throw new Error(
+            "Your account changed. Refresh the session before rating a card.",
+          );
+        }
+        const previousCard = normalizeReviewCard(
+          existingCard || { state: SRS_CARD_STATES.new },
+        );
+        assertGradeAllowed({
+          card: previousCard,
+          expectedRevision: payload.expectedRevision,
+          nowMs,
+        });
         const queueType = getQueueTypeByState(previousCard.state);
         const nextCard = resolveScheduleOutcome({
           card: previousCard,

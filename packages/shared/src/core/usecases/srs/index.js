@@ -1,4 +1,7 @@
 export {
+  assertGradeAllowed,
+  getCardRevision,
+  formatRelativeInterval,
   DEFAULT_SRS_SETTINGS,
   DEFAULT_STUDY_SETTINGS,
   EMPTY_SRS_SESSION,
@@ -14,4 +17,4 @@ export {
   buildRatingPreview,
   toSessionCard,
   buildSrsSessionSnapshot,
-} from "./srsEngine";
+} from "./srsEngine.js";

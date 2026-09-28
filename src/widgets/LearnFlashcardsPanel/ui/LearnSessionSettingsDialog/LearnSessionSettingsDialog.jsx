@@ -262,7 +262,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
               <label className="learn-session-dialog__field">
                 <span>
                   <FiTarget aria-hidden="true" />
-                  <span>Daily goal</span>
+                  <span>Daily goal (not a limit)</span>
                 </span>
                 <input
                   type="number"
@@ -313,9 +313,9 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 <span className="learn-session-dialog__toggle-copy">
                   <span className="learn-session-dialog__toggle-title">
                     <FiRepeat aria-hidden="true" />
-                    <strong>Repeat wrong cards</strong>
+                    <strong>Repeat missed cards sooner</strong>
                   </span>
-                  <small>Keep failed cards in the current SRS run.</small>
+                  <small>Again returns after one minute, never immediately.</small>
                 </span>
               </label>
             </div>

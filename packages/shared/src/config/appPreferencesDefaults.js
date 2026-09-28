@@ -9,9 +9,9 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
   spacedRepetition: Object.freeze({
     newCardsPerDay: 20,
     maxReviewsPerDay: 100,
-    learningSteps: "10m, 1d, 3d",
+    learningSteps: "10m",
     easyBonus: 130,
-    lapsePenalty: 70,
+    lapsePenalty: 20,
   }),
   deckDefaults: Object.freeze({
     sourceLanguage: "English",

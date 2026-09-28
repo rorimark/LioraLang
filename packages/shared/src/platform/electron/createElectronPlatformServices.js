@@ -401,6 +401,8 @@ const createSrsRepository = () => {
         deckId: payload?.deckId,
         wordId: payload?.wordId,
         rating: payload?.rating,
+        expectedRevision: payload?.expectedRevision,
+        expectedProfileScope: payload?.expectedProfileScope,
         settings: payload?.settings || {},
         forceAllCards: Boolean(payload?.forceAllCards),
         profileScope: await resolveCurrentProfileScope(),
