@@ -354,7 +354,8 @@ export const SettingsDatabasePanel = memo(() => {
   const view = isSearching ? "results" : hasRequestedTab ? "section" : "list";
 
   useEffect(() => {
-    if (isSearching || !hasRequestedTab || typeof window === "undefined") {
+    // Opening a section, or going back to the list, starts at the top.
+    if (isSearching || typeof window === "undefined") {
       return;
     }
 

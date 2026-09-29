@@ -52,11 +52,18 @@ const resolveAccount = (snapshot) =>
       }
     : SIGNED_OUT_ACCOUNT;
 
+// A tab already open does nothing when pressed again, except Settings: a
+// section inside it lives in the query, so pressing Settings there goes
+// back to the list of sections.
+const isAlreadyOpen = (location, targetPath) =>
+  location.pathname === targetPath &&
+  (targetPath !== ROUTE_PATHS.settings || !location.search);
+
 const NavItemsList = memo(
   ({
     items,
     compact = false,
-    pathname = "",
+    location,
     onActivePointerDown,
     onPreviewCancel,
     onPreviewLeave,
@@ -65,13 +72,11 @@ const NavItemsList = memo(
     const { t } = useI18n();
     const handleNavTabClick = useCallback(
       (event, targetPath) => {
-        if (pathname !== targetPath) {
-          return;
+        if (isAlreadyOpen(location, targetPath)) {
+          event.preventDefault();
         }
-
-        event.preventDefault();
       },
-      [pathname],
+      [location],
     );
 
     return (
@@ -169,7 +174,8 @@ AccountRailLink.displayName = "AccountRailLink";
 // and every section is one icon with its name under it.
 const DesktopNavBar = memo(() => {
   const { t } = useI18n();
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
 
   return (
     <nav className="nav-bar nav-bar--rail" aria-label={t("nav.primary")}>
@@ -177,7 +183,7 @@ const DesktopNavBar = memo(() => {
         <AppIcon size={40} className="nav-bar__logo" />
       </Link>
 
-      <NavItemsList items={desktopNavItems} compact pathname={pathname} />
+      <NavItemsList items={desktopNavItems} compact location={location} />
 
       <ul className="nav-bar__list nav-bar__footer">
         <li className="nav-bar__list-item">
@@ -192,7 +198,7 @@ const DesktopNavBar = memo(() => {
               title={t(settingsNavItem.titleKey)}
               compact
               onClick={(event) => {
-                if (pathname === settingsNavItem.to) {
+                if (isAlreadyOpen(location, settingsNavItem.to)) {
                   event.preventDefault();
                 }
               }}
@@ -213,7 +219,8 @@ const MobileNavBar = memo(() => {
   const mobileIndicatorSnapshotRef = useRef(null);
   const mobilePreviewTabRef = useRef(null);
   const mobileIndicatorFrameRef = useRef(0);
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
 
   const measureMobileIndicator = useCallback(() => {
     const listElement = mobileListRef.current;
@@ -361,7 +368,7 @@ const MobileNavBar = memo(() => {
           <NavItemsList
             items={NAV_ITEMS}
             compact
-            pathname={pathname}
+            location={location}
             onActivePointerDown={handleMobileTabPointerDown}
             onPreviewCancel={clearMobileTabPreview}
             onPreviewLeave={handleMobileTabPointerLeave}
