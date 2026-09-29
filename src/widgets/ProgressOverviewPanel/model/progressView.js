@@ -147,3 +147,29 @@ export const buildRecallDelta = (current, previous) => {
         : `${Math.abs(points)} ${Math.abs(points) === 1 ? "point" : "points"} ${points > 0 ? "higher" : "lower"} than the 30 days before`,
   };
 };
+
+// How the decks on the progress page can be ordered. "Active" keeps the
+// stats' order: this week's reviews, then words known.
+export const DECK_SORTS = [
+  { value: "active", label: "Active" },
+  { value: "due", label: "Due" },
+  { value: "name", label: "A–Z" },
+];
+
+const byName = (first, second) => first.name.localeCompare(second.name, undefined, { sensitivity: "base", numeric: true });
+
+export const sortDeckRows = (decks, sort) => {
+  const list = Array.isArray(decks) ? [...decks] : [];
+
+  if (sort === "due") {
+    return list.sort(
+      (first, second) => second.dueNow - first.dueNow || second.reviews7d - first.reviews7d || byName(first, second),
+    );
+  }
+
+  if (sort === "name") {
+    return list.sort(byName);
+  }
+
+  return list;
+};

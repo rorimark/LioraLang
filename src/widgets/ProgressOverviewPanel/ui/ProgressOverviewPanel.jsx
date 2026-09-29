@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react";
 import { Link } from "react-router";
 import { IoArrowDown, IoArrowForward, IoArrowUp, IoFlame, IoRemove } from "react-icons/io5";
-import { ROUTE_PATHS, buildDeckDetailsRoute } from "@shared/config/routes";
+import { ROUTE_PATHS } from "@shared/config/routes";
 import {
   STAGES,
   buildRecallDelta,
@@ -14,6 +14,7 @@ import {
   useProgressOverviewPanel,
 } from "../model";
 import { ActivityGrid, ActivityLegend, AnswersBar, ForecastChart, StageBar } from "./progressCharts";
+import { ProgressDecksCard } from "./ProgressDecksCard";
 import { Sticker, StickerDialog } from "./Sticker";
 import "./ProgressOverviewPanel.css";
 
@@ -266,58 +267,6 @@ const AnswersCard = ({ overview }) => {
   );
 };
 
-// ----- decks -----
-
-const DecksCard = ({ overview }) => {
-  const { decks } = overview;
-
-  return (
-    <Card className="progress-decks-card" title="Decks">
-      {decks.length === 0 ? (
-        <p className="progress-empty">Your decks and how far along you are in each will be listed here.</p>
-      ) : (
-        <ul className="progress-decks">
-          {decks.map((deck) => (
-            <li key={deck.id} className="progress-deck">
-              <div className="progress-deck__head">
-                <Link className="progress-deck__name" to={buildDeckDetailsRoute(deck.id)}>
-                  {deck.name}
-                </Link>
-                <span className="progress-deck__known">
-                  <strong>{formatInteger(deck.known)}</strong> / {formatInteger(deck.words)} known
-                </span>
-              </div>
-              <StageBar
-                stages={deck}
-                total={deck.words}
-                size="sm"
-                label={`${deck.name}: ${STAGES.map((stage) => `${stage.label} ${deck[stage.key]}`).join(", ")}`}
-              />
-              <div className="progress-deck__foot">
-                <span>
-                  {deck.dueNow > 0 ? <em>{formatInteger(deck.dueNow)} due now</em> : "Nothing due"}
-                  {" · "}
-                  {deck.reviews7d > 0 ? `${plural(deck.reviews7d, "review")} this week` : "No reviews this week"}
-                </span>
-                {deck.dueNow > 0 ? (
-                  <Link
-                    className="ui-button ui-button--secondary ui-button--sm"
-                    to={ROUTE_PATHS.learn}
-                    state={learnState(deck)}
-                    aria-label={`Review ${deck.name}`}
-                  >
-                    Review
-                  </Link>
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </Card>
-  );
-};
-
 // ----- stickers -----
 
 const StickersCard = ({ stickers, onOpen }) => {
@@ -419,7 +368,7 @@ export const ProgressOverviewPanel = memo(() => {
         <ActivityCard overview={overview} />
         <ForecastCard overview={overview} />
         <AnswersCard overview={overview} />
-        <DecksCard overview={overview} />
+        <ProgressDecksCard decks={overview.decks} />
         <StickersCard stickers={stickers} onOpen={openSticker} />
       </div>
       <StickerDialog selection={selection} onClose={closeSticker} />

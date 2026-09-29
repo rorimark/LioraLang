@@ -63,3 +63,19 @@ describe("progress view", () => {
     expect(resolveBusiestDeck([{ id: 1, dueNow: 0 }])).toBeNull();
   });
 });
+
+describe("deck order", () => {
+  const decks = [
+    { name: "Deck 10", dueNow: 2, reviews7d: 9 },
+    { name: "deck 2", dueNow: 5, reviews7d: 1 },
+    { name: "Alpha", dueNow: 5, reviews7d: 3 },
+  ];
+
+  it("keeps the stats' order for Active, and sorts Due and A–Z", async () => {
+    const { sortDeckRows } = await import("./progressView");
+
+    expect(sortDeckRows(decks, "active").map((deck) => deck.name)).toEqual(["Deck 10", "deck 2", "Alpha"]);
+    expect(sortDeckRows(decks, "due").map((deck) => deck.name)).toEqual(["Alpha", "deck 2", "Deck 10"]);
+    expect(sortDeckRows(decks, "name").map((deck) => deck.name)).toEqual(["Alpha", "deck 2", "Deck 10"]);
+  });
+});
