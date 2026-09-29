@@ -15,19 +15,20 @@ export const useSrsSession = ({
   // The error is kept as what failed ("load", "save") and put into words
   // when read, so a language change needs no reload.
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isRatingPending, setIsRatingPending] = useState(false);
   const requestRef = useRef(0);
   const ratingLock = useRef(false);
   const extraRef = useRef(false);
   const contextKey = `${enabled}:${deckId}:${JSON.stringify(settings)}`;
-  const session =
-    result?.contextKey === contextKey ? result.session : EMPTY_SRS_SESSION;
+  const hasSession = result?.contextKey === contextKey;
+  const session = hasSession ? result.session : EMPTY_SRS_SESSION;
+  const isLoading = Boolean(enabled && deckId && !hasSession && !error);
 
   const refresh = useCallback(async () => {
     if (!enabled || !deckId) return;
     const request = ++requestRef.current;
-    setIsLoading(true);
+    setIsRefreshing(true);
     setError("");
     try {
       const next = await repository.getSrsSession(deckId, settings, {
@@ -42,7 +43,7 @@ export const useSrsSession = ({
         setError("load");
       }
     } finally {
-      if (request === requestRef.current) setIsLoading(false);
+      if (request === requestRef.current) setIsRefreshing(false);
     }
   }, [contextKey, deckId, enabled, repository, settings]);
 
@@ -97,7 +98,7 @@ export const useSrsSession = ({
       !deckId ||
       session.card ||
       !session.deck ||
-      isLoading ||
+      isRefreshing ||
       error
     )
       return undefined;
@@ -115,7 +116,7 @@ export const useSrsSession = ({
       Math.max(100, Math.min(2_147_483_647, wakeAt - Date.now() + 50)),
     );
     return () => window.clearTimeout(timer);
-  }, [deckId, enabled, error, isLoading, refresh, session]);
+  }, [deckId, enabled, error, isRefreshing, refresh, session]);
 
   const rate = useCallback(
     async (rating) => {
@@ -123,6 +124,8 @@ export const useSrsSession = ({
         return false;
       ratingLock.current = true;
       const request = ++requestRef.current;
+      // A grade supersedes a background read without hiding the visible card.
+      setIsRefreshing(false);
       setIsRatingPending(true);
       setError("");
       try {

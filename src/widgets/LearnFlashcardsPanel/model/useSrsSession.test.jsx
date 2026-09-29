@@ -33,6 +33,97 @@ afterEach(() => {
 });
 
 describe("SRS session lifecycle", () => {
+  it("shows loading only until the first snapshot is ready", async () => {
+    const read = deferred();
+    const repository = { getSrsSession: vi.fn().mockReturnValue(read.promise) };
+    const hook = setup(repository);
+    expect(hook.result.current.isLoading).toBe(true);
+    await act(async () => {
+      read.resolve(session());
+      await read.promise;
+    });
+    expect(hook.result.current.isLoading).toBe(false);
+    expect(hook.result.current.session.card.wordId).toBe(1);
+  });
+  it.each(["focus", "visibility", "sync", "manual"])(
+    "keeps the card visible during a slow %s refresh",
+    async (trigger) => {
+      let onSync;
+      const syncRepository = {
+        subscribe: (callback) => {
+          onSync = callback;
+          return () => {};
+        },
+      };
+      const repository = { getSrsSession: vi.fn().mockResolvedValue(session()) };
+      const hook = setup(repository, { syncRepository });
+      await waitFor(() => expect(hook.result.current.session.card?.wordId).toBe(1));
+      const read = deferred();
+      repository.getSrsSession.mockReturnValue(read.promise);
+      const before = repository.getSrsSession.mock.calls.length;
+      act(() => {
+        if (trigger === "focus") window.dispatchEvent(new Event("focus"));
+        if (trigger === "visibility") {
+          vi.spyOn(document, "visibilityState", "get").mockReturnValue("visible");
+          document.dispatchEvent(new Event("visibilitychange"));
+        }
+        if (trigger === "sync") onSync({ lastSuccessfulPullAt: "2026-09-29T12:00:00Z" });
+        if (trigger === "manual") void hook.result.current.refresh();
+      });
+      expect(repository.getSrsSession).toHaveBeenCalledTimes(before + 1);
+      expect(hook.result.current.isLoading).toBe(false);
+      expect(hook.result.current.session.card.wordId).toBe(1);
+      await act(async () => {
+        read.resolve(session(2));
+        await read.promise;
+      });
+      expect(hook.result.current.isLoading).toBe(false);
+      expect(hook.result.current.session.card.wordId).toBe(2);
+    },
+  );
+  it.each(["before", "after"])(
+    "accepts a grade during refresh and ignores a stale read resolved %s the grade",
+    async (order) => {
+      const read = deferred();
+      const write = deferred();
+      const repository = {
+        getSrsSession: vi.fn().mockResolvedValue(session()),
+        gradeSrsCard: vi.fn().mockReturnValue(write.promise),
+      };
+      const hook = setup(repository);
+      await waitFor(() => expect(hook.result.current.session.card?.wordId).toBe(1));
+      repository.getSrsSession.mockReturnValue(read.promise);
+      let refresh;
+      let answer;
+      act(() => { refresh = hook.result.current.refresh(); });
+      act(() => { answer = hook.result.current.rate("good"); });
+      expect(repository.gradeSrsCard).toHaveBeenCalledTimes(1);
+      expect(hook.result.current.isRatingPending).toBe(true);
+      expect(hook.result.current.isLoading).toBe(false);
+      const finishRead = async () => { read.resolve(session(99)); await refresh; };
+      const finishWrite = async () => { write.resolve(session(2)); expect(await answer).toBe(true); };
+      await act(async () => {
+        if (order === "before") { await finishRead(); await finishWrite(); }
+        else { await finishWrite(); await finishRead(); }
+      });
+      expect(hook.result.current.session.card.wordId).toBe(2);
+      expect(hook.result.current.isRatingPending).toBe(false);
+      expect(hook.result.current.isLoading).toBe(false);
+    },
+  );
+  it("keeps the completion screen visible while refreshing an empty queue", async () => {
+    const completed = { ...session(), card: null, completionState: { done: true, canStartNewSession: false } };
+    const repository = { getSrsSession: vi.fn().mockResolvedValue(completed) };
+    const hook = setup(repository);
+    await waitFor(() => expect(hook.result.current.session.deck).not.toBeNull());
+    const read = deferred();
+    repository.getSrsSession.mockReturnValue(read.promise);
+    act(() => { void hook.result.current.refresh(); });
+    expect(hook.result.current.isLoading).toBe(false);
+    expect(hook.result.current.session.completionState.done).toBe(true);
+    await act(async () => { read.resolve(session(2)); await read.promise; });
+    expect(hook.result.current.session.card.wordId).toBe(2);
+  });
   it("ignores cached snapshots and loads a fresh session on every mount", async () => {
     sessionStorage.setItem(
       "learnSessionCache",
@@ -181,14 +272,17 @@ describe("SRS session lifecycle", () => {
     await waitFor(() =>
       expect(hook.result.current.session.card).not.toBeNull(),
     );
-    repository.getSrsSession.mockResolvedValue({
-      ...session(7),
-      profileScope: "user:next",
-    });
+    const read = deferred();
+    repository.getSrsSession.mockReturnValue(read.promise);
+    act(() => { onAuth({ user: { id: "next" } }); });
+    expect(hook.result.current.session.card).toBeNull();
+    expect(hook.result.current.isLoading).toBe(true);
     await act(async () => {
-      onAuth({ user: { id: "next" } });
+      read.resolve({ ...session(7), profileScope: "user:next" });
+      await read.promise;
     });
     expect(hook.result.current.session.card.wordId).toBe(7);
+    expect(hook.result.current.isLoading).toBe(false);
   });
 });
 
