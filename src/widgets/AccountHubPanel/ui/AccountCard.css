@@ -59,6 +59,29 @@
     0 40px 70px -34px rgba(16, 24, 40, 0.6);
 }
 
+/* Which side shows is also switched with visibility halfway through the
+   turn: backface-visibility alone is not honoured by every engine
+   (Firefox shows the front mirrored through the back). */
+.acard__front,
+.acard__stickers {
+  transform: rotateY(0deg) translateZ(1px);
+  transition: visibility 0s linear 330ms;
+}
+
+.acard.is-turned .acard__front,
+.acard.is-turned .acard__stickers {
+  visibility: hidden;
+}
+
+.acard__back {
+  visibility: hidden;
+  transition: visibility 0s linear 330ms;
+}
+
+.acard.is-turned .acard__back {
+  visibility: visible;
+}
+
 /* Front: blue, with a fine diagonal security print and a soft light from
    the top left, as printed plastic. */
 .acard__front {
@@ -235,7 +258,6 @@
   top: -3.2cqi;
   display: flex;
   gap: 1.2cqi;
-  transform: translateZ(1px);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }

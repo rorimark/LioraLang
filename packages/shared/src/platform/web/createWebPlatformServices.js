@@ -46,9 +46,9 @@ const createLazyProgressRepository = () => {
   };
 
   return {
-    async getProgressOverview() {
+    async getProgressOverview(options) {
       const repository = await getRepository();
-      return repository.getProgressOverview();
+      return repository.getProgressOverview(options);
     },
   };
 };

@@ -328,7 +328,7 @@ const isSyncOn = (label) => ["Synced", "Ready", "Syncing"].includes(label);
 
 const SignedInView = memo(({ panel }) => {
   const { authState } = panel;
-  const cardStats = useAccountCardStats(authState.isAuthenticated);
+  const cardStats = useAccountCardStats(authState.isAuthenticated ? authState.user?.id : "");
   const name = resolveCardName(authState) || "Learner";
   const perks = [
     {

@@ -412,9 +412,9 @@ const createSrsRepository = () => {
 
 const createProgressRepository = () => {
   return {
-    getProgressOverview: async () =>
+    getProgressOverview: async (options = {}) =>
       ensureElectronApi().getProgressOverview({
-        profileScope: await resolveCurrentProfileScope(),
+        profileScope: options?.profileScope || (await resolveCurrentProfileScope()),
       }),
   };
 };

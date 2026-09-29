@@ -11,10 +11,13 @@
   gap: 18px;
 }
 
+/* The page is a centred column, not a sheet pinned to the left. */
 .account {
   display: grid;
   gap: 22px;
+  width: 100%;
   max-width: 1120px;
+  margin-inline: auto;
 }
 
 /* ---------- signed out ---------- */

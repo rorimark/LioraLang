@@ -34,8 +34,12 @@ const resolveCurrentProfileScope = async () => {
 
 export const createWebProgressRepository = () => {
   return {
-    async getProgressOverview() {
-      const profileScope = normalizeProfileScope(await resolveCurrentProfileScope());
+    // The profile can be given (the account page knows who is signed in
+    // before the auth client has settled); otherwise it is looked up.
+    async getProgressOverview({ profileScope: requestedProfileScope = "" } = {}) {
+      const profileScope = normalizeProfileScope(
+        requestedProfileScope || (await resolveCurrentProfileScope()),
+      );
       await getWebSyncLocalRepository().activateProfile(profileScope);
       const { decks, words, reviewCards, reviewLogs } = await runReadonlyTransaction(
         [

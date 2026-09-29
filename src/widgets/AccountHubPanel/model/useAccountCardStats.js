@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { toLocalDayKey } from "@shared/core/usecases/progress";
+import { buildUserProfileScope } from "@shared/core/usecases/sync";
 import { mergeStickers, readStickerLedger } from "@shared/lib/stickers";
 import { usePlatformService } from "@shared/providers";
 import { buildCardStats } from "./accountCard";
 
-// The learning side of the card: read once the learner is signed in.
+// The learning side of the card, for the signed-in user's own profile.
+// The profile is passed explicitly: right after sign-in the auth client
+// may not have settled, and a lookup would read the guest profile.
 // The card shows without it (dashes) if progress cannot be read.
-export const useAccountCardStats = (isAuthenticated) => {
+export const useAccountCardStats = (userId) => {
   const progressRepository = usePlatformService("progressRepository");
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!userId) {
       return undefined;
     }
 
     let isCurrent = true;
 
     progressRepository
-      .getProgressOverview()
+      .getProgressOverview({ profileScope: buildUserProfileScope(userId) })
       .then((overview) => {
         if (!isCurrent) {
           return;
@@ -42,7 +45,7 @@ export const useAccountCardStats = (isAuthenticated) => {
     return () => {
       isCurrent = false;
     };
-  }, [isAuthenticated, progressRepository]);
+  }, [userId, progressRepository]);
 
-  return isAuthenticated ? stats : null;
+  return userId ? stats : null;
 };
