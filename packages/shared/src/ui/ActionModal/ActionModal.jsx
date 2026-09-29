@@ -1,6 +1,7 @@
 import { memo, useId, useRef } from "react";
 import { useDialogA11y } from "@shared/lib/a11y";
 import "./ActionModal.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const EMPTY_DIALOG = Object.freeze({});
 
@@ -9,14 +10,17 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
       isOpen,
       title,
       description = "",
-      confirmLabel = "Confirm",
-      cancelLabel = "Cancel",
+      confirmLabel,
+      cancelLabel,
       isConfirming = false,
       isConfirmDisabled = false,
       onConfirm,
       onClose,
       renderActions,
     } = dialog;
+    const { t } = useI18n();
+    const confirmText = confirmLabel ?? t("common.confirm");
+    const cancelText = cancelLabel ?? t("common.cancel");
     const contentRef = useRef(null);
     const titleId = useId();
     const descriptionId = useId();
@@ -54,7 +58,7 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
               type="button"
               className="action-modal__close"
               onClick={onClose}
-              aria-label="Close dialog"
+              aria-label={t("common.closeDialog")}
             >
               ×
             </button>
@@ -70,8 +74,8 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
 
           {typeof renderActions === "function" ? (
             renderActions({
-              confirmLabel,
-              cancelLabel,
+              confirmLabel: confirmText,
+              cancelLabel: cancelText,
               isConfirming,
               isConfirmDisabled,
               onConfirm,
@@ -80,7 +84,7 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
           ) : (
             <div className="action-modal__actions">
               <button type="button" onClick={onClose} data-autofocus>
-                {cancelLabel}
+                {cancelText}
               </button>
               <button
                 type="button"
@@ -88,7 +92,7 @@ export const ActionModal = memo(({ dialog = EMPTY_DIALOG, children = null }) => 
                 onClick={onConfirm}
                 disabled={isConfirming || isConfirmDisabled}
               >
-                {isConfirming ? "Processing..." : confirmLabel}
+                {isConfirming ? t("common.working") : confirmText}
               </button>
             </div>
           )}

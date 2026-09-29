@@ -1,17 +1,18 @@
 import { memo, useId, useMemo, useRef } from "react";
 import { useDialogA11y } from "@shared/lib/a11y";
 import "./RuntimeErrorModal.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const resolveMessageText = (value) =>
   typeof value === "string" ? value.trim() : "";
 
-const resolveDetailsText = (message, details) => {
+const resolveDetailsText = (message, details, t) => {
   const normalizedMessage = resolveMessageText(message);
   const normalizedDetails = resolveMessageText(details);
   const lines = [];
 
   if (normalizedMessage) {
-    lines.push("Message:");
+    lines.push(t("runtimeError.message"));
     lines.push(normalizedMessage);
   }
 
@@ -19,7 +20,7 @@ const resolveDetailsText = (message, details) => {
     if (lines.length > 0) {
       lines.push("");
     }
-    lines.push("Stack trace:");
+    lines.push(t("errors.stack"));
     lines.push(normalizedDetails);
   }
 
@@ -34,13 +35,14 @@ export const RuntimeErrorModal = memo(
     details,
     onClose,
   }) => {
+    const { t } = useI18n();
     const contentRef = useRef(null);
     const titleId = useId();
     const messageId = useId();
     const normalizedMessage = useMemo(() => resolveMessageText(message), [message]);
     const detailsText = useMemo(
-      () => resolveDetailsText(message, details),
-      [message, details],
+      () => resolveDetailsText(message, details, t),
+      [message, details, t],
     );
     const shouldShowDetails = Boolean(detailsText);
 
@@ -77,20 +79,20 @@ export const RuntimeErrorModal = memo(
               type="button"
               className="runtime-error-modal__close"
               onClick={onClose}
-              aria-label="Close dialog"
+              aria-label={t("common.closeDialog")}
             >
               ×
             </button>
           </header>
 
           <p className="runtime-error-modal__message runtime-error-modal__message--clamped" id={messageId}>
-            {normalizedMessage || "Something went wrong."}
+            {normalizedMessage || t("runtimeError.fallback")}
           </p>
 
           {shouldShowDetails ? (
             <details className="runtime-error-modal__details">
               <summary className="runtime-error-modal__details-toggle">
-                Show technical details
+                {t("runtimeError.details")}
               </summary>
               <pre className="runtime-error-modal__details-body">
                 {detailsText}
@@ -105,7 +107,7 @@ export const RuntimeErrorModal = memo(
               onClick={onClose}
               data-autofocus
             >
-              Close
+              {t("common.close")}
             </button>
           </div>
         </section>

@@ -6,18 +6,24 @@ import { useStartupPreferences } from "@shared/lib/appPreferences";
 import { usePointerFocusGuard } from "@shared/lib/a11y";
 import { useActionLogger } from "@shared/lib/debug";
 import { usePlatformService } from "@shared/providers";
+import { I18nProvider, readStoredLocaleChoice } from "@shared/lib/i18n";
 import {
   APP_THEME_MODES,
   applyThemeMode,
   getSystemThemeMediaQuery,
 } from "@shared/lib/theme";
 
-export const App = () => {
+export const App = ({ initialLocale }) => {
   usePointerFocusGuard();
   useActionLogger();
   const syncRepository = usePlatformService("syncRepository");
 
-  const { startupPreferences } = useStartupPreferences();
+  const { startupPreferences, isLoaded } = useStartupPreferences();
+  // The language this device started in, until the settings say which one
+  // was chosen: no flash of another language while they load.
+  const languageChoice = isLoaded
+    ? startupPreferences.uiAccessibility.interfaceLanguage
+    : readStoredLocaleChoice();
   const themeMode = startupPreferences.uiAccessibility.themeMode;
 
   useEffect(() => {
@@ -82,5 +88,9 @@ export const App = () => {
     root.setAttribute("ui-high-contrast", String(accessibility.highContrast));
   }, [startupPreferences.uiAccessibility]);
 
-  return <AppRouter />;
+  return (
+    <I18nProvider choice={languageChoice} initialLocale={initialLocale}>
+      <AppRouter />
+    </I18nProvider>
+  );
 };

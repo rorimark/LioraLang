@@ -24,32 +24,31 @@ import {
 } from "../model";
 import { AccountCard } from "./AccountCard";
 import "./AccountHubPanel.css";
+import { useI18n } from "@shared/lib/i18n";
 
-const renderDeckVersion = (deck) => {
+const renderDeckVersion = (deck, t) => {
   const version = Number.isFinite(Number(deck?.latestVersion?.version))
     ? Number(deck.latestVersion.version)
     : 0;
 
-  return version <= 0 ? "Draft" : `v${version}`;
+  return version <= 0 ? t("account.hub.draft") : `v${version}`;
 };
 
 const toCount = (value) => (Number.isFinite(Number(value)) ? Number(value) : 0);
 
-// What an account adds, said once, next to the form that creates it.
-const ACCOUNT_PERKS = [
-  "Publish your decks to the Hub for others to use.",
-  "Keep decks and progress in step across your devices.",
-  "Manage and remove what you published, from any device.",
-];
+// What an account adds, said once, next to the form that creates it
+// (account.perks.<key>).
+const ACCOUNT_PERKS = ["publish", "sync", "manage"];
 
 const SignedOutForms = memo(({ panel }) => {
+  const { t } = useI18n();
   const isSignUp = panel.activeTab === "sign-up";
   const isReset = panel.activeTab === "reset";
 
   return (
-    <section className="account__auth" aria-label="Sign in or create an account">
+    <section className="account__auth" aria-label={t("account.authLabel")}>
       {isReset ? null : (
-        <div className="account__switch" role="tablist" aria-label="Account access">
+        <div className="account__switch" role="tablist" aria-label={t("account.accessLabel")}>
           {panel.signedOutTabs
             .filter((tab) => tab.key !== "reset")
             .map((tab) => (
@@ -76,24 +75,24 @@ const SignedOutForms = memo(({ panel }) => {
           }}
         >
           <label className="account__field">
-            <span>Email</span>
+            <span>{t("account.email")}</span>
             <TextInput
               type="email"
               value={panel.email}
               onChange={(event) => panel.setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={t("account.emailPlaceholder")}
               autoComplete="email"
             />
           </label>
           <div className="account__field">
             <span className="account__field-head">
-              <label htmlFor="account-sign-in-password">Password</label>
+              <label htmlFor="account-sign-in-password">{t("account.password")}</label>
               <button
                 type="button"
                 className="account__text-link"
                 onClick={() => panel.setActiveTab("reset")}
               >
-                Forgot password?
+                {t("account.forgot")}
               </button>
             </span>
             <TextInput
@@ -101,7 +100,7 @@ const SignedOutForms = memo(({ panel }) => {
               type="password"
               value={panel.password}
               onChange={(event) => panel.setPassword(event.target.value)}
-              placeholder="Your password"
+              placeholder={t("account.passwordPlaceholder")}
               autoComplete="current-password"
             />
           </div>
@@ -111,7 +110,7 @@ const SignedOutForms = memo(({ panel }) => {
             fullWidth
             isLoading={panel.pendingAction === "sign-in"}
           >
-            Sign in
+            {t("account.tabs.sign-in")}
           </Button>
         </form>
       ) : null}
@@ -125,36 +124,36 @@ const SignedOutForms = memo(({ panel }) => {
           }}
         >
           <label className="account__field">
-            <span>Display name</span>
+            <span>{t("account.displayName")}</span>
             <TextInput
               value={panel.displayName}
               onChange={(event) => panel.setDisplayName(event.target.value)}
-              placeholder="How your name should appear"
+              placeholder={t("account.displayNamePlaceholder")}
               autoComplete="nickname"
             />
           </label>
           <label className="account__field">
-            <span>Email</span>
+            <span>{t("account.email")}</span>
             <TextInput
               type="email"
               value={panel.email}
               onChange={(event) => panel.setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={t("account.emailPlaceholder")}
               autoComplete="email"
             />
           </label>
           <label className="account__field">
-            <span>Password</span>
+            <span>{t("account.password")}</span>
             <TextInput
               type="password"
               value={panel.password}
               onChange={(event) => panel.setPassword(event.target.value)}
-              placeholder="At least 10 characters"
+              placeholder={t("account.passwordHint", { count: 10 })}
               autoComplete="new-password"
             />
           </label>
           <p className="account__note">
-            We send a link to confirm your email. Publishing unlocks once it is confirmed.
+            {t("account.signUpNote")}
           </p>
           <Button
             variant="primary"
@@ -162,7 +161,7 @@ const SignedOutForms = memo(({ panel }) => {
             fullWidth
             isLoading={panel.pendingAction === "sign-up"}
           >
-            Create account
+            {t("account.tabs.sign-up")}
           </Button>
         </form>
       ) : null}
@@ -176,16 +175,16 @@ const SignedOutForms = memo(({ panel }) => {
           }}
         >
           <header className="account__form-head">
-            <h3>Reset your password</h3>
-            <p>We will email you a link to set a new one.</p>
+            <h3>{t("account.reset.title")}</h3>
+            <p>{t("account.reset.text")}</p>
           </header>
           <label className="account__field">
-            <span>Email</span>
+            <span>{t("account.email")}</span>
             <TextInput
               type="email"
               value={panel.resetEmail}
               onChange={(event) => panel.setResetEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={t("account.emailPlaceholder")}
               autoComplete="email"
             />
           </label>
@@ -195,14 +194,14 @@ const SignedOutForms = memo(({ panel }) => {
             fullWidth
             isLoading={panel.pendingAction === "reset-password"}
           >
-            Send reset link
+            {t("account.reset.send")}
           </Button>
           <button
             type="button"
             className="account__text-link account__text-link--center"
             onClick={() => panel.setActiveTab("sign-in")}
           >
-            Back to sign in
+            {t("account.reset.back")}
           </button>
         </form>
       ) : null}
@@ -210,9 +209,9 @@ const SignedOutForms = memo(({ panel }) => {
       {isReset ? null : (
         <>
           <div className="account__divider" role="separator">
-            <span>or</span>
+            <span>{t("common.or")}</span>
           </div>
-          <div className="account__providers" aria-label="Sign in with a provider">
+          <div className="account__providers" aria-label={t("account.providersLabel")}>
             {panel.socialProviders.map((provider) => (
               <Button
                 key={provider.key}
@@ -227,8 +226,7 @@ const SignedOutForms = memo(({ panel }) => {
           </div>
           {panel.isDesktopMode ? (
             <p className="account__note">
-              Google and GitHub sign-in are coming to the desktop app. Email and password
-              work here already.
+              {t("account.desktopProvidersNote")}
             </p>
           ) : null}
         </>
@@ -240,8 +238,10 @@ const SignedOutForms = memo(({ panel }) => {
 SignedOutForms.displayName = "SignedOutForms";
 
 const HubDecksList = memo(({ panel }) => {
+  const { t } = useI18n();
+
   if (panel.isOwnDecksLoading) {
-    return <p className="account__muted">Loading your Hub decks...</p>;
+    return <p className="account__muted">{t("account.hub.loading")}</p>;
   }
 
   if (panel.ownDecksError) {
@@ -251,10 +251,8 @@ const HubDecksList = memo(({ panel }) => {
   if (panel.ownDecks.length === 0) {
     return (
       <div className="account__empty">
-        <strong>Nothing published yet.</strong>
-        <p>
-          Publish a deck from your library, and it shows up here with its link.
-        </p>
+        <strong>{t("account.hub.emptyTitle")}</strong>
+        <p>{t("account.hub.emptyText")}</p>
       </div>
     );
   }
@@ -262,17 +260,17 @@ const HubDecksList = memo(({ panel }) => {
   return (
     <ul className="account__decks">
       {panel.ownDecks.map((deck) => {
-        const title = deck.title || "Untitled deck";
+        const title = deck.title || t("browse.untitled");
 
         return (
           <li className="account__deck" key={deck.id}>
             <div className="account__deck-copy">
               <strong>{title}</strong>
-              <p>{deck.description || "No public description yet."}</p>
+              <p>{deck.description || t("account.hub.noDescription")}</p>
               <span className="account__deck-meta">
-                <b>{renderDeckVersion(deck)}</b>
-                <span>{toCount(deck.wordsCount)} words</span>
-                <span>{toCount(deck.downloadsCount)} downloads</span>
+                <b>{renderDeckVersion(deck, t)}</b>
+                <span>{t("browse.wordsCount", { count: toCount(deck.wordsCount) })}</span>
+                <span>{t("account.hub.downloads", { count: toCount(deck.downloadsCount) })}</span>
               </span>
             </div>
             <div className="account__deck-actions">
@@ -280,19 +278,19 @@ const HubDecksList = memo(({ panel }) => {
                 variant="secondary"
                 size="sm"
                 onClick={() => panel.handleCopyDeckLink(deck)}
-                aria-label={`Copy link to ${title}`}
+                aria-label={t("account.hub.copyNamed", { name: title })}
               >
                 <FiCopy aria-hidden="true" />
-                <span>Copy link</span>
+                <span>{t("account.hub.copy")}</span>
               </Button>
               {deck.slug ? (
                 <Link
                   className="ui-button ui-button--secondary ui-button--sm"
                   to={buildBrowseDeckRoute(deck.slug)}
-                  aria-label={`Open ${title} in the Hub`}
+                  aria-label={t("account.hub.openNamed", { name: title })}
                 >
                   <FiExternalLink aria-hidden="true" />
-                  <span>Open</span>
+                  <span>{t("common.open")}</span>
                 </Link>
               ) : null}
               <Button
@@ -301,10 +299,10 @@ const HubDecksList = memo(({ panel }) => {
                 type="button"
                 onClick={() => panel.handleDeleteHubDeck(deck)}
                 isLoading={panel.deletingHubDeckId === String(deck.id)}
-                aria-label={`Delete ${title} from the Hub`}
+                aria-label={t("account.hub.deleteNamed", { name: title })}
               >
                 <FiTrash2 aria-hidden="true" />
-                <span>Delete</span>
+                <span>{t("common.delete")}</span>
               </Button>
             </div>
           </li>
@@ -324,12 +322,14 @@ const STATUS_ICONS = {
 };
 
 // Sync reads as on for every state but a problem.
-const isSyncOn = (label) => ["Synced", "Ready", "Syncing"].includes(label);
+const isSyncOn = (state) => ["synced", "ready", "syncing"].includes(state);
 
 const SignedInView = memo(({ panel }) => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const { authState } = panel;
   const cardStats = useAccountCardStats(authState.isAuthenticated ? authState.user?.id : "");
-  const name = resolveCardName(authState) || "Learner";
+  const name = resolveCardName(authState) || t("account.learner");
   const providerValue = panel.overviewCards.find((card) => card.key === "provider")?.value;
   // Kept stable between sync status updates, so the card does not redraw
   // every few seconds.
@@ -337,24 +337,24 @@ const SignedInView = memo(({ panel }) => {
     () => [
       {
         key: "publish",
-        title: "Publish to the Hub",
-        note: authState.isEmailVerified ? "Share your decks with everyone" : "Once your email is confirmed",
+        title: t("account.card.publish"),
+        note: authState.isEmailVerified ? t("account.card.publishOn") : t("account.card.publishOff"),
         isOn: authState.isEmailVerified,
       },
       {
         key: "sync",
-        title: "Sync across devices",
+        title: t("account.card.sync"),
         note: panel.syncOverview.label,
-        isOn: isSyncOn(panel.syncOverview.label),
+        isOn: isSyncOn(panel.syncOverview.state),
       },
       {
         key: "provider",
-        title: providerValue || "Signed in",
-        note: panel.isDesktopMode ? "On the desktop app" : "In the browser",
+        title: providerValue || t("account.card.signedIn"),
+        note: panel.isDesktopMode ? t("account.card.desktop") : t("account.card.browser"),
         isOn: true,
       },
     ],
-    [authState.isEmailVerified, panel.isDesktopMode, panel.syncOverview.label, providerValue],
+    [authState.isEmailVerified, panel.isDesktopMode, panel.syncOverview.label, panel.syncOverview.state, providerValue, t],
   );
 
   return (
@@ -364,7 +364,7 @@ const SignedInView = memo(({ panel }) => {
           <AccountCard
             name={name}
             email={authState.email}
-            memberSince={formatMemberSince(authState.user?.created_at)}
+            memberSince={formatMemberSince(authState.user?.created_at, i18n)}
             cardNumber={buildCardNumber(authState.user?.id)}
             stats={cardStats}
             isVerified={authState.isEmailVerified}
@@ -372,13 +372,13 @@ const SignedInView = memo(({ panel }) => {
           />
         </div>
 
-        <section className="account__status" aria-label="Account status">
+        <section className="account__status" aria-label={t("account.statusLabel")}>
           <ul className="account__status-list">
             {panel.overviewCards.map((card) => {
               const Icon = STATUS_ICONS[card.key] || FiShield;
               const isWarning =
                 (card.key === "verification" && !authState.isEmailVerified) ||
-                (card.key === "sync" && !isSyncOn(card.value));
+                (card.key === "sync" && !isSyncOn(panel.syncOverview.state));
 
               return (
                 <li key={card.key} className={isWarning ? "is-warning" : ""}>
@@ -397,12 +397,12 @@ const SignedInView = memo(({ panel }) => {
                       onClick={panel.handleResendVerification}
                       isLoading={panel.pendingAction === "resend-verification"}
                     >
-                      Send again
+                      {t("account.sendAgain")}
                     </Button>
                   ) : null}
                   {card.key === "hub-decks" && panel.ownDecks.length > 0 ? (
                     <Button variant="ghost" size="sm" onClick={() => panel.setActiveTab("hub")}>
-                      Manage
+                      {t("account.manage")}
                     </Button>
                   ) : null}
                 </li>
@@ -417,12 +417,12 @@ const SignedInView = memo(({ panel }) => {
             isLoading={panel.pendingAction === "sign-out"}
           >
             <FiLogOut aria-hidden="true" />
-            <span>Sign out</span>
+            <span>{t("account.signOut")}</span>
           </Button>
         </section>
       </div>
 
-      <nav className="account__tabs" role="tablist" aria-label="Account">
+      <nav className="account__tabs" role="tablist" aria-label={t("nav.account")}>
         {panel.signedInTabs.map((tab) => (
           <button
             key={tab.key}
@@ -447,17 +447,17 @@ const SignedInView = memo(({ panel }) => {
             }}
           >
             <label className="account__field">
-              <span>Display name</span>
+              <span>{t("account.displayName")}</span>
               <TextInput
                 value={panel.displayName}
                 onChange={(event) => panel.setDisplayName(event.target.value)}
-                placeholder="Your display name"
+                placeholder={t("account.displayNamePlaceholderSelf")}
                 autoComplete="nickname"
               />
-              <small>Shown on the decks you publish.</small>
+              <small>{t("account.displayNameHint")}</small>
             </label>
             <label className="account__field">
-              <span>Email</span>
+              <span>{t("account.email")}</span>
               <TextInput value={authState.email} disabled />
             </label>
             <div className="account__form-actions">
@@ -466,7 +466,7 @@ const SignedInView = memo(({ panel }) => {
                 type="submit"
                 isLoading={panel.pendingAction === "save-profile"}
               >
-                Save profile
+                {t("account.saveProfile")}
               </Button>
             </div>
           </form>
@@ -481,11 +481,11 @@ const SignedInView = memo(({ panel }) => {
             }}
           >
             <header className="account__form-head">
-              <h3>{panel.isRecoveryFlow ? "Set a new password" : "Change password"}</h3>
-              <p>Use at least 10 characters.</p>
+              <h3>{panel.isRecoveryFlow ? t("account.security.setNew") : t("account.security.change")}</h3>
+              <p>{t("account.security.hint", { count: 10 })}</p>
             </header>
             <label className="account__field">
-              <span>New password</span>
+              <span>{t("account.security.new")}</span>
               <TextInput
                 type="password"
                 value={panel.nextPassword}
@@ -494,7 +494,7 @@ const SignedInView = memo(({ panel }) => {
               />
             </label>
             <label className="account__field">
-              <span>Repeat new password</span>
+              <span>{t("account.security.repeat")}</span>
               <TextInput
                 type="password"
                 value={panel.confirmPassword}
@@ -509,10 +509,10 @@ const SignedInView = memo(({ panel }) => {
                 isLoading={panel.pendingAction === "update-password"}
               >
                 <FiShield aria-hidden="true" />
-                <span>{panel.isRecoveryFlow ? "Save new password" : "Update password"}</span>
+                <span>{panel.isRecoveryFlow ? t("account.security.saveNew") : t("account.security.update")}</span>
               </Button>
               <Button variant="ghost" type="button" onClick={panel.handlePasswordResetRequest}>
-                Email me a reset link
+                {t("account.security.emailLink")}
               </Button>
             </div>
           </form>
@@ -528,6 +528,7 @@ SignedInView.displayName = "SignedInView";
 
 export const AccountHubPanel = memo(() => {
   const panel = useAccountHubPanel();
+  const { t } = useI18n();
   const isSignedOut =
     panel.isConfigured && !panel.isAuthLoading && !panel.authState.isAuthenticated;
   const isSignedIn =
@@ -541,23 +542,19 @@ export const AccountHubPanel = memo(() => {
         <section className="account__notice">
           <FiAlertCircle aria-hidden="true" />
           <div>
-            <h3>Accounts are not set up in this build</h3>
-            <p>
-              Add <code>VITE_SUPABASE_URL</code> and{" "}
-              <code>VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY</code> to <code>.env</code> to
-              turn on sign-in, publishing and sync. Learning and your decks work without it.
-            </p>
+            <h3>{t("account.notConfigured.title")}</h3>
+            <p>{t("account.notConfigured.text")}</p>
           </div>
         </section>
       ) : null}
 
       {panel.isConfigured && panel.isAuthLoading ? (
-        <p className="account__muted">Checking your session...</p>
+        <p className="account__muted">{t("account.checking")}</p>
       ) : null}
 
       {isSignedOut ? (
         <div className="account account--signed-out">
-          <section className="account__intro" aria-label="Why sign in">
+          <section className="account__intro" aria-label={t("account.whyLabel")}>
             {/* The card this account will be, filled in as the form is. */}
             <AccountCard
               isBlank
@@ -567,16 +564,16 @@ export const AccountHubPanel = memo(() => {
               })}
               email={panel.email}
             />
-            <h2>Your learner card</h2>
+            <h2>{t("account.yourCard")}</h2>
             <ul>
               {ACCOUNT_PERKS.map((perk) => (
                 <li key={perk}>
                   <FiCheckCircle aria-hidden="true" />
-                  {perk}
+                  {t(`account.perks.${perk}`)}
                 </li>
               ))}
             </ul>
-            <p>You can learn, make decks and browse the Hub without one.</p>
+            <p>{t("account.withoutOne")}</p>
           </section>
           <SignedOutForms panel={panel} />
         </div>

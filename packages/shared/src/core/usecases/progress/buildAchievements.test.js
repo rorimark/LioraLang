@@ -10,7 +10,7 @@ describe("buildAchievements", () => {
 
     expect(result.families.map((item) => item.key)).toEqual(ACHIEVEMENT_FAMILIES.map((item) => item.key));
     expect(result.families.flatMap((item) => item.tiers).every((item) => !item.earned)).toBe(true);
-    expect(tier(result, "days", 1).description).toBe("Finish your first review.");
+    expect(tier(result, "days", 1)).toMatchObject({ family: "days", target: 1, earnedOn: null });
   });
 
   it("dates log-based tiers by the day they were crossed", () => {

@@ -8,15 +8,15 @@ import {
   describeNextDue,
   describeStreak,
   formatDay,
-  formatInteger,
-  plural,
   resolveBusiestDeck,
+  stickerGoal,
   useProgressOverviewPanel,
 } from "../model";
 import { ActivityGrid, ActivityLegend, AnswersBar, ForecastChart, StageBar } from "./progressCharts";
 import { ProgressDecksCard } from "./ProgressDecksCard";
 import { Sticker, StickerDialog } from "./Sticker";
 import "./ProgressOverviewPanel.css";
+import { useI18n, withEmphasis } from "@shared/lib/i18n";
 
 const learnState = (deck) => (deck ? { importedDeckId: String(deck.id) } : null);
 
@@ -35,42 +35,47 @@ const Card = ({ className = "", title, aside, children, ...props }) => (
 // ----- the words you know, on an index card -----
 
 const WordsCard = ({ overview }) => {
+  const { t, formatNumber } = useI18n();
   const { known, stages, totalWords } = overview;
-  const stageSummary = STAGES.map((stage) => `${stage.label} ${formatInteger(stages[stage.key])}`).join(", ");
+  const stageSummary = STAGES.map(
+    (stage) => `${t(`progress.stages.${stage.key}.label`)} ${formatNumber(stages[stage.key])}`,
+  ).join(", ");
 
   return (
     <section className="progress-words" aria-labelledby="progress-words-title">
-      <p className="progress-words__eyebrow">Your words</p>
+      <p className="progress-words__eyebrow">{t("progress.words.eyebrow")}</p>
       <div className="progress-words__body">
         <h2 id="progress-words-title" className="progress-words__count">
-          <strong>{formatInteger(known)}</strong>
-          <span>{known === 1 ? "word you know" : "words you know"}</span>
+          <strong>{formatNumber(known)}</strong>
+          <span>{t("progress.words.youKnow", { count: known })}</span>
         </h2>
         <p className="progress-words__lede">
           {totalWords === 0
-            ? "Add a deck and the words you learn will be counted here."
-            : stages.mature > 0
-              ? `Out of ${formatInteger(totalWords)} in your decks. ${formatInteger(stages.mature)} of them are in long-term memory.`
-              : `Out of ${formatInteger(totalWords)} in your decks. A word reaches long-term memory when its next review is three weeks away.`}
+            ? t("progress.words.empty")
+            : `${t("progress.words.outOf", { count: totalWords })} ${
+              stages.mature > 0
+                ? t("progress.words.inLongTerm", { count: stages.mature })
+                : t("progress.words.longTermHint")
+            }`}
         </p>
         {totalWords > 0 ? (
           <>
             <StageBar
               stages={stages}
               total={totalWords}
-              label={`Your words by stage: ${stageSummary}`}
+              label={t("progress.words.byStage", { summary: stageSummary })}
             />
             <ul className="progress-words__legend">
               {STAGES.map((stage) => (
-                <li key={stage.key} title={stage.hint}>
+                <li key={stage.key} title={t(`progress.stages.${stage.key}.hint`)}>
                   <span className={`progress-swatch is-${stage.key}`} aria-hidden />
-                  <span>{stage.label}</span>
-                  <strong>{formatInteger(stages[stage.key])}</strong>
+                  <span>{t(`progress.stages.${stage.key}.label`)}</span>
+                  <strong>{formatNumber(stages[stage.key])}</strong>
                 </li>
               ))}
             </ul>
             <p className="progress-words__note">
-              Known words are the recent and the long-term ones: answered right, and not due again today.
+              {t("progress.words.note")}
             </p>
           </>
         ) : null}
@@ -82,6 +87,8 @@ const WordsCard = ({ overview }) => {
 // ----- what to do today -----
 
 const TodayCard = ({ overview }) => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const { dueNow, forecast, streak, reviewsToday, totalWords, decks } = overview;
   const busiestDeck = resolveBusiestDeck(decks);
 
@@ -90,10 +97,10 @@ const TodayCard = ({ overview }) => {
   if (totalWords === 0) {
     body = (
       <>
-        <p className="progress-today__big">No words yet</p>
-        <p className="progress-today__line">Pick a deck from the community to start learning.</p>
+        <p className="progress-today__big">{t("progress.today.noWords")}</p>
+        <p className="progress-today__line">{t("progress.today.pickDeck")}</p>
         <Link className="ui-button ui-button--primary progress-today__action" to={ROUTE_PATHS.browse}>
-          Browse decks
+          {t("progress.today.browse")}
           <IoArrowForward aria-hidden />
         </Link>
       </>
@@ -102,13 +109,13 @@ const TodayCard = ({ overview }) => {
     body = (
       <>
         <p className="progress-today__big">
-          <strong>{formatInteger(dueNow)}</strong> {dueNow === 1 ? "card to review" : "cards to review"}
+          {withEmphasis(t("progress.today.due", { count: dueNow }))}
         </p>
         <p className="progress-today__line">
           {busiestDeck && busiestDeck.dueNow < dueNow
-            ? `${formatInteger(busiestDeck.dueNow)} of them in ${busiestDeck.name}.`
+            ? t("progress.today.someIn", { count: busiestDeck.dueNow, name: busiestDeck.name })
             : busiestDeck
-              ? `All in ${busiestDeck.name}.`
+              ? t("progress.today.allIn", { name: busiestDeck.name })
               : ""}
         </p>
         <Link
@@ -116,7 +123,7 @@ const TodayCard = ({ overview }) => {
           to={ROUTE_PATHS.learn}
           state={learnState(busiestDeck)}
         >
-          Review now
+          {t("progress.today.reviewNow")}
           <IoArrowForward aria-hidden />
         </Link>
       </>
@@ -124,10 +131,10 @@ const TodayCard = ({ overview }) => {
   } else {
     body = (
       <>
-        <p className="progress-today__big">All caught up</p>
-        <p className="progress-today__line">{describeNextDue(forecast)}</p>
+        <p className="progress-today__big">{t("progress.today.caughtUp")}</p>
+        <p className="progress-today__line">{describeNextDue(forecast, i18n)}</p>
         <Link className="ui-button ui-button--secondary progress-today__action" to={ROUTE_PATHS.learn}>
-          Learn new words
+          {t("progress.today.learnNew")}
           <IoArrowForward aria-hidden />
         </Link>
       </>
@@ -135,11 +142,11 @@ const TodayCard = ({ overview }) => {
   }
 
   return (
-    <Card className="progress-today" title="Today">
+    <Card className="progress-today" title={t("progress.today.title")}>
       <div className="progress-today__body">{body}</div>
       <p className={`progress-today__streak${streak.isTodayDone ? " is-done" : ""}`}>
         <IoFlame aria-hidden />
-        <span>{describeStreak(streak, reviewsToday)}</span>
+        <span>{describeStreak(streak, reviewsToday, i18n)}</span>
       </p>
     </Card>
   );
@@ -148,41 +155,43 @@ const TodayCard = ({ overview }) => {
 // ----- a year of study -----
 
 const ActivityCard = ({ overview }) => {
+  const i18n = useI18n();
+  const { t, formatNumber } = i18n;
   const { streak, activity } = overview;
 
   return (
-    <Card className="progress-activity-card" title="Activity" aside={<ActivityLegend />}>
+    <Card className="progress-activity-card" title={t("progress.activity.title")} aside={<ActivityLegend />}>
       <dl className="progress-stats">
         <div>
-          <dt>Current streak</dt>
-          <dd>{plural(streak.current, "day")}</dd>
+          <dt>{t("progress.activity.currentStreak")}</dt>
+          <dd>{t("progress.activity.days", { count: streak.current })}</dd>
         </div>
         <div>
-          <dt>Best streak</dt>
-          <dd>{plural(streak.best, "day")}</dd>
+          <dt>{t("progress.activity.bestStreak")}</dt>
+          <dd>{t("progress.activity.days", { count: streak.best })}</dd>
         </div>
         <div>
-          <dt>Days studied</dt>
+          <dt>{t("progress.activity.daysStudied")}</dt>
           <dd>
-            {formatInteger(activity.activeDays)}
-            <small> this year</small>
+            {formatNumber(activity.activeDays)}
+            <small> {t("progress.activity.thisYear")}</small>
           </dd>
         </div>
         <div>
-          <dt>Reviews</dt>
+          <dt>{t("progress.activity.reviews")}</dt>
           <dd>
-            {formatInteger(activity.reviews)}
-            <small> this year</small>
+            {formatNumber(activity.reviews)}
+            <small> {t("progress.activity.thisYear")}</small>
           </dd>
         </div>
       </dl>
       <ActivityGrid activity={activity} />
       <table className="sr-only">
-        <caption>Reviews per day, days with reviews only</caption>
+        <caption>{t("progress.activity.tableCaption")}</caption>
         <thead>
           <tr>
-            <th scope="col">Day</th>
-            <th scope="col">Reviews</th>
+            <th scope="col">{t("progress.activity.dayColumn")}</th>
+            <th scope="col">{t("progress.activity.reviews")}</th>
           </tr>
         </thead>
         <tbody>
@@ -190,8 +199,8 @@ const ActivityCard = ({ overview }) => {
             .filter((day) => day && day.reviews > 0)
             .map((day) => (
               <tr key={day.date}>
-                <td>{formatDay(day.date)}</td>
-                <td>{day.reviews}</td>
+                <td>{formatDay(day.date, i18n)}</td>
+                <td>{formatNumber(day.reviews)}</td>
               </tr>
             ))}
         </tbody>
@@ -203,18 +212,19 @@ const ActivityCard = ({ overview }) => {
 // ----- the next two weeks -----
 
 const ForecastCard = ({ overview }) => {
+  const { t } = useI18n();
   const { forecast } = overview;
   const total = forecast.reduce((sum, day) => sum + day.due, 0);
 
   return (
     <Card
       className="progress-forecast-card"
-      title="Coming up"
-      aside={<span className="progress-card__meta">{plural(total, "review")} in 2 weeks</span>}
+      title={t("progress.forecast.title")}
+      aside={<span className="progress-card__meta">{t("progress.forecast.total", { count: total })}</span>}
     >
       {total === 0 ? (
         <p className="progress-empty">
-          Nothing is scheduled yet. Words you study come back here, spaced further apart each time you remember them.
+          {t("progress.forecast.empty")}
         </p>
       ) : (
         <ForecastChart forecast={forecast} />
@@ -228,30 +238,34 @@ const ForecastCard = ({ overview }) => {
 const DELTA_ICONS = { up: IoArrowUp, down: IoArrowDown, flat: IoRemove };
 
 const AnswersCard = ({ overview }) => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const { ratings30d, recall30d, recallPrevious30d } = overview;
-  const delta = buildRecallDelta(recall30d, recallPrevious30d);
+  const delta = buildRecallDelta(recall30d, recallPrevious30d, i18n);
   const DeltaIcon = delta ? DELTA_ICONS[delta.direction] : null;
 
   return (
     <Card
       className="progress-answers-card"
-      title="Answers"
-      aside={<span className="progress-card__meta">Last 30 days</span>}
+      title={t("progress.answers.title")}
+      aside={<span className="progress-card__meta">{t("progress.answers.period")}</span>}
     >
       {ratings30d.total === 0 ? (
         <p className="progress-empty">
-          How you answer shows up here after your first reviews: how often you remembered, and how easily.
+          {t("progress.answers.empty")}
         </p>
       ) : (
         <>
           <div className="progress-recall">
             <p className="progress-recall__value">
-              <strong>{Math.round(recall30d)}%</strong>
-              <span>remembered</span>
+              <strong>{i18n.formatPercent(recall30d)}</strong>
+              <span>{t("progress.answers.remembered")}</span>
             </p>
             <p className="progress-recall__detail">
-              {plural(ratings30d.total - ratings30d.again, "answer")} out of {formatInteger(ratings30d.total)} were
-              not Again.
+              {t("progress.answers.detail", {
+                count: ratings30d.total - ratings30d.again,
+                total: ratings30d.total,
+              })}
             </p>
             {delta ? (
               <p className={`progress-recall__delta is-${delta.direction}`}>
@@ -275,16 +289,18 @@ const AnswersCard = ({ overview }) => {
 const SHEET_SIZE = 8;
 
 const StickersCard = ({ stickers, onOpen }) => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const sheet = [...stickers.recent, ...stickers.nextUp].slice(0, SHEET_SIZE);
   const nextUp = stickers.nextUp.slice(0, 3);
 
   return (
     <Card
       className="progress-stickers-card"
-      title="Stickers"
+      title={t("stickers.title")}
       aside={
         <span className="progress-card__meta">
-          {formatInteger(stickers.earnedCount)} of {formatInteger(stickers.totalCount)}
+          {t("stickers.earnedOf", { earned: stickers.earnedCount, total: stickers.totalCount })}
         </span>
       }
     >
@@ -294,24 +310,24 @@ const StickersCard = ({ stickers, onOpen }) => {
         ))}
       </div>
       {stickers.earnedCount === 0 ? (
-        <p className="progress-empty">Your first sticker comes with your first review.</p>
+        <p className="progress-empty">{t("stickers.first")}</p>
       ) : null}
       {nextUp.length > 0 ? (
         <div className="progress-stickers__next">
-          <h3>Next up</h3>
+          <h3>{t("stickers.nextUp")}</h3>
           <ul className="progress-goals">
             {nextUp.map((tier) => (
               <li key={tier.id} className="progress-goal">
                 <div className="progress-goal__head">
-                  <span>{tier.description.replace(/\.$/, "")}</span>
+                  <span>{stickerGoal(i18n, tier).replace(/[.。]$/, "")}</span>
                   <span className="progress-goal__count">
-                    {formatInteger(tier.progress)} / {formatInteger(tier.target)}
+                    {i18n.formatNumber(tier.progress)} / {i18n.formatNumber(tier.target)}
                   </span>
                 </div>
                 <div
                   className="progress-goal__meter"
                   role="meter"
-                  aria-label={tier.description}
+                  aria-label={stickerGoal(i18n, tier)}
                   aria-valuemin={0}
                   aria-valuemax={tier.target}
                   aria-valuenow={tier.progress}
@@ -325,25 +341,30 @@ const StickersCard = ({ stickers, onOpen }) => {
         </div>
       ) : null}
       <Link className="progress-stickers__link" to={ROUTE_PATHS.progressStickers}>
-        Open the sticker album
+        {t("stickers.openAlbum")}
         <IoArrowForward aria-hidden />
       </Link>
     </Card>
   );
 };
 
-const ProgressLoading = () => (
-  <div className="progress" aria-busy="true" aria-label="Loading progress">
-    <div className="progress__grid">
-      <div className="progress-skeleton progress-skeleton--words" />
-      <div className="progress-skeleton progress-skeleton--today" />
-      <div className="progress-skeleton progress-skeleton--activity" />
+const ProgressLoading = () => {
+  const { t } = useI18n();
+
+  return (
+    <div className="progress" aria-busy="true" aria-label={t("progress.loading")}>
+      <div className="progress__grid">
+        <div className="progress-skeleton progress-skeleton--words" />
+        <div className="progress-skeleton progress-skeleton--today" />
+        <div className="progress-skeleton progress-skeleton--activity" />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const ProgressOverviewPanel = memo(() => {
   const { overview, stickers, isLoading, error, refreshOverview } = useProgressOverviewPanel();
+  const { t } = useI18n();
   const [selection, setSelection] = useState(null);
   const openSticker = useCallback((tier, family) => setSelection({ tier, family }), []);
   const closeSticker = useCallback(() => setSelection(null), []);
@@ -355,10 +376,10 @@ export const ProgressOverviewPanel = memo(() => {
   if (error) {
     return (
       <section className="progress-card progress-error" role="alert">
-        <h2>Progress could not be loaded</h2>
-        <p>{error}</p>
+        <h2>{t("progress.errors.title")}</h2>
+        <p>{t("progress.errors.text")}</p>
         <button type="button" className="ui-button ui-button--secondary" onClick={refreshOverview}>
-          Try again
+          {t("common.tryAgain")}
         </button>
       </section>
     );

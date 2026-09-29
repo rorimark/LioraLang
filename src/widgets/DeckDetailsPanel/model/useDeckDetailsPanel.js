@@ -5,6 +5,7 @@ import { useDeckWords } from "@entities/deck";
 import { useCardCatalog } from "@features/card-catalog";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { ROUTE_PATHS, buildDeckEditRoute } from "@shared/config/routes";
+import { useI18n } from "@shared/lib/i18n";
 
 const FILTERS_BREAKPOINT = 1450;
 
@@ -30,6 +31,7 @@ export const useDeckDetailsPanel = () => {
   );
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
+  const { t, errorText } = useI18n();
   const cardCatalog = useCardCatalog(words);
   const languageLabels = useMemo(() => {
     const sourceLanguage = deck?.sourceLanguage?.trim() || "English";
@@ -95,24 +97,24 @@ export const useDeckDetailsPanel = () => {
       const exportedDeckName =
         typeof result?.deckName === "string" && result.deckName.trim()
           ? result.deckName
-          : "Deck";
+          : t("decks.untitled");
       const exportFilePath =
         typeof result?.filePath === "string" ? result.filePath.trim() : "";
 
       if (exportedCount === 0) {
-        setMessage(`Exported "${exportedDeckName}" as empty deck`);
+        setMessage(t("decks.status.exportedEmpty", { name: exportedDeckName }));
         setMessageVariant("warning");
       } else if (!exportFilePath) {
         setMessage(
-          `Exported "${exportedDeckName}": ${exportedCount} words (path unavailable)`,
+          t("decks.status.exportedNoPath", { name: exportedDeckName, count: exportedCount }),
         );
         setMessageVariant("warning");
       } else {
-        setMessage(`Exported "${exportedDeckName}": ${exportedCount} words`);
+        setMessage(t("decks.status.exported", { name: exportedDeckName, count: exportedCount }));
         setMessageVariant("success");
       }
     } catch (exportError) {
-      setMessage(exportError.message || "Failed to export deck");
+      setMessage(errorText(exportError, "decks.errors.export"));
       setMessageVariant("error");
     } finally {
       setIsExporting(false);
@@ -123,6 +125,8 @@ export const useDeckDetailsPanel = () => {
     appPreferences.importExport.includeTags,
     deckRepository,
     deckId,
+    errorText,
+    t,
   ]);
 
   const clearMessage = useCallback(() => {

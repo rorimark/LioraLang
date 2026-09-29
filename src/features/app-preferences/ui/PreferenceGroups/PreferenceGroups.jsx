@@ -11,6 +11,7 @@ import {
 } from "@shared/ui";
 import { useAppPreferencesSection } from "../../model";
 import "./PreferenceGroups.css";
+import { AUTO_LOCALE, INTERFACE_LOCALES, useI18n } from "@shared/lib/i18n";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"].map((level) => ({
   value: level,
@@ -30,52 +31,54 @@ const PART_OF_SPEECH_OPTIONS = [
   "other",
 ];
 
-const LANGUAGE_OPTION_ITEMS = LANGUAGE_OPTIONS.map((language) => (
-  <option key={language} value={language}>
-    {language}
-  </option>
-));
+const renderLanguageOptions = ({ languageName }) =>
+  LANGUAGE_OPTIONS.map((language) => (
+    <option key={language} value={language}>
+      {languageName(language)}
+    </option>
+  ));
 
-const PART_OPTION_ITEMS = PART_OF_SPEECH_OPTIONS.map((part) => (
-  <option key={part} value={part}>
-    {part}
-  </option>
-));
+const renderPartOptions = ({ partOfSpeechName }) =>
+  PART_OF_SPEECH_OPTIONS.map((part) => (
+    <option key={part} value={part}>
+      {partOfSpeechName(part)}
+    </option>
+  ));
 
-const FONT_SCALE_OPTIONS = [
-  { value: "small", label: "Small" },
-  { value: "normal", label: "Normal" },
-  { value: "large", label: "Large" },
+const FONT_SCALE_OPTIONS = (t) => [
+  { value: "small", label: t("prefs.small") },
+  { value: "normal", label: t("prefs.normal") },
+  { value: "large", label: t("prefs.large") },
 ];
 
-const STUDY_MODE_OPTIONS = [
+const STUDY_MODE_OPTIONS = (t) => [
   { value: "srs", label: "SRS" },
-  { value: "review", label: "Review" },
+  { value: "review", label: t("prefs.review") },
 ];
 
-const AUTO_FLIP_OPTIONS = [
-  { value: "off", label: "Off" },
-  { value: "1s", label: "1s" },
-  { value: "2s", label: "2s" },
-  { value: "3s", label: "3s" },
+const AUTO_FLIP_OPTIONS = (t) => [
+  { value: "off", label: t("prefs.off") },
+  { value: "1s", label: t("session.seconds", { count: 1 }) },
+  { value: "2s", label: t("session.seconds", { count: 2 }) },
+  { value: "3s", label: t("session.seconds", { count: 3 }) },
 ];
 
-const SHUFFLE_OPTIONS = [
-  { value: "off", label: "Off" },
-  { value: "per_session", label: "Per session" },
-  { value: "always", label: "Always" },
+const SHUFFLE_OPTIONS = (t) => [
+  { value: "off", label: t("prefs.off") },
+  { value: "per_session", label: t("prefs.perSession") },
+  { value: "always", label: t("prefs.always") },
 ];
 
-const BACKUP_OPTIONS = [
-  { value: "off", label: "Off" },
-  { value: "daily", label: "Daily" },
-  { value: "weekly", label: "Weekly" },
-  { value: "monthly", label: "Monthly" },
+const BACKUP_OPTIONS = (t) => [
+  { value: "off", label: t("prefs.off") },
+  { value: "daily", label: t("prefs.daily") },
+  { value: "weekly", label: t("prefs.weekly") },
+  { value: "monthly", label: t("prefs.monthly") },
 ];
 
-const UPDATE_CHANNEL_OPTIONS = [
-  { value: "stable", label: "Stable" },
-  { value: "beta", label: "Beta" },
+const UPDATE_CHANNEL_OPTIONS = (t) => [
+  { value: "stable", label: t("prefs.stable") },
+  { value: "beta", label: t("prefs.beta") },
 ];
 
 const EXPORT_FORMAT_OPTIONS = [
@@ -100,45 +103,74 @@ const SwitchRow = memo(({ label, hint, keywords, name, checked, onChange }) => {
 
 SwitchRow.displayName = "SwitchRow";
 
+// The word for "language" in every language offered, so the row can be
+// found by someone who has landed in a language they cannot read.
+const LANGUAGE_KEYWORDS =
+  "language interface translation locale мова язык język sprache idioma langue lingua dil jazyk 言語";
+
 export const DisplayPreferences = memo(() => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const { appPreferences, handleBooleanFieldChange, handleSelectFieldChange } =
     useAppPreferencesSection();
   const { uiAccessibility } = appPreferences;
+  const languageId = useId();
 
   return (
     <>
       <SettingRow
-        label="Text size"
+        label={t("prefs.interfaceLanguage")}
+        hint={t("prefs.interfaceLanguageHint")}
+        keywords={LANGUAGE_KEYWORDS}
+        controlId={languageId}
+        control={
+          <SettingSelect
+            id={languageId}
+            name="uiAccessibility.interfaceLanguage"
+            value={uiAccessibility.interfaceLanguage}
+            onChange={handleSelectFieldChange}
+          >
+            <option value={AUTO_LOCALE}>{t("prefs.interfaceLanguageAuto")}</option>
+            {INTERFACE_LOCALES.map((item) => (
+              <option key={item.code} value={item.code} lang={item.code}>
+                {item.nativeName}
+              </option>
+            ))}
+          </SettingSelect>
+        }
+      />
+      <SettingRow
+        label={t("prefs.textSize")}
         keywords="font scale zoom bigger smaller accessibility"
         control={
           <SettingSegmented
             name="uiAccessibility.fontScale"
             value={uiAccessibility.fontScale}
-            options={FONT_SCALE_OPTIONS}
+            options={FONT_SCALE_OPTIONS(t)}
             onChange={handleSelectFieldChange}
-            ariaLabel="Text size"
+            ariaLabel={t("prefs.textSize")}
           />
         }
       />
       <SwitchRow
-        label="Compact layout"
-        hint="Tighter spacing, more on the screen at once."
+        label={t("prefs.compactLayout")}
+        hint={t("prefs.tighterSpacingMoreOnThe")}
         keywords="density dense accessibility"
         name="uiAccessibility.compactMode"
         checked={uiAccessibility.compactMode}
         onChange={handleBooleanFieldChange}
       />
       <SwitchRow
-        label="Reduce motion"
-        hint="Animations are switched off; changes happen in place."
+        label={t("prefs.reduceMotion")}
+        hint={t("prefs.animationsAreSwitchedOffChanges")}
         keywords="animation accessibility"
         name="uiAccessibility.reducedMotion"
         checked={uiAccessibility.reducedMotion}
         onChange={handleBooleanFieldChange}
       />
       <SwitchRow
-        label="High contrast"
-        hint="Stronger borders and no shadows."
+        label={t("prefs.highContrast")}
+        hint={t("prefs.strongerBordersAndNoShadows")}
         keywords="accessibility contrast"
         name="uiAccessibility.highContrast"
         checked={uiAccessibility.highContrast}
@@ -151,6 +183,8 @@ export const DisplayPreferences = memo(() => {
 DisplayPreferences.displayName = "DisplayPreferences";
 
 export const LearningPreferences = memo(() => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const {
     appPreferences,
     handleBooleanFieldChange,
@@ -164,24 +198,24 @@ export const LearningPreferences = memo(() => {
 
   return (
     <>
-      <SettingGroup title="Sessions" keywords="study learn">
+      <SettingGroup title={t("prefs.sessions")} keywords="study learn">
         <SettingRow
-          label="Start Learn in"
-          hint="SRS brings the cards that are due; Review goes through the whole deck."
+          label={t("prefs.startLearnIn")}
+          hint={t("prefs.srsBringsTheCardsThat")}
           keywords="default study mode srs review"
           control={
             <SettingSegmented
               name="studySession.defaultStudyMode"
               value={studySession.defaultStudyMode}
-              options={STUDY_MODE_OPTIONS}
+              options={STUDY_MODE_OPTIONS(t)}
               onChange={handleSelectFieldChange}
-              ariaLabel="Start Learn in"
+              ariaLabel={t("prefs.startLearnIn")}
             />
           }
         />
         <SettingRow
-          label="Daily goal"
-          hint="A target for distinct cards studied today. It never blocks due reviews."
+          label={t("prefs.dailyGoal")}
+          hint={t("prefs.aTargetForDistinctCards")}
           keywords="cards target"
           control={
             <SettingStepper
@@ -191,41 +225,41 @@ export const LearningPreferences = memo(() => {
               max={999}
               step={5}
               onChange={handleNumberFieldChange}
-              ariaLabel="daily goal"
+              ariaLabel={t("prefs.dailyGoal")}
             />
           }
         />
         <SettingRow
-          label="Flip by itself after"
-          hint="Turns the card over for you, so you can study hands-free."
+          label={t("prefs.flipByItselfAfter")}
+          hint={t("prefs.turnsTheCardOverFor")}
           keywords="auto flip delay timer"
           control={
             <SettingSegmented
               name="studySession.autoFlipDelay"
               value={studySession.autoFlipDelay}
-              options={AUTO_FLIP_OPTIONS}
+              options={AUTO_FLIP_OPTIONS(t)}
               onChange={handleSelectFieldChange}
-              ariaLabel="Flip by itself after"
+              ariaLabel={t("prefs.flipByItselfAfter")}
             />
           }
         />
         <SettingRow
-          label="Shuffle"
-          hint="The order the cards come in."
+          label={t("prefs.shuffle")}
+          hint={t("prefs.theOrderTheCardsCome")}
           keywords="random order"
           control={
             <SettingSegmented
               name="studySession.shuffleMode"
               value={studySession.shuffleMode}
-              options={SHUFFLE_OPTIONS}
+              options={SHUFFLE_OPTIONS(t)}
               onChange={handleSelectFieldChange}
-              ariaLabel="Shuffle"
+              ariaLabel={t("prefs.shuffle")}
             />
           }
         />
         <SwitchRow
-          label="Repeat missed cards sooner"
-          hint="Again brings the card back after one minute, with a break to test recall."
+          label={t("prefs.repeatMissedCardsSooner")}
+          hint={t("prefs.againBringsTheCardBack")}
           keywords="wrong again repeat"
           name="studySession.repeatWrongCards"
           checked={studySession.repeatWrongCards}
@@ -234,18 +268,18 @@ export const LearningPreferences = memo(() => {
       </SettingGroup>
 
       <SettingGroup
-        title="Spaced repetition"
-        description="How often words come back. The defaults suit most people."
+        title={t("prefs.spacedRepetition")}
+        description={t("prefs.howOftenWordsComeBack")}
         keywords="srs schedule interval algorithm"
       >
         <SettingRow
-          label="Recommended schedule"
-          hint="Use the current defaults for future answers. Your saved progress and due dates stay intact."
-          control={<Button type="button" onClick={resetSrsDefaults}>Use recommended settings</Button>}
+          label={t("prefs.recommendedSchedule")}
+          hint={t("prefs.useTheCurrentDefaultsFor")}
+          control={<Button type="button" onClick={resetSrsDefaults}>{t("prefs.useRecommendedSettings")}</Button>}
         />
         <SettingRow
-          label="New words a day"
-          hint="New words introduced per deck each day. Set 0 to focus on reviews."
+          label={t("prefs.newWordsADay")}
+          hint={t("prefs.newWordsIntroducedPerDeck")}
           keywords="new cards per day limit"
           control={
             <SettingStepper
@@ -255,13 +289,13 @@ export const LearningPreferences = memo(() => {
               max={999}
               step={5}
               onChange={handleNumberFieldChange}
-              ariaLabel="new words a day"
+              ariaLabel={t("prefs.newWordsADay")}
             />
           }
         />
         <SettingRow
-          label="Reviews a day"
-          hint="Distinct review cards per deck each day. Learning steps always continue."
+          label={t("prefs.reviewsADay")}
+          hint={t("prefs.distinctReviewCardsPerDeck")}
           keywords="max reviews per day limit"
           control={
             <SettingStepper
@@ -271,13 +305,13 @@ export const LearningPreferences = memo(() => {
               max={2000}
               step={10}
               onChange={handleNumberFieldChange}
-              ariaLabel="reviews a day"
+              ariaLabel={t("prefs.reviewsADay")}
             />
           }
         />
         <SettingRow
-          label="Learning steps"
-          hint="Default: 10m. Again waits 10 minutes, Hard 1 day, Good 3 days, Easy 7 days. Add steps separated by commas for more practice."
+          label={t("prefs.learningSteps")}
+          hint={t("prefs.default10mAgainWaits10")}
           keywords="intervals minutes days"
           controlId={stepsId}
           wide
@@ -295,8 +329,8 @@ export const LearningPreferences = memo(() => {
           }
         />
         <SettingRow
-          label="Easy bonus"
-          hint="Easy stretches the next wait by this much."
+          label={t("prefs.easyBonus")}
+          hint={t("prefs.easyStretchesTheNextWait")}
           keywords="multiplier interval"
           control={
             <SettingStepper
@@ -307,13 +341,13 @@ export const LearningPreferences = memo(() => {
               step={5}
               unit="%"
               onChange={handleNumberFieldChange}
-              ariaLabel="easy bonus"
+              ariaLabel={t("prefs.easyBonus")}
             />
           }
         />
         <SettingRow
-          label="Interval retained after forgetting"
-          hint="A forgotten word keeps this share of its wait."
+          label={t("prefs.intervalRetainedAfterForgetting")}
+          hint={t("prefs.aForgottenWordKeepsThis")}
           keywords="forgot again interval"
           control={
             <SettingStepper
@@ -324,7 +358,7 @@ export const LearningPreferences = memo(() => {
               step={5}
               unit="%"
               onChange={handleNumberFieldChange}
-              ariaLabel="lapse penalty"
+              ariaLabel={t("prefs.intervalRetainedAfterForgetting")}
             />
           }
         />
@@ -336,6 +370,8 @@ export const LearningPreferences = memo(() => {
 LearningPreferences.displayName = "LearningPreferences";
 
 export const DeckDefaultPreferences = memo(() => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const { appPreferences, handleSelectFieldChange, handleTextFieldChange } =
     useAppPreferencesSection();
   const { deckDefaults } = appPreferences;
@@ -347,7 +383,7 @@ export const DeckDefaultPreferences = memo(() => {
   return (
     <SettingGroup keywords="new deck defaults create">
       <SettingRow
-        label="Words in"
+        label={t("prefs.wordsIn")}
         keywords="source language"
         controlId={sourceId}
         control={
@@ -357,12 +393,12 @@ export const DeckDefaultPreferences = memo(() => {
             value={deckDefaults.sourceLanguage}
             onChange={handleSelectFieldChange}
           >
-            {LANGUAGE_OPTION_ITEMS}
+            {renderLanguageOptions(i18n)}
           </SettingSelect>
         }
       />
       <SettingRow
-        label="Translated to"
+        label={t("prefs.translatedTo")}
         keywords="target language"
         controlId={targetId}
         control={
@@ -372,12 +408,12 @@ export const DeckDefaultPreferences = memo(() => {
             value={deckDefaults.targetLanguage}
             onChange={handleSelectFieldChange}
           >
-            {LANGUAGE_OPTION_ITEMS}
+            {renderLanguageOptions(i18n)}
           </SettingSelect>
         }
       />
       <SettingRow
-        label="Level"
+        label={t("prefs.level")}
         keywords="cefr a1 a2 b1 b2 c1 c2"
         control={
           <SettingSegmented
@@ -385,12 +421,12 @@ export const DeckDefaultPreferences = memo(() => {
             value={deckDefaults.level}
             options={LEVEL_OPTIONS}
             onChange={handleSelectFieldChange}
-            ariaLabel="Level"
+            ariaLabel={t("prefs.level")}
           />
         }
       />
       <SettingRow
-        label="Part of speech"
+        label={t("prefs.partOfSpeech")}
         keywords="noun verb grammar"
         controlId={partId}
         control={
@@ -400,13 +436,13 @@ export const DeckDefaultPreferences = memo(() => {
             value={deckDefaults.partOfSpeech}
             onChange={handleSelectFieldChange}
           >
-            {PART_OPTION_ITEMS}
+            {renderPartOptions(i18n)}
           </SettingSelect>
         }
       />
       <SettingRow
-        label="Tags"
-        hint="Separated by commas, up to 10."
+        label={t("prefs.tags")}
+        hint={t("prefs.separatedByCommasUpTo")}
         keywords="labels"
         controlId={tagsId}
         wide
@@ -418,7 +454,7 @@ export const DeckDefaultPreferences = memo(() => {
             name="deckDefaults.tags"
             value={deckDefaults.tags.join(", ")}
             onChange={handleTextFieldChange}
-            placeholder="travel, verbs"
+            placeholder={t("prefs.travelVerbs")}
             autoComplete="off"
           />
         }
@@ -430,6 +466,8 @@ export const DeckDefaultPreferences = memo(() => {
 DeckDefaultPreferences.displayName = "DeckDefaultPreferences";
 
 export const SafetyPreferences = memo(() => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const {
     appPreferences,
     handleBooleanFieldChange,
@@ -441,21 +479,21 @@ export const SafetyPreferences = memo(() => {
   return (
     <SettingGroup keywords="backups safety data protect">
       <SettingRow
-        label="Back up automatically"
+        label={t("prefs.backUpAutomatically")}
         keywords="auto backup interval schedule"
         control={
           <SettingSegmented
             name="dataSafety.autoBackupInterval"
             value={dataSafety.autoBackupInterval}
-            options={BACKUP_OPTIONS}
+            options={BACKUP_OPTIONS(t)}
             onChange={handleSelectFieldChange}
-            ariaLabel="Back up automatically"
+            ariaLabel={t("prefs.backUpAutomatically")}
           />
         }
       />
       <SettingRow
-        label="Backups to keep"
-        hint="Older ones are removed."
+        label={t("prefs.backupsToKeep")}
+        hint={t("prefs.olderOnesAreRemoved")}
         keywords="max backups"
         control={
           <SettingStepper
@@ -464,13 +502,13 @@ export const SafetyPreferences = memo(() => {
             min={1}
             max={100}
             onChange={handleNumberFieldChange}
-            ariaLabel="backups to keep"
+            ariaLabel={t("prefs.backupsToKeep")}
           />
         }
       />
       <SwitchRow
-        label="Ask before deleting"
-        hint="Confirm before anything is removed for good."
+        label={t("prefs.askBeforeDeleting")}
+        hint={t("prefs.confirmBeforeAnythingIsRemoved")}
         keywords="confirm destructive delete"
         name="dataSafety.confirmDestructive"
         checked={dataSafety.confirmDestructive}
@@ -483,6 +521,7 @@ export const SafetyPreferences = memo(() => {
 SafetyPreferences.displayName = "SafetyPreferences";
 
 export const PrivacyPreferences = memo(({ isDesktopMode = false }) => {
+  const { t } = useI18n();
   const { appPreferences, handleBooleanFieldChange, handleSelectFieldChange } =
     useAppPreferencesSection();
   const { desktop, privacy } = appPreferences;
@@ -491,56 +530,56 @@ export const PrivacyPreferences = memo(({ isDesktopMode = false }) => {
   return (
     <>
       {isDesktopMode ? (
-        <SettingGroup title="Desktop app" keywords="desktop electron">
+        <SettingGroup title={t("prefs.desktopApp")} keywords="desktop electron">
           <SwitchRow
-            label="Open at login"
+            label={t("prefs.openAtLogin")}
             keywords="launch startup"
             name="desktop.launchAtStartup"
             checked={desktop.launchAtStartup}
             onChange={handleBooleanFieldChange}
           />
           <SwitchRow
-            label="Minimize to tray"
+            label={t("prefs.minimizeToTray")}
             keywords="menu bar background"
             name="desktop.minimizeToTray"
             checked={desktop.minimizeToTray}
             onChange={handleBooleanFieldChange}
           />
           <SwitchRow
-            label="Hardware acceleration"
-            hint="Turn off if the window flickers or draws wrong."
+            label={t("prefs.hardwareAcceleration")}
+            hint={t("prefs.turnOffIfTheWindow")}
             keywords="gpu graphics"
             name="desktop.hardwareAcceleration"
             checked={desktop.hardwareAcceleration}
             onChange={handleBooleanFieldChange}
           />
           <SettingRow
-            label="Updates"
-            hint="Beta gets new versions first."
+            label={t("prefs.updates")}
+            hint={t("prefs.betaGetsNewVersionsFirst")}
             keywords="update channel release"
             control={
               <SettingSegmented
                 name="desktop.updateChannel"
                 value={desktop.updateChannel}
-                options={UPDATE_CHANNEL_OPTIONS}
+                options={UPDATE_CHANNEL_OPTIONS(t)}
                 onChange={handleSelectFieldChange}
-                ariaLabel="Update channel"
+                ariaLabel={t("prefs.updateChannel")}
               />
             }
           />
         </SettingGroup>
       ) : null}
 
-      <SettingGroup title="Diagnostics" keywords="privacy data">
+      <SettingGroup title={t("prefs.diagnostics")} keywords="privacy data">
         <SwitchRow
-          label="Usage analytics"
+          label={t("prefs.usageAnalytics")}
           keywords="tracking statistics"
           name="privacy.analyticsEnabled"
           checked={privacy.analyticsEnabled}
           onChange={handleBooleanFieldChange}
         />
         <SwitchRow
-          label="Crash reports"
+          label={t("prefs.crashReports")}
           keywords="errors diagnostics"
           name="privacy.crashReportsEnabled"
           checked={privacy.crashReportsEnabled}
@@ -548,16 +587,16 @@ export const PrivacyPreferences = memo(({ isDesktopMode = false }) => {
         />
       </SettingGroup>
 
-      <SettingGroup title="For developers" keywords="advanced debug">
+      <SettingGroup title={t("prefs.forDevelopers")} keywords="advanced debug">
         <SwitchRow
-          label="Developer mode"
+          label={t("prefs.developerMode")}
           keywords="dev tools debug"
           name="desktop.devMode"
           checked={desktop.devMode}
           onChange={handleBooleanFieldChange}
         />
         <SettingRow
-          label="Log level"
+          label={t("prefs.logLevel")}
           keywords="logging debug warn error"
           controlId={logLevelId}
           control={
@@ -567,10 +606,10 @@ export const PrivacyPreferences = memo(({ isDesktopMode = false }) => {
               value={privacy.logLevel}
               onChange={handleSelectFieldChange}
             >
-              <option value="off">Off</option>
-              <option value="error">Errors</option>
-              <option value="warn">Warnings</option>
-              <option value="debug">Everything (debug)</option>
+              <option value="off">{t("prefs.off")}</option>
+              <option value="error">{t("prefs.errors")}</option>
+              <option value="warn">{t("prefs.warnings")}</option>
+              <option value="debug">{t("prefs.everythingDebug")}</option>
             </SettingSelect>
           }
         />
@@ -582,15 +621,17 @@ export const PrivacyPreferences = memo(({ isDesktopMode = false }) => {
 PrivacyPreferences.displayName = "PrivacyPreferences";
 
 export const ImportExportPreferences = memo(() => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const { appPreferences, handleBooleanFieldChange, handleSelectFieldChange } =
     useAppPreferencesSection();
   const { importExport } = appPreferences;
   const duplicateId = useId();
 
   return (
-    <SettingGroup title="Import and export files" keywords="import export deck file">
+    <SettingGroup title={t("prefs.importAndExportFiles")} keywords="import export deck file">
       <SettingRow
-        label="When a word is already in the deck"
+        label={t("prefs.whenAWordIsAlready")}
         keywords="duplicate strategy merge"
         controlId={duplicateId}
         control={
@@ -600,14 +641,14 @@ export const ImportExportPreferences = memo(() => {
             value={importExport.duplicateStrategy}
             onChange={handleSelectFieldChange}
           >
-            <option value="skip">Skip it</option>
-            <option value="update">Update it</option>
-            <option value="keep_both">Keep both</option>
+            <option value="skip">{t("prefs.skipIt")}</option>
+            <option value="update">{t("prefs.updateIt")}</option>
+            <option value="keep_both">{t("prefs.keepBoth")}</option>
           </SettingSelect>
         }
       />
       <SettingRow
-        label="Export as"
+        label={t("prefs.exportAs")}
         keywords="export format file type"
         control={
           <SettingSegmented
@@ -615,27 +656,27 @@ export const ImportExportPreferences = memo(() => {
             value={importExport.exportFormat}
             options={EXPORT_FORMAT_OPTIONS}
             onChange={handleSelectFieldChange}
-            ariaLabel="Export as"
+            ariaLabel={t("prefs.exportAs")}
           />
         }
       />
       <SwitchRow
-        label="Include examples"
+        label={t("prefs.includeExamples")}
         keywords="export sentences"
         name="importExport.includeExamples"
         checked={importExport.includeExamples}
         onChange={handleBooleanFieldChange}
       />
       <SwitchRow
-        label="Include tags"
+        label={t("prefs.includeTags")}
         keywords="export labels"
         name="importExport.includeTags"
         checked={importExport.includeTags}
         onChange={handleBooleanFieldChange}
       />
       <SwitchRow
-        label="Check languages after choosing a file"
-        hint="Opens the language check before importing."
+        label={t("prefs.checkLanguagesAfterChoosingA")}
+        hint={t("prefs.opensTheLanguageCheckBefore")}
         keywords="import language review"
         name="importExport.autoOpenLanguageReview"
         checked={importExport.autoOpenLanguageReview}

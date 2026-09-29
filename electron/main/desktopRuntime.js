@@ -9,6 +9,7 @@ export const createDesktopRuntimeManager = ({
   getLaunchAtStartup,
   logWarn,
   onQuitRequested,
+  getTranslator,
 }) => {
   let appTray = null;
   let launchAtStartupSignature = null;
@@ -37,6 +38,30 @@ export const createDesktopRuntimeManager = ({
     appTray = null;
   };
 
+  // Rebuilt when the language changes, so the tray speaks it too.
+  const buildTrayMenu = () => {
+    const t = getTranslator();
+
+    return Menu.buildFromTemplate([
+      {
+        label: t("desktop.tray.show"),
+        click: () => {
+          showMainWindow();
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: t("desktop.tray.quit"),
+        click: () => {
+          onQuitRequested();
+          app.quit();
+        },
+      },
+    ]);
+  };
+
   const ensureTray = () => {
     if (appTray) {
       return appTray;
@@ -44,26 +69,7 @@ export const createDesktopRuntimeManager = ({
 
     const tray = new Tray(appIconPath);
     tray.setToolTip("LioraLang");
-    tray.setContextMenu(
-      Menu.buildFromTemplate([
-        {
-          label: "Show LioraLang",
-          click: () => {
-            showMainWindow();
-          },
-        },
-        {
-          type: "separator",
-        },
-        {
-          label: "Quit",
-          click: () => {
-            onQuitRequested();
-            app.quit();
-          },
-        },
-      ]),
-    );
+    tray.setContextMenu(buildTrayMenu());
     tray.on("click", () => {
       showMainWindow();
     });
@@ -74,7 +80,7 @@ export const createDesktopRuntimeManager = ({
 
   const syncTrayMode = () => {
     if (getMinimizeToTray()) {
-      ensureTray();
+      ensureTray().setContextMenu(buildTrayMenu());
       return;
     }
 

@@ -107,6 +107,11 @@ const resolveSessionWithUpdatedUser = async (client, user) => {
   );
 };
 
+// Supabase's error code is kept on the error, so the interface can say
+// what went wrong in its own language ("invalid_credentials", ...).
+const authFailure = (error, fallbackMessage) =>
+  Object.assign(new Error(error?.message || fallbackMessage), { code: String(error?.code || "") });
+
 export const createSupabaseAuthRepository = () => {
   return {
     isConfigured() {
@@ -117,7 +122,7 @@ export const createSupabaseAuthRepository = () => {
       const { data, error } = await client.auth.getSession();
 
       if (error) {
-        throw new Error(error.message || "Failed to resolve account session");
+        throw authFailure(error, "Failed to resolve account session");
       }
 
       return toAuthSummary(data?.session || null);
@@ -149,7 +154,7 @@ export const createSupabaseAuthRepository = () => {
       const normalizedPassword = String(password || "");
 
       if (!normalizedEmail || !normalizedPassword) {
-        throw new Error("Email and password are required");
+        throw authFailure({ code: "missing_credentials" }, "Email and password are required");
       }
 
       const { data, error } = await client.auth.signInWithPassword({
@@ -158,7 +163,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to sign in");
+        throw authFailure(error, "Failed to sign in");
       }
 
       return toAuthSummary(data?.session || null);
@@ -170,7 +175,7 @@ export const createSupabaseAuthRepository = () => {
       const normalizedDisplayName = toCleanString(displayName);
 
       if (!normalizedEmail || !normalizedPassword) {
-        throw new Error("Email and password are required");
+        throw authFailure({ code: "missing_credentials" }, "Email and password are required");
       }
 
       const { data, error } = await client.auth.signUp({
@@ -185,7 +190,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to create account");
+        throw authFailure(error, "Failed to create account");
       }
 
       return {
@@ -202,7 +207,7 @@ export const createSupabaseAuthRepository = () => {
       }
 
       if (isDesktopRuntime()) {
-        throw new Error("Social sign-in will be added for desktop next. Use email and password for now.");
+        throw authFailure({ code: "social_desktop_unavailable" }, "Social sign-in will be added for desktop next. Use email and password for now.");
       }
 
       const { data, error } = await client.auth.signInWithOAuth({
@@ -214,7 +219,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to start social sign-in");
+        throw authFailure(error, "Failed to start social sign-in");
       }
 
       return data || null;
@@ -230,7 +235,7 @@ export const createSupabaseAuthRepository = () => {
       const { data, error } = await client.auth.exchangeCodeForSession(normalizedCode);
 
       if (error) {
-        throw new Error(error.message || "Failed to complete sign-in");
+        throw authFailure(error, "Failed to complete sign-in");
       }
 
       return toAuthSummary(data?.session || null);
@@ -250,7 +255,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to restore account session");
+        throw authFailure(error, "Failed to restore account session");
       }
 
       return toAuthSummary(data?.session || null);
@@ -260,7 +265,7 @@ export const createSupabaseAuthRepository = () => {
       const normalizedEmail = toCleanString(email).toLowerCase();
 
       if (!normalizedEmail) {
-        throw new Error("Email is required");
+        throw authFailure({ code: "missing_email" }, "Email is required");
       }
 
       const { error } = await client.auth.resend({
@@ -272,7 +277,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to resend verification email");
+        throw authFailure(error, "Failed to resend verification email");
       }
 
       return { ok: true };
@@ -282,7 +287,7 @@ export const createSupabaseAuthRepository = () => {
       const normalizedEmail = toCleanString(email).toLowerCase();
 
       if (!normalizedEmail) {
-        throw new Error("Email is required");
+        throw authFailure({ code: "missing_email" }, "Email is required");
       }
 
       const { error } = await client.auth.resetPasswordForEmail(normalizedEmail, {
@@ -290,7 +295,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to send password reset email");
+        throw authFailure(error, "Failed to send password reset email");
       }
 
       return { ok: true };
@@ -306,7 +311,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to update profile");
+        throw authFailure(error, "Failed to update profile");
       }
 
       return resolveSessionWithUpdatedUser(client, data?.user || null);
@@ -316,7 +321,7 @@ export const createSupabaseAuthRepository = () => {
       const normalizedPassword = String(password || "");
 
       if (!normalizedPassword) {
-        throw new Error("Password is required");
+        throw authFailure({ code: "missing_password" }, "Password is required");
       }
 
       const { data, error } = await client.auth.updateUser({
@@ -324,7 +329,7 @@ export const createSupabaseAuthRepository = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to update password");
+        throw authFailure(error, "Failed to update password");
       }
 
       return resolveSessionWithUpdatedUser(client, data?.user || null);
@@ -334,7 +339,7 @@ export const createSupabaseAuthRepository = () => {
       const { error } = await client.auth.signOut();
 
       if (error) {
-        throw new Error(error.message || "Failed to sign out");
+        throw authFailure(error, "Failed to sign out");
       }
 
       return EMPTY_AUTH_SUMMARY;

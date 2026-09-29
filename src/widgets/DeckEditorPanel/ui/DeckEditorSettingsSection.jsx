@@ -2,6 +2,7 @@ import { memo } from "react";
 import { FiBookOpen, FiSettings } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
 import { Select } from "@shared/ui";
+import { useI18n } from "@shared/lib/i18n";
 
 export const DeckEditorSettingsSection = memo(() => {
   const {
@@ -10,6 +11,7 @@ export const DeckEditorSettingsSection = memo(() => {
     words,
     handleDeckFormChange,
   } = useDeckEditorPanelContext();
+  const { t, languageName } = useI18n();
 
   return (
     <section className="deck-editor-panel__section">
@@ -18,35 +20,35 @@ export const DeckEditorSettingsSection = memo(() => {
           <span className="deck-editor-panel__section-icon" aria-hidden>
             <FiSettings />
           </span>
-          <h3>Deck settings</h3>
+          <h3>{t("editor.settings")}</h3>
         </div>
       </header>
 
       <div className="deck-editor-panel__settings-grid">
         <label className="deck-editor-panel__field">
-          <span>Deck name</span>
+          <span>{t("renameDeck.label")}</span>
           <input
             type="text"
             name="name"
             value={deckForm.name}
             onChange={handleDeckFormChange}
-            placeholder="Everyday Phrases"
+            placeholder={t("editor.namePlaceholder")}
           />
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">
-          <span>Description</span>
+          <span>{t("editor.description")}</span>
           <input
             type="text"
             name="description"
             value={deckForm.description}
             onChange={handleDeckFormChange}
-            placeholder="Short summary of what this deck is for"
+            placeholder={t("editor.descriptionPlaceholder")}
           />
         </label>
 
         <label className="deck-editor-panel__field">
-          <span>Source language</span>
+          <span>{t("import.file.source")}</span>
           <Select
             name="sourceLanguage"
             value={deckForm.sourceLanguage}
@@ -54,14 +56,14 @@ export const DeckEditorSettingsSection = memo(() => {
           >
             {languageOptions.map((language) => (
               <option key={language} value={language}>
-                {language}
+                {languageName(language)}
               </option>
             ))}
           </Select>
         </label>
 
         <label className="deck-editor-panel__field">
-          <span>Target language</span>
+          <span>{t("import.file.target")}</span>
           <Select
             name="targetLanguage"
             value={deckForm.targetLanguage}
@@ -69,30 +71,30 @@ export const DeckEditorSettingsSection = memo(() => {
           >
             {languageOptions.map((language) => (
               <option key={language} value={language}>
-                {language}
+                {languageName(language)}
               </option>
             ))}
           </Select>
         </label>
 
         <label className="deck-editor-panel__field">
-          <span>Optional language</span>
+          <span>{t("import.file.optional")}</span>
           <Select
             name="tertiaryLanguage"
             value={deckForm.tertiaryLanguage}
             onChange={handleDeckFormChange}
           >
-            <option value="">None</option>
+            <option value="">{t("common.none")}</option>
             {languageOptions.map((language) => (
               <option key={language} value={language}>
-                {language}
+                {languageName(language)}
               </option>
             ))}
           </Select>
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide deck-editor-panel__field--toggle">
-          <span>Word levels</span>
+          <span>{t("editor.wordLevels")}</span>
           <span className="deck-editor-panel__toggle">
             <input
               type="checkbox"
@@ -101,26 +103,26 @@ export const DeckEditorSettingsSection = memo(() => {
               onChange={handleDeckFormChange}
             />
             <span className="deck-editor-panel__toggle-copy">
-              <strong>Enable CEFR levels</strong>
+              <strong>{t("editor.enableLevels")}</strong>
             </span>
           </span>
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">
-          <span>Tags (comma separated)</span>
+          <span>{t("editor.tags")}</span>
           <input
             type="text"
             name="tagsInput"
             value={deckForm.tagsInput}
             onChange={handleDeckFormChange}
-            placeholder="travel, phrasal verbs, business"
+            placeholder={t("editor.tagsPlaceholder")}
           />
         </label>
       </div>
 
       <p className="deck-editor-panel__section-meta">
         <FiBookOpen aria-hidden />
-        <span>{words.length} words in deck</span>
+        <span>{t("editor.wordsInDeck", { count: words.length })}</span>
       </p>
     </section>
   );

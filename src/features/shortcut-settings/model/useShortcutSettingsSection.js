@@ -5,6 +5,7 @@ import {
   LEARN_RATING_SHORTCUT_MODES,
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
+import { useI18n } from "@shared/lib/i18n";
 
 const resolvePlatform = () => {
   if (typeof navigator === "undefined") {
@@ -25,6 +26,9 @@ const resolvePlatform = () => {
 export const useShortcutSettingsSection = () => {
   const platform = useMemo(() => resolvePlatform(), []);
   const { shortcutSettings, updateShortcutSettings } = useShortcutSettings();
+  const { t } = useI18n();
+  // The first choice of each is the default, and says so.
+  const asDefault = useCallback((label) => t("shortcuts.default", { label }), [t]);
 
   const historyOptions = useMemo(() => {
     const isDarwin = platform === "darwin";
@@ -32,24 +36,25 @@ export const useShortcutSettingsSection = () => {
     return [
       {
         value: HISTORY_SHORTCUT_MODES.system,
-        label: isDarwin ? "Cmd + arrows (Default)" : "Alt + arrows (Default)",
+        label: asDefault(isDarwin ? t("shortcuts.cmdArrows") : t("shortcuts.altArrows")),
       },
       {
         value: HISTORY_SHORTCUT_MODES.alternative,
-        label: isDarwin ? "Option + arrows" : "Ctrl + arrows",
+        label: isDarwin ? t("shortcuts.optionArrows") : t("shortcuts.ctrlArrows"),
       },
       {
         value: HISTORY_SHORTCUT_MODES.disabled,
-        label: "Disabled",
+        label: t("shortcuts.off"),
       },
     ];
-  }, [platform]);
+  }, [asDefault, platform, t]);
 
   const flipOptions = useMemo(
     () => [
       {
         value: LEARN_FLIP_SHORTCUT_MODES.space,
-        label: "Space (Default)",
+        label: asDefault(t("shortcuts.space")),
+        shortLabel: t("shortcuts.space"),
       },
       {
         value: LEARN_FLIP_SHORTCUT_MODES.enter,
@@ -57,17 +62,17 @@ export const useShortcutSettingsSection = () => {
       },
       {
         value: LEARN_FLIP_SHORTCUT_MODES.disabled,
-        label: "Disabled",
+        label: t("shortcuts.off"),
       },
     ],
-    [],
+    [asDefault, t],
   );
 
   const ratingOptions = useMemo(
     () => [
       {
         value: LEARN_RATING_SHORTCUT_MODES.digits,
-        label: "1 / 2 / 3 / 4 (Default)",
+        label: asDefault("1 / 2 / 3 / 4"),
       },
       {
         value: LEARN_RATING_SHORTCUT_MODES.asdf,
@@ -79,10 +84,10 @@ export const useShortcutSettingsSection = () => {
       },
       {
         value: LEARN_RATING_SHORTCUT_MODES.disabled,
-        label: "Disabled",
+        label: t("shortcuts.off"),
       },
     ],
-    [],
+    [asDefault, t],
   );
 
   const handleHistoryShortcutChange = useCallback(

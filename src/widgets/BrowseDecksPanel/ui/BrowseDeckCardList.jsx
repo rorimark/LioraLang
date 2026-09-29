@@ -11,49 +11,11 @@ import {
 import { DeckTagBadges } from "@entities/deck";
 import { Button } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
+import { useI18n } from "@shared/lib/i18n";
 
 const MAX_VISIBLE_TAGS = 4;
 const EMPTY_OBJECT = Object.freeze({});
 const EMPTY_ARRAY = Object.freeze([]);
-
-const formatFileSize = (bytes) => {
-  if (!Number.isFinite(Number(bytes)) || Number(bytes) <= 0) {
-    return "Unknown size";
-  }
-
-  const normalizedBytes = Number(bytes);
-
-  if (normalizedBytes < 1024) {
-    return `${normalizedBytes} B`;
-  }
-
-  const kilobytes = normalizedBytes / 1024;
-
-  if (kilobytes < 1024) {
-    return `${kilobytes.toFixed(1)} KB`;
-  }
-
-  const megabytes = kilobytes / 1024;
-  return `${megabytes.toFixed(2)} MB`;
-};
-
-const formatDate = (value) => {
-  if (!value) {
-    return "Unknown date";
-  }
-
-  const parsedDate = new Date(value);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return "Unknown date";
-  }
-
-  return new Intl.DateTimeFormat(undefined, {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(parsedDate);
-};
 
 const normalizeTags = (value) => {
   if (!Array.isArray(value)) {
@@ -83,6 +45,7 @@ const normalizeTags = (value) => {
 };
 
 export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
+    const { t, formatBytes, formatDate, formatNumber, languageName } = useI18n();
     const resolvedDeckList = deckList;
     const resolvedDecks = Array.isArray(resolvedDeckList.decks)
       ? resolvedDeckList.decks
@@ -135,7 +98,7 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
     if (resolvedDecks.length === 0) {
       return (
         <div className="browse-decks-panel__empty">
-          No community decks found for your search.
+          {t("browse.empty")}
         </div>
       );
     }
@@ -150,7 +113,7 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
           const badgeItems = [
             ...languages.map((language) => ({
               key: `${deck.id}-lang-${language}`,
-              text: language,
+              text: languageName(language),
               accent: false,
             })),
             ...visibleTags.map((tag) => ({
@@ -170,11 +133,12 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
             typeof deck?.description === "string" && deck.description.trim().length > 0;
           const isImporting =
             String(pendingState.importingDeckId) === String(deck?.id);
-          const fileSize = formatFileSize(deck?.latestVersion?.fileSizeBytes);
-          const createdAt = formatDate(deck?.createdAt);
-          const updatedAt = formatDate(
-            deck?.latestVersion?.createdAt || deck?.createdAt,
-          );
+          const fileSize =
+            formatBytes(deck?.latestVersion?.fileSizeBytes) || t("browse.unknownSize");
+          const createdAt = formatDate(deck?.createdAt) || t("browse.unknownDate");
+          const updatedAt =
+            formatDate(deck?.latestVersion?.createdAt || deck?.createdAt) ||
+            t("browse.unknownDate");
           const wordsCount = Number.isFinite(Number(deck?.wordsCount))
             ? Number(deck.wordsCount)
             : 0;
@@ -196,10 +160,10 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                     <h3>
                       {deckLink ? (
                         <Link className="browse-decks-panel__card-link" to={deckLink}>
-                          {deck?.title || "Untitled deck"}
+                          {deck?.title || t("browse.untitled")}
                         </Link>
                       ) : (
-                        deck?.title || "Untitled deck"
+                        deck?.title || t("browse.untitled")
                       )}
                     </h3>
                     <Button
@@ -209,14 +173,14 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                       variant="ghost"
                       size="sm"
                       className="browse-decks-panel__copy-link"
-                      aria-label="Copy public deck link"
-                      title="Copy public deck link"
+                      aria-label={t("browse.copyLink")}
+                      title={t("browse.copyLink")}
                     >
                       <FiLink />
                     </Button>
                   </div>
                   <span className="browse-decks-panel__card-meta">
-                    Added {createdAt}
+                    {t("browse.added", { date: createdAt })}
                   </span>
                 </div>
                 <span className="browse-decks-panel__date-pill">{createdAt}</span>
@@ -243,28 +207,28 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                   <div className="browse-decks-panel__stat">
                     <dt>
                       <FiType aria-hidden />
-                      <span>Words</span>
+                      <span>{t("decks.table.words")}</span>
                     </dt>
-                    <dd>{wordsCount}</dd>
+                    <dd>{formatNumber(wordsCount)}</dd>
                   </div>
                   <div className="browse-decks-panel__stat">
                     <dt>
                       <FiDownload aria-hidden />
-                      <span>Downloads</span>
+                      <span>{t("browse.downloads")}</span>
                     </dt>
-                    <dd>{downloadsCount}</dd>
+                    <dd>{formatNumber(downloadsCount)}</dd>
                   </div>
                   <div className="browse-decks-panel__stat">
                     <dt>
                       <FiCalendar aria-hidden />
-                      <span>Updated</span>
+                      <span>{t("browse.updated")}</span>
                     </dt>
                     <dd>{updatedAt}</dd>
                   </div>
                   <div className="browse-decks-panel__stat">
                     <dt>
                       <FiPackage aria-hidden />
-                      <span>Package</span>
+                      <span>{t("browse.package")}</span>
                     </dt>
                     <dd>{fileSize}</dd>
                   </div>
@@ -279,7 +243,7 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
                   variant="primary"
                 >
                   {isImporting ? <FiHardDrive aria-hidden /> : <FiDownload aria-hidden />}
-                  <span>{isImporting ? "Importing..." : "Import to Decks"}</span>
+                  <span>{isImporting ? t("browse.importing") : t("browse.import")}</span>
                 </Button>
               </div>
             </article>

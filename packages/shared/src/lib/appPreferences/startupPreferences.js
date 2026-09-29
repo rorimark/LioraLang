@@ -1,4 +1,7 @@
+import { AUTO_LOCALE, LOCALE_CODES } from "../i18n/locales.js";
+
 const THEME_MODE_OPTIONS = new Set(["system", "light", "dark"]);
+const INTERFACE_LANGUAGE_OPTIONS = new Set([AUTO_LOCALE, ...LOCALE_CODES]);
 const FONT_SCALE_OPTIONS = new Set(["small", "normal", "large"]);
 
 const toCleanString = (value) => {
@@ -23,6 +26,7 @@ const toOneOf = (value, options, fallback) => {
 
 export const DEFAULT_STARTUP_PREFERENCES = {
   uiAccessibility: {
+    interfaceLanguage: AUTO_LOCALE,
     themeMode: "system",
     fontScale: "normal",
     compactMode: false,
@@ -36,6 +40,11 @@ export const normalizeStartupPreferences = (value = {}) => {
 
   return {
     uiAccessibility: {
+      interfaceLanguage: toOneOf(
+        toCleanString(uiAccessibility.interfaceLanguage),
+        INTERFACE_LANGUAGE_OPTIONS,
+        DEFAULT_STARTUP_PREFERENCES.uiAccessibility.interfaceLanguage,
+      ),
       themeMode: toOneOf(
         toCleanString(uiAccessibility.themeMode),
         THEME_MODE_OPTIONS,

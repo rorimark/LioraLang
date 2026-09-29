@@ -28,6 +28,7 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
     includeTags: true,
   }),
   uiAccessibility: Object.freeze({
+    interfaceLanguage: "auto",
     themeMode: "system",
     fontScale: "normal",
     compactMode: false,

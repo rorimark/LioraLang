@@ -1,5 +1,6 @@
 import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
 import { APP_PREFERENCES_APP_KEY } from "./constants";
+import { AUTO_LOCALE, LOCALE_CODES } from "../i18n/locales.js";
 
 export { DEFAULT_APP_PREFERENCES };
 
@@ -23,6 +24,7 @@ const DUPLICATE_STRATEGY_OPTIONS = new Set(["skip", "update", "keep_both"]);
 const EXPORT_FORMAT_OPTIONS = new Set(["lioradeck", "json"]);
 const FONT_SCALE_OPTIONS = new Set(["small", "normal", "large"]);
 const THEME_MODE_OPTIONS = new Set(["system", "light", "dark"]);
+const INTERFACE_LANGUAGE_OPTIONS = new Set([AUTO_LOCALE, ...LOCALE_CODES]);
 const BACKUP_INTERVAL_OPTIONS = new Set(["off", "daily", "weekly", "monthly"]);
 const UPDATE_CHANNEL_OPTIONS = new Set(["stable", "beta"]);
 const LOG_LEVEL_OPTIONS = new Set(["off", "error", "warn", "debug"]);
@@ -188,6 +190,11 @@ export const normalizeAppPreferences = (value = {}) => {
       ),
     },
     uiAccessibility: {
+      interfaceLanguage: toOneOf(
+        value?.uiAccessibility?.interfaceLanguage,
+        INTERFACE_LANGUAGE_OPTIONS,
+        DEFAULT_APP_PREFERENCES.uiAccessibility.interfaceLanguage,
+      ),
       themeMode: toOneOf(
         value?.uiAccessibility?.themeMode,
         THEME_MODE_OPTIONS,

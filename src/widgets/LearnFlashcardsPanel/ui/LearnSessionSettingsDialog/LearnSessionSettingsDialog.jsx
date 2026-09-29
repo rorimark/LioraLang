@@ -24,70 +24,51 @@ import {
   LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE,
 } from "../../model/learnSessionSettings";
 import "./LearnSessionSettingsDialog.css";
+import { useI18n } from "@shared/lib/i18n";
 
+// Titles and descriptions are messages under session.*.
 const EXERCISE_MODE_OPTIONS = Object.freeze([
-  {
-    value: LEARN_EXERCISE_MODE_FLASHCARDS,
-    title: "Flashcards",
-    description: "Flip and grade cards quickly.",
-    available: true,
-  },
-  {
-    value: LEARN_EXERCISE_MODE_TYPE_TRANSLATION,
-    title: "Type translation",
-    description: "Answer by typing the translation.",
-    available: false,
-  },
-  {
-    value: LEARN_EXERCISE_MODE_FILL_GAP,
-    title: "Fill missing word",
-    description: "Complete the missing word in context.",
-    available: false,
-  },
-  {
-    value: LEARN_EXERCISE_MODE_MULTIPLE_CHOICE,
-    title: "Multiple choice",
-    description: "Pick the correct translation fast.",
-    available: false,
-  },
+  { value: LEARN_EXERCISE_MODE_FLASHCARDS, key: "flashcards", available: true },
+  { value: LEARN_EXERCISE_MODE_TYPE_TRANSLATION, key: "typeTranslation", available: false },
+  { value: LEARN_EXERCISE_MODE_FILL_GAP, key: "fillGap", available: false },
+  { value: LEARN_EXERCISE_MODE_MULTIPLE_CHOICE, key: "multipleChoice", available: false },
 ]);
 
 const AUTO_FLIP_OPTIONS = Object.freeze([
-  { value: "off", label: "Off" },
-  { value: "1s", label: "1 sec" },
-  { value: "2s", label: "2 sec" },
-  { value: "3s", label: "3 sec" },
+  { value: "off", seconds: 0 },
+  { value: "1s", seconds: 1 },
+  { value: "2s", seconds: 2 },
+  { value: "3s", seconds: 3 },
 ]);
 
-const SHUFFLE_OPTIONS = Object.freeze([
-  { value: "off", label: "Off" },
-  { value: "per_session", label: "Per session" },
-  { value: "always", label: "Always" },
-]);
+const SHUFFLE_OPTIONS = Object.freeze(["off", "per_session", "always"]);
 
-const resolveDirectionOptions = (deck = {}) => {
-  const source = String(deck?.sourceLanguage || "Source").trim() || "Source";
+const resolveDirectionOptions = (deck = {}, { t, languageName }) => {
+  const source = String(deck?.sourceLanguage || "").trim()
+    ? languageName(String(deck.sourceLanguage).trim())
+    : t("learn.sourceLanguage");
   const target = [deck?.targetLanguage, deck?.tertiaryLanguage]
     .filter(Boolean)
     .map((value) => String(value).trim())
     .filter(Boolean)
-    .join(" + ") || "Target";
+    .map(languageName)
+    .join(" + ") || t("learn.targetLanguage");
 
   return [
     {
       value: LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
       title: `${source} → ${target}`,
-      description: "Prompt on the source side, answer on the target side.",
+      description: t("session.direction.forward"),
     },
     {
       value: LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE,
       title: `${target} → ${source}`,
-      description: "Reverse the deck and answer back to the source language.",
+      description: t("session.direction.reverse"),
     },
     {
       value: LEARN_SESSION_DIRECTION_MIXED,
       title: `${source} ↔ ${target}`,
-      description: "Mix both directions card by card.",
+      description: t("session.direction.mixed"),
     },
   ];
 };
@@ -99,6 +80,8 @@ const OptionCard = memo(({
   disabled = false,
   onClick,
 }) => {
+  const { t } = useI18n();
+
   return (
     <button
       type="button"
@@ -121,7 +104,7 @@ const OptionCard = memo(({
           </span>
         ) : null}
         {!selected && disabled ? (
-          <span className="learn-session-dialog__option-badge">Soon</span>
+          <span className="learn-session-dialog__option-badge">{t("common.soon")}</span>
         ) : null}
       </span>
       <span>{description}</span>
@@ -132,6 +115,8 @@ const OptionCard = memo(({
 OptionCard.displayName = "OptionCard";
 
 export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
+  const i18n = useI18n();
+  const { t } = i18n;
   const dialog = sessionControl || {};
   const currentDeck = useMemo(() => dialog.currentDeck || null, [dialog.currentDeck]);
   const sessionSettings = dialog.sessionSettings || {};
@@ -139,8 +124,8 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
   const titleId = useId();
   const descriptionId = useId();
   const directionOptions = useMemo(
-    () => resolveDirectionOptions(currentDeck),
-    [currentDeck],
+    () => resolveDirectionOptions(currentDeck, i18n),
+    [currentDeck, i18n],
   );
 
   useDialogA11y({
@@ -171,7 +156,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
               <FiSliders />
             </span>
             <div className="learn-session-dialog__title-copy">
-              <h2 id={titleId}>Session settings</h2>
+              <h2 id={titleId}>{t("learn.sessionSettings")}</h2>
               <p id={descriptionId}>{dialog.sessionSummary}</p>
             </div>
           </div>
@@ -179,7 +164,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             type="button"
             className="learn-session-dialog__close"
             onClick={dialog.onClose}
-            aria-label="Close session settings"
+            aria-label={t("session.close")}
             data-dialog-close
           >
             <FiX />
@@ -191,19 +176,19 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             <div className="learn-session-dialog__section-head">
               <h3 className="learn-session-dialog__section-title">
                 <FiLayers aria-hidden="true" />
-                <span>Study engine</span>
+                <span>{t("session.engine.title")}</span>
               </h3>
             </div>
             <div className="learn-session-dialog__options-grid learn-session-dialog__options-grid--two">
               <OptionCard
-                title="Review"
-                description="Browse the whole deck in a loop."
+                title={t("learn.engine.review")}
+                description={t("session.engine.reviewDescription")}
                 selected={dialog.learnViewMode === "browse"}
                 onClick={dialog.onSwitchToBrowseMode}
               />
               <OptionCard
-                title="SRS"
-                description="Follow due dates and daily limits."
+                title={t("learn.engine.srs")}
+                description={t("session.engine.srsDescription")}
                 selected={dialog.learnViewMode === "srs"}
                 onClick={dialog.onSwitchToSrsMode}
               />
@@ -214,15 +199,15 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             <div className="learn-session-dialog__section-head">
               <h3 className="learn-session-dialog__section-title">
                 <FiType aria-hidden="true" />
-                <span>Exercise mode</span>
+                <span>{t("session.exercise.title")}</span>
               </h3>
             </div>
             <div className="learn-session-dialog__options-grid learn-session-dialog__options-grid--two">
               {EXERCISE_MODE_OPTIONS.map((option) => (
                 <OptionCard
                   key={option.value}
-                  title={option.title}
-                  description={option.description}
+                  title={t(`session.exercise.${option.key}.title`)}
+                  description={t(`session.exercise.${option.key}.description`)}
                   selected={dialog.exerciseMode === option.value}
                   disabled={!option.available}
                   onClick={() => dialog.onExerciseModeChange(option.value)}
@@ -235,7 +220,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             <div className="learn-session-dialog__section-head">
               <h3 className="learn-session-dialog__section-title">
                 <FiRepeat aria-hidden="true" />
-                <span>Direction</span>
+                <span>{t("session.direction.title")}</span>
               </h3>
             </div>
             <div className="learn-session-dialog__options-grid">
@@ -255,14 +240,14 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             <div className="learn-session-dialog__section-head">
               <h3 className="learn-session-dialog__section-title">
                 <FiBookOpen aria-hidden="true" />
-                <span>Session behavior</span>
+                <span>{t("session.behavior")}</span>
               </h3>
             </div>
             <div className="learn-session-dialog__fields-grid">
               <label className="learn-session-dialog__field">
                 <span>
                   <FiTarget aria-hidden="true" />
-                  <span>Daily goal (not a limit)</span>
+                  <span>{t("session.dailyGoal")}</span>
                 </span>
                 <input
                   type="number"
@@ -275,7 +260,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
               <label className="learn-session-dialog__field">
                 <span>
                   <FiClock aria-hidden="true" />
-                  <span>Auto-flip</span>
+                  <span>{t("session.autoFlip")}</span>
                 </span>
                 <Select
                   value={sessionSettings.autoFlipDelay}
@@ -283,7 +268,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 >
                   {AUTO_FLIP_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
-                      {option.label}
+                      {option.seconds ? t("session.seconds", { count: option.seconds }) : t("session.off")}
                     </option>
                   ))}
                 </Select>
@@ -291,15 +276,15 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
               <label className="learn-session-dialog__field">
                 <span>
                   <FiShuffle aria-hidden="true" />
-                  <span>Shuffle</span>
+                  <span>{t("session.shuffle.title")}</span>
                 </span>
                 <Select
                   value={sessionSettings.shuffleMode}
                   onChange={dialog.onShuffleModeChange}
                 >
                   {SHUFFLE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
+                    <option key={option} value={option}>
+                      {t(`session.shuffle.${option}`)}
                     </option>
                   ))}
                 </Select>
@@ -313,9 +298,9 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 <span className="learn-session-dialog__toggle-copy">
                   <span className="learn-session-dialog__toggle-title">
                     <FiRepeat aria-hidden="true" />
-                    <strong>Repeat missed cards sooner</strong>
+                    <strong>{t("session.repeatMissed.title")}</strong>
                   </span>
-                  <small>Again returns after one minute, never immediately.</small>
+                  <small>{t("session.repeatMissed.hint")}</small>
                 </span>
               </label>
             </div>
@@ -325,7 +310,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             <div className="learn-session-dialog__section-head">
               <h3 className="learn-session-dialog__section-title">
                 <FiEye aria-hidden="true" />
-                <span>Card details</span>
+                <span>{t("session.cardDetails")}</span>
               </h3>
             </div>
             <div className="learn-session-dialog__toggle-grid">
@@ -338,9 +323,9 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 <span className="learn-session-dialog__toggle-copy">
                   <span className="learn-session-dialog__toggle-title">
                     <FiBookOpen aria-hidden="true" />
-                    <strong>Examples</strong>
+                    <strong>{t("session.examples.title")}</strong>
                   </span>
-                  <small>Show up to three usage examples under the answer.</small>
+                  <small>{t("session.examples.hint")}</small>
                 </span>
               </label>
               <label className="learn-session-dialog__toggle learn-session-dialog__toggle--centered">
@@ -352,9 +337,9 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 <span className="learn-session-dialog__toggle-copy">
                   <span className="learn-session-dialog__toggle-title">
                     <FiClock aria-hidden="true" />
-                    <strong>Level badge</strong>
+                    <strong>{t("session.level.title")}</strong>
                   </span>
-                  <small>Display the CEFR level on the answer side.</small>
+                  <small>{t("session.level.hint")}</small>
                 </span>
               </label>
               <label className="learn-session-dialog__toggle learn-session-dialog__toggle--centered">
@@ -366,9 +351,9 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 <span className="learn-session-dialog__toggle-copy">
                   <span className="learn-session-dialog__toggle-title">
                     <FiType aria-hidden="true" />
-                    <strong>Part of speech</strong>
+                    <strong>{t("session.partOfSpeech.title")}</strong>
                   </span>
-                  <small>Show grammar context next to the answer.</small>
+                  <small>{t("session.partOfSpeech.hint")}</small>
                 </span>
               </label>
             </div>
@@ -377,7 +362,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
 
         <footer className="learn-session-dialog__footer">
           <Button variant="secondary" onClick={dialog.onClose}>
-            Close
+            {t("common.close")}
           </Button>
         </footer>
       </section>

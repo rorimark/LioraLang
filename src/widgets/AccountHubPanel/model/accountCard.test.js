@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { CARD_ACTIVITY_WEEKS, buildCardNumber, buildCardStats, formatMemberSince, resolveCardName, resolveInitial } from "./accountCard";
+import { buildI18nValue, ENGLISH_MESSAGES } from "@shared/lib/i18n";
+
+const en = buildI18nValue("en", ENGLISH_MESSAGES);
 
 describe("learner card", () => {
   it("makes a stable card number from the account id", () => {
@@ -8,8 +11,8 @@ describe("learner card", () => {
   });
 
   it("says since when, or nothing", () => {
-    expect(formatMemberSince("2026-09-01T10:00:00Z")).toBe("Sep 2026");
-    expect(formatMemberSince(undefined)).toBe("");
+    expect(formatMemberSince("2026-09-01T10:00:00Z", en)).toBe("Sep 2026");
+    expect(formatMemberSince(undefined, en)).toBe("");
   });
 
   it("names the card by display name, then by email", () => {

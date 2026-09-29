@@ -22,6 +22,7 @@ import {
 } from "@shared/ui";
 import { useSyncSettingsSection } from "../../model/useSyncSettingsSection";
 import "./SyncSettingsSection.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const SUMMARY_ICON_BY_TONE = {
   muted: FiCloud,
@@ -39,6 +40,9 @@ const resolveSummaryClassName = (tone) => {
     .filter(Boolean)
     .join(" ");
 };
+
+// The platform names a device in English when it has no better name.
+const DEVICE_NAME_KEYS = { "Web browser": "sync.deviceWeb", "Desktop app": "account.desktopApp" };
 
 const resolveStatClassName = (tone = "") => {
   return [
@@ -61,11 +65,12 @@ export const SyncSettingsSection = memo(() => {
     formatTimestamp,
     lastCompletedSyncAt,
   } = useSyncSettingsSection();
+  const { t, formatNumber } = useI18n();
   const SummaryIcon = SUMMARY_ICON_BY_TONE[summary.tone] || FiCloud;
 
   return (
     <section className="sync-settings-section">
-      <SettingGroup title="Status" keywords="sync cloud devices">
+      <SettingGroup title={t("sync.status")} keywords="sync cloud devices">
         <SettingContent>
           <div className={resolveSummaryClassName(summary.tone)}>
             <span className="sync-settings-section__summary-icon" aria-hidden="true">
@@ -83,7 +88,7 @@ export const SyncSettingsSection = memo(() => {
               disabled={!canSyncNow}
             >
               <FiRefreshCw aria-hidden="true" />
-              <span>Sync now</span>
+              <span>{t("sync.now")}</span>
             </Button>
           </div>
 
@@ -91,9 +96,9 @@ export const SyncSettingsSection = memo(() => {
             <div className="sync-settings-section__error">
               <InlineAlert
                 variant="error"
-                text={status.lastErrorMessage}
+                text={t("sync.lastError", { message: status.lastErrorMessage })}
                 action={{
-                  label: "Clear",
+                  label: t("sync.clear"),
                   onClick: clearError,
                   disableAutoClose: true,
                 }}
@@ -106,71 +111,75 @@ export const SyncSettingsSection = memo(() => {
             <div className={resolveStatClassName()}>
               <dt>
                 <FiHardDrive aria-hidden="true" />
-                Deck changes waiting
+                {t("sync.deckChanges")}
               </dt>
-              <dd>{status.pendingDeckChanges}</dd>
+              <dd>{formatNumber(status.pendingDeckChanges)}</dd>
             </div>
             <div className={resolveStatClassName()}>
               <dt>
                 <FiCloudLightning aria-hidden="true" />
-                Progress waiting
+                {t("sync.progressChanges")}
               </dt>
-              <dd>{status.pendingProgressChanges}</dd>
+              <dd>{formatNumber(status.pendingProgressChanges)}</dd>
             </div>
             <div className={resolveStatClassName(status.lastErrorMessage ? "danger" : "")}>
               <dt>
                 <FiClock aria-hidden="true" />
-                Last synced
+                {t("sync.lastSynced")}
               </dt>
               <dd>{formatTimestamp(lastCompletedSyncAt)}</dd>
             </div>
             <div className={resolveStatClassName()}>
               <dt>
                 <FiGitMerge aria-hidden="true" />
-                Conflicts resolved
+                {t("sync.conflicts")}
               </dt>
-              <dd>{status.autoResolvedConflictsCount}</dd>
+              <dd>{formatNumber(status.autoResolvedConflictsCount)}</dd>
             </div>
             <div className={resolveStatClassName()}>
               <dt>
                 <FiUser aria-hidden="true" />
-                Account
+                {t("nav.account")}
               </dt>
-              <dd>{status.accountEmail || "Guest"}</dd>
+              <dd>{status.accountEmail || t("settingsPage.account.guestBadge")}</dd>
             </div>
             <div className={resolveStatClassName()}>
               <dt>
                 <FiSmartphone aria-hidden="true" />
-                Device
+                {t("sync.device")}
               </dt>
-              <dd>{status.deviceName || "This device"}</dd>
+              <dd>
+                {DEVICE_NAME_KEYS[status.deviceName]
+                  ? t(DEVICE_NAME_KEYS[status.deviceName])
+                  : status.deviceName || t("deleteDeck.device")}
+              </dd>
             </div>
           </dl>
         </SettingContent>
       </SettingGroup>
 
-      <SettingGroup title="How it syncs" keywords="sync automatic background">
+      <SettingGroup title={t("sync.how")} keywords="sync automatic background">
         <SyncSwitchRow
-          label="Sync in the background"
+          label={t("sync.background")}
           keywords="auto automatic"
           checked={status.autoSync}
           onChange={(event) => updatePreference("autoSync", event.target.checked)}
         />
         <SyncSwitchRow
-          label="Check when the app opens"
+          label={t("sync.onLaunch")}
           keywords="launch start"
           checked={status.syncOnLaunch}
           onChange={(event) => updatePreference("syncOnLaunch", event.target.checked)}
         />
         <SyncSwitchRow
-          label="Keep my copy on a conflict"
-          hint="When a deck changed here and on another device, both versions are kept."
+          label={t("sync.keepCopy")}
+          hint={t("sync.keepCopyHint")}
           keywords="conflict local copy"
           checked={status.keepLocalCopyOnConflict}
           onChange={(event) => updatePreference("keepLocalCopyOnConflict", event.target.checked)}
         />
         <SyncSwitchRow
-          label="Tell me when sync fails"
+          label={t("sync.notify")}
           keywords="errors notify"
           checked={status.notifyOnError}
           onChange={(event) => updatePreference("notifyOnError", event.target.checked)}

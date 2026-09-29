@@ -17,6 +17,7 @@ import {
   stepSelectIndex,
 } from "./selectOptions";
 import "./Select.css";
+import { useI18n } from "@shared/lib/i18n";
 
 // Phones get a sheet from the bottom of the screen: big rows within a
 // thumb's reach. Everything else gets a list that drops from the field.
@@ -83,9 +84,10 @@ export const Select = memo(
     variant = "key",
     label = "",
     searchable,
-    placeholder = "Choose...",
+    placeholder,
     "aria-label": ariaLabel,
   }) => {
+    const { t } = useI18n();
     const options = useMemo(() => readSelectOptions(children), [children]);
     const selectedIndex = options.findIndex((option) => option.value === String(value ?? ""));
     // A value that is not among the options (an older deck's own part of
@@ -355,7 +357,7 @@ export const Select = memo(
       >
         {visibleOptions.length === 0 ? (
           <li className="ui-select__empty" role="presentation">
-            Nothing matches “{query.trim()}”.
+            {t("select.noMatch", { query: query.trim() })}
           </li>
         ) : (
           visibleOptions.map((option, index) => {
@@ -401,8 +403,8 @@ export const Select = memo(
             setActiveIndex(0);
           }}
           onKeyDown={handleListKeyDown}
-          placeholder="Search"
-          aria-label={title ? `Search ${title}` : "Search options"}
+          placeholder={t("common.search")}
+          aria-label={title ? t("select.searchIn", { title }) : t("select.searchOptions")}
           aria-controls={listId}
           aria-activedescendant={activeOptionId}
           autoComplete="off"
@@ -437,7 +439,7 @@ export const Select = memo(
           onKeyDown={handleTriggerKeyDown}
         >
           <span className={selectedOption ? "ui-select__value" : "ui-select__value is-placeholder"}>
-            {selectedOption ? selectedOption.label : placeholder}
+            {selectedOption ? selectedOption.label : placeholder ?? t("select.placeholder")}
           </span>
           <FiChevronDown className="ui-select__chevron" aria-hidden="true" />
         </button>
@@ -455,7 +457,7 @@ export const Select = memo(
               className="ui-select__sheet"
               role="dialog"
               aria-modal="true"
-              aria-label={title || "Choose an option"}
+              aria-label={title || t("select.choose")}
             >
               <span className="ui-select__handle" aria-hidden="true" />
               {title ? <strong className="ui-select__title">{title}</strong> : null}

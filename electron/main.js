@@ -79,6 +79,7 @@ import { createLogger } from "./main/logging.js";
 import { createAnalyticsManager } from "./main/analytics.js";
 import { createAppLifecycleManager } from "./main/appLifecycle.js";
 import { createMainState } from "./main/state.js";
+import { createMainTranslator } from "./main/interfaceLanguage.js";
 import { createSecureStorageService } from "./services/secureStorage.service.js";
 import {
   APP_HOMEPAGE_URL,
@@ -140,6 +141,7 @@ const toCleanString = (...args) => runtimePreferencesManager.toCleanString(...ar
 const mainState = createMainState({
   initialPreferences: resolveBootstrapAppPreferences(),
 });
+const getTranslator = createMainTranslator({ app, getInterfaceLanguage: mainState.getInterfaceLanguage });
 
 const getDevServerUrl = () => {
   return process.env.VITE_DEV_SERVER_URL || "http://localhost:5175";
@@ -188,6 +190,7 @@ const {
 
 const importWorkflow = createImportWorkflow({
   app,
+  getTranslator,
   BrowserWindow,
   dialog,
   fs,
@@ -267,6 +270,7 @@ const {
   syncWindowTitle,
 } = createDesktopRuntimeManager({
   app,
+  getTranslator,
   Menu,
   Tray,
   appIconPath: APP_ICON_PATH,
@@ -301,6 +305,7 @@ const { clearBackupSchedule, syncBackupSchedule } = createBackupManager({
 
 const { syncApplicationMenu } = createApplicationMenuManager({
   app,
+  getTranslator,
   Menu,
   shell,
   homepageUrl: APP_HOMEPAGE_URL,
@@ -357,6 +362,7 @@ const { sendDecksUpdated, sendAppSettingsUpdated } = createWindowBroadcast({
 const setupIpcHandlers = () => {
   registerIpcHandlers({
     ipcMain,
+    getTranslator,
     BrowserWindow,
     dialog,
     shell,

@@ -4,8 +4,9 @@ import { CardCatalogPagination } from "@features/card-catalog";
 import { ROUTE_PATHS, buildDeckDetailsRoute } from "@shared/config/routes";
 import { paginate } from "@shared/lib/pagination";
 import { SettingSegmented } from "@shared/ui";
-import { DECK_SORTS, STAGES, formatInteger, plural, sortDeckRows } from "../model";
+import { DECK_SORTS, STAGES, sortDeckRows } from "../model";
 import { StageBar } from "./progressCharts";
+import { useI18n, withEmphasis } from "@shared/lib/i18n";
 
 // Six decks at a time, in the chosen order, and the card never changes
 // height: every row is one line tall and a short last page keeps the room
@@ -30,51 +31,60 @@ const writeSort = (value) => {
   }
 };
 
-const DeckRow = memo(({ deck }) => (
+const DeckRow = memo(({ deck }) => {
+  const { t, formatNumber } = useI18n();
+
+  return (
   <li className="progress-deck">
     <div className="progress-deck__head">
       <Link className="progress-deck__name" to={buildDeckDetailsRoute(deck.id)} title={deck.name}>
         {deck.name}
       </Link>
       <span className="progress-deck__known">
-        <strong>{formatInteger(deck.known)}</strong> / {formatInteger(deck.words)} known
+        {withEmphasis(t("progress.decks.known", { known: deck.known, words: deck.words }))}
       </span>
     </div>
     <StageBar
       stages={deck}
       total={deck.words}
       size="sm"
-      label={`${deck.name}: ${STAGES.map((stage) => `${stage.label} ${deck[stage.key]}`).join(", ")}`}
+      label={`${deck.name}: ${STAGES.map((stage) => `${t(`progress.stages.${stage.key}.label`)} ${formatNumber(deck[stage.key])}`).join(", ")}`}
     />
     <div className="progress-deck__foot">
       <span>
-        {deck.dueNow > 0 ? <em>{formatInteger(deck.dueNow)} due now</em> : "Nothing due"}
+        {deck.dueNow > 0 ? <em>{t("progress.decks.dueNow", { count: deck.dueNow })}</em> : t("progress.decks.nothingDue")}
         {" · "}
-        {deck.reviews7d > 0 ? `${plural(deck.reviews7d, "review")} this week` : "No reviews this week"}
+        {deck.reviews7d > 0 ? t("progress.decks.reviewsWeek", { count: deck.reviews7d }) : t("progress.decks.noReviewsWeek")}
       </span>
       {deck.dueNow > 0 ? (
         <Link
           className="ui-button ui-button--secondary ui-button--sm"
           to={ROUTE_PATHS.learn}
           state={{ importedDeckId: String(deck.id) }}
-          aria-label={`Review ${deck.name}`}
+          aria-label={t("progress.decks.reviewNamed", { name: deck.name })}
         >
-          Review
+          {t("progress.decks.review")}
         </Link>
       ) : null}
     </div>
   </li>
-));
+  );
+});
 
 DeckRow.displayName = "DeckRow";
 
 export const ProgressDecksCard = memo(({ decks }) => {
+  const { t, formatNumber } = useI18n();
   const cardRef = useRef(null);
   const [sort, setSort] = useState(readSort);
   const [page, setPage] = useState(1);
   const sortedDecks = useMemo(() => sortDeckRows(decks, sort), [decks, sort]);
   const deckPage = useMemo(() => paginate(sortedDecks, page, PAGE_SIZE), [page, sortedDecks]);
   const hasPages = deckPage.totalPages > 1;
+  const sortOptions = useMemo(
+    () => DECK_SORTS.map((option) => ({ value: option.value, label: t(option.labelKey) })),
+    [t],
+  );
 
   const handleSortChange = useCallback((event) => {
     setSort(event.target.value);
@@ -108,21 +118,21 @@ export const ProgressDecksCard = memo(({ decks }) => {
     <section className="progress-card progress-decks-card" ref={cardRef}>
       <header className="progress-card__head">
         <h2>
-          Decks <span className="progress-card__count">{formatInteger(decks.length)}</span>
+          {t("progress.decks.title")} <span className="progress-card__count">{formatNumber(decks.length)}</span>
         </h2>
         {decks.length > 2 ? (
           <SettingSegmented
             name="progress-deck-sort"
             value={sort}
-            options={DECK_SORTS}
+            options={sortOptions}
             onChange={handleSortChange}
-            ariaLabel="Order decks by"
+            ariaLabel={t("progress.decks.orderBy")}
           />
         ) : null}
       </header>
 
       {decks.length === 0 ? (
-        <p className="progress-empty">Your decks and how far along you are in each will be listed here.</p>
+        <p className="progress-empty">{t("progress.decks.empty")}</p>
       ) : (
         <ul className={hasPages ? "progress-decks is-paged" : "progress-decks"}>
           {deckPage.items.map((deck) => (
@@ -131,7 +141,7 @@ export const ProgressDecksCard = memo(({ decks }) => {
         </ul>
       )}
 
-      {hasPages ? <CardCatalogPagination pagination={pagination} label="Deck pages" /> : null}
+      {hasPages ? <CardCatalogPagination pagination={pagination} label={t("decks.pages")} /> : null}
     </section>
   );
 });

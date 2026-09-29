@@ -2,6 +2,7 @@ import { memo } from "react";
 import { FiBookOpen, FiCheckCircle, FiCompass } from "react-icons/fi";
 import { ActionModal, Button } from "@shared/ui";
 import "./PostImportChoiceModal.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const EMPTY_MODAL = Object.freeze({
   isOpen: false,
@@ -12,16 +13,16 @@ const EMPTY_MODAL = Object.freeze({
 });
 
 export const PostImportChoiceModal = memo(({ modal = EMPTY_MODAL }) => {
+  const { t } = useI18n();
   const resolvedModal = modal || EMPTY_MODAL;
-  const normalizedDeckName = String(resolvedModal.deckName || "").trim() || "Imported deck";
+  const normalizedDeckName = String(resolvedModal.deckName || "").trim() || t("import.importedDeck");
 
   return (
     <ActionModal
       dialog={{
         isOpen: resolvedModal.isOpen,
-        title: "Deck imported",
-        description:
-          "Your deck is now in the local library. You can start learning it right away or keep browsing community decks.",
+        title: t("import.done.title"),
+        description: t("import.done.description"),
         onClose: resolvedModal.onClose,
         renderActions: ({ onClose }) => (
           <div className="post-import-choice-modal__actions">
@@ -31,11 +32,11 @@ export const PostImportChoiceModal = memo(({ modal = EMPTY_MODAL }) => {
               data-autofocus
             >
               <FiCompass aria-hidden />
-              <span>Continue browsing</span>
+              <span>{t("import.done.continue")}</span>
             </Button>
             <Button variant="primary" onClick={resolvedModal.onGoToLearn}>
               <FiBookOpen aria-hidden />
-              <span>Go to Learn</span>
+              <span>{t("import.done.learn")}</span>
             </Button>
           </div>
         ),
@@ -47,7 +48,7 @@ export const PostImportChoiceModal = memo(({ modal = EMPTY_MODAL }) => {
         </div>
         <div className="post-import-choice-modal__copy">
           <strong>{normalizedDeckName}</strong>
-          <span>Imported successfully and ready to study.</span>
+          <span>{t("import.done.ready")}</span>
         </div>
       </div>
     </ActionModal>

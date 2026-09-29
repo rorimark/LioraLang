@@ -38,12 +38,14 @@ import {
   resolveLoopedBrowseIndex,
   resolvePreferredLearnViewMode,
 } from "./learnViewMode";
+import { useI18n } from "@shared/lib/i18n";
 
+// Labels and descriptions are messages: grades.<key>.label / .description.
 const RATING_OPTIONS = [
-  { key: "again", label: "Again", tone: "danger", description: "I forgot — learn it again after a short break" },
-  { key: "hard", label: "Hard", tone: "warning", description: "I remembered, but with difficulty" },
-  { key: "good", label: "Good", tone: "neutral", description: "I remembered correctly" },
-  { key: "easy", label: "Easy", tone: "success", description: "I remembered immediately, with no effort" },
+  { key: "again", tone: "danger" },
+  { key: "hard", tone: "warning" },
+  { key: "good", tone: "neutral" },
+  { key: "easy", tone: "success" },
 ];
 
 const AUTO_FLIP_DELAY_TO_MS = {
@@ -60,16 +62,20 @@ const createShuffleSeed = () => Math.floor(Math.random() * 2_147_483_646) + 1;
 const buildDirectionSummary = (
   directionMode = LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
   deck = {},
+  { t, languageName },
 ) => {
-  const sourceLanguage = String(deck?.sourceLanguage || "Source").trim() || "Source";
+  const sourceLanguage = String(deck?.sourceLanguage || "").trim()
+    ? languageName(String(deck.sourceLanguage).trim())
+    : t("learn.sourceLanguage");
   const targetLanguages = [
     deck?.targetLanguage,
     deck?.tertiaryLanguage,
   ]
     .filter(Boolean)
     .map((value) => String(value).trim())
-    .filter(Boolean);
-  const targetLabel = targetLanguages.length > 0 ? targetLanguages.join(" + ") : "Target";
+    .filter(Boolean)
+    .map(languageName);
+  const targetLabel = targetLanguages.length > 0 ? targetLanguages.join(" + ") : t("learn.targetLanguage");
 
   if (directionMode === LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE) {
     return `${targetLabel} → ${sourceLanguage}`;
@@ -99,6 +105,7 @@ const buildCardFrontText = (
 const buildCardBackText = (
   word,
   directionMode = LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
+  t,
 ) => {
   const resolvedDirectionMode = resolveEffectiveDirectionMode(directionMode, word);
 
@@ -109,13 +116,13 @@ const buildCardBackText = (
   const values = [word?.target, word?.tertiary].filter(Boolean);
 
   if (values.length === 0) {
-    return "No translation";
+    return t("learn.noTranslation");
   }
 
   return values.join(" • ");
 };
 
-const buildCardMetaBadges = (word, sessionSettings = {}) => {
+const buildCardMetaBadges = (word, sessionSettings = {}, { t, partOfSpeechName }) => {
   if (!word) {
     return [];
   }
@@ -123,13 +130,13 @@ const buildCardMetaBadges = (word, sessionSettings = {}) => {
   const badges = [];
 
   if (sessionSettings.showLevel && word.level) {
-    badges.push({ key: "level", text: `Level ${word.level}`, accent: false });
+    badges.push({ key: "level", text: t("learn.level", { level: word.level }), accent: false });
   }
 
   if (sessionSettings.showPartOfSpeech && word.part_of_speech) {
     badges.push({
       key: "partOfSpeech",
-      text: word.part_of_speech,
+      text: partOfSpeechName(word.part_of_speech),
       accent: false,
     });
   }
@@ -261,15 +268,17 @@ const resolveBrowseNavigationShortcut = (event) => {
   return "";
 };
 
-const buildCompletionMessage = (session) => {
+const buildCompletionMessage = (session, t) => {
   if (!session?.completionState?.done) return "";
-  if (session.completionState.reason === "daily-limit") return "Today's card limits are reached. You can study the remaining due cards in an extra session.";
-  if (session.completionState.reason === "empty-deck") return "This deck has no cards yet.";
-  if (session.completionState.reason === "learning-wait") return "You're caught up. Learning cards are taking a short break.";
-  return "All due cards are done for now.";
+  if (session.completionState.reason === "daily-limit") return t("learn.done.dailyLimit");
+  if (session.completionState.reason === "empty-deck") return t("learn.done.emptyDeck");
+  if (session.completionState.reason === "learning-wait") return t("learn.done.learningWait");
+  return t("learn.done.allDone");
 };
 
 export const useLearnFlashcardsPanel = () => {
+  const i18n = useI18n();
+  const { t, languageName, formatInterval } = i18n;
   const navigate = useNavigate();
   const location = useLocation();
   const srsRepository = usePlatformService("srsRepository");
@@ -371,13 +380,13 @@ export const useLearnFlashcardsPanel = () => {
   const isExtendedSession = session.sessionMode === "extended";
   const currentDeck = isBrowseMode ? deckDetails : session?.deck || deckDetails || null;
   const directionSummary = useMemo(
-    () => buildDirectionSummary(sessionSettings.directionMode, currentDeck),
-    [currentDeck, sessionSettings.directionMode],
+    () => buildDirectionSummary(sessionSettings.directionMode, currentDeck, i18n),
+    [currentDeck, i18n, sessionSettings.directionMode],
   );
   const sessionSummary = useMemo(() => {
-    const engineLabel = isBrowseMode ? "Review" : "SRS";
-    return `${engineLabel} · Flashcards · ${directionSummary}`;
-  }, [directionSummary, isBrowseMode]);
+    const engineLabel = isBrowseMode ? t("learn.engine.review") : t("learn.engine.srs");
+    return `${engineLabel} · ${t("learn.exercise.flashcards")} · ${directionSummary}`;
+  }, [directionSummary, isBrowseMode, t]);
 
   const setBrowseProgressCardWordId = useCallback((deckId, wordId) => {
     const normalizedWordId =
@@ -862,46 +871,42 @@ export const useLearnFlashcardsPanel = () => {
 
     return RATING_OPTIONS.map((option) => ({
       ...option,
-      value: preview[option.key] || "-",
+      label: t(`grades.${option.key}.label`),
+      description: t(`grades.${option.key}.description`),
+      value: preview[option.key] ? formatInterval(preview[option.key]) : "-",
     }));
-  }, [currentWord, isBrowseMode]);
+  }, [currentWord, formatInterval, isBrowseMode, t]);
   const resolvedDirectionMode = useMemo(
     () => resolveEffectiveDirectionMode(sessionSettings.directionMode, currentWord),
     [currentWord, sessionSettings.directionMode],
   );
-  const cardFrontLabel = useMemo(() => {
-    if (resolvedDirectionMode === LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE) {
-      const labels = [currentDeck?.targetLanguage, currentDeck?.tertiaryLanguage]
-        .filter(Boolean)
-        .join(" + ");
-
-      return labels || "Target";
-    }
-
-    return currentDeck?.sourceLanguage || "Source";
-  }, [currentDeck?.sourceLanguage, currentDeck?.targetLanguage, currentDeck?.tertiaryLanguage, resolvedDirectionMode]);
-  const cardBackLabel = useMemo(() => {
-    if (resolvedDirectionMode === LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE) {
-      return currentDeck?.sourceLanguage || "Source";
-    }
-
-    const labels = [currentDeck?.targetLanguage, currentDeck?.tertiaryLanguage]
-      .filter(Boolean)
-      .join(" + ");
-
-    return labels || "Target";
-  }, [currentDeck?.sourceLanguage, currentDeck?.targetLanguage, currentDeck?.tertiaryLanguage, resolvedDirectionMode]);
+  // The language names on the card, in the interface's language.
+  const targetLanguagesLabel = [currentDeck?.targetLanguage, currentDeck?.tertiaryLanguage]
+    .filter(Boolean)
+    .map(languageName)
+    .join(" + ");
+  const sourceLanguageLabel = currentDeck?.sourceLanguage
+    ? languageName(currentDeck.sourceLanguage)
+    : t("learn.sourceLanguage");
+  const cardFrontLabel =
+    resolvedDirectionMode === LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE
+      ? targetLanguagesLabel || t("learn.targetLanguage")
+      : sourceLanguageLabel;
+  const cardBackLabel =
+    resolvedDirectionMode === LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE
+      ? sourceLanguageLabel
+      : targetLanguagesLabel || t("learn.targetLanguage");
   const cardFrontText = useMemo(
     () => buildCardFrontText(currentWord, sessionSettings.directionMode),
     [currentWord, sessionSettings.directionMode],
   );
   const cardBackText = useMemo(
-    () => buildCardBackText(currentWord, sessionSettings.directionMode),
-    [currentWord, sessionSettings.directionMode],
+    () => buildCardBackText(currentWord, sessionSettings.directionMode, t),
+    [currentWord, sessionSettings.directionMode, t],
   );
   const cardMetaBadges = useMemo(
-    () => buildCardMetaBadges(currentWord, sessionSettings),
-    [currentWord, sessionSettings],
+    () => buildCardMetaBadges(currentWord, sessionSettings, i18n),
+    [currentWord, i18n, sessionSettings],
   );
   const cardBackDetails = useMemo(
     () => buildCardBackDetails(currentWord, sessionSettings),
@@ -987,7 +992,7 @@ export const useLearnFlashcardsPanel = () => {
     nextDueAt: session.nextDueAt,
     nextLearningDueAt: session.nextLearningDueAt,
     refreshSession,
-    completionMessage: isBrowseMode ? "" : buildCompletionMessage(session),
+    completionMessage: isBrowseMode ? "" : buildCompletionMessage(session, t),
     canStartNewSession: isBrowseMode ? false : canStartNewSession,
     isExtendedSession,
     ratingOptions,

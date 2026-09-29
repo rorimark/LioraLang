@@ -2,11 +2,10 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { FiCheck, FiRotateCw } from "react-icons/fi";
 import { IoBook, IoCalendar, IoFlame, IoFlash, IoInfinite, IoLayers, IoSparkles, IoTrophy } from "react-icons/io5";
 import { AppIcon } from "@shared/ui";
-import { formatStickerValue } from "@shared/lib/stickers";
+import { formatStickerValue, stickerUnit } from "@shared/lib/stickers";
 import { resolveInitial } from "../model";
 import "./AccountCard.css";
-
-const INTEGER = new Intl.NumberFormat("en-US");
+import { useI18n } from "@shared/lib/i18n";
 
 const STICKER_ICONS = {
   known: IoBook,
@@ -123,6 +122,7 @@ const useTurn = () => {
 };
 
 const CardSticker = ({ tier, index }) => {
+  const i18n = useI18n();
   const Icon = STICKER_ICONS[tier.family.key] || IoTrophy;
 
   return (
@@ -136,7 +136,7 @@ const CardSticker = ({ tier, index }) => {
     >
       <Icon aria-hidden />
       <strong>{formatStickerValue(tier.target)}</strong>
-      <small>{tier.target === 1 ? tier.family.unitOne : tier.family.unit}</small>
+      <small>{stickerUnit(i18n, tier.family.key, tier.target)}</small>
     </span>
   );
 };
@@ -150,6 +150,7 @@ const Stat = ({ value, label }) => (
 
 // The front: who, how far along, since when.
 const CardFront = ({ name, email, memberSince, cardNumber, stats, isVerified, isBlank }) => {
+  const { t, formatNumber } = useI18n();
   const initial = resolveInitial(name);
   const hasStats = Boolean(stats);
 
@@ -167,18 +168,28 @@ const CardFront = ({ name, email, memberSince, cardNumber, stats, isVerified, is
           {initial || "?"}
         </span>
         <div className="acard__who-text">
-          <strong className={name ? "acard__name" : "acard__name is-placeholder"}>{name || "Your name"}</strong>
-          <span className={email ? "acard__email" : "acard__email is-placeholder"}>{email || "you@example.com"}</span>
+          <strong className={name ? "acard__name" : "acard__name is-placeholder"}>{name || t("account.card.yourName")}</strong>
+          <span className={email ? "acard__email" : "acard__email is-placeholder"}>{email || t("account.emailPlaceholder")}</span>
         </div>
       </div>
 
       <div className="acard__row">
       <dl className="acard__stats">
-        <Stat value={hasStats ? INTEGER.format(stats.known) : "—"} label="words known" />
-        <Stat value={hasStats ? INTEGER.format(stats.streak) : "—"} label="day streak" />
         <Stat
-          value={hasStats ? INTEGER.format(stats.stickersEarned) : "—"}
-          label={hasStats ? `of ${stats.stickersTotal} stickers` : "stickers"}
+          value={hasStats ? formatNumber(stats.known) : "—"}
+          label={t("account.card.wordsKnown", { count: hasStats ? stats.known : 0 })}
+        />
+        <Stat
+          value={hasStats ? formatNumber(stats.streak) : "—"}
+          label={t("account.card.dayStreak", { count: hasStats ? stats.streak : 0 })}
+        />
+        <Stat
+          value={hasStats ? formatNumber(stats.stickersEarned) : "—"}
+          label={
+            hasStats
+              ? t("account.card.ofStickers", { count: stats.stickersTotal })
+              : t("account.card.stickers")
+          }
         />
       </dl>
 
@@ -193,18 +204,22 @@ const CardFront = ({ name, email, memberSince, cardNumber, stats, isVerified, is
 
       <div className="acard__foot">
         <span>
-          Learner card
+          {t("account.card.title")}
           <span className="acard__dot" aria-hidden>
             ·
           </span>
-          {isBlank ? "not issued yet" : memberSince ? `member since ${memberSince}` : "member"}
+          {isBlank
+            ? t("account.card.notIssued")
+            : memberSince
+              ? t("account.card.memberSince", { date: memberSince })
+              : t("account.card.member")}
         </span>
         <span className="acard__number">{isBlank ? "LL •••• ••••" : cardNumber}</span>
       </div>
 
       {!isBlank && !isVerified ? (
         <span className="acard__stamp" aria-hidden>
-          Email not confirmed
+          {t("account.card.unconfirmed")}
         </span>
       ) : null}
     </div>
@@ -234,6 +249,7 @@ const CardBack = ({ name, perks }) => (
 
 export const AccountCard = memo(
   ({ name, email, memberSince, cardNumber, stats, isVerified = true, perks = [], isBlank = false }) => {
+    const { t } = useI18n();
     const { ref, handlePointerMove, handlePointerLeave } = useTilt();
     const { isTurned, isFlipping, turn } = useTurn();
     const canTurn = !isBlank && perks.length > 0;
@@ -250,7 +266,7 @@ export const AccountCard = memo(
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         role="group"
-        aria-label={isBlank ? "Your learner card, not issued yet" : `Learner card of ${name}`}
+        aria-label={isBlank ? t("account.card.blankLabel") : t("account.card.label", { name })}
       >
         <div className="acard__tilt">
           <div
@@ -289,10 +305,10 @@ export const AccountCard = memo(
             className="acard__turn"
             onClick={turn}
             aria-pressed={isTurned}
-            aria-label={isTurned ? "Show the front of the card" : "Show the back of the card"}
+            aria-label={isTurned ? t("account.card.showFront") : t("account.card.showBack")}
           >
             <FiRotateCw aria-hidden />
-            <span>{isTurned ? "Front" : "Turn over"}</span>
+            <span>{isTurned ? t("account.card.front") : t("account.card.turn")}</span>
           </button>
         ) : null}
       </div>

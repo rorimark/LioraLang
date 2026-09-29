@@ -10,6 +10,7 @@ import { DeckEditorSettingsSection } from "./DeckEditorSettingsSection";
 import { DeckEditorWordFormSection } from "./DeckEditorWordFormSection";
 import { DeckEditorWordsTableSection } from "./DeckEditorWordsTableSection";
 import "./DeckEditorPanel.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const DeckEditorPanelBody = memo(() => {
   const {
@@ -25,6 +26,7 @@ const DeckEditorPanelBody = memo(() => {
     goToDeckDetails,
     reloadDeck,
   } = useDeckEditorPanelContext();
+  const { t } = useI18n();
   const statusAlert = useMemo(
     () => ({
       text: statusMessage,
@@ -35,7 +37,7 @@ const DeckEditorPanelBody = memo(() => {
   );
 
   if (isLoading) {
-    return <article className="panel deck-editor-panel">Loading deck editor...</article>;
+    return <article className="panel deck-editor-panel">{t("editor.loading")}</article>;
   }
 
   if (loadError) {
@@ -45,7 +47,7 @@ const DeckEditorPanelBody = memo(() => {
         <div className="deck-editor-panel__toolbar">
           <button type="button" onClick={reloadDeck}>
             <FiRefreshCw aria-hidden />
-            <span>Retry</span>
+            <span>{t("common.retry")}</span>
           </button>
           <button
             type="button"
@@ -53,7 +55,7 @@ const DeckEditorPanelBody = memo(() => {
             onClick={goToDecks}
           >
             <FiArrowLeft aria-hidden />
-            <span>Back to decks</span>
+            <span>{t("common.backToDecks")}</span>
           </button>
         </div>
       </article>
@@ -64,7 +66,7 @@ const DeckEditorPanelBody = memo(() => {
     <article className="panel deck-editor-panel">
       <header className="deck-editor-panel__header">
         <div>
-          <h2>{isEditMode ? "Edit deck" : "Create deck"}</h2>
+          <h2>{isEditMode ? t("deck.edit") : t("decks.create")}</h2>
         </div>
 
         <div className="deck-editor-panel__toolbar">
@@ -74,7 +76,7 @@ const DeckEditorPanelBody = memo(() => {
             onClick={goToDecks}
           >
             <FiArrowLeft aria-hidden />
-            <span>Back to decks</span>
+            <span>{t("common.backToDecks")}</span>
           </button>
           {isEditMode && (
             <button
@@ -83,12 +85,12 @@ const DeckEditorPanelBody = memo(() => {
               onClick={goToDeckDetails}
             >
               <FiExternalLink aria-hidden />
-              <span>Open details</span>
+              <span>{t("editor.openDetails")}</span>
             </button>
           )}
           <button type="button" onClick={handleSaveDeck} disabled={isSaving}>
             <FiSave aria-hidden />
-            <span>{isSaving ? "Saving..." : "Save deck"}</span>
+            <span>{isSaving ? t("editor.saving") : t("editor.saveDeck")}</span>
           </button>
         </div>
       </header>

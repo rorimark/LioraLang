@@ -29,6 +29,7 @@ export const createMainState = ({
   const getDataSafetyPreferences = () => getAppPreferences().dataSafety;
   const getDesktopPreferences = () => getAppPreferences().desktop;
   const getPrivacyPreferences = () => getAppPreferences().privacy;
+  const getInterfaceLanguage = () => getAppPreferences().uiAccessibility?.interfaceLanguage || "auto";
 
   const getWindowTitle = () => {
     return getDesktopPreferences().updateChannel === "beta"
@@ -57,6 +58,7 @@ export const createMainState = ({
     getDataSafetyPreferences,
     getDesktopPreferences,
     getPrivacyPreferences,
+    getInterfaceLanguage,
     getWindowTitle,
     isDeveloperModeEnabled,
     getMinimizeToTray,

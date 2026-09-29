@@ -25,45 +25,7 @@ import { useBrowseDeckDetailsPanel } from "../model";
 import "@widgets/BrowseDecksPanel/ui/BrowseDecksPanel.css";
 import "@widgets/DeckDetailsPanel/ui/DeckDetailsPanel.css";
 import "./BrowseDeckDetailsPanel.css";
-
-const formatFileSize = (bytes) => {
-  if (!Number.isFinite(Number(bytes)) || Number(bytes) <= 0) {
-    return "Unknown size";
-  }
-
-  const normalizedBytes = Number(bytes);
-
-  if (normalizedBytes < 1024) {
-    return `${normalizedBytes} B`;
-  }
-
-  const kilobytes = normalizedBytes / 1024;
-
-  if (kilobytes < 1024) {
-    return `${kilobytes.toFixed(1)} KB`;
-  }
-
-  const megabytes = kilobytes / 1024;
-  return `${megabytes.toFixed(2)} MB`;
-};
-
-const formatDate = (value) => {
-  if (!value) {
-    return "Unknown date";
-  }
-
-  const parsedDate = new Date(value);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return "Unknown date";
-  }
-
-  return new Intl.DateTimeFormat(undefined, {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(parsedDate);
-};
+import { useI18n } from "@shared/lib/i18n";
 
 const normalizeTags = (value) => {
   if (!Array.isArray(value)) {
@@ -94,13 +56,14 @@ const normalizeTags = (value) => {
 
 export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   const panel = useBrowseDeckDetailsPanel(deckSlug);
+  const { t, formatBytes, formatDate, formatNumber, languageName } = useI18n();
 
   usePageMeta({
-    title: panel.deck?.title ? `${panel.deck.title} - LioraLang` : "Community Deck - LioraLang",
+    title: `${panel.deck?.title || t("browse.communityDeck")} - LioraLang`,
     description:
       typeof panel.deck?.description === "string" && panel.deck.description.trim().length > 0
         ? panel.deck.description.trim()
-        : "Explore a shared deck and import it to your library.",
+        : t("browse.metaDescription"),
   });
 
   const derived = useMemo(() => {
@@ -109,7 +72,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
     const badgeItems = [
       ...languages.map((language) => ({
         key: `${panel.deck?.id}-lang-${language}`,
-        text: language,
+        text: languageName(language),
         accent: false,
       })),
       ...tags.map((tag) => ({
@@ -123,8 +86,8 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
       tags,
       languages,
       badgeItems,
-      createdAt: formatDate(panel.deck?.createdAt),
-      fileSize: formatFileSize(panel.deck?.latestVersion?.fileSizeBytes),
+      createdAt: formatDate(panel.deck?.createdAt) || t("browse.unknownDate"),
+      fileSize: formatBytes(panel.deck?.latestVersion?.fileSizeBytes) || t("browse.unknownSize"),
       wordsCount: Number.isFinite(Number(panel.deck?.wordsCount))
         ? Number(panel.deck.wordsCount)
         : 0,
@@ -134,9 +97,11 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
       hasDescription:
         typeof panel.deck?.description === "string"
         && panel.deck.description.trim().length > 0,
-      updatedAt: formatDate(panel.deck?.latestVersion?.createdAt || panel.deck?.createdAt),
+      updatedAt:
+        formatDate(panel.deck?.latestVersion?.createdAt || panel.deck?.createdAt) ||
+        t("browse.unknownDate"),
     };
-  }, [panel.deck]);
+  }, [formatBytes, formatDate, languageName, panel.deck, t]);
 
   const showsWordLevels = panel.levelOptions.length > 0;
   const filterCatalog = useMemo(
@@ -203,14 +168,14 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   const filtersDialog = useMemo(
     () => ({
       isOpen: panel.isFiltersExpanded,
-      title: "Filters",
-      description: "Narrow your results and sort the deck.",
-      confirmLabel: "Apply",
-      cancelLabel: "Close",
+      title: t("catalog.filters"),
+      description: t("catalog.filtersDescription"),
+      confirmLabel: t("catalog.apply"),
+      cancelLabel: t("common.close"),
       onConfirm: panel.toggleFilters,
       onClose: panel.toggleFilters,
     }),
-    [panel.isFiltersExpanded, panel.toggleFilters],
+    [panel.isFiltersExpanded, panel.toggleFilters, t],
   );
   const postImportModal = useMemo(
     () => ({
@@ -237,7 +202,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           onClick={panel.openBrowseDecks}
         >
           <FiArrowLeft />
-          Back to Browse
+          {t("browse.back")}
         </Button>
         <Button
           variant="secondary"
@@ -245,7 +210,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           disabled={!panel.isConfigured || panel.isLoading}
         >
           <FiRefreshCw aria-hidden />
-          <span>Refresh</span>
+          <span>{t("common.refresh")}</span>
         </Button>
       </div>
 
@@ -253,15 +218,14 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
 
       {!panel.isConfigured ? (
         <div className="browse-deck-details__warning">
-          Supabase is not configured. Add <code>VITE_SUPABASE_URL</code> and{" "}
-          <code>VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY</code> to your <code>.env</code>.
+          {t("hub.notConfigured")}
         </div>
       ) : null}
 
       {panel.error ? <div className="browse-deck-details__error">{panel.error}</div> : null}
 
       {panel.isConfigured && panel.isLoading ? (
-        <div className="browse-deck-details__loading">Loading community deck...</div>
+        <div className="browse-deck-details__loading">{t("browse.loadingDeck")}</div>
       ) : null}
 
       {panel.isConfigured && !panel.isLoading && !panel.error && panel.deck ? (
@@ -269,20 +233,20 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           <header className="browse-decks-panel__card-head">
             <div className="browse-deck-details__title">
               <div className="browse-deck-details__title-row">
-                <h2>{panel.deck.title || "Untitled deck"}</h2>
+                <h2>{panel.deck.title || t("browse.untitled")}</h2>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="browse-deck-details__copy-link"
                   onClick={panel.copyDeckLink}
-                  aria-label="Copy public deck link"
-                  title="Copy public deck link"
+                  aria-label={t("browse.copyLink")}
+                  title={t("browse.copyLink")}
                 >
                   <FiLink />
                 </Button>
               </div>
               <span className="browse-decks-panel__card-meta">
-                Added {derived.createdAt}
+                {t("browse.added", { date: derived.createdAt })}
               </span>
             </div>
           </header>
@@ -308,28 +272,28 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               <div>
                 <dt>
                   <FiType aria-hidden />
-                  <span>Words</span>
+                  <span>{t("decks.table.words")}</span>
                 </dt>
-                <dd>{derived.wordsCount}</dd>
+                <dd>{formatNumber(derived.wordsCount)}</dd>
               </div>
               <div>
                 <dt>
                   <FiDownload aria-hidden />
-                  <span>Downloads</span>
+                  <span>{t("browse.downloads")}</span>
                 </dt>
-                <dd>{derived.downloadsCount}</dd>
+                <dd>{formatNumber(derived.downloadsCount)}</dd>
               </div>
               <div>
                 <dt>
                   <FiCalendar aria-hidden />
-                  <span>Updated</span>
+                  <span>{t("browse.updated")}</span>
                 </dt>
                 <dd>{derived.updatedAt}</dd>
               </div>
               <div>
                 <dt>
                   <FiPackage aria-hidden />
-                  <span>Package</span>
+                  <span>{t("browse.package")}</span>
                 </dt>
                 <dd>{derived.fileSize}</dd>
               </div>
@@ -343,7 +307,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               variant="primary"
             >
               {panel.importing ? <FiHardDrive aria-hidden /> : <FiDownload aria-hidden />}
-              <span>{panel.importing ? "Importing..." : "Import to Decks"}</span>
+              <span>{panel.importing ? t("browse.importing") : t("browse.import")}</span>
             </Button>
           </div>
         </article>
@@ -354,14 +318,14 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           <header className="browse-deck-details__preview-head">
             <h3>
               <FiType aria-hidden />
-              <span>Words preview</span>
+              <span>{t("browse.preview")}</span>
             </h3>
-            <span>{panel.totalItems} words</span>
+            <span>{t("browse.wordsCount", { count: panel.totalItems })}</span>
           </header>
 
           {panel.isPreviewLoading ? (
             <div className="browse-deck-details__loading">
-              Loading deck words...
+              {t("browse.loadingWords")}
             </div>
           ) : panel.previewError ? (
             <div className="browse-deck-details__error">{panel.previewError}</div>
@@ -375,7 +339,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
                     aria-expanded={panel.isFiltersExpanded}
                   >
                     <FiFilter aria-hidden />
-                    <span>{panel.isFiltersExpanded ? "Hide filters" : "Show filters"}</span>
+                    <span>{panel.isFiltersExpanded ? t("catalog.hideFilters") : t("catalog.showFilters")}</span>
                   </Button>
                 </div>
               )}

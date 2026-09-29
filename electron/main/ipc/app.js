@@ -19,6 +19,7 @@ export const registerAppIpcHandlers = ({
   sendAppSettingsUpdated,
   buildRuntimeErrorPayload,
   queueRuntimeErrorEvent,
+  getTranslator,
 }) => {
   ipcMain.handle("app:get-db-path", () => {
     return getDatabasePath();
@@ -46,7 +47,7 @@ export const registerAppIpcHandlers = ({
   ipcMain.handle("app:change-db-location", async () => {
     const currentDbPath = getDatabasePath();
     const result = await dialog.showOpenDialog(getMainWindow(), {
-      title: "Choose database folder",
+      title: getTranslator()("desktop.dialogs.chooseDbFolder"),
       properties: ["openDirectory", "createDirectory"],
       defaultPath: currentDbPath ? path.dirname(currentDbPath) : app.getPath("home"),
     });

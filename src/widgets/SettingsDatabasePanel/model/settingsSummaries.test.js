@@ -1,13 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
 import { SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
+import { buildI18nValue, ENGLISH_MESSAGES } from "@shared/lib/i18n";
 import { buildSettingsSummaries } from "./settingsSummaries";
+
+const i18n = buildI18nValue("en", ENGLISH_MESSAGES);
 
 describe("buildSettingsSummaries", () => {
   it("describes the defaults in a line per section", () => {
     const summaries = buildSettingsSummaries({
       appPreferences: DEFAULT_APP_PREFERENCES,
       themeMode: "system",
+      i18n,
     });
 
     expect(summaries[SETTINGS_TAB_KEYS.general]).toBe("System theme · normal text");
@@ -34,6 +38,7 @@ describe("buildSettingsSummaries", () => {
         sync: { ...DEFAULT_APP_PREFERENCES.sync, autoSync: false },
       },
       themeMode: "dark",
+      i18n,
     });
 
     expect(summaries[SETTINGS_TAB_KEYS.general]).toBe("Dark theme · normal text · reduced motion");
@@ -44,6 +49,6 @@ describe("buildSettingsSummaries", () => {
   });
 
   it("returns nothing without preferences", () => {
-    expect(buildSettingsSummaries({ appPreferences: null })).toEqual({});
+    expect(buildSettingsSummaries({ appPreferences: null, i18n })).toEqual({});
   });
 });

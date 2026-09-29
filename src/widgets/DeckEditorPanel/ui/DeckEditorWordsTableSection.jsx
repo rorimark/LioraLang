@@ -3,6 +3,7 @@ import { FiEdit3, FiEye, FiList, FiTrash2 } from "react-icons/fi";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { useDeckEditorPanelContext } from "../model";
 import { WORD_FORM_ID } from "./DeckEditorWordFormSection";
+import { useI18n } from "@shared/lib/i18n";
 
 const renderWordCell = (value) => {
   return value ? value : "-";
@@ -62,7 +63,7 @@ export const DeckEditorWordsTableSection = memo(() => {
     words,
     paginatedWords,
     previewWord,
-    languageLabels,
+    languageLabels: storedLanguageLabels,
     usesWordLevels,
     wordsPage,
     wordsPageSize,
@@ -75,6 +76,16 @@ export const DeckEditorWordsTableSection = memo(() => {
     handleWordsPageChange,
     handleWordsPageSizeChange,
   } = useDeckEditorPanelContext();
+  const { t, languageName, partOfSpeechName } = useI18n();
+  const languageLabels = useMemo(
+    () => ({
+      ...storedLanguageLabels,
+      sourceLanguage: languageName(storedLanguageLabels.sourceLanguage),
+      targetLanguage: languageName(storedLanguageLabels.targetLanguage),
+      tertiaryLanguage: languageName(storedLanguageLabels.tertiaryLanguage),
+    }),
+    [languageName, storedLanguageLabels],
+  );
 
   const onEditClick = useCallback(
     (event) => {
@@ -131,18 +142,18 @@ export const DeckEditorWordsTableSection = memo(() => {
           <span className="deck-editor-panel__section-icon" aria-hidden>
             <FiList />
           </span>
-          <h3>Words table</h3>
+          <h3>{t("editor.wordsTable")}</h3>
         </div>
       </header>
 
       {words.length === 0 ? (
         <div className="deck-editor-panel__empty">
-          Add your first word to start building this deck.
+          {t("editor.empty")}
         </div>
       ) : (
         <>
           <div className="deck-editor-panel__table-wrap">
-            <table className="deck-editor-panel__table" aria-label="Editable words">
+            <table className="deck-editor-panel__table" aria-label={t("editor.wordsTable")}>
               <thead>
                 <tr>
                   <th>{languageLabels.sourceLanguage}</th>
@@ -150,10 +161,10 @@ export const DeckEditorWordsTableSection = memo(() => {
                   {languageLabels.hasTertiaryLanguage && (
                     <th>{languageLabels.tertiaryLanguage}</th>
                   )}
-                  {usesWordLevels && <th>Level</th>}
-                  <th>Part</th>
-                  <th>Examples</th>
-                  <th>Actions</th>
+                  {usesWordLevels && <th>{t("catalog.level")}</th>}
+                  <th>{t("editor.part")}</th>
+                  <th>{t("flashcard.examples")}</th>
+                  <th>{t("decks.table.actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -178,17 +189,17 @@ export const DeckEditorWordsTableSection = memo(() => {
                       </td>
                     )}
                     {usesWordLevels && (
-                      <td data-label="Level">{renderWordCell(word.level)}</td>
+                      <td data-label={t("catalog.level")}>{renderWordCell(word.level)}</td>
                     )}
-                    <td data-label="Part">{renderWordCell(word.part_of_speech)}</td>
+                    <td data-label={t("editor.part")}>{renderWordCell(word.part_of_speech && partOfSpeechName(word.part_of_speech))}</td>
                     <td
-                      data-label="Examples"
+                      data-label={t("flashcard.examples")}
                       className="deck-editor-panel__cell--example"
                     >
                       {renderExamplesPreview(word)}
                     </td>
                     <td
-                      data-label="Actions"
+                      data-label={t("decks.table.actions")}
                       className="deck-editor-panel__cell--actions"
                     >
                       <div className="deck-editor-panel__table-actions">
@@ -196,20 +207,20 @@ export const DeckEditorWordsTableSection = memo(() => {
                           type="button"
                           data-word-id={word.id}
                           onClick={onEditClick}
-                          aria-label={`Edit "${word.source || "word"}"`}
+                          aria-label={t("editor.editNamed", { word: word.source || "—" })}
                         >
                           <FiEdit3 aria-hidden />
-                          <span>Edit</span>
+                          <span>{t("common.edit")}</span>
                         </button>
                         <button
                           type="button"
                           className="deck-editor-panel__button--danger"
                           data-word-id={word.id}
                           onClick={onDeleteClick}
-                          aria-label={`Delete "${word.source || "word"}"`}
+                          aria-label={t("editor.deleteNamed", { word: word.source || "—" })}
                         >
                           <FiTrash2 aria-hidden />
-                          <span>Delete</span>
+                          <span>{t("common.delete")}</span>
                         </button>
                       </div>
                     </td>
@@ -225,7 +236,7 @@ export const DeckEditorWordsTableSection = memo(() => {
             <div className="deck-editor-panel__preview">
               <h4>
                 <FiEye aria-hidden />
-                <span>Preview</span>
+                <span>{t("editor.preview")}</span>
               </h4>
               <p>
                 <strong>{languageLabels.sourceLanguage}:</strong>{" "}
@@ -242,7 +253,7 @@ export const DeckEditorWordsTableSection = memo(() => {
                 </p>
               )}
               <p>
-                <strong>Examples:</strong>
+                <strong>{t("editor.examplesLabel")}</strong>
               </p>
               {resolveExamples(previewWord).length === 0 ? (
                 <p>-</p>
@@ -254,7 +265,7 @@ export const DeckEditorWordsTableSection = memo(() => {
                 </ul>
               )}
               <p>
-                <strong>Tags:</strong> {renderWordTags(previewWord.tags)}
+                <strong>{t("editor.tagsLabel")}</strong> {renderWordTags(previewWord.tags)}
               </p>
             </div>
           )}

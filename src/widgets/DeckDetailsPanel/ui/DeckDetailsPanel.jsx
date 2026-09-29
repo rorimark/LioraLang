@@ -16,15 +16,18 @@ import {
 import { ActionModal, InlineAlert } from "@shared/ui";
 import { useDeckDetailsPanel } from "../model";
 import "./DeckDetailsPanel.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const DeckLoadingState = memo(() => {
-  return <article className="panel cards-panel">Loading deck...</article>;
+  const { t } = useI18n();
+  return <article className="panel cards-panel">{t("deck.loading")}</article>;
 });
 
 DeckLoadingState.displayName = "DeckLoadingState";
 
 export const DeckDetailsPanel = memo(() => {
   const panel = useDeckDetailsPanel();
+  const { t } = useI18n();
 
   const showsWordLevels =
     panel.deck?.usesWordLevels !== false && panel.levelOptions.length > 0;
@@ -100,14 +103,14 @@ export const DeckDetailsPanel = memo(() => {
   const filtersDialog = useMemo(
     () => ({
       isOpen: panel.isFiltersExpanded,
-      title: "Filters",
-      description: "Narrow your results and sort the deck.",
-      confirmLabel: "Apply",
-      cancelLabel: "Close",
+      title: t("catalog.filters"),
+      description: t("catalog.filtersDescription"),
+      confirmLabel: t("catalog.apply"),
+      cancelLabel: t("common.close"),
       onConfirm: panel.toggleFilters,
       onClose: panel.toggleFilters,
     }),
-    [panel.isFiltersExpanded, panel.toggleFilters],
+    [panel.isFiltersExpanded, panel.toggleFilters, t],
   );
 
   if (panel.isLoading) {
@@ -118,14 +121,14 @@ export const DeckDetailsPanel = memo(() => {
     return (
       <article className="panel cards-panel">
         <div className="cards-panel__status cards-panel__status--error">
-          {panel.error || "Deck not found"}
+          {panel.error || t("decks.errors.notFound")}
         </div>
         <button
           type="button"
           className="cards-panel__retry"
           onClick={panel.refreshDeckWords}
         >
-          Retry
+          {t("common.retry")}
         </button>
       </article>
     );
@@ -135,7 +138,7 @@ export const DeckDetailsPanel = memo(() => {
     <article className="panel cards-panel">
       <div className="cards-panel__header">
         <h2>{panel.deck.name}</h2>
-        <p>{panel.deck.description || "Deck details and words catalog"}</p>
+        <p>{panel.deck.description || t("deck.noDescription")}</p>
       </div>
 
       <div className="cards-panel__actions">
@@ -145,19 +148,19 @@ export const DeckDetailsPanel = memo(() => {
           onClick={panel.openDecksOverview}
         >
           <FiArrowLeft aria-hidden />
-          <span>Back to decks</span>
+          <span>{t("common.backToDecks")}</span>
         </button>
         <button type="button" onClick={panel.openEditDeck}>
           <FiEdit3 aria-hidden />
-          <span>Edit deck</span>
+          <span>{t("deck.edit")}</span>
         </button>
         <button type="button" onClick={panel.exportDeck} disabled={panel.isExporting}>
           <FiDownload aria-hidden />
-          <span>{panel.isExporting ? "Exporting..." : "Export deck as JSON"}</span>
+          <span>{panel.isExporting ? t("decks.table.exporting") : t("deck.export")}</span>
         </button>
         <button type="button" onClick={panel.refreshDeckWords}>
           <FiRefreshCw aria-hidden />
-          <span>Refresh words</span>
+          <span>{t("deck.refreshWords")}</span>
         </button>
         {panel.isNarrowFiltersViewport && (
           <button
@@ -167,7 +170,7 @@ export const DeckDetailsPanel = memo(() => {
             aria-expanded={panel.isFiltersExpanded}
           >
             <FiSliders aria-hidden />
-            <span>{panel.isFiltersExpanded ? "Hide filters" : "Show filters"}</span>
+            <span>{panel.isFiltersExpanded ? t("catalog.hideFilters") : t("catalog.showFilters")}</span>
           </button>
         )}
       </div>

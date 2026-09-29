@@ -1,8 +1,6 @@
 // What the learner card says, from the account and the learning stats.
 // Pure, so every line of it can be tested.
 
-const MONTH_YEAR = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" });
-
 // The weeks of activity the card has room for: about four months.
 export const CARD_ACTIVITY_WEEKS = 17;
 
@@ -18,10 +16,9 @@ export const buildCardNumber = (userId) => {
   return `LL ${hex.slice(0, 4)} ${hex.slice(4, 8)}`;
 };
 
-export const formatMemberSince = (createdAt) => {
-  const date = new Date(createdAt);
-  return Number.isNaN(date.getTime()) ? "" : MONTH_YEAR.format(date);
-};
+// Month and year, in the interface's language (takes useI18n()'s value).
+export const formatMemberSince = (createdAt, { formatDate }) =>
+  createdAt ? formatDate(createdAt, { month: "short", year: "numeric" }) : "";
 
 // The name the card shows: the display name, or the part of the email
 // before the @, or nothing yet.

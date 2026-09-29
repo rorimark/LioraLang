@@ -45,63 +45,49 @@ import {
 import { useSettingsDatabasePanel } from "../model";
 import { buildSettingsSummaries } from "../model/settingsSummaries";
 import "./SettingsDatabasePanel.css";
+import { useI18n } from "@shared/lib/i18n";
 
 // The sections, in the order people look for them. The keys are the tab
-// keys the desktop app menu and links already use.
+// keys the desktop app menu and links already use; titles and descriptions
+// are settingsPage.sections.<key>.
 const SETTINGS_SECTIONS = [
   {
     key: SETTINGS_TAB_KEYS.general,
-    title: "General",
-    description: "Theme, display, keys and version.",
     keywords: "appearance theme keyboard about version reset",
     icon: FiSliders,
   },
   {
     key: SETTINGS_TAB_KEYS.learningCore,
-    title: "Learning",
-    description: "Sessions, and how often words come back.",
     keywords: "study srs spaced repetition review",
     icon: FiLayers,
   },
   {
     key: SETTINGS_TAB_KEYS.deckDefaults,
-    title: "New decks",
-    description: "What a new deck starts with. Each deck can change it.",
     keywords: "deck defaults language level tags",
     icon: FiBookOpen,
   },
   {
     key: SETTINGS_TAB_KEYS.sync,
-    title: "Sync",
-    description: "Your decks and progress across devices.",
     keywords: "cloud devices account",
     icon: FiRefreshCw,
   },
   {
     key: SETTINGS_TAB_KEYS.importExport,
-    title: "Import and export",
-    description: "Deck files in and out.",
     keywords: "file json lioradeck",
     icon: FiDownload,
   },
   {
     key: SETTINGS_TAB_KEYS.workspaceSafety,
-    title: "Backups and safety",
-    description: "Automatic backups and confirmations.",
     keywords: "backup data protect",
     icon: FiArchive,
   },
   {
     key: SETTINGS_TAB_KEYS.advancedDesktop,
-    title: "Privacy",
-    description: "Diagnostics, and options for developers.",
     keywords: "analytics crash logs developer desktop",
     icon: FiLock,
   },
   {
     key: SETTINGS_TAB_KEYS.storageIntegrity,
-    title: "Storage",
-    description: "Where the database lives, and checking it.",
     keywords: "database folder integrity files",
     icon: FiHardDrive,
     desktopOnly: true,
@@ -117,6 +103,8 @@ const EMPTY_ACCOUNT_SNAPSHOT = Object.freeze({
 
 export const SettingsDatabasePanel = memo(() => {
   const panel = useSettingsDatabasePanel();
+  const i18n = useI18n();
+  const { t } = i18n;
   const authRepository = usePlatformService("authRepository");
   const [accountSnapshot, setAccountSnapshot] = useState(EMPTY_ACCOUNT_SNAPSHOT);
 
@@ -155,36 +143,31 @@ export const SettingsDatabasePanel = memo(() => {
   const accountEntry = useMemo(() => {
     if (!authRepository?.isConfigured?.()) {
       return {
-        sectionTitle: "Sign in",
-        title: "Accounts unavailable",
-        description:
-          "Add Supabase config to enable sign in, publishing, and Hub management.",
-        badge: "Unavailable",
+        title: t("settingsPage.account.unavailableTitle"),
+        description: t("settingsPage.account.unavailableText"),
+        badge: t("account.sync.unavailable.label"),
         badgeAccent: false,
       };
     }
 
     if (!accountSnapshot.isAuthenticated) {
       return {
-        sectionTitle: "Sign in",
-        title: "Sign in or create account",
-        description:
-          "Browse stays open for guests. Sign in to publish and manage Hub decks.",
-        badge: "Guest",
+        title: t("settingsPage.account.guestTitle"),
+        description: t("settingsPage.account.guestText"),
+        badge: t("settingsPage.account.guestBadge"),
         badgeAccent: false,
       };
     }
 
     return {
-      sectionTitle: "Account",
-      title: accountSnapshot.displayName || accountSnapshot.email || "Open account",
+      title: accountSnapshot.displayName || accountSnapshot.email || t("settingsPage.account.open"),
       description: accountSnapshot.isEmailVerified
-        ? "Verified account. Manage profile, Hub decks, and account security."
-        : "Verify your email to publish and manage Hub decks.",
-      badge: accountSnapshot.isEmailVerified ? "Verified" : "Verify email",
+        ? t("settingsPage.account.verifiedText")
+        : t("settingsPage.account.unverifiedText"),
+      badge: accountSnapshot.isEmailVerified ? t("account.verified") : t("settingsPage.account.verifyBadge"),
       badgeAccent: accountSnapshot.isEmailVerified,
     };
-  }, [accountSnapshot, authRepository]);
+  }, [accountSnapshot, authRepository, t]);
 
   const accountInitial = accountSnapshot.isAuthenticated
     ? (accountSnapshot.displayName || accountSnapshot.email || "").trim().charAt(0).toUpperCase()
@@ -192,12 +175,16 @@ export const SettingsDatabasePanel = memo(() => {
   const settingsNavItems = useMemo(
     () =>
       SETTINGS_SECTIONS.filter((section) => !section.desktopOnly || panel.isDesktopMode).map(
-        (section) =>
-          section.key === SETTINGS_TAB_KEYS.advancedDesktop && panel.isDesktopMode
-            ? { ...section, title: "Desktop and privacy" }
-            : section,
+        (section) => ({
+          ...section,
+          title:
+            section.key === SETTINGS_TAB_KEYS.advancedDesktop && panel.isDesktopMode
+              ? t("settingsPage.sections.advanced-desktop.desktopTitle")
+              : t(`settingsPage.sections.${section.key}.title`),
+          description: t(`settingsPage.sections.${section.key}.description`),
+        }),
       ),
-    [panel.isDesktopMode],
+    [panel.isDesktopMode, t],
   );
   const availableSettingsTabs = useMemo(
     () => new Set(settingsNavItems.map((item) => item.key)),
@@ -302,12 +289,12 @@ export const SettingsDatabasePanel = memo(() => {
   const updatePromptDialog = useMemo(
     () => ({
       isOpen: panel.isUpdatePromptOpen,
-      title: "Update Available",
+      title: t("settingsPage.update.title"),
       description: panel.updatePromptVersion
-        ? `Version ${panel.updatePromptVersion} is ready to download.`
-        : "A new version is ready to download.",
-      confirmLabel: "Download update",
-      cancelLabel: "Not now",
+        ? t("settingsPage.update.version", { version: panel.updatePromptVersion })
+        : t("settingsPage.update.generic"),
+      confirmLabel: t("settingsPage.update.download"),
+      cancelLabel: t("settingsPage.update.notNow"),
       isConfirming: panel.isUpdateDownloading,
       onConfirm: panel.confirmUpdateDownload,
       onClose: panel.closeUpdatePrompt,
@@ -318,16 +305,16 @@ export const SettingsDatabasePanel = memo(() => {
       panel.isUpdateDownloading,
       panel.isUpdatePromptOpen,
       panel.updatePromptVersion,
+      t,
     ],
   );
   const resetSettingsDialog = useMemo(
     () => ({
       isOpen: panel.isResetSettingsConfirmOpen,
-      title: "Reset all settings?",
-      description:
-        "This will restore preferences, shortcuts, and color scheme mode to defaults.",
-      confirmLabel: "Reset settings",
-      cancelLabel: "Cancel",
+      title: t("settingsPage.reset.title"),
+      description: t("settingsPage.reset.description"),
+      confirmLabel: t("settingsPage.reset.confirm"),
+      cancelLabel: t("common.cancel"),
       isConfirming: panel.isResettingSettings,
       onConfirm: panel.resetAllSettingsToDefaults,
       onClose: panel.closeResetSettingsConfirm,
@@ -337,6 +324,7 @@ export const SettingsDatabasePanel = memo(() => {
       panel.isResetSettingsConfirmOpen,
       panel.isResettingSettings,
       panel.resetAllSettingsToDefaults,
+      t,
     ],
   );
 
@@ -356,8 +344,9 @@ export const SettingsDatabasePanel = memo(() => {
         appPreferences,
         themeMode: panel.themeMode,
         isDesktopMode: panel.isDesktopMode,
+        i18n,
       }),
-    [appPreferences, panel.isDesktopMode, panel.themeMode],
+    [appPreferences, i18n, panel.isDesktopMode, panel.themeMode],
   );
 
   // A phone shows one pane at a time: the list of sections, or the one you
@@ -386,29 +375,29 @@ export const SettingsDatabasePanel = memo(() => {
       case SETTINGS_TAB_KEYS.general:
         return (
           <>
-            <SettingGroup title="Appearance" keywords="display look">
+            <SettingGroup title={t("settingsPage.appearance")} keywords="display look">
               <ThemeSwitch control={themeControl} />
               <DisplayPreferences />
             </SettingGroup>
 
             <SettingGroup
-              title="Keyboard"
-              description="Saved as you change them."
+              title={t("settingsPage.keyboard")}
+              description={t("settingsPage.keyboardNote")}
               keywords="shortcuts keys hotkeys"
             >
               <ShortcutSettingsSection />
             </SettingGroup>
 
-            <SettingGroup title="About" keywords="version update">
+            <SettingGroup title={t("settingsPage.about")} keywords="version update">
               <SettingRow
-                label="Version"
+                label={t("settingsPage.version")}
                 hint={panel.appPlatformLabel}
                 keywords="about build"
                 control={<strong className="settings__value">{panel.appVersionLabel}</strong>}
               />
               {panel.isDesktopMode ? (
                 <SettingRow
-                  label="Updates"
+                  label={t("prefs.updates")}
                   keywords="update download new version"
                   control={
                     <Button
@@ -417,14 +406,14 @@ export const SettingsDatabasePanel = memo(() => {
                       variant="secondary"
                       size="sm"
                     >
-                      {panel.isCheckingUpdates ? "Checking..." : "Check now"}
+                      {panel.isCheckingUpdates ? t("settingsPage.checking") : t("settingsPage.checkNow")}
                     </Button>
                   }
                 />
               ) : null}
               <SettingRow
-                label="Reset all settings"
-                hint="Preferences, keys and theme go back to their defaults. Your decks stay."
+                label={t("settingsPage.resetAll")}
+                hint={t("settingsPage.resetAllHint")}
                 keywords="defaults restore"
                 tone="danger"
                 control={
@@ -434,7 +423,7 @@ export const SettingsDatabasePanel = memo(() => {
                     variant="danger"
                     size="sm"
                   >
-                    {panel.isResettingSettings ? "Resetting..." : "Reset"}
+                    {panel.isResettingSettings ? t("settingsPage.resetting") : t("settingsPage.resetButton")}
                   </Button>
                 }
               />
@@ -450,10 +439,10 @@ export const SettingsDatabasePanel = memo(() => {
       case SETTINGS_TAB_KEYS.importExport:
         return (
           <>
-            <SettingGroup title="Add a deck" keywords="import new">
+            <SettingGroup title={t("settingsPage.addDeck")} keywords="import new">
               <SettingRow
-                label="Import a deck file"
-                hint="A .lioradeck or .json file."
+                label={t("settingsPage.importFile")}
+                hint={t("settingsPage.importFileHint")}
                 keywords="import upload open"
                 control={
                   <Button
@@ -462,13 +451,13 @@ export const SettingsDatabasePanel = memo(() => {
                     variant="primary"
                     size="sm"
                   >
-                    {panel.isImporting ? "Importing..." : "Choose file"}
+                    {panel.isImporting ? t("browse.importing") : t("settingsPage.chooseFile")}
                   </Button>
                 }
               />
               <SettingRow
-                label="Create a deck from JSON"
-                hint="Paste the words as JSON text."
+                label={t("decks.fromJson")}
+                hint={t("settingsPage.pasteHint")}
                 keywords="paste json text"
                 control={
                   <Button
@@ -477,7 +466,7 @@ export const SettingsDatabasePanel = memo(() => {
                     variant="secondary"
                     size="sm"
                   >
-                    Paste JSON
+                    {t("settingsPage.pasteJson")}
                   </Button>
                 }
               />
@@ -491,15 +480,15 @@ export const SettingsDatabasePanel = memo(() => {
         return <PrivacyPreferences isDesktopMode={panel.isDesktopMode} />;
       case SETTINGS_TAB_KEYS.storageIntegrity:
         return (
-          <SettingGroup title="Database" keywords="storage files">
+          <SettingGroup title={t("settingsPage.database")} keywords="storage files">
             <SettingRow
-              label="Location"
-              hint={panel.dbPath || "Loading..."}
+              label={t("settingsPage.location")}
+              hint={panel.dbPath || t("common.loading")}
               keywords="database path folder"
               control={
                 <span className="settings__row-keys">
                   <Button onClick={panel.openDbFolder} variant="secondary" size="sm">
-                    Open folder
+                    {t("settingsPage.openFolder")}
                   </Button>
                   <Button
                     onClick={panel.changeDbLocation}
@@ -507,14 +496,14 @@ export const SettingsDatabasePanel = memo(() => {
                     variant="secondary"
                     size="sm"
                   >
-                    {panel.isChangingDbLocation ? "Moving..." : "Move"}
+                    {panel.isChangingDbLocation ? t("settingsPage.moving") : t("settingsPage.move")}
                   </Button>
                 </span>
               }
             />
             <SettingRow
-              label="Check files"
-              hint="Looks for damaged or missing deck data, and offers to repair it."
+              label={t("settingsPage.checkFiles")}
+              hint={t("settingsPage.checkFilesHint")}
               keywords="integrity verify repair"
               control={
                 <Button
@@ -523,7 +512,7 @@ export const SettingsDatabasePanel = memo(() => {
                   variant="secondary"
                   size="sm"
                 >
-                  {panel.isVerifyingIntegrity ? "Checking..." : "Check"}
+                  {panel.isVerifyingIntegrity ? t("settingsPage.checking") : t("settingsPage.check")}
                 </Button>
               }
             />
@@ -542,13 +531,13 @@ export const SettingsDatabasePanel = memo(() => {
 
       <SettingsSearch query={query}>
         <div className="settings" data-view={view}>
-          <nav className="settings__nav" aria-label="Settings sections">
+          <nav className="settings__nav" aria-label={t("settingsPage.sectionsLabel")}>
             {/* The account is who is using the app, not one setting among
                 many, so it sits apart, above everything else. */}
             <Link
               to={ROUTE_PATHS.account}
               className="settings__account"
-              aria-label={`${accountEntry.title}. ${accountEntry.badge}. Open account`}
+              aria-label={t("settingsPage.account.aria", { title: accountEntry.title, badge: accountEntry.badge })}
             >
               <span className="settings__avatar" aria-hidden="true">
                 {accountInitial || <FiUser />}
@@ -566,13 +555,13 @@ export const SettingsDatabasePanel = memo(() => {
                 type="search"
                 value={query}
                 onChange={handleQueryChange}
-                placeholder="Search settings"
-                aria-label="Search settings"
+                placeholder={t("settingsPage.search")}
+                aria-label={t("settingsPage.search")}
                 autoComplete="off"
                 enterKeyHint="search"
               />
               {isSearching ? (
-                <button type="button" onClick={clearQuery} aria-label="Clear search">
+                <button type="button" onClick={clearQuery} aria-label={t("common.clearSearch")}>
                   <FiX aria-hidden="true" />
                 </button>
               ) : null}
@@ -629,15 +618,14 @@ export const SettingsDatabasePanel = memo(() => {
                   </SettingsScope>
                 ))}
                 <p className="settings__empty">
-                  Nothing matches “{query.trim()}”. Try another word, like “theme” or
-                  “backup”.
+                  {t("settingsPage.noMatch", { query: query.trim() })}
                 </p>
               </div>
             ) : (
               <section className="settings__section" key={activeSection.key}>
                 <Link className="settings__back" to={ROUTE_PATHS.settings}>
                   <FiChevronLeft aria-hidden="true" />
-                  <span>All settings</span>
+                  <span>{t("settingsPage.all")}</span>
                 </Link>
                 <header className="settings__section-head">
                   <h2>{activeSection.title}</h2>

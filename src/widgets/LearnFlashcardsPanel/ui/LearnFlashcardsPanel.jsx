@@ -7,10 +7,10 @@ import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
 import { LearnSessionSettingsDialog } from "./LearnSessionSettingsDialog/LearnSessionSettingsDialog";
 import "./LearnFlashcardsPanel.css";
 import { Select } from "@shared/ui";
-
-const GRADE_LABELS = { again: "Again", hard: "Hard", good: "Good", easy: "Easy" };
+import { useI18n } from "@shared/lib/i18n";
 
 export const LearnFlashcardsPanel = memo(() => {
+  const { t, formatDate } = useI18n();
   const panel = useLearnFlashcardsPanel();
   const deckSelector = useMemo(
     () => ({
@@ -126,20 +126,20 @@ export const LearnFlashcardsPanel = memo(() => {
       <header className="learn-desk__strip">
         <div className="learn-desk__deck">
           <label className="learn-desk__deck-label" htmlFor="learn-deck-select">
-            Deck
+            {t("learn.deck")}
           </label>
           <span className="learn-desk__deck-select">
             <Select
               id="learn-deck-select"
               variant="plain"
-              label="Deck"
+              label={t("learn.deck")}
               value={deckSelector.selectedDeckId}
               onChange={deckSelector.onChange}
               disabled={deckSelector.isDisabled}
             >
               {!panel.hasDecks && (
                 <option value="">
-                  {panel.isDecksLoading ? "Loading decks..." : "No decks yet"}
+                  {panel.isDecksLoading ? t("learn.loadingDecks") : t("learn.noDecksOption")}
                 </option>
               )}
               {deckSelector.options.map((deckItem) => (
@@ -163,15 +163,15 @@ export const LearnFlashcardsPanel = memo(() => {
         ) : null}
 
         {panel.isExtendedSession && !panel.isBrowseMode ? (
-          <span className="learn-desk__tag">Extra session</span>
+          <span className="learn-desk__tag">{t("learn.extraSession")}</span>
         ) : null}
 
         <button
           type="button"
           className="learn-desk__session"
           onClick={sessionControl.onOpen}
-          aria-label="Open session settings"
-          title="Session settings"
+          aria-label={t("learn.openSessionSettings")}
+          title={t("learn.sessionSettings")}
           aria-haspopup="dialog"
           aria-expanded={sessionControl.isOpen}
         >
@@ -187,7 +187,7 @@ export const LearnFlashcardsPanel = memo(() => {
       {panel.wordsError && (
         <div className="learn-desk__status learn-desk__status--error" role="alert">
           {panel.wordsError}
-          {!panel.isBrowseMode && <button type="button" className="learn-desk__key" onClick={panel.refreshSession} disabled={panel.isRatingPending}>Refresh session</button>}
+          {!panel.isBrowseMode && <button type="button" className="learn-desk__key" onClick={panel.refreshSession} disabled={panel.isRatingPending}>{t("learn.refreshSession")}</button>}
         </div>
       )}
 
@@ -203,15 +203,22 @@ export const LearnFlashcardsPanel = memo(() => {
           />
         ) : panel.isWordsLoading ? (
           <div className="learn-desk__note-card" aria-live="polite">
-            <p>{panel.isBrowseMode ? "Laying out the cards..." : "Building today's queue..."}</p>
+            <p>{panel.isBrowseMode ? t("learn.layingOut") : t("learn.buildingQueue")}</p>
           </div>
         ) : !panel.currentWord ? (
           <div className="learn-desk__note-card learn-desk__note-card--done" aria-live="polite">
-            <strong>{panel.completionMessage || "No cards available for this deck."}</strong>
+            <strong>{panel.completionMessage || t("learn.noCards")}</strong>
             {!panel.isBrowseMode && panel.nextDueAt && (
-              <p>Next {panel.nextLearningDueAt ? "learning step" : "review"}: <time dateTime={panel.nextLearningDueAt || panel.nextDueAt}>
-                {new Date(panel.nextLearningDueAt || panel.nextDueAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-              </time>. This session updates automatically.</p>
+              <p>
+                {t(panel.nextLearningDueAt ? "learn.nextLearningStep" : "learn.nextReview", {
+                  when: formatDate(panel.nextLearningDueAt || panel.nextDueAt, {
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }),
+                })}
+              </p>
             )}
             {panel.canStartNewSession && (
               <button
@@ -219,7 +226,7 @@ export const LearnFlashcardsPanel = memo(() => {
                 className="learn-desk__key learn-desk__key--primary"
                 onClick={panel.handleStartNewSession}
               >
-                Study remaining due cards
+                {t("learn.studyRemaining")}
               </button>
             )}
           </div>
@@ -236,7 +243,7 @@ export const LearnFlashcardsPanel = memo(() => {
                 </span>
                 <span className="learn-desk__count">
                   {leftCount}
-                  <small>left</small>
+                  <small>{t("learn.left")}</small>
                 </span>
               </div>
             )}
@@ -280,7 +287,7 @@ export const LearnFlashcardsPanel = memo(() => {
                       className="learn-desk__key learn-desk__key--icon"
                       onClick={browseNavigation.onBrowsePrev}
                       disabled={!browseNavigation.canBrowsePrev || panel.isRatingPending}
-                      aria-label="Previous card"
+                      aria-label={t("learn.previousCard")}
                     >
                       <FiChevronLeft aria-hidden="true" />
                     </button>
@@ -290,7 +297,7 @@ export const LearnFlashcardsPanel = memo(() => {
                       onClick={panel.toggleBackVisibility}
                       disabled={panel.isRatingPending}
                     >
-                      <span>{panel.isBackVisible ? "Hide answer" : "Show answer"}</span>
+                      <span>{panel.isBackVisible ? t("learn.hideAnswer") : t("learn.showAnswer")}</span>
                       {flipKey ? <kbd>{flipKey}</kbd> : null}
                     </button>
                     <button
@@ -298,7 +305,7 @@ export const LearnFlashcardsPanel = memo(() => {
                       className="learn-desk__key learn-desk__key--icon"
                       onClick={browseNavigation.onBrowseNext}
                       disabled={!browseNavigation.canBrowseNext || panel.isRatingPending}
-                      aria-label="Next card"
+                      aria-label={t("learn.nextCard")}
                     >
                       <FiChevronRight aria-hidden="true" />
                     </button>
@@ -319,7 +326,7 @@ export const LearnFlashcardsPanel = memo(() => {
                     disabled={panel.isRatingPending}
                     aria-keyshortcuts={flipKey || undefined}
                   >
-                    <span>Show answer</span>
+                    <span>{t("learn.showAnswer")}</span>
                     {flipKey ? <kbd>{flipKey}</kbd> : null}
                   </button>
                 )}
@@ -336,7 +343,7 @@ export const LearnFlashcardsPanel = memo(() => {
                       <>
                         <b>{lastDoneCard.text}</b>
                         <em className={`learn-desk__grade learn-desk__grade--${lastDoneCard.kind}`}>
-                          {GRADE_LABELS[lastDoneCard.kind] || lastDoneCard.kind}
+                          {t(`grades.${lastDoneCard.kind}.label`)}
                         </em>
                       </>
                     ) : null}
@@ -344,7 +351,7 @@ export const LearnFlashcardsPanel = memo(() => {
                 </span>
                 <span className="learn-desk__count">
                   {panel.sessionReceipt.done}
-                  <small>studied</small>
+                  <small>{t("learn.studied")}</small>
                 </span>
               </div>
             )}
@@ -362,6 +369,8 @@ LearnFlashcardsPanel.displayName = "LearnFlashcardsPanel";
 // One tick per card in today's queue, coloured by the grade it got; a plain
 // bar when the queue is too long for ticks, and a position while browsing.
 const SessionReceipt = memo(({ receipt, isBrowseMode, browseProgressLabel }) => {
+  const { t } = useI18n();
+
   if (isBrowseMode) {
     return browseProgressLabel ? (
       <span className="learn-desk__receipt">
@@ -374,7 +383,7 @@ const SessionReceipt = memo(({ receipt, isBrowseMode, browseProgressLabel }) => 
     return null;
   }
 
-  const label = `${receipt.done} cards studied today; ${receipt.total - receipt.done} cards due now`;
+  const label = t("learn.receiptLabel", { done: receipt.done, due: receipt.total - receipt.done });
 
   return (
     <span className="learn-desk__receipt" role="img" aria-label={label} title={label}>
@@ -391,7 +400,7 @@ const SessionReceipt = memo(({ receipt, isBrowseMode, browseProgressLabel }) => 
       )}
       <span className="learn-desk__receipt-count">
         {receipt.done}
-        <small> studied · {receipt.total - receipt.done} due</small>
+        <small> {t("learn.receiptShort", { due: receipt.total - receipt.done })}</small>
       </span>
     </span>
   );

@@ -53,7 +53,9 @@ export const useProgressOverviewPanel = () => {
       setOverview(nextOverview);
       setStickers(nextStickers);
     } catch (overviewError) {
-      setError(overviewError?.message || "Progress could not be loaded.");
+      // Said by the page in its own words; the cause is for the console.
+      console.warn(overviewError);
+      setError("load");
     } finally {
       setIsLoading(false);
     }

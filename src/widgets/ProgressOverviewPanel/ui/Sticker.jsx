@@ -10,8 +10,9 @@ import {
   IoTrophy,
 } from "react-icons/io5";
 import { ActionModal } from "@shared/ui";
-import { formatDay, formatInteger, formatStickerValue } from "../model";
+import { formatStickerValue, stickerGoal, stickerStatus, stickerTitle, stickerUnit } from "../model";
 import "./Sticker.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const STICKER_ICONS = {
   known: IoBook,
@@ -36,17 +37,8 @@ const resolveState = (tier) => {
   return tier.isNext ? "next" : "locked";
 };
 
-const describeStickerStatus = (tier, family) => {
-  if (tier.earned) {
-    return tier.isDated ? `Earned on ${formatDay(tier.earnedOn)}` : `Earned by ${formatDay(tier.earnedOn)}`;
-  }
-
-  const left = tier.target - tier.progress;
-
-  return `${formatInteger(tier.progress)} of ${formatInteger(tier.target)} ${tier.target === 1 ? family.unitOne : family.unit}, ${formatInteger(left)} to go`;
-};
-
 export const Sticker = memo(({ tier, family, index = 0, size = "md", onOpen }) => {
+  const i18n = useI18n();
   const Icon = STICKER_ICONS[family.key] || IoTrophy;
   const state = resolveState(tier);
   // In the dialog the sticker is a picture, not a control.
@@ -69,7 +61,12 @@ export const Sticker = memo(({ tier, family, index = 0, size = "md", onOpen }) =
       }}
       aria-label={
         onOpen
-          ? `${family.title} ${formatStickerValue(tier.target)}: ${tier.description} ${describeStickerStatus(tier, family)}.${tier.isNew ? " New." : ""}`
+          ? i18n.t(tier.isNew ? "stickers.ariaNew" : "stickers.aria", {
+            title: stickerTitle(i18n, family.key),
+            value: formatStickerValue(tier.target),
+            goal: stickerGoal(i18n, tier),
+            status: stickerStatus(i18n, tier),
+          })
           : undefined
       }
       aria-hidden={onOpen ? undefined : true}
@@ -78,11 +75,11 @@ export const Sticker = memo(({ tier, family, index = 0, size = "md", onOpen }) =
       <span className="sticker__face" aria-hidden>
         <Icon className="sticker__icon" />
         <strong className="sticker__value">{formatStickerValue(tier.target)}</strong>
-        <span className="sticker__unit">{tier.target === 1 ? family.unitOne : family.unit}</span>
+        <span className="sticker__unit">{stickerUnit(i18n, family.key, tier.target)}</span>
       </span>
       {tier.isNew ? (
         <span className="sticker__new" aria-hidden>
-          New
+          {i18n.t("stickers.new")}
         </span>
       ) : null}
     </Tag>
@@ -93,6 +90,7 @@ Sticker.displayName = "Sticker";
 
 // A closer look at one sticker: what it asks for and where you stand.
 export const StickerDialog = memo(({ selection, onClose }) => {
+  const i18n = useI18n();
   const tier = selection?.tier;
   const family = selection?.family;
 
@@ -100,12 +98,12 @@ export const StickerDialog = memo(({ selection, onClose }) => {
     <ActionModal
       dialog={{
         isOpen: Boolean(tier),
-        title: family ? `${family.title} ${formatStickerValue(tier.target)}` : "",
+        title: family ? `${stickerTitle(i18n, family.key)} ${formatStickerValue(tier.target)}` : "",
         onClose,
         renderActions: ({ onClose: close }) => (
           <div className="action-modal__actions">
             <button type="button" onClick={close} data-autofocus>
-              Close
+              {i18n.t("common.close")}
             </button>
           </div>
         ),
@@ -115,13 +113,13 @@ export const StickerDialog = memo(({ selection, onClose }) => {
         <div className="sticker-dialog">
           <Sticker tier={{ ...tier, isNew: false }} family={family} size="lg" />
           <div className="sticker-dialog__text">
-            <p className="sticker-dialog__goal">{tier.description}</p>
-            <p className="sticker-dialog__status">{describeStickerStatus(tier, family)}</p>
+            <p className="sticker-dialog__goal">{stickerGoal(i18n, tier)}</p>
+            <p className="sticker-dialog__status">{stickerStatus(i18n, tier)}</p>
             {tier.earned ? null : (
               <div
                 className="sticker-dialog__meter"
                 role="meter"
-                aria-label={`${family.title} progress`}
+                aria-label={i18n.t("stickers.progressLabel", { title: stickerTitle(i18n, family.key) })}
                 aria-valuemin={0}
                 aria-valuemax={tier.target}
                 aria-valuenow={tier.progress}
@@ -131,7 +129,7 @@ export const StickerDialog = memo(({ selection, onClose }) => {
             )}
             {tier.earned && !tier.isDated ? (
               <p className="sticker-dialog__note">
-                Counted from your words as they are, so the day shown is when this device first saw it earned.
+                {i18n.t("stickers.undatedNote")}
               </p>
             ) : null}
           </div>

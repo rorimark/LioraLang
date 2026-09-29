@@ -7,6 +7,9 @@ import {
   resolveAgeBucket,
   resolveBusiestDeck,
 } from "./progressView";
+import { buildI18nValue, ENGLISH_MESSAGES } from "@shared/lib/i18n";
+
+const en = buildI18nValue("en", ENGLISH_MESSAGES);
 
 const day = (date, reviews = 0) => ({ date, reviews, level: reviews > 0 ? 1 : 0 });
 
@@ -19,7 +22,7 @@ describe("progress view", () => {
       day("2026-09-04"), day("2026-09-05"), day("2026-09-06"),
       day("2026-09-07"), null, null, null, null, null, null,
     ];
-    const columns = buildActivityColumns({ days });
+    const columns = buildActivityColumns({ days }, en);
 
     expect(columns.map((column) => column.age)).toEqual([2, 1, 0]);
     // The second week starts on 31 August; its first day decides the label.
@@ -35,27 +38,27 @@ describe("progress view", () => {
   it("says when the next reviews come", () => {
     const forecast = (dues) => dues.map((due, index) => ({ date: `2026-10-0${index + 1}`, due }));
 
-    expect(describeNextDue(forecast([0, 4, 0]))).toBe("Next: 4 cards tomorrow.");
-    expect(describeNextDue(forecast([0, 0, 0, 1]))).toBe("Next: 1 card on Sun, in 3 days.");
-    expect(describeNextDue(forecast([3, 0, 0]))).toBe("Nothing is due in the next two weeks.");
+    expect(describeNextDue(forecast([0, 4, 0]), en)).toBe("Next: 4 cards tomorrow.");
+    expect(describeNextDue(forecast([0, 0, 0, 1]), en)).toBe("Next: 1 card on Sun, in 3 days.");
+    expect(describeNextDue(forecast([3, 0, 0]), en)).toBe("Nothing is due in the next two weeks.");
   });
 
   it("talks about the streak the way the day stands", () => {
-    expect(describeStreak({ current: 4, isTodayDone: true }, 12)).toBe("12 reviews today. Day 4 of your streak.");
-    expect(describeStreak({ current: 1, isTodayDone: true }, 1)).toBe("1 review today.");
-    expect(describeStreak({ current: 6, isTodayDone: false }, 0)).toBe("Review today to keep your 6-day streak.");
-    expect(describeStreak({ current: 0, isTodayDone: false }, 0)).toBe("A review today starts a streak.");
+    expect(describeStreak({ current: 4, isTodayDone: true }, 12, en)).toBe("12 reviews today. Day 4 of your streak.");
+    expect(describeStreak({ current: 1, isTodayDone: true }, 1, en)).toBe("1 review today.");
+    expect(describeStreak({ current: 6, isTodayDone: false }, 0, en)).toBe("Review today to keep your 6-day streak.");
+    expect(describeStreak({ current: 0, isTodayDone: false }, 0, en)).toBe("A review today starts a streak.");
   });
 
   it("compares recall in whole points, or not at all", () => {
-    expect(buildRecallDelta(82.4, 78)).toMatchObject({ points: 4, direction: "up" });
-    expect(buildRecallDelta(70, 71.2)).toMatchObject({
+    expect(buildRecallDelta(82.4, 78, en)).toMatchObject({ points: 4, direction: "up" });
+    expect(buildRecallDelta(70, 71.2, en)).toMatchObject({
       points: -1,
       direction: "down",
       label: "1 point lower than the 30 days before",
     });
-    expect(buildRecallDelta(80, 80.2).direction).toBe("flat");
-    expect(buildRecallDelta(80, null)).toBeNull();
+    expect(buildRecallDelta(80, 80.2, en).direction).toBe("flat");
+    expect(buildRecallDelta(80, null, en)).toBeNull();
   });
 
   it("picks the deck with most cards due", () => {

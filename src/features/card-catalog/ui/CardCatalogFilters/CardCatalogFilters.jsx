@@ -1,6 +1,7 @@
 import { memo, useCallback } from "react";
 import "./CardCatalogFilters.css";
 import { Select } from "@shared/ui";
+import { useI18n } from "@shared/lib/i18n";
 
 const EMPTY_FILTERS = Object.freeze({
   level: [],
@@ -42,6 +43,7 @@ const FilterGroup = memo(({ title, children }) => {
 FilterGroup.displayName = "FilterGroup";
 
 export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
+    const { t, partOfSpeechName } = useI18n();
     const resolvedCatalog = catalog;
     const resolvedFilters = resolvedCatalog.filters || EMPTY_FILTERS;
     const resolvedLevelOptions = Array.isArray(resolvedCatalog.levelOptions)
@@ -82,13 +84,11 @@ export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
 
     return (
       <fieldset className="card-catalog-filters">
-        <legend className="sr-only">Card filters</legend>
+        <legend className="sr-only">{t("catalog.filtersLegend")}</legend>
         <div className="card-catalog-filters__header">
-          <h3 className="card-catalog-filters__title">Filters</h3>
+          <h3 className="card-catalog-filters__title">{t("catalog.filters")}</h3>
           <span className="card-catalog-filters__results">
-            {Number.isFinite(Number(resolvedCatalog.resultsCount))
-              ? `${Number(resolvedCatalog.resultsCount)} results`
-              : "0 results"}
+            {t("catalog.results", { count: Number(resolvedCatalog.resultsCount) || 0 })}
           </span>
         </div>
 
@@ -96,31 +96,31 @@ export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
           <input
             type="text"
             value={resolvedCatalog.search || ""}
-            placeholder="Search by word or translation"
+            placeholder={t("catalog.searchPlaceholder")}
             onChange={handleSearchChange}
-            aria-label="Search cards"
+            aria-label={t("catalog.search")}
           />
 
           <Select
             value={resolvedCatalog.sort || ""}
             onChange={handleSortChange}
-            aria-label="Sort cards"
+            aria-label={t("catalog.sortLabel")}
           >
             {resolvedSortOptions.map((option) => (
               <option key={option.value} value={option.value}>
-                {option.label}
+                {option.labelKey ? t(option.labelKey) : option.label}
               </option>
             ))}
           </Select>
 
           <button type="button" onClick={resolvedCatalog.onClearFilters}>
-            Clear filters
+            {t("catalog.clear")}
           </button>
         </div>
 
         <ul className="card-catalog-filters__groups">
           {resolvedLevelOptions.length > 0 && (
-            <FilterGroup title="Level">
+            <FilterGroup title={t("catalog.level")}>
               {resolvedLevelOptions.map((level) => (
                 <FilterItem
                   key={level}
@@ -134,13 +134,13 @@ export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
             </FilterGroup>
           )}
 
-          <FilterGroup title="Part of speech">
+          <FilterGroup title={t("catalog.partOfSpeech")}>
             {resolvedPartOfSpeechOptions.map((part) => (
               <FilterItem
                 key={part}
                 name="partOfSpeech"
                 value={part}
-                label={part}
+                label={partOfSpeechName(part)}
                 checked={resolvedFilters.partOfSpeech.includes(part)}
                 onChange={handleFilterToggle}
               />
@@ -148,7 +148,7 @@ export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
           </FilterGroup>
 
           {resolvedTagOptions.length > 0 && (
-            <FilterGroup title="Tags">
+            <FilterGroup title={t("catalog.tags")}>
               {resolvedTagOptions.map((tag) => (
                 <FilterItem
                   key={tag}

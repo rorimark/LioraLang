@@ -17,6 +17,7 @@ export const registerDeckIpcHandlers = ({
   extractAppPreferencesFromSettings,
   sendDecksUpdated,
   trackAnalyticsEvent,
+  getTranslator,
 }) => {
   ipcMain.handle("decks:list", () => listDecks());
 
@@ -142,16 +143,15 @@ export const registerDeckIpcHandlers = ({
         ? payload.settings.includeTags
         : appPreferences.importExport.includeTags;
     const isJsonFormat = preferredFormat === "json";
-    const primaryFilter = isJsonFormat
-      ? { name: "JSON", extensions: ["json"] }
-      : { name: "Liora deck", extensions: ["lioradeck"] };
-    const secondaryFilter = isJsonFormat
-      ? { name: "Liora deck", extensions: ["lioradeck"] }
-      : { name: "JSON", extensions: ["json"] };
+    const t = getTranslator();
+    const jsonFilter = { name: t("desktop.dialogs.jsonFiles"), extensions: ["json"] };
+    const deckFilter = { name: t("desktop.dialogs.deckPackages"), extensions: ["lioradeck"] };
+    const primaryFilter = isJsonFormat ? jsonFilter : deckFilter;
+    const secondaryFilter = isJsonFormat ? deckFilter : jsonFilter;
     const defaultExtension = isJsonFormat ? "json" : "lioradeck";
 
     const result = await dialog.showSaveDialog(getMainWindow(), {
-      title: "Export deck package",
+      title: t("desktop.dialogs.exportDeck"),
       defaultPath: `${deck.name}.${defaultExtension}`,
       filters: [primaryFilter, secondaryFilter],
     });

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
 import { buildPublicDeckShareUrl } from "@shared/lib/share";
+import { useI18n } from "@shared/lib/i18n";
 
 const DEFAULT_AUTH_STATE = Object.freeze({
   session: null,
@@ -14,26 +15,47 @@ const DEFAULT_AUTH_STATE = Object.freeze({
   provider: "email",
 });
 
-const SIGNED_OUT_TAB_ITEMS = [
-  { key: "sign-in", label: "Sign in" },
-  { key: "sign-up", label: "Create account" },
-  { key: "reset", label: "Reset password" },
-];
+// Labels are account.tabs.<key>.
+const SIGNED_OUT_TAB_ITEMS = [{ key: "sign-in" }, { key: "sign-up" }, { key: "reset" }];
 
 // What the account is (the card, its status) is always on screen above
 // these; the tabs are for changing things.
-const SIGNED_IN_TAB_ITEMS = [
-  { key: "profile", label: "Profile" },
-  { key: "security", label: "Security" },
-  { key: "hub", label: "My Hub decks" },
-];
+const SIGNED_IN_TAB_ITEMS = [{ key: "profile" }, { key: "security" }, { key: "hub" }];
 
-const PROVIDER_NAMES = { email: "Email and password", google: "Google", github: "GitHub" };
+const PROVIDER_NAMES = { google: "Google", github: "GitHub" };
 
-const SOCIAL_PROVIDERS = [
-  { key: "google", label: "Continue with Google" },
-  { key: "github", label: "Continue with GitHub" },
-];
+const SOCIAL_PROVIDERS = [{ key: "google" }, { key: "github" }];
+
+// Supabase error codes the interface explains in its own words
+// (account.authErrors.<code>); any other failure gets the action's
+// general message, and its cause goes to the console.
+const KNOWN_AUTH_ERRORS = new Set([
+  "invalid_credentials",
+  "email_not_confirmed",
+  "user_already_exists",
+  "email_exists",
+  "weak_password",
+  "same_password",
+  "email_address_invalid",
+  "over_email_send_rate_limit",
+  "over_request_rate_limit",
+  "signup_disabled",
+  "missing_credentials",
+  "missing_email",
+  "missing_password",
+  "social_desktop_unavailable",
+]);
+
+const describeFailure = (error, fallbackKey) => {
+  const code = String(error?.code || "");
+
+  if (KNOWN_AUTH_ERRORS.has(code)) {
+    return { key: `account.authErrors.${code}` };
+  }
+
+  console.warn(error);
+  return { key: fallbackKey };
+};
 
 const toVariant = (value) => {
   if (value === "success" || value === "warning" || value === "error" || value === "danger") {
@@ -134,7 +156,9 @@ export const useAccountHubPanel = () => {
   const [authState, setAuthState] = useState(DEFAULT_AUTH_STATE);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("sign-in");
-  const [statusText, setStatusText] = useState("");
+  // A message key and its values, said in the current language on render.
+  const [status, setStatus] = useState(null);
+  const { t } = useI18n();
   const [statusVariant, setStatusVariant] = useState("info");
   const [pendingAction, setPendingAction] = useState("");
   const [email, setEmail] = useState("");
@@ -164,13 +188,13 @@ export const useAccountHubPanel = () => {
   const isConfigured = authRepository.isConfigured();
   const isDesktopMode = runtimeGateway.isDesktopMode?.() ?? isDesktopUserAgent();
 
-  const reportStatus = useCallback((text, variant = "info") => {
-    setStatusText(text);
+  const reportStatus = useCallback((message, variant = "info") => {
+    setStatus(message?.key ? message : null);
     setStatusVariant(toVariant(variant));
   }, []);
 
   const clearStatus = useCallback(() => {
-    setStatusText("");
+    setStatus(null);
   }, []);
 
   useEffect(() => {
@@ -194,7 +218,7 @@ export const useAccountHubPanel = () => {
 
         if (redirectPayload?.type === "error") {
           stripAuthParamsFromUrl();
-          throw new Error(redirectPayload.message || "Failed to complete sign-in");
+          throw Object.assign(new Error(redirectPayload.message || "sign-in failed"), { code: "redirect" });
         }
 
         let nextAuthState = null;
@@ -202,7 +226,7 @@ export const useAccountHubPanel = () => {
         if (redirectPayload?.type === "code") {
           nextAuthState = await authRepository.exchangeCodeForSession(redirectPayload.code);
           stripAuthParamsFromUrl();
-          reportStatus("Signed in successfully.", "success");
+          reportStatus({ key: "account.status.signedIn" }, "success");
           setIsRecoveryFlow(false);
         } else if (redirectPayload?.type === "token") {
           nextAuthState = await authRepository.setSessionFromTokens({
@@ -213,9 +237,9 @@ export const useAccountHubPanel = () => {
           if (redirectPayload.isRecovery) {
             setIsRecoveryFlow(true);
             setActiveTab("security");
-            reportStatus("Set a new password to finish account recovery.", "warning");
+            reportStatus({ key: "account.status.setNewPassword" }, "warning");
           } else {
-            reportStatus("Signed in successfully.", "success");
+            reportStatus({ key: "account.status.signedIn" }, "success");
           }
         }
 
@@ -233,7 +257,7 @@ export const useAccountHubPanel = () => {
           return;
         }
 
-        reportStatus(error?.message || "Failed to load account session", "error");
+        reportStatus(describeFailure(error, "account.errors.session"), "error");
       } finally {
         if (isSubscribed) {
           setIsAuthLoading(false);
@@ -355,7 +379,8 @@ export const useAccountHubPanel = () => {
         }
 
         setOwnDecks([]);
-        setOwnDecksError(error?.message || "Failed to load your Hub decks");
+        console.warn(error);
+        setOwnDecksError("account.errors.ownDecks");
       })
       .finally(() => {
         if (isSubscribed) {
@@ -375,7 +400,7 @@ export const useAccountHubPanel = () => {
     try {
       await callback();
     } catch (error) {
-      reportStatus(error?.message || "Account action failed", "error");
+      reportStatus(describeFailure(error, "account.errors.action"), "error");
     } finally {
       setPendingAction("");
     }
@@ -386,7 +411,7 @@ export const useAccountHubPanel = () => {
       const nextAuthState = await authRepository.signInWithPassword({ email, password });
       setAuthState(nextAuthState);
       setPassword("");
-      reportStatus("Signed in successfully.", "success");
+      reportStatus({ key: "account.status.signedIn" }, "success");
       setActiveTab("profile");
     });
   }, [authRepository, email, password, reportStatus, runAction]);
@@ -406,12 +431,12 @@ export const useAccountHubPanel = () => {
       }));
 
       if (nextAuthState?.pendingEmailConfirmation) {
-        reportStatus("Account created. Check your email and confirm your address before publishing to Hub.", "success");
+        reportStatus({ key: "account.status.createdConfirm" }, "success");
         setActiveTab("sign-in");
         return;
       }
 
-      reportStatus("Account created and signed in.", "success");
+      reportStatus({ key: "account.status.created" }, "success");
       setActiveTab("profile");
     });
   }, [authRepository, displayName, email, password, reportStatus, runAction]);
@@ -419,21 +444,21 @@ export const useAccountHubPanel = () => {
   const handlePasswordResetRequest = useCallback(async () => {
     await runAction("reset-password", async () => {
       await authRepository.sendPasswordResetEmail(resetEmail || email);
-      reportStatus("Password reset email sent. Use the link in your inbox to finish recovery.", "success");
+      reportStatus({ key: "account.status.resetSent" }, "success");
     });
   }, [authRepository, email, reportStatus, resetEmail, runAction]);
 
   const handleSocialSignIn = useCallback(async (provider) => {
     await runAction(`social-${provider}`, async () => {
       await authRepository.signInWithProvider(provider);
-      reportStatus(`Redirecting to ${provider} sign-in...`, "success");
+      reportStatus({ key: "account.status.redirecting", params: { provider: PROVIDER_NAMES[provider] || provider } }, "success");
     });
   }, [authRepository, reportStatus, runAction]);
 
   const handleResendVerification = useCallback(async () => {
     await runAction("resend-verification", async () => {
       await authRepository.resendVerification(authState.email || email);
-      reportStatus("Verification email sent. Confirm your inbox before publishing to Hub.", "success");
+      reportStatus({ key: "account.status.verificationSent" }, "success");
     });
   }, [authRepository, authState.email, email, reportStatus, runAction]);
 
@@ -444,7 +469,7 @@ export const useAccountHubPanel = () => {
         ...currentState,
         ...nextAuthState,
       }));
-      reportStatus("Profile updated.", "success");
+      reportStatus({ key: "account.status.profileSaved" }, "success");
     });
   }, [authRepository, displayName, reportStatus, runAction]);
 
@@ -453,12 +478,12 @@ export const useAccountHubPanel = () => {
     const normalizedConfirmPassword = String(confirmPassword || "");
 
     if (normalizedPassword.length < 10) {
-      reportStatus("Use at least 10 characters for your new password.", "error");
+      reportStatus({ key: "account.errors.passwordShort", params: { count: 10 } }, "error");
       return;
     }
 
     if (normalizedPassword !== normalizedConfirmPassword) {
-      reportStatus("New password and confirmation do not match.", "error");
+      reportStatus({ key: "account.errors.passwordMismatch" }, "error");
       return;
     }
 
@@ -467,7 +492,7 @@ export const useAccountHubPanel = () => {
       setNextPassword("");
       setConfirmPassword("");
       setIsRecoveryFlow(false);
-      reportStatus("Password updated successfully.", "success");
+      reportStatus({ key: "account.status.passwordSaved" }, "success");
     });
   }, [authRepository, confirmPassword, nextPassword, reportStatus, runAction]);
 
@@ -476,7 +501,7 @@ export const useAccountHubPanel = () => {
       await authRepository.signOut();
       setAuthState(DEFAULT_AUTH_STATE);
       setActiveTab("sign-in");
-      reportStatus("Signed out.", "success");
+      reportStatus({ key: "account.status.signedOut" }, "success");
     });
   }, [authRepository, reportStatus, runAction]);
 
@@ -488,7 +513,7 @@ export const useAccountHubPanel = () => {
     }
 
     if (typeof window !== "undefined") {
-      const confirmed = window.confirm(`Delete "${deck?.title || "this deck"}" from LioraLangHub?`);
+      const confirmed = window.confirm(t("account.hub.confirmDelete", { name: deck?.title || t("deleteDeck.thisDeck") }));
 
       if (!confirmed) {
         return;
@@ -501,13 +526,13 @@ export const useAccountHubPanel = () => {
     try {
       await hubRepository.deleteDeck(deckId);
       setOwnDecks((currentDecks) => currentDecks.filter((item) => String(item?.id) !== deckId));
-      reportStatus("Hub deck deleted.", "danger");
+      reportStatus({ key: "account.status.hubDeckDeleted" }, "danger");
     } catch (error) {
-      reportStatus(error?.message || "Failed to delete Hub deck", "error");
+      reportStatus(describeFailure(error, "account.errors.hubDelete"), "error");
     } finally {
       setDeletingHubDeckId("");
     }
-  }, [clearStatus, hubRepository, reportStatus]);
+  }, [clearStatus, hubRepository, reportStatus, t]);
 
   const handleCopyDeckLink = useCallback(async (deck) => {
     const publicUrl = buildPublicDeckShareUrl(deck?.slug, {
@@ -517,73 +542,66 @@ export const useAccountHubPanel = () => {
     });
 
     if (!publicUrl) {
-      reportStatus("Public deck link is not available.", "error");
+      reportStatus({ key: "browse.errors.noLink" }, "error");
       return;
     }
 
     const copied = await copyTextToClipboard(publicUrl);
     reportStatus(
-      copied ? "Public deck link copied." : "Failed to copy deck link.",
+      { key: copied ? "browse.status.linkCopied" : "browse.errors.copy" },
       copied ? "success" : "error",
     );
   }, [reportStatus]);
 
   const isBusy = Boolean(pendingAction);
   const statusAlert = useMemo(
-    () => ({ text: statusText, variant: statusVariant, onClose: clearStatus }),
-    [clearStatus, statusText, statusVariant],
+    () => ({ text: status ? t(status.key, status.params) : "", variant: statusVariant, onClose: clearStatus }),
+    [clearStatus, status, statusVariant, t],
   );
-  const signedOutTabs = useMemo(() => SIGNED_OUT_TAB_ITEMS, []);
-  const signedInTabs = useMemo(() => SIGNED_IN_TAB_ITEMS, []);
-  const syncOverview = useMemo(() => {
+  const signedOutTabs = useMemo(
+    () => SIGNED_OUT_TAB_ITEMS.map((item) => ({ ...item, label: t(`account.tabs.${item.key}`) })),
+    [t],
+  );
+  const signedInTabs = useMemo(
+    () => SIGNED_IN_TAB_ITEMS.map((item) => ({ ...item, label: t(`account.tabs.${item.key}`) })),
+    [t],
+  );
+  const socialProviders = useMemo(
+    () =>
+      SOCIAL_PROVIDERS.map((item) => ({
+        ...item,
+        label: t("account.continueWith", { provider: PROVIDER_NAMES[item.key] }),
+      })),
+    [t],
+  );
+  const syncState = useMemo(() => {
     if (!syncStatus.configured) {
-      return {
-        label: "Unavailable",
-        text: "Supabase sync is not configured yet.",
-      };
+      return { state: "unavailable" };
     }
 
     if (!authState.isAuthenticated) {
-      return {
-        label: "Guest mode",
-        text: "Sign in to sync progress and decks across devices.",
-      };
+      return { state: "guest" };
     }
 
     if (!syncStatus.online) {
-      return {
-        label: "Offline",
-        text: "Changes stay local and will sync when the device is online again.",
-      };
+      return { state: "offline" };
     }
 
     if (syncStatus.lastErrorMessage) {
-      return {
-        label: "Needs attention",
-        text: syncStatus.lastErrorMessage,
-      };
+      return { state: "attention" };
     }
 
     // Background passes every few seconds are not shown: "Syncing" only
     // until the first sync has finished, so the status does not flicker.
     if (syncStatus.syncing && !syncStatus.lastSuccessfulSyncAt) {
-      return {
-        label: "Syncing",
-        text: "The first sync is running now.",
-      };
+      return { state: "syncing" };
     }
 
     if (syncStatus.lastSuccessfulSyncAt) {
-      return {
-        label: "Synced",
-        text: "Decks and study progress are connected across your signed-in devices.",
-      };
+      return { state: "synced" };
     }
 
-    return {
-      label: "Ready",
-      text: "Sync is available and will start once there are changes to exchange.",
-    };
+    return { state: "ready" };
   }, [
     authState.isAuthenticated,
     syncStatus.configured,
@@ -593,36 +611,42 @@ export const useAccountHubPanel = () => {
     syncStatus.syncing,
   ]);
 
+  const syncOverview = useMemo(
+    () => ({
+      state: syncState.state,
+      label: t(`account.sync.${syncState.state}.label`),
+      text: t(`account.sync.${syncState.state}.text`),
+    }),
+    [syncState.state, t],
+  );
+
   const overviewCards = useMemo(() => {
     return [
       {
         key: "verification",
-        title: "Email verification",
-        value: authState.isEmailVerified ? "Verified" : "Confirmation pending",
+        title: t("account.overview.verification"),
+        value: authState.isEmailVerified ? t("account.verified") : t("account.overview.pending"),
         note: authState.isEmailVerified
-          ? "Publishing and Hub management are enabled."
-          : "Confirm your email before publishing or deleting Hub decks.",
+          ? t("account.overview.verifiedNote")
+          : t("account.overview.pendingNote"),
       },
       {
         key: "sync",
-        title: "Sync",
+        title: t("account.overview.sync"),
         value: syncOverview.label,
         note: syncOverview.text,
       },
       {
         key: "hub-decks",
-        title: "Published Hub decks",
+        title: t("account.overview.hubDecks"),
         value: String(ownDecks.length),
-        note:
-          ownDecks.length > 0
-            ? "Manage links and delete published decks from this account."
-            : "No Hub decks are attached to this account yet.",
+        note: ownDecks.length > 0 ? t("account.overview.hubDecksNote") : t("account.overview.noHubDecks"),
       },
       {
         key: "provider",
-        title: "Sign-in method",
-        value: PROVIDER_NAMES[authState.provider] || authState.provider,
-        note: isDesktopMode ? "Desktop session" : "Web session",
+        title: t("account.overview.provider"),
+        value: PROVIDER_NAMES[authState.provider] || (authState.provider === "email" ? t("account.emailPassword") : authState.provider),
+        note: isDesktopMode ? t("account.overview.desktopSession") : t("account.overview.webSession"),
       },
     ];
   }, [
@@ -632,6 +656,7 @@ export const useAccountHubPanel = () => {
     ownDecks.length,
     syncOverview.label,
     syncOverview.text,
+    t,
   ]);
 
   const accountBadges = useMemo(() => {
@@ -640,22 +665,22 @@ export const useAccountHubPanel = () => {
     if (authState.provider) {
       badges.push({
         key: "provider",
-        text: authState.provider === "email" ? "Email" : authState.provider,
+        text: authState.provider === "email" ? t("account.email") : PROVIDER_NAMES[authState.provider] || authState.provider,
       });
     }
 
     badges.push({
       key: "verification",
-      text: authState.isEmailVerified ? "Verified" : "Email not verified",
+      text: authState.isEmailVerified ? t("account.verified") : t("account.notVerified"),
       accent: authState.isEmailVerified,
     });
 
     if (isDesktopMode) {
-      badges.push({ key: "runtime", text: "Desktop app" });
+      badges.push({ key: "runtime", text: t("account.desktopApp") });
     }
 
     return badges;
-  }, [authState.isEmailVerified, authState.provider, isDesktopMode]);
+  }, [authState.isEmailVerified, authState.provider, isDesktopMode, t]);
 
   return {
     isConfigured,
@@ -668,7 +693,7 @@ export const useAccountHubPanel = () => {
     statusAlert,
     signedOutTabs,
     signedInTabs,
-    socialProviders: SOCIAL_PROVIDERS,
+    socialProviders,
     accountBadges,
     syncStatus,
     syncOverview,
@@ -682,7 +707,7 @@ export const useAccountHubPanel = () => {
     isRecoveryFlow,
     ownDecks,
     isOwnDecksLoading,
-    ownDecksError,
+    ownDecksError: ownDecksError ? t(ownDecksError) : "",
     deletingHubDeckId,
     setActiveTab,
     setEmail,

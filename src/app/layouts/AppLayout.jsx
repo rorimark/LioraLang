@@ -9,6 +9,7 @@ import { resolvePageMeta, ROUTE_PATHS } from "@shared/config/routes";
 import { registerWebPwa } from "@shared/lib/pwa";
 import { usePageMeta } from "@shared/lib/seo";
 import { ToastViewport } from "@shared/ui";
+import { useI18n } from "@shared/lib/i18n";
 import { useEffect } from "react";
 import "./AppLayout.css";
 
@@ -25,13 +26,15 @@ export const AppLayout = () => {
   const runtimeGateway = usePlatformService("runtimeGateway");
   const { pathname } = useLocation();
   const normalizedPathname = normalizePathname(pathname);
+  const { t } = useI18n();
   const pageMeta = resolvePageMeta(normalizedPathname);
+  const pageTitle = t(`${pageMeta.key}.title`);
   const isDesktopMode = runtimeGateway.isDesktopMode();
   const isLearnPage = normalizedPathname === ROUTE_PATHS.learn;
 
   usePageMeta({
-    title: `${pageMeta.title} - LioraLang`,
-    description: pageMeta.subtitle,
+    title: `${pageTitle} - LioraLang`,
+    description: t(`${pageMeta.key}.subtitle`),
   });
 
   useEffect(() => {
@@ -103,7 +106,7 @@ export const AppLayout = () => {
         <div className="app-shell__main">
           {/* Learn has its own strip above the card; a page title there would
               only take height from the card. */}
-          {isLearnPage ? null : <PageHeader title={pageMeta.title} />}
+          {isLearnPage ? null : <PageHeader title={pageTitle} />}
           <main
             className={
               isLearnPage ? "app-shell__content app-shell__content--learn" : "app-shell__content"

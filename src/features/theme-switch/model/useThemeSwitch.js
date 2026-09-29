@@ -2,19 +2,11 @@ import { useCallback, useMemo } from "react";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { APP_THEME_MODES, isDarkThemeActive } from "@shared/lib/theme";
 
+// Named by theme.<mode>.
 const THEME_MODE_OPTIONS = [
-  {
-    value: APP_THEME_MODES.system,
-    label: "System (Default)",
-  },
-  {
-    value: APP_THEME_MODES.light,
-    label: "Light",
-  },
-  {
-    value: APP_THEME_MODES.dark,
-    label: "Dark",
-  },
+  { value: APP_THEME_MODES.system },
+  { value: APP_THEME_MODES.light },
+  { value: APP_THEME_MODES.dark },
 ];
 
 const normalizeThemeMode = (value) => {

@@ -30,6 +30,7 @@
     "check:persistence": "node electron/scripts/run-persistence-check.cjs",
     "check:boundaries": "bash scripts/check-no-electron-imports.sh",
     "check:layers": "node scripts/check-layer-imports.mjs",
+    "check:i18n": "node scripts/check-ui-strings.mjs",
     "lint": "eslint .",
     "test": "node scripts/run-test-suite.mjs --watch",
     "test:verbose": "node scripts/run-test-suite.mjs --watch --verbose",

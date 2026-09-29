@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { debugLogData } from "@shared/lib/debug";
+import { useI18n } from "@shared/lib/i18n";
 
 export const useDeckWords = (deckId) => {
   const deckRepository = usePlatformService("deckRepository");
@@ -8,6 +9,7 @@ export const useDeckWords = (deckId) => {
   const [words, setWords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useI18n();
 
   const loadDeckWords = useCallback(async () => {
     if (!deckId) {
@@ -34,12 +36,13 @@ export const useDeckWords = (deckId) => {
         count: Array.isArray(loadedWords) ? loadedWords.length : 0,
       });
     } catch (loadError) {
-      setError(loadError.message || "Failed to load deck words");
+      console.warn(loadError);
+      setError(loadError || new Error("load"));
       setDeck(null);
       setWords([]);
       debugLogData("deck.words.load.error", {
         deckId,
-        message: loadError?.message || "Failed to load deck words",
+        message: loadError?.message || "load failed",
       });
     } finally {
       setIsLoading(false);
@@ -54,7 +57,7 @@ export const useDeckWords = (deckId) => {
     deck,
     words,
     isLoading,
-    error,
+    error: error ? t("decks.errors.loadWords") : null,
     refreshDeckWords: loadDeckWords,
   };
 };

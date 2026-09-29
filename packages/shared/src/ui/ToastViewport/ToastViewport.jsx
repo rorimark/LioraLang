@@ -5,6 +5,7 @@ import {
   subscribeToasts,
 } from "@shared/lib/toast";
 import "./ToastViewport.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const AUTO_CLOSE_VARIANTS = new Set(["info", "success", "warning", "error", "danger"]);
 const AUTO_CLOSE_MS_BY_VARIANT = {
@@ -58,6 +59,7 @@ const ToastItem = memo(
     disableAutoClose = false,
     action,
   }) => {
+    const { t } = useI18n();
     const [isExiting, setIsExiting] = useState(false);
     const removeTimeoutRef = useRef(0);
     const autoCloseTimeoutRef = useRef(0);
@@ -141,7 +143,7 @@ const ToastItem = memo(
           type="button"
           className="toast-item__close"
           onClick={closeToast}
-          aria-label="Close notification"
+          aria-label={t("common.closeNotification")}
         >
           ×
         </button>

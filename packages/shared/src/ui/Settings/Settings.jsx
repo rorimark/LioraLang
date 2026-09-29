@@ -4,6 +4,7 @@ import { matchesSettingsQuery, splitSettingsQuery } from "./settingsSearch";
 import { SettingsSearchContext } from "./settingsSearchContext";
 import { Select } from "../Select/Select";
 import "./Settings.css";
+import { useI18n } from "@shared/lib/i18n";
 
 // ----- search scope -----
 // A scope passes the search down. Once a scope's own title matches, every
@@ -166,6 +167,7 @@ const clampNumber = (value, min, max) => Math.min(max, Math.max(min, value));
 // what the preference handlers read.
 export const SettingStepper = memo(
   ({ id, name, value, min = 0, max = 9999, step = 1, onChange, unit = "", ariaLabel }) => {
+    const { t } = useI18n();
     const numericValue = Number(value) || 0;
     const emit = useCallback(
       (nextValue) => {
@@ -181,7 +183,7 @@ export const SettingStepper = memo(
           className="setting-stepper__key"
           onClick={() => emit(numericValue - step)}
           disabled={numericValue <= min}
-          aria-label={`Decrease ${ariaLabel || name}`}
+          aria-label={t("settings.decrease", { name: ariaLabel || name })}
         >
           <FiMinus aria-hidden="true" />
         </button>
@@ -211,7 +213,7 @@ export const SettingStepper = memo(
           className="setting-stepper__key"
           onClick={() => emit(numericValue + step)}
           disabled={numericValue >= max}
-          aria-label={`Increase ${ariaLabel || name}`}
+          aria-label={t("settings.increase", { name: ariaLabel || name })}
         >
           <FiPlus aria-hidden="true" />
         </button>

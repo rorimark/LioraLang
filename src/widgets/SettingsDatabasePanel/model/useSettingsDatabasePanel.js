@@ -19,6 +19,7 @@ import {
   useShortcutSettings,
 } from "@shared/lib/shortcutSettings";
 import { APP_THEME_MODES } from "@shared/lib/theme";
+import { useI18n } from "@shared/lib/i18n";
 
 const resolveAppVersion = (value) => {
   if (!value) {
@@ -111,6 +112,7 @@ export const useSettingsDatabasePanel = () => {
     };
   }, [isMenuFocusNavigation, menuFocusTab, menuFocusToken]);
 
+  const { t, errorText } = useI18n();
   const reportMessage = useCallback((text, variant = "info", action = null) => {
     setStatusMessage(text);
     setStatusVariant(variant);
@@ -121,9 +123,9 @@ export const useSettingsDatabasePanel = () => {
     try {
       await systemRepository.openDownloadsFolder();
     } catch (openError) {
-      reportMessage(openError.message || "Failed to open Downloads folder", "error");
+      reportMessage(errorText(openError, "settingsPage.errors.openDownloads"), "error");
     }
-  }, [reportMessage, systemRepository]);
+  }, [errorText, reportMessage, systemRepository]);
 
   const handleUpdateStatus = useCallback(
     (payload) => {
@@ -148,7 +150,7 @@ export const useSettingsDatabasePanel = () => {
       };
 
       if (status === "checking") {
-        reportMessage("Checking for updates...", "info");
+        reportMessage(t("settingsPage.status.checkingUpdates"), "info");
         return;
       }
 
@@ -167,29 +169,30 @@ export const useSettingsDatabasePanel = () => {
       }
 
       if (status === "downloaded") {
-        reportMessage("Update ready. Restart the app to install.", "success");
+        reportMessage(t("settingsPage.status.updateReady"), "success");
         return;
       }
 
       if (status === "none") {
-        reportMessage("You're up to date.", "success");
+        reportMessage(t("settingsPage.status.upToDate"), "success");
         return;
       }
 
       if (status === "error") {
         if (payload.code === "signature" && payload.downloadsReady) {
-          reportMessage(payload.message || "Update check failed", "error", {
-            label: "Open Downloads",
+          reportMessage(t("settingsPage.errors.updateSignature"), "error", {
+            label: t("settingsPage.openDownloads"),
             onClick: openDownloadsFolder,
             disableAutoClose: true,
           });
           return;
         }
 
-        reportMessage(payload.message || "Update check failed", "error");
+        console.warn(payload.message);
+        reportMessage(t("settingsPage.errors.updateCheck"), "error");
       }
     },
-    [openDownloadsFolder, reportMessage],
+    [openDownloadsFolder, reportMessage, t],
   );
 
   const {
@@ -242,7 +245,7 @@ export const useSettingsDatabasePanel = () => {
       })
       .catch(() => {
         if (!cancelled) {
-          setDbPath("Desktop mode is required");
+          setDbPath("");
         }
       });
 
@@ -274,24 +277,24 @@ export const useSettingsDatabasePanel = () => {
 
   const appVersionLabel = useMemo(() => {
     if (!appVersion) {
-      return "Unavailable";
+      return t("account.sync.unavailable.label");
     }
 
     return `v${appVersion}`;
-  }, [appVersion]);
+  }, [appVersion, t]);
 
   const appPlatformLabel = useMemo(
-    () => (isDesktopMode ? "Desktop" : "Web"),
-    [isDesktopMode],
+    () => (isDesktopMode ? t("settingsPage.platformDesktop") : t("settingsPage.platformWeb")),
+    [isDesktopMode, t],
   );
 
   const openDbFolder = useCallback(async () => {
     try {
       await systemRepository.openDbFolder();
     } catch (openError) {
-      reportMessage(openError.message || "Failed to open DB folder", "error");
+      reportMessage(errorText(openError, "settingsPage.errors.openFolder"), "error");
     }
-  }, [reportMessage, systemRepository]);
+  }, [errorText, reportMessage, systemRepository]);
 
   const checkForUpdates = useCallback(async () => {
     setIsCheckingUpdates(true);
@@ -301,7 +304,7 @@ export const useSettingsDatabasePanel = () => {
       const status = result?.status;
 
       if (status === "disabled") {
-        reportMessage(result.message || "Updates are available only in desktop builds.", "info");
+        reportMessage(t("settingsPage.status.updatesDesktopOnly"), "info");
       } else if (status === "available") {
         const nextVersion =
           typeof result?.info?.version === "string"
@@ -314,18 +317,19 @@ export const useSettingsDatabasePanel = () => {
           setIsUpdatePromptOpen(true);
         }
       } else if (status === "none") {
-        reportMessage("You're up to date.", "success");
+        reportMessage(t("settingsPage.status.upToDate"), "success");
       } else if (status === "error") {
-        reportMessage(result.message || "Update check failed", "error");
+        console.warn(result.message);
+        reportMessage(t("settingsPage.errors.updateCheck"), "error");
       } else {
-        reportMessage("Checking for updates...", "info");
+        reportMessage(t("settingsPage.status.checkingUpdates"), "info");
       }
     } catch (error) {
-      reportMessage(error?.message || "Update check failed", "error");
+      reportMessage(errorText(error, "settingsPage.errors.updateCheck"), "error");
     } finally {
       setIsCheckingUpdates(false);
     }
-  }, [reportMessage, runtimeGateway]);
+  }, [errorText, reportMessage, runtimeGateway, t]);
 
   const closeUpdatePrompt = useCallback(() => {
     setIsUpdatePromptOpen(false);
@@ -338,15 +342,16 @@ export const useSettingsDatabasePanel = () => {
     try {
       const result = await runtimeGateway.downloadUpdate();
       if (result?.status === "error") {
-        reportMessage(result.message || "Failed to download update", "error");
+        console.warn(result.message);
+        reportMessage(t("settingsPage.errors.updateDownload"), "error");
       }
     } catch (error) {
-      reportMessage(error?.message || "Failed to download update", "error");
+      reportMessage(errorText(error, "settingsPage.errors.updateDownload"), "error");
     } finally {
       setIsUpdateDownloading(false);
       setIsUpdatePromptOpen(false);
     }
-  }, [reportMessage, runtimeGateway]);
+  }, [errorText, reportMessage, runtimeGateway, t]);
 
   const changeDbLocation = useCallback(async () => {
     setIsChangingDbLocation(true);
@@ -368,19 +373,16 @@ export const useSettingsDatabasePanel = () => {
 
       reportMessage(
         migrated
-          ? "Database location updated. Existing data was moved."
-          : "Database location updated.",
+          ? t("settingsPage.status.dbMoved")
+          : t("settingsPage.status.dbLocationChanged"),
         "success",
       );
     } catch (changeError) {
-      reportMessage(
-        changeError.message || "Failed to change database location",
-        "error",
-      );
+      reportMessage(errorText(changeError, "settingsPage.errors.dbLocation"), "error");
     } finally {
       setIsChangingDbLocation(false);
     }
-  }, [reportMessage, systemRepository]);
+  }, [errorText, reportMessage, systemRepository, t]);
 
   const closeIntegrityRepairConfirm = useCallback(() => {
     setIntegrityRepairConfirmState({
@@ -400,12 +402,11 @@ export const useSettingsDatabasePanel = () => {
       const backupPaths = Array.isArray(report?.database?.backupPaths)
         ? report.database.backupPaths
         : [];
-      const backupHint =
-        backupPaths.length > 0 ? ` Backup: ${backupPaths[0]}` : "";
-
       if (isHealthy) {
         reportMessage(
-          `Database restore completed successfully.${backupHint}`,
+          backupPaths.length > 0
+            ? t("settingsPage.status.restoredWithBackup", { path: backupPaths[0] })
+            : t("settingsPage.status.restored"),
           "success",
         );
       } else {
@@ -416,14 +417,15 @@ export const useSettingsDatabasePanel = () => {
           ? report.coreFiles.issues
           : [];
         const allIssues = [...databaseIssues, ...coreFilesIssues];
-        const issuesSummary = allIssues.length > 0 ? allIssues[0] : "Unknown issue";
-        reportMessage(`Restore failed: ${issuesSummary}`, "error");
+        reportMessage(
+          allIssues.length > 0
+            ? t("settingsPage.errors.restoreIssue", { issue: allIssues[0] })
+            : t("settingsPage.errors.restore"),
+          "error",
+        );
       }
     } catch (repairError) {
-      reportMessage(
-        repairError.message || "Failed to restore database",
-        "error",
-      );
+      reportMessage(errorText(repairError, "settingsPage.errors.restore"), "error");
     } finally {
       setIsRepairingIntegrity(false);
 
@@ -431,7 +433,7 @@ export const useSettingsDatabasePanel = () => {
         closeIntegrityRepairConfirm();
       }
     }
-  }, [closeIntegrityRepairConfirm, reportMessage, systemRepository]);
+  }, [closeIntegrityRepairConfirm, errorText, reportMessage, systemRepository, t]);
 
   const verifyIntegrity = useCallback(async () => {
     setIsVerifyingIntegrity(true);
@@ -450,7 +452,7 @@ export const useSettingsDatabasePanel = () => {
       closeIntegrityRepairConfirm();
 
       if (isHealthy) {
-        reportMessage("Integrity check passed. No issues found.", "success");
+        reportMessage(t("settingsPage.status.integrityOk"), "success");
         return;
       }
 
@@ -465,29 +467,32 @@ export const useSettingsDatabasePanel = () => {
           issues: databaseIssues,
         });
         reportMessage(
-          "Integrity issues found. Confirm database restore to continue.",
+          t("settingsPage.status.integrityNeedsRepair"),
           "info",
         );
         return;
       }
 
       const allIssues = [...databaseIssues, ...coreFilesIssues];
-      const issuesSummary = allIssues.length > 0 ? allIssues[0] : "Unknown issue";
-      reportMessage(`Integrity check failed: ${issuesSummary}`, "error");
-    } catch (verifyError) {
       reportMessage(
-        verifyError.message || "Failed to run integrity check",
+        allIssues.length > 0
+          ? t("settingsPage.errors.integrityIssue", { issue: allIssues[0] })
+          : t("settingsPage.errors.integrity"),
         "error",
       );
+    } catch (verifyError) {
+      reportMessage(errorText(verifyError, "settingsPage.errors.integrity"), "error");
     } finally {
       setIsVerifyingIntegrity(false);
     }
   }, [
     appPreferences.dataSafety.confirmDestructive,
     closeIntegrityRepairConfirm,
+    errorText,
     reportMessage,
     runIntegrityRepair,
     systemRepository,
+    t,
   ]);
 
   const confirmIntegrityRepair = useCallback(async () => {
@@ -537,17 +542,14 @@ export const useSettingsDatabasePanel = () => {
         [SHORTCUT_SETTINGS_APP_KEY]: DEFAULT_SHORTCUT_SETTINGS,
       });
 
-      reportMessage("All settings restored to defaults.", "success");
+      reportMessage(t("settingsPage.status.resetDone"), "success");
     } catch (resetError) {
-      reportMessage(
-        resetError.message || "Failed to reset settings",
-        "error",
-      );
+      reportMessage(errorText(resetError, "settingsPage.errors.reset"), "error");
     } finally {
       setIsResettingSettings(false);
       setIsResetSettingsConfirmOpen(false);
     }
-  }, [reportMessage, settingsRepository]);
+  }, [errorText, reportMessage, settingsRepository, t]);
 
   return {
     isDesktopMode,

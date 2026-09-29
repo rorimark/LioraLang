@@ -19,6 +19,7 @@ export const createImportWorkflow = ({
   isTrustedHubStorageUrl,
   toOrigin,
   reportRuntimeError,
+  getTranslator,
 }) => {
   let pendingImportFilePaths = [];
 
@@ -392,14 +393,15 @@ export const createImportWorkflow = ({
   };
 
   const pickDeckImportPayloadFromDialog = async () => {
+    const t = getTranslator();
     const result = await dialog.showOpenDialog(getDialogParentWindow(), {
-      title: "Import deck file",
+      title: t("desktop.dialogs.importDeck"),
       properties: ["openFile"],
       filters: [
-        { name: "Deck files", extensions: ["lioradeck", "lioralang", "json"] },
-        { name: "Liora deck package (.lioradeck)", extensions: ["lioradeck"] },
-        { name: "Legacy Liora package (.lioralang)", extensions: ["lioralang"] },
-        { name: "JSON deck (.json)", extensions: ["json"] },
+        { name: t("desktop.dialogs.deckFiles"), extensions: ["lioradeck", "lioralang", "json"] },
+        { name: `${t("desktop.dialogs.deckPackages")} (.lioradeck)`, extensions: ["lioradeck"] },
+        { name: `${t("desktop.dialogs.legacyPackages")} (.lioralang)`, extensions: ["lioralang"] },
+        { name: `${t("desktop.dialogs.jsonFiles")} (.json)`, extensions: ["json"] },
       ],
     });
 

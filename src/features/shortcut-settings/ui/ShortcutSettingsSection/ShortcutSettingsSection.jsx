@@ -1,14 +1,12 @@
 import { memo, useId } from "react";
 import { SettingRow, SettingSegmented, SettingSelect, SettingSwitch } from "@shared/ui";
 import { useShortcutSettingsSection } from "../../model";
+import { useI18n } from "@shared/lib/i18n";
 
-// "(Default)" belongs in a long list; in a row of three segments it only
-// crowds the key names.
+// "(default)" belongs in a long list; in a row of three segments it only
+// crowds the key names, so segments use the short name.
 const toSegments = (options) =>
-  options.map((option) => ({
-    value: option.value,
-    label: option.label.replace(/\s*\(Default\)$/, "").replace(/^Disabled$/, "Off"),
-  }));
+  options.map((option) => ({ value: option.value, label: option.shortLabel || option.label }));
 
 export const ShortcutSettingsSection = memo(() => {
   const {
@@ -24,6 +22,7 @@ export const ShortcutSettingsSection = memo(() => {
     handleRatingShortcutChange,
     handleShowLearnShortcutsChange,
   } = useShortcutSettingsSection();
+  const { t } = useI18n();
   const historyId = useId();
   const ratingId = useId();
   const hintsId = useId();
@@ -31,7 +30,7 @@ export const ShortcutSettingsSection = memo(() => {
   return (
     <>
       <SettingRow
-        label="Flip the card"
+        label={t("shortcuts.flip")}
         keywords="keyboard keys shortcut space enter"
         control={
           <SettingSegmented
@@ -39,13 +38,13 @@ export const ShortcutSettingsSection = memo(() => {
             value={learnFlipShortcutMode}
             options={toSegments(flipOptions)}
             onChange={handleFlipShortcutChange}
-            ariaLabel="Flip the card"
+            ariaLabel={t("shortcuts.flip")}
           />
         }
       />
       <SettingRow
-        label="Grade the card"
-        hint="Again, Hard, Good, Easy, in that order."
+        label={t("shortcuts.grade")}
+        hint={t("shortcuts.gradeHint")}
         keywords="keyboard keys shortcut rating"
         controlId={ratingId}
         control={
@@ -63,8 +62,8 @@ export const ShortcutSettingsSection = memo(() => {
         }
       />
       <SettingRow
-        label="Back and forward"
-        hint="Move through the pages you opened."
+        label={t("shortcuts.history")}
+        hint={t("shortcuts.historyHint")}
         keywords="keyboard keys shortcut history navigation"
         controlId={historyId}
         control={
@@ -82,8 +81,8 @@ export const ShortcutSettingsSection = memo(() => {
         }
       />
       <SettingRow
-        label="Show keys on buttons"
-        hint="The key for each action appears on its button in Learn."
+        label={t("shortcuts.showKeys")}
+        hint={t("shortcuts.showKeysHint")}
         keywords="keyboard hints shortcut"
         controlId={hintsId}
         control={

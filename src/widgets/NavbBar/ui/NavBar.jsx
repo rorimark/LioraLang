@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 
 import { Link, useLocation } from "react-router";
 import { AppIcon, NavTab } from "@shared/ui";
 import { NAV_ITEMS, ROUTE_PATHS } from "@shared/config/routes";
+import { useI18n } from "@shared/lib/i18n";
 import { usePlatformService } from "@shared/providers";
 import {
   IoBook,
@@ -38,13 +39,16 @@ const ACTIVE_ICONS_BY_NAME = {
   settings: IoSettings,
 };
 
-const SIGNED_OUT_ACCOUNT = Object.freeze({ title: "Sign in", label: "Sign in or sign up" });
+// Who is signed in; the words for it are picked at render, in the
+// interface's language.
+const SIGNED_OUT_ACCOUNT = Object.freeze({ isAuthenticated: false, name: "", label: "" });
 
 const resolveAccount = (snapshot) =>
   snapshot?.isAuthenticated
     ? {
-        title: "Account",
-        label: `Account: ${snapshot.displayName || snapshot.email || "signed in"}`,
+        isAuthenticated: true,
+        name: snapshot.displayName || snapshot.email || "",
+        label: `in:${snapshot.displayName || snapshot.email || ""}`,
       }
     : SIGNED_OUT_ACCOUNT;
 
@@ -58,6 +62,7 @@ const NavItemsList = memo(
     onPreviewLeave,
     onPreviewContextMenu,
   }) => {
+    const { t } = useI18n();
     const handleNavTabClick = useCallback(
       (event, targetPath) => {
         if (pathname !== targetPath) {
@@ -77,7 +82,7 @@ const NavItemsList = memo(
               to={item.to}
               icon={ICONS_BY_NAME[item.icon]}
               activeIcon={ACTIVE_ICONS_BY_NAME[item.icon]}
-              title={item.title}
+              title={t(item.titleKey)}
               compact={compact}
               draggable={compact ? false : undefined}
               onClick={(event) => {
@@ -99,6 +104,7 @@ const NavItemsList = memo(
 NavItemsList.displayName = "NavItemsList";
 
 const AccountRailLink = memo(({ pathname }) => {
+  const { t } = useI18n();
   const authRepository = usePlatformService("authRepository");
   const [account, setAccount] = useState(SIGNED_OUT_ACCOUNT);
 
@@ -139,8 +145,14 @@ const AccountRailLink = memo(({ pathname }) => {
       to={ROUTE_PATHS.account}
       icon={IoPersonCircleOutline}
       activeIcon={IoPersonCircle}
-      title={account.title}
-      aria-label={account.label}
+      title={account.isAuthenticated ? t("nav.account") : t("nav.signIn")}
+      aria-label={
+        account.isAuthenticated
+          ? account.name
+            ? t("nav.accountOf", { name: account.name })
+            : t("nav.account")
+          : t("nav.signInOrUp")
+      }
       compact
       onClick={(event) => {
         if (pathname === ROUTE_PATHS.account) {
@@ -156,11 +168,12 @@ AccountRailLink.displayName = "AccountRailLink";
 // On wide screens the navigation is a narrow rail: the page gets the width,
 // and every section is one icon with its name under it.
 const DesktopNavBar = memo(() => {
+  const { t } = useI18n();
   const { pathname } = useLocation();
 
   return (
-    <nav className="nav-bar nav-bar--rail" aria-label="Primary navigation">
-      <Link className="nav-bar__brand" to={ROUTE_PATHS.learn} aria-label="LioraLang, learn">
+    <nav className="nav-bar nav-bar--rail" aria-label={t("nav.primary")}>
+      <Link className="nav-bar__brand" to={ROUTE_PATHS.learn} aria-label={t("nav.brandToLearn")}>
         <AppIcon size={40} className="nav-bar__logo" />
       </Link>
 
@@ -176,7 +189,7 @@ const DesktopNavBar = memo(() => {
               to={settingsNavItem.to}
               icon={ICONS_BY_NAME[settingsNavItem.icon]}
               activeIcon={ACTIVE_ICONS_BY_NAME[settingsNavItem.icon]}
-              title={settingsNavItem.title}
+              title={t(settingsNavItem.titleKey)}
               compact
               onClick={(event) => {
                 if (pathname === settingsNavItem.to) {
@@ -194,6 +207,7 @@ const DesktopNavBar = memo(() => {
 DesktopNavBar.displayName = "DesktopNavBar";
 
 const MobileNavBar = memo(() => {
+  const { t } = useI18n();
   const mobileListRef = useRef(null);
   const mobileIndicatorRef = useRef(null);
   const mobileIndicatorSnapshotRef = useRef(null);
@@ -336,7 +350,7 @@ const MobileNavBar = memo(() => {
   }, []);
 
   return (
-    <nav className="nav-bar nav-bar--mobile" aria-label="Primary navigation">
+    <nav className="nav-bar nav-bar--mobile" aria-label={t("nav.primary")}>
       <div className="nav-bar__mobile-track">
         <span
           ref={mobileIndicatorRef}

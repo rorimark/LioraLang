@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EMPTY_SRS_SESSION } from "@shared/core/usecases/srs";
+import { useI18n } from "@shared/lib/i18n";
 
 export const useSrsSession = ({
   deckId,
@@ -10,6 +11,9 @@ export const useSrsSession = ({
   syncRepository,
 }) => {
   const [result, setResult] = useState(null);
+  const { t } = useI18n();
+  // The error is kept as what failed ("load", "save") and put into words
+  // when read, so a language change needs no reload.
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isRatingPending, setIsRatingPending] = useState(false);
@@ -33,7 +37,10 @@ export const useSrsSession = ({
         setResult({ contextKey, session: next || EMPTY_SRS_SESSION });
     } catch (cause) {
       if (request === requestRef.current)
-        setError(cause?.message || "Could not load the session. Try again.");
+      {
+        console.warn("[learn] session load failed", cause);
+        setError("load");
+      }
     } finally {
       if (request === requestRef.current) setIsLoading(false);
     }
@@ -133,7 +140,10 @@ export const useSrsSession = ({
         return true;
       } catch (cause) {
         if (request === requestRef.current)
-          setError(cause?.message || "Could not save your answer. Try again.");
+        {
+          console.warn("[learn] answer save failed", cause);
+          setError("save");
+        }
         return false;
       } finally {
         ratingLock.current = false;
@@ -151,7 +161,7 @@ export const useSrsSession = ({
 
   return {
     session,
-    error,
+    error: error ? t(`learn.errors.${error}`) : "",
     isLoading,
     isRatingPending,
     rate,

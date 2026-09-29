@@ -1,11 +1,12 @@
 import { Fragment, memo } from "react";
 import { useWordsTable } from "../../model/useWordsTable";
 import "./WordsTable.css";
+import { useI18n } from "@shared/lib/i18n";
 
-const resolveLanguageLabels = (languageLabels) => {
-  const sourceLanguage = languageLabels?.sourceLanguage?.trim() || "English";
-  const targetLanguage = languageLabels?.targetLanguage?.trim() || "Russian";
-  const tertiaryLanguage = languageLabels?.tertiaryLanguage?.trim() || "";
+const resolveLanguageLabels = (languageLabels, languageName) => {
+  const sourceLanguage = languageName(languageLabels?.sourceLanguage?.trim() || "English");
+  const targetLanguage = languageName(languageLabels?.targetLanguage?.trim() || "Russian");
+  const tertiaryLanguage = languageName(languageLabels?.tertiaryLanguage?.trim() || "");
 
   return {
     sourceLanguage,
@@ -42,7 +43,8 @@ const resolveExamples = (word) => {
     });
 };
 export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true }) => {
-  const labels = resolveLanguageLabels(languageLabels);
+  const { t, languageName, partOfSpeechName } = useI18n();
+  const labels = resolveLanguageLabels(languageLabels, languageName);
   const totalColumns =
     4 +
     (showLevelColumn ? 1 : 0) +
@@ -50,16 +52,16 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
   const { expandedRowId, handleToggleRow } = useWordsTable();
 
   return (
-    <table className="words-table" aria-label="Dictionary words">
-      <caption className="sr-only">Filtered dictionary cards</caption>
+    <table className="words-table" aria-label={t("wordsTable.label")}>
+      <caption className="sr-only">{t("wordsTable.caption")}</caption>
       <thead>
         <tr>
           <th>{labels.sourceLanguage}</th>
-          {showLevelColumn && <th className="words-table__level">Level</th>}
-          <th>Part of speech</th>
+          {showLevelColumn && <th className="words-table__level">{t("catalog.level")}</th>}
+          <th>{t("catalog.partOfSpeech")}</th>
           <th>{labels.targetLanguage}</th>
           {labels.hasTertiaryLanguage && <th>{labels.tertiaryLanguage}</th>}
-          <th className="words-table__examples">Examples</th>
+          <th className="words-table__examples">{t("flashcard.examples")}</th>
         </tr>
       </thead>
 
@@ -67,7 +69,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
         {words.length === 0 ? (
           <tr>
             <td className="words-table__empty" colSpan={totalColumns}>
-              No words found.
+              {t("wordsTable.empty")}
             </td>
           </tr>
         ) : (
@@ -93,7 +95,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                       <span className="words-table__cell-text words-table__cell-truncate">
                         {word.source || "-"}
                       </span>
-                      <span className="words-table__tap-hint">Tap to expand</span>
+                      <span className="words-table__tap-hint">{t("wordsTable.tapHint")}</span>
                       <span
                         className={
                           isExpanded
@@ -107,13 +109,13 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                     </span>
                   </td>
                   {showLevelColumn && (
-                    <td className="words-table__level" data-label="Level">
+                    <td className="words-table__level" data-label={t("catalog.level")}>
                       {word.level || "-"}
                     </td>
                   )}
-                  <td data-label="Part of speech">
+                  <td data-label={t("catalog.partOfSpeech")}>
                     <span className="words-table__cell-truncate">
-                      {word.part_of_speech || "-"}
+                      {word.part_of_speech ? partOfSpeechName(word.part_of_speech) : "-"}
                     </span>
                   </td>
                   <td data-label={labels.targetLanguage}>
@@ -128,7 +130,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                       </span>
                     </td>
                   )}
-                  <td className="words-table__examples" data-label="Examples">
+                  <td className="words-table__examples" data-label={t("flashcard.examples")}>
                     {examples.length === 0 ? (
                       "-"
                     ) : (
@@ -165,7 +167,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                         <div className="words-table__details-grid">
                           {showLevelColumn && (
                             <div>
-                              <span className="words-table__details-label">Level</span>
+                              <span className="words-table__details-label">{t("catalog.level")}</span>
                               <span className="words-table__details-value">
                                 {word.level || "-"}
                               </span>
@@ -173,10 +175,10 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                           )}
                           <div>
                             <span className="words-table__details-label">
-                              Part of speech
+                              {t("catalog.partOfSpeech")}
                             </span>
                             <span className="words-table__details-value">
-                              {word.part_of_speech || "-"}
+                              {word.part_of_speech ? partOfSpeechName(word.part_of_speech) : "-"}
                             </span>
                           </div>
                           <div>
@@ -200,7 +202,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                         </div>
                         <div className="words-table__details-examples">
                           <span className="words-table__details-label">
-                            Examples
+                            {t("flashcard.examples")}
                           </span>
                           {examples.length === 0 ? (
                             <span className="words-table__details-value">-</span>

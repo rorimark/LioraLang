@@ -5,12 +5,11 @@ import {
   buildActivityColumns,
   describeActivityDay,
   formatDay,
-  formatInteger,
   formatWeekday,
-  plural,
   resolveAgeBucket,
   toShare,
 } from "../model";
+import { useI18n } from "@shared/lib/i18n";
 
 const isShown = (element) => Boolean(element) && element.getClientRects().length > 0;
 
@@ -160,11 +159,14 @@ StageBar.displayName = "StageBar";
 
 // ----- activity: a year of days, as many weeks as fit -----
 
-const WEEKDAY_LABELS = ["Mon", "", "Wed", "", "Fri", "", ""];
+// Monday, Wednesday and Friday, named in the interface's language: 1, 3
+// and 5 January 2024 were those days.
+const WEEKDAY_ROWS = [1, 0, 3, 0, 5, 0, 0];
 const ACTIVITY_KEYS = { ArrowUp: -1, ArrowDown: 1, ArrowLeft: -7, ArrowRight: 7 };
 
 export const ActivityGrid = memo(({ activity }) => {
-  const columns = buildActivityColumns(activity);
+  const i18n = useI18n();
+  const columns = buildActivityColumns(activity, i18n);
   const days = columns.flatMap((column) => column.cells);
   const todayIndex = days.reduce((last, day, index) => (day ? index : last), 0);
   const { activeIndex, tip, frameProps, surfaceProps } = useChartMarks({
@@ -184,14 +186,14 @@ export const ActivityGrid = memo(({ activity }) => {
         ))}
       </div>
       <div className="progress-activity__weekdays" aria-hidden>
-        {WEEKDAY_LABELS.map((label, index) => (
-          <span key={index}>{label}</span>
+        {WEEKDAY_ROWS.map((day, index) => (
+          <span key={index}>{day ? i18n.formatDate(new Date(2024, 0, day), { weekday: "short" }) : ""}</span>
         ))}
       </div>
       <div
         className="progress-activity__grid"
         role="img"
-        aria-label={`Days you studied. ${plural(activity.activeDays, "day")} with reviews in the past year. Use the arrow keys to read each day.`}
+        aria-label={i18n.t("progress.activity.gridLabel", { count: activity.activeDays })}
         {...surfaceProps}
       >
         {columns.map((column, columnIndex) =>
@@ -214,28 +216,33 @@ export const ActivityGrid = memo(({ activity }) => {
           }),
         )}
       </div>
-      <ChartTip tip={tip}>{describeActivityDay(activeDay)}</ChartTip>
+      <ChartTip tip={tip}>{describeActivityDay(activeDay, i18n)}</ChartTip>
     </div>
   );
 });
 
 ActivityGrid.displayName = "ActivityGrid";
 
-export const ActivityLegend = () => (
-  <div className="progress-activity-legend" aria-hidden>
-    <span>Less</span>
-    {[0, 1, 2, 3, 4].map((level) => (
-      <span key={level} className={`progress-activity__day is-level-${level}`} />
-    ))}
-    <span>More</span>
-  </div>
-);
+export const ActivityLegend = () => {
+  const { t } = useI18n();
+
+  return (
+    <div className="progress-activity-legend" aria-hidden>
+      <span>{t("progress.activity.less")}</span>
+      {[0, 1, 2, 3, 4].map((level) => (
+        <span key={level} className={`progress-activity__day is-level-${level}`} />
+      ))}
+      <span>{t("progress.activity.more")}</span>
+    </div>
+  );
+};
 
 // ----- forecast: reviews due, day by day -----
 
 const FORECAST_KEYS = { ArrowLeft: -1, ArrowRight: 1 };
 
 export const ForecastChart = memo(({ forecast }) => {
+  const i18n = useI18n();
   const maxDue = Math.max(0, ...forecast.map((day) => day.due));
   const peakIndex = maxDue > 0 ? forecast.findIndex((day) => day.due === maxDue) : -1;
   const { activeIndex, tip, frameProps, surfaceProps } = useChartMarks({
@@ -250,7 +257,7 @@ export const ForecastChart = memo(({ forecast }) => {
       <div
         className="progress-forecast__plot"
         role="img"
-        aria-label={`Reviews due over the next ${forecast.length} days. Use the arrow keys to read each day.`}
+        aria-label={i18n.t("progress.forecast.label", { count: forecast.length })}
         {...surfaceProps}
       >
         {forecast.map((day, index) => (
@@ -264,7 +271,7 @@ export const ForecastChart = memo(({ forecast }) => {
             ].join(" ")}
           >
             <span className="progress-forecast__value" aria-hidden>
-              {day.due > 0 && (index === 0 || index === peakIndex) ? formatInteger(day.due) : ""}
+              {day.due > 0 && (index === 0 || index === peakIndex) ? i18n.formatNumber(day.due) : ""}
             </span>
             <span className="progress-forecast__track">
               <span
@@ -274,14 +281,17 @@ export const ForecastChart = memo(({ forecast }) => {
               />
             </span>
             <span className="progress-forecast__label" aria-hidden>
-              {index === 0 ? "Today" : formatWeekday(day.date)}
+              {index === 0 ? i18n.t("progress.forecast.today") : formatWeekday(day.date, i18n)}
             </span>
           </div>
         ))}
       </div>
       <ChartTip tip={tip}>
         {activeDay
-          ? `${activeIndex === 0 ? "Today, with anything overdue" : formatDay(activeDay.date)}: ${plural(activeDay.due, "card")}`
+          ? i18n.t("progress.forecast.tip", {
+            day: activeIndex === 0 ? i18n.t("progress.forecast.todayOverdue") : formatDay(activeDay.date, i18n),
+            count: activeDay.due,
+          })
           : ""}
       </ChartTip>
     </div>
@@ -292,12 +302,15 @@ ForecastChart.displayName = "ForecastChart";
 
 // ----- answers: how the last 30 days went -----
 
-export const AnswersBar = memo(({ ratings }) => (
+export const AnswersBar = memo(({ ratings }) => {
+  const { t, formatNumber } = useI18n();
+
+  return (
   <div className="progress-answers">
     <div
       className="progress-answers__bar"
       role="img"
-      aria-label={GRADES.map((grade) => `${grade.label} ${formatInteger(ratings[grade.key])}`).join(", ")}
+      aria-label={GRADES.map((grade) => `${t(`grades.${grade.key}.label`)} ${formatNumber(ratings[grade.key])}`).join(", ")}
     >
       {GRADES.filter((grade) => ratings[grade.key] > 0).map((grade) => (
         <span
@@ -311,8 +324,8 @@ export const AnswersBar = memo(({ ratings }) => (
       {GRADES.map((grade) => (
         <li key={grade.key}>
           <span className={`progress-swatch is-${grade.key}`} aria-hidden />
-          <span className="progress-answers__name">{grade.label}</span>
-          <strong>{formatInteger(ratings[grade.key])}</strong>
+          <span className="progress-answers__name">{t(`grades.${grade.key}.label`)}</span>
+          <strong>{formatNumber(ratings[grade.key])}</strong>
           <span className="progress-answers__share">
             {Math.round(toShare(ratings[grade.key], ratings.total))}%
           </span>
@@ -320,6 +333,7 @@ export const AnswersBar = memo(({ ratings }) => (
       ))}
     </ul>
   </div>
-));
+  );
+});
 
 AnswersBar.displayName = "AnswersBar";

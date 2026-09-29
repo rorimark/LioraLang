@@ -14,83 +14,48 @@ export const CLEAN_SHEET_MIN_REVIEWS = 20;
 // A deck counts as mastered with at least this many words, all known.
 export const MASTERED_DECK_MIN_WORDS = 10;
 
-const formatCount = (value) => new Intl.NumberFormat("en-US").format(value);
-
+// No words here: the interface names and describes each family and tier
+// in the reader's language (stickers.* in the message catalogues).
 export const ACHIEVEMENT_FAMILIES = [
   {
     key: "known",
-    title: "Vocabulary",
-    unit: "words",
-    unitOne: "word",
     source: "state",
     tiers: [10, 50, 100, 250, 500, 1000, 2500, 5000],
-    describe: (target) => `Know ${formatCount(target)} words.`,
   },
   {
     key: "streak",
-    title: "Streak",
-    unit: "days",
-    unitOne: "day",
     source: "log",
     tiers: [3, 7, 14, 30, 60, 100, 200, 365],
-    describe: (target) => `Study ${formatCount(target)} days in a row.`,
   },
   {
     key: "mature",
-    title: "Long-term memory",
-    unit: "words",
-    unitOne: "word",
     source: "state",
     tiers: [10, 50, 100, 250, 500, 1000],
-    describe: (target) =>
-      `Have ${formatCount(target)} words in long-term memory, with their next review three weeks away or more.`,
   },
   {
     key: "days",
-    title: "Days studied",
-    unit: "days",
-    unitOne: "day",
     source: "log",
     tiers: [1, 10, 30, 100, 200, 365, 730],
-    describe: (target) => (target === 1 ? "Finish your first review." : `Study on ${formatCount(target)} different days.`),
   },
   {
     key: "reviews",
-    title: "Reviews",
-    unit: "reviews",
-    unitOne: "review",
     source: "log",
     tiers: [100, 500, 1000, 2500, 5000, 10000, 25000, 50000],
-    describe: (target) => `Review ${formatCount(target)} cards in total.`,
   },
   {
     key: "bigDay",
-    title: "Big day",
-    unit: "in a day",
-    unitOne: "in a day",
     source: "log",
     tiers: [50, 100, 200, 300, 500],
-    describe: (target) => `Review ${formatCount(target)} cards in one day.`,
   },
   {
     key: "cleanSheet",
-    title: "Clean sheet",
-    unit: "days",
-    unitOne: "day",
     source: "log",
     tiers: [1, 5, 10, 25, 50, 100],
-    describe: (target) =>
-      `${target === 1 ? "Have a day" : `Have ${formatCount(target)} days`} with ${CLEAN_SHEET_MIN_REVIEWS} or more reviews and not one Again.`,
   },
   {
     key: "decks",
-    title: "Decks mastered",
-    unit: "decks",
-    unitOne: "deck",
     source: "state",
     tiers: [1, 3, 5, 10],
-    describe: (target) =>
-      `Know every word in ${target === 1 ? "a deck" : `${formatCount(target)} decks`} of ${MASTERED_DECK_MIN_WORDS} words or more.`,
   },
 ];
 
@@ -159,16 +124,12 @@ export const buildAchievements = (stats = {}) => {
 
     return {
       key: family.key,
-      title: family.title,
-      unit: family.unit,
-      unitOne: family.unitOne,
       source: family.source,
       current: value,
       tiers: family.tiers.map((target) => ({
         id: `${family.key}-${target}`,
         family: family.key,
         target,
-        description: family.describe(target),
         earned: value >= target,
         earnedOn: family.source === "log" ? crossedOn[family.key][target] || null : null,
       })),

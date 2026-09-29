@@ -11,6 +11,7 @@ import { formatDeckCreatedAt } from "@shared/lib/date";
 import { DeckTagBadges } from "../DeckTagBadges/DeckTagBadges";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
 import "./DecksTable.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const MAX_VISIBLE_TAGS = 5;
 const MAX_TOTAL_TAGS = 10;
@@ -48,7 +49,7 @@ const parseTagsJson = (value) => {
   }
 };
 
-const buildDeckTags = (deck) => {
+const buildDeckTags = (deck, { t, languageName }) => {
   const tags = [];
   const languages = [];
   const seenLanguageKeys = new Set();
@@ -92,7 +93,7 @@ const buildDeckTags = (deck) => {
   languages.forEach((language) => {
     tags.push({
       key: `lang-${language}`,
-      text: language,
+      text: languageName(language),
       accent: false,
     });
   });
@@ -108,7 +109,7 @@ const buildDeckTags = (deck) => {
   if (tags.length === 0) {
     tags.push({
       key: "untagged",
-      text: "No tags yet",
+      text: t("decks.table.noTags"),
       accent: false,
     });
   }
@@ -139,6 +140,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
   const pendingState = resolvedTable.pendingState || EMPTY_OBJECT;
   const tableRef = useRef(null);
   const [openMenuDeckId, setOpenMenuDeckId] = useState(null);
+  const i18n = useI18n();
+  const { t } = i18n;
 
   useDeckTagsPopover(tableRef);
 
@@ -245,14 +248,14 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
   );
 
   return (
-    <table ref={tableRef} className="decks-table" aria-label="Decks table">
+    <table ref={tableRef} className="decks-table" aria-label={t("decks.table.label")}>
       <thead>
         <tr>
-          <th>Deck</th>
-          <th>Tags</th>
-          <th>Words</th>
-          <th>Date added</th>
-          <th>Actions</th>
+          <th>{t("decks.table.deck")}</th>
+          <th>{t("decks.table.tags")}</th>
+          <th>{t("decks.table.words")}</th>
+          <th>{t("decks.table.added")}</th>
+          <th>{t("decks.table.actions")}</th>
         </tr>
       </thead>
 
@@ -260,12 +263,12 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
         {resolvedDecks.length === 0 ? (
           <tr>
             <td colSpan={5} className="decks-table__empty">
-              No decks found. Create one or import a deck file.
+              {t("decks.table.empty")}
             </td>
           </tr>
         ) : (
           resolvedDecks.map((deck) => {
-            const deckTags = buildDeckTags(deck);
+            const deckTags = buildDeckTags(deck, i18n);
             const { visibleTags, hiddenTags } = splitDeckTags(deckTags);
             const isMenuOpen = String(openMenuDeckId) === String(deck.id);
             const isPublishing =
@@ -284,8 +287,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                 onKeyDown={handleRowKeyDown}
                 tabIndex={0}
               >
-                <td data-label="Deck">{deck.name}</td>
-                <td data-label="Tags" className="decks-table__tags-cell">
+                <td data-label={t("decks.table.deck")}>{deck.name}</td>
+                <td data-label={t("decks.table.tags")} className="decks-table__tags-cell">
                   <div className="decks-table__tags-wrap">
                     <div className="decks-table__tags-row">
                       <DeckTagBadges
@@ -299,7 +302,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                           className="decks-table__tags-more-wrap"
                           tabIndex={0}
                           aria-describedby={`deck-tags-tooltip-${deck.id}`}
-                          aria-label={`Show all tags for ${deck.name}`}
+                          aria-label={t("decks.table.allTags", { name: deck.name })}
                           onClick={stopEventPropagation}
                           onKeyDown={stopEventPropagation}
                         >
@@ -319,11 +322,11 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                     </div>
                   </div>
                 </td>
-                <td data-label="Words">{deck.wordsCount ?? 0}</td>
-                <td data-label="Date added">
-                  {formatDeckCreatedAt(deck.createdAt)}
+                <td data-label={t("decks.table.words")}>{i18n.formatNumber(deck.wordsCount ?? 0)}</td>
+                <td data-label={t("decks.table.added")}>
+                  {formatDeckCreatedAt(deck.createdAt, "-", i18n.locale)}
                 </td>
-                <td data-label="Actions" className="decks-table__actions-cell">
+                <td data-label={t("decks.table.actions")} className="decks-table__actions-cell">
                   <div
                     className={`decks-table__actions ${isMenuOpen ? "decks-table__actions--open" : ""}`}
                     data-deck-menu-id={deck.id}
@@ -333,7 +336,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         type="button"
                         data-deck-id={deck.id}
                         className="decks-table__menu-trigger"
-                        aria-label={`Open actions for ${deck.name}`}
+                        aria-label={t("decks.table.openActions", { name: deck.name })}
                         aria-expanded={isMenuOpen}
                         aria-haspopup="menu"
                         onClick={handleToggleMenu}
@@ -346,7 +349,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         <div
                           className="decks-table__menu"
                           role="menu"
-                          aria-label={`Actions for ${deck.name}`}
+                          aria-label={t("decks.table.actionsFor", { name: deck.name })}
                           onClick={stopEventPropagation}
                           onKeyDown={stopEventPropagation}
                         >
@@ -356,7 +359,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             onClick={() => handleOpenDeck(deck.id)}
                           >
                             <FiFolder aria-hidden />
-                            <span>Open</span>
+                            <span>{t("common.open")}</span>
                           </button>
                           <button
                             type="button"
@@ -364,7 +367,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             onClick={() => handleEditDeck(deck.id)}
                           >
                             <FiEdit3 aria-hidden />
-                            <span>Edit</span>
+                            <span>{t("common.edit")}</span>
                           </button>
 
                           <button
@@ -374,7 +377,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             disabled={isExporting}
                           >
                             <FiDownload aria-hidden />
-                            <span>{isExporting ? "Exporting..." : "Export"}</span>
+                            <span>{isExporting ? t("decks.table.exporting") : t("decks.table.export")}</span>
                           </button>
                           <button
                             type="button"
@@ -384,7 +387,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             disabled={isPublishing}
                           >
                             <FiSend aria-hidden />
-                            <span>{isPublishing ? "Publishing..." : "Publish"}</span>
+                            <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
                           </button>
                           <button
                             type="button"
@@ -396,7 +399,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                             disabled={isDeleting}
                           >
                             <FiTrash2 aria-hidden />
-                            <span>{isDeleting ? "Deleting..." : "Delete"}</span>
+                            <span>{isDeleting ? t("decks.table.deleting") : t("common.delete")}</span>
                           </button>
                         </div>
                       )}
@@ -411,7 +414,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         }}
                       >
                         <FiFolder aria-hidden />
-                        <span>Open</span>
+                        <span>{t("common.open")}</span>
                       </button>
                       <button
                         type="button"
@@ -421,7 +424,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         }}
                       >
                         <FiEdit3 aria-hidden />
-                        <span>Edit</span>
+                        <span>{t("common.edit")}</span>
                       </button>
                       <button
                         type="button"
@@ -432,7 +435,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         disabled={isExporting}
                       >
                         <FiDownload aria-hidden />
-                        <span>{isExporting ? "Exporting..." : "Export"}</span>
+                        <span>{isExporting ? t("decks.table.exporting") : t("decks.table.export")}</span>
                       </button>
                       <button
                         type="button"
@@ -444,7 +447,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         disabled={isPublishing}
                       >
                         <FiSend aria-hidden />
-                        <span>{isPublishing ? "Publishing..." : "Publish"}</span>
+                        <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
                       </button>
 
                       <button
@@ -457,7 +460,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                         disabled={isDeleting}
                       >
                         <FiTrash2 aria-hidden />
-                        <span>{isDeleting ? "Deleting..." : "Delete"}</span>
+                        <span>{isDeleting ? t("decks.table.deleting") : t("common.delete")}</span>
                       </button>
                     </div>
                   </div>

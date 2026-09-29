@@ -55,14 +55,14 @@ const parseDeckCreatedAt = (value) => {
   return Number.isNaN(defaultParsedDate.getTime()) ? null : defaultParsedDate;
 };
 
-export const formatDeckCreatedAt = (value, fallback = "-") => {
+export const formatDeckCreatedAt = (value, fallback = "-", locale = undefined) => {
   const parsedDate = parseDeckCreatedAt(value);
 
   if (!parsedDate) {
     return fallback;
   }
 
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",

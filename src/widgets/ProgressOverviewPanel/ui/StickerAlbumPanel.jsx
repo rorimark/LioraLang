@@ -2,41 +2,36 @@ import { memo, useCallback, useState } from "react";
 import { Link } from "react-router";
 import { IoArrowBack } from "react-icons/io5";
 import { ROUTE_PATHS } from "@shared/config/routes";
-import { formatInteger, plural, useProgressOverviewPanel } from "../model";
+import { stickerTitle, useProgressOverviewPanel } from "../model";
 import { Sticker, StickerDialog } from "./Sticker";
 import "./ProgressOverviewPanel.css";
 import "./StickerAlbumPanel.css";
+import { useI18n, withEmphasis } from "@shared/lib/i18n";
 
-// One line per family: where you stand now, in its own words.
-const FAMILY_SUMMARY = {
-  known: (family) => `${plural(family.current, "word")} known now`,
-  streak: (family, overview) =>
-    `Best ${plural(family.current, "day")} in a row, ${formatInteger(overview.streak.current)} now`,
-  mature: (family) => `${plural(family.current, "word")} in long-term memory`,
-  days: (family) => `${plural(family.current, "day")} with reviews`,
-  reviews: (family) => `${plural(family.current, "review")} in all`,
-  bigDay: (family) => `Most in one day: ${plural(family.current, "review")}`,
-  cleanSheet: (family) => `${plural(family.current, "day")} with 20+ reviews and no Again`,
-  decks: (family) => `${plural(family.current, "deck")} fully known`,
-};
+// One line per family: where you stand now, in its own words
+// (stickers.<family>.now).
+const describeFamilyNow = ({ t }, family, overview) =>
+  t(`stickers.${family.key}.now`, { count: family.current, streak: overview?.streak?.current ?? 0 });
 
 export const StickerAlbumPanel = memo(() => {
   const { overview, stickers, isLoading, error, refreshOverview } = useProgressOverviewPanel();
+  const i18n = useI18n();
+  const { t, formatNumber } = i18n;
   const [selection, setSelection] = useState(null);
   const openSticker = useCallback((tier, family) => setSelection({ tier, family }), []);
   const closeSticker = useCallback(() => setSelection(null), []);
 
   if (isLoading && !stickers) {
-    return <div className="album album--loading" aria-busy="true" aria-label="Loading stickers" />;
+    return <div className="album album--loading" aria-busy="true" aria-label={t("stickers.loading")} />;
   }
 
   if (error) {
     return (
       <section className="progress-card progress-error" role="alert">
-        <h2>Stickers could not be loaded</h2>
-        <p>{error}</p>
+        <h2>{t("stickers.errors.title")}</h2>
+        <p>{t("progress.errors.text")}</p>
         <button type="button" className="ui-button ui-button--secondary" onClick={refreshOverview}>
-          Try again
+          {t("common.tryAgain")}
         </button>
       </section>
     );
@@ -48,18 +43,17 @@ export const StickerAlbumPanel = memo(() => {
     <div className="album">
       <Link className="album__back" to={ROUTE_PATHS.progress}>
         <IoArrowBack aria-hidden />
-        Progress
+        {t("nav.progress")}
       </Link>
 
       <header className="album__head">
         <p className="album__count">
-          <strong>{formatInteger(stickers.earnedCount)}</strong>
-          <span>of {formatInteger(stickers.totalCount)} stickers</span>
+          {withEmphasis(t("stickers.albumCount", { earned: stickers.earnedCount, count: stickers.totalCount }))}
         </p>
         <div
           className="album__meter"
           role="meter"
-          aria-label="Stickers earned"
+          aria-label={t("stickers.earnedLabel")}
           aria-valuemin={0}
           aria-valuemax={stickers.totalCount}
           aria-valuenow={stickers.earnedCount}
@@ -68,8 +62,8 @@ export const StickerAlbumPanel = memo(() => {
         </div>
         <p className="album__lede">
           {stickers.newCount > 0
-            ? `${plural(stickers.newCount, "new sticker")} since your last visit.`
-            : "Tap a sticker to see what it takes, or when you earned it."}
+            ? t("stickers.newSince", { count: stickers.newCount })
+            : t("stickers.tapHint")}
         </p>
       </header>
 
@@ -80,11 +74,11 @@ export const StickerAlbumPanel = memo(() => {
           return (
             <section key={family.key} className="album-family" aria-labelledby={`album-${family.key}`}>
               <header className="album-family__head">
-                <h2 id={`album-${family.key}`}>{family.title}</h2>
+                <h2 id={`album-${family.key}`}>{stickerTitle(i18n, family.key)}</h2>
                 <span className="album-family__count">
-                  {earned} / {family.tiers.length}
+                  {formatNumber(earned)} / {formatNumber(family.tiers.length)}
                 </span>
-                <p>{FAMILY_SUMMARY[family.key]?.(family, overview)}</p>
+                <p>{describeFamilyNow(i18n, family, overview)}</p>
               </header>
               <div className="album-family__sheet">
                 {family.tiers.map((tier, index) => (

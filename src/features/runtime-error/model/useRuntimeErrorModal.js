@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePlatformService } from "@shared/providers";
+import { useI18n } from "@shared/lib/i18n";
 
 const MAX_QUEUED_ERRORS = 8;
 
@@ -24,6 +25,7 @@ const appendErrorToQueue = (queue, nextError) => {
 export const useRuntimeErrorModal = () => {
   const runtimeGateway = usePlatformService("runtimeGateway");
   const [errorQueue, setErrorQueue] = useState([]);
+  const { t } = useI18n();
   const isDesktopMode = useMemo(() => runtimeGateway.isDesktopMode(), [runtimeGateway]);
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export const useRuntimeErrorModal = () => {
 
   return {
     isOpen: Boolean(activeError),
-    title: activeError?.title || "Application Error",
+    title: activeError?.title || t("runtimeError.title"),
     message: activeError?.message || "",
     details: activeError?.details || "",
     closeModal,

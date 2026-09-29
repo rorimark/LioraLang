@@ -7,9 +7,11 @@ import { CardCatalogPagination } from "@features/card-catalog";
 import { Button, InlineAlert, SearchField } from "@shared/ui";
 import { DECK_PAGE_SIZE_OPTIONS, useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
+import { useI18n } from "@shared/lib/i18n";
 
 export const DecksOverviewPanel = memo(() => {
   const panel = useDecksOverviewPanel();
+  const { t } = useI18n();
   const listRef = useRef(null);
   const { handleDeckPageChange, handleDeckPageSizeChange } = panel;
 
@@ -146,26 +148,26 @@ export const DecksOverviewPanel = memo(() => {
           value={panel.deckSearch}
           onChange={(event) => panel.handleDeckSearchChange(event.target.value)}
           onClear={() => panel.handleDeckSearchChange("")}
-          placeholder="Search by name, description, language or tag"
-          ariaLabel="Search decks"
+          placeholder={t("decks.searchPlaceholder")}
+          ariaLabel={t("decks.search")}
         />
         <div className="decks-page-panel__header-tools">
           <div className="decks-page-panel__search-meta" aria-live="polite">
             <strong>{panel.matchingDecksCount}</strong>
             <span>/ {panel.totalDecksCount}</span>
           </div>
-          <div className="decks-page-panel__controls" aria-label="Deck actions">
+          <div className="decks-page-panel__controls" aria-label={t("decks.actions")}>
             <div className="decks-page-panel__icon-action-wrap">
               <Button
                 variant="ghost"
                 className="decks-page-panel__icon-action decks-page-panel__icon-action--create"
                 onClick={panel.openCreateDeck}
-                aria-label="Create deck"
+                aria-label={t("decks.create")}
               >
                 <FiFolderPlus size={16} strokeWidth={2.1} />
               </Button>
               <div className="decks-page-panel__tooltip" role="tooltip">
-                Create deck
+                {t("decks.create")}
               </div>
             </div>
             <div className="decks-page-panel__icon-action-wrap">
@@ -174,12 +176,12 @@ export const DecksOverviewPanel = memo(() => {
                 className="decks-page-panel__icon-action decks-page-panel__icon-action--import"
                 onClick={panel.openImportConfirm}
                 disabled={panel.isImporting}
-                aria-label={panel.isImporting ? "Importing deck file" : "Import deck file"}
+                aria-label={panel.isImporting ? t("decks.importing") : t("decks.import")}
               >
                 <FiUpload size={16} strokeWidth={2.1} />
               </Button>
               <div className="decks-page-panel__tooltip" role="tooltip">
-                {panel.isImporting ? "Importing deck file" : "Import deck file"}
+                {panel.isImporting ? t("decks.importing") : t("decks.import")}
               </div>
             </div>
             <div className="decks-page-panel__icon-action-wrap">
@@ -188,12 +190,12 @@ export const DecksOverviewPanel = memo(() => {
                 className="decks-page-panel__icon-action decks-page-panel__icon-action--json"
                 onClick={panel.openJsonImport}
                 disabled={panel.isImporting}
-                aria-label="Create deck from JSON"
+                aria-label={t("decks.fromJson")}
               >
                 <FiCode size={16} strokeWidth={2.1} />
               </Button>
               <div className="decks-page-panel__tooltip" role="tooltip">
-                Create deck from JSON
+                {t("decks.fromJson")}
               </div>
             </div>
             <div className="decks-page-panel__icon-action-wrap">
@@ -201,12 +203,12 @@ export const DecksOverviewPanel = memo(() => {
                 variant="ghost"
                 className="decks-page-panel__icon-action decks-page-panel__icon-action--refresh"
                 onClick={panel.refreshDecks}
-                aria-label="Refresh decks"
+                aria-label={t("decks.refresh")}
               >
                 <FiRefreshCw size={16} strokeWidth={2.1} />
               </Button>
               <div className="decks-page-panel__tooltip" role="tooltip">
-                Refresh decks
+                {t("decks.refresh")}
               </div>
             </div>
           </div>
@@ -222,13 +224,13 @@ export const DecksOverviewPanel = memo(() => {
       )}
 
       {panel.isLoading ? (
-        <div className="decks-page-panel__loading">Loading decks...</div>
+        <div className="decks-page-panel__loading">{t("decks.loading")}</div>
       ) : (
         <div className="decks-page-panel__list" ref={listRef}>
           <DecksTable table={table} />
           {/* Only when there is more than the smallest page to page through. */}
           {panel.matchingDecksCount > DECK_PAGE_SIZE_OPTIONS[0] ? (
-            <CardCatalogPagination pagination={pagination} label="Deck pages" sizeLabel="Decks" />
+            <CardCatalogPagination pagination={pagination} label={t("decks.pages")} sizeLabel={t("decks.pageSize")} />
           ) : null}
         </div>
       )}

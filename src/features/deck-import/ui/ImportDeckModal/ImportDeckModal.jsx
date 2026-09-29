@@ -1,8 +1,10 @@
 import { memo } from "react";
 import { ActionModal, Select } from "@shared/ui";
 import "./ImportDeckModal.css";
+import { useI18n } from "@shared/lib/i18n";
 
 export const ImportDeckModal = memo(({ modal }) => {
+    const { t, languageName } = useI18n();
     const resolvedModal = modal || {};
     const selection = resolvedModal.selection || resolvedModal;
     const languageReview = resolvedModal.languageReview || {
@@ -34,17 +36,16 @@ export const ImportDeckModal = memo(({ modal }) => {
       <ActionModal
         dialog={{
           isOpen: resolvedModal.isOpen,
-          title: "Import deck file",
-          description:
-            "Supports .lioradeck, .lioralang and .json. Review import details and confirm language mapping.",
-          confirmLabel: "Import",
+          title: t("decks.import"),
+          description: t("import.file.description"),
+          confirmLabel: t("import.file.confirm"),
           isConfirming: resolvedModal.isImporting,
           onConfirm: actions.onConfirm,
           onClose: actions.onClose,
         }}
       >
         <label className="import-deck-modal__label" htmlFor="import-deck-name">
-          Deck name in Decks (optional)
+          {t("import.deckNameOptional")}
         </label>
         <input
           id="import-deck-name"
@@ -52,16 +53,16 @@ export const ImportDeckModal = memo(({ modal }) => {
           type="text"
           value={selection.deckNameDraft || ""}
           onChange={actions.onDeckNameChange}
-          placeholder="Use filename if empty"
+          placeholder={t("import.file.namePlaceholder")}
         />
         <div className="import-deck-modal__language-review">
           <p className="import-deck-modal__language-summary">
-            Detected languages in package:{" "}
+            {t("import.file.detected")}{" "}
             {detectedLanguages.length > 0 ? (
               detectedLanguages.map((language, index) => (
                 <span key={`${language}-${index}`}>
                   {index > 0 ? ", " : ""}
-                  <strong>{language}</strong>
+                  <strong>{languageName(language)}</strong>
                 </span>
               ))
             ) : (
@@ -78,15 +79,15 @@ export const ImportDeckModal = memo(({ modal }) => {
             }
           >
             {languageReview.isOpen
-              ? "Hide language check"
-              : "Check or adjust languages"}
+              ? t("import.file.hideLanguages")
+              : t("import.file.checkLanguages")}
           </button>
         </div>
 
         {languageReview.isOpen ? (
           <div className="import-deck-modal__languages">
             <label className="import-deck-modal__label" htmlFor="import-source-language">
-              Source language
+              {t("import.file.source")}
             </label>
             <Select
               id="import-source-language"
@@ -97,13 +98,13 @@ export const ImportDeckModal = memo(({ modal }) => {
             >
               {(languageReview.languageOptions || []).map((language) => (
                 <option key={`source-${language}`} value={language}>
-                  {language}
+                  {languageName(language)}
                 </option>
               ))}
             </Select>
 
             <label className="import-deck-modal__label" htmlFor="import-target-language">
-              Target language
+              {t("import.file.target")}
             </label>
             <Select
               id="import-target-language"
@@ -114,13 +115,13 @@ export const ImportDeckModal = memo(({ modal }) => {
             >
               {(languageReview.languageOptions || []).map((language) => (
                 <option key={`target-${language}`} value={language}>
-                  {language}
+                  {languageName(language)}
                 </option>
               ))}
             </Select>
 
             <label className="import-deck-modal__label" htmlFor="import-tertiary-language">
-              Optional language
+              {t("import.file.optional")}
             </label>
             <Select
               id="import-tertiary-language"
@@ -129,25 +130,25 @@ export const ImportDeckModal = memo(({ modal }) => {
               value={tertiaryLanguage}
               onChange={actions.onLanguageChange}
             >
-              <option value="">None</option>
+              <option value="">{t("common.none")}</option>
               {(languageReview.languageOptions || []).map((language) => (
                 <option key={`tertiary-${language}`} value={language}>
-                  {language}
+                  {languageName(language)}
                 </option>
               ))}
             </Select>
           </div>
         ) : null}
         <p className="import-deck-modal__preview">
-          Selected file: {selection.selectedFileName || "-"}
+          {t("import.file.selected", { name: selection.selectedFileName || "-" })}
         </p>
         {Number.isInteger(selection.selectedWordsCount) && (
           <p className="import-deck-modal__preview">
-            Words in file: {selection.selectedWordsCount}
+            {t("import.file.wordsInFile", { count: selection.selectedWordsCount })}
           </p>
         )}
         <p className="import-deck-modal__preview">
-          Deck in DB: {normalizedDeckName || "Use filename from package"}
+          {t("import.file.savedAs", { name: normalizedDeckName || t("import.file.nameFromPackage") })}
         </p>
       </ActionModal>
     );

@@ -83,80 +83,49 @@ export const NAV_ITEMS = [
   {
     key: "learn",
     to: ROUTE_PATHS.learn,
-    title: "Learn",
+    titleKey: "nav.learn",
     icon: "learn",
   },
   {
     key: "decks",
     to: ROUTE_PATHS.decks,
-    title: "Decks",
+    titleKey: "nav.decks",
     icon: "decks",
   },
   {
     key: "browse",
     to: ROUTE_PATHS.browse,
-    title: "Browse",
+    titleKey: "nav.browse",
     icon: "browse",
   },
   {
     key: "progress",
     to: ROUTE_PATHS.progress,
-    title: "Progress",
+    titleKey: "nav.progress",
     icon: "progress",
   },
   {
     key: "settings",
     to: ROUTE_PATHS.settings,
-    title: "Settings",
+    titleKey: "nav.settings",
     icon: "settings",
   },
 ];
 
+// Each page's title and description live in the messages under
+// pages.<key> (title, subtitle), in every interface language.
 export const PAGE_META = {
-  [ROUTE_PATHS.learn]: {
-    title: "Flashcards",
-    subtitle: "Pick a deck and review cards in a focused study session.",
-  },
-  [ROUTE_PATHS.browse]: {
-    title: "Browse Decks",
-    subtitle: "Discover community deck packages and import them in one click.",
-  },
-  [ROUTE_PATHS.browseDeck]: {
-    title: "Community Deck",
-    subtitle: "Explore a shared deck and import it to your library.",
-  },
-  [ROUTE_PATHS.decks]: {
-    title: "Deck Library",
-    subtitle: "Manage local decks, inspect content, and export to JSON.",
-  },
-  [ROUTE_PATHS.deckDetails]: {
-    title: "Deck Details",
-    subtitle: "Browse words, filter entries, and review deck content.",
-  },
-  [ROUTE_PATHS.deckEdit]: {
-    title: "Deck Editor",
-    subtitle: "Configure deck languages, add words, and keep your base updated.",
-  },
-  [ROUTE_PATHS.progress]: {
-    title: "Progress",
-    subtitle: "What you know, what is due, and how your study is going.",
-  },
-  [ROUTE_PATHS.progressStickers]: {
-    title: "Stickers",
-    subtitle: "Every sticker you have earned, and how far you are from the next.",
-  },
-  [ROUTE_PATHS.account]: {
-    title: "Account",
-    subtitle: "Sign in, register, and manage your profile and sync options.",
-  },
-  [ROUTE_PATHS.settings]: {
-    title: "Settings",
-    subtitle: "Tune preferences for SRS cadence and workspace behavior.",
-  },
-  default: {
-    title: "LioraLang",
-    subtitle: "Language learning workspace",
-  },
+  [ROUTE_PATHS.learn]: { key: "pages.learn" },
+  [ROUTE_PATHS.browse]: { key: "pages.browse" },
+  [ROUTE_PATHS.browseDeck]: { key: "pages.browseDeck" },
+  [ROUTE_PATHS.decks]: { key: "pages.decks" },
+  [ROUTE_PATHS.deckDetails]: { key: "pages.deckDetails" },
+  [ROUTE_PATHS.deckEdit]: { key: "pages.deckEdit" },
+  [ROUTE_PATHS.progress]: { key: "pages.progress" },
+  [ROUTE_PATHS.progressStickers]: { key: "pages.stickers" },
+  [ROUTE_PATHS.account]: { key: "pages.account" },
+  [ROUTE_PATHS.settings]: { key: "pages.settings" },
+  default: { key: "pages.default" },
 };
 
 const DECK_EDIT_ROUTE_PATTERN = /^\/app\/decks\/[^/]+\/edit$/;

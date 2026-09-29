@@ -1,10 +1,12 @@
 import { memo } from "react";
 import { ActionModal } from "@shared/ui";
 import "./RenameDeckModal.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const EMPTY_MODAL = Object.freeze({});
 
 export const RenameDeckModal = memo(({ modal = EMPTY_MODAL }) => {
+    const { t } = useI18n();
     const {
       isOpen,
       value,
@@ -17,9 +19,9 @@ export const RenameDeckModal = memo(({ modal = EMPTY_MODAL }) => {
       <ActionModal
         dialog={{
           isOpen,
-          title: "Rename deck",
-          description: "Enter a new deck name.",
-          confirmLabel: "Save",
+          title: t("renameDeck.title"),
+          description: t("renameDeck.description"),
+          confirmLabel: t("common.save"),
           isConfirming: isRenaming,
           isConfirmDisabled: !value?.trim(),
           onConfirm,
@@ -27,7 +29,7 @@ export const RenameDeckModal = memo(({ modal = EMPTY_MODAL }) => {
         }}
       >
         <label className="rename-deck-modal__label" htmlFor="rename-deck-name">
-          Deck name
+          {t("renameDeck.label")}
         </label>
         <input
           id="rename-deck-name"
@@ -35,7 +37,7 @@ export const RenameDeckModal = memo(({ modal = EMPTY_MODAL }) => {
           type="text"
           value={value || ""}
           onChange={onValueChange}
-          placeholder="Enter deck name"
+          placeholder={t("renameDeck.placeholder")}
         />
       </ActionModal>
     );

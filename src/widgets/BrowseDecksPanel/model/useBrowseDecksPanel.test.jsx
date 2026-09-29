@@ -103,7 +103,7 @@ describe("useBrowseDecksPanel", () => {
         },
       });
       expect(result.current.decks[0].downloadsCount).toBe(4);
-      expect(result.current.message).toBe('Imported "Travel & Tourism": 24 words');
+      expect(result.current.message).toBe("Imported “Travel & Tourism”: 24 words");
       expect(result.current.messageVariant).toBe("success");
       expect(result.current.postImportModal).toEqual({
         isOpen: true,

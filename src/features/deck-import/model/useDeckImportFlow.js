@@ -13,6 +13,7 @@ import {
   DEFAULT_TARGET_LANGUAGE,
   LANGUAGE_OPTIONS,
 } from "@shared/config/languages";
+import { useI18n } from "@shared/lib/i18n";
 
 const toCleanString = (value) => (typeof value === "string" ? value.trim() : "");
 const toLanguageKey = (value) => toCleanString(value).toLowerCase();
@@ -83,6 +84,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
   const deckRepository = usePlatformService("deckRepository");
   const runtimeGateway = usePlatformService("runtimeGateway");
   const { appPreferences } = useAppPreferences();
+  const { t, errorText } = useI18n();
   const defaultImportLanguages = useMemo(
     () => createImportLanguagesFromDefaults(appPreferences.deckDefaults),
     [appPreferences.deckDefaults],
@@ -148,7 +150,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       : null;
 
     if (!filePath && !fileText) {
-      reportMessage("Selected file is invalid", "error");
+      reportMessage(t("import.errors.invalidFile"), "error");
       return;
     }
 
@@ -172,6 +174,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     appPreferences.deckDefaults,
     appPreferences.importExport.autoOpenLanguageReview,
     reportMessage,
+    t,
   ]);
 
   useEffect(() => {
@@ -195,9 +198,9 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         applyImportSelection(result);
       })
       .catch((pickError) => {
-        reportMessage(pickError.message || "Failed to select import file", "error");
+        reportMessage(errorText(pickError, "import.errors.pick"), "error");
       });
-  }, [applyImportSelection, deckRepository, reportMessage, resetJsonImportState]);
+  }, [applyImportSelection, deckRepository, errorText, reportMessage, resetJsonImportState]);
 
   useEffect(() => {
     const unsubscribe = runtimeGateway.subscribeImportDeckFileRequested((payload) => {
@@ -260,19 +263,19 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
 
     if (!filePath && !fileText) {
       reportMessage(
-        "Select a .lioradeck, .lioralang or .json file before confirming import",
+        t("import.errors.noFile"),
         "error",
       );
       return;
     }
 
     if (!normalizedSource || !normalizedTarget) {
-      reportMessage("Source and target languages are required", "error");
+      reportMessage(t("import.errors.languagesRequired"), "error");
       return;
     }
 
     if (toLanguageKey(normalizedSource) === toLanguageKey(normalizedTarget)) {
-      reportMessage("Source and target languages should be different", "error");
+      reportMessage(t("import.errors.languagesSame"), "error");
       return;
     }
 
@@ -283,7 +286,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         toLanguageKey(normalizedTertiary) === toLanguageKey(normalizedTarget)
       )
     ) {
-      reportMessage("Optional language must be different from source and target", "error");
+      reportMessage(t("import.errors.optionalLanguage"), "error");
       return;
     }
 
@@ -320,26 +323,30 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
       const importedDeckName =
         typeof result?.deckName === "string" && result.deckName.trim()
           ? result.deckName
-          : "Deck";
+          : t("decks.untitled");
 
       if (importedCount > 0 && skippedCount === 0) {
         reportMessage(
-          `Imported "${importedDeckName}": ${importedCount} words`,
+          t("import.status.imported", { name: importedDeckName, count: importedCount }),
           "success",
         );
       } else if (importedCount > 0 && skippedCount > 0) {
         reportMessage(
-          `Imported "${importedDeckName}" with warnings: ${importedCount} added, ${skippedCount} skipped`,
+          t("import.status.importedWithSkipped", {
+            name: importedDeckName,
+            added: importedCount,
+            skipped: skippedCount,
+          }),
           "warning",
         );
       } else if (importedCount === 0 && skippedCount > 0) {
         reportMessage(
-          `Import completed with no new words: ${skippedCount} skipped`,
+          t("import.status.nothingNew", { count: skippedCount }),
           "danger",
         );
       } else {
         reportMessage(
-          `Imported "${importedDeckName}": ${importedCount} words`,
+          t("import.status.imported", { name: importedDeckName, count: importedCount }),
           "success",
         );
       }
@@ -352,7 +359,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
 
       return { success: true, result };
     } catch (importError) {
-      reportMessage(importError.message || "Failed to import deck", "error");
+      reportMessage(errorText(importError, "import.errors.import"), "error");
       return { success: false, canceled: false };
     } finally {
       setIsImporting(false);
@@ -362,16 +369,18 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
     deckRepository,
+    errorText,
     onImportSuccess,
     reportMessage,
     resetImportState,
+    t,
   ]);
 
   const importFromPaste = useCallback(async ({ text = "", deckName = "" } = {}) => {
     const normalizedText = toCleanString(text) || pasteTextDraft.trim();
 
     if (!normalizedText) {
-      setPasteError("Paste deck JSON first");
+      setPasteError(t("import.errors.pasteFirst"));
       return { success: false };
     }
 
@@ -391,7 +400,7 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
         toCleanString(deckName) ||
         jsonDeckNameDraft.trim() ||
         metadata.suggestedDeckName ||
-        "Imported Deck";
+        t("import.importedDeck");
 
       setPasteError("");
 
@@ -411,15 +420,17 @@ export const useDeckImportFlow = ({ onMessage, onImportSuccess } = {}) => {
 
       return importResult;
     } catch (error) {
-      setPasteError(error.message || "Failed to parse pasted deck");
+      setPasteError(errorText(error, "import.errors.parse"));
       return { success: false };
     }
   }, [
     appPreferences.deckDefaults,
+    errorText,
     jsonDeckNameDraft,
     pasteTextDraft,
     resetJsonImportState,
     runImport,
+    t,
   ]);
 
   const openLanguageReview = useCallback(() => {

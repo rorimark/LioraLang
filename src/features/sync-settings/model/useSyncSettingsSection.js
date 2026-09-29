@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePlatformService } from "@shared/providers";
+import { useI18n } from "@shared/lib/i18n";
 
 const DEFAULT_STATUS = Object.freeze({
   configured: false,
@@ -26,27 +27,15 @@ const DEFAULT_STATUS = Object.freeze({
   lastSummary: "",
 });
 
-const formatTimestamp = (value) => {
-  if (!value) {
-    return "Never";
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Never";
-  }
-
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-};
-
 export const useSyncSettingsSection = () => {
   const syncRepository = usePlatformService("syncRepository");
   const [status, setStatus] = useState(DEFAULT_STATUS);
   const [isRunningNow, setIsRunningNow] = useState(false);
+  const { t, formatDate } = useI18n();
+  const formatTimestamp = useCallback(
+    (value) => (value && formatDate(value, { dateStyle: "medium", timeStyle: "short" })) || t("sync.never"),
+    [formatDate, t],
+  );
 
   useEffect(() => {
     let isActive = true;
@@ -99,37 +88,21 @@ export const useSyncSettingsSection = () => {
     [syncRepository],
   );
 
-  const summary = useMemo(() => {
+  const syncState = useMemo(() => {
     if (!status.configured) {
-      return {
-        label: "Unavailable",
-        tone: "muted",
-        text: "Supabase config is missing, so cross-device sync is off.",
-      };
+      return { state: "unavailable", tone: "muted" };
     }
 
     if (!status.signedIn) {
-      return {
-        label: "Guest mode",
-        tone: "muted",
-        text: "Sign in to sync your library and study progress across devices.",
-      };
+      return { state: "guest", tone: "muted" };
     }
 
     if (!status.online) {
-      return {
-        label: "Offline",
-        tone: "warning",
-        text: "Local changes stay safe here and will sync automatically when you're back online.",
-      };
+      return { state: "offline", tone: "warning" };
     }
 
     if (status.lastErrorMessage) {
-      return {
-        label: "Needs attention",
-        tone: "danger",
-        text: status.lastErrorMessage,
-      };
+      return { state: "attention", tone: "danger" };
     }
 
     // The background sync runs every few seconds; it is not news. The
@@ -140,19 +113,19 @@ export const useSyncSettingsSection = () => {
     );
 
     if (isRunningNow || (status.syncing && !hasSyncedBefore)) {
-      return {
-        label: "Syncing",
-        tone: "accent",
-        text: "Checking for deck and progress changes…",
-      };
+      return { state: "syncing", tone: "accent" };
     }
 
-    return {
-      label: "Synced",
-      tone: "success",
-      text: "Local data and cloud state are aligned. New changes keep syncing in the background.",
-    };
+    return { state: "synced", tone: "success" };
   }, [isRunningNow, status]);
+  const summary = useMemo(
+    () => ({
+      ...syncState,
+      label: t(`account.sync.${syncState.state}.label`),
+      text: t(`sync.summary.${syncState.state}`),
+    }),
+    [syncState, t],
+  );
 
   const lastCompletedSyncAt = useMemo(() => {
     return (

@@ -2,6 +2,7 @@ import { memo } from "react";
 import { FiEdit3, FiPlus, FiRotateCcw, FiSave } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
 import { Select } from "@shared/ui";
+import { useI18n } from "@shared/lib/i18n";
 
 export const WORD_FORM_ID = "deck-editor-word-form";
 
@@ -17,6 +18,7 @@ export const DeckEditorWordFormSection = memo(() => {
     handleUpsertWordDraft,
     resetWordDraft,
   } = useDeckEditorPanelContext();
+  const { t, languageName, partOfSpeechName } = useI18n();
 
   return (
     <section id={WORD_FORM_ID} className="deck-editor-panel__section">
@@ -25,49 +27,49 @@ export const DeckEditorWordFormSection = memo(() => {
           <span className="deck-editor-panel__section-icon" aria-hidden>
             {editingWordId ? <FiEdit3 /> : <FiPlus />}
           </span>
-          <h3>{editingWordId ? "Edit word" : "Add words"}</h3>
+          <h3>{editingWordId ? t("editor.editWord") : t("editor.addWords")}</h3>
         </div>
       </header>
 
       <div className="deck-editor-panel__word-grid">
         <label className="deck-editor-panel__field">
-          <span>{languageLabels.sourceLanguage}</span>
+          <span>{languageName(languageLabels.sourceLanguage)}</span>
           <input
             type="text"
             name="source"
             value={wordDraft.source}
             onChange={handleWordDraftChange}
-            placeholder={`Word in ${languageLabels.sourceLanguage}`}
+            placeholder={t("editor.wordPlaceholder")}
           />
         </label>
 
         <label className="deck-editor-panel__field">
-          <span>{languageLabels.targetLanguage}</span>
+          <span>{languageName(languageLabels.targetLanguage)}</span>
           <input
             type="text"
             name="target"
             value={wordDraft.target}
             onChange={handleWordDraftChange}
-            placeholder={`Translation in ${languageLabels.targetLanguage}`}
+            placeholder={t("editor.translationPlaceholder")}
           />
         </label>
 
         {languageLabels.hasTertiaryLanguage && (
           <label className="deck-editor-panel__field">
-            <span>{languageLabels.tertiaryLanguage}</span>
+            <span>{languageName(languageLabels.tertiaryLanguage)}</span>
             <input
               type="text"
               name="tertiary"
               value={wordDraft.tertiary}
               onChange={handleWordDraftChange}
-              placeholder={`Optional in ${languageLabels.tertiaryLanguage}`}
+              placeholder={t("editor.optionalPlaceholder")}
             />
           </label>
         )}
 
         {usesWordLevels && (
           <label className="deck-editor-panel__field">
-            <span>Level</span>
+            <span>{t("catalog.level")}</span>
             <Select
               name="level"
               value={wordDraft.level}
@@ -83,7 +85,7 @@ export const DeckEditorWordFormSection = memo(() => {
         )}
 
         <label className="deck-editor-panel__field">
-          <span>Part of speech</span>
+          <span>{t("catalog.partOfSpeech")}</span>
           <Select
             name="part_of_speech"
             value={wordDraft.part_of_speech}
@@ -91,31 +93,31 @@ export const DeckEditorWordFormSection = memo(() => {
           >
             {partOfSpeechOptions.map((part) => (
               <option key={part} value={part}>
-                {part}
+                {partOfSpeechName(part)}
               </option>
             ))}
           </Select>
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">
-          <span>Examples</span>
+          <span>{t("flashcard.examples")}</span>
           <textarea
             name="examplesInput"
             value={wordDraft.examplesInput}
             onChange={handleWordDraftChange}
-            placeholder={"One example per line\nA short sentence with this word"}
+            placeholder={t("editor.examplesPlaceholder")}
             rows={4}
           />
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">
-          <span>Word tags (comma separated)</span>
+          <span>{t("editor.wordTags")}</span>
           <input
             type="text"
             name="tagsInput"
             value={wordDraft.tagsInput}
             onChange={handleWordDraftChange}
-            placeholder="school, grammar, php"
+            placeholder={t("editor.wordTagsPlaceholder")}
           />
         </label>
       </div>
@@ -123,7 +125,7 @@ export const DeckEditorWordFormSection = memo(() => {
       <div className="deck-editor-panel__word-actions">
         <button type="button" onClick={handleUpsertWordDraft}>
           {editingWordId ? <FiSave aria-hidden /> : <FiPlus aria-hidden />}
-          <span>{editingWordId ? "Save word changes" : "Add word"}</span>
+          <span>{editingWordId ? t("editor.saveWord") : t("editor.addWord")}</span>
         </button>
         <button
           type="button"
@@ -131,7 +133,7 @@ export const DeckEditorWordFormSection = memo(() => {
           onClick={resetWordDraft}
         >
           <FiRotateCcw aria-hidden />
-          <span>Clear form</span>
+          <span>{t("editor.clearForm")}</span>
         </button>
       </div>
     </section>

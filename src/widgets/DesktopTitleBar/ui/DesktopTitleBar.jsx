@@ -1,10 +1,12 @@
 import { memo, useMemo } from "react";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import { AppIcon } from "@shared/ui";
+import { useI18n } from "@shared/lib/i18n";
 import { useDesktopTitleBar } from "../model";
 import "./DesktopTitleBar.css";
 
 export const DesktopTitleBar = memo(() => {
+  const { t } = useI18n();
   const panel = useDesktopTitleBar();
   const historyControls = useMemo(
     () => ({
@@ -32,21 +34,21 @@ export const DesktopTitleBar = memo(() => {
   return (
     <header
       className={`desktop-title-bar ${panel.platformClassName}`.trim()}
-      aria-label="Desktop title bar"
+      aria-label={t("titleBar.label")}
     >
       <div className="desktop-title-bar__left">
-        <div className="desktop-title-bar__history" role="group" aria-label="History">
+        <div className="desktop-title-bar__history" role="group" aria-label={t("titleBar.history")}>
           <div className="desktop-title-bar__history-item">
             <button
               type="button"
               onClick={historyControls.navigateBack}
               disabled={!historyControls.canGoBack}
-              aria-label="Go back"
+              aria-label={t("titleBar.back")}
             >
               <IoChevronBackOutline />
             </button>
             <div className="desktop-title-bar__tooltip" role="tooltip">
-              <span>Go back</span>
+              <span>{t("titleBar.back")}</span>
               {historyControls.backShortcutLabel ? (
                 <span className="desktop-title-bar__tooltip-shortcut">
                   {historyControls.backShortcutLabel}
@@ -59,12 +61,12 @@ export const DesktopTitleBar = memo(() => {
               type="button"
               onClick={historyControls.navigateForward}
               disabled={!historyControls.canGoForward}
-              aria-label="Go forward"
+              aria-label={t("titleBar.forward")}
             >
               <IoChevronForwardOutline />
             </button>
             <div className="desktop-title-bar__tooltip" role="tooltip">
-              <span>Go forward</span>
+              <span>{t("titleBar.forward")}</span>
               {historyControls.forwardShortcutLabel ? (
                 <span className="desktop-title-bar__tooltip-shortcut">
                   {historyControls.forwardShortcutLabel}

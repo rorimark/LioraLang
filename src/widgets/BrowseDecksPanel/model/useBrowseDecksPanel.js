@@ -5,6 +5,7 @@ import { useAppPreferences } from "@shared/lib/appPreferences";
 import { ROUTE_PATHS } from "@shared/config/routes";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
 import { buildPublicDeckShareUrl } from "@shared/lib/share";
+import { useI18n } from "@shared/lib/i18n";
 
 const BROWSE_PAGE_SIZE = 6;
 const SEARCH_DEBOUNCE_MS = 280;
@@ -17,57 +18,43 @@ const toVariant = (value) => {
   return "info";
 };
 
-const resolveImportMessage = (result, fallbackDeckName) => {
+const resolveImportMessage = (result, fallbackDeckName, t) => {
   const importedCount = Number.isFinite(Number(result?.importedCount))
     ? Number(result.importedCount)
     : 0;
   const skippedCount = Number.isFinite(Number(result?.skippedCount))
     ? Number(result.skippedCount)
     : 0;
-  const resolvedDeckName =
+  const name =
     typeof result?.deckName === "string" && result.deckName.trim()
       ? result.deckName.trim()
-      : fallbackDeckName || "Deck";
+      : fallbackDeckName || t("decks.untitled");
 
   if (importedCount <= 0 && skippedCount > 0) {
     return {
-      text: `No new words imported from "${resolvedDeckName}" (${skippedCount} skipped)`,
+      text: t("browse.status.nothingNew", { name, count: skippedCount }),
       variant: "warning",
     };
   }
 
   if (skippedCount > 0) {
     return {
-      text: `Imported "${resolvedDeckName}": ${importedCount} words, ${skippedCount} skipped`,
+      text: t("import.status.importedWithSkipped", { name, added: importedCount, skipped: skippedCount }),
       variant: "warning",
     };
   }
 
   return {
-    text: `Imported "${resolvedDeckName}": ${importedCount} words`,
+    text: t("import.status.imported", { name, count: importedCount }),
     variant: "success",
   };
 };
 
-const withDownloadsCounterWarning = (message) => {
-  const baseText = typeof message?.text === "string" ? message.text.trim() : "";
-  const fallbackText = "Deck imported";
-
-  return {
-    text: `${baseText || fallbackText}. Downloads counter was not updated.`,
-    variant: "warning",
-  };
-};
-
-const withDownloadsCounterQueuedWarning = (message) => {
-  const baseText = typeof message?.text === "string" ? message.text.trim() : "";
-  const fallbackText = "Deck imported";
-
-  return {
-    text: `${baseText || fallbackText}. Downloads update is queued and will sync when you're online.`,
-    variant: "warning",
-  };
-};
+// The import worked; only the public download counter did not move.
+const withCounterNote = (message, noteKey, t) => ({
+  text: `${message?.text?.trim() || t("import.done.title")} ${t(noteKey)}`,
+  variant: "warning",
+});
 
 const buildDeckSharePreviewKey = (deck) => {
   const versionToken =
@@ -78,6 +65,7 @@ const buildDeckSharePreviewKey = (deck) => {
 
 export const useBrowseDecksPanel = () => {
   const navigate = useNavigate();
+  const { t, errorText } = useI18n();
   const deckRepository = usePlatformService("deckRepository");
   const hubRepository = usePlatformService("hubRepository");
   const { appPreferences } = useAppPreferences();
@@ -170,7 +158,8 @@ export const useBrowseDecksPanel = () => {
 
         setDecks([]);
         setTotalDecks(0);
-        setError(loadError.message || "Failed to load community decks");
+        console.warn(loadError);
+        setError("browse.errors.load");
       })
       .finally(() => {
         if (requestIdRef.current !== nextRequestId) {
@@ -211,14 +200,14 @@ export const useBrowseDecksPanel = () => {
     const normalizedDeckName =
       typeof result?.deckName === "string" && result.deckName.trim()
         ? result.deckName.trim()
-        : fallbackDeckName || "Imported deck";
+        : fallbackDeckName || t("import.importedDeck");
 
     setPostImportModal({
       isOpen: true,
       deckId: normalizedDeckId,
       deckName: normalizedDeckName,
     });
-  }, []);
+  }, [t]);
 
   const closePostImportModal = useCallback(() => {
     setPostImportModal((currentState) => {
@@ -283,7 +272,7 @@ export const useBrowseDecksPanel = () => {
     const filePath = deck?.latestVersion?.filePath || "";
 
     if (!filePath) {
-      reportMessage("Deck package file is unavailable for this item", "error");
+      reportMessage(t("browse.errors.noPackage"), "error");
       return;
     }
 
@@ -313,7 +302,7 @@ export const useBrowseDecksPanel = () => {
           includeTags: appPreferences.importExport.includeTags,
         },
       });
-      const importMessage = resolveImportMessage(result, deck.title);
+      const importMessage = resolveImportMessage(result, deck.title, t);
       let resolvedStatus = importMessage;
 
       try {
@@ -349,18 +338,18 @@ export const useBrowseDecksPanel = () => {
         });
 
         if (isDownloadsIncrementQueued) {
-          resolvedStatus = withDownloadsCounterQueuedWarning(importMessage);
+          resolvedStatus = withCounterNote(importMessage, "browse.status.counterQueued", t);
         } else {
           resolvedStatus = importMessage;
         }
       } catch {
-        resolvedStatus = withDownloadsCounterWarning(importMessage);
+        resolvedStatus = withCounterNote(importMessage, "browse.status.counterFailed", t);
       }
 
       reportMessage(resolvedStatus.text, resolvedStatus.variant);
       openPostImportModal(result, deck.title);
     } catch (importError) {
-      reportMessage(importError.message || "Failed to import deck from Hub", "error");
+      reportMessage(errorText(importError, "browse.errors.import"), "error");
     } finally {
       setImportingDeckId("");
     }
@@ -369,9 +358,11 @@ export const useBrowseDecksPanel = () => {
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
     deckRepository,
+    errorText,
     hubRepository,
     openPostImportModal,
     reportMessage,
+    t,
   ]);
 
   const resolvePublicDeckUrl = useCallback((deck) => {
@@ -392,21 +383,21 @@ export const useBrowseDecksPanel = () => {
     const publicUrl = resolvePublicDeckUrl(deck);
 
     if (!publicUrl) {
-      reportMessage("Public deck link is not available", "error");
+      reportMessage(t("browse.errors.noLink"), "error");
       return;
     }
 
     const copied = await copyTextToClipboard(publicUrl);
     reportMessage(
-      copied ? "Public deck link copied" : "Failed to copy deck link",
+      copied ? t("browse.status.linkCopied") : t("browse.errors.copy"),
       copied ? "success" : "error",
     );
-  }, [reportMessage, resolvePublicDeckUrl]);
+  }, [reportMessage, resolvePublicDeckUrl, t]);
 
   return {
     decks,
     isLoading,
-    error,
+    error: error ? t(error) : "",
     isConfigured,
     searchInput,
     currentPage,

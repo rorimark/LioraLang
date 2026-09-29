@@ -135,7 +135,7 @@ describe("SRS session lifecycle", () => {
     await act(async () => {
       await hook.result.current.rate("good");
     });
-    expect(hook.result.current.error).toBe("Storage failed");
+    expect(hook.result.current.error).toBe("Your answer could not be saved. Try again.");
     expect(hook.result.current.session.card.wordId).toBe(1);
     repository.getSrsSession.mockResolvedValue(session(2));
     await act(async () => {

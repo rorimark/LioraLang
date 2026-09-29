@@ -5,9 +5,11 @@ import { InlineAlert, Panel, SearchField } from "@shared/ui";
 import { useBrowseDecksPanel } from "../model";
 import { BrowseDeckCardList } from "./BrowseDeckCardList";
 import "./BrowseDecksPanel.css";
+import { useI18n } from "@shared/lib/i18n";
 
 export const BrowseDecksPanel = memo(() => {
   const panel = useBrowseDecksPanel();
+  const { t } = useI18n();
   const deckList = useMemo(
     () => ({
       decks: panel.decks,
@@ -94,9 +96,7 @@ export const BrowseDecksPanel = memo(() => {
 
       {!panel.isConfigured ? (
         <div className="browse-decks-panel__warning">
-          Supabase is not configured. Add <code>VITE_SUPABASE_URL</code> and{" "}
-          <code>VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY</code> to your{" "}
-          <code>.env</code>.
+          {t("hub.notConfigured")}
         </div>
       ) : null}
 
@@ -108,8 +108,8 @@ export const BrowseDecksPanel = memo(() => {
             value={panel.searchInput}
             onChange={panel.handleSearchInputChange}
             onClear={panel.clearSearch}
-            placeholder="Search decks by title..."
-            ariaLabel="Search decks"
+            placeholder={t("browse.searchPlaceholder")}
+            ariaLabel={t("decks.search")}
           />
         </div>
       ) : null}
@@ -118,7 +118,7 @@ export const BrowseDecksPanel = memo(() => {
 
       {panel.isConfigured && panel.isLoading ? (
         <div className="browse-decks-panel__loading">
-          Loading community decks...
+          {t("browse.loading")}
         </div>
       ) : null}
 

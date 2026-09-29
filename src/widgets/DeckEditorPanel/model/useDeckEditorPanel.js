@@ -12,6 +12,7 @@ import {
   buildDeckEditRoute,
   ROUTE_PATHS,
 } from "@shared/config/routes";
+import { useI18n } from "@shared/lib/i18n";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const PART_OF_SPEECH_OPTIONS = [
@@ -290,7 +291,9 @@ export const useDeckEditorPanel = () => {
   const nextTempIdRef = useRef(1);
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [isSaving, setIsSaving] = useState(false);
+  // A message key, said in the current language when it is read.
   const [loadError, setLoadError] = useState("");
+  const { t, errorText } = useI18n();
   const [statusMessage, setStatusMessage] = useState("");
   const [statusVariant, setStatusVariant] = useState("info");
   const [deckForm, setDeckForm] = useState(() => defaultDeckForm);
@@ -348,12 +351,14 @@ export const useDeckEditorPanel = () => {
       ]);
 
       if (!deck) {
-        throw new Error("Deck not found");
+        setLoadError("decks.errors.notFound");
+        return;
       }
 
       applyLoadedDeck(deck, loadedWords);
     } catch (error) {
-      setLoadError(error.message || "Failed to load deck");
+      console.warn(error);
+      setLoadError("editor.errors.load");
     } finally {
       setIsLoading(false);
     }
@@ -423,7 +428,7 @@ export const useDeckEditorPanel = () => {
     const cleanedSource = wordDraft.source.trim();
 
     if (!cleanedSource) {
-      reportStatus("Source word cannot be empty", "error");
+      reportStatus(t("editor.errors.emptyWord"), "error");
       return;
     }
 
@@ -467,6 +472,7 @@ export const useDeckEditorPanel = () => {
     editingWordId,
     reportStatus,
     resetWordDraft,
+    t,
     wordDraft,
   ]);
 
@@ -508,11 +514,11 @@ export const useDeckEditorPanel = () => {
       }
 
       if (removedWord) {
-        const removedWordLabel = removedWord.source?.trim() || "word";
-        reportStatus(`Deleted: ${removedWordLabel}`, "danger");
+        const removedWordLabel = removedWord.source?.trim() || "—";
+        reportStatus(t("editor.status.deleted", { word: removedWordLabel }), "danger");
       }
     },
-    [editingWordId, previewWordId, reportStatus, resetWordDraft, words],
+    [editingWordId, previewWordId, reportStatus, resetWordDraft, t, words],
   );
 
   const wordsTotalPages = useMemo(() => {
@@ -609,12 +615,12 @@ export const useDeckEditorPanel = () => {
     const targetLanguage = deckForm.targetLanguage.trim();
 
     if (!deckName) {
-      reportStatus("Deck name is required", "error");
+      reportStatus(t("editor.errors.nameRequired"), "error");
       return;
     }
 
     if (!sourceLanguage || !targetLanguage) {
-      reportStatus("Source and target languages are required", "error");
+      reportStatus(t("import.errors.languagesRequired"), "error");
       return;
     }
 
@@ -663,12 +669,12 @@ export const useDeckEditorPanel = () => {
       const savedWords = Array.isArray(saveResult?.words) ? saveResult.words : [];
 
       if (!savedDeck) {
-        throw new Error("Deck save result is invalid");
+        throw new Error("save result is invalid");
       }
 
       applyLoadedDeck(savedDeck, savedWords);
       reportStatus(
-        numericDeckId ? "Deck updated successfully" : "Deck created successfully",
+        numericDeckId ? t("editor.status.updated") : t("editor.status.created"),
         "info",
       );
 
@@ -676,7 +682,7 @@ export const useDeckEditorPanel = () => {
         navigate(buildDeckEditRoute(savedDeck.id), { replace: true });
       }
     } catch (saveError) {
-      reportStatus(saveError.message || "Failed to save deck", "error");
+      reportStatus(errorText(saveError, "editor.errors.save"), "error");
     } finally {
       setIsSaving(false);
     }
@@ -690,9 +696,11 @@ export const useDeckEditorPanel = () => {
     deckForm.usesWordLevels,
     deckForm.tagsInput,
     deckRepository,
+    errorText,
     navigate,
     numericDeckId,
     reportStatus,
+    t,
     words,
   ]);
 
@@ -722,7 +730,7 @@ export const useDeckEditorPanel = () => {
     isEditMode,
     isLoading,
     isSaving,
-    loadError,
+    loadError: loadError ? t(loadError) : "",
     statusMessage,
     statusVariant,
     deckForm,

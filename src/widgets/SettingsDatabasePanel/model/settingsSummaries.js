@@ -1,24 +1,18 @@
 import { SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
+import { INTERFACE_LOCALES } from "@shared/lib/i18n";
 
 // One line per section, saying what it is set to now, so the list of
 // sections doubles as an overview and most people never need to open one.
-
-const THEME_LABELS = { system: "System theme", light: "Light theme", dark: "Dark theme" };
-const TEXT_SIZE_LABELS = { small: "small text", normal: "normal text", large: "large text" };
-const BACKUP_LABELS = {
-  off: "No automatic backups",
-  daily: "Backups daily",
-  weekly: "Backups weekly",
-  monthly: "Backups monthly",
-};
+// Said in the interface's language: takes the value useI18n() returns.
 
 const joinParts = (...parts) => parts.filter(Boolean).join(" · ");
 
-export const buildSettingsSummaries = ({ appPreferences, themeMode, isDesktopMode = false }) => {
+export const buildSettingsSummaries = ({ appPreferences, themeMode, isDesktopMode = false, i18n }) => {
   if (!appPreferences) {
     return {};
   }
 
+  const { t, languageName } = i18n;
   const {
     studySession = {},
     spacedRepetition = {},
@@ -30,38 +24,41 @@ export const buildSettingsSummaries = ({ appPreferences, themeMode, isDesktopMod
     desktop = {},
     sync = {},
   } = appPreferences;
+  const chosenLanguage = INTERFACE_LOCALES.find((item) => item.code === uiAccessibility.interfaceLanguage);
+  const theme = ["system", "light", "dark"].includes(themeMode) ? themeMode : "system";
 
   return {
     [SETTINGS_TAB_KEYS.general]: joinParts(
-      THEME_LABELS[themeMode] || THEME_LABELS.system,
-      TEXT_SIZE_LABELS[uiAccessibility.fontScale],
-      uiAccessibility.reducedMotion ? "reduced motion" : "",
+      t(`summaries.theme.${theme}`),
+      chosenLanguage?.nativeName,
+      uiAccessibility.fontScale ? t(`summaries.textSize.${uiAccessibility.fontScale}`) : "",
+      uiAccessibility.reducedMotion ? t("summaries.reducedMotion") : "",
     ),
     [SETTINGS_TAB_KEYS.learningCore]: joinParts(
-      Number.isFinite(studySession.dailyGoal) ? `${studySession.dailyGoal} cards a day` : "",
+      Number.isFinite(studySession.dailyGoal) ? t("summaries.dailyGoal", { count: studySession.dailyGoal }) : "",
       Number.isFinite(spacedRepetition.newCardsPerDay)
-        ? `${spacedRepetition.newCardsPerDay} new`
+        ? t("summaries.newCards", { count: spacedRepetition.newCardsPerDay })
         : "",
     ),
     [SETTINGS_TAB_KEYS.deckDefaults]:
       deckDefaults.sourceLanguage && deckDefaults.targetLanguage
         ? joinParts(
-            `${deckDefaults.sourceLanguage} → ${deckDefaults.targetLanguage}`,
+            `${languageName(deckDefaults.sourceLanguage)} → ${languageName(deckDefaults.targetLanguage)}`,
             deckDefaults.level,
           )
         : "",
-    [SETTINGS_TAB_KEYS.sync]: sync.autoSync === false ? "Only when you sync" : "In the background",
+    [SETTINGS_TAB_KEYS.sync]: sync.autoSync === false ? t("summaries.syncManual") : t("summaries.syncAuto"),
     [SETTINGS_TAB_KEYS.importExport]: importExport.exportFormat
-      ? `Exports as .${importExport.exportFormat}`
+      ? t("summaries.exportsAs", { format: `.${importExport.exportFormat}` })
       : "",
     [SETTINGS_TAB_KEYS.workspaceSafety]: joinParts(
-      BACKUP_LABELS[dataSafety.autoBackupInterval],
-      dataSafety.confirmDestructive === false ? "no delete confirmation" : "",
+      dataSafety.autoBackupInterval ? t(`summaries.backups.${dataSafety.autoBackupInterval}`) : "",
+      dataSafety.confirmDestructive === false ? t("summaries.noDeleteConfirmation") : "",
     ),
     [SETTINGS_TAB_KEYS.advancedDesktop]: joinParts(
-      isDesktopMode && desktop.launchAtStartup ? "Opens at login" : "",
-      privacy.analyticsEnabled ? "Analytics on" : "Analytics off",
-      privacy.crashReportsEnabled ? "crash reports on" : "crash reports off",
+      isDesktopMode && desktop.launchAtStartup ? t("summaries.opensAtLogin") : "",
+      privacy.analyticsEnabled ? t("summaries.analyticsOn") : t("summaries.analyticsOff"),
+      privacy.crashReportsEnabled ? t("summaries.crashReportsOn") : t("summaries.crashReportsOff"),
     ),
   };
 };

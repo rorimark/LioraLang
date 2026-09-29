@@ -10,11 +10,12 @@ const LEVEL_ORDER = {
   C2: 6,
 };
 
+// Labels are message keys: the list is shared, the words are the reader's.
 export const SORT_OPTIONS = [
-  { value: "alpha-asc", label: "A-Z" },
-  { value: "alpha-desc", label: "Z-A" },
-  { value: "level-asc", label: "Level: easy-hard" },
-  { value: "level-desc", label: "Level: hard-easy" },
+  { value: "alpha-asc", labelKey: "catalog.sort.alphaAsc" },
+  { value: "alpha-desc", labelKey: "catalog.sort.alphaDesc" },
+  { value: "level-asc", labelKey: "catalog.sort.levelAsc" },
+  { value: "level-desc", labelKey: "catalog.sort.levelDesc" },
 ];
 
 export const PAGE_SIZE_OPTIONS = [10, 20, 50];
@@ -82,31 +83,6 @@ export const useCardCatalog = (words) => {
             : [],
         ),
       )].sort((left, right) => left.localeCompare(right)),
-    [sourceWords],
-  );
-
-  const kpiItems = useMemo(
-    () => [
-      {
-        label: "New",
-        count: String(
-          sourceWords.filter((word) => ["A1", "A2"].includes(word.level)).length,
-        ),
-      },
-      {
-        label: "Mature",
-        count: String(
-          sourceWords.filter((word) => ["B2", "C1", "C2"].includes(word.level))
-            .length,
-        ),
-      },
-      {
-        label: "Leeches",
-        count: String(
-          sourceWords.filter((word) => ["C1", "C2"].includes(word.level)).length,
-        ),
-      },
-    ],
     [sourceWords],
   );
 
@@ -227,7 +203,6 @@ export const useCardCatalog = (words) => {
   }, []);
 
   return {
-    kpiItems,
     search,
     sort,
     filters,

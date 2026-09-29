@@ -10,6 +10,7 @@ import {
   buildDeckEditRoute,
   ROUTE_PATHS,
 } from "@shared/config/routes";
+import { useI18n } from "@shared/lib/i18n";
 
 export const DECK_PAGE_SIZE_OPTIONS = [10, 20, 50];
 const DEFAULT_DECK_PAGE_SIZE = 20;
@@ -34,6 +35,7 @@ export const useDecksOverviewPanel = () => {
   const syncRepository = usePlatformService("syncRepository");
   const { decks, isLoading, error, refreshDecks } = useDecks();
   const { appPreferences } = useAppPreferences();
+  const { t, errorText } = useI18n();
   const [message, setMessage] = useState("");
   const [messageVariant, setMessageVariant] = useState("info");
   const [publishingDeckId, setPublishingDeckId] = useState(null);
@@ -148,28 +150,28 @@ export const useDecksOverviewPanel = () => {
       const exportedDeckName =
         typeof result?.deckName === "string" && result.deckName.trim()
           ? result.deckName
-          : "Deck";
+          : t("decks.untitled");
       const exportFilePath =
         typeof result?.filePath === "string" ? result.filePath.trim() : "";
 
       if (exportedCount === 0) {
         reportMessage(
-          `Exported "${exportedDeckName}" as empty deck`,
+          t("decks.status.exportedEmpty", { name: exportedDeckName }),
           "warning",
         );
       } else if (!exportFilePath) {
         reportMessage(
-          `Exported "${exportedDeckName}": ${exportedCount} words (path unavailable)`,
+          t("decks.status.exportedNoPath", { name: exportedDeckName, count: exportedCount }),
           "warning",
         );
       } else {
         reportMessage(
-          `Exported "${exportedDeckName}": ${exportedCount} words`,
+          t("decks.status.exported", { name: exportedDeckName, count: exportedCount }),
           "success",
         );
       }
     } catch (exportError) {
-      reportMessage(exportError.message || "Failed to export deck", "error");
+      reportMessage(errorText(exportError, "decks.errors.export"), "error");
     } finally {
       setExportingDeckId(null);
     }
@@ -178,7 +180,9 @@ export const useDecksOverviewPanel = () => {
     appPreferences.importExport.includeExamples,
     appPreferences.importExport.includeTags,
     deckRepository,
+    errorText,
     reportMessage,
+    t,
   ]);
 
   const publishDeck = useCallback(async (deckId) => {
@@ -186,7 +190,7 @@ export const useDecksOverviewPanel = () => {
 
     if (!hubRepository.isConfigured()) {
       reportMessage(
-        "LLH is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY to .env.",
+        t("hub.notConfigured"),
         "error",
       );
       return;
@@ -195,14 +199,14 @@ export const useDecksOverviewPanel = () => {
     const normalizedDeckId = Number(deckId);
 
     if (!Number.isInteger(normalizedDeckId) || normalizedDeckId <= 0) {
-      reportMessage("Invalid deck id", "error");
+      reportMessage(t("decks.errors.notFound"), "error");
       return;
     }
 
     const deck = decks.find((item) => Number(item?.id) === normalizedDeckId);
 
     if (!deck) {
-      reportMessage("Deck not found", "error");
+      reportMessage(t("decks.errors.notFound"), "error");
       return;
     }
 
@@ -226,7 +230,7 @@ export const useDecksOverviewPanel = () => {
       const publishedTitle =
         typeof publishResult?.title === "string" && publishResult.title.trim()
           ? publishResult.title.trim()
-          : deck.name || "Deck";
+          : deck.name || t("decks.untitled");
       const version = Number.isFinite(Number(publishResult?.version))
         ? Number(publishResult.version)
         : 1;
@@ -238,7 +242,7 @@ export const useDecksOverviewPanel = () => {
 
       if (skippedAsDuplicate) {
         reportMessage(
-          `"${publishedTitle}" is already up to date on LLH (v${version}, ${wordsCount} words)`,
+          t("decks.status.publishUpToDate", { name: publishedTitle, version, count: wordsCount }),
           "warning",
         );
         return;
@@ -246,18 +250,18 @@ export const useDecksOverviewPanel = () => {
 
       if (queuedPublish) {
         reportMessage(
-          `Queued "${publishedTitle}" for LLH publish. It will sync automatically when you're online.`,
+          t("decks.status.publishQueued", { name: publishedTitle }),
           "warning",
         );
         return;
       }
 
       reportMessage(
-        `Published "${publishedTitle}" to LLH (v${version}, ${wordsCount} words)`,
+        t("decks.status.published", { name: publishedTitle, version, count: wordsCount }),
         "success",
       );
     } catch (publishError) {
-      reportMessage(publishError.message || "Failed to publish deck", "error");
+      reportMessage(errorText(publishError, "decks.errors.publish"), "error");
     } finally {
       setPublishingDeckId(null);
     }
@@ -266,8 +270,10 @@ export const useDecksOverviewPanel = () => {
     appPreferences.importExport.includeTags,
     deckRepository,
     decks,
+    errorText,
     hubRepository,
     reportMessage,
+    t,
   ]);
 
   const canManageSyncedLibrary = Boolean(
@@ -288,7 +294,7 @@ export const useDecksOverviewPanel = () => {
     setDeletingDeckId(deckId);
 
     try {
-      const deletedName = deckName?.trim() || "Deck";
+      const deletedName = deckName?.trim() || t("decks.untitled");
 
       if (
         mode === "remove-device" &&
@@ -301,7 +307,7 @@ export const useDecksOverviewPanel = () => {
           name: deckName,
           syncId: deckSyncId,
         });
-        reportMessage(`Removed from this device: ${deletedName}`, "warning");
+        reportMessage(t("decks.status.removedFromDevice", { name: deletedName }), "warning");
       } else if (
         mode === "delete-library" &&
         canManageSyncedLibrary &&
@@ -316,24 +322,24 @@ export const useDecksOverviewPanel = () => {
 
         if (result?.queued) {
           reportMessage(
-            `Queued "${deletedName}" for removal from your synced library. It will finish when you're online.`,
+            t("decks.status.deleteQueued", { name: deletedName }),
             "warning",
           );
         } else {
           reportMessage(
-            `Deleted from synced library: ${deletedName}`,
+            t("decks.status.deletedFromLibrary", { name: deletedName }),
             "danger",
           );
         }
       } else {
         await deckRepository.deleteDeck(deckId);
-        reportMessage(`Deck deleted: ${deletedName}`, "danger");
+        reportMessage(t("decks.status.deleted", { name: deletedName }), "danger");
       }
 
       await refreshDecks();
       return true;
     } catch (deleteError) {
-      reportMessage(deleteError.message || "Failed to delete deck", "error");
+      reportMessage(errorText(deleteError, "decks.errors.delete"), "error");
       return false;
     } finally {
       setDeletingDeckId(null);
@@ -341,8 +347,10 @@ export const useDecksOverviewPanel = () => {
   }, [
     canManageSyncedLibrary,
     deckRepository,
+    errorText,
     refreshDecks,
     reportMessage,
+    t,
     syncRepository,
   ]);
 

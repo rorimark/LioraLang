@@ -15,6 +15,9 @@ export const useStartupPreferences = () => {
   const [startupPreferences, setStartupPreferences] = useState(
     DEFAULT_STARTUP_PREFERENCES,
   );
+  // Until the stored settings have been read, the defaults are a guess;
+  // what depends on a real choice (the language) waits for this.
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -35,6 +38,7 @@ export const useStartupPreferences = () => {
             ? prevValue
             : nextStartupPreferences,
         );
+        setIsLoaded(true);
       })
       .catch(() => {
         if (cancelled) {
@@ -46,6 +50,7 @@ export const useStartupPreferences = () => {
             ? prevValue
             : DEFAULT_STARTUP_PREFERENCES,
         );
+        setIsLoaded(true);
       });
 
     const unsubscribe = settingsRepository.subscribeAppSettingsUpdated((nextSettings) => {
@@ -68,5 +73,6 @@ export const useStartupPreferences = () => {
 
   return {
     startupPreferences,
+    isLoaded,
   };
 };

@@ -1,5 +1,6 @@
 import { memo } from "react";
 import "./Flashcard.css";
+import { useI18n } from "@shared/lib/i18n";
 
 const EMPTY_CARD = Object.freeze({});
 const EMPTY_BADGES = Object.freeze([]);
@@ -18,10 +19,11 @@ const resolveTextLengthClass = (text) => {
 };
 
 export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
+    const { t } = useI18n();
     const {
-      frontLabel = "Front",
+      frontLabel = t("flashcard.front"),
       frontText,
-      backLabel = "Back",
+      backLabel = t("flashcard.back"),
       backText,
       backMetaBadges = EMPTY_BADGES,
       backDetails = EMPTY_DETAILS,
@@ -46,8 +48,8 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
         disabled={disabled}
         aria-label={
           isFlipped
-            ? "Flashcard back side. Press to show front side."
-            : "Flashcard front side. Press to reveal answer."
+            ? t("flashcard.backAria")
+            : t("flashcard.frontAria")
         }
         aria-pressed={isFlipped}
       >
@@ -64,7 +66,7 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
             </span>
             <span className="flashcard__foot">
               <span className="flashcard__note">{frontNote}</span>
-              <span className="flashcard__hint">Tap to reveal answer</span>
+              <span className="flashcard__hint">{t("flashcard.reveal")}</span>
             </span>
           </span>
 
@@ -96,7 +98,7 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
                 {backText || "-"}
               </strong>
               {backDetails.length > 0 && (
-                <span className="flashcard__details" aria-label="Examples">
+                <span className="flashcard__details" aria-label={t("flashcard.examples")}>
                   {backDetails.map((detail, index) => (
                     <span key={`${detail}-${index}`} className="flashcard__detail-line">
                       {detail}
@@ -107,7 +109,7 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
             </span>
             <span className="flashcard__foot">
               <span className="flashcard__note" />
-              <span className="flashcard__hint">Tap to see front side</span>
+              <span className="flashcard__hint">{t("flashcard.showFront")}</span>
             </span>
           </span>
         </span>

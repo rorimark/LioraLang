@@ -107,6 +107,9 @@ export const createRuntimePreferencesManager = ({
       crashReportsEnabled: defaultAppPreferences.privacy.crashReportsEnabled,
       logLevel: defaultAppPreferences.privacy.logLevel,
     },
+    uiAccessibility: {
+      interfaceLanguage: defaultAppPreferences.uiAccessibility?.interfaceLanguage || "auto",
+    },
   };
 
   const normalizeAppPreferencesForMain = (value = {}) => {
@@ -131,6 +134,13 @@ export const createRuntimePreferencesManager = ({
       : defaultRuntimeAppPreferences.privacy.logLevel;
 
     return {
+      uiAccessibility: {
+        // A language code or "auto"; the translator falls back to the
+        // system's languages for anything it does not know.
+        interfaceLanguage:
+          toCleanString(raw?.uiAccessibility?.interfaceLanguage) ||
+          defaultRuntimeAppPreferences.uiAccessibility.interfaceLanguage,
+      },
       studySession: {
         defaultStudyMode: ["review", "srs"].includes(raw?.studySession?.defaultStudyMode)
           ? raw.studySession.defaultStudyMode
