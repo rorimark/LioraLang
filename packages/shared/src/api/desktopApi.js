@@ -1,3 +1,4 @@
+import { buildProgressOverview } from "@shared/core/usecases/progress";
 const FALLBACK_DECK_ID = "local-json";
 const ELECTRON_INVOKE_PREFIX = /^Error invoking remote method '[^']+':\s*/i;
 const LEADING_ERROR_PREFIX = /^Error:\s*/i;
@@ -391,120 +392,16 @@ const buildFallbackSrsSession = async (
   };
 };
 
-const FALLBACK_DAY_MS = 24 * 60 * 60 * 1000;
-const FALLBACK_WEEKDAY_FORMATTER = new Intl.DateTimeFormat("en-US", {
-  weekday: "short",
-});
-
-const buildFallbackRecentDays = (daysCount) => {
-  const safeCount = Number.isInteger(daysCount) && daysCount > 0 ? daysCount : 7;
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-
-  return Array.from({ length: safeCount }, (_, index) => {
-    const offset = safeCount - 1 - index;
-    const date = new Date(today.getTime() - offset * FALLBACK_DAY_MS);
-
-    return {
-      date: date.toISOString().slice(0, 10),
-      label: FALLBACK_WEEKDAY_FORMATTER.format(date),
-    };
-  });
-};
-
-const clampFallbackPercent = (value) => {
-  const safeValue = Number(value) || 0;
-  return Math.max(0, Math.min(100, Number(safeValue.toFixed(1))));
-};
-
+// No review history outside the desktop app: the starter words are shown
+// as they are, all new, rather than with made-up numbers.
 const buildFallbackProgressOverview = async () => {
   const words = await loadFallbackWords();
-  const fallbackState = getFallbackSrsState(FALLBACK_DECK_ID);
-  const reviewedToday = Math.max(0, Number(fallbackState?.reviewedToday) || 0);
-  const weeklyDays = buildFallbackRecentDays(7);
-  const intensityDays = buildFallbackRecentDays(14);
-  const weightedReviews = weeklyDays.map((_, index) => {
-    if (reviewedToday === 0) {
-      return 0;
-    }
+  const deck = { id: 1, name: "Starter Deck" };
 
-    const distanceFromToday = weeklyDays.length - 1 - index;
-    const weight = Math.max(0.12, 1 - distanceFromToday * 0.14);
-    return Math.round(reviewedToday * weight);
+  return buildProgressOverview({
+    decks: words.length > 0 ? [deck] : [],
+    words: words.map((word, index) => ({ id: index + 1, deckId: deck.id })),
   });
-  const weekly = weeklyDays.map((dayItem, index) => {
-    const reviews = weightedReviews[index];
-    const recall = reviews > 0 ? clampFallbackPercent(76 + index * 3.2) : 0;
-
-    return {
-      date: dayItem.date,
-      label: dayItem.label,
-      reviews,
-      recall,
-    };
-  });
-  const reviewed7d = weekly.reduce((total, dayItem) => total + dayItem.reviews, 0);
-  const recall7d = reviewed7d > 0
-    ? clampFallbackPercent(
-      weekly.reduce((total, dayItem) => total + dayItem.recall, 0) / weekly.length,
-    )
-    : 0;
-  const baseIntensity = intensityDays.map((dayItem, index) => {
-    const weeklyIndex = index - (intensityDays.length - weekly.length);
-    const reviews = weeklyIndex >= 0 ? weightedReviews[weeklyIndex] : 0;
-
-    return {
-      date: dayItem.date,
-      label: dayItem.label,
-      value: reviews,
-    };
-  });
-  const matureCards = Math.floor(words.length * 0.35);
-  const streakDays = reviewedToday > 0 ? 1 : 0;
-
-  return {
-    generatedAt: new Date().toISOString(),
-    kpis: {
-      reviewed7d,
-      recall7d,
-      streakDays,
-      matureCards,
-    },
-    weekly,
-    intensity: baseIntensity,
-    deckLoad: [
-      {
-        id: FALLBACK_DECK_ID,
-        name: "Starter Deck",
-        cards: words.length,
-        reviews7d: reviewed7d,
-      },
-    ],
-    retentionSplit: [
-      { label: "New Queue", value: clampFallbackPercent(recall7d - 8) },
-      { label: "Learning Queue", value: clampFallbackPercent(recall7d - 3) },
-      { label: "Review Queue", value: clampFallbackPercent(recall7d + 4) },
-    ],
-    milestones:
-      words.length > 0
-        ? [
-          `Starter deck has ${words.length} cards`,
-          reviewedToday > 0
-            ? `You reviewed ${reviewedToday} cards today`
-            : "Complete your first review to start progress tracking",
-          "Desktop analytics becomes richer as you review more cards",
-        ]
-        : [
-          "No local cards loaded yet",
-          "Import or create a deck to unlock progress analytics",
-        ],
-    totals: {
-      decks: words.length > 0 ? 1 : 0,
-      words: words.length,
-      reviews: reviewedToday,
-    },
-  };
 };
 
 export const desktopApi = {
