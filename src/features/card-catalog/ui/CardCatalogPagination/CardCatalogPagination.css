@@ -1,118 +1,151 @@
+/* ===== Pager =====
+   Where you are on the left, the page keys on the right, as the app's
+   other keys. When there is no room for every page key it keeps back,
+   "Page 2 of 8" and forward, so it never wraps into a mess. */
+
 .cards-pagination {
+  container: pager / inline-size;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
   flex-wrap: wrap;
-  border: 2px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-  padding: 10px 12px;
+  gap: 10px 16px;
 }
 
 .cards-pagination__meta {
   display: flex;
   align-items: center;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 8px 16px;
   color: var(--color-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.cards-pagination__range {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .cards-pagination__size {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .cards-pagination__size .ui-select__trigger {
-  min-height: 36px;
+  min-height: 38px;
   padding: 4px 8px 4px 12px;
-  font-size: 0.84rem;
+  font-size: 0.86rem;
 }
 
-.cards-pagination__controls {
+.cards-pagination__controls,
+.cards-pagination__pages {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .cards-pagination__controls button {
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 2px solid var(--color-border-strong);
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-control);
   background: var(--color-surface);
   color: var(--color-text);
-  cursor: pointer;
   font-family: inherit;
-  font-size: 0.8rem;
-  padding: 6px 10px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 150ms var(--motion-spring),
+    border-bottom-width 150ms var(--motion-spring),
+    border-color 140ms ease;
+}
+
+.cards-pagination__controls button svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+@media (hover: hover) {
+  .cards-pagination__controls button:hover:not(:disabled) {
+    border-color: var(--color-primary-border);
+  }
+}
+
+.cards-pagination__controls button:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  transition-duration: 60ms;
 }
 
 .cards-pagination__controls button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
+  cursor: default;
+  opacity: 0.45;
 }
 
-.cards-pagination__controls button:hover:not(:disabled) {
-  background: var(--color-surface-muted);
+.cards-pagination__controls button:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
 }
 
 .cards-pagination__page.is-active {
-  border-color: var(--color-primary);
-  background: var(--color-primary-soft);
-  color: var(--color-primary-strong);
+  border-color: var(--color-primary-strong);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 .cards-pagination__ellipsis {
-  color: var(--color-text-muted);
-  font-size: 0.84rem;
-  padding: 0 2px;
+  min-width: 16px;
+  color: var(--color-text-subtle);
+  font-weight: 800;
+  text-align: center;
 }
 
-@media (max-width: 860px) {
-  .cards-pagination {
-    align-items: stretch;
-    padding: 9px 10px;
-    gap: 8px;
+.cards-pagination__status {
+  display: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* No room for every page: back, where you are, forward, across the
+   whole width, under the range. */
+@container pager (max-width: 600px) {
+  .cards-pagination__pages,
+  .cards-pagination__step-text {
+    display: none;
   }
 
-  .cards-pagination__meta {
+  .cards-pagination__status {
+    display: block;
+  }
+
+  .cards-pagination__controls {
+    flex: 1 1 100%;
     justify-content: space-between;
   }
 
-  .cards-pagination__controls {
-    flex-wrap: wrap;
+  .cards-pagination__controls button {
+    min-width: 48px;
+    min-height: 44px;
   }
 }
 
-@media (max-width: 520px) {
-  .cards-pagination {
-    padding: 8px;
-    gap: 7px;
-  }
-
-  .cards-pagination__meta {
-    font-size: 0.74rem;
-    gap: 7px;
-  }
-
-  .cards-pagination__size {
-    gap: 4px;
-    font-size: 0.74rem;
-  }
-
-  .cards-pagination__size .ui-select__trigger {
-    font-size: 0.8rem;
-  }
-
-  .cards-pagination__controls {
-    width: 100%;
-    gap: 5px;
-  }
-
+@media (prefers-reduced-motion: reduce) {
   .cards-pagination__controls button {
-    min-height: 32px;
-    font-size: 0.72rem;
-    padding: 5px 7px;
+    transition: none;
   }
 }

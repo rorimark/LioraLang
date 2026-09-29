@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useDecks } from "@entities/deck";
 import { useDeckImportFlow } from "@features/deck-import";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { paginate } from "@shared/lib/pagination";
 import {
   buildDeckDetailsRoute,
   buildDeckEditRoute,
   ROUTE_PATHS,
 } from "@shared/config/routes";
+
+export const DECK_PAGE_SIZE_OPTIONS = [10, 20, 50];
+const DEFAULT_DECK_PAGE_SIZE = 20;
 
 const buildDeckSearchBlob = (deck) =>
   [
@@ -36,6 +40,10 @@ export const useDecksOverviewPanel = () => {
   const [exportingDeckId, setExportingDeckId] = useState(null);
   const [deletingDeckId, setDeletingDeckId] = useState(null);
   const [deckSearch, setDeckSearch] = useState("");
+  // The page lives in the address, so coming back from a deck lands on the
+  // page it was opened from.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [deckPageSize, setDeckPageSize] = useState(DEFAULT_DECK_PAGE_SIZE);
   const [syncStatus, setSyncStatus] = useState(null);
   const [deleteState, setDeleteState] = useState({
     isOpen: false,
@@ -429,12 +437,62 @@ export const useDecksOverviewPanel = () => {
     );
   }, [decks, normalizedDeckSearch]);
 
-  const handleDeckSearchChange = useCallback((value) => {
-    setDeckSearch(value);
-  }, []);
+  const deckPage = useMemo(
+    () => paginate(filteredDecks, searchParams.get("page"), deckPageSize),
+    [deckPageSize, filteredDecks, searchParams],
+  );
+
+  const setDeckPageParam = useCallback(
+    (page) => {
+      setSearchParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+
+          if (page > 1) {
+            next.set("page", String(page));
+          } else {
+            next.delete("page");
+          }
+
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
+
+  const handleDeckSearchChange = useCallback(
+    (value) => {
+      setDeckSearch(value);
+      setDeckPageParam(1);
+    },
+    [setDeckPageParam],
+  );
+
+  const handleDeckPageChange = useCallback(
+    (page) => {
+      setDeckPageParam(page);
+    },
+    [setDeckPageParam],
+  );
+
+  const handleDeckPageSizeChange = useCallback(
+    (size) => {
+      if (DECK_PAGE_SIZE_OPTIONS.includes(size)) {
+        setDeckPageSize(size);
+        setDeckPageParam(1);
+      }
+    },
+    [setDeckPageParam],
+  );
 
   return {
-    decks: filteredDecks,
+    decks: deckPage.items,
+    matchingDecksCount: filteredDecks.length,
+    deckPage,
+    handleDeckPageChange,
+    handleDeckPageSizeChange,
     totalDecksCount: decks.length,
     deckSearch,
     isLoading,

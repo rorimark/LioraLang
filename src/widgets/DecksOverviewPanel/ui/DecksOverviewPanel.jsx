@@ -1,14 +1,46 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo, useRef } from "react";
 import { FiCode, FiFolderPlus, FiRefreshCw, FiUpload } from "react-icons/fi";
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
+import { CardCatalogPagination } from "@features/card-catalog";
 import { Button, InlineAlert, SearchField } from "@shared/ui";
-import { useDecksOverviewPanel } from "../model";
+import { DECK_PAGE_SIZE_OPTIONS, useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
 
 export const DecksOverviewPanel = memo(() => {
   const panel = useDecksOverviewPanel();
+  const listRef = useRef(null);
+  const { handleDeckPageChange, handleDeckPageSizeChange } = panel;
+
+  // A new page starts at its first deck: if the top of the list has
+  // scrolled away, bring it back.
+  const bringListIntoView = useCallback(() => {
+    requestAnimationFrame(() => {
+      const list = listRef.current;
+
+      if (list && list.getBoundingClientRect().top < 0) {
+        const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+        list.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
+      }
+    });
+  }, []);
+
+  const pagination = useMemo(
+    () => ({
+      ...panel.deckPage,
+      pageSizeOptions: DECK_PAGE_SIZE_OPTIONS,
+      onPageChange: (page) => {
+        handleDeckPageChange(page);
+        bringListIntoView();
+      },
+      onPageSizeChange: (size) => {
+        handleDeckPageSizeChange(size);
+        bringListIntoView();
+      },
+    }),
+    [bringListIntoView, handleDeckPageChange, handleDeckPageSizeChange, panel.deckPage],
+  );
   const table = useMemo(
     () => ({
       decks: panel.decks,
@@ -119,7 +151,7 @@ export const DecksOverviewPanel = memo(() => {
         />
         <div className="decks-page-panel__header-tools">
           <div className="decks-page-panel__search-meta" aria-live="polite">
-            <strong>{panel.decks.length}</strong>
+            <strong>{panel.matchingDecksCount}</strong>
             <span>/ {panel.totalDecksCount}</span>
           </div>
           <div className="decks-page-panel__controls" aria-label="Deck actions">
@@ -192,7 +224,13 @@ export const DecksOverviewPanel = memo(() => {
       {panel.isLoading ? (
         <div className="decks-page-panel__loading">Loading decks...</div>
       ) : (
-        <DecksTable table={table} />
+        <div className="decks-page-panel__list" ref={listRef}>
+          <DecksTable table={table} />
+          {/* Only when there is more than the smallest page to page through. */}
+          {panel.matchingDecksCount > DECK_PAGE_SIZE_OPTIONS[0] ? (
+            <CardCatalogPagination pagination={pagination} label="Deck pages" sizeLabel="Decks" />
+          ) : null}
+        </div>
       )}
 
       <DeleteDeckModal

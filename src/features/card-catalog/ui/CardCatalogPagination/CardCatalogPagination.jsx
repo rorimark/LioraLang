@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from "react";
-import "./CardCatalogPagination.css";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { Select } from "@shared/ui";
+import "./CardCatalogPagination.css";
 
 const EMPTY_OBJECT = Object.freeze({});
 const EMPTY_OPTIONS = Object.freeze([]);
@@ -31,7 +32,7 @@ const buildVisiblePages = (currentPage, totalPages) => {
   return pages;
 };
 
-export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
+export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT, label = "Pagination", sizeLabel = "Rows" }) => {
     const resolvedPagination = pagination;
     const resolvedPageSizeOptions = Array.isArray(
       resolvedPagination.pageSizeOptions,
@@ -77,20 +78,24 @@ export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
       [resolvedPagination],
     );
 
+    const { currentPage, totalPages } = resolvedPagination;
+
+    // Wide: every page key. Narrow: back, "Page 2 of 8", forward. The
+    // container decides, so the pager fits wherever it is put.
     return (
-      <div className="cards-pagination">
+      <nav className="cards-pagination" aria-label={label}>
         <div className="cards-pagination__meta">
-          <span>
-            Showing {resolvedPagination.rangeStart}-{resolvedPagination.rangeEnd} of{" "}
-            {resolvedPagination.totalItems}
+          <span className="cards-pagination__range">
+            {resolvedPagination.rangeStart}–{resolvedPagination.rangeEnd} of {resolvedPagination.totalItems}
           </span>
 
           {showsPageSizeControl ? (
             <label className="cards-pagination__size">
-              Rows
+              {sizeLabel}
               <Select
                 value={resolvedPagination.pageSize}
                 onChange={handlePageSizeSelect}
+                aria-label={`${sizeLabel} per page`}
               >
                 {resolvedPageSizeOptions.map((size) => (
                   <option key={size} value={size}>
@@ -102,60 +107,62 @@ export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
           ) : null}
         </div>
 
-        <div className="cards-pagination__controls" aria-label="Table pagination">
-          <button
-            type="button"
-            onClick={handlePrevPage}
-            disabled={resolvedPagination.currentPage === 1}
-          >
-            Prev
-          </button>
+        {totalPages > 1 ? (
+          <div className="cards-pagination__controls">
+            <button
+              type="button"
+              className="cards-pagination__step"
+              onClick={handlePrevPage}
+              disabled={currentPage <= 1}
+              aria-label="Previous page"
+            >
+              <IoChevronBack aria-hidden />
+              <span className="cards-pagination__step-text">Previous</span>
+            </button>
 
-          {visiblePages.map((page, index) => {
-            if (page === "...") {
-              return (
-                <span
-                  key={`ellipsis-${index}`}
-                  className="cards-pagination__ellipsis"
-                  aria-hidden="true"
-                >
-                  ...
-                </span>
-              );
-            }
+            <span className="cards-pagination__status" aria-hidden="true">
+              Page {currentPage} of {totalPages}
+            </span>
 
-            return (
-              <button
-                key={page}
-                type="button"
-                data-page={page}
-                className={
-                  page === resolvedPagination.currentPage
-                    ? "cards-pagination__page is-active"
-                    : "cards-pagination__page"
+            <span className="cards-pagination__pages">
+              {visiblePages.map((page, index) => {
+                if (page === "...") {
+                  return (
+                    <span key={`ellipsis-${index}`} className="cards-pagination__ellipsis" aria-hidden="true">
+                      …
+                    </span>
+                  );
                 }
-                onClick={handlePageButtonClick}
-                aria-current={
-                  page === resolvedPagination.currentPage ? "page" : undefined
-                }
-                aria-label={`Go to page ${page}`}
-              >
-                {page}
-              </button>
-            );
-          })}
 
-          <button
-            type="button"
-            onClick={handleNextPage}
-            disabled={
-              resolvedPagination.currentPage === resolvedPagination.totalPages
-            }
-          >
-            Next
-          </button>
-        </div>
-      </div>
+                return (
+                  <button
+                    key={page}
+                    type="button"
+                    data-page={page}
+                    className={page === currentPage ? "cards-pagination__page is-active" : "cards-pagination__page"}
+                    onClick={handlePageButtonClick}
+                    aria-current={page === currentPage ? "page" : undefined}
+                    aria-label={`Page ${page}`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </span>
+
+            <button
+              type="button"
+              className="cards-pagination__step"
+              onClick={handleNextPage}
+              disabled={currentPage >= totalPages}
+              aria-label="Next page"
+            >
+              <span className="cards-pagination__step-text">Next</span>
+              <IoChevronForward aria-hidden />
+            </button>
+          </div>
+        ) : null}
+      </nav>
     );
   });
 
