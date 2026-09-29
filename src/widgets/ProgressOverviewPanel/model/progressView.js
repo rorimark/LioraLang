@@ -147,21 +147,3 @@ export const buildRecallDelta = (current, previous) => {
         : `${Math.abs(points)} ${Math.abs(points) === 1 ? "point" : "points"} ${points > 0 ? "higher" : "lower"} than the 30 days before`,
   };
 };
-
-const GOAL_COPY = {
-  known: (target) => `Know ${formatInteger(target)} words`,
-  streak: (target) => `Study ${formatInteger(target)} days in a row`,
-  mature: (target) => `${formatInteger(target)} words in long-term memory`,
-};
-
-export const buildGoalRows = (goals) =>
-  (Array.isArray(goals) ? goals : [])
-    .filter((goal) => GOAL_COPY[goal.key] && goal.target > 0)
-    .map((goal) => ({
-      key: goal.key,
-      title: GOAL_COPY[goal.key](goal.target),
-      current: goal.current,
-      target: goal.target,
-      share: Math.min(100, toShare(goal.current, goal.target)),
-      left: Math.max(0, goal.target - goal.current),
-    }));

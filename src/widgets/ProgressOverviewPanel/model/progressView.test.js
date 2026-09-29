@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   buildActivityColumns,
-  buildGoalRows,
   buildRecallDelta,
   describeNextDue,
   describeStreak,
@@ -62,11 +61,5 @@ describe("progress view", () => {
   it("picks the deck with most cards due", () => {
     expect(resolveBusiestDeck([{ id: 1, dueNow: 2 }, { id: 2, dueNow: 5 }, { id: 3, dueNow: 0 }]).id).toBe(2);
     expect(resolveBusiestDeck([{ id: 1, dueNow: 0 }])).toBeNull();
-  });
-
-  it("writes goals as what is left to do", () => {
-    expect(buildGoalRows([{ key: "known", current: 12, target: 25 }])).toEqual([
-      { key: "known", title: "Know 25 words", current: 12, target: 25, share: 48, left: 13 },
-    ]);
   });
 });

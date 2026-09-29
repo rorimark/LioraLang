@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { buildLearningStats } from "@shared/core/usecases/progress";
+import { buildAchievements, buildLearningStats, toLocalDayKey } from "@shared/core/usecases/progress";
 import { usePlatformService } from "@shared/providers";
+import { buildSeenLedger, mergeStickers, readStickerLedger, writeStickerLedger } from "./stickerLedger";
 
-const EMPTY_STATS = buildLearningStats({ weeks: 53 });
+const EMPTY_BASE = buildLearningStats({ weeks: 53 });
+const EMPTY_STATS = { ...EMPTY_BASE, achievements: buildAchievements(EMPTY_BASE), profileScope: "" };
 
 // The platforms return buildProgressOverview's payload; anything missing
 // falls back to the empty picture rather than breaking the page.
@@ -28,6 +30,7 @@ const normalizeOverview = (payload) => {
 export const useProgressOverviewPanel = () => {
   const progressRepository = usePlatformService("progressRepository");
   const [overview, setOverview] = useState(null);
+  const [stickers, setStickers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -36,7 +39,19 @@ export const useProgressOverviewPanel = () => {
     setError("");
 
     try {
-      setOverview(normalizeOverview(await progressRepository.getProgressOverview()));
+      const nextOverview = normalizeOverview(await progressRepository.getProgressOverview());
+      const nextStickers = mergeStickers({
+        achievements: nextOverview.achievements,
+        ledger: readStickerLedger(nextOverview.profileScope),
+        todayKey: toLocalDayKey(Date.now()),
+        currentStreak: nextOverview.streak.current,
+      });
+
+      // Shown now, so remembered as seen: the "new" marks stay for this
+      // visit and are gone on the next one.
+      writeStickerLedger(nextOverview.profileScope, buildSeenLedger(nextStickers));
+      setOverview(nextOverview);
+      setStickers(nextStickers);
     } catch (overviewError) {
       setError(overviewError?.message || "Progress could not be loaded.");
     } finally {
@@ -48,5 +63,5 @@ export const useProgressOverviewPanel = () => {
     void refreshOverview();
   }, [refreshOverview]);
 
-  return { overview, isLoading, error, refreshOverview };
+  return { overview, stickers, isLoading, error, refreshOverview };
 };

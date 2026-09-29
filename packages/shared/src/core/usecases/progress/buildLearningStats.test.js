@@ -35,7 +35,7 @@ describe("buildLearningStats", () => {
     expect(stats.forecast).toHaveLength(14);
     expect(stats.activity.days).toHaveLength(26 * 7);
     expect(stats.activity.reviews).toBe(0);
-    expect(stats.goals.map((goal) => goal.key)).toEqual(["known", "streak", "mature"]);
+    expect(stats.history).toEqual([]);
   });
 
   it("counts stages per word and per deck", () => {
@@ -153,19 +153,16 @@ describe("buildLearningStats", () => {
     expect(stats.recallPrevious30d).toBe(50);
   });
 
-  it("sets the next goal above the current value", () => {
-    const words = Array.from({ length: 12 }, (_, index) => ({ id: index + 1 }));
+  it("keeps every day with reviews, oldest first, with its Again answers", () => {
     const stats = buildLearningStats({
       now: NOW,
-      words,
-      reviewCards: words.map((word) => ({ wordId: word.id, state: "review", intervalDays: 4, dueAtMs: at(4) })),
-      reviewLogs: [log(0), log(-1), log(-2)],
+      reviewLogs: [log(0, "good"), log(-300, "again"), log(-300, "good"), log(-2, "easy"), log(3, "good")],
     });
 
-    expect(stats.goals).toEqual([
-      { key: "known", current: 12, target: 25 },
-      { key: "streak", current: 3, target: 7 },
-      { key: "mature", current: 0, target: 10 },
+    expect(stats.history).toEqual([
+      { date: dayKey(-300), reviews: 2, again: 1 },
+      { date: dayKey(-2), reviews: 1, again: 0 },
+      { date: dayKey(0), reviews: 1, again: 0 },
     ]);
   });
 

@@ -11,6 +11,7 @@ export const ROUTE_PATHS = {
   deckEdit: "/app/decks/:deckId/edit",
   deckDetails: "/app/decks/:deckId",
   progress: "/app/progress",
+  progressStickers: "/app/progress/stickers",
   account: "/app/account",
   settings: "/app/settings",
 };
@@ -139,6 +140,10 @@ export const PAGE_META = {
   [ROUTE_PATHS.progress]: {
     title: "Progress",
     subtitle: "What you know, what is due, and how your study is going.",
+  },
+  [ROUTE_PATHS.progressStickers]: {
+    title: "Stickers",
+    subtitle: "Every sticker you have earned, and how far you are from the next.",
   },
   [ROUTE_PATHS.account]: {
     title: "Account",

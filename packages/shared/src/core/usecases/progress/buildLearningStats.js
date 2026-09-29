@@ -8,9 +8,6 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // or more away: the usual line between a young card and a mature one.
 export const MATURE_INTERVAL_DAYS = 21;
 
-const KNOWN_WORD_GOALS = [10, 25, 50, 100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000, 10000];
-const STREAK_GOALS = [3, 7, 14, 30, 50, 100, 200, 365];
-
 export const toLocalDayKey = (value) => {
   const date = new Date(value);
 
@@ -83,8 +80,6 @@ const resolveLogDayKey = (log) => {
 
   return toLocalDayKey(log?.reviewedAtMs ?? log?.reviewedAt);
 };
-
-const nextGoal = (ladder, current) => ladder.find((target) => target > current) ?? null;
 
 const resolveStreaks = (activeDayKeys, todayStartMs) => {
   const todayKey = toLocalDayKey(todayStartMs);
@@ -284,6 +279,8 @@ export const buildLearningStats = ({
   const logsPrevious30 = [];
   let reviewsToday = 0;
 
+  const againByDay = new Map();
+
   reviewLogs.forEach((log) => {
     const dayKey = resolveLogDayKey(log);
 
@@ -292,6 +289,10 @@ export const buildLearningStats = ({
     }
 
     reviewsByDay.set(dayKey, (reviewsByDay.get(dayKey) || 0) + 1);
+
+    if (log?.rating === "again") {
+      againByDay.set(dayKey, (againByDay.get(dayKey) || 0) + 1);
+    }
 
     if (dayKey === todayKey) {
       reviewsToday += 1;
@@ -317,16 +318,6 @@ export const buildLearningStats = ({
   const ratingsPrevious30d = countRatings(logsPrevious30);
   const known = stages.young + stages.mature;
 
-  const goals = [
-    { key: "known", current: known, target: nextGoal(KNOWN_WORD_GOALS, known) },
-    { key: "streak", current: streak.current, target: nextGoal(STREAK_GOALS, streak.current) },
-    {
-      key: "mature",
-      current: stages.mature,
-      target: nextGoal(KNOWN_WORD_GOALS, stages.mature),
-    },
-  ].filter((goal) => goal.target !== null);
-
   return {
     totalWords: words.filter((word) => toId(word?.id)).length,
     stages,
@@ -339,7 +330,11 @@ export const buildLearningStats = ({
     ratings30d,
     recall30d: toRecall(ratings30d),
     recallPrevious30d: toRecall(ratingsPrevious30d),
-    goals,
+    // Every day with reviews, oldest first: what the achievements are
+    // dated from.
+    history: Array.from(reviewsByDay.keys())
+      .sort()
+      .map((date) => ({ date, reviews: reviewsByDay.get(date), again: againByDay.get(date) || 0 })),
     decks: Array.from(deckStats.values())
       .map((deck) => ({ ...deck, known: deck.young + deck.mature }))
       .sort(

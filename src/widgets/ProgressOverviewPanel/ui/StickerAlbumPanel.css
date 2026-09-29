@@ -1,0 +1,161 @@
+/* ===== Sticker album =====
+   A sheet per family: the stickers you have, stuck on crooked, then the
+   places for the ones to come. The page is as wide as it needs to be to
+   read as an album, not a table. */
+
+.album {
+  container: album / inline-size;
+  display: grid;
+  gap: 18px;
+  padding-bottom: 8px;
+}
+
+.album--loading {
+  min-height: 60vh;
+  border-radius: var(--radius-panel);
+  background: var(--color-surface-muted);
+  animation: progress-pulse 1.4s ease-in-out infinite;
+}
+
+.album__back {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 10px 0 6px;
+  margin-left: -6px;
+  border-radius: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.album__back svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (hover: hover) {
+  .album__back:hover {
+    background: var(--color-surface-muted);
+    color: var(--color-text);
+  }
+}
+
+.album__back:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+.album__head {
+  display: grid;
+  gap: 10px;
+  max-width: 560px;
+}
+
+.album__count {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.album__count strong {
+  font-size: clamp(3rem, 9cqi, 4.4rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.album__count span {
+  color: var(--color-text-muted);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.album__meter {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--chart-track);
+}
+
+.album__meter span {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--color-primary);
+  transform-origin: left center;
+  animation: progress-grow 800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.album__lede {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.album__families {
+  display: grid;
+  gap: 16px;
+}
+
+@container album (min-width: 820px) {
+  .album__families {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.album-family {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-width: 0;
+  padding: 18px 20px 22px;
+  border: 2px solid var(--color-border);
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+
+.album-family__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+
+.album-family__head h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.02rem;
+  font-weight: 900;
+}
+
+.album-family__count {
+  color: var(--color-text-subtle);
+  font-size: 0.84rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.album-family__head p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.album-family__sheet {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  justify-items: center;
+  gap: 20px 12px;
+  padding: 4px 2px;
+}

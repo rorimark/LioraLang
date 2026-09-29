@@ -3,10 +3,6 @@ import { GUEST_PROFILE_SCOPE, normalizeProfileScope } from "../../../packages/sh
 import { buildProgressOverview } from "../../../packages/shared/src/core/usecases/progress/buildProgressOverview.js";
 import { activateProgressProfile } from "./sync.services.js";
 
-// Enough history for the activity grid (26 weeks), the streak and the
-// 30-day comparison; the total count is asked for separately.
-const HISTORY_DAYS = 400;
-
 export const getProgressOverview = ({
   profileScope = GUEST_PROFILE_SCOPE,
 } = {}) => {
@@ -43,20 +39,16 @@ export const getProgressOverview = ({
           word_id AS wordId
         FROM review_logs
         WHERE profile_scope = ?
-          AND DATE(reviewed_at, 'localtime') >= DATE('now', 'localtime', ?)
       `,
     )
-    .all(normalizedProfileScope, `-${HISTORY_DAYS} days`);
-  const totalReviews =
-    db
-      .prepare("SELECT COUNT(*) AS total FROM review_logs WHERE profile_scope = ?")
-      .get(normalizedProfileScope)?.total || 0;
+    // All of it: the stickers are dated from the whole history.
+    .all(normalizedProfileScope);
 
   return buildProgressOverview({
     decks,
     words,
     reviewCards,
     reviewLogs,
-    totalReviews: Number(totalReviews) || 0,
+    profileScope: normalizedProfileScope,
   });
 };

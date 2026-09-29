@@ -6,6 +6,7 @@ const ROUTE_PRELOADERS = [
   () => import("@pages/deck-details/ui/DeckDetailsPage"),
   () => import("@pages/learn/ui/LearnPage"),
   () => import("@pages/progress/ui/ProgressPage"),
+  () => import("@pages/progress/ui/StickersPage"),
   () => import("@pages/settings/ui/SettingsPage"),
 ];
 let hasScheduledPreload = false;

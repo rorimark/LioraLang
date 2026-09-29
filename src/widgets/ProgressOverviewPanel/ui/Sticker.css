@@ -1,0 +1,267 @@
+/* ===== Stickers =====
+   An earned sticker is a coloured die-cut with a white edge, stuck on a
+   little crooked. One not earned yet is its place in the album: a dashed
+   outline, straight, with how far along you are drawn along its floor.
+   A sticker earned since the last visit is slapped on as the page opens. */
+
+.sticker {
+  --sticker-size: 78px;
+
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  width: var(--sticker-size);
+  height: calc(var(--sticker-size) * 1.08);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+span.sticker {
+  cursor: default;
+}
+
+.sticker--sm { --sticker-size: 64px; }
+.sticker--lg { --sticker-size: 112px; }
+
+.sticker__face {
+  position: relative;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1px;
+  overflow: hidden;
+  border-radius: calc(var(--sticker-size) * 0.26);
+  line-height: 1;
+  transition: transform 220ms var(--motion-spring), box-shadow 220ms ease;
+}
+
+.sticker__icon {
+  width: calc(var(--sticker-size) * 0.24);
+  height: calc(var(--sticker-size) * 0.24);
+  margin-bottom: 3px;
+}
+
+.sticker__value {
+  font-size: calc(var(--sticker-size) * 0.3);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sticker__unit {
+  font-size: max(0.62rem, calc(var(--sticker-size) * 0.12));
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* ----- earned ----- */
+
+.sticker.is-earned .sticker__face {
+  background: var(--sticker-fill);
+  color: var(--sticker-ink);
+  box-shadow:
+    0 0 0 3px var(--sticker-edge),
+    0 6px 14px -6px rgba(16, 24, 40, 0.45);
+  transform: rotate(var(--sticker-tilt));
+}
+
+/* A soft gloss across the top, as on a vinyl sticker. */
+.sticker.is-earned .sticker__face::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 55% 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  button.sticker.is-earned:hover .sticker__face {
+    transform: rotate(0deg) translateY(-3px) scale(1.04);
+    box-shadow:
+      0 0 0 3px var(--sticker-edge),
+      0 12px 20px -8px rgba(16, 24, 40, 0.5);
+  }
+}
+
+/* ----- not yet ----- */
+
+.sticker.is-next .sticker__face,
+.sticker.is-locked .sticker__face {
+  border: 2px dashed var(--color-border-strong);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+.sticker.is-locked .sticker__face {
+  color: var(--color-text-subtle);
+  opacity: 0.6;
+}
+
+/* How far along: a strip in the family colour along the floor. */
+.sticker.is-next .sticker__face::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--sticker-share);
+  height: 5px;
+  background: var(--sticker-fill);
+}
+
+.sticker.is-next .sticker__icon {
+  color: var(--sticker-fill);
+}
+
+@media (hover: hover) {
+  button.sticker.is-next:hover .sticker__face,
+  button.sticker.is-locked:hover .sticker__face {
+    border-color: var(--color-text-subtle);
+    opacity: 1;
+  }
+}
+
+button.sticker:focus-visible {
+  outline: none;
+}
+
+button.sticker:focus-visible .sticker__face {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 5px;
+}
+
+/* ----- new: slapped on ----- */
+
+.sticker.is-new .sticker__face {
+  animation: sticker-slap 620ms var(--motion-spring) var(--sticker-delay, 0ms) backwards;
+}
+
+.sticker.is-new .sticker__face::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: sticker-shine 900ms ease-out calc(var(--sticker-delay, 0ms) + 450ms) both;
+  pointer-events: none;
+}
+
+.sticker__new {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  z-index: 1;
+  padding: 3px 6px;
+  border: 2px solid var(--color-surface);
+  border-radius: 8px;
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transform: rotate(6deg);
+  animation: sticker-badge 300ms var(--motion-spring) calc(var(--sticker-delay, 0ms) + 380ms) backwards;
+}
+
+@keyframes sticker-slap {
+  from {
+    opacity: 0;
+    transform: rotate(calc(var(--sticker-tilt) + 18deg)) scale(1.7);
+  }
+
+  60% {
+    opacity: 1;
+    transform: rotate(calc(var(--sticker-tilt) - 3deg)) scale(0.94);
+  }
+}
+
+@keyframes sticker-shine {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes sticker-badge {
+  from {
+    opacity: 0;
+    transform: rotate(6deg) scale(0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker__face,
+  .sticker.is-new .sticker__face,
+  .sticker__new {
+    animation: none;
+    transition: none;
+  }
+
+  .sticker.is-new .sticker__face::after {
+    display: none;
+  }
+}
+
+/* ----- the dialog ----- */
+
+.sticker-dialog {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 8px 4px 4px 10px;
+}
+
+.sticker-dialog__text {
+  display: grid;
+  gap: 8px;
+}
+
+.sticker-dialog__goal {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.sticker-dialog__status {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sticker-dialog__meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--chart-track);
+}
+
+.sticker-dialog__meter span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--color-primary);
+}
+
+.sticker-dialog__note {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+@media (max-width: 420px) {
+  .sticker-dialog {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+}

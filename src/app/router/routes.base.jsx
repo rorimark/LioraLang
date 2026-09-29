@@ -66,6 +66,10 @@ export const appRoute = {
       lazy: loadRouteComponent(() => import("@pages/progress/ui/ProgressPage")),
     },
     {
+      path: "progress/stickers",
+      lazy: loadRouteComponent(() => import("@pages/progress/ui/StickersPage")),
+    },
+    {
       path: "settings",
       lazy: loadRouteComponent(() => import("@pages/settings/ui/SettingsPage")),
     },

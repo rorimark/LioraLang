@@ -70,6 +70,7 @@ export const createWebProgressRepository = () => {
         words,
         reviewCards,
         reviewLogs,
+        profileScope,
       });
     },
   };

@@ -68,6 +68,19 @@
   --chart-grade-good: #2563eb;
   --chart-grade-easy: #1f9e46;
 
+  /* Stickers: one colour per family, each dark enough for white type,
+     told apart by its icon and name as well as its colour. */
+  --sticker-edge: #ffffff;
+  --sticker-ink: #ffffff;
+  --sticker-known: #2563eb;
+  --sticker-streak: #c2410c;
+  --sticker-mature: #6741d9;
+  --sticker-days: #2b8a3e;
+  --sticker-reviews: #0c8599;
+  --sticker-bigDay: #e03131;
+  --sticker-cleanSheet: #ae3ec9;
+  --sticker-decks: #a36a00;
+
   /* Depth comes mostly from edges; shadows only lift floating layers. */
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
   --shadow-md: 0 24px 60px rgba(16, 24, 40, 0.16);
@@ -138,6 +151,8 @@
   --chart-grade-hard: #c08800;
   --chart-grade-good: #4f86ff;
   --chart-grade-easy: #22963f;
+
+  --sticker-edge: #e9efff;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 26px 60px rgba(0, 0, 0, 0.5);

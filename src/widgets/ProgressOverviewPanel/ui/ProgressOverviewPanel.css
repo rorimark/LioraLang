@@ -53,7 +53,7 @@
 .progress-forecast-card { grid-area: forecast; }
 .progress-answers-card { grid-area: answers; }
 .progress-decks-card { grid-area: decks; }
-.progress-goals-card { grid-area: goals; }
+.progress-stickers-card { grid-area: goals; }
 
 /* ----- the quiet card ----- */
 
@@ -849,7 +849,59 @@
   text-decoration: none;
 }
 
-/* ----- milestones ----- */
+/* ----- stickers ----- */
+
+.progress-stickers__strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 14px;
+  padding: 6px 4px 2px;
+}
+
+.progress-stickers__next {
+  display: grid;
+  gap: 12px;
+}
+
+.progress-stickers__next h3 {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.progress-stickers__link {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 6px;
+  border-radius: 6px;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.progress-stickers__link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 180ms var(--motion-spring);
+}
+
+@media (hover: hover) {
+  .progress-stickers__link:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+.progress-stickers__link:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 3px;
+}
+
+/* ----- milestone meters ----- */
 
 .progress-goals {
   display: grid;
@@ -863,6 +915,21 @@
   .progress-goals {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 18px 28px;
+  }
+
+  .progress-stickers-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+    column-gap: 32px;
+  }
+
+  .progress-stickers-card > .progress-card__head,
+  .progress-stickers-card > .progress-stickers__link {
+    grid-column: 1 / -1;
+  }
+
+  .progress-stickers-card .progress-goals {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -899,16 +966,9 @@
   display: block;
   height: 100%;
   border-radius: 4px;
-  background: var(--color-primary);
+  background: var(--goal-fill, var(--color-primary));
   transform-origin: left center;
   animation: progress-grow 800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.progress-goal__left {
-  margin: 0;
-  color: var(--color-text-subtle);
-  font-size: 0.78rem;
-  font-weight: 700;
 }
 
 /* ----- loading and error ----- */

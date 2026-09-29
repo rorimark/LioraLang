@@ -1,10 +1,9 @@
-import { memo } from "react";
+import { memo, useCallback, useState } from "react";
 import { Link } from "react-router";
 import { IoArrowDown, IoArrowForward, IoArrowUp, IoFlame, IoRemove } from "react-icons/io5";
 import { ROUTE_PATHS, buildDeckDetailsRoute } from "@shared/config/routes";
 import {
   STAGES,
-  buildGoalRows,
   buildRecallDelta,
   describeNextDue,
   describeStreak,
@@ -15,6 +14,7 @@ import {
   useProgressOverviewPanel,
 } from "../model";
 import { ActivityGrid, ActivityLegend, AnswersBar, ForecastChart, StageBar } from "./progressCharts";
+import { Sticker, StickerDialog } from "./Sticker";
 import "./ProgressOverviewPanel.css";
 
 const learnState = (deck) => (deck ? { importedDeckId: String(deck.id) } : null);
@@ -318,40 +318,63 @@ const DecksCard = ({ overview }) => {
   );
 };
 
-// ----- what comes next -----
+// ----- stickers -----
 
-const GoalsCard = ({ overview }) => {
-  const goals = buildGoalRows(overview.goals);
-
-  if (goals.length === 0) {
-    return null;
-  }
+const StickersCard = ({ stickers, onOpen }) => {
+  const recent = stickers.recent.slice(0, 4);
+  const nextUp = stickers.nextUp.slice(0, 3);
 
   return (
-    <Card className="progress-goals-card" title="Next milestones">
-      <ul className="progress-goals">
-        {goals.map((goal) => (
-          <li key={goal.key} className="progress-goal">
-            <div className="progress-goal__head">
-              <span>{goal.title}</span>
-              <span className="progress-goal__count">
-                {formatInteger(goal.current)} / {formatInteger(goal.target)}
-              </span>
-            </div>
-            <div
-              className="progress-goal__meter"
-              role="meter"
-              aria-label={goal.title}
-              aria-valuemin={0}
-              aria-valuemax={goal.target}
-              aria-valuenow={goal.current}
-            >
-              <span style={{ width: `${goal.share}%` }} />
-            </div>
-            <p className="progress-goal__left">{goal.left === 1 ? "1 to go" : `${formatInteger(goal.left)} to go`}</p>
-          </li>
-        ))}
-      </ul>
+    <Card
+      className="progress-stickers-card"
+      title="Stickers"
+      aside={
+        <span className="progress-card__meta">
+          {formatInteger(stickers.earnedCount)} of {formatInteger(stickers.totalCount)}
+        </span>
+      }
+    >
+      {recent.length > 0 ? (
+        <div className="progress-stickers__strip">
+          {recent.map((tier, index) => (
+            <Sticker key={tier.id} tier={tier} family={tier.family} index={index} size="sm" onOpen={onOpen} />
+          ))}
+        </div>
+      ) : (
+        <p className="progress-empty">Your first sticker comes with your first review.</p>
+      )}
+      {nextUp.length > 0 ? (
+        <div className="progress-stickers__next">
+          <h3>Next up</h3>
+          <ul className="progress-goals">
+            {nextUp.map((tier) => (
+              <li key={tier.id} className="progress-goal">
+                <div className="progress-goal__head">
+                  <span>{tier.description.replace(/\.$/, "")}</span>
+                  <span className="progress-goal__count">
+                    {formatInteger(tier.progress)} / {formatInteger(tier.target)}
+                  </span>
+                </div>
+                <div
+                  className="progress-goal__meter"
+                  role="meter"
+                  aria-label={tier.description}
+                  aria-valuemin={0}
+                  aria-valuemax={tier.target}
+                  aria-valuenow={tier.progress}
+                  style={{ "--goal-fill": `var(--sticker-${tier.family.key})` }}
+                >
+                  <span style={{ width: `${tier.share}%` }} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      <Link className="progress-stickers__link" to={ROUTE_PATHS.progressStickers}>
+        Open the sticker album
+        <IoArrowForward aria-hidden />
+      </Link>
     </Card>
   );
 };
@@ -367,7 +390,10 @@ const ProgressLoading = () => (
 );
 
 export const ProgressOverviewPanel = memo(() => {
-  const { overview, isLoading, error, refreshOverview } = useProgressOverviewPanel();
+  const { overview, stickers, isLoading, error, refreshOverview } = useProgressOverviewPanel();
+  const [selection, setSelection] = useState(null);
+  const openSticker = useCallback((tier, family) => setSelection({ tier, family }), []);
+  const closeSticker = useCallback(() => setSelection(null), []);
 
   if (isLoading && !overview) {
     return <ProgressLoading />;
@@ -394,8 +420,9 @@ export const ProgressOverviewPanel = memo(() => {
         <ForecastCard overview={overview} />
         <AnswersCard overview={overview} />
         <DecksCard overview={overview} />
-        <GoalsCard overview={overview} />
+        <StickersCard stickers={stickers} onOpen={openSticker} />
       </div>
+      <StickerDialog selection={selection} onClose={closeSticker} />
     </div>
   );
 });
