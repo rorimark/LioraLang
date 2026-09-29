@@ -2,6 +2,7 @@ export {
   AUTO_LOCALE,
   DEFAULT_LOCALE,
   INTERFACE_LOCALES,
+  READY_LOCALES,
   detectLocale,
   isSupportedLocale,
   resolveLocale,

@@ -14,7 +14,11 @@ import tr from "./messages/tr.js";
 import cs from "./messages/cs.js";
 import ja from "./messages/ja.js";
 
-const CATALOGUES = { uk, ru, pl, de, es, fr, it: it_, pt, tr, cs, ja };
+// Only languages offered in the picker must be complete; the others are
+// still being translated and fall back to English.
+const CATALOGUES = Object.fromEntries(
+  Object.entries({ uk, ru, pl, de, es, fr, it: it_, pt, tr, cs, ja }).filter(([code]) => LOCALE_CODES.includes(code)),
+);
 
 // The plural forms a count can need in a language: whatever
 // Intl.PluralRules picks for whole numbers people actually see.

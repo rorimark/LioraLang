@@ -11,7 +11,7 @@ import {
 } from "@shared/ui";
 import { useAppPreferencesSection } from "../../model";
 import "./PreferenceGroups.css";
-import { AUTO_LOCALE, INTERFACE_LOCALES, useI18n } from "@shared/lib/i18n";
+import { AUTO_LOCALE, READY_LOCALES, useI18n } from "@shared/lib/i18n";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"].map((level) => ({
   value: level,
@@ -131,7 +131,7 @@ export const DisplayPreferences = memo(() => {
             onChange={handleSelectFieldChange}
           >
             <option value={AUTO_LOCALE}>{t("prefs.interfaceLanguageAuto")}</option>
-            {INTERFACE_LOCALES.map((item) => (
+            {READY_LOCALES.map((item) => (
               <option key={item.code} value={item.code} lang={item.code}>
                 {item.nativeName}
               </option>

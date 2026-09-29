@@ -8,18 +8,23 @@ export const INTERFACE_LOCALES = [
   { code: "pl", nativeName: "Polski", deckLanguage: "Polish" },
   { code: "de", nativeName: "Deutsch", deckLanguage: "German" },
   { code: "es", nativeName: "Español", deckLanguage: "Spanish" },
-  { code: "fr", nativeName: "Français", deckLanguage: "French" },
-  { code: "it", nativeName: "Italiano", deckLanguage: "Italian" },
-  { code: "pt", nativeName: "Português", deckLanguage: "Portuguese" },
-  { code: "tr", nativeName: "Türkçe", deckLanguage: "Turkish" },
-  { code: "cs", nativeName: "Čeština", deckLanguage: "Czech" },
-  { code: "ja", nativeName: "日本語", deckLanguage: "Japanese" },
+  { code: "fr", nativeName: "Français", deckLanguage: "French", pending: true },
+  { code: "it", nativeName: "Italiano", deckLanguage: "Italian", pending: true },
+  { code: "pt", nativeName: "Português", deckLanguage: "Portuguese", pending: true },
+  { code: "tr", nativeName: "Türkçe", deckLanguage: "Turkish", pending: true },
+  { code: "cs", nativeName: "Čeština", deckLanguage: "Czech", pending: true },
+  { code: "ja", nativeName: "日本語", deckLanguage: "Japanese", pending: true },
 ];
 
 export const DEFAULT_LOCALE = "en";
 export const AUTO_LOCALE = "auto";
 
-export const LOCALE_CODES = INTERFACE_LOCALES.map((locale) => locale.code);
+// A language joins the picker and device detection once its catalogue is
+// complete (pending: true until then). The full list still names deck
+// languages everywhere.
+export const READY_LOCALES = INTERFACE_LOCALES.filter((locale) => !locale.pending);
+
+export const LOCALE_CODES = READY_LOCALES.map((locale) => locale.code);
 
 export const isSupportedLocale = (code) => LOCALE_CODES.includes(code);
 

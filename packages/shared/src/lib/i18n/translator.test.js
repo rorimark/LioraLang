@@ -43,10 +43,10 @@ describe("translator", () => {
 
 describe("locale choice", () => {
   it("follows the device by base language, English otherwise", () => {
-    expect(detectLocale(["pt-BR", "en"])).toBe("pt");
-    expect(detectLocale(["zh-CN", "ja-JP"])).toBe("ja");
+    expect(detectLocale(["es-MX", "en"])).toBe("es");
+    expect(detectLocale(["zh-CN", "de-AT"])).toBe("de");
     expect(detectLocale(["zh-CN"])).toBe("en");
     expect(resolveLocale("de", ["fr"])).toBe("de");
-    expect(resolveLocale("auto", ["cs-CZ"])).toBe("cs");
+    expect(resolveLocale("auto", ["uk-UA"])).toBe("uk");
   });
 });
