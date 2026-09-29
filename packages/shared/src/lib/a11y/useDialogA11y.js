@@ -60,6 +60,11 @@ export const useDialogA11y = ({
         return;
       }
 
+      // Something inside the dialog (an open list) already used this Escape.
+      if (event.key === "Escape" && event.defaultPrevented) {
+        return;
+      }
+
       if (event.key === "Escape") {
         event.preventDefault();
 

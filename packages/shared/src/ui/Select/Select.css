@@ -1,0 +1,345 @@
+/* ===== Select =====
+   Closed, it is a key like the other controls. Open, it is a card that
+   drops from the field on a computer, or a sheet that rises from the
+   bottom of a phone. The chosen option carries the app's blue mark. */
+
+.ui-select {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ui-select__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px 8px 14px;
+  border: 2px solid var(--color-border-strong);
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 140ms ease,
+    transform 160ms var(--motion-spring),
+    border-bottom-width 160ms var(--motion-spring);
+}
+
+.ui-select__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-select__value.is-placeholder {
+  color: var(--color-text-subtle);
+}
+
+.ui-select__chevron {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+  transition: transform 220ms var(--motion-spring);
+}
+
+.ui-select.is-open .ui-select__chevron {
+  transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+  .ui-select__trigger:hover:not(:disabled) {
+    border-color: var(--color-primary-border);
+  }
+}
+
+.ui-select.is-open .ui-select__trigger {
+  border-color: var(--color-primary);
+}
+
+.ui-select__trigger:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  transition-duration: 60ms;
+}
+
+.ui-select__trigger:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+.ui-select__trigger:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+/* Plain: text you can press, for a select that is also a heading (the
+   deck on the Learn screen). */
+.ui-select--plain .ui-select__trigger {
+  min-height: 0;
+  padding: 6px 8px 6px 10px;
+  margin-left: -10px;
+  border-color: transparent;
+  border-bottom-width: 2px;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+@media (hover: hover) {
+  .ui-select--plain .ui-select__trigger:hover:not(:disabled) {
+    border-color: var(--color-border);
+    background: var(--color-surface);
+  }
+}
+
+.ui-select--plain.is-open .ui-select__trigger {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.ui-select--plain .ui-select__trigger:active:not(:disabled) {
+  transform: none;
+  border-bottom-width: 2px;
+}
+
+/* ----- the open list ----- */
+
+.ui-select__popover {
+  position: fixed;
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-tooltip);
+  transform-origin: top center;
+  animation: ui-select-drop 170ms var(--motion-spring);
+}
+
+.ui-select__popover.is-above {
+  transform-origin: bottom center;
+}
+
+.ui-select__list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.ui-select__list:focus {
+  outline: none;
+}
+
+.ui-select__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+  padding: 8px 12px 8px 16px;
+  border-radius: 10px;
+  color: var(--color-text);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ui-select__option span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ui-select__option svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+}
+
+.ui-select__option.is-active {
+  background: var(--color-surface-muted);
+}
+
+.ui-select__option.is-selected {
+  color: var(--color-primary);
+  font-weight: 900;
+}
+
+/* The same short blue mark the navigation and tabs use. */
+.ui-select__option.is-selected::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--color-primary);
+  transform: translateY(-50%);
+}
+
+.ui-select__option[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.ui-select__empty {
+  padding: 14px 12px;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ui-select__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: none;
+  margin: 6px 6px 0;
+}
+
+.ui-select__search svg {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+.ui-select__search input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px 8px 36px;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.ui-select__search input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+/* ----- the sheet, on phones ----- */
+
+.ui-select__sheet-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.ui-select__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay);
+  animation: ui-select-fade 180ms ease;
+}
+
+.ui-select__sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 560px);
+  max-height: min(78dvh, 640px);
+  padding: 8px 8px max(10px, env(safe-area-inset-bottom));
+  border: 2px solid var(--color-border);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  animation: ui-select-rise 260ms var(--motion-spring);
+}
+
+.ui-select__handle {
+  align-self: center;
+  width: 40px;
+  height: 5px;
+  margin: 2px 0 8px;
+  border-radius: 999px;
+  background: var(--color-border-strong);
+}
+
+.ui-select__title {
+  padding: 2px 12px 8px;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.ui-select__sheet .ui-select__option {
+  min-height: 52px;
+  font-size: 1rem;
+}
+
+.ui-select__sheet .ui-select__search {
+  margin: 0 4px 4px;
+}
+
+.ui-select__sheet .ui-select__search input {
+  min-height: 46px;
+  font-size: 1rem;
+}
+
+@keyframes ui-select-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+
+@keyframes ui-select-rise {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes ui-select-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-select__trigger,
+  .ui-select__chevron {
+    transition: none;
+  }
+
+  .ui-select__popover,
+  .ui-select__sheet,
+  .ui-select__backdrop {
+    animation: none;
+  }
+}
