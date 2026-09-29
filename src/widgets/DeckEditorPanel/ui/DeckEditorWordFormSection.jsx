@@ -3,6 +3,8 @@ import { FiEdit3, FiPlus, FiRotateCcw, FiSave } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
 import { Select } from "@shared/ui";
 
+export const WORD_FORM_ID = "deck-editor-word-form";
+
 export const DeckEditorWordFormSection = memo(() => {
   const {
     wordDraft,
@@ -17,7 +19,7 @@ export const DeckEditorWordFormSection = memo(() => {
   } = useDeckEditorPanelContext();
 
   return (
-    <section className="deck-editor-panel__section">
+    <section id={WORD_FORM_ID} className="deck-editor-panel__section">
       <header className="deck-editor-panel__section-header">
         <div className="deck-editor-panel__section-title">
           <span className="deck-editor-panel__section-icon" aria-hidden>

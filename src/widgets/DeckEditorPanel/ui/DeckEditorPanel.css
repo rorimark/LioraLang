@@ -589,3 +589,143 @@
     flex: 1;
   }
 }
+
+/* ===== Word cards =====
+   Below table width each word is a small card read like a flashcard: the
+   word large, its part of speech and level as tags, the translation under
+   its language, the examples quieter, and the keys at the foot, Edit wide
+   and Delete a red square. The word being edited is the blue one. */
+@media (max-width: 860px) {
+  .deck-editor-panel__table tbody {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 12px;
+  }
+
+  .deck-editor-panel__table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: start;
+    align-items: center;
+    gap: 6px 8px;
+    padding: 14px 14px 12px;
+    border: 2px solid var(--color-border);
+    border-bottom-width: var(--edge-width);
+    border-radius: 16px;
+    background: var(--color-surface);
+  }
+
+  .deck-editor-panel__table tbody tr.deck-editor-panel__table-row--active {
+    border-color: var(--color-primary-border);
+    border-bottom-color: var(--color-primary);
+    background: var(--color-primary-soft);
+  }
+
+  .deck-editor-panel__table td,
+  .deck-editor-panel__table tbody tr:last-child td {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    color: var(--color-text);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .deck-editor-panel__table td::before {
+    display: block;
+    margin-bottom: 1px;
+    color: var(--color-text-subtle);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  /* The word. */
+  .deck-editor-panel__table td:first-child {
+    order: 0;
+    font-size: 1.1rem;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  .deck-editor-panel__table td:first-child::before,
+  .deck-editor-panel__table td[data-label="Level"]::before,
+  .deck-editor-panel__table td[data-label="Part"]::before,
+  .deck-editor-panel__table td[data-label="Examples"]::before,
+  .deck-editor-panel__table td[data-label="Actions"]::before {
+    content: none;
+  }
+
+  /* Part of speech and level, as tags under the word. */
+  .deck-editor-panel__table td[data-label="Part"],
+  .deck-editor-panel__table td[data-label="Level"] {
+    order: 1;
+    width: auto;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--color-surface-muted);
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .deck-editor-panel__table td[data-label="Level"] {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  /* Translations, under the name of their language. */
+  .deck-editor-panel__table td:nth-child(2),
+  .deck-editor-panel__table td:nth-child(3):not([data-label="Level"], [data-label="Part"]) {
+    order: 2;
+    margin-top: 4px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .deck-editor-panel__table td[data-label="Examples"] {
+    order: 3;
+    margin-top: 2px;
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+  }
+
+  .deck-editor-panel__table td.deck-editor-panel__cell--actions {
+    order: 4;
+    margin-top: 8px;
+  }
+
+  .deck-editor-panel__table-actions,
+  .deck-editor-panel__table .deck-editor-panel__table-actions {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .deck-editor-panel__table-actions button {
+    min-height: 40px;
+    font-size: 0.86rem;
+  }
+
+  .deck-editor-panel__table-actions button:first-child {
+    flex: 1;
+  }
+
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger {
+    flex: none;
+    width: 46px;
+    padding: 0;
+  }
+
+  .deck-editor-panel__table-actions .deck-editor-panel__button--danger span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

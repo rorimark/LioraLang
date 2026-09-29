@@ -2,6 +2,7 @@ import { memo, useCallback, useMemo } from "react";
 import { FiEdit3, FiEye, FiList, FiTrash2 } from "react-icons/fi";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { useDeckEditorPanelContext } from "../model";
+import { WORD_FORM_ID } from "./DeckEditorWordFormSection";
 
 const renderWordCell = (value) => {
   return value ? value : "-";
@@ -78,6 +79,16 @@ export const DeckEditorWordsTableSection = memo(() => {
   const onEditClick = useCallback(
     (event) => {
       handleEditWord(event.currentTarget.dataset.wordId);
+
+      // The form sits above the list; on a narrow screen it is off screen,
+      // so bring it into view and put the cursor in its first field.
+      const form = document.getElementById(WORD_FORM_ID);
+
+      if (form && form.getBoundingClientRect().bottom < 0) {
+        const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+        form.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+        form.querySelector("input, textarea")?.focus({ preventScroll: true });
+      }
     },
     [handleEditWord],
   );
@@ -185,6 +196,7 @@ export const DeckEditorWordsTableSection = memo(() => {
                           type="button"
                           data-word-id={word.id}
                           onClick={onEditClick}
+                          aria-label={`Edit "${word.source || "word"}"`}
                         >
                           <FiEdit3 aria-hidden />
                           <span>Edit</span>
@@ -194,6 +206,7 @@ export const DeckEditorWordsTableSection = memo(() => {
                           className="deck-editor-panel__button--danger"
                           data-word-id={word.id}
                           onClick={onDeleteClick}
+                          aria-label={`Delete "${word.source || "word"}"`}
                         >
                           <FiTrash2 aria-hidden />
                           <span>Delete</span>
