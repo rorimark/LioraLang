@@ -2,6 +2,7 @@ import { memo, useCallback, useContext, useId, useMemo } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { matchesSettingsQuery, splitSettingsQuery } from "./settingsSearch";
 import { SettingsSearchContext } from "./settingsSearchContext";
+import { Select } from "../Select/Select";
 import "./Settings.css";
 
 // ----- search scope -----
@@ -222,11 +223,16 @@ export const SettingStepper = memo(
 SettingStepper.displayName = "SettingStepper";
 
 export const SettingSelect = memo(({ id, name, value, onChange, children, disabled = false }) => (
-  <span className="setting-select">
-    <select id={id} name={name} value={value} onChange={onChange} disabled={disabled}>
-      {children}
-    </select>
-  </span>
+  <Select
+    id={id}
+    name={name}
+    value={value}
+    onChange={onChange}
+    disabled={disabled}
+    className="setting-select"
+  >
+    {children}
+  </Select>
 ));
 
 SettingSelect.displayName = "SettingSelect";

@@ -13,7 +13,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import { useDialogA11y } from "@shared/lib/a11y";
-import { Button } from "@shared/ui";
+import { Button, Select } from "@shared/ui";
 import {
   LEARN_EXERCISE_MODE_FILL_GAP,
   LEARN_EXERCISE_MODE_FLASHCARDS,
@@ -277,7 +277,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                   <FiClock aria-hidden="true" />
                   <span>Auto-flip</span>
                 </span>
-                <select
+                <Select
                   value={sessionSettings.autoFlipDelay}
                   onChange={dialog.onAutoFlipDelayChange}
                 >
@@ -286,14 +286,14 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                       {option.label}
                     </option>
                   ))}
-                </select>
+                </Select>
               </label>
               <label className="learn-session-dialog__field">
                 <span>
                   <FiShuffle aria-hidden="true" />
                   <span>Shuffle</span>
                 </span>
-                <select
+                <Select
                   value={sessionSettings.shuffleMode}
                   onChange={dialog.onShuffleModeChange}
                 >
@@ -302,7 +302,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                       {option.label}
                     </option>
                   ))}
-                </select>
+                </Select>
               </label>
               <label className="learn-session-dialog__toggle learn-session-dialog__toggle--centered">
                 <input

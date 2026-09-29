@@ -24,3 +24,4 @@ export {
   SettingsSearch,
 } from "./Settings/Settings";
 export { useIsSettingsSearching } from "./Settings/settingsSearchContext";
+export { Select } from "./Select/Select";

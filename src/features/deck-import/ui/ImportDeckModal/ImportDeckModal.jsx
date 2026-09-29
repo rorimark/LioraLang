@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { ActionModal } from "@shared/ui";
+import { ActionModal, Select } from "@shared/ui";
 import "./ImportDeckModal.css";
 
 export const ImportDeckModal = memo(({ modal }) => {
@@ -88,9 +88,9 @@ export const ImportDeckModal = memo(({ modal }) => {
             <label className="import-deck-modal__label" htmlFor="import-source-language">
               Source language
             </label>
-            <select
+            <Select
               id="import-source-language"
-              className="import-deck-modal__input"
+              className="import-deck-modal__select"
               name="sourceLanguage"
               value={sourceLanguage}
               onChange={actions.onLanguageChange}
@@ -100,14 +100,14 @@ export const ImportDeckModal = memo(({ modal }) => {
                   {language}
                 </option>
               ))}
-            </select>
+            </Select>
 
             <label className="import-deck-modal__label" htmlFor="import-target-language">
               Target language
             </label>
-            <select
+            <Select
               id="import-target-language"
-              className="import-deck-modal__input"
+              className="import-deck-modal__select"
               name="targetLanguage"
               value={targetLanguage}
               onChange={actions.onLanguageChange}
@@ -117,14 +117,14 @@ export const ImportDeckModal = memo(({ modal }) => {
                   {language}
                 </option>
               ))}
-            </select>
+            </Select>
 
             <label className="import-deck-modal__label" htmlFor="import-tertiary-language">
               Optional language
             </label>
-            <select
+            <Select
               id="import-tertiary-language"
-              className="import-deck-modal__input"
+              className="import-deck-modal__select"
               name="tertiaryLanguage"
               value={tertiaryLanguage}
               onChange={actions.onLanguageChange}
@@ -135,7 +135,7 @@ export const ImportDeckModal = memo(({ modal }) => {
                   {language}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
         ) : null}
         <p className="import-deck-modal__preview">

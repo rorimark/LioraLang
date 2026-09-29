@@ -257,8 +257,11 @@
   flex: 0 0 auto;
 }
 
-.learn-session-dialog__field input,
-.learn-session-dialog__field select {
+.learn-session-dialog__field .ui-select {
+  width: 100%;
+}
+
+.learn-session-dialog__field input {
   width: 100%;
   border: 2px solid var(--color-border);
   border-radius: 10px;

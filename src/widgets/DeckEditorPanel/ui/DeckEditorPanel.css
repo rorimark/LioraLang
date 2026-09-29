@@ -137,8 +137,11 @@
   color: var(--color-text-muted);
 }
 
+.deck-editor-panel__field .ui-select {
+  width: 100%;
+}
+
 .deck-editor-panel__field input:not([type="checkbox"]),
-.deck-editor-panel__field select,
 .deck-editor-panel__field textarea {
   width: 100%;
   border: 2px solid var(--color-border);

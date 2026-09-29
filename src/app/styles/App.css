@@ -52,9 +52,6 @@ body {
   --ui-meta-badge-font-size: 0.76rem;
   --ui-shortcut-section-padding: 12px;
   --ui-shortcut-section-gap: 10px;
-  --ui-shortcut-select-padding-y: 8px;
-  --ui-shortcut-select-padding-x: 10px;
-  --ui-shortcut-select-font-size: 0.82rem;
   --ui-shortcut-label-font-size: 0.78rem;
   --ui-shortcut-check-font-size: 0.82rem;
   --ui-shortcut-check-min-height: 34px;
@@ -64,10 +61,6 @@ body {
    specificity, so every component's own rules still win. */
 :where(button, input, select, textarea) {
   font-family: inherit;
-}
-
-:where(select) {
-  font-weight: 700;
 }
 
 :root {
@@ -117,9 +110,6 @@ body {
   --ui-meta-badge-font-size: 0.7rem;
   --ui-shortcut-section-padding: 10px;
   --ui-shortcut-section-gap: 8px;
-  --ui-shortcut-select-padding-y: 6px;
-  --ui-shortcut-select-padding-x: 9px;
-  --ui-shortcut-select-font-size: 0.78rem;
   --ui-shortcut-label-font-size: 0.72rem;
   --ui-shortcut-check-font-size: 0.78rem;
 }

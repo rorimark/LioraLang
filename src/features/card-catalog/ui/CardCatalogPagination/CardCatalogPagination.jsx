@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo } from "react";
 import "./CardCatalogPagination.css";
+import { Select } from "@shared/ui";
 
 const EMPTY_OBJECT = Object.freeze({});
 const EMPTY_OPTIONS = Object.freeze([]);
@@ -87,7 +88,7 @@ export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
           {showsPageSizeControl ? (
             <label className="cards-pagination__size">
               Rows
-              <select
+              <Select
                 value={resolvedPagination.pageSize}
                 onChange={handlePageSizeSelect}
               >
@@ -96,7 +97,7 @@ export const CardCatalogPagination = memo(({ pagination = EMPTY_OBJECT }) => {
                     {size}
                   </option>
                 ))}
-              </select>
+              </Select>
             </label>
           ) : null}
         </div>

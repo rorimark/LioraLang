@@ -35,8 +35,7 @@
 }
 
 .card-catalog-filters__controls input,
-.card-catalog-filters__controls select,
-.card-catalog-filters__controls button {
+.card-catalog-filters__controls button:not(.ui-select__trigger) {
   width: 100%;
   border-radius: 10px;
   border: 2px solid var(--color-border);
@@ -45,8 +44,7 @@
   font-family: inherit;
 }
 
-.card-catalog-filters__controls input,
-.card-catalog-filters__controls select {
+.card-catalog-filters__controls input {
   background: var(--color-surface);
   color: var(--color-text);
 }
@@ -55,20 +53,23 @@
   color: var(--color-text-muted);
 }
 
-.card-catalog-filters__controls input:focus,
-.card-catalog-filters__controls select:focus {
+.card-catalog-filters__controls input:focus {
   outline: 2px solid var(--color-primary-soft);
   border-color: var(--color-primary);
 }
 
-.card-catalog-filters__controls button {
+.card-catalog-filters__controls .ui-select {
+  width: 100%;
+}
+
+.card-catalog-filters__controls button:not(.ui-select__trigger) {
   background: var(--color-surface-muted);
   color: var(--color-text);
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.card-catalog-filters__controls button:hover {
+.card-catalog-filters__controls button:not(.ui-select__trigger):hover {
   background: var(--color-primary-soft);
 }
 
@@ -135,8 +136,7 @@
   }
 
   .card-catalog-filters__controls input,
-  .card-catalog-filters__controls select,
-  .card-catalog-filters__controls button {
+  .card-catalog-filters__controls button:not(.ui-select__trigger) {
     min-height: 34px;
     font-size: 0.78rem;
     padding: 8px 10px;

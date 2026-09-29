@@ -1,5 +1,6 @@
 import { memo, useCallback } from "react";
 import "./CardCatalogFilters.css";
+import { Select } from "@shared/ui";
 
 const EMPTY_FILTERS = Object.freeze({
   level: [],
@@ -100,7 +101,7 @@ export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
             aria-label="Search cards"
           />
 
-          <select
+          <Select
             value={resolvedCatalog.sort || ""}
             onChange={handleSortChange}
             aria-label="Sort cards"
@@ -110,7 +111,7 @@ export const CardCatalogFilters = memo(({ catalog = EMPTY_OBJECT }) => {
                 {option.label}
               </option>
             ))}
-          </select>
+          </Select>
 
           <button type="button" onClick={resolvedCatalog.onClearFilters}>
             Clear filters

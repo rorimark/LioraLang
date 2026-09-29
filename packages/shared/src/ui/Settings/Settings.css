@@ -311,43 +311,7 @@
 /* ----- select ----- */
 
 .setting-select {
-  position: relative;
-  display: inline-flex;
   min-width: min(220px, 100%);
-}
-
-.setting-select::after {
-  content: "";
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  border-right: 2.5px solid var(--color-text-subtle);
-  border-bottom: 2.5px solid var(--color-text-subtle);
-  transform: translateY(-70%) rotate(45deg);
-  pointer-events: none;
-}
-
-.setting-select select {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  min-height: 44px;
-  padding: 8px 38px 8px 14px;
-  border: 2px solid var(--color-border-strong);
-  border-bottom-width: 4px;
-  border-radius: 12px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.9rem;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.setting-select select:focus-visible {
-  outline: 3px solid var(--color-primary-border);
-  outline-offset: 1px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { FiEdit3, FiPlus, FiRotateCcw, FiSave } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
+import { Select } from "@shared/ui";
 
 export const DeckEditorWordFormSection = memo(() => {
   const {
@@ -65,7 +66,7 @@ export const DeckEditorWordFormSection = memo(() => {
         {usesWordLevels && (
           <label className="deck-editor-panel__field">
             <span>Level</span>
-            <select
+            <Select
               name="level"
               value={wordDraft.level}
               onChange={handleWordDraftChange}
@@ -75,13 +76,13 @@ export const DeckEditorWordFormSection = memo(() => {
                   {level}
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
         )}
 
         <label className="deck-editor-panel__field">
           <span>Part of speech</span>
-          <select
+          <Select
             name="part_of_speech"
             value={wordDraft.part_of_speech}
             onChange={handleWordDraftChange}
@@ -91,7 +92,7 @@ export const DeckEditorWordFormSection = memo(() => {
                 {part}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide">

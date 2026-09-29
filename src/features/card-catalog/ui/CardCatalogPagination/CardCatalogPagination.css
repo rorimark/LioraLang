@@ -25,14 +25,10 @@
   gap: 6px;
 }
 
-.cards-pagination__size select {
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
-  padding: 4px 8px;
-  font-family: inherit;
-  font-size: 0.8rem;
-  color: var(--color-text);
-  background: var(--color-surface);
+.cards-pagination__size .ui-select__trigger {
+  min-height: 36px;
+  padding: 4px 8px 4px 12px;
+  font-size: 0.84rem;
 }
 
 .cards-pagination__controls {
@@ -105,9 +101,8 @@
     font-size: 0.74rem;
   }
 
-  .cards-pagination__size select {
-    font-size: 0.74rem;
-    padding: 4px 7px;
+  .cards-pagination__size .ui-select__trigger {
+    font-size: 0.8rem;
   }
 
   .cards-pagination__controls {

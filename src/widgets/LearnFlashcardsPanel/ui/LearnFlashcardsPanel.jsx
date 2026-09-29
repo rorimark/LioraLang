@@ -1,11 +1,12 @@
 import { memo, useMemo } from "react";
-import { FiChevronDown, FiChevronLeft, FiChevronRight, FiSliders } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiSliders } from "react-icons/fi";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLearnFlashcardsPanel, useLeavingCard } from "../model";
 import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
 import { LearnSessionSettingsDialog } from "./LearnSessionSettingsDialog/LearnSessionSettingsDialog";
 import "./LearnFlashcardsPanel.css";
+import { Select } from "@shared/ui";
 
 const GRADE_LABELS = { again: "Again", hard: "Hard", good: "Good", easy: "Easy" };
 
@@ -128,8 +129,10 @@ export const LearnFlashcardsPanel = memo(() => {
             Deck
           </label>
           <span className="learn-desk__deck-select">
-            <select
+            <Select
               id="learn-deck-select"
+              variant="plain"
+              label="Deck"
               value={deckSelector.selectedDeckId}
               onChange={deckSelector.onChange}
               disabled={deckSelector.isDisabled}
@@ -144,8 +147,7 @@ export const LearnFlashcardsPanel = memo(() => {
                   {deckItem.name}
                 </option>
               ))}
-            </select>
-            <FiChevronDown aria-hidden="true" />
+            </Select>
           </span>
           {panel.hasDecks && panel.currentDeck ? (
             <span className="learn-desk__direction">{panel.directionSummary}</span>

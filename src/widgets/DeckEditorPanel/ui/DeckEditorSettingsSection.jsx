@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { FiBookOpen, FiSettings } from "react-icons/fi";
 import { useDeckEditorPanelContext } from "../model";
+import { Select } from "@shared/ui";
 
 export const DeckEditorSettingsSection = memo(() => {
   const {
@@ -46,7 +47,7 @@ export const DeckEditorSettingsSection = memo(() => {
 
         <label className="deck-editor-panel__field">
           <span>Source language</span>
-          <select
+          <Select
             name="sourceLanguage"
             value={deckForm.sourceLanguage}
             onChange={handleDeckFormChange}
@@ -56,12 +57,12 @@ export const DeckEditorSettingsSection = memo(() => {
                 {language}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
 
         <label className="deck-editor-panel__field">
           <span>Target language</span>
-          <select
+          <Select
             name="targetLanguage"
             value={deckForm.targetLanguage}
             onChange={handleDeckFormChange}
@@ -71,12 +72,12 @@ export const DeckEditorSettingsSection = memo(() => {
                 {language}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
 
         <label className="deck-editor-panel__field">
           <span>Optional language</span>
-          <select
+          <Select
             name="tertiaryLanguage"
             value={deckForm.tertiaryLanguage}
             onChange={handleDeckFormChange}
@@ -87,7 +88,7 @@ export const DeckEditorSettingsSection = memo(() => {
                 {language}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
 
         <label className="deck-editor-panel__field deck-editor-panel__field--wide deck-editor-panel__field--toggle">
