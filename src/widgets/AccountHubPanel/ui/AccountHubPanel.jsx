@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Link } from "react-router";
 import {
   FiAlertCircle,
@@ -330,26 +330,32 @@ const SignedInView = memo(({ panel }) => {
   const { authState } = panel;
   const cardStats = useAccountCardStats(authState.isAuthenticated ? authState.user?.id : "");
   const name = resolveCardName(authState) || "Learner";
-  const perks = [
-    {
-      key: "publish",
-      title: "Publish to the Hub",
-      note: authState.isEmailVerified ? "Share your decks with everyone" : "Once your email is confirmed",
-      isOn: authState.isEmailVerified,
-    },
-    {
-      key: "sync",
-      title: "Sync across devices",
-      note: panel.syncOverview.label,
-      isOn: isSyncOn(panel.syncOverview.label),
-    },
-    {
-      key: "provider",
-      title: panel.overviewCards.find((card) => card.key === "provider")?.value || "Signed in",
-      note: panel.isDesktopMode ? "On the desktop app" : "In the browser",
-      isOn: true,
-    },
-  ];
+  const providerValue = panel.overviewCards.find((card) => card.key === "provider")?.value;
+  // Kept stable between sync status updates, so the card does not redraw
+  // every few seconds.
+  const perks = useMemo(
+    () => [
+      {
+        key: "publish",
+        title: "Publish to the Hub",
+        note: authState.isEmailVerified ? "Share your decks with everyone" : "Once your email is confirmed",
+        isOn: authState.isEmailVerified,
+      },
+      {
+        key: "sync",
+        title: "Sync across devices",
+        note: panel.syncOverview.label,
+        isOn: isSyncOn(panel.syncOverview.label),
+      },
+      {
+        key: "provider",
+        title: providerValue || "Signed in",
+        note: panel.isDesktopMode ? "On the desktop app" : "In the browser",
+        isOn: true,
+      },
+    ],
+    [authState.isEmailVerified, panel.isDesktopMode, panel.syncOverview.label, providerValue],
+  );
 
   return (
     <>

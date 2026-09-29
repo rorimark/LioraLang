@@ -8,8 +8,8 @@
 .acard {
   --tilt-x: 0deg;
   --tilt-y: 0deg;
-  --glare-x: 30%;
-  --glare-y: 20%;
+  --glare-x: 0px;
+  --glare-y: 0px;
   --card-blue: var(--flashcard-back-bg);
   --card-blue-deep: var(--flashcard-back-edge);
 
@@ -21,25 +21,51 @@
   perspective: 1400px;
 }
 
-.acard__body {
+/* Leaning: its own layer, moved by transform only. */
+.acard__tilt {
   position: absolute;
   inset: 0;
-  transform-style: preserve-3d;
   transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  cursor: default;
+  transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
 }
 
-.acard:not(.acard--blank) .acard__body {
+.acard.is-tilting .acard__tilt {
+  transition: transform 140ms ease-out;
+}
+
+.acard__flip {
+  position: absolute;
+  inset: 0;
+}
+
+.acard:not(.acard--blank) .acard__flip {
   cursor: pointer;
 }
 
-.acard.is-tilting .acard__body {
-  transition: transform 120ms ease-out;
+/* To the edge, the side changes, and back. */
+.acard__flip.is-flipping {
+  animation: acard-flip var(--flip-ms) linear;
 }
 
-.acard.is-turned .acard__body {
-  transform: rotateX(var(--tilt-x)) rotateY(calc(180deg + var(--tilt-y)));
+@keyframes acard-flip {
+  0% {
+    transform: perspective(1400px) rotateY(0deg) scale(1);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.5);
+  }
+
+  50% {
+    transform: perspective(1400px) rotateY(90deg) scale(0.97);
+  }
+
+  50.01% {
+    transform: perspective(1400px) rotateY(-90deg) scale(0.97);
+    animation-timing-function: cubic-bezier(0.1, 0.5, 0.45, 1);
+  }
+
+  100% {
+    transform: perspective(1400px) rotateY(0deg) scale(1);
+  }
 }
 
 .acard__face {
@@ -50,36 +76,11 @@
   overflow: hidden;
   padding: 5.4cqi 5.6cqi 4.6cqi;
   border-radius: 4.6cqi;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   color: #fff;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.25) inset,
     0 2.4cqi 0 -1.2cqi var(--card-blue-deep),
     0 40px 70px -34px rgba(16, 24, 40, 0.6);
-}
-
-/* Which side shows is also switched with visibility halfway through the
-   turn: backface-visibility alone is not honoured by every engine
-   (Firefox shows the front mirrored through the back). */
-.acard__front,
-.acard__stickers {
-  transform: rotateY(0deg) translateZ(1px);
-  transition: visibility 0s linear 330ms;
-}
-
-.acard.is-turned .acard__front,
-.acard.is-turned .acard__stickers {
-  visibility: hidden;
-}
-
-.acard__back {
-  visibility: hidden;
-  transition: visibility 0s linear 330ms;
-}
-
-.acard.is-turned .acard__back {
-  visibility: visible;
 }
 
 /* Front: blue, with a fine diagonal security print and a soft light from
@@ -258,8 +259,6 @@
   top: -3.2cqi;
   display: flex;
   gap: 1.2cqi;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
 .acard__sticker {
@@ -312,35 +311,44 @@
   opacity: 0.9;
 }
 
-/* Glare and a faint rainbow, following the pointer. */
-.acard__glare {
+/* Glare: a soft light with a faint rainbow edge, moved as a layer, so
+   following the pointer costs nothing to draw. */
+.acard__glare-clip {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 255, 255, 0.42), transparent 42%),
-    conic-gradient(
-      from 200deg at var(--glare-x) var(--glare-y),
-      rgba(255, 120, 200, 0.22),
-      rgba(120, 220, 255, 0.22),
-      rgba(160, 255, 170, 0.2),
-      rgba(255, 230, 120, 0.22),
-      rgba(255, 120, 200, 0.22)
-    );
-  mix-blend-mode: soft-light;
+  overflow: hidden;
+  border-radius: 4.6cqi;
   opacity: 0;
   pointer-events: none;
   transition: opacity 300ms ease;
 }
 
-.acard.is-tilting .acard__glare {
+.acard.is-tilting .acard__glare-clip {
   opacity: 1;
+}
+
+.acard__glare {
+  position: absolute;
+  left: -40cqi;
+  top: -40cqi;
+  width: 80cqi;
+  height: 80cqi;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.12) 35%,
+    rgba(160, 220, 255, 0.08) 52%,
+    rgba(255, 170, 230, 0.06) 62%,
+    transparent 70%
+  );
+  transform: translate(var(--glare-x), var(--glare-y));
+  will-change: transform;
 }
 
 /* Back: the magnetic stripe, what the card lets you do, the signature. */
 .acard__back {
   padding: 0 0 4.6cqi;
-  transform: rotateY(180deg);
   background:
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 7px),
     linear-gradient(150deg, var(--card-blue-deep) 0%, #10307e 100%);
@@ -496,7 +504,7 @@
   box-shadow: none;
 }
 
-.acard--blank .acard__glare {
+.acard--blank .acard__glare-clip {
   display: none;
 }
 
@@ -520,16 +528,17 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .acard__body,
-  .acard.is-tilting .acard__body {
+  .acard__tilt,
+  .acard.is-tilting .acard__tilt {
     transition: none;
   }
 
-  .acard__sticker {
+  .acard__sticker,
+  .acard__flip.is-flipping {
     animation: none;
   }
 
-  .acard__glare {
+  .acard__glare-clip {
     display: none;
   }
 }

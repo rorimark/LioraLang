@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { FiCheck, FiRotateCw } from "react-icons/fi";
 import { IoBook, IoCalendar, IoFlame, IoFlash, IoInfinite, IoLayers, IoSparkles, IoTrophy } from "react-icons/io5";
 import { AppIcon } from "@shared/ui";
@@ -21,46 +21,105 @@ const STICKER_ICONS = {
 
 const TILTS = [-10, 7, -4];
 
-// The card leans towards the pointer and the sheen follows it. Written
-// straight to CSS variables: a pointer move never re-renders React.
+// The card leans towards the pointer and a glare follows it. Written
+// straight to CSS variables once a frame, and only ever as transforms:
+// a pointer move never re-renders React and never repaints the card.
 const useTilt = () => {
   const ref = useRef(null);
+  const frameRef = useRef(0);
+  const pointRef = useRef(null);
 
-  const handlePointerMove = useCallback((event) => {
+  const apply = useCallback(() => {
+    frameRef.current = 0;
     const card = ref.current;
+    const point = pointRef.current;
 
-    if (
-      !card ||
-      event.pointerType !== "mouse" ||
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
-    ) {
+    if (!card || !point) {
       return;
     }
 
-    const rect = card.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-
-    card.style.setProperty("--tilt-x", `${(0.5 - y) * 10}deg`);
-    card.style.setProperty("--tilt-y", `${(x - 0.5) * 14}deg`);
-    card.style.setProperty("--glare-x", `${x * 100}%`);
-    card.style.setProperty("--glare-y", `${y * 100}%`);
-    card.classList.add("is-tilting");
+    card.style.setProperty("--tilt-x", `${(0.5 - point.y) * 10}deg`);
+    card.style.setProperty("--tilt-y", `${(point.x - 0.5) * 14}deg`);
+    card.style.setProperty("--glare-x", `${point.x * point.width}px`);
+    card.style.setProperty("--glare-y", `${point.y * point.height}px`);
   }, []);
+
+  const handlePointerMove = useCallback(
+    (event) => {
+      const card = ref.current;
+
+      if (
+        !card ||
+        event.pointerType !== "mouse" ||
+        window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
+      ) {
+        return;
+      }
+
+      const rect = card.getBoundingClientRect();
+      pointRef.current = {
+        x: Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width)),
+        y: Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height)),
+        width: rect.width,
+        height: rect.height,
+      };
+      card.classList.add("is-tilting");
+
+      if (!frameRef.current) {
+        frameRef.current = requestAnimationFrame(apply);
+      }
+    },
+    [apply],
+  );
 
   const handlePointerLeave = useCallback(() => {
     const card = ref.current;
 
-    if (!card) {
+    cancelAnimationFrame(frameRef.current);
+    frameRef.current = 0;
+
+    if (card) {
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+      card.classList.remove("is-tilting");
+    }
+  }, []);
+
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
+
+  return { ref, handlePointerMove, handlePointerLeave };
+};
+
+// Turning over: the card swings to its edge, the side changes there, and
+// it swings back. One side is ever drawn, so no browser can show both or
+// neither.
+const FLIP_MS = 560;
+
+const useTurn = () => {
+  const [isTurned, setIsTurned] = useState(false);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const timersRef = useRef([]);
+
+  useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
+
+  const turn = useCallback(() => {
+    if (isFlipping) {
       return;
     }
 
-    card.style.setProperty("--tilt-x", "0deg");
-    card.style.setProperty("--tilt-y", "0deg");
-    card.classList.remove("is-tilting");
-  }, []);
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+      setIsTurned((current) => !current);
+      return;
+    }
 
-  return { ref, handlePointerMove, handlePointerLeave };
+    setIsFlipping(true);
+    timersRef.current = [
+      setTimeout(() => setIsTurned((current) => !current), FLIP_MS / 2),
+      setTimeout(() => setIsFlipping(false), FLIP_MS),
+    ];
+  }, [isFlipping]);
+
+  return { isTurned, isFlipping, turn };
 };
 
 const CardSticker = ({ tier, index }) => {
@@ -148,8 +207,6 @@ const CardFront = ({ name, email, memberSince, cardNumber, stats, isVerified, is
           Email not confirmed
         </span>
       ) : null}
-
-      <span className="acard__glare" aria-hidden />
     </div>
   );
 };
@@ -172,16 +229,14 @@ const CardBack = ({ name, perks }) => (
     <div className="acard__signature">
       <span>{name}</span>
     </div>
-    <span className="acard__glare" />
   </div>
 );
 
 export const AccountCard = memo(
   ({ name, email, memberSince, cardNumber, stats, isVerified = true, perks = [], isBlank = false }) => {
     const { ref, handlePointerMove, handlePointerLeave } = useTilt();
-    const [isTurned, setIsTurned] = useState(false);
+    const { isTurned, isFlipping, turn } = useTurn();
     const canTurn = !isBlank && perks.length > 0;
-    const turn = useCallback(() => setIsTurned((current) => !current), []);
 
     return (
       <div
@@ -197,24 +252,36 @@ export const AccountCard = memo(
         role="group"
         aria-label={isBlank ? "Your learner card, not issued yet" : `Learner card of ${name}`}
       >
-        <div className="acard__body" onClick={canTurn ? turn : undefined}>
-          <CardFront
-            name={name}
-            email={email}
-            memberSince={memberSince}
-            cardNumber={cardNumber}
-            stats={stats}
-            isVerified={isVerified}
-            isBlank={isBlank}
-          />
-          {canTurn ? <CardBack name={name} perks={perks} /> : null}
-          {stats?.recentStickers?.length ? (
-            <div className="acard__stickers" aria-hidden>
-              {stats.recentStickers.map((tier, index) => (
-                <CardSticker key={tier.id} tier={tier} index={index} />
-              ))}
-            </div>
-          ) : null}
+        <div className="acard__tilt">
+          <div
+            className={isFlipping ? "acard__flip is-flipping" : "acard__flip"}
+            style={{ "--flip-ms": `${FLIP_MS}ms` }}
+            onClick={canTurn ? turn : undefined}
+          >
+            {isTurned ? (
+              <CardBack name={name} perks={perks} />
+            ) : (
+              <CardFront
+                name={name}
+                email={email}
+                memberSince={memberSince}
+                cardNumber={cardNumber}
+                stats={stats}
+                isVerified={isVerified}
+                isBlank={isBlank}
+              />
+            )}
+            <span className="acard__glare-clip" aria-hidden>
+              <span className="acard__glare" />
+            </span>
+            {!isTurned && stats?.recentStickers?.length ? (
+              <div className="acard__stickers" aria-hidden>
+                {stats.recentStickers.map((tier, index) => (
+                  <CardSticker key={tier.id} tier={tier} index={index} />
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
         {canTurn ? (
           <button

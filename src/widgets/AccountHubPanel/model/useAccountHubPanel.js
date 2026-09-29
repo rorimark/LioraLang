@@ -564,10 +564,12 @@ export const useAccountHubPanel = () => {
       };
     }
 
-    if (syncStatus.syncing) {
+    // Background passes every few seconds are not shown: "Syncing" only
+    // until the first sync has finished, so the status does not flicker.
+    if (syncStatus.syncing && !syncStatus.lastSuccessfulSyncAt) {
       return {
         label: "Syncing",
-        text: "Sync is running in the background right now.",
+        text: "The first sync is running now.",
       };
     }
 

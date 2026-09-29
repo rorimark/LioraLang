@@ -132,20 +132,25 @@ export const useSyncSettingsSection = () => {
       };
     }
 
-    if (status.syncing || isRunningNow) {
+    // The background sync runs every few seconds; it is not news. The
+    // status says "Syncing" only for a sync you asked for, or for the
+    // very first one, so it does not flicker while you read it.
+    const hasSyncedBefore = Boolean(
+      status.lastSuccessfulSyncAt || status.lastSuccessfulPullAt || status.lastSuccessfulPushAt,
+    );
+
+    if (isRunningNow || (status.syncing && !hasSyncedBefore)) {
       return {
         label: "Syncing",
         tone: "accent",
-        text: status.lastSummary || "Checking for deck and progress changes…",
+        text: "Checking for deck and progress changes…",
       };
     }
 
     return {
       label: "Synced",
       tone: "success",
-      text:
-        status.lastSummary ||
-        "Local data and cloud state are aligned. New changes will keep syncing in the background.",
+      text: "Local data and cloud state are aligned. New changes keep syncing in the background.",
     };
   }, [isRunningNow, status]);
 
@@ -169,7 +174,7 @@ export const useSyncSettingsSection = () => {
     clearError,
     updatePreference,
     summary,
-    canSyncNow: status.configured && status.signedIn && !isRunningNow && !status.syncing,
+    canSyncNow: status.configured && status.signedIn && !isRunningNow,
     formatTimestamp,
     lastCompletedSyncAt,
   };

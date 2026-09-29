@@ -79,7 +79,7 @@ export const SyncSettingsSection = memo(() => {
               type="button"
               variant="primary"
               onClick={runSyncNow}
-              isLoading={isRunningNow || status.syncing}
+              isLoading={isRunningNow}
               disabled={!canSyncNow}
             >
               <FiRefreshCw aria-hidden="true" />
