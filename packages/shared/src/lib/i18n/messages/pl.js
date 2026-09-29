@@ -1123,7 +1123,7 @@ export default {
       "stickers": "naklejki",
       "title": "Legitymacja ucznia",
       "notIssued": "jeszcze niewydana",
-      "memberSince": "z nami od {date}",
+      "memberSince": "z nami: {date}",
       "member": "członek",
       "unconfirmed": "E-mail niepotwierdzony",
       "blankLabel": "Twoja legitymacja ucznia, jeszcze niewydana",

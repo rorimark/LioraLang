@@ -11,7 +11,7 @@ describe("learner card", () => {
   });
 
   it("says since when, or nothing", () => {
-    expect(formatMemberSince("2026-09-01T10:00:00Z", en)).toBe("Sep 2026");
+    expect(formatMemberSince("2026-09-01T10:00:00Z", en)).toBe("09/2026");
     expect(formatMemberSince(undefined, en)).toBe("");
   });
 

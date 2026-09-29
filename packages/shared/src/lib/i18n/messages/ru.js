@@ -1123,7 +1123,7 @@ export default {
       "stickers": "стикеры",
       "title": "Билет ученика",
       "notIssued": "ещё не выдан",
-      "memberSince": "с нами с {date}",
+      "memberSince": "с нами: {date}",
       "member": "участник",
       "unconfirmed": "Почта не подтверждена",
       "blankLabel": "Ваш билет ученика, ещё не выдан",

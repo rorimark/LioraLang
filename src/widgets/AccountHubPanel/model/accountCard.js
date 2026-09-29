@@ -16,9 +16,10 @@ export const buildCardNumber = (userId) => {
   return `LL ${hex.slice(0, 4)} ${hex.slice(4, 8)}`;
 };
 
-// Month and year, in the interface's language (takes useI18n()'s value).
+// Month and year as on a bank card, "09/2026", in the language's own
+// numerals and separator (takes useI18n()'s value).
 export const formatMemberSince = (createdAt, { formatDate }) =>
-  createdAt ? formatDate(createdAt, { month: "short", year: "numeric" }) : "";
+  createdAt ? formatDate(createdAt, { month: "2-digit", year: "numeric" }) : "";
 
 // The name the card shows: the display name, or the part of the email
 // before the @, or nothing yet.

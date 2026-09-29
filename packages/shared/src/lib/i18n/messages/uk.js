@@ -1123,7 +1123,7 @@ export default {
       "stickers": "наліпки",
       "title": "Квиток учня",
       "notIssued": "ще не видано",
-      "memberSince": "з нами з {date}",
+      "memberSince": "з нами: {date}",
       "member": "учасник",
       "unconfirmed": "Пошту не підтверджено",
       "blankLabel": "Ваш квиток учня, ще не видано",

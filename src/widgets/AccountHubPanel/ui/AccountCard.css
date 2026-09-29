@@ -174,15 +174,21 @@
   opacity: 0.45;
 }
 
+/* The numbers give way to the activity grid, never the other way round:
+   a longer language wraps its labels onto a second line instead of
+   pushing the grid off the card. */
 .acard__stats {
   display: flex;
-  gap: 5cqi;
+  flex: 1 1 auto;
+  gap: 4cqi;
+  min-width: 0;
   margin: 0;
 }
 
 .acard__stat {
   display: flex;
   flex-direction: column-reverse;
+  min-width: 0;
 }
 
 .acard__stat dd {
@@ -200,8 +206,10 @@
 }
 
 .acard__stat dt {
-  white-space: nowrap;
+  max-width: 17cqi;
   margin-top: 0.8cqi;
+  line-height: 1.15;
+  overflow-wrap: break-word;
   font-size: max(10px, 2.4cqi);
   font-weight: 800;
   opacity: 0.8;
@@ -247,8 +255,18 @@
 }
 
 .acard__number {
+  flex: none;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.14em;
+}
+
+/* The card's title and date keep to one line; the number never breaks. */
+.acard__foot > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Stickers stuck on the card's corner, crooked, hanging over its edge.

@@ -318,12 +318,17 @@
 }
 
 /* Tabs carry the navigation's mark: a short blue bar under the open one. */
+/* Scrolls sideways only when the tabs do not fit (a narrow phone, a long
+   language). The rule and the active line are drawn inside the row, so
+   nothing hangs below it and it never scrolls up and down. */
 .account__tabs {
   display: flex;
   gap: 4px;
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
-  border-bottom: 2px solid var(--color-border);
+  box-shadow: inset 0 -2px 0 var(--color-border);
 }
 
 .account__tabs::-webkit-scrollbar {
@@ -341,6 +346,7 @@
   font-size: 0.95rem;
   font-weight: 800;
   cursor: pointer;
+  user-select: none;
   transition: color 140ms ease;
 }
 
@@ -349,7 +355,7 @@
   position: absolute;
   left: 14px;
   right: 14px;
-  bottom: -2px;
+  bottom: 0;
   height: 0;
   border-radius: 4px 4px 0 0;
   background: var(--color-primary);
