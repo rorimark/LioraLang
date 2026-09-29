@@ -601,12 +601,21 @@
     gap: 12px;
   }
 
+  /* A grid, not a wrapping row: the last track takes the spare height, so
+     the keys sit on the card's floor and line up across a row of cards. */
   .deck-editor-panel__table tbody tr {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: start;
-    align-items: center;
-    gap: 6px 8px;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto auto 1fr;
+    grid-template-areas:
+      "word word word"
+      "part level ."
+      "target target target"
+      "tertiary tertiary tertiary"
+      "examples examples examples"
+      "actions actions actions";
+    align-items: start;
+    column-gap: 6px;
     padding: 14px 14px 12px;
     border: 2px solid var(--color-border);
     border-bottom-width: var(--edge-width);
@@ -643,7 +652,7 @@
 
   /* The word. */
   .deck-editor-panel__table td:first-child {
-    order: 0;
+    grid-area: word;
     font-size: 1.1rem;
     font-weight: 900;
     line-height: 1.25;
@@ -660,8 +669,9 @@
   /* Part of speech and level, as tags under the word. */
   .deck-editor-panel__table td[data-label="Part"],
   .deck-editor-panel__table td[data-label="Level"] {
-    order: 1;
+    justify-self: start;
     width: auto;
+    margin-top: 6px;
     padding: 2px 9px;
     border-radius: 999px;
     background: var(--color-surface-muted);
@@ -670,16 +680,28 @@
     font-weight: 800;
   }
 
+  .deck-editor-panel__table td[data-label="Part"] {
+    grid-area: part;
+  }
+
   .deck-editor-panel__table td[data-label="Level"] {
+    grid-area: level;
     background: var(--color-primary-soft);
     color: var(--color-primary);
   }
 
   /* Translations, under the name of their language. */
+  .deck-editor-panel__table td:nth-child(2) {
+    grid-area: target;
+  }
+
+  .deck-editor-panel__table td:nth-child(3):not([data-label="Level"], [data-label="Part"]) {
+    grid-area: tertiary;
+  }
+
   .deck-editor-panel__table td:nth-child(2),
   .deck-editor-panel__table td:nth-child(3):not([data-label="Level"], [data-label="Part"]) {
-    order: 2;
-    margin-top: 4px;
+    margin-top: 8px;
     display: -webkit-box;
     overflow: hidden;
     -webkit-line-clamp: 3;
@@ -687,15 +709,16 @@
   }
 
   .deck-editor-panel__table td[data-label="Examples"] {
-    order: 3;
-    margin-top: 2px;
+    grid-area: examples;
+    margin-top: 4px;
     color: var(--color-text-muted);
     font-size: 0.84rem;
   }
 
   .deck-editor-panel__table td.deck-editor-panel__cell--actions {
-    order: 4;
-    margin-top: 8px;
+    grid-area: actions;
+    align-self: end;
+    margin-top: 12px;
   }
 
   .deck-editor-panel__table-actions,
