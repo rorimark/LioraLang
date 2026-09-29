@@ -11,7 +11,7 @@ export const INTERFACE_LOCALES = [
   { code: "fr", nativeName: "Français", deckLanguage: "French" },
   { code: "it", nativeName: "Italiano", deckLanguage: "Italian" },
   { code: "pt", nativeName: "Português", deckLanguage: "Portuguese" },
-  { code: "tr", nativeName: "Türkçe", deckLanguage: "Turkish", pending: true },
+  { code: "tr", nativeName: "Türkçe", deckLanguage: "Turkish" },
   { code: "cs", nativeName: "Čeština", deckLanguage: "Czech", pending: true },
   { code: "ja", nativeName: "日本語", deckLanguage: "Japanese", pending: true },
 ];
