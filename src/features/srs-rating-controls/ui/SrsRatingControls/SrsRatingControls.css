@@ -73,8 +73,26 @@
   --grade-edge: var(--color-grade-easy-edge);
 }
 
+/* A grade is one line in every language, so the four keys keep one
+   height: a label longer than its key has room for steps its type down
+   (a bold letter of this face is about 0.8em, so the key holds 125cqi / letters), and
+   only past that is it cut. Short labels keep their size. Keys
+   share the row's width only on smaller screens; wider ones let each key
+   grow to its word, and cqi then falls back to the viewport, which is
+   never the smaller value. */
+@media (max-width: 960px) {
+  .srs-rating-controls__button {
+    container-type: inline-size;
+  }
+}
+
 .srs-rating-controls__label {
-  font-size: 0.95rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: min(0.95rem, calc(125cqi / var(--label-chars, 6)));
   font-weight: 900;
 }
 
@@ -103,7 +121,7 @@
   }
 
   .srs-rating-controls__label {
-    font-size: 0.78rem;
+    font-size: min(0.78rem, calc(125cqi / var(--label-chars, 6)));
   }
 
   .srs-rating-controls__value {
@@ -122,7 +140,7 @@
   }
 
   .srs-rating-controls__label {
-    font-size: 0.74rem;
+    font-size: min(0.74rem, calc(125cqi / var(--label-chars, 6)));
   }
 
   .srs-rating-controls__value {
@@ -145,7 +163,7 @@
   }
 
   .srs-rating-controls__label {
-    font-size: 0.72rem;
+    font-size: min(0.72rem, calc(125cqi / var(--label-chars, 6)));
   }
 
   .srs-rating-controls__value {
@@ -214,7 +232,7 @@
 }
 
 .srs-rating-controls--stickers .srs-rating-controls__label {
-  font-size: var(--sticker-label-size, clamp(1rem, 0.7rem + 0.6vh, 1.3rem));
+  font-size: min(var(--sticker-label-size, clamp(1rem, 0.7rem + 0.6vh, 1.3rem)), calc(125cqi / var(--label-chars, 6)));
 }
 
 .srs-rating-controls--stickers .srs-rating-controls__value {

@@ -4,6 +4,11 @@ import { useI18n } from "@shared/lib/i18n";
 
 const EMPTY_KEY_LABELS = Object.freeze({});
 
+// How wide a label reads, in Latin letters: a CJK character is about as
+// wide as two. The CSS sizes the label to fit its key from this.
+const measureLabel = (label) =>
+  Math.max(5, [...String(label || "")].reduce((width, char) => width + (char.codePointAt(0) > 0x2e80 ? 1.7 : 1), 0));
+
 export const SrsRatingControls = memo(
   ({
     ratingOptions = [],
@@ -39,7 +44,9 @@ export const SrsRatingControls = memo(
               })}
               aria-keyshortcuts={keyLabel || undefined}
             >
-              <span className="srs-rating-controls__label">{option.label}</span>
+              <span className="srs-rating-controls__label" style={{ "--label-chars": measureLabel(option.label) }}>
+                {option.label}
+              </span>
               <span className="srs-rating-controls__value">{option.value}</span>
               {keyLabel ? (
                 <kbd className="srs-rating-controls__key" aria-hidden="true">
