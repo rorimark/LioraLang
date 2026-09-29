@@ -137,8 +137,8 @@ export const PAGE_META = {
     subtitle: "Configure deck languages, add words, and keep your base updated.",
   },
   [ROUTE_PATHS.progress]: {
-    title: "Learning Progress",
-    subtitle: "Track retention, streaks, and spaced-repetition efficiency.",
+    title: "Progress",
+    subtitle: "What you know, what is due, and how your study is going.",
   },
   [ROUTE_PATHS.account]: {
     title: "Account",

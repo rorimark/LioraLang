@@ -53,6 +53,21 @@
   --flashcard-rule: rgba(37, 99, 235, 0.1);
   --flashcard-header-rule: rgba(255, 90, 95, 0.6);
 
+  /* Charts on the progress page. One blue ramp, light to dark, for
+     "more" (activity) and "further along" (a word's stage); the empty
+     track stands for words not started yet. The grade tones are the grade
+     colours adjusted for charts and checked for colour-blind separation
+     against the card. Text never wears these. */
+  --chart-track: #e1e6ef;
+  --chart-ramp-1: #8aabf2;
+  --chart-ramp-2: #5a8aec;
+  --chart-ramp-3: #2f66dc;
+  --chart-ramp-4: #1a3f9e;
+  --chart-grade-again: #e5484d;
+  --chart-grade-hard: #c98a00;
+  --chart-grade-good: #2563eb;
+  --chart-grade-easy: #1f9e46;
+
   /* Depth comes mostly from edges; shadows only lift floating layers. */
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
   --shadow-md: 0 24px 60px rgba(16, 24, 40, 0.16);
@@ -113,6 +128,16 @@
   --flashcard-border: #33466a;
   --flashcard-rule: rgba(120, 160, 255, 0.08);
   --flashcard-header-rule: rgba(255, 110, 115, 0.5);
+
+  --chart-track: #24334f;
+  --chart-ramp-1: #3a5ea8;
+  --chart-ramp-2: #4a78d8;
+  --chart-ramp-3: #739dff;
+  --chart-ramp-4: #b3ccff;
+  --chart-grade-again: #e04a60;
+  --chart-grade-hard: #c08800;
+  --chart-grade-good: #4f86ff;
+  --chart-grade-easy: #22963f;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 26px 60px rgba(0, 0, 0, 0.5);
