@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { buildAchievements, buildLearningStats, toLocalDayKey } from "@shared/core/usecases/progress";
 import { usePlatformService } from "@shared/providers";
-import { buildSeenLedger, mergeStickers, readStickerLedger, writeStickerLedger } from "./stickerLedger";
+import { buildSeenLedger, mergeStickers, readStickerLedger, writeStickerLedger } from "@shared/lib/stickers";
 
 const EMPTY_BASE = buildLearningStats({ weeks: 53 });
 const EMPTY_STATS = { ...EMPTY_BASE, achievements: buildAchievements(EMPTY_BASE), profileScope: "" };

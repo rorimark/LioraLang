@@ -5,16 +5,24 @@ import {
   FiCheckCircle,
   FiCopy,
   FiExternalLink,
+  FiKey,
   FiLogOut,
   FiMail,
   FiRefreshCw,
   FiShield,
   FiTrash2,
-  FiUser,
+  FiUploadCloud,
 } from "react-icons/fi";
 import { Button, InlineAlert, TextInput } from "@shared/ui";
 import { buildBrowseDeckRoute } from "@shared/config/routes";
-import { useAccountHubPanel } from "../model";
+import {
+  buildCardNumber,
+  formatMemberSince,
+  resolveCardName,
+  useAccountCardStats,
+  useAccountHubPanel,
+} from "../model";
+import { AccountCard } from "./AccountCard";
 import "./AccountHubPanel.css";
 
 const renderDeckVersion = (deck) => {
@@ -26,9 +34,6 @@ const renderDeckVersion = (deck) => {
 };
 
 const toCount = (value) => (Number.isFinite(Number(value)) ? Number(value) : 0);
-
-const resolveInitial = (authState) =>
-  (authState.displayName || authState.email || "").trim().charAt(0).toUpperCase();
 
 // What an account adds, said once, next to the form that creates it.
 const ACCOUNT_PERKS = [
@@ -311,58 +316,105 @@ const HubDecksList = memo(({ panel }) => {
 
 HubDecksList.displayName = "HubDecksList";
 
+const STATUS_ICONS = {
+  verification: FiMail,
+  sync: FiRefreshCw,
+  "hub-decks": FiUploadCloud,
+  provider: FiKey,
+};
+
+// Sync reads as on for every state but a problem.
+const isSyncOn = (label) => ["Synced", "Ready", "Syncing"].includes(label);
+
 const SignedInView = memo(({ panel }) => {
   const { authState } = panel;
-  const initial = resolveInitial(authState);
+  const cardStats = useAccountCardStats(authState.isAuthenticated);
+  const name = resolveCardName(authState) || "Learner";
+  const perks = [
+    {
+      key: "publish",
+      title: "Publish to the Hub",
+      note: authState.isEmailVerified ? "Share your decks with everyone" : "Once your email is confirmed",
+      isOn: authState.isEmailVerified,
+    },
+    {
+      key: "sync",
+      title: "Sync across devices",
+      note: panel.syncOverview.label,
+      isOn: isSyncOn(panel.syncOverview.label),
+    },
+    {
+      key: "provider",
+      title: panel.overviewCards.find((card) => card.key === "provider")?.value || "Signed in",
+      note: panel.isDesktopMode ? "On the desktop app" : "In the browser",
+      isOn: true,
+    },
+  ];
 
   return (
     <>
-      {/* Who is signed in, as the landing's blue card. */}
-      <section className="account__id" aria-label="Your account">
-        <span className="account__avatar" aria-hidden="true">
-          {initial || <FiUser />}
-        </span>
-        <div className="account__id-copy">
-          <h2>{authState.displayName || "Your account"}</h2>
-          <p>{authState.email || "No email on this account"}</p>
-          <ul className="account__chips" aria-label="Account status">
-            {panel.accountBadges.map((badge) => (
-              <li key={badge.key} className={badge.accent ? "is-accent" : ""}>
-                {badge.text}
-              </li>
-            ))}
-          </ul>
+      <div className="account__top">
+        <div className="account__card-side">
+          <AccountCard
+            name={name}
+            email={authState.email}
+            memberSince={formatMemberSince(authState.user?.created_at)}
+            cardNumber={buildCardNumber(authState.user?.id)}
+            stats={cardStats}
+            isVerified={authState.isEmailVerified}
+            perks={perks}
+          />
         </div>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="account__sign-out"
-          onClick={panel.handleSignOut}
-          isLoading={panel.pendingAction === "sign-out"}
-        >
-          <FiLogOut aria-hidden="true" />
-          <span>Sign out</span>
-        </Button>
-      </section>
 
-      {!authState.isEmailVerified ? (
-        <aside className="account__callout">
-          <FiMail aria-hidden="true" />
-          <div>
-            <strong>Confirm your email</strong>
-            <p>Publishing and deleting Hub decks unlock once your email is confirmed.</p>
-          </div>
+        <section className="account__status" aria-label="Account status">
+          <ul className="account__status-list">
+            {panel.overviewCards.map((card) => {
+              const Icon = STATUS_ICONS[card.key] || FiShield;
+              const isWarning =
+                (card.key === "verification" && !authState.isEmailVerified) ||
+                (card.key === "sync" && !isSyncOn(card.value));
+
+              return (
+                <li key={card.key} className={isWarning ? "is-warning" : ""}>
+                  <span className="account__status-icon" aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <span className="account__status-text">
+                    <span className="account__status-title">{card.title}</span>
+                    <strong>{card.value}</strong>
+                    <small>{card.note}</small>
+                  </span>
+                  {card.key === "verification" && !authState.isEmailVerified ? (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={panel.handleResendVerification}
+                      isLoading={panel.pendingAction === "resend-verification"}
+                    >
+                      Send again
+                    </Button>
+                  ) : null}
+                  {card.key === "hub-decks" && panel.ownDecks.length > 0 ? (
+                    <Button variant="ghost" size="sm" onClick={() => panel.setActiveTab("hub")}>
+                      Manage
+                    </Button>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
           <Button
             variant="secondary"
-            size="sm"
-            onClick={panel.handleResendVerification}
-            isLoading={panel.pendingAction === "resend-verification"}
+            fullWidth
+            className="account__sign-out"
+            onClick={panel.handleSignOut}
+            isLoading={panel.pendingAction === "sign-out"}
           >
-            <FiRefreshCw aria-hidden="true" />
-            <span>Send again</span>
+            <FiLogOut aria-hidden="true" />
+            <span>Sign out</span>
           </Button>
-        </aside>
-      ) : null}
+        </section>
+      </div>
 
       <nav className="account__tabs" role="tablist" aria-label="Account">
         {panel.signedInTabs.map((tab) => (
@@ -380,18 +432,6 @@ const SignedInView = memo(({ panel }) => {
       </nav>
 
       <section className="account__panel" key={panel.activeTab}>
-        {panel.activeTab === "overview" ? (
-          <dl className="account__facts">
-            {panel.overviewCards.map((card) => (
-              <div className="account__fact" key={card.key}>
-                <dt>{card.title}</dt>
-                <dd>{card.value}</dd>
-                <p>{card.note}</p>
-              </div>
-            ))}
-          </dl>
-        ) : null}
-
         {panel.activeTab === "profile" ? (
           <form
             className="account__form account__form--card"
@@ -474,13 +514,6 @@ const SignedInView = memo(({ panel }) => {
 
         {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
       </section>
-
-      {authState.isEmailVerified && panel.activeTab === "overview" ? (
-        <p className="account__ready">
-          <FiCheckCircle aria-hidden="true" />
-          Your account can publish, manage and sync decks.
-        </p>
-      ) : null}
     </>
   );
 });
@@ -519,10 +552,16 @@ export const AccountHubPanel = memo(() => {
       {isSignedOut ? (
         <div className="account account--signed-out">
           <section className="account__intro" aria-label="Why sign in">
-            <span className="account__avatar" aria-hidden="true">
-              <FiUser />
-            </span>
-            <h2>Your LioraLang account</h2>
+            {/* The card this account will be, filled in as the form is. */}
+            <AccountCard
+              isBlank
+              name={resolveCardName({
+                displayName: panel.activeTab === "sign-up" ? panel.displayName : "",
+                email: panel.email,
+              })}
+              email={panel.email}
+            />
+            <h2>Your learner card</h2>
             <ul>
               {ACCOUNT_PERKS.map((perk) => (
                 <li key={perk}>

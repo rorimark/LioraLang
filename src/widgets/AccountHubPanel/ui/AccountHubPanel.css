@@ -1,9 +1,9 @@
 /* ===== Account =====
-   The person is the landing's blue card: on the way in it says what an
-   account gives, once signed in it says who you are. Everything else is
-   the app's calm surfaces: a form card, a row of tabs marked like the
-   navigation, and published decks as small cards. The layout follows the
-   width the page gets. */
+   The account is a learner card (AccountCard): blank and filling in as
+   you sign up, issued with your name, numbers and stickers once you are
+   in. Beside it, what the account can do right now; below, the tabs for
+   changing things. Everything else is the app's calm surfaces. The
+   layout follows the width the page gets. */
 
 .account-hub-panel {
   container: account / inline-size;
@@ -13,39 +13,8 @@
 
 .account {
   display: grid;
-  gap: 18px;
-  max-width: 1040px;
-}
-
-/* ---------- blue cards ---------- */
-
-.account__intro,
-.account__id {
-  position: relative;
-  border: 2px solid var(--flashcard-back-edge);
-  border-bottom-width: 6px;
-  border-radius: var(--radius-panel);
-  background: var(--flashcard-back-bg);
-  color: var(--flashcard-on-back);
-  box-shadow: var(--shadow-card);
-}
-
-.account__avatar {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--flashcard-on-back);
-  color: var(--flashcard-back-bg);
-  font-size: 1.7rem;
-  font-weight: 900;
-}
-
-.account__avatar svg {
-  width: 28px;
-  height: 28px;
+  gap: 22px;
+  max-width: 1120px;
 }
 
 /* ---------- signed out ---------- */
@@ -58,31 +27,36 @@
 
 .account__intro {
   display: grid;
-  gap: 16px;
-  padding: clamp(22px, 3vw, 34px);
-  transform: rotate(-1deg);
+  justify-items: start;
+  gap: 14px;
+  padding-top: 6px;
+}
+
+.account__intro .acard {
+  margin-bottom: 10px;
 }
 
 .account__intro h2 {
   margin: 0;
-  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  color: var(--color-text);
+  font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem);
   font-weight: 900;
   letter-spacing: -0.015em;
-  line-height: 1.1;
 }
 
 .account__intro ul {
+  display: grid;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
-  display: grid;
-  gap: 10px;
 }
 
 .account__intro li {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 10px;
+  color: var(--color-text);
   font-size: 0.95rem;
   font-weight: 700;
   line-height: 1.4;
@@ -92,13 +66,12 @@
   width: 18px;
   height: 18px;
   margin-top: 2px;
+  color: var(--color-primary);
 }
 
 .account__intro > p {
   margin: 0;
-  padding-top: 14px;
-  border-top: 2px solid color-mix(in srgb, var(--flashcard-on-back) 22%, transparent);
-  color: color-mix(in srgb, var(--flashcard-on-back) 82%, transparent);
+  color: var(--color-text-muted);
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -246,106 +219,99 @@
 
 /* ---------- signed in ---------- */
 
-.account__id {
+.account__top {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 18px;
-  padding: clamp(18px, 2.6vw, 28px);
+  grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(22px, 3vw, 40px);
 }
 
-.account__id-copy {
+/* Room above for the stickers on the card's corner, below for the key
+   that turns it over. */
+.account__card-side {
+  padding: 22px 8px 64px 0;
+}
+
+/* What the account can do now: one row per fact, a warning tint where
+   something is missing, the fix beside it. */
+.account__status {
   display: grid;
-  gap: 4px;
-  min-width: 0;
+  gap: 14px;
 }
 
-.account__id-copy h2 {
+.account__status-list {
+  display: grid;
   margin: 0;
-  overflow: hidden;
-  font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.8rem);
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.account__id-copy p {
-  margin: 0;
-  overflow: hidden;
-  color: color-mix(in srgb, var(--flashcard-on-back) 82%, transparent);
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.account__chips {
-  margin: 6px 0 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  border: 2px solid var(--color-border);
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  overflow: hidden;
 }
 
-.account__chips li {
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--flashcard-on-back) 18%, transparent);
-  font-size: 0.76rem;
-  font-weight: 900;
-}
-
-/* Providers come in lower case ("google"); only the first letter is raised. */
-.account__chips li::first-letter {
-  text-transform: uppercase;
-}
-
-.account__chips li.is-accent {
-  background: var(--color-grade-easy);
-}
-
-.account__id .account__sign-out {
-  align-self: start;
-  border-color: color-mix(in srgb, var(--flashcard-on-back) 45%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--flashcard-on-back) 45%, transparent);
-  background: color-mix(in srgb, var(--flashcard-on-back) 14%, transparent);
-  color: var(--flashcard-on-back);
-}
-
-@media (hover: hover) {
-  .account__id .account__sign-out:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--flashcard-on-back) 22%, transparent);
-  }
-}
-
-.account__callout {
+.account__status-list li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
-  border: 2px solid color-mix(in srgb, var(--color-grade-hard) 55%, var(--color-border));
-  border-bottom: var(--edge-width) solid var(--color-grade-hard-edge);
-  border-radius: var(--radius-control);
-  background: var(--color-accent-soft);
 }
 
-.account__callout > svg {
-  width: 22px;
-  height: 22px;
+.account__status-list li + li {
+  border-top: 2px solid var(--color-border);
+}
+
+.account__status-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.account__status-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.account__status-list li.is-warning .account__status-icon {
+  background: var(--color-accent-soft);
   color: var(--color-accent-strong);
 }
 
-.account__callout strong {
+.account__status-text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.account__status-title {
+  color: var(--color-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.account__status-text strong {
+  color: var(--color-text);
+  font-size: 1rem;
   font-weight: 900;
 }
 
-.account__callout p {
-  margin: 2px 0 0;
+.account__status-text small {
   color: var(--color-text-muted);
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1.4;
+}
+
+.account__sign-out {
+  gap: 8px;
 }
 
 /* Tabs carry the navigation's mark: a short blue bar under the open one. */
@@ -416,56 +382,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.account__facts {
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-}
-
-.account__fact {
-  display: grid;
-  align-content: start;
-  gap: 4px;
-  padding: 16px;
-  border: 2px solid var(--color-border);
-  border-bottom-width: var(--edge-width);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-}
-
-.account__fact dt {
-  color: var(--color-text-subtle);
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.account__fact dd {
-  margin: 0;
-  color: var(--color-text);
-  font-size: 1.15rem;
-  font-weight: 900;
-}
-
-.account__fact p {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.84rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.account__ready {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: var(--color-success);
-  font-weight: 800;
 }
 
 /* Published decks, each a small card with its keys. */
@@ -612,68 +528,43 @@
 
 /* ---------- narrow ---------- */
 
-@container account (max-width: 760px) {
-  .account--signed-out {
+@container account (max-width: 860px) {
+  .account--signed-out,
+  .account__top {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* The form is what you came for; what an account gives follows it. */
+  .account__card-side,
+  .account__intro .acard {
+    justify-self: center;
+    width: min(100%, 520px);
+  }
+
+  /* Signing in is what you came for: the form first, the card after. */
   .account--signed-out .account__intro {
     order: 2;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .account--signed-out .account__intro li {
+    text-align: left;
   }
 }
 
 @container account (max-width: 600px) {
-  /* On a phone the blue card shrinks to a header: the form is what you
-     came for. */
-  .account__intro {
+  .account__card-side {
+    padding: 18px 4px 64px 0;
+  }
+
+  .account__status-list li {
     grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 12px 14px;
-    padding: 16px;
-    transform: none;
+    padding: 12px 14px;
   }
 
-  .account__intro .account__avatar {
-    width: 48px;
-    height: 48px;
-  }
-
-  .account__intro h2 {
-    font-size: 1.2rem;
-  }
-
-  .account__intro ul,
-  .account__intro > p {
-    grid-column: 1 / -1;
-  }
-
-  .account__intro li {
-    font-size: 0.88rem;
-  }
-
-  .account__id {
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  .account__id .account__avatar {
-    width: 52px;
-    height: 52px;
-    font-size: 1.4rem;
-  }
-
-  .account__id .account__sign-out {
-    grid-column: 1 / -1;
-    justify-self: stretch;
-  }
-
-  .account__callout {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .account__callout .ui-button {
-    grid-column: 1 / -1;
+  .account__status-list li .ui-button {
+    grid-column: 2;
+    justify-self: start;
   }
 
   .account__deck {

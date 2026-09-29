@@ -20,12 +20,15 @@ const SIGNED_OUT_TAB_ITEMS = [
   { key: "reset", label: "Reset password" },
 ];
 
+// What the account is (the card, its status) is always on screen above
+// these; the tabs are for changing things.
 const SIGNED_IN_TAB_ITEMS = [
-  { key: "overview", label: "Overview" },
   { key: "profile", label: "Profile" },
   { key: "security", label: "Security" },
   { key: "hub", label: "My Hub decks" },
 ];
+
+const PROVIDER_NAMES = { email: "Email and password", google: "Google", github: "GitHub" };
 
 const SOCIAL_PROVIDERS = [
   { key: "google", label: "Continue with Google" },
@@ -306,7 +309,7 @@ export const useAccountHubPanel = () => {
     setDisplayName(authState.displayName || "");
     setEmail(authState.email || "");
     setResetEmail(authState.email || "");
-    setActiveTab((currentTab) => (currentTab === "sign-in" || currentTab === "sign-up" || currentTab === "reset" ? "overview" : currentTab));
+    setActiveTab((currentTab) => (currentTab === "sign-in" || currentTab === "sign-up" || currentTab === "reset" ? "profile" : currentTab));
   }, [authState.displayName, authState.email, authState.isAuthenticated]);
 
   useEffect(() => {
@@ -384,7 +387,7 @@ export const useAccountHubPanel = () => {
       setAuthState(nextAuthState);
       setPassword("");
       reportStatus("Signed in successfully.", "success");
-      setActiveTab("overview");
+      setActiveTab("profile");
     });
   }, [authRepository, email, password, reportStatus, runAction]);
 
@@ -409,7 +412,7 @@ export const useAccountHubPanel = () => {
       }
 
       reportStatus("Account created and signed in.", "success");
-      setActiveTab("overview");
+      setActiveTab("profile");
     });
   }, [authRepository, displayName, email, password, reportStatus, runAction]);
 
@@ -616,7 +619,7 @@ export const useAccountHubPanel = () => {
       {
         key: "provider",
         title: "Sign-in method",
-        value: authState.provider === "email" ? "Email and password" : authState.provider,
+        value: PROVIDER_NAMES[authState.provider] || authState.provider,
         note: isDesktopMode ? "Desktop session" : "Web session",
       },
     ];

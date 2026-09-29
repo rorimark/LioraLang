@@ -2,6 +2,8 @@
 // earned, and whether the learner has seen it since. A sticker, once
 // earned, stays earned here even if the number behind it falls again (a
 // forgotten word); the numbers themselves always come from the stats.
+// Shared, so every screen that shows stickers (progress, the account card)
+// shows the same ones.
 
 const STORAGE_PREFIX = "lioralang.stickers.";
 

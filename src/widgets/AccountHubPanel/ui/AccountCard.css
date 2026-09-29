@@ -1,0 +1,513 @@
+/* ===== Learner card =====
+   The account as a card you could carry: the app's blue, a fine security
+   print, the learner's own numbers and stickers stuck on it. It leans
+   towards the pointer with a holographic glare, and turns over to show
+   what it lets you do. Everything is sized from the card's own width
+   (cqi), so it is the same card on a phone and on a monitor. */
+
+.acard {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glare-x: 30%;
+  --glare-y: 20%;
+  --card-blue: var(--flashcard-back-bg);
+  --card-blue-deep: var(--flashcard-back-edge);
+
+  position: relative;
+  container: acard / inline-size;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1.586;
+  perspective: 1400px;
+}
+
+.acard__body {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: default;
+}
+
+.acard:not(.acard--blank) .acard__body {
+  cursor: pointer;
+}
+
+.acard.is-tilting .acard__body {
+  transition: transform 120ms ease-out;
+}
+
+.acard.is-turned .acard__body {
+  transform: rotateX(var(--tilt-x)) rotateY(calc(180deg + var(--tilt-y)));
+}
+
+.acard__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 5.4cqi 5.6cqi 4.6cqi;
+  border-radius: 4.6cqi;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  color: #fff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 2.4cqi 0 -1.2cqi var(--card-blue-deep),
+    0 40px 70px -34px rgba(16, 24, 40, 0.6);
+}
+
+/* Front: blue, with a fine diagonal security print and a soft light from
+   the top left, as printed plastic. */
+.acard__front {
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, 0.22), transparent 55%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 7px),
+    linear-gradient(150deg, var(--card-blue) 0%, var(--card-blue-deep) 100%);
+}
+
+.acard__band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3cqi;
+}
+
+.acard__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.8cqi;
+  font-size: 3.6cqi;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.acard__brand .app-icon {
+  width: 5.6cqi;
+  height: 5.6cqi;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.5cqi rgba(255, 255, 255, 0.9);
+}
+
+.acard__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4cqi;
+  margin-top: auto;
+}
+
+.acard__who {
+  display: flex;
+  align-items: center;
+  gap: 3cqi;
+  margin-top: 5cqi;
+  min-width: 0;
+}
+
+.acard__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 11cqi;
+  height: 11cqi;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--card-blue-deep);
+  font-size: 5.4cqi;
+  font-weight: 900;
+  box-shadow: 0 0.6cqi 1.6cqi rgba(0, 0, 0, 0.2);
+}
+
+.acard__who-text {
+  display: grid;
+  min-width: 0;
+  gap: 0.4cqi;
+}
+
+.acard__name {
+  overflow: hidden;
+  font-size: 6.2cqi;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.acard__email {
+  overflow: hidden;
+  font-size: max(11px, 3cqi);
+  font-weight: 700;
+  opacity: 0.85;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.is-placeholder {
+  opacity: 0.45;
+}
+
+.acard__stats {
+  display: flex;
+  gap: 5cqi;
+  margin: 0;
+}
+
+.acard__stat {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.acard__stat dd {
+  margin: 0;
+  font-size: 6.4cqi;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* An unconfirmed card keeps room for its stamp beside the name. */
+.acard.is-unverified .acard__who-text {
+  max-width: 50cqi;
+}
+
+.acard__stat dt {
+  white-space: nowrap;
+  margin-top: 0.8cqi;
+  font-size: max(10px, 2.4cqi);
+  font-weight: 800;
+  opacity: 0.8;
+}
+
+/* The last seventeen weeks, a column per week, in white. */
+.acard__activity {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 1.45cqi);
+  grid-auto-columns: 1.45cqi;
+  gap: 0.45cqi;
+  flex: none;
+}
+
+.acard__activity span {
+  border-radius: 0.4cqi;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.acard__activity .is-level-1 { background: rgba(255, 255, 255, 0.38); }
+.acard__activity .is-level-2 { background: rgba(255, 255, 255, 0.58); }
+.acard__activity .is-level-3 { background: rgba(255, 255, 255, 0.8); }
+.acard__activity .is-level-4 { background: #fff; }
+.acard__activity .is-future { background: none; }
+
+.acard__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 3cqi;
+  margin-top: 3.6cqi;
+  padding-top: 2.6cqi;
+  border-top: 0.3cqi solid rgba(255, 255, 255, 0.22);
+  font-size: max(9px, 2.4cqi);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.acard__dot {
+  margin: 0 1.2cqi;
+}
+
+.acard__number {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+}
+
+/* Stickers stuck on the card's corner, crooked, hanging over its edge.
+   They sit outside the clipped face and hide when the card turns. */
+.acard__stickers {
+  position: absolute;
+  right: 3.5cqi;
+  top: -3.2cqi;
+  display: flex;
+  gap: 1.2cqi;
+  transform: translateZ(1px);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.acard__sticker {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  width: 12.5cqi;
+  height: 13.2cqi;
+  border-radius: 3.4cqi;
+  background: var(--sticker-fill);
+  color: var(--sticker-ink);
+  box-shadow: 0 0 0 0.8cqi var(--sticker-edge), 0 1.4cqi 2.4cqi -0.8cqi rgba(0, 0, 0, 0.45);
+  line-height: 1;
+  transform: rotate(var(--sticker-tilt));
+  animation: acard-stick 520ms var(--motion-spring) var(--sticker-delay) backwards;
+}
+
+.acard__sticker svg {
+  width: 3cqi;
+  height: 3cqi;
+}
+
+.acard__sticker strong {
+  font-size: 3.8cqi;
+  font-weight: 900;
+}
+
+.acard__sticker small {
+  font-size: 1.7cqi;
+  font-weight: 900;
+}
+
+/* A rubber stamp for what is still missing. */
+.acard__stamp {
+  position: absolute;
+  right: 5cqi;
+  top: 21cqi;
+  max-width: 30cqi;
+  text-align: center;
+  padding: 1.2cqi 2.4cqi;
+  border: 0.6cqi solid #ff8a8d;
+  border-radius: 1.6cqi;
+  color: #ffd2d3;
+  font-size: max(9px, 2.6cqi);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: rotate(-8deg);
+  background: rgba(20, 30, 70, 0.35);
+  opacity: 0.9;
+}
+
+/* Glare and a faint rainbow, following the pointer. */
+.acard__glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 255, 255, 0.42), transparent 42%),
+    conic-gradient(
+      from 200deg at var(--glare-x) var(--glare-y),
+      rgba(255, 120, 200, 0.22),
+      rgba(120, 220, 255, 0.22),
+      rgba(160, 255, 170, 0.2),
+      rgba(255, 230, 120, 0.22),
+      rgba(255, 120, 200, 0.22)
+    );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.acard.is-tilting .acard__glare {
+  opacity: 1;
+}
+
+/* Back: the magnetic stripe, what the card lets you do, the signature. */
+.acard__back {
+  padding: 0 0 4.6cqi;
+  transform: rotateY(180deg);
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 7px),
+    linear-gradient(150deg, var(--card-blue-deep) 0%, #10307e 100%);
+}
+
+.acard__stripe {
+  flex: none;
+  height: 11cqi;
+  margin-top: 5cqi;
+  background: linear-gradient(180deg, #0c1322, #1d2638);
+}
+
+.acard__perks {
+  display: grid;
+  gap: 1.8cqi;
+  margin: 3.6cqi 5.6cqi 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acard__perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.2cqi;
+  opacity: 0.65;
+}
+
+.acard__perks li.is-on {
+  opacity: 1;
+}
+
+.acard__perk-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 4cqi;
+  height: 4cqi;
+  margin-top: 0.2cqi;
+  border: 0.45cqi solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}
+
+.acard__perks .is-on .acard__perk-mark {
+  border-color: #fff;
+  background: #fff;
+  color: var(--card-blue-deep);
+}
+
+.acard__perk-mark svg {
+  width: 2.6cqi;
+  height: 2.6cqi;
+  stroke-width: 4;
+}
+
+.acard__perks strong {
+  display: block;
+  font-size: 3cqi;
+  font-weight: 900;
+}
+
+.acard__perks small {
+  display: block;
+  font-size: max(9px, 2.3cqi);
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.acard__signature {
+  margin: auto 5.6cqi 0;
+  padding: 1.6cqi 3cqi;
+  border-radius: 1cqi;
+  background:
+    repeating-linear-gradient(-45deg, rgba(37, 99, 235, 0.12) 0 1px, transparent 1px 6px),
+    #f3f6ff;
+  color: var(--card-blue-deep);
+  font-size: 4.4cqi;
+  font-style: italic;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Under the card, centred: turning it over is a thing you can do, not
+   a secret. */
+.acard__turn {
+  position: absolute;
+  left: 50%;
+  bottom: -58px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 2px solid var(--color-border-strong);
+  border-bottom-width: 4px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.acard__turn svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 300ms var(--motion-spring);
+}
+
+@media (hover: hover) {
+  .acard__turn:hover {
+    color: var(--color-text);
+  }
+
+  .acard__turn:hover svg {
+    transform: rotate(-60deg);
+  }
+}
+
+.acard__turn:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 2px;
+}
+
+/* Blank: the place the card will be, filled in as the form is. */
+.acard--blank .acard__foot {
+  border-top-color: var(--color-border-strong);
+}
+
+.acard--blank .acard__face {
+  border: 2px dashed var(--color-border-strong);
+  background:
+    repeating-linear-gradient(135deg, var(--color-border) 0 1px, transparent 1px 7px),
+    var(--color-surface);
+  color: var(--color-text);
+  box-shadow: none;
+}
+
+.acard--blank .acard__avatar {
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+  box-shadow: inset 0 0 0 2px var(--color-border-strong);
+}
+
+.acard--blank .acard__activity span {
+  background: var(--color-surface-muted);
+}
+
+.acard--blank .acard__brand .app-icon {
+  box-shadow: none;
+}
+
+.acard--blank .acard__glare {
+  display: none;
+}
+
+/* A narrow card keeps twelve weeks of activity, so the numbers beside
+   it still read on one line. */
+@container acard (max-width: 440px) {
+  .acard__activity span:nth-child(-n + 35) {
+    display: none;
+  }
+
+  .acard__stats {
+    gap: 4cqi;
+  }
+}
+
+@keyframes acard-stick {
+  from {
+    opacity: 0;
+    transform: rotate(calc(var(--sticker-tilt) + 20deg)) scale(1.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acard__body,
+  .acard.is-tilting .acard__body {
+    transition: none;
+  }
+
+  .acard__sticker {
+    animation: none;
+  }
+
+  .acard__glare {
+    display: none;
+  }
+}
