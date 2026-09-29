@@ -269,8 +269,13 @@ const AnswersCard = ({ overview }) => {
 
 // ----- stickers -----
 
+// A small sheet of the album: always eight places, two rows. The newest
+// stickers first, then the places of the next ones, so the card reads the
+// same whether a learner has none or dozens.
+const SHEET_SIZE = 8;
+
 const StickersCard = ({ stickers, onOpen }) => {
-  const recent = stickers.recent.slice(0, 4);
+  const sheet = [...stickers.recent, ...stickers.nextUp].slice(0, SHEET_SIZE);
   const nextUp = stickers.nextUp.slice(0, 3);
 
   return (
@@ -283,15 +288,14 @@ const StickersCard = ({ stickers, onOpen }) => {
         </span>
       }
     >
-      {recent.length > 0 ? (
-        <div className="progress-stickers__strip">
-          {recent.map((tier, index) => (
-            <Sticker key={tier.id} tier={tier} family={tier.family} index={index} size="sm" onOpen={onOpen} />
-          ))}
-        </div>
-      ) : (
+      <div className="progress-stickers__sheet">
+        {sheet.map((tier, index) => (
+          <Sticker key={tier.id} tier={tier} family={tier.family} index={index} size="sm" onOpen={onOpen} />
+        ))}
+      </div>
+      {stickers.earnedCount === 0 ? (
         <p className="progress-empty">Your first sticker comes with your first review.</p>
-      )}
+      ) : null}
       {nextUp.length > 0 ? (
         <div className="progress-stickers__next">
           <h3>Next up</h3>

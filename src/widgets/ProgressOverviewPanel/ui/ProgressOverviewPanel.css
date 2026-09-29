@@ -908,10 +908,22 @@
 
 /* ----- stickers ----- */
 
-.progress-stickers__strip {
+/* The card fills the height of the decks beside it: the sheet and the
+   next milestones at the top, the way to the album on the floor. */
+.progress-stickers-card {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px 14px;
+  flex-direction: column;
+}
+
+.progress-stickers-card > .progress-stickers__link {
+  margin-top: auto;
+}
+
+.progress-stickers__sheet {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  justify-items: center;
+  gap: 18px 8px;
   padding: 6px 4px 2px;
 }
 
@@ -975,6 +987,7 @@
   }
 
   .progress-stickers-card {
+    display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     align-items: start;
     column-gap: 32px;
