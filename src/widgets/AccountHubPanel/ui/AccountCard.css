@@ -188,6 +188,9 @@
 .acard__stat {
   display: flex;
   flex-direction: column-reverse;
+  /* Numbers share one line; a label that wraps hangs below, rather than
+     lifting its number above its neighbours. */
+  justify-content: flex-end;
   min-width: 0;
 }
 
