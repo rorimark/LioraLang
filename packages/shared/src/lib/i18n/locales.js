@@ -8,7 +8,7 @@ export const INTERFACE_LOCALES = [
   { code: "pl", nativeName: "Polski", deckLanguage: "Polish" },
   { code: "de", nativeName: "Deutsch", deckLanguage: "German" },
   { code: "es", nativeName: "Español", deckLanguage: "Spanish" },
-  { code: "fr", nativeName: "Français", deckLanguage: "French", pending: true },
+  { code: "fr", nativeName: "Français", deckLanguage: "French" },
   { code: "it", nativeName: "Italiano", deckLanguage: "Italian", pending: true },
   { code: "pt", nativeName: "Português", deckLanguage: "Portuguese", pending: true },
   { code: "tr", nativeName: "Türkçe", deckLanguage: "Turkish", pending: true },
