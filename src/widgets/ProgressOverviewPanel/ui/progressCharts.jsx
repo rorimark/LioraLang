@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useLayoutEffect, useRef, useState } from "react";
 import {
   GRADES,
   STAGES,
@@ -41,12 +41,10 @@ const useChartMarks = ({ count, keySteps, initialIndex }) => {
       const frameRect = frame.getBoundingClientRect();
       const markRect = (mark.querySelector("[data-anchor]") || mark).getBoundingClientRect();
       const center = markRect.left - frameRect.left + markRect.width / 2;
-      const edge = Math.min(80, frameRect.width / 2);
-
       setActive({
         index,
         tip: {
-          left: Math.max(edge, Math.min(frameRect.width - edge, center)),
+          left: Math.max(0, Math.min(frameRect.width, center)),
           top: markRect.top - frameRect.top,
         },
       });
@@ -125,15 +123,37 @@ const useChartMarks = ({ count, keySteps, initialIndex }) => {
   };
 };
 
-const ChartTip = ({ tip, children }) => (
-  <div className="progress-tip-region" aria-live="polite">
-    {tip && children ? (
-      <div className="progress-tip" style={{ left: `${tip.left}px`, top: `${tip.top}px` }}>
-        {children}
-      </div>
-    ) : null}
-  </div>
-);
+// The tooltip sits over its mark but never past the chart's edges: its
+// width depends on the language, so it is measured, not assumed.
+const ChartTip = ({ tip, children }) => {
+  const regionRef = useRef(null);
+  const tipRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const region = regionRef.current;
+    const element = tipRef.current;
+
+    if (!region || !element || !tip) {
+      return;
+    }
+
+    const half = element.offsetWidth / 2;
+    const room = region.clientWidth;
+    const shift =
+      tip.left - half < 0 ? half - tip.left : tip.left + half > room ? room - half - tip.left : 0;
+    element.style.setProperty("--tip-shift", `${Math.round(shift)}px`);
+  }, [tip, children]);
+
+  return (
+    <div className="progress-tip-region" aria-live="polite" ref={regionRef}>
+      {tip && children ? (
+        <div className="progress-tip" ref={tipRef} style={{ left: `${tip.left}px`, top: `${tip.top}px` }}>
+          {children}
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 // ----- word journey: one bar, four stages -----
 

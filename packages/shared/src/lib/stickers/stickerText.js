@@ -10,13 +10,18 @@ const FIRST_TIER_GOALS = new Set(["days", "cleanSheet", "decks"]);
 
 const MINIMUMS = { cleanSheet: CLEAN_SHEET_MIN_REVIEWS, decks: MASTERED_DECK_MIN_WORDS };
 
+// A tier names its family by key in the stats, and by the family itself
+// once merged for the page; either works here.
+const familyKeyOf = (tier) => (typeof tier.family === "object" ? tier.family?.key : tier.family);
+
 export const stickerTitle = ({ t }, familyKey) => t(`stickers.${familyKey}.title`);
 
 export const stickerUnit = ({ t }, familyKey, count) => t(`stickers.${familyKey}.unit`, { count });
 
 export const stickerGoal = ({ t }, tier) => {
-  const key = tier.target === 1 && FIRST_TIER_GOALS.has(tier.family) ? "goalFirst" : "goal";
-  return t(`stickers.${tier.family}.${key}`, { count: tier.target, min: MINIMUMS[tier.family] ?? 0 });
+  const family = familyKeyOf(tier);
+  const key = tier.target === 1 && FIRST_TIER_GOALS.has(family) ? "goalFirst" : "goal";
+  return t(`stickers.${family}.${key}`, { count: tier.target, min: MINIMUMS[family] ?? 0 });
 };
 
 // Earned when, or how far along.
@@ -32,7 +37,7 @@ export const stickerStatus = (i18n, tier) => {
   return t("stickers.progress", {
     progress: i18n.formatNumber(tier.progress),
     target: i18n.formatNumber(tier.target),
-    unit: stickerUnit(i18n, tier.family, tier.target),
+    unit: stickerUnit(i18n, familyKeyOf(tier), tier.target),
     count: Math.max(0, tier.target - tier.progress),
   });
 };
