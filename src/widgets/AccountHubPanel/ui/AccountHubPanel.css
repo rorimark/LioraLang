@@ -28,8 +28,12 @@
   gap: clamp(18px, 3vw, 36px);
 }
 
+/* One column no wider than the page. Left as an implicit track, Safari
+   sizes it by the longest line and pushes the card off a phone screen. */
 .account__intro {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   justify-items: start;
   gap: 14px;
   padding-top: 6px;
@@ -49,6 +53,7 @@
 
 .account__intro ul {
   display: grid;
+  max-width: 100%;
   gap: 10px;
   margin: 0;
   padding: 0;
@@ -57,7 +62,7 @@
 
 .account__intro li {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 10px;
   color: var(--color-text);
   font-size: 0.95rem;
@@ -73,6 +78,7 @@
 }
 
 .account__intro > p {
+  max-width: 100%;
   margin: 0;
   color: var(--color-text-muted);
   font-size: 0.88rem;
