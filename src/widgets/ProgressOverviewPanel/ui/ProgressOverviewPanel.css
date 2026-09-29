@@ -756,19 +756,28 @@
 /* ----- decks ----- */
 
 .progress-decks {
+  --deck-row-height: 118px;
+
   display: grid;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* Every row the same height: one line of name, the bar, one line of
+   counts with room for the Review key whether it is there or not. */
 .progress-deck {
   display: grid;
+  grid-template-rows: auto auto 36px;
+  align-content: start;
   gap: 10px;
+  box-sizing: border-box;
+  height: var(--deck-row-height);
   padding: 14px 0;
 }
 
 .progress-deck:first-child {
+  height: calc(var(--deck-row-height) - 14px);
   padding-top: 0;
 }
 
@@ -782,13 +791,27 @@
   container: progress-decks / inline-size;
 }
 
+/* Paged, the list keeps the room of a full page (six rows, or three
+   two by two), so turning to a short last page does not move the page. */
+.progress-decks {
+  --deck-rows: 6;
+}
+
+.progress-decks.is-paged {
+  align-content: start;
+  min-height: calc(var(--deck-rows) * var(--deck-row-height) - 14px);
+}
+
 @container progress-decks (min-width: 700px) {
   .progress-decks {
+    --deck-rows: 3;
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 36px;
   }
 
   .progress-deck:nth-child(2) {
+    height: calc(var(--deck-row-height) - 14px);
     padding-top: 0;
     border-top: 0;
   }
@@ -808,33 +831,6 @@
   font-size: 0.8rem;
 }
 
-.progress-decks__toggle {
-  justify-self: start;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 2px solid var(--color-border-strong);
-  border-bottom-width: var(--edge-width);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
-  color: var(--color-primary);
-  font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 900;
-  cursor: pointer;
-  transition:
-    transform 150ms var(--motion-spring),
-    border-bottom-width 150ms var(--motion-spring);
-}
-
-.progress-decks__toggle:active {
-  transform: translateY(2px);
-  border-bottom-width: 2px;
-}
-
-.progress-decks__toggle:focus-visible {
-  outline: 3px solid var(--color-primary-border);
-  outline-offset: 2px;
-}
 
 .progress-deck__head,
 .progress-deck__foot {
@@ -850,7 +846,6 @@
 }
 
 .progress-deck__name {
-  display: -webkit-box;
   min-width: 0;
   overflow: hidden;
   color: var(--color-text);
@@ -858,9 +853,8 @@
   font-weight: 900;
   line-height: 1.3;
   text-decoration: none;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (hover: hover) {
@@ -892,6 +886,13 @@
   color: var(--color-text-muted);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.progress-deck__foot > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .progress-deck__foot em {

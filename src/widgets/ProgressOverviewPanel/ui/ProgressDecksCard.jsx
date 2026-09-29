@@ -7,10 +7,10 @@ import { SettingSegmented } from "@shared/ui";
 import { DECK_SORTS, STAGES, formatInteger, plural, sortDeckRows } from "../model";
 import { StageBar } from "./progressCharts";
 
-// A few decks at a glance, the rest a tap away: folded, the card shows the
-// first six in the chosen order; unfolded, every deck, twelve to a page.
-const FOLDED_COUNT = 6;
-const PAGE_SIZE = 12;
+// Six decks at a time, in the chosen order, and the card never changes
+// height: every row is one line tall and a short last page keeps the room
+// of a full one. More decks mean more pages, not a longer page.
+const PAGE_SIZE = 6;
 const SORT_STORAGE_KEY = "lioralang.progress.deckSort";
 
 const readSort = () => {
@@ -33,7 +33,7 @@ const writeSort = (value) => {
 const DeckRow = memo(({ deck }) => (
   <li className="progress-deck">
     <div className="progress-deck__head">
-      <Link className="progress-deck__name" to={buildDeckDetailsRoute(deck.id)}>
+      <Link className="progress-deck__name" to={buildDeckDetailsRoute(deck.id)} title={deck.name}>
         {deck.name}
       </Link>
       <span className="progress-deck__known">
@@ -71,12 +71,10 @@ DeckRow.displayName = "DeckRow";
 export const ProgressDecksCard = memo(({ decks }) => {
   const cardRef = useRef(null);
   const [sort, setSort] = useState(readSort);
-  const [isUnfolded, setIsUnfolded] = useState(false);
   const [page, setPage] = useState(1);
   const sortedDecks = useMemo(() => sortDeckRows(decks, sort), [decks, sort]);
-  const canUnfold = sortedDecks.length > FOLDED_COUNT;
   const deckPage = useMemo(() => paginate(sortedDecks, page, PAGE_SIZE), [page, sortedDecks]);
-  const shownDecks = isUnfolded ? deckPage.items : sortedDecks.slice(0, FOLDED_COUNT);
+  const hasPages = deckPage.totalPages > 1;
 
   const handleSortChange = useCallback((event) => {
     setSort(event.target.value);
@@ -84,8 +82,7 @@ export const ProgressDecksCard = memo(({ decks }) => {
     writeSort(event.target.value);
   }, []);
 
-  // A new page, or folding back up, starts at the card's top, so the page
-  // does not stay scrolled into what was the long list.
+  // A new page starts at the card's top if the card has scrolled away.
   const bringCardIntoView = useCallback(() => {
     requestAnimationFrame(() => {
       const card = cardRef.current;
@@ -95,15 +92,6 @@ export const ProgressDecksCard = memo(({ decks }) => {
       }
     });
   }, []);
-
-  const toggleUnfolded = useCallback(() => {
-    if (isUnfolded) {
-      bringCardIntoView();
-    }
-
-    setIsUnfolded(!isUnfolded);
-    setPage(1);
-  }, [bringCardIntoView, isUnfolded]);
 
   const pagination = useMemo(
     () => ({
@@ -136,27 +124,14 @@ export const ProgressDecksCard = memo(({ decks }) => {
       {decks.length === 0 ? (
         <p className="progress-empty">Your decks and how far along you are in each will be listed here.</p>
       ) : (
-        <ul className="progress-decks">
-          {shownDecks.map((deck) => (
+        <ul className={hasPages ? "progress-decks is-paged" : "progress-decks"}>
+          {deckPage.items.map((deck) => (
             <DeckRow key={deck.id} deck={deck} />
           ))}
         </ul>
       )}
 
-      {isUnfolded && deckPage.totalPages > 1 ? (
-        <CardCatalogPagination pagination={pagination} label="Deck pages" />
-      ) : null}
-
-      {canUnfold ? (
-        <button
-          type="button"
-          className="progress-decks__toggle"
-          aria-expanded={isUnfolded}
-          onClick={toggleUnfolded}
-        >
-          {isUnfolded ? "Show fewer" : `Show all ${formatInteger(decks.length)} decks`}
-        </button>
-      ) : null}
+      {hasPages ? <CardCatalogPagination pagination={pagination} label="Deck pages" /> : null}
     </section>
   );
 });
