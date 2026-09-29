@@ -127,7 +127,7 @@ export default {
   },
   "grades": {
     "again": {
-      "label": "Jeszcze raz",
+      "label": "Znowu",
       "description": "Nie pamiętam — pokaż ponownie po krótkiej przerwie"
     },
     "hard": {
@@ -245,7 +245,7 @@ export default {
     },
     "repeatMissed": {
       "title": "Szybciej powtarzaj zapomniane karty",
-      "hint": "Karta oceniona „Jeszcze raz” wraca po minucie, nigdy od razu."
+      "hint": "Karta oceniona „Znowu” wraca po minucie, nigdy od razu."
     },
     "cardDetails": "Na karcie",
     "examples": {
@@ -704,10 +704,10 @@ export default {
       "empty": "Po pierwszych powtórkach zobaczysz tu, jak odpowiadasz: jak często pamiętasz i jak łatwo.",
       "remembered": "zapamiętane",
       "detail": {
-        "one": "{count} odpowiedź z {total} nie była „Jeszcze raz”.",
-        "few": "{count} odpowiedzi z {total} nie były „Jeszcze raz”.",
-        "many": "{count} odpowiedzi z {total} nie było „Jeszcze raz”.",
-        "other": "{count} odpowiedzi z {total} nie było „Jeszcze raz”."
+        "one": "{count} odpowiedź z {total} nie była „Znowu”.",
+        "few": "{count} odpowiedzi z {total} nie były „Znowu”.",
+        "many": "{count} odpowiedzi z {total} nie było „Znowu”.",
+        "other": "{count} odpowiedzi z {total} nie było „Znowu”."
       }
     },
     "decks": {
@@ -964,18 +964,18 @@ export default {
         "many": "dni",
         "other": "dni"
       },
-      "goalFirst": "Jeden dzień z co najmniej {min} powtórkami i ani jednym „Jeszcze raz”.",
+      "goalFirst": "Jeden dzień z co najmniej {min} powtórkami i ani jednym „Znowu”.",
       "goal": {
-        "one": "{count} dzień z co najmniej {min} powtórkami i ani jednym „Jeszcze raz”.",
-        "few": "{count} dni z co najmniej {min} powtórkami i ani jednym „Jeszcze raz”.",
-        "many": "{count} dni z co najmniej {min} powtórkami i ani jednym „Jeszcze raz”.",
-        "other": "{count} dni z co najmniej {min} powtórkami i ani jednym „Jeszcze raz”."
+        "one": "{count} dzień z co najmniej {min} powtórkami i ani jednym „Znowu”.",
+        "few": "{count} dni z co najmniej {min} powtórkami i ani jednym „Znowu”.",
+        "many": "{count} dni z co najmniej {min} powtórkami i ani jednym „Znowu”.",
+        "other": "{count} dni z co najmniej {min} powtórkami i ani jednym „Znowu”."
       },
       "now": {
-        "one": "{count} dzień z 20+ powtórkami bez „Jeszcze raz”",
-        "few": "{count} dni z 20+ powtórkami bez „Jeszcze raz”",
-        "many": "{count} dni z 20+ powtórkami bez „Jeszcze raz”",
-        "other": "{count} dni z 20+ powtórkami bez „Jeszcze raz”"
+        "one": "{count} dzień z 20+ powtórkami bez „Znowu”",
+        "few": "{count} dni z 20+ powtórkami bez „Znowu”",
+        "many": "{count} dni z 20+ powtórkami bez „Znowu”",
+        "other": "{count} dni z 20+ powtórkami bez „Znowu”"
       }
     },
     "decks": {
@@ -1237,7 +1237,7 @@ export default {
     "shuffle": "Tasowanie",
     "theOrderTheCardsCome": "Kolejność, w jakiej przychodzą karty.",
     "repeatMissedCardsSooner": "Szybciej powtarzaj zapomniane karty",
-    "againBringsTheCardBack": "„Jeszcze raz” przywraca kartę po minucie, z przerwą na sprawdzenie pamięci.",
+    "againBringsTheCardBack": "„Znowu” przywraca kartę po minucie, z przerwą na sprawdzenie pamięci.",
     "spacedRepetition": "Powtórki rozłożone w czasie",
     "howOftenWordsComeBack": "Jak często wracają słowa. Domyślne wartości pasują większości osób.",
     "recommendedSchedule": "Zalecany harmonogram",
@@ -1247,7 +1247,7 @@ export default {
     "reviewsADay": "Powtórki dziennie",
     "distinctReviewCardsPerDeck": "Różne karty do powtórki na talię każdego dnia. Kroki nauki trwają zawsze.",
     "learningSteps": "Kroki nauki",
-    "default10mAgainWaits10": "Domyślnie: 10m. „Jeszcze raz” czeka 10 minut, „Trudne” 1 dzień, „Dobrze” 3 dni, „Łatwe” 7 dni. Dodaj kroki po przecinku, aby ćwiczyć więcej.",
+    "default10mAgainWaits10": "Domyślnie: 10m. „Znowu” czeka 10 minut, „Trudne” 1 dzień, „Dobrze” 3 dni, „Łatwe” 7 dni. Dodaj kroki po przecinku, aby ćwiczyć więcej.",
     "easyBonus": "Premia za „Łatwe”",
     "easyStretchesTheNextWait": "O tyle „Łatwe” wydłuża następną przerwę.",
     "intervalRetainedAfterForgetting": "Odstęp zachowany po zapomnieniu",
@@ -1503,7 +1503,7 @@ export default {
     "space": "Spacja",
     "flip": "Odwróć kartę",
     "grade": "Oceń kartę",
-    "gradeHint": "„Jeszcze raz”, „Trudne”, „Dobrze”, „Łatwe” — w tej kolejności.",
+    "gradeHint": "„Znowu”, „Trudne”, „Dobrze”, „Łatwe” — w tej kolejności.",
     "history": "Wstecz i dalej",
     "historyHint": "Przechodzenie po otwartych stronach.",
     "showKeys": "Pokazuj klawisze na przyciskach",
