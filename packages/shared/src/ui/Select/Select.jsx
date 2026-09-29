@@ -88,7 +88,15 @@ export const Select = memo(
   }) => {
     const options = useMemo(() => readSelectOptions(children), [children]);
     const selectedIndex = options.findIndex((option) => option.value === String(value ?? ""));
-    const selectedOption = selectedIndex >= 0 ? options[selectedIndex] : null;
+    // A value that is not among the options (an older deck's own part of
+    // speech, say) is still the value: it is shown as it is, not hidden
+    // behind the placeholder.
+    const selectedOption =
+      selectedIndex >= 0
+        ? options[selectedIndex]
+        : value != null && String(value) !== ""
+          ? { value: String(value), label: String(value) }
+          : null;
     const isSearchable = searchable ?? options.length >= SEARCH_THRESHOLD;
     const isSheet = useIsSheet();
 
