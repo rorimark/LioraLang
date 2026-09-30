@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Une image à nommer"
   },
   "session": {
+    "appliesImmediately": "Les modifications s’appliquent immédiatement",
+    "backToCards": "Retour aux cartes",
     "close": "Fermer les réglages de la session",
     "engine": {
       "title": "Façon d'étudier",

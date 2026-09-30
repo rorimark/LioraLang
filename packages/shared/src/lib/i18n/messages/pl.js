@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Nazwij to, co jest na obrazku"
   },
   "session": {
+    "appliesImmediately": "Zmiany są stosowane od razu",
+    "backToCards": "Wróć do fiszek",
     "close": "Zamknij ustawienia sesji",
     "engine": {
       "title": "Jak się uczyć",

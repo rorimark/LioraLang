@@ -198,6 +198,8 @@ export default {
     "pictureToName": "名前を答える画像"
   },
   "session": {
+    "appliesImmediately": "変更はすぐに適用されます",
+    "backToCards": "カードに戻る",
     "close": "セッション設定を閉じる",
     "engine": {
       "title": "学習方法",

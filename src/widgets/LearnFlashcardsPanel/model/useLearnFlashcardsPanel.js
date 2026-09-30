@@ -479,7 +479,7 @@ export const useLearnFlashcardsPanel = () => {
   const isBackVisible = learnProgress.isBackVisible && (isBrowseMode || learnProgress.revealedSrsIdentity === srsIdentity);
 
   useEffect(() => {
-    if (!currentWord || isBackVisible || autoFlipDelayMs <= 0) {
+    if (isSessionSettingsOpen || !currentWord || isBackVisible || autoFlipDelayMs <= 0) {
       return undefined;
     }
 
@@ -494,7 +494,7 @@ export const useLearnFlashcardsPanel = () => {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [autoFlipDelayMs, currentWord, isBackVisible, srsIdentity]);
+  }, [autoFlipDelayMs, currentWord, isBackVisible, isSessionSettingsOpen, srsIdentity]);
 
   const handleDeckChange = useCallback((deckId) => {
     const normalizedDeckId = String(deckId || "");

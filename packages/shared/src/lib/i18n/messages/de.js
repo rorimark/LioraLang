@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Ein Bild zum Benennen"
   },
   "session": {
+    "appliesImmediately": "Änderungen gelten sofort",
+    "backToCards": "Zurück zu den Karten",
     "close": "Sitzungseinstellungen schließen",
     "engine": {
       "title": "Lernweise",

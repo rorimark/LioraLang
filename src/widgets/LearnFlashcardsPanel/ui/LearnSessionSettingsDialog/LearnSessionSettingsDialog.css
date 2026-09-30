@@ -4,7 +4,7 @@
   z-index: 1250;
   display: grid;
   place-items: center;
-  padding: 18px;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
 }
 
 .learn-session-dialog__overlay {
@@ -12,448 +12,186 @@
   inset: 0;
   border: 0;
   background: var(--color-overlay);
+  animation: session-overlay-in 160ms ease;
 }
 
 .learn-session-dialog__content {
   position: relative;
-  width: min(780px, 100%);
-  max-height: min(88vh, 860px);
+  width: min(900px, 100%);
+  max-height: 100%;
   min-height: 0;
-  border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--color-border) 84%, transparent);
-  background: color-mix(in srgb, var(--color-surface) 94%, var(--color-surface-muted));
-  box-shadow: var(--shadow-lg);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  animation: session-dialog-in 220ms var(--motion-spring);
 }
 
 .learn-session-dialog__header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px 12px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.learn-session-dialog__title-wrap {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  min-width: 0;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .learn-session-dialog__title-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: inline-grid;
+  display: grid;
   place-items: center;
-  flex-shrink: 0;
-  border: 2px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-}
-
-.learn-session-dialog__title-icon > svg {
-  width: 16px;
-  height: 16px;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-control);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 22px;
 }
 
 .learn-session-dialog__title-copy {
-  display: grid;
-  gap: 4px;
+  flex: 1;
   min-width: 0;
 }
 
 .learn-session-dialog__title-copy h2 {
   margin: 0;
   color: var(--color-text);
-  font-size: 1.04rem;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.25;
 }
 
 .learn-session-dialog__title-copy p {
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 5px 0 0;
   color: var(--color-text-muted);
-  font-size: 0.82rem;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
-.learn-session-dialog__close {
-  width: 28px;
-  height: 28px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--color-transparent);
-  color: var(--color-text-muted);
-  display: inline-grid;
-  place-items: center;
-  cursor: pointer;
-  flex-shrink: 0;
+.learn-session-dialog__title-copy p svg { flex: none; }
+.learn-session-dialog__title-copy p span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.learn-session-dialog__close > svg {
-  width: 16px;
-  height: 16px;
+.learn-session-dialog__close.ui-button {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
 }
 
 .learn-session-dialog__body {
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   display: grid;
-  gap: 18px;
-  padding: 16px;
-}
-
-.learn-session-dialog__section {
-  display: grid;
-  gap: 12px;
-}
-
-.learn-session-dialog__section-head {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.learn-session-dialog__section-title {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--color-text);
-  font-size: 0.92rem;
-}
-
-.learn-session-dialog__section-title > svg {
-  width: 16px;
-  height: 16px;
-  color: var(--color-text-muted);
-}
-
-.learn-session-dialog__options-grid {
-  display: grid;
-  gap: 10px;
-}
-
-.learn-session-dialog__options-grid--two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.learn-session-dialog__option-card {
-  width: 100%;
-  border: 2px solid var(--color-border);
-  border-radius: 14px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  cursor: pointer;
-  padding: 12px 13px;
-  display: grid;
-  gap: 8px;
-  text-align: left;
-  transition:
-    background-color 140ms ease,
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    transform 100ms ease;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.learn-session-dialog__option-card--active {
-  border-color: color-mix(in srgb, var(--color-primary) 58%, var(--color-border));
-  background: color-mix(in srgb, var(--color-primary-soft) 56%, var(--color-surface));
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 26%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--color-primary) 16%, transparent);
-}
-
-.learn-session-dialog__option-card--active .learn-session-dialog__option-head strong {
-  color: var(--color-text);
-}
-
-.learn-session-dialog__option-card--disabled {
-  cursor: not-allowed;
-  opacity: 0.68;
-}
-
-.learn-session-dialog__option-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: space-between;
-}
-
-.learn-session-dialog__option-head strong {
-  font-size: 0.86rem;
-  font-weight: 600;
-}
-
-.learn-session-dialog__option-card > span:last-child {
-  color: var(--color-text-muted);
-  font-size: 0.76rem;
-  line-height: 1.42;
-}
-
-.learn-session-dialog__option-indicator,
-.learn-session-dialog__option-badge {
-  flex: 0 0 auto;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  line-height: 1;
-  padding: 5px 8px;
-}
-
-.learn-session-dialog__option-indicator {
-  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
-  background: color-mix(in srgb, var(--color-primary-soft) 54%, var(--color-surface));
-  color: var(--color-primary-strong);
-}
-
-.learn-session-dialog__option-badge {
-  border: 2px solid var(--color-border);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  padding: 24px;
   background: var(--color-surface-muted);
-  color: var(--color-text-muted);
 }
 
-.learn-session-dialog__fields-grid,
-.learn-session-dialog__toggle-grid {
-  display: grid;
-  gap: 10px;
-}
+.learn-session-dialog__setup { grid-column: 1 / -1; }
+.learn-session-dialog__body > * { min-width: 0; }
 
-.learn-session-dialog__fields-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.learn-session-dialog__field,
-.learn-session-dialog__toggle {
-  border: 2px solid var(--color-border);
-  border-radius: 14px;
-  background: var(--color-surface);
-}
-
-.learn-session-dialog__field {
-  display: grid;
-  gap: 8px;
-  padding: 12px 13px;
-}
-
-.learn-session-dialog__field span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--color-text-muted);
-  font-size: 0.76rem;
-}
-
-.learn-session-dialog__field span > svg {
-  width: 14px;
-  height: 14px;
-  flex: 0 0 auto;
-}
-
-.learn-session-dialog__field .ui-select {
-  width: 100%;
-}
-
-.learn-session-dialog__field input {
-  width: 100%;
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface-muted);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: 0.84rem;
-  padding: 8px 10px;
-}
-
-.learn-session-dialog__toggle {
+/* Session options must remain visible, including long translated labels. */
+.learn-session-dialog .setting-segmented {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 13px;
+  flex-wrap: wrap;
+  overflow: visible;
 }
 
-.learn-session-dialog__toggle input {
-  margin-top: 2px;
-}
-
-.learn-session-dialog__toggle--centered {
-  align-items: center;
-}
-
-.learn-session-dialog__toggle--centered input {
-  margin-top: 0;
-}
-
-.learn-session-dialog__toggle--centered .learn-session-dialog__toggle-copy {
-  justify-content: center;
-}
-
-.learn-session-dialog__toggle-copy {
-  display: grid;
-  gap: 4px;
+.learn-session-dialog .setting-segmented__option {
+  flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
 }
 
-.learn-session-dialog__toggle-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
+.learn-session-dialog .setting-segmented__option label {
+  min-height: 44px;
+  padding: 8px 12px;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
-.learn-session-dialog__toggle-title > svg {
-  width: 15px;
-  height: 15px;
-  color: var(--color-text-muted);
-  flex: 0 0 auto;
-}
+.learn-session-dialog .setting-row__label,
+.learn-session-dialog .setting-row__hint { overflow-wrap: anywhere; }
 
-.learn-session-dialog__toggle strong {
-  color: var(--color-text);
-  font-size: 0.84rem;
-}
-
-.learn-session-dialog__toggle small {
-  color: var(--color-text-muted);
-  font-size: 0.75rem;
-  line-height: 1.42;
+.learn-session-dialog .setting-stepper__key {
+  width: 44px;
+  height: 44px;
 }
 
 .learn-session-dialog__footer {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-top: 2px solid var(--color-border);
+}
+
+.learn-session-dialog__footer p {
+  display: flex;
+  align-items: center;
   gap: 8px;
-  padding: 14px 16px 16px;
-  border-top: 1px solid var(--color-border);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
-@media (max-width: 820px) {
-  .learn-session-dialog__options-grid--two,
-  .learn-session-dialog__fields-grid {
-    grid-template-columns: 1fr;
-  }
+.learn-session-dialog__footer p svg { flex: none; }
+.learn-session-dialog__footer .ui-button { min-height: 44px; }
+
+@media (max-width: 760px) {
+  .learn-session-dialog__body { grid-template-columns: minmax(0, 1fr); }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 540px) {
   .learn-session-dialog {
-    padding: 0;
+    padding: max(12px, env(safe-area-inset-top)) 0 0;
     align-items: end;
   }
-
   .learn-session-dialog__content {
-    width: 100%;
-    max-height: min(92vh, 920px);
-    border-radius: 18px 18px 0 0;
     border-bottom: 0;
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   }
-
   .learn-session-dialog__header {
-    padding: 14px 14px 12px;
+    gap: 10px;
+    padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left));
   }
-
+  .learn-session-dialog__title-copy h2 { font-size: 1.15rem; }
   .learn-session-dialog__body {
-    padding: 14px;
-    gap: 16px;
+    gap: 20px;
+    padding: 16px max(16px, env(safe-area-inset-right)) 20px max(16px, env(safe-area-inset-left));
   }
-
   .learn-session-dialog__footer {
-    padding: 12px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   }
+  .learn-session-dialog__footer .ui-button { width: 100%; }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .learn-session-dialog__close:hover {
-    background: var(--color-surface-muted);
-    color: var(--color-text);
-  }
-
-  .learn-session-dialog__option-card:hover:not(:disabled):not(.learn-session-dialog__option-card--active) {
-    background: var(--color-surface-muted);
-    border-color: var(--color-border-strong);
-  }
-
-  .learn-session-dialog__option-card--active:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--color-primary) 48%, var(--color-border));
-    background: color-mix(in srgb, var(--color-primary-soft) 42%, var(--color-surface));
-  }
+@keyframes session-dialog-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
 }
-
-@media (hover: none) and (pointer: coarse) {
-  .learn-session-dialog .ui-button:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--color-surface) 75%, var(--color-surface-muted));
-    border-color: var(--color-border);
-    color: var(--color-text);
-  }
-
-  .learn-session-dialog__option-card:active:not(:disabled):not(.learn-session-dialog__option-card--active) {
-    background: color-mix(in srgb, var(--color-primary-soft) 44%, var(--color-surface));
-    border-color: color-mix(in srgb, var(--color-primary) 38%, var(--color-border));
-    transform: scale(0.995);
-  }
-
-  .learn-session-dialog__option-card--active:active:not(:disabled) {
-    background: color-mix(in srgb, var(--color-primary-soft) 62%, var(--color-surface));
-    border-color: color-mix(in srgb, var(--color-primary) 62%, var(--color-border));
-    transform: scale(0.995);
-  }
-}
-
-/* === Keys ===
-   Options are keys too: the chosen one is the pressed-in blue key, the
-   others lift on hover. Visual layer only; layout stays above. */
-.learn-session-dialog__section-title {
-  font-weight: 900;
-}
-
-.learn-session-dialog__option-card {
-  border: 2px solid var(--color-border);
-  border-bottom-width: var(--edge-width);
-  box-shadow: none;
-  transition:
-    transform 160ms var(--motion-spring),
-    border-color 140ms ease,
-    background-color 140ms ease;
-}
-
-.learn-session-dialog__option-head strong {
-  font-weight: 900;
-}
-
-@media (hover: hover) {
-  .learn-session-dialog__option-card:hover:not(:disabled) {
-    transform: translateY(-1px);
-    border-color: var(--color-border-strong);
-  }
-}
-
-.learn-session-dialog__option-card--active,
-.learn-session-dialog__option-card--active:hover:not(:disabled) {
-  border-color: var(--color-primary-border);
-  border-bottom-color: var(--color-primary);
-  background: var(--color-primary-soft);
-  box-shadow: none;
-  transform: none;
-}
-
-.learn-session-dialog__option-card--active .learn-session-dialog__option-head strong {
-  color: var(--color-primary);
-}
-
-.learn-session-dialog__option-indicator {
-  border-color: var(--color-primary-strong);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-}
+@keyframes session-overlay-in { from { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .learn-session-dialog__option-card {
-    transition: none;
-  }
+  .learn-session-dialog__content,
+  .learn-session-dialog__overlay { animation: none; }
 }
+:root[ui-reduced-motion="true"] .learn-session-dialog__content,
+:root[ui-reduced-motion="true"] .learn-session-dialog__overlay { animation: none; }

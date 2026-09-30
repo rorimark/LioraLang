@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Назовите то, что на изображении"
   },
   "session": {
+    "appliesImmediately": "Изменения применяются сразу",
+    "backToCards": "К карточкам",
     "close": "Закрыть настройки сессии",
     "engine": {
       "title": "Как учить",

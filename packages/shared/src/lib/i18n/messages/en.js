@@ -201,6 +201,8 @@ export default {
     "pictureToName": "A picture to name"
   },
   "session": {
+    "appliesImmediately": "Changes apply immediately",
+    "backToCards": "Back to cards",
     "close": "Close session settings",
     "engine": {
       "title": "How to study",

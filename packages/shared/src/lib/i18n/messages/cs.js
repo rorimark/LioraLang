@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Obrázek k pojmenování"
   },
   "session": {
+    "appliesImmediately": "Změny se projeví okamžitě",
+    "backToCards": "Zpět ke kartám",
     "close": "Zavřít nastavení relace",
     "engine": {
       "title": "Jak se učit",

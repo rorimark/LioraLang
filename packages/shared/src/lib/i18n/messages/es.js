@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Una imagen para nombrar"
   },
   "session": {
+    "appliesImmediately": "Los cambios se aplican al instante",
+    "backToCards": "Volver a las tarjetas",
     "close": "Cerrar ajustes de la sesión",
     "engine": {
       "title": "Cómo estudiar",

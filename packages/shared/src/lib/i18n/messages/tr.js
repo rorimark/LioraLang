@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Adını söyleyeceğiniz bir resim"
   },
   "session": {
+    "appliesImmediately": "Değişiklikler hemen uygulanır",
+    "backToCards": "Kartlara dön",
     "close": "Oturum ayarlarını kapat",
     "engine": {
       "title": "Nasıl çalışılsın",

@@ -198,6 +198,8 @@ export default {
     "pictureToName": "Назвіть те, що на зображенні"
   },
   "session": {
+    "appliesImmediately": "Зміни застосовуються одразу",
+    "backToCards": "До карток",
     "close": "Закрити налаштування сесії",
     "engine": {
       "title": "Як вчити",
