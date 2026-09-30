@@ -1,6 +1,6 @@
 name: Release
 
-# Pushing a tag like v3.0.0 builds the desktop app for macOS and Windows
+# Pushing a tag like v0.5.0 builds the desktop app for macOS and Windows
 # and publishes a GitHub release with the notes from docs/releases/<tag>.md.
 # The web version deploys on its own from main.
 
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag to release, e.g. v3.0.0 (the tag must exist)"
+        description: "Tag to release, e.g. v0.5.0 (the tag must exist)"
         required: true
 
 permissions:

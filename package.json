@@ -4,7 +4,7 @@
   "author": "Mark Storchovyi markstorchovyi@gmail.com",
   "homepage": "https://github.com/rorimark/LioraLang",
   "private": true,
-  "version": "3.0.0",
+  "version": "0.5.0",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
