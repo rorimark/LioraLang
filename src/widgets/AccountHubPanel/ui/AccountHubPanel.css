@@ -331,8 +331,16 @@
   height: 4px;
 }
 
+/* A tab changes in place: a short fade, no slide, nothing that reads as
+   the page reloading. */
 .account__panel-body {
-  animation: account-in 200ms ease both;
+  animation: account-tab-in 120ms ease both;
+}
+
+@keyframes account-tab-in {
+  from {
+    opacity: 0.4;
+  }
 }
 
 .account__form-actions {
@@ -401,6 +409,28 @@
   from {
     opacity: 0;
     transform: translateY(6px);
+  }
+}
+
+/* ---------- large screens ---------- */
+
+/* A tall window gets the account a little lower, as if the page had a
+   middle; the offset follows the window, never the open tab, so switching
+   tabs does not move anything. */
+@container account (min-width: 1001px) {
+  .account--signed-in {
+    padding-top: max(0px, calc((100dvh - 860px) / 2));
+  }
+}
+
+/* A wide window gets a wider page and a larger card. */
+@container account (min-width: 1300px) {
+  .account--signed-in {
+    max-width: 1320px;
+  }
+
+  .account__top {
+    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
   }
 }
 

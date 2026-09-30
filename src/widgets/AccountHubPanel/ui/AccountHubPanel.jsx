@@ -725,8 +725,13 @@ const useSteadyTabs = (activeTab, setActiveTab) => {
 
       if (panel && key !== activeTab) {
         const scroller = findScrollParent(panel);
-        const content = panel.firstElementChild || panel;
-        pendingRef.current = { scroller, top: scroller?.scrollTop ?? 0, height: content.offsetHeight };
+        const top = scroller?.scrollTop ?? 0;
+        // Only as tall as it takes to keep this scroll position: what the
+        // rest of the page lacks to fill the screen below the current top.
+        // Unscrolled, that is nothing, and no empty space is left behind.
+        const rest = (scroller?.scrollHeight ?? 0) - panel.offsetHeight;
+        const height = top > 0 ? Math.max(0, top + (scroller?.clientHeight ?? 0) - rest) : 0;
+        pendingRef.current = { scroller, top, height };
       }
 
       setActiveTab(key);
@@ -743,7 +748,7 @@ const useSteadyTabs = (activeTab, setActiveTab) => {
       return;
     }
 
-    panel.style.minHeight = pending ? `${pending.height}px` : "";
+    panel.style.minHeight = pending?.height ? `${pending.height}px` : "";
 
     if (pending?.scroller) {
       pending.scroller.scrollTop = pending.top;
