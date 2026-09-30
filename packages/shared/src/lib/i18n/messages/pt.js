@@ -985,7 +985,6 @@ export default {
       "loading": "Carregando seus baralhos no hub…",
       "emptyTitle": "Nada publicado ainda.",
       "emptyText": "Publique um baralho da sua biblioteca e ele aparecerá aqui com o link.",
-      "noDescription": "Ainda sem descrição pública.",
       "draft": "Rascunho",
       "downloads": {
         "one": "{count} download",
@@ -996,14 +995,18 @@ export default {
       "copy": "Copiar link",
       "openNamed": "Abrir {name} no hub",
       "deleteNamed": "Excluir {name} do hub",
-      "confirmDelete": "Excluir “{name}” do hub?"
+      "confirmDelete": "Excluir “{name}” do hub?",
+      "published": {
+        "one": "{count} publicado",
+        "many": "{count} publicados",
+        "other": "{count} publicados"
+      }
     },
     "learner": "Estudante",
     "statusLabel": "Status da conta",
     "sendAgain": "Enviar de novo",
     "manage": "Gerenciar",
     "signOut": "Sair",
-    "saveProfile": "Salvar perfil",
     "security": {
       "setNew": "Defina uma nova senha",
       "change": "Alterar senha",
@@ -1071,17 +1074,9 @@ export default {
       "turn": "Virar"
     },
     "overview": {
-      "verification": "Verificação de e-mail",
-      "pending": "Confirmação pendente",
-      "verifiedNote": "Publicação e gerenciamento do hub estão ativos.",
-      "pendingNote": "Confirme seu e-mail antes de publicar ou excluir baralhos do hub.",
       "sync": "Sincronização",
       "hubDecks": "Baralhos publicados no hub",
-      "hubDecksNote": "Gerencie links e exclua baralhos publicados por esta conta.",
-      "noHubDecks": "Esta conta ainda não tem baralhos no hub.",
-      "provider": "Forma de login",
-      "desktopSession": "Sessão no computador",
-      "webSession": "Sessão na web"
+      "noHubDecks": "Esta conta ainda não tem baralhos no hub."
     },
     "sync": {
       "unavailable": {
@@ -1165,26 +1160,19 @@ export default {
       "social_failed": "O login não foi concluído. Tente de novo."
     },
     "profile": {
-      "nameTitle": "Nome",
-      "emailTitle": "E-mail",
       "emailText": "Enviaremos um link para o novo endereço. A troca vale quando você abri-lo.",
-      "currentEmail": "Em uso",
       "pendingEmail": "Aguardando confirmação: {email}. Abra o link que enviamos para lá.",
-      "newEmail": "Novo e-mail",
       "sendLink": "Enviar link"
     },
     "sessions": {
-      "title": "Sessões",
-      "text": "Ainda conectado onde não usa mais? Encerre todas as sessões, inclusive esta.",
+      "text": "Encerra todas as sessões, inclusive esta.",
       "method": "Entrou com",
       "signOutEverywhere": "Sair de todos os dispositivos",
       "confirm": "Sair de todos os dispositivos, inclusive deste?"
     },
     "devices": {
-      "text": "Dispositivos que sincronizaram com esta conta. Um removido volta à lista se sincronizar de novo.",
       "loading": "Carregando seus dispositivos…",
       "errorTitle": "Não foi possível carregar os dispositivos.",
-      "errorText": "Verifique a conexão e tente de novo.",
       "emptyTitle": "Nenhum dispositivo ainda.",
       "emptyText": "Um dispositivo aparece aqui após a primeira sincronização.",
       "unnamed": "Dispositivo sem nome",

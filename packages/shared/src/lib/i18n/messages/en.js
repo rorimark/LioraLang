@@ -927,7 +927,6 @@ export default {
       "loading": "Loading your Hub decks…",
       "emptyTitle": "Nothing published yet.",
       "emptyText": "Publish a deck from your library, and it shows up here with its link.",
-      "noDescription": "No public description yet.",
       "draft": "Draft",
       "downloads": {
         "one": "{count} download",
@@ -937,14 +936,17 @@ export default {
       "copy": "Copy link",
       "openNamed": "Open {name} in the Hub",
       "deleteNamed": "Delete {name} from the Hub",
-      "confirmDelete": "Delete “{name}” from the Hub?"
+      "confirmDelete": "Delete “{name}” from the Hub?",
+      "published": {
+        "one": "{count} published",
+        "other": "{count} published"
+      }
     },
     "learner": "Learner",
     "statusLabel": "Account status",
     "sendAgain": "Send again",
     "manage": "Manage",
     "signOut": "Sign out",
-    "saveProfile": "Save profile",
     "security": {
       "setNew": "Set a new password",
       "change": "Change password",
@@ -1008,17 +1010,9 @@ export default {
       "turn": "Turn over"
     },
     "overview": {
-      "verification": "Email verification",
-      "pending": "Confirmation pending",
-      "verifiedNote": "Publishing and Hub management are on.",
-      "pendingNote": "Confirm your email before publishing or deleting Hub decks.",
       "sync": "Sync",
       "hubDecks": "Published Hub decks",
-      "hubDecksNote": "Manage links and delete published decks from this account.",
-      "noHubDecks": "No Hub decks are attached to this account yet.",
-      "provider": "Sign-in method",
-      "desktopSession": "Desktop session",
-      "webSession": "Web session"
+      "noHubDecks": "No Hub decks are attached to this account yet."
     },
     "sync": {
       "unavailable": {
@@ -1101,26 +1095,19 @@ export default {
       "social_failed": "Sign-in did not finish. Try again."
     },
     "profile": {
-      "nameTitle": "Name",
-      "emailTitle": "Email",
       "emailText": "A link goes to the new address. The change takes effect once you open it.",
-      "currentEmail": "In use",
       "pendingEmail": "Waiting for confirmation: {email}. Open the link we sent there.",
-      "newEmail": "New email",
       "sendLink": "Send confirmation link"
     },
     "sessions": {
-      "title": "Sessions",
-      "text": "Signed in somewhere you no longer use? End every session, this one included.",
+      "text": "Ends every session, this one included.",
       "method": "Signed in with",
       "signOutEverywhere": "Sign out on all devices",
       "confirm": "Sign out on every device, this one included?"
     },
     "devices": {
-      "text": "Devices that have synced with this account. Removing one takes it off this list; it comes back if it syncs again.",
       "loading": "Loading your devices…",
       "errorTitle": "Could not load your devices.",
-      "errorText": "Check your connection and try again.",
       "emptyTitle": "No devices yet.",
       "emptyText": "A device appears here after its first sync.",
       "unnamed": "Unnamed device",

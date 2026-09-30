@@ -924,7 +924,6 @@ export default {
       "loading": "Hub'daki destelerin yükleniyor…",
       "emptyTitle": "Henüz bir şey yayımlanmadı.",
       "emptyText": "Kitaplığından bir deste yayımla; burada bağlantısıyla görünür.",
-      "noDescription": "Henüz herkese açık açıklama yok.",
       "draft": "Taslak",
       "downloads": {
         "one": "{count} indirme",
@@ -934,14 +933,17 @@ export default {
       "copy": "Bağlantıyı kopyala",
       "openNamed": "{name} destesini hub'da aç",
       "deleteNamed": "{name} destesini hub'dan sil",
-      "confirmDelete": "“{name}” hub'dan silinsin mi?"
+      "confirmDelete": "“{name}” hub'dan silinsin mi?",
+      "published": {
+        "one": "{count} yayında",
+        "other": "{count} yayında"
+      }
     },
     "learner": "Öğrenci",
     "statusLabel": "Hesap durumu",
     "sendAgain": "Yeniden gönder",
     "manage": "Yönet",
     "signOut": "Çıkış yap",
-    "saveProfile": "Profili kaydet",
     "security": {
       "setNew": "Yeni parola belirle",
       "change": "Parolayı değiştir",
@@ -1005,17 +1007,9 @@ export default {
       "turn": "Çevir"
     },
     "overview": {
-      "verification": "E-posta doğrulaması",
-      "pending": "Doğrulama bekliyor",
-      "verifiedNote": "Yayımlama ve hub yönetimi açık.",
-      "pendingNote": "Hub'da deste yayımlamadan veya silmeden önce e-postanı doğrula.",
       "sync": "Eşitleme",
       "hubDecks": "Hub'da yayımlanan desteler",
-      "hubDecksNote": "Bu hesaptan yayımlanan destelerin bağlantılarını yönet ve sil.",
-      "noHubDecks": "Bu hesaba bağlı henüz hub destesi yok.",
-      "provider": "Giriş yöntemi",
-      "desktopSession": "Masaüstü oturumu",
-      "webSession": "Web oturumu"
+      "noHubDecks": "Bu hesaba bağlı henüz hub destesi yok."
     },
     "sync": {
       "unavailable": {
@@ -1098,26 +1092,19 @@ export default {
       "social_failed": "Giriş tamamlanmadı. Tekrar deneyin."
     },
     "profile": {
-      "nameTitle": "Ad",
-      "emailTitle": "E-posta",
       "emailText": "Yeni adrese bir bağlantı gönderilir. Değişiklik, bağlantıyı açınca geçerli olur.",
-      "currentEmail": "Kullanılan",
       "pendingEmail": "Onay bekliyor: {email}. Oraya gönderdiğimiz bağlantıyı açın.",
-      "newEmail": "Yeni e-posta",
       "sendLink": "Bağlantı gönder"
     },
     "sessions": {
-      "title": "Oturumlar",
-      "text": "Artık kullanmadığınız bir yerde oturum açık mı kaldı? Bu dahil tüm oturumları kapatın.",
+      "text": "Bu dahil tüm oturumları kapatır.",
       "method": "Giriş yöntemi",
       "signOutEverywhere": "Tüm cihazlarda çıkış yap",
       "confirm": "Bu dahil tüm cihazlarda çıkış yapılsın mı?"
     },
     "devices": {
-      "text": "Bu hesapla eşitlenen cihazlar. Kaldırılan bir cihaz yeniden eşitlenirse listeye döner.",
       "loading": "Cihazlarınız yükleniyor…",
       "errorTitle": "Cihazlar yüklenemedi.",
-      "errorText": "Bağlantınızı kontrol edip tekrar deneyin.",
       "emptyTitle": "Henüz cihaz yok.",
       "emptyText": "Bir cihaz ilk eşitlemesinden sonra burada görünür.",
       "unnamed": "Adsız cihaz",

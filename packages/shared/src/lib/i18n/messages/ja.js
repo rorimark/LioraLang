@@ -863,7 +863,6 @@ export default {
       "loading": "ハブのデッキを読み込み中…",
       "emptyTitle": "まだ何も公開していません。",
       "emptyText": "ライブラリのデッキを公開すると、リンクと一緒にここに表示されます。",
-      "noDescription": "公開用の説明はまだありません。",
       "draft": "下書き",
       "downloads": {
         "other": "ダウンロード {count}回"
@@ -872,14 +871,16 @@ export default {
       "copy": "リンクをコピー",
       "openNamed": "{name}をハブで開く",
       "deleteNamed": "{name}をハブから削除",
-      "confirmDelete": "「{name}」をハブから削除しますか？"
+      "confirmDelete": "「{name}」をハブから削除しますか？",
+      "published": {
+        "other": "{count}件公開中"
+      }
     },
     "learner": "学習者",
     "statusLabel": "アカウントの状態",
     "sendAgain": "再送信",
     "manage": "管理",
     "signOut": "ログアウト",
-    "saveProfile": "プロフィールを保存",
     "security": {
       "setNew": "新しいパスワードを設定",
       "change": "パスワードを変更",
@@ -939,17 +940,9 @@ export default {
       "turn": "裏返す"
     },
     "overview": {
-      "verification": "メールの確認",
-      "pending": "確認待ち",
-      "verifiedNote": "公開とハブの管理が有効です。",
-      "pendingNote": "ハブでデッキを公開・削除する前にメールを確認してください。",
       "sync": "同期",
       "hubDecks": "ハブで公開したデッキ",
-      "hubDecksNote": "このアカウントで公開したデッキのリンク管理と削除ができます。",
-      "noHubDecks": "このアカウントにはまだハブのデッキがありません。",
-      "provider": "ログイン方法",
-      "desktopSession": "デスクトップのセッション",
-      "webSession": "ウェブのセッション"
+      "noHubDecks": "このアカウントにはまだハブのデッキがありません。"
     },
     "sync": {
       "unavailable": {
@@ -1031,26 +1024,19 @@ export default {
       "social_failed": "ログインが完了しませんでした。もう一度お試しください。"
     },
     "profile": {
-      "nameTitle": "名前",
-      "emailTitle": "メール",
       "emailText": "新しいアドレスにリンクを送ります。開くと変更されます。",
-      "currentEmail": "使用中",
       "pendingEmail": "確認待ち：{email}。そのアドレスに送ったリンクを開いてください。",
-      "newEmail": "新しいメール",
       "sendLink": "確認リンクを送る"
     },
     "sessions": {
-      "title": "セッション",
-      "text": "もう使わない場所でログインしたままですか？このデバイスを含むすべてのセッションを終了します。",
+      "text": "このデバイスを含むすべてのセッションを終了します。",
       "method": "ログイン方法",
       "signOutEverywhere": "すべてのデバイスでログアウト",
       "confirm": "このデバイスを含むすべてのデバイスでログアウトしますか？"
     },
     "devices": {
-      "text": "このアカウントと同期したデバイスです。削除しても、再び同期すると一覧に戻ります。",
       "loading": "デバイスを読み込んでいます…",
       "errorTitle": "デバイスを読み込めませんでした。",
-      "errorText": "接続を確認してもう一度お試しください。",
       "emptyTitle": "まだデバイスはありません。",
       "emptyText": "最初の同期のあと、ここにデバイスが表示されます。",
       "unnamed": "名前のないデバイス",

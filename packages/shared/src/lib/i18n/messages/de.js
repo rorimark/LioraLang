@@ -924,7 +924,6 @@ export default {
       "loading": "Deine Hub-Decks werden geladen…",
       "emptyTitle": "Noch nichts veröffentlicht.",
       "emptyText": "Veröffentliche ein Deck aus deiner Bibliothek, dann erscheint es hier mit seinem Link.",
-      "noDescription": "Noch keine öffentliche Beschreibung.",
       "draft": "Entwurf",
       "downloads": {
         "one": "{count} Download",
@@ -934,14 +933,17 @@ export default {
       "copy": "Link kopieren",
       "openNamed": "{name} im Hub öffnen",
       "deleteNamed": "{name} aus dem Hub löschen",
-      "confirmDelete": "„{name}“ aus dem Hub löschen?"
+      "confirmDelete": "„{name}“ aus dem Hub löschen?",
+      "published": {
+        "one": "{count} veröffentlicht",
+        "other": "{count} veröffentlicht"
+      }
     },
     "learner": "Lernende Person",
     "statusLabel": "Kontostatus",
     "sendAgain": "Erneut senden",
     "manage": "Verwalten",
     "signOut": "Abmelden",
-    "saveProfile": "Profil speichern",
     "security": {
       "setNew": "Neues Passwort festlegen",
       "change": "Passwort ändern",
@@ -1005,17 +1007,9 @@ export default {
       "turn": "Umdrehen"
     },
     "overview": {
-      "verification": "E-Mail-Bestätigung",
-      "pending": "Bestätigung ausstehend",
-      "verifiedNote": "Veröffentlichen und Hub-Verwaltung sind aktiv.",
-      "pendingNote": "Bestätige deine E-Mail, bevor du Hub-Decks veröffentlichst oder löschst.",
       "sync": "Synchronisierung",
       "hubDecks": "Veröffentlichte Hub-Decks",
-      "hubDecksNote": "Links verwalten und veröffentlichte Decks dieses Kontos löschen.",
-      "noHubDecks": "Diesem Konto sind noch keine Hub-Decks zugeordnet.",
-      "provider": "Anmeldemethode",
-      "desktopSession": "Desktop-Sitzung",
-      "webSession": "Web-Sitzung"
+      "noHubDecks": "Diesem Konto sind noch keine Hub-Decks zugeordnet."
     },
     "sync": {
       "unavailable": {
@@ -1098,26 +1092,19 @@ export default {
       "social_failed": "Die Anmeldung wurde nicht abgeschlossen. Versuche es erneut."
     },
     "profile": {
-      "nameTitle": "Name",
-      "emailTitle": "E-Mail",
       "emailText": "Ein Link geht an die neue Adresse. Die Änderung gilt, sobald du ihn öffnest.",
-      "currentEmail": "Aktuell",
       "pendingEmail": "Wartet auf Bestätigung: {email}. Öffne den Link, den wir dorthin geschickt haben.",
-      "newEmail": "Neue E-Mail",
       "sendLink": "Bestätigungslink senden"
     },
     "sessions": {
-      "title": "Sitzungen",
-      "text": "Noch irgendwo angemeldet, wo du nicht mehr bist? Beende alle Sitzungen, auch diese.",
+      "text": "Beendet alle Sitzungen, auch diese.",
       "method": "Angemeldet mit",
       "signOutEverywhere": "Auf allen Geräten abmelden",
       "confirm": "Auf allen Geräten abmelden, auch auf diesem?"
     },
     "devices": {
-      "text": "Geräte, die mit diesem Konto synchronisiert haben. Ein entferntes Gerät erscheint wieder, sobald es erneut synchronisiert.",
       "loading": "Geräte werden geladen…",
       "errorTitle": "Die Geräte konnten nicht geladen werden.",
-      "errorText": "Prüfe die Verbindung und versuche es erneut.",
       "emptyTitle": "Noch keine Geräte.",
       "emptyText": "Ein Gerät erscheint hier nach seiner ersten Synchronisierung.",
       "unnamed": "Unbenanntes Gerät",

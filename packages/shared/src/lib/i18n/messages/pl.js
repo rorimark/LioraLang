@@ -1046,7 +1046,6 @@ export default {
       "loading": "Ładujemy twoje talie w hubie…",
       "emptyTitle": "Nic jeszcze nie opublikowano.",
       "emptyText": "Opublikuj talię ze swojej biblioteki, a pojawi się tutaj razem z linkiem.",
-      "noDescription": "Brak publicznego opisu.",
       "draft": "Szkic",
       "downloads": {
         "one": "{count} pobranie",
@@ -1058,14 +1057,19 @@ export default {
       "copy": "Kopiuj link",
       "openNamed": "Otwórz „{name}” w hubie",
       "deleteNamed": "Usuń „{name}” z hubu",
-      "confirmDelete": "Usunąć „{name}” z hubu?"
+      "confirmDelete": "Usunąć „{name}” z hubu?",
+      "published": {
+        "one": "{count} opublikowana",
+        "few": "{count} opublikowane",
+        "many": "{count} opublikowanych",
+        "other": "{count} opublikowanej"
+      }
     },
     "learner": "Uczeń",
     "statusLabel": "Stan konta",
     "sendAgain": "Wyślij ponownie",
     "manage": "Zarządzaj",
     "signOut": "Wyloguj się",
-    "saveProfile": "Zapisz profil",
     "security": {
       "setNew": "Ustaw nowe hasło",
       "change": "Zmień hasło",
@@ -1137,17 +1141,9 @@ export default {
       "turn": "Odwróć"
     },
     "overview": {
-      "verification": "Potwierdzenie e-maila",
-      "pending": "Czeka na potwierdzenie",
-      "verifiedNote": "Publikowanie i zarządzanie hubem są włączone.",
-      "pendingNote": "Potwierdź e-mail, zanim opublikujesz lub usuniesz talie w hubie.",
       "sync": "Synchronizacja",
       "hubDecks": "Talie w hubie",
-      "hubDecksNote": "Zarządzaj linkami i usuwaj opublikowane talie tego konta.",
-      "noHubDecks": "To konto nie ma jeszcze talii w hubie.",
-      "provider": "Sposób logowania",
-      "desktopSession": "Sesja w aplikacji",
-      "webSession": "Sesja w przeglądarce"
+      "noHubDecks": "To konto nie ma jeszcze talii w hubie."
     },
     "sync": {
       "unavailable": {
@@ -1232,26 +1228,19 @@ export default {
       "social_failed": "Logowanie nie zostało dokończone. Spróbuj ponownie."
     },
     "profile": {
-      "nameTitle": "Imię",
-      "emailTitle": "E-mail",
       "emailText": "Wyślemy link na nowy adres. Zmiana nastąpi po jego otwarciu.",
-      "currentEmail": "Obecny",
       "pendingEmail": "Czeka na potwierdzenie: {email}. Otwórz link, który tam wysłaliśmy.",
-      "newEmail": "Nowy e-mail",
       "sendLink": "Wyślij link"
     },
     "sessions": {
-      "title": "Sesje",
-      "text": "Jesteś zalogowany tam, gdzie już nie bywasz? Zakończ wszystkie sesje, także tę.",
+      "text": "Kończy wszystkie sesje, także tę.",
       "method": "Sposób logowania",
       "signOutEverywhere": "Wyloguj ze wszystkich urządzeń",
       "confirm": "Wylogować ze wszystkich urządzeń, także z tego?"
     },
     "devices": {
-      "text": "Urządzenia, które synchronizowały się z tym kontem. Usunięte wróci na listę, jeśli znów się zsynchronizuje.",
       "loading": "Wczytywanie urządzeń…",
       "errorTitle": "Nie udało się wczytać urządzeń.",
-      "errorText": "Sprawdź połączenie i spróbuj ponownie.",
       "emptyTitle": "Brak urządzeń.",
       "emptyText": "Urządzenie pojawi się tu po pierwszej synchronizacji.",
       "unnamed": "Urządzenie bez nazwy",

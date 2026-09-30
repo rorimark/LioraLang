@@ -241,85 +241,14 @@
   padding: 22px 8px 64px 0;
 }
 
-/* What the account can do now: one row per fact, a warning tint where
-   something is missing, the fix beside it. */
+/* What the account is right now, in the settings' rows, the fix beside
+   whatever needs one. */
 .account__status {
   display: grid;
   gap: 14px;
 }
 
-.account__status-list {
-  display: grid;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 2px solid var(--color-border);
-  border-bottom-width: var(--edge-width);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-  overflow: hidden;
-}
-
-.account__status-list li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-}
-
-.account__status-list li + li {
-  border-top: 2px solid var(--color-border);
-}
-
-.account__status-icon {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-}
-
-.account__status-icon svg {
-  width: 19px;
-  height: 19px;
-}
-
-.account__status-list li.is-warning .account__status-icon {
-  background: var(--color-accent-soft);
-  color: var(--color-accent-strong);
-}
-
-.account__status-text {
-  display: grid;
-  gap: 1px;
-  min-width: 0;
-}
-
-.account__status-title {
-  color: var(--color-text-subtle);
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.account__status-text strong {
-  color: var(--color-text);
-  font-size: 1rem;
-  font-weight: 900;
-}
-
-.account__status-text small {
-  color: var(--color-text-muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.account__sign-out {
+.account__status .ui-button {
   gap: 8px;
 }
 
@@ -384,200 +313,12 @@
   animation: account-in 200ms ease both;
 }
 
-/* The cards of a tab, side by side while each keeps a comfortable
-   width, one under another when they would not. */
-.account__sections {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-  align-items: start;
-  gap: 16px;
-}
-
-.account__section {
-  display: grid;
-  align-content: start;
-  gap: 14px;
-  min-width: 0;
-  padding: clamp(18px, 2.4vw, 26px);
-  border: 2px solid var(--color-border);
-  border-bottom-width: var(--edge-width);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-}
-
-/* A value the card is about, read-only: the address in use, the way in. */
-.account__fact {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: var(--color-surface-muted);
-}
-
-.account__fact span {
-  color: var(--color-text-subtle);
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.account__fact strong {
-  overflow-wrap: anywhere;
-  color: var(--color-text);
-  font-size: 0.98rem;
-  font-weight: 800;
-}
-
-.account__pending {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 10px;
-  margin: 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: var(--color-accent-soft);
-  color: var(--color-text);
-  font-size: 0.86rem;
-  font-weight: 700;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-}
-
-.account__pending svg {
-  width: 17px;
-  height: 17px;
-  margin-top: 2px;
-  color: var(--color-accent-strong);
-}
-
-.account__lead {
-  max-width: 64ch;
-  margin: 0 0 14px;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-/* A device: what it is, when it last synced, and a way to drop an old one. */
-.account__deck.account__device {
-  grid-template-columns: auto minmax(0, 1fr) auto;
-}
-
-.account__device.is-current {
-  border-color: var(--color-primary-border);
-}
-
-.account__device .account__deck-copy strong {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 10px;
-}
-
-.account__badge {
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-  font-size: 0.72rem;
-  font-style: normal;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-}
-
-.account__empty .ui-button {
-  margin-top: 14px;
-  gap: 6px;
-}
-
 .account__form-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-/* Published decks, each a small card with its keys. */
-.account__decks {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 12px;
-}
-
-.account__deck {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 18px;
-  border: 2px solid var(--color-border);
-  border-bottom-width: var(--edge-width);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-}
-
-.account__deck-copy {
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-}
-
-.account__deck-copy strong {
-  font-size: 1.02rem;
-  font-weight: 900;
-}
-
-.account__deck-copy p {
-  margin: 0;
-  overflow: hidden;
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.account__deck-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 12px;
-  margin-top: 2px;
-  color: var(--color-text-subtle);
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.account__deck-meta b {
-  color: var(--color-primary);
-}
-
-.account__deck-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.account__deck-actions .ui-button {
-  gap: 6px;
-  text-decoration: none;
-}
-
-.account__empty {
-  padding: 28px 20px;
-  border: 2px dashed var(--color-border-strong);
-  border-radius: var(--radius-panel);
-  text-align: center;
-}
-
-.account__empty strong {
-  font-size: 1.05rem;
-  font-weight: 900;
-}
-
-.account__empty p,
 .account__muted {
   margin: 6px 0 0;
   color: var(--color-text-muted);
@@ -672,33 +413,6 @@
     padding: 18px 4px 64px 0;
   }
 
-  .account__status-list li {
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: 12px 14px;
-  }
-
-  .account__status-list li .ui-button {
-    grid-column: 2;
-    justify-self: start;
-  }
-
-  .account__deck {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .account__deck-actions .ui-button:first-child {
-    flex: 1;
-  }
-
-  .account__deck.account__device {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .account__device .account__deck-actions {
-    grid-column: 2;
-  }
-
   .account__form-actions > .ui-button {
     flex: 1 1 auto;
   }
@@ -724,14 +438,6 @@
     grid-template-columns: 1fr;
   }
 
-  .account__deck-actions .ui-button:not(:first-child) span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -742,5 +448,75 @@
 
   .account__tabs button::after {
     transition: none;
+  }
+}
+
+/* ---------- rows in the tabs ---------- */
+
+/* A field and the button that saves it, on one line while they fit. */
+.account__inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.account__inline-form .ui-text-input,
+.account__inline-form input {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.account__password {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+.account__password .account__form-actions {
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 16px;
+}
+
+.account__value {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.account__here {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.account__row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.account__row-actions .ui-button {
+  gap: 6px;
+  text-decoration: none;
+}
+
+.account__remove.ui-button {
+  color: var(--color-danger);
+}
+
+/* A field as long as the page is hard to read; one address long is enough. */
+.account__panel .setting-row--wide .setting-row__control > * {
+  max-width: 620px;
+}
+
+/* A quiet action stays as small as its word, even where a row stacks. */
+@container setting-group (max-width: 480px) {
+  .account .setting-row__control:has(> .ui-button--ghost) {
+    justify-content: flex-start;
+  }
+
+  .account .setting-row__control > .ui-button--ghost {
+    width: auto;
+    margin-left: -10px;
   }
 }

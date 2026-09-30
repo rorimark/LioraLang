@@ -985,7 +985,6 @@ export default {
       "loading": "Načítání vašich balíčků v hubu…",
       "emptyTitle": "Zatím nic nezveřejněno.",
       "emptyText": "Zveřejněte balíček ze své knihovny a objeví se tady i s odkazem.",
-      "noDescription": "Zatím bez veřejného popisu.",
       "draft": "Koncept",
       "downloads": {
         "one": "{count} stažení",
@@ -996,14 +995,18 @@ export default {
       "copy": "Kopírovat odkaz",
       "openNamed": "Otevřít {name} v hubu",
       "deleteNamed": "Smazat {name} z hubu",
-      "confirmDelete": "Smazat „{name}“ z hubu?"
+      "confirmDelete": "Smazat „{name}“ z hubu?",
+      "published": {
+        "one": "{count} zveřejněný",
+        "few": "{count} zveřejněné",
+        "other": "{count} zveřejněných"
+      }
     },
     "learner": "Student",
     "statusLabel": "Stav účtu",
     "sendAgain": "Poslat znovu",
     "manage": "Spravovat",
     "signOut": "Odhlásit se",
-    "saveProfile": "Uložit profil",
     "security": {
       "setNew": "Nastavte nové heslo",
       "change": "Změnit heslo",
@@ -1071,17 +1074,9 @@ export default {
       "turn": "Otočit"
     },
     "overview": {
-      "verification": "Ověření e-mailu",
-      "pending": "Čeká na ověření",
-      "verifiedNote": "Zveřejňování a správa hubu jsou zapnuté.",
-      "pendingNote": "Před zveřejněním nebo smazáním balíčků v hubu ověřte e-mail.",
       "sync": "Synchronizace",
       "hubDecks": "Zveřejněné balíčky v hubu",
-      "hubDecksNote": "Spravujte odkazy a mažte balíčky zveřejněné tímto účtem.",
-      "noHubDecks": "K tomuto účtu zatím nepatří žádné balíčky v hubu.",
-      "provider": "Způsob přihlášení",
-      "desktopSession": "Relace v aplikaci",
-      "webSession": "Relace na webu"
+      "noHubDecks": "K tomuto účtu zatím nepatří žádné balíčky v hubu."
     },
     "sync": {
       "unavailable": {
@@ -1165,26 +1160,19 @@ export default {
       "social_failed": "Přihlášení se nedokončilo. Zkuste to znovu."
     },
     "profile": {
-      "nameTitle": "Jméno",
-      "emailTitle": "E-mail",
       "emailText": "Na novou adresu pošleme odkaz. Změna platí, jakmile ho otevřete.",
-      "currentEmail": "Používaný",
       "pendingEmail": "Čeká na potvrzení: {email}. Otevřete odkaz, který jsme tam poslali.",
-      "newEmail": "Nový e-mail",
       "sendLink": "Poslat odkaz"
     },
     "sessions": {
-      "title": "Relace",
-      "text": "Zůstali jste přihlášeni tam, kam už nechodíte? Ukončete všechny relace včetně této.",
+      "text": "Ukončí všechny relace včetně této.",
       "method": "Způsob přihlášení",
       "signOutEverywhere": "Odhlásit ze všech zařízení",
       "confirm": "Odhlásit ze všech zařízení včetně tohoto?"
     },
     "devices": {
-      "text": "Zařízení, která se synchronizovala s tímto účtem. Odebrané zařízení se vrátí, jakmile se znovu synchronizuje.",
       "loading": "Načítáme zařízení…",
       "errorTitle": "Zařízení se nepodařilo načíst.",
-      "errorText": "Zkontrolujte připojení a zkuste to znovu.",
       "emptyTitle": "Zatím žádná zařízení.",
       "emptyText": "Zařízení se tu objeví po první synchronizaci.",
       "unnamed": "Zařízení bez názvu",

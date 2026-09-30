@@ -383,6 +383,11 @@ export const useAccountHubPanel = () => {
     setResetEmail(authState.email || "");
   }, [authState.displayName, authState.email, authState.isAuthenticated]);
 
+  // The email field starts at the address in use; editing it is the change.
+  useEffect(() => {
+    setNewEmail(authState.email || "");
+  }, [authState.email]);
+
   useEffect(() => {
     if (authState.isAuthenticated) {
       return;
@@ -568,7 +573,7 @@ export const useAccountHubPanel = () => {
     await runAction("change-email", async () => {
       const nextAuthState = await authRepository.updateEmail(nextEmail);
       setAuthState((currentState) => ({ ...currentState, ...nextAuthState }));
-      setNewEmail("");
+      setNewEmail(authState.email || "");
       reportStatus({ key: "account.status.emailChangeSent", params: { email: nextEmail } }, "success");
     });
   }, [authRepository, authState.email, newEmail, reportStatus, runAction]);
@@ -835,68 +840,6 @@ export const useAccountHubPanel = () => {
   // queue a second pass.
   const canSyncNow = ["synced", "ready", "attention"].includes(syncState.state);
 
-  const overviewCards = useMemo(() => {
-    return [
-      {
-        key: "verification",
-        title: t("account.overview.verification"),
-        value: authState.isEmailVerified ? t("account.verified") : t("account.overview.pending"),
-        note: authState.isEmailVerified
-          ? t("account.overview.verifiedNote")
-          : t("account.overview.pendingNote"),
-      },
-      {
-        key: "sync",
-        title: t("account.overview.sync"),
-        value: syncOverview.label,
-        note: syncOverview.text,
-      },
-      {
-        key: "hub-decks",
-        title: t("account.overview.hubDecks"),
-        value: String(ownDecks.length),
-        note: ownDecks.length > 0 ? t("account.overview.hubDecksNote") : t("account.overview.noHubDecks"),
-      },
-      {
-        key: "provider",
-        title: t("account.overview.provider"),
-        value: signInMethodLabel,
-        note: isDesktopMode ? t("account.overview.desktopSession") : t("account.overview.webSession"),
-      },
-    ];
-  }, [
-    authState.isEmailVerified,
-    isDesktopMode,
-    ownDecks.length,
-    signInMethodLabel,
-    syncOverview.label,
-    syncOverview.text,
-    t,
-  ]);
-
-  const accountBadges = useMemo(() => {
-    const badges = [];
-
-    if (authState.provider) {
-      badges.push({
-        key: "provider",
-        text: authState.provider === "email" ? t("account.email") : PROVIDER_NAMES[authState.provider] || authState.provider,
-      });
-    }
-
-    badges.push({
-      key: "verification",
-      text: authState.isEmailVerified ? t("account.verified") : t("account.notVerified"),
-      accent: authState.isEmailVerified,
-    });
-
-    if (isDesktopMode) {
-      badges.push({ key: "runtime", text: t("account.desktopApp") });
-    }
-
-    return badges;
-  }, [authState.isEmailVerified, authState.provider, isDesktopMode, t]);
-
   return {
     isConfigured,
     isDesktopMode,
@@ -909,10 +852,8 @@ export const useAccountHubPanel = () => {
     signedOutTabs,
     signedInTabs,
     socialProviders,
-    accountBadges,
     syncStatus,
     syncOverview,
-    overviewCards,
     email,
     password,
     displayName,

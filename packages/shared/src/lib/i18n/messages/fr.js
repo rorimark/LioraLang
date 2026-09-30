@@ -985,7 +985,6 @@ export default {
       "loading": "Chargement de vos paquets du hub…",
       "emptyTitle": "Rien de publié pour l'instant.",
       "emptyText": "Publiez un paquet de votre bibliothèque : il apparaîtra ici avec son lien.",
-      "noDescription": "Pas encore de description publique.",
       "draft": "Brouillon",
       "downloads": {
         "one": "{count} téléchargement",
@@ -996,14 +995,18 @@ export default {
       "copy": "Copier le lien",
       "openNamed": "Ouvrir {name} dans le hub",
       "deleteNamed": "Supprimer {name} du hub",
-      "confirmDelete": "Supprimer « {name} » du hub ?"
+      "confirmDelete": "Supprimer « {name} » du hub ?",
+      "published": {
+        "one": "{count} publié",
+        "many": "{count} publiés",
+        "other": "{count} publiés"
+      }
     },
     "learner": "Apprenant",
     "statusLabel": "État du compte",
     "sendAgain": "Renvoyer",
     "manage": "Gérer",
     "signOut": "Se déconnecter",
-    "saveProfile": "Enregistrer le profil",
     "security": {
       "setNew": "Choisir un nouveau mot de passe",
       "change": "Changer le mot de passe",
@@ -1071,17 +1074,9 @@ export default {
       "turn": "Retourner"
     },
     "overview": {
-      "verification": "Vérification de l'e-mail",
-      "pending": "Confirmation en attente",
-      "verifiedNote": "La publication et la gestion du hub sont actives.",
-      "pendingNote": "Confirmez votre e-mail avant de publier ou de supprimer des paquets du hub.",
       "sync": "Synchronisation",
       "hubDecks": "Paquets publiés sur le hub",
-      "hubDecksNote": "Gérez les liens et supprimez les paquets publiés depuis ce compte.",
-      "noHubDecks": "Aucun paquet du hub n'est encore lié à ce compte.",
-      "provider": "Méthode de connexion",
-      "desktopSession": "Session de bureau",
-      "webSession": "Session web"
+      "noHubDecks": "Aucun paquet du hub n'est encore lié à ce compte."
     },
     "sync": {
       "unavailable": {
@@ -1165,26 +1160,19 @@ export default {
       "social_failed": "La connexion n'a pas abouti. Réessayez."
     },
     "profile": {
-      "nameTitle": "Nom",
-      "emailTitle": "E-mail",
       "emailText": "Un lien part vers la nouvelle adresse. Le changement s'applique quand vous l'ouvrez.",
-      "currentEmail": "Actuelle",
       "pendingEmail": "En attente de confirmation : {email}. Ouvrez le lien envoyé à cette adresse.",
-      "newEmail": "Nouvel e-mail",
       "sendLink": "Envoyer le lien"
     },
     "sessions": {
-      "title": "Sessions",
-      "text": "Encore connecté là où vous n'allez plus ? Fermez toutes les sessions, celle-ci comprise.",
+      "text": "Ferme toutes les sessions, celle-ci comprise.",
       "method": "Connecté avec",
       "signOutEverywhere": "Se déconnecter partout",
       "confirm": "Se déconnecter sur tous les appareils, celui-ci compris ?"
     },
     "devices": {
-      "text": "Les appareils synchronisés avec ce compte. Un appareil retiré revient dans la liste s'il se synchronise à nouveau.",
       "loading": "Chargement des appareils…",
       "errorTitle": "Impossible de charger les appareils.",
-      "errorText": "Vérifiez la connexion et réessayez.",
       "emptyTitle": "Aucun appareil pour l'instant.",
       "emptyText": "Un appareil apparaît ici après sa première synchronisation.",
       "unnamed": "Appareil sans nom",
