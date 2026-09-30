@@ -7,8 +7,8 @@ const capitalize = (text, locale) =>
   text ? text.charAt(0).toLocaleUpperCase(locale) + text.slice(1) : text;
 
 // Everything a component needs to speak the interface's language.
-export const buildI18nValue = (locale, messages) => {
-  const t = createTranslator({ locale, messages, fallbackMessages: ENGLISH_MESSAGES });
+export const buildI18nValue = (locale, messages, fallbackMessages = ENGLISH_MESSAGES) => {
+  const t = createTranslator({ locale, messages, fallbackMessages });
   const numberFormat = new Intl.NumberFormat(locale);
   let languageNames = null;
 
@@ -39,6 +39,7 @@ export const buildI18nValue = (locale, messages) => {
 
   return {
     locale,
+    messages,
     t,
     formatUnitLong,
     // "10m", "12h", "7d" as the scheduler writes them, the language's way:

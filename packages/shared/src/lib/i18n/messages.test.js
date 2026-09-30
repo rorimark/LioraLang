@@ -13,11 +13,41 @@ import pt from "./messages/pt.js";
 import tr from "./messages/tr.js";
 import cs from "./messages/cs.js";
 import ja from "./messages/ja.js";
+import landingEn from "./messages/landing/en.js";
+import landingUk from "./messages/landing/uk.js";
+import landingRu from "./messages/landing/ru.js";
+import landingPl from "./messages/landing/pl.js";
+import landingDe from "./messages/landing/de.js";
+import landingEs from "./messages/landing/es.js";
+import landingFr from "./messages/landing/fr.js";
+import landingIt from "./messages/landing/it.js";
+import landingPt from "./messages/landing/pt.js";
+import landingTr from "./messages/landing/tr.js";
+import landingCs from "./messages/landing/cs.js";
+import landingJa from "./messages/landing/ja.js";
 
 // Only languages offered in the picker must be complete; the others are
 // still being translated and fall back to English.
+// The landing's copy lives in its own files (the desktop app has no
+// landing) but is checked as part of each language.
+const LANDING = {
+  uk: landingUk,
+  ru: landingRu,
+  pl: landingPl,
+  de: landingDe,
+  es: landingEs,
+  fr: landingFr,
+  it: landingIt,
+  pt: landingPt,
+  tr: landingTr,
+  cs: landingCs,
+  ja: landingJa,
+};
+
 const CATALOGUES = Object.fromEntries(
-  Object.entries({ uk, ru, pl, de, es, fr, it: it_, pt, tr, cs, ja }).filter(([code]) => LOCALE_CODES.includes(code)),
+  Object.entries({ uk, ru, pl, de, es, fr, it: it_, pt, tr, cs, ja })
+    .filter(([code]) => LOCALE_CODES.includes(code))
+    .map(([code, catalogue]) => [code, { ...catalogue, landing: LANDING[code] }]),
 );
 
 // The plural forms a count can need in a language: whatever
@@ -28,7 +58,7 @@ const neededForms = (locale) => {
   return [...new Set(counts.map((count) => rules.select(count)))].sort();
 };
 
-const english = new Map(flattenMessages(en));
+const english = new Map(flattenMessages({ ...en, landing: landingEn }));
 
 describe("message catalogues", () => {
   it("covers every interface language", () => {

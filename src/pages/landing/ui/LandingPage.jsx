@@ -1,9 +1,10 @@
 import { LandingMockPanel } from "@widgets/LandingMockPanel";
 import { usePageMeta } from "@shared/lib/seo";
 import { useI18n } from "@shared/lib/i18n";
+import { LandingI18nProvider } from "@shared/lib/i18n/LandingI18nProvider";
 import "./LandingPage.css";
 
-export const LandingPage = () => {
+const LandingContent = () => {
   const { t } = useI18n();
 
   usePageMeta({
@@ -17,5 +18,11 @@ export const LandingPage = () => {
     </section>
   );
 };
+
+export const LandingPage = () => (
+  <LandingI18nProvider>
+    <LandingContent />
+  </LandingI18nProvider>
+);
 
 export default LandingPage;

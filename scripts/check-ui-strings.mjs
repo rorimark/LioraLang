@@ -37,7 +37,10 @@ const walk = (dir) => {
 };
 [...ROOTS, "electron/main"].forEach(walk);
 
-const { default: english } = await import(path.resolve("packages/shared/src/lib/i18n/messages/en.js"));
+const { default: appEnglish } = await import(path.resolve("packages/shared/src/lib/i18n/messages/en.js"));
+// The landing's copy is a catalogue of its own, kept out of the desktop app.
+const { default: landingEnglish } = await import(path.resolve("packages/shared/src/lib/i18n/messages/landing/en.js"));
+const english = { ...appEnglish, landing: landingEnglish };
 const PLURAL_FORMS = new Set(["zero", "one", "two", "few", "many", "other"]);
 const isPlural = (value) =>
   value && typeof value === "object" && typeof value.other === "string" &&
