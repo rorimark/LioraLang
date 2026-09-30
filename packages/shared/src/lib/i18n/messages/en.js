@@ -320,7 +320,6 @@ export default {
       "label": "Decks",
       "deck": "Deck",
       "tags": "Tags",
-      "words": "Words",
       "actions": "Actions",
       "empty": "No decks found. Create one or import a deck file.",
       "allTags": "Show all tags for {name}",
@@ -541,13 +540,9 @@ export default {
     "unknownDate": "Date unknown",
     "untitled": "Untitled deck",
     "copyLink": "Copy public deck link",
-    "added": "Added {date}",
-    "downloads": "Downloads",
-    "updated": "Updated",
-    "package": "Package",
     "importing": "Importing…",
     "import": "Add to my decks",
-    "searchPlaceholder": "Search decks by title",
+    "searchPlaceholder": "Search by name or description",
     "loading": "Loading community decks…",
     "status": {
       "nothingNew": {
@@ -577,7 +572,12 @@ export default {
       "one": "{count} word",
       "other": "{count} words"
     },
-    "loadingWords": "Loading the words…"
+    "loadingWords": "Loading the words…",
+    "add": "Add",
+    "addNamed": "Add {name} to my decks",
+    "inLibrary": "In my decks",
+    "openInLibrary": "Open {name} in my decks",
+    "updatedOn": "updated {date}"
   },
   "progress": {
     "stages": {

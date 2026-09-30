@@ -322,7 +322,6 @@ export default {
       "label": "Balíčky",
       "deck": "Balíček",
       "tags": "Štítky",
-      "words": "Slova",
       "actions": "Akce",
       "empty": "Žádné balíčky. Vytvořte balíček nebo importujte soubor.",
       "allTags": "Zobrazit všechny štítky balíčku {name}",
@@ -550,13 +549,9 @@ export default {
     "unknownDate": "Datum neznámé",
     "untitled": "Balíček bez názvu",
     "copyLink": "Kopírovat veřejný odkaz",
-    "added": "Přidáno {date}",
-    "downloads": "Stažení",
-    "updated": "Aktualizováno",
-    "package": "Soubor",
     "importing": "Importujeme…",
     "import": "Přidat do mých balíčků",
-    "searchPlaceholder": "Hledat balíčky podle názvu",
+    "searchPlaceholder": "Hledat podle názvu nebo popisu",
     "loading": "Načítání balíčků komunity…",
     "status": {
       "nothingNew": {
@@ -588,7 +583,12 @@ export default {
       "few": "{count} slova",
       "other": "{count} slov"
     },
-    "loadingWords": "Načítání slov…"
+    "loadingWords": "Načítání slov…",
+    "add": "Přidat",
+    "addNamed": "Přidat „{name}“ do mých balíčků",
+    "inLibrary": "V mých balíčcích",
+    "openInLibrary": "Otevřít „{name}“ v mých balíčcích",
+    "updatedOn": "aktualizováno {date}"
   },
   "progress": {
     "stages": {

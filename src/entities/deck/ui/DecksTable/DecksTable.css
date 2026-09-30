@@ -94,22 +94,6 @@
   overflow-wrap: anywhere;
 }
 
-.deck-row__langs {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2px 6px;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.deck-row__langs svg {
-  width: 13px;
-  height: 13px;
-  color: var(--color-text-subtle);
-}
-
 /* Tags stay on one line; the rest are counted and shown on demand. */
 .deck-row__tags {
   display: flex;

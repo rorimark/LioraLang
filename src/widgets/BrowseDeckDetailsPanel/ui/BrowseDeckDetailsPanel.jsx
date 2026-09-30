@@ -1,16 +1,6 @@
 import { memo, useMemo } from "react";
-import {
-  FiArrowLeft,
-  FiCalendar,
-  FiDownload,
-  FiFilter,
-  FiHardDrive,
-  FiLink,
-  FiPackage,
-  FiRefreshCw,
-  FiType,
-} from "react-icons/fi";
-import { DeckTagBadges } from "@entities/deck";
+import { FiArrowLeft, FiFilter, FiLink } from "react-icons/fi";
+import { DeckLanguagePair, HubDeckAction, normalizeHubTags, useHubLibraryIndex } from "@entities/deck";
 import { WordsTable } from "@entities/word";
 import {
   CardCatalogFilters,
@@ -27,36 +17,9 @@ import "@widgets/DeckDetailsPanel/ui/DeckDetailsPanel.css";
 import "./BrowseDeckDetailsPanel.css";
 import { useI18n } from "@shared/lib/i18n";
 
-const normalizeTags = (value) => {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  const uniqueTags = [];
-  const seen = new Set();
-
-  value.forEach((tag) => {
-    if (typeof tag !== "string") {
-      return;
-    }
-
-    const normalizedTag = tag.trim();
-    const key = normalizedTag.toLowerCase();
-
-    if (!normalizedTag || seen.has(key)) {
-      return;
-    }
-
-    seen.add(key);
-    uniqueTags.push(normalizedTag);
-  });
-
-  return uniqueTags;
-};
-
 export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   const panel = useBrowseDeckDetailsPanel(deckSlug);
-  const { t, formatBytes, formatDate, formatNumber, languageName } = useI18n();
+  const { t, formatBytes, formatDate } = useI18n();
 
   usePageMeta({
     title: `${panel.deck?.title || t("browse.communityDeck")} - LioraLang`,
@@ -66,42 +29,16 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
         : t("browse.metaDescription"),
   });
 
-  const derived = useMemo(() => {
-    const tags = normalizeTags(panel.deck?.tags);
-    const languages = Array.isArray(panel.deck?.languages) ? panel.deck.languages : [];
-    const badgeItems = [
-      ...languages.map((language) => ({
-        key: `${panel.deck?.id}-lang-${language}`,
-        text: languageName(language),
-        accent: false,
-      })),
-      ...tags.map((tag) => ({
-        key: `${panel.deck?.id}-tag-${tag}`,
-        text: tag,
-        accent: false,
-      })),
-    ];
-
-    return {
-      tags,
-      languages,
-      badgeItems,
-      createdAt: formatDate(panel.deck?.createdAt) || t("browse.unknownDate"),
-      fileSize: formatBytes(panel.deck?.latestVersion?.fileSizeBytes) || t("browse.unknownSize"),
-      wordsCount: Number.isFinite(Number(panel.deck?.wordsCount))
-        ? Number(panel.deck.wordsCount)
-        : 0,
-      downloadsCount: Number.isFinite(Number(panel.deck?.downloadsCount))
-        ? Number(panel.deck.downloadsCount)
-        : 0,
-      hasDescription:
-        typeof panel.deck?.description === "string"
-        && panel.deck.description.trim().length > 0,
-      updatedAt:
-        formatDate(panel.deck?.latestVersion?.createdAt || panel.deck?.createdAt) ||
-        t("browse.unknownDate"),
-    };
-  }, [formatBytes, formatDate, languageName, panel.deck, t]);
+  const derived = useMemo(() => ({
+    tags: normalizeHubTags(panel.deck?.tags, panel.deck?.languages),
+    fileSize: formatBytes(panel.deck?.latestVersion?.fileSizeBytes) || t("browse.unknownSize"),
+    wordsCount: Number(panel.deck?.wordsCount) || 0,
+    downloadsCount: Number(panel.deck?.downloadsCount) || 0,
+    hasDescription: typeof panel.deck?.description === "string" && panel.deck.description.trim().length > 0,
+    updatedAt:
+      formatDate(panel.deck?.latestVersion?.createdAt || panel.deck?.createdAt) || t("browse.unknownDate"),
+  }), [formatBytes, formatDate, panel.deck, t]);
+  const library = useHubLibraryIndex();
 
   const showsWordLevels = panel.levelOptions.length > 0;
   const filterCatalog = useMemo(
@@ -196,21 +133,9 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   return (
     <Panel className="browse-deck-details">
       <div className="browse-deck-details__header">
-        <Button
-          variant="secondary"
-          className="browse-deck-details__back-button"
-          onClick={panel.openBrowseDecks}
-        >
-          <FiArrowLeft />
-          {t("browse.back")}
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={panel.refreshDeck}
-          disabled={!panel.isConfigured || panel.isLoading}
-        >
-          <FiRefreshCw aria-hidden />
-          <span>{t("common.refresh")}</span>
+        <Button variant="ghost" className="browse-deck-details__back-button" onClick={panel.openBrowseDecks}>
+          <FiArrowLeft aria-hidden="true" />
+          <span>{t("browse.back")}</span>
         </Button>
       </div>
 
@@ -229,97 +154,56 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
       ) : null}
 
       {panel.isConfigured && !panel.isLoading && !panel.error && panel.deck ? (
-        <article className="browse-decks-panel__card browse-deck-details__card">
-          <header className="browse-decks-panel__card-head">
-            <div className="browse-deck-details__title">
-              <div className="browse-deck-details__title-row">
-                <h2>{panel.deck.title || t("browse.untitled")}</h2>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="browse-deck-details__copy-link"
-                  onClick={panel.copyDeckLink}
-                  aria-label={t("browse.copyLink")}
-                  title={t("browse.copyLink")}
-                >
-                  <FiLink />
-                </Button>
-              </div>
-              <span className="browse-decks-panel__card-meta">
-                {t("browse.added", { date: derived.createdAt })}
-              </span>
+        <article className="hub-hero">
+          <header className="hub-hero__head">
+            <div className="hub-hero__titles">
+              <h2>{panel.deck.title || t("browse.untitled")}</h2>
+              <DeckLanguagePair source={panel.deck.sourceLanguage} targets={panel.deck.targetLanguages} />
+            </div>
+            <div className="hub-hero__actions">
+              <Button
+                variant="ghost"
+                className="hub-card__link"
+                onClick={panel.copyDeckLink}
+                aria-label={t("browse.copyLink")}
+                title={t("browse.copyLink")}
+              >
+                <FiLink aria-hidden="true" />
+              </Button>
+              <HubDeckAction
+                deck={panel.deck}
+                localDeckId={library.get(String(panel.deck.id))}
+                isImporting={panel.importing}
+                onImport={panel.importDeckFromHub}
+              />
             </div>
           </header>
 
-          <p
-            className={
-              derived.hasDescription
-                ? "browse-decks-panel__description"
-                : "browse-decks-panel__description browse-decks-panel__description--empty"
-            }
-            aria-hidden={!derived.hasDescription}
-          >
-            {derived.hasDescription ? panel.deck.description : "\u00A0"}
+          {derived.hasDescription ? <p className="hub-hero__description">{panel.deck.description}</p> : null}
+
+          {derived.tags.length > 0 ? (
+            <ul className="hub-card__tags hub-hero__tags" aria-label={t("decks.table.tags")}>
+              {derived.tags.map((tag) => (
+                <li key={tag}>{tag}</li>
+              ))}
+            </ul>
+          ) : null}
+
+          <p className="hub-hero__meta">
+            {[
+              t("browse.wordsCount", { count: derived.wordsCount }),
+              t("account.hub.downloads", { count: derived.downloadsCount }),
+              t("browse.updatedOn", { date: derived.updatedAt }),
+              derived.fileSize,
+            ].join(" · ")}
           </p>
-
-          <div className="browse-decks-panel__card-footer">
-            <DeckTagBadges
-              className="browse-decks-panel__badges"
-              badges={derived.badgeItems}
-            />
-
-            <dl className="browse-decks-panel__stats">
-              <div>
-                <dt>
-                  <FiType aria-hidden />
-                  <span>{t("decks.table.words")}</span>
-                </dt>
-                <dd>{formatNumber(derived.wordsCount)}</dd>
-              </div>
-              <div>
-                <dt>
-                  <FiDownload aria-hidden />
-                  <span>{t("browse.downloads")}</span>
-                </dt>
-                <dd>{formatNumber(derived.downloadsCount)}</dd>
-              </div>
-              <div>
-                <dt>
-                  <FiCalendar aria-hidden />
-                  <span>{t("browse.updated")}</span>
-                </dt>
-                <dd>{derived.updatedAt}</dd>
-              </div>
-              <div>
-                <dt>
-                  <FiPackage aria-hidden />
-                  <span>{t("browse.package")}</span>
-                </dt>
-                <dd>{derived.fileSize}</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="browse-decks-panel__actions browse-decks-panel__actions--single">
-            <Button
-              onClick={panel.importDeckFromHub}
-              disabled={panel.importing || !panel.deck.latestVersion?.filePath}
-              variant="primary"
-            >
-              {panel.importing ? <FiHardDrive aria-hidden /> : <FiDownload aria-hidden />}
-              <span>{panel.importing ? t("browse.importing") : t("browse.import")}</span>
-            </Button>
-          </div>
         </article>
       ) : null}
 
       {panel.isConfigured && !panel.isLoading && !panel.error && panel.deck ? (
         <>
           <header className="browse-deck-details__preview-head">
-            <h3>
-              <FiType aria-hidden />
-              <span>{t("browse.preview")}</span>
-            </h3>
+            <h3>{t("browse.preview")}</h3>
             <span>{t("browse.wordsCount", { count: panel.totalItems })}</span>
           </header>
 

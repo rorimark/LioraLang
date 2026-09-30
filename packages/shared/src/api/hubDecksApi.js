@@ -143,8 +143,12 @@ export const hubDecksApi = {
       .order("created_at", { ascending: false })
       .range(from, to);
 
-    if (normalizedSearch) {
-      decksQuery = decksQuery.ilike("title", `%${normalizedSearch}%`);
+    // Name or description. Commas and brackets would change the meaning of
+    // the filter itself, so they are read as spaces.
+    const searchTerm = normalizedSearch.replace(/[,()%*\\]/g, " ").replace(/\s+/g, " ").trim();
+
+    if (searchTerm) {
+      decksQuery = decksQuery.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
     }
 
     const { data: decks, error: decksError, count } = await decksQuery;

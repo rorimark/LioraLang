@@ -113,9 +113,16 @@
   transform: rotate(90deg);
 }
 
+/* Wide enough for "Level" in capitals in every language, never broken
+   in the middle of the word. */
 .words-table__level {
-  width: 76px;
+  width: 104px;
   text-align: center;
+}
+
+th.words-table__level {
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
 .words-table__examples {

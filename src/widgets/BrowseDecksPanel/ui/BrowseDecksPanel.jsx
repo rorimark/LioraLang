@@ -2,6 +2,7 @@ import { memo, useMemo } from "react";
 import { PostImportChoiceModal } from "@features/deck-import";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { InlineAlert, Panel, SearchField } from "@shared/ui";
+import { useHubLibraryIndex } from "@entities/deck";
 import { useBrowseDecksPanel } from "../model";
 import { BrowseDeckCardList } from "./BrowseDeckCardList";
 import "./BrowseDecksPanel.css";
@@ -10,9 +11,11 @@ import { useI18n } from "@shared/lib/i18n";
 export const BrowseDecksPanel = memo(() => {
   const panel = useBrowseDecksPanel();
   const { t } = useI18n();
+  const library = useHubLibraryIndex();
   const deckList = useMemo(
     () => ({
       decks: panel.decks,
+      library,
       pendingState: {
         importingDeckId: panel.importingDeckId,
       },
@@ -26,6 +29,7 @@ export const BrowseDecksPanel = memo(() => {
       panel.decks,
       panel.importDeckFromHub,
       panel.importingDeckId,
+      library,
     ],
   );
   const statusAlert = useMemo(
@@ -75,22 +79,6 @@ export const BrowseDecksPanel = memo(() => {
 
   return (
     <Panel className="browse-decks-panel">
-      {/* <header className="browse-decks-panel__header">
-        <div className="browse-decks-panel__titles">
-          <h2>Browse Community Decks</h2>
-          <p>
-            Discover ready-made decks from LioraLangHub and import them in one click.
-          </p>
-        </div>
-        <button
-          type="button"
-          className="browse-decks-panel__refresh"
-          onClick={refreshDecks}
-          disabled={!isConfigured || isLoading}
-        >
-          Refresh
-        </button>
-      </header> */}
 
       <InlineAlert alert={statusAlert} />
 

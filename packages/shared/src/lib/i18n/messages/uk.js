@@ -327,7 +327,6 @@ export default {
       "label": "Колоди",
       "deck": "Колода",
       "tags": "Теги",
-      "words": "Слова",
       "actions": "Дії",
       "empty": "Колод не знайдено. Створіть колоду або імпортуйте файл.",
       "allTags": "Усі теги колоди {name}",
@@ -562,13 +561,9 @@ export default {
     "unknownDate": "Дата невідома",
     "untitled": "Колода без назви",
     "copyLink": "Скопіювати публічне посилання",
-    "added": "Додано {date}",
-    "downloads": "Завантаження",
-    "updated": "Оновлено",
-    "package": "Файл",
     "importing": "Імпортуємо…",
     "import": "Додати до моїх колод",
-    "searchPlaceholder": "Пошук колод за назвою",
+    "searchPlaceholder": "Пошук за назвою чи описом",
     "loading": "Завантажуємо колоди спільноти…",
     "status": {
       "nothingNew": {
@@ -602,7 +597,12 @@ export default {
       "many": "{count} слів",
       "other": "{count} слів"
     },
-    "loadingWords": "Завантажуємо слова…"
+    "loadingWords": "Завантажуємо слова…",
+    "add": "Додати",
+    "addNamed": "Додати «{name}» до моїх колод",
+    "inLibrary": "У моїх колодах",
+    "openInLibrary": "Відкрити «{name}» у моїх колодах",
+    "updatedOn": "оновлено {date}"
   },
   "progress": {
     "stages": {

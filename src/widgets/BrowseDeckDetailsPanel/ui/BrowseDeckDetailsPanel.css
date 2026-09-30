@@ -11,60 +11,89 @@
   gap: 10px;
 }
 
-.browse-deck-details__back-button {
-  justify-content: flex-start;
-  gap: 8px;
-  min-height: 40px;
-  padding-inline: 14px;
-  border-color: color-mix(in srgb, var(--color-border) 84%, var(--color-primary));
-  background: color-mix(in srgb, var(--color-surface-muted) 62%, var(--color-surface));
-  color: var(--color-text);
+.browse-deck-details__back-button.ui-button {
+  justify-self: start;
+  gap: 6px;
+  margin-left: -10px;
+  color: var(--color-primary);
+  font-weight: 800;
 }
 
 .browse-deck-details__back-button svg {
-  width: 15px;
-  height: 15px;
-  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
 }
 
-.browse-deck-details__title {
-  display: grid;
-  gap: 4px;
-}
-
-.browse-deck-details__title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.browse-deck-details__title h2 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--color-text);
-}
-
-.browse-deck-details__header .ui-button,
-.browse-deck-details__preview-actions .ui-button,
-.browse-decks-panel__actions .ui-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.browse-deck-details__preview-actions .ui-button {
   gap: 7px;
 }
 
-.browse-deck-details__copy-link {
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
-  padding: 0;
-  border-radius: 10px;
+/* ----- the deck: what it is, then the one thing to do with it ----- */
+
+.hub-hero {
+  display: grid;
+  gap: 12px;
+  padding: clamp(16px, 2.4vw, 24px);
+  border: 2px solid var(--color-border);
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
 }
 
-.browse-deck-details__copy-link svg {
-  width: 16px;
-  height: 16px;
+.hub-hero__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 20px;
+}
+
+.hub-hero__titles {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hub-hero__titles h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.7rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.hub-hero__titles .deck-language-pair {
+  font-size: 0.9rem;
+}
+
+.hub-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hub-hero__description {
+  max-width: 78ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.hub-hero__tags {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.hub-hero__meta {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 2px solid var(--color-border);
+  color: var(--color-text-subtle);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .browse-deck-details__warning,
@@ -96,15 +125,15 @@
 
 .browse-deck-details__preview-head h3 {
   margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.95rem;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  font-weight: 900;
 }
 
 .browse-deck-details__preview-head span {
   color: var(--color-text-muted);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
+  font-weight: 700;
 }
 
 .browse-deck-details__preview-actions {
@@ -112,13 +141,19 @@
   justify-content: flex-end;
 }
 
+/* On a phone the deck is read first and the key comes last, under
+   everything it is about. */
 @media (max-width: 720px) {
-  .browse-deck-details__header {
-    flex-direction: column;
-    align-items: stretch;
+  .hub-hero__head {
+    display: contents;
   }
 
-  .browse-deck-details__header .ui-button {
+  .hub-hero__actions {
+    order: 10;
     width: 100%;
+  }
+
+  .hub-hero__actions .hub-action {
+    flex: 1;
   }
 }

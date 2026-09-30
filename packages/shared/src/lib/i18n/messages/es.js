@@ -322,7 +322,6 @@ export default {
       "label": "Mazos",
       "deck": "Mazo",
       "tags": "Etiquetas",
-      "words": "Palabras",
       "actions": "Acciones",
       "empty": "No hay mazos. Crea uno o importa un archivo de mazo.",
       "allTags": "Ver todas las etiquetas de {name}",
@@ -550,13 +549,9 @@ export default {
     "unknownDate": "Fecha desconocida",
     "untitled": "Mazo sin título",
     "copyLink": "Copiar enlace público",
-    "added": "Añadido el {date}",
-    "downloads": "Descargas",
-    "updated": "Actualizado",
-    "package": "Archivo",
     "importing": "Importando…",
     "import": "Añadir a mis mazos",
-    "searchPlaceholder": "Buscar mazos por título",
+    "searchPlaceholder": "Buscar por nombre o descripción",
     "loading": "Cargando mazos de la comunidad…",
     "status": {
       "nothingNew": {
@@ -588,7 +583,12 @@ export default {
       "other": "{count} palabras",
       "many": "{count} palabras"
     },
-    "loadingWords": "Cargando las palabras…"
+    "loadingWords": "Cargando las palabras…",
+    "add": "Añadir",
+    "addNamed": "Añadir «{name}» a mis mazos",
+    "inLibrary": "En mis mazos",
+    "openInLibrary": "Abrir «{name}» en mis mazos",
+    "updatedOn": "actualizado el {date}"
   },
   "progress": {
     "stages": {

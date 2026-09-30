@@ -312,7 +312,6 @@ export default {
       "label": "デッキ",
       "deck": "デッキ",
       "tags": "タグ",
-      "words": "単語数",
       "actions": "操作",
       "empty": "デッキがありません。作成するか、デッキファイルを読み込んでください。",
       "allTags": "{name}のタグをすべて表示",
@@ -526,13 +525,9 @@ export default {
     "unknownDate": "日付不明",
     "untitled": "無題のデッキ",
     "copyLink": "公開リンクをコピー",
-    "added": "追加日 {date}",
-    "downloads": "ダウンロード数",
-    "updated": "更新日",
-    "package": "ファイル",
     "importing": "読み込み中…",
     "import": "マイデッキに追加",
-    "searchPlaceholder": "タイトルでデッキを検索",
+    "searchPlaceholder": "名前または説明で検索",
     "loading": "コミュニティのデッキを読み込み中…",
     "status": {
       "nothingNew": {
@@ -560,7 +555,12 @@ export default {
     "wordsCount": {
       "other": "{count}語"
     },
-    "loadingWords": "単語を読み込み中…"
+    "loadingWords": "単語を読み込み中…",
+    "add": "追加",
+    "addNamed": "「{name}」をマイデッキに追加",
+    "inLibrary": "マイデッキにあります",
+    "openInLibrary": "マイデッキの「{name}」を開く",
+    "updatedOn": "{date}更新"
   },
   "progress": {
     "stages": {

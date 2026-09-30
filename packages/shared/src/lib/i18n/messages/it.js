@@ -322,7 +322,6 @@ export default {
       "label": "Mazzi",
       "deck": "Mazzo",
       "tags": "Tag",
-      "words": "Parole",
       "actions": "Azioni",
       "empty": "Nessun mazzo. Creane uno o importa un file di mazzo.",
       "allTags": "Mostra tutti i tag di {name}",
@@ -550,13 +549,9 @@ export default {
     "unknownDate": "Data sconosciuta",
     "untitled": "Mazzo senza titolo",
     "copyLink": "Copia link pubblico",
-    "added": "Aggiunto il {date}",
-    "downloads": "Download",
-    "updated": "Aggiornato",
-    "package": "File",
     "importing": "Importazione…",
     "import": "Aggiungi ai miei mazzi",
-    "searchPlaceholder": "Cerca mazzi per titolo",
+    "searchPlaceholder": "Cerca per nome o descrizione",
     "loading": "Caricamento dei mazzi della community…",
     "status": {
       "nothingNew": {
@@ -588,7 +583,12 @@ export default {
       "other": "{count} parole",
       "many": "{count} parole"
     },
-    "loadingWords": "Caricamento delle parole…"
+    "loadingWords": "Caricamento delle parole…",
+    "add": "Aggiungi",
+    "addNamed": "Aggiungi «{name}» ai miei mazzi",
+    "inLibrary": "Nei miei mazzi",
+    "openInLibrary": "Apri «{name}» nei miei mazzi",
+    "updatedOn": "aggiornato il {date}"
   },
   "progress": {
     "stages": {

@@ -229,7 +229,7 @@ describe("useBrowseDecksPanel", () => {
       await waitFor(() => {
         expect(hubRepository.listDecks).toHaveBeenLastCalledWith({
           page: 1,
-          pageSize: 6,
+          pageSize: 12,
           search: "travel",
         });
       });

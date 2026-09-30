@@ -322,7 +322,6 @@ export default {
       "label": "Paquets",
       "deck": "Paquet",
       "tags": "Étiquettes",
-      "words": "Mots",
       "actions": "Actions",
       "empty": "Aucun paquet. Créez-en un ou importez un fichier de paquet.",
       "allTags": "Voir toutes les étiquettes de {name}",
@@ -550,13 +549,9 @@ export default {
     "unknownDate": "Date inconnue",
     "untitled": "Paquet sans titre",
     "copyLink": "Copier le lien public",
-    "added": "Ajouté le {date}",
-    "downloads": "Téléchargements",
-    "updated": "Mis à jour",
-    "package": "Fichier",
     "importing": "Importation…",
     "import": "Ajouter à mes paquets",
-    "searchPlaceholder": "Rechercher des paquets par titre",
+    "searchPlaceholder": "Rechercher par nom ou description",
     "loading": "Chargement des paquets de la communauté…",
     "status": {
       "nothingNew": {
@@ -588,7 +583,12 @@ export default {
       "other": "{count} mots",
       "many": "{count} mots"
     },
-    "loadingWords": "Chargement des mots…"
+    "loadingWords": "Chargement des mots…",
+    "add": "Ajouter",
+    "addNamed": "Ajouter « {name} » à mes decks",
+    "inLibrary": "Dans mes decks",
+    "openInLibrary": "Ouvrir « {name} » dans mes decks",
+    "updatedOn": "mis à jour le {date}"
   },
   "progress": {
     "stages": {

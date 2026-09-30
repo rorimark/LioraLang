@@ -327,7 +327,6 @@ export default {
       "label": "Колоды",
       "deck": "Колода",
       "tags": "Теги",
-      "words": "Слова",
       "actions": "Действия",
       "empty": "Колоды не найдены. Создайте колоду или импортируйте файл.",
       "allTags": "Все теги колоды {name}",
@@ -562,13 +561,9 @@ export default {
     "unknownDate": "Дата неизвестна",
     "untitled": "Колода без названия",
     "copyLink": "Скопировать публичную ссылку",
-    "added": "Добавлена {date}",
-    "downloads": "Загрузки",
-    "updated": "Обновлена",
-    "package": "Файл",
     "importing": "Импортируем…",
     "import": "Добавить в мои колоды",
-    "searchPlaceholder": "Поиск колод по названию",
+    "searchPlaceholder": "Поиск по названию или описанию",
     "loading": "Загружаем колоды сообщества…",
     "status": {
       "nothingNew": {
@@ -602,7 +597,12 @@ export default {
       "many": "{count} слов",
       "other": "{count} слов"
     },
-    "loadingWords": "Загружаем слова…"
+    "loadingWords": "Загружаем слова…",
+    "add": "Добавить",
+    "addNamed": "Добавить «{name}» в мои колоды",
+    "inLibrary": "В моих колодах",
+    "openInLibrary": "Открыть «{name}» в моих колодах",
+    "updatedOn": "обновлена {date}"
   },
   "progress": {
     "stages": {

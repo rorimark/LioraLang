@@ -327,7 +327,6 @@ export default {
       "label": "Talie",
       "deck": "Talia",
       "tags": "Tagi",
-      "words": "Słowa",
       "actions": "Działania",
       "empty": "Nie znaleziono talii. Utwórz talię lub zaimportuj plik.",
       "allTags": "Pokaż wszystkie tagi talii {name}",
@@ -562,13 +561,9 @@ export default {
     "unknownDate": "Data nieznana",
     "untitled": "Talia bez nazwy",
     "copyLink": "Kopiuj publiczny link",
-    "added": "Dodano {date}",
-    "downloads": "Pobrania",
-    "updated": "Zaktualizowano",
-    "package": "Plik",
     "importing": "Importujemy…",
     "import": "Dodaj do moich talii",
-    "searchPlaceholder": "Szukaj talii po nazwie",
+    "searchPlaceholder": "Szukaj po nazwie lub opisie",
     "loading": "Ładujemy talie społeczności…",
     "status": {
       "nothingNew": {
@@ -602,7 +597,12 @@ export default {
       "many": "{count} słów",
       "other": "{count} słów"
     },
-    "loadingWords": "Ładujemy słowa…"
+    "loadingWords": "Ładujemy słowa…",
+    "add": "Dodaj",
+    "addNamed": "Dodaj „{name}” do moich talii",
+    "inLibrary": "W moich taliach",
+    "openInLibrary": "Otwórz „{name}” w moich taliach",
+    "updatedOn": "zaktualizowano {date}"
   },
   "progress": {
     "stages": {

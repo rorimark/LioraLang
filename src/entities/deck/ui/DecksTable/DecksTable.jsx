@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import {
-  FiArrowRight,
   FiDownload,
   FiEdit3,
   FiFolder,
@@ -10,6 +9,7 @@ import {
 } from "react-icons/fi";
 import { Button } from "@shared/ui";
 import { DeckTagBadges } from "../DeckTagBadges/DeckTagBadges";
+import { DeckLanguagePair } from "../DeckLanguagePair/DeckLanguagePair";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
 import "./DecksTable.css";
 import { useI18n } from "@shared/lib/i18n";
@@ -69,26 +69,6 @@ const buildDeckTags = (deck) => {
       return true;
     })
     .map((tag) => ({ key: `tag-${tag}`, text: tag, accent: false }));
-};
-
-// "Polish → English", and a third language after a plus.
-const DeckLanguages = ({ deck, languageName }) => {
-  const source = String(deck?.sourceLanguage || "").trim();
-  const target = String(deck?.targetLanguage || "").trim();
-  const third = String(deck?.tertiaryLanguage || "").trim();
-
-  if (!source && !target) {
-    return null;
-  }
-
-  return (
-    <span className="deck-row__langs">
-      {source ? languageName(source) : "—"}
-      <FiArrowRight aria-hidden="true" />
-      {target ? languageName(target) : "—"}
-      {third && third !== source && third !== target ? <span> + {languageName(third)}</span> : null}
-    </span>
-  );
 };
 
 const DeckMenu = ({ deck, isOpen, pendingState, onToggle, onAction, stop }) => {
@@ -190,7 +170,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
   const progressByDeck = table.progress || EMPTY_OBJECT;
   const listRef = useRef(null);
   const [openMenuDeckId, setOpenMenuDeckId] = useState(null);
-  const { t, languageName, formatNumber } = useI18n();
+  const { t, formatNumber } = useI18n();
 
   useDeckTagsPopover(listRef);
 
@@ -301,7 +281,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
             >
               <div className="deck-row__main">
                 <strong className="deck-row__name">{deck.name}</strong>
-                <DeckLanguages deck={deck} languageName={languageName} />
+                <DeckLanguagePair source={deck.sourceLanguage} targets={[deck.targetLanguage, deck.tertiaryLanguage]} />
               </div>
 
               <div className="deck-row__tags">

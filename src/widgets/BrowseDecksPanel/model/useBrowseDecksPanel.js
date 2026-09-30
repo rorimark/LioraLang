@@ -7,7 +7,8 @@ import { copyTextToClipboard } from "@shared/lib/clipboard";
 import { buildPublicDeckShareUrl } from "@shared/lib/share";
 import { useI18n } from "@shared/lib/i18n";
 
-const BROWSE_PAGE_SIZE = 6;
+// Twelve fills two, three or four columns without a gap.
+const BROWSE_PAGE_SIZE = 12;
 const SEARCH_DEBOUNCE_MS = 280;
 
 const toVariant = (value) => {

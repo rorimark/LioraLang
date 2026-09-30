@@ -317,7 +317,6 @@ export default {
       "label": "Decks",
       "deck": "Deck",
       "tags": "Tags",
-      "words": "Wörter",
       "actions": "Aktionen",
       "empty": "Keine Decks gefunden. Erstelle eins oder importiere eine Deck-Datei.",
       "allTags": "Alle Tags von {name} zeigen",
@@ -538,13 +537,9 @@ export default {
     "unknownDate": "Datum unbekannt",
     "untitled": "Deck ohne Titel",
     "copyLink": "Öffentlichen Link kopieren",
-    "added": "Hinzugefügt am {date}",
-    "downloads": "Downloads",
-    "updated": "Aktualisiert",
-    "package": "Datei",
     "importing": "Wird importiert…",
     "import": "Zu meinen Decks",
-    "searchPlaceholder": "Decks nach Titel suchen",
+    "searchPlaceholder": "Nach Name oder Beschreibung suchen",
     "loading": "Community-Decks werden geladen…",
     "status": {
       "nothingNew": {
@@ -574,7 +569,12 @@ export default {
       "one": "{count} Wort",
       "other": "{count} Wörter"
     },
-    "loadingWords": "Wörter werden geladen…"
+    "loadingWords": "Wörter werden geladen…",
+    "add": "Hinzufügen",
+    "addNamed": "{name} zu meinen Decks hinzufügen",
+    "inLibrary": "In meinen Decks",
+    "openInLibrary": "{name} in meinen Decks öffnen",
+    "updatedOn": "aktualisiert am {date}"
   },
   "progress": {
     "stages": {

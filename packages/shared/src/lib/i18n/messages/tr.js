@@ -317,7 +317,6 @@ export default {
       "label": "Desteler",
       "deck": "Deste",
       "tags": "Etiketler",
-      "words": "Kelimeler",
       "actions": "İşlemler",
       "empty": "Deste bulunamadı. Bir tane oluştur ya da deste dosyası içe aktar.",
       "allTags": "{name} için tüm etiketleri göster",
@@ -538,13 +537,9 @@ export default {
     "unknownDate": "Tarih bilinmiyor",
     "untitled": "Adsız deste",
     "copyLink": "Herkese açık bağlantıyı kopyala",
-    "added": "Eklenme: {date}",
-    "downloads": "İndirmeler",
-    "updated": "Güncellendi",
-    "package": "Dosya",
     "importing": "İçe aktarılıyor…",
     "import": "Destelerime ekle",
-    "searchPlaceholder": "Desteleri başlığa göre ara",
+    "searchPlaceholder": "Ada veya açıklamaya göre ara",
     "loading": "Topluluk desteleri yükleniyor…",
     "status": {
       "nothingNew": {
@@ -574,7 +569,12 @@ export default {
       "one": "{count} kelime",
       "other": "{count} kelime"
     },
-    "loadingWords": "Kelimeler yükleniyor…"
+    "loadingWords": "Kelimeler yükleniyor…",
+    "add": "Ekle",
+    "addNamed": "{name} destesini destelerime ekle",
+    "inLibrary": "Destelerimde",
+    "openInLibrary": "{name} destesini destelerimde aç",
+    "updatedOn": "güncellendi: {date}"
   },
   "progress": {
     "stages": {

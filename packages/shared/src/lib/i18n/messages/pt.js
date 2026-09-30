@@ -322,7 +322,6 @@ export default {
       "label": "Baralhos",
       "deck": "Baralho",
       "tags": "Etiquetas",
-      "words": "Palavras",
       "actions": "Ações",
       "empty": "Nenhum baralho. Crie um ou importe um arquivo de baralho.",
       "allTags": "Ver todas as etiquetas de {name}",
@@ -550,13 +549,9 @@ export default {
     "unknownDate": "Data desconhecida",
     "untitled": "Baralho sem título",
     "copyLink": "Copiar link público",
-    "added": "Adicionado em {date}",
-    "downloads": "Downloads",
-    "updated": "Atualizado",
-    "package": "Arquivo",
     "importing": "Importando…",
     "import": "Adicionar aos meus baralhos",
-    "searchPlaceholder": "Pesquisar baralhos pelo título",
+    "searchPlaceholder": "Pesquisar por nome ou descrição",
     "loading": "Carregando baralhos da comunidade…",
     "status": {
       "nothingNew": {
@@ -588,7 +583,12 @@ export default {
       "other": "{count} palavras",
       "many": "{count} palavras"
     },
-    "loadingWords": "Carregando as palavras…"
+    "loadingWords": "Carregando as palavras…",
+    "add": "Adicionar",
+    "addNamed": "Adicionar “{name}” aos meus baralhos",
+    "inLibrary": "Nos meus baralhos",
+    "openInLibrary": "Abrir “{name}” nos meus baralhos",
+    "updatedOn": "atualizado em {date}"
   },
   "progress": {
     "stages": {
