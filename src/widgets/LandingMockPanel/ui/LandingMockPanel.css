@@ -151,6 +151,19 @@
   color: var(--lp-blue-edge);
 }
 
+/* A label never runs out of its key: on a narrow screen the letters sit
+   closer, and a label that still does not fit wraps onto a second line. */
+@media (max-width: 420px) {
+  .lp-btn {
+    padding-inline: 18px;
+    letter-spacing: 0.03em;
+    white-space: normal;
+    text-align: center;
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+}
+
 .lp-btn--sm {
   min-height: 42px;
   padding: 0 18px;
@@ -877,7 +890,10 @@
 .lp-chart {
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
-  align-items: end;
+  /* Columns line up at the top: every bar then stands on the same line,
+     and a day label that takes two lines hangs below without lifting its
+     bar above the others. */
+  align-items: start;
   gap: 8px;
   padding: 0;
   list-style: none;

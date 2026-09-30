@@ -1618,7 +1618,7 @@ export default {
       "title": "L'app de cartes qui sait quand vous allez **oublier.**",
       "text": "Notez chaque mot, et LioraLang le ramène juste avant qu'il ne vous échappe. Gratuit, et vos cartes restent sur votre appareil.",
       "start": "Commencer",
-      "download": "Télécharger pour ordinateur"
+      "download": "Version ordinateur"
     },
     "langs": {
       "label": {

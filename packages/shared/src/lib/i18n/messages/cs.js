@@ -1611,7 +1611,7 @@ export default {
       "description": "Přestaňte zapomínat slova po jednom opakování. Vytvářejte balíčky, učte se metodou opakování v rozestupech a používejte LioraLang v prohlížeči, na počítači nebo na ploše telefonu."
     },
     "topbar": {
-      "open": "Otevřít webovou aplikaci",
+      "open": "Otevřít aplikaci",
       "language": "Jazyk"
     },
     "hero": {

@@ -1618,7 +1618,7 @@ export default {
       "title": "La app de tarjetas que sabe cuándo vas a **olvidar.**",
       "text": "Califica cada palabra y LioraLang te la devuelve justo antes de que se te escape. Gratis, y tus tarjetas se quedan en tu dispositivo.",
       "start": "Empezar a aprender",
-      "download": "Descargar para escritorio"
+      "download": "Versión de escritorio"
     },
     "langs": {
       "label": {

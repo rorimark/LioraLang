@@ -1536,7 +1536,7 @@ export default {
       "description": "Kelimeleri tek bir tekrardan sonra unutmayı bırakın. Desteler oluşturun, aralıklı tekrarla çalışın ve LioraLang'i tarayıcıda, bilgisayarda ya da telefonun ana ekranında kullanın."
     },
     "topbar": {
-      "open": "Web uygulamasını aç",
+      "open": "Uygulamayı aç",
       "language": "Dil"
     },
     "hero": {

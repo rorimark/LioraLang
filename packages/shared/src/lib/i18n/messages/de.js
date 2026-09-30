@@ -1543,7 +1543,7 @@ export default {
       "title": "Die Karteikarten-App, die weiß, wann du **vergisst.**",
       "text": "Bewerte jedes Wort, und LioraLang holt es zurück, kurz bevor es dir entgleitet. Kostenlos, und deine Karten bleiben auf deinem Gerät.",
       "start": "Jetzt lernen",
-      "download": "Für den Computer herunterladen"
+      "download": "Desktop-Version"
     },
     "langs": {
       "label": {
