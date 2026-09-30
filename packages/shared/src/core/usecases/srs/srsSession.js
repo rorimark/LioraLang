@@ -63,6 +63,7 @@ export const toSessionCard = ({
     srsSettings,
     studySettings,
     nowMs,
+    seed: Number(word.id),
   }),
 });
 const uniqueWords = (logs) =>

@@ -66,7 +66,8 @@ export const getSrsSessionSnapshot = ({
   const cards = db
     .prepare(
       `SELECT word_id AS wordId, state, learning_step AS learningStep, due_at AS dueAt,
-    interval_days AS intervalDays, ease_factor AS easeFactor, reps, lapses FROM review_cards
+    interval_days AS intervalDays, ease_factor AS easeFactor, reps, lapses,
+    stability, difficulty, last_reviewed_at AS lastReviewedAt FROM review_cards
     WHERE profile_scope = ? AND word_id IN (SELECT id FROM words WHERE deck_id = ?)`,
     )
     .all(scope, id);
@@ -165,7 +166,10 @@ export const gradeSrsCard = ({
             interval_days AS intervalDays,
             ease_factor AS easeFactor,
           reps,
-          lapses
+          lapses,
+          stability,
+          difficulty,
+          last_reviewed_at AS lastReviewedAt
           FROM review_cards
           WHERE word_id = ?
         `,
@@ -184,6 +188,7 @@ export const gradeSrsCard = ({
       srsSettings,
       studySettings: studySessionSettings,
       nowMs: now.getTime(),
+      seed: numericWordId,
     });
 
     db.prepare(
@@ -198,8 +203,10 @@ export const gradeSrsCard = ({
           reps,
           lapses,
           last_reviewed_at,
-          profile_scope
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          profile_scope,
+          stability,
+          difficulty
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(word_id) DO UPDATE SET
           state = excluded.state,
           learning_step = excluded.learning_step,
@@ -209,7 +216,9 @@ export const gradeSrsCard = ({
           reps = excluded.reps,
           lapses = excluded.lapses,
           last_reviewed_at = excluded.last_reviewed_at,
-          profile_scope = excluded.profile_scope
+          profile_scope = excluded.profile_scope,
+          stability = excluded.stability,
+          difficulty = excluded.difficulty
       `,
     ).run(
       numericWordId,
@@ -222,6 +231,8 @@ export const gradeSrsCard = ({
       outcome.lapses,
       nowIso,
       normalizedProfileScope,
+      outcome.stability,
+      outcome.difficulty,
     );
 
     db.prepare(

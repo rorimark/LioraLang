@@ -279,6 +279,7 @@ export const createWebSrsRepository = () => {
           srsSettings,
           studySettings,
           nowMs,
+          seed: wordId,
         });
 
         reviewCardsStore.put({
@@ -292,6 +293,9 @@ export const createWebSrsRepository = () => {
           easeFactor: nextCard.easeFactor,
           reps: nextCard.reps,
           lapses: nextCard.lapses,
+          stability: nextCard.stability,
+          difficulty: nextCard.difficulty,
+          lastReviewedAtMs: nextCard.lastReviewedAtMs,
           profileScope,
           createdAtMs: Number(existingCard?.createdAtMs) || nowMs,
           updatedAtMs: nowMs,

@@ -102,6 +102,11 @@ const toReplayCardRecord = (logRecord, profileScope) => {
     easeFactor: Number(nextCard?.easeFactor) || 2.5,
     reps: toPositiveInteger(nextCard?.reps, 0),
     lapses: toPositiveInteger(nextCard?.lapses, 0),
+    // FSRS memory; an answer from an older app version has none, and the
+    // scheduler then works it out from the interval and ease.
+    stability: Number.isFinite(Number(nextCard?.stability)) && nextCard?.stability !== null ? Number(nextCard.stability) : null,
+    difficulty: Number.isFinite(Number(nextCard?.difficulty)) && nextCard?.difficulty !== null ? Number(nextCard.difficulty) : null,
+    lastReviewedAtMs: reviewedAtMs,
     lastReviewedAt: toCleanString(logRecord?.reviewedAt) || toIsoTimestamp(reviewedAtMs),
     profileScope,
     createdAtMs: toPositiveInteger(logRecord?.createdAtMs, reviewedAtMs),

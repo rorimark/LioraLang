@@ -6,10 +6,12 @@ describe("buildReviewTimeline", () => {
     const timeline = buildReviewTimeline();
 
     expect(timeline.reviews).toBe(6);
-    expect(timeline.points.map((point) => point.gapLabel)).toEqual(["3d", "8d", "20d", "50d", "125d", "313d"]);
-    expect(timeline.points.at(-1).day).toBe(519);
-    expect(timeline.firstGaps).toEqual([3, 8, 20]);
-    expect(timeline.span).toEqual({ unit: "months", count: 17 });
+    // FSRS: fast at first, slower as the memory settles, and never past the
+    // year-long longest gap.
+    expect(timeline.points.map((point) => point.gapLabel)).toEqual(["3d", "11d", "35d", "101d", "269d", "365d"]);
+    expect(timeline.points.at(-1).day).toBe(784);
+    expect(timeline.firstGaps).toEqual([3, 11, 35]);
+    expect(timeline.span).toEqual({ unit: "years", count: 2 });
   });
 
   it("scales each bar by its gap, with the longest gap at full height", () => {

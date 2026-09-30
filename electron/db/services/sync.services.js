@@ -115,6 +115,9 @@ const toReplayCardRecord = (logRow, profileScope) => {
     easeFactor: Number(nextCard.easeFactor) || 2.5,
     reps: toPositiveInteger(nextCard.reps, 0),
     lapses: toPositiveInteger(nextCard.lapses, 0),
+    // FSRS memory; an answer from an older app version has none.
+    stability: Number.isFinite(Number(nextCard.stability)) && nextCard.stability !== null ? Number(nextCard.stability) : null,
+    difficulty: Number.isFinite(Number(nextCard.difficulty)) && nextCard.difficulty !== null ? Number(nextCard.difficulty) : null,
     lastReviewedAt: toCleanString(logRow?.reviewed_at) || toIsoTimestamp(),
     profileScope,
   };
@@ -203,8 +206,10 @@ export const activateProgressProfile = (
           reps,
           lapses,
           last_reviewed_at,
-          profile_scope
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          profile_scope,
+          stability,
+          difficulty
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
     );
 
@@ -220,6 +225,8 @@ export const activateProgressProfile = (
         card.lapses,
         card.lastReviewedAt,
         card.profileScope,
+        card.stability,
+        card.difficulty,
       );
     });
 

@@ -8,6 +8,7 @@ import {
   resolveScheduleOutcome,
   getCardRevision,
   assertGradeAllowed,
+  formatRelativeInterval,
 } from "./srsEngine.js";
 
 const NOW = Date.UTC(2026, 8, 28, 12);
@@ -105,7 +106,7 @@ describe("learning and relearning", () => {
       again: "10m",
       hard: "1d",
       good: "3d",
-      easy: "7d",
+      easy: "16d",
     });
     expect(grade({}, "good")).toMatchObject({
       state: "review",
@@ -130,10 +131,12 @@ describe("learning and relearning", () => {
       nowMs: learning.dueAtMs,
       srsSettings,
     });
+    // A second Good on the same day strengthens the memory a little, so
+    // the first review comes a day later than after a single Good.
     expect(graduated).toMatchObject({
       state: "review",
-      intervalDays: 3,
-      dueAtMs: learning.dueAtMs + 3 * DAY,
+      intervalDays: 4,
+      dueAtMs: learning.dueAtMs + 4 * DAY,
       reps: 2,
     });
     const next = grade(graduated, "good", { nowMs: graduated.dueAtMs });
@@ -192,38 +195,48 @@ describe("learning and relearning", () => {
     expect(good.dueAtMs).toBeGreaterThan(hard.dueAtMs);
     expect(grade(card, "good").state).toBe("review");
   });
-  it("Easy graduates immediately from any learning step", () => {
-    for (const state of ["new", "learning", "relearning"])
-      expect(grade({ state }, "easy")).toMatchObject({
-        state: "review",
-        intervalDays: 7,
-      });
+  it("Easy graduates immediately from any learning step, past Good", () => {
+    for (const state of ["new", "learning", "relearning"]) {
+      const easy = grade({ state }, "easy");
+      expect(easy.state).toBe("review");
+      expect(easy.intervalDays).toBeGreaterThan(grade({ state }, "good").intervalDays || 0);
+    }
+    expect(grade({}, "easy").intervalDays).toBe(16);
   });
 });
 
 describe("review scheduling", () => {
-  it("orders Hard < Good < Easy and grows even one-day intervals", () => {
-    for (const intervalDays of [1, 2, 10, 100]) {
-      const card = { ...review, intervalDays, easeFactor: 1.3 };
-      const hard = grade(card, "hard").intervalDays;
-      const good = grade(card, "good").intervalDays;
-      const easy = grade(card, "easy").intervalDays;
-      expect(hard).toBeGreaterThan(intervalDays);
-      expect(good).toBeGreaterThan(hard);
-      expect(easy).toBeGreaterThan(good);
-    }
+  it("orders Hard < Good < Easy, and Hard never shortens a wait", () => {
+    for (const easeFactor of [1.3, 2.5])
+      for (const intervalDays of [1, 2, 10, 100]) {
+        const card = { ...review, intervalDays, easeFactor };
+        const hard = grade(card, "hard").intervalDays;
+        const good = grade(card, "good").intervalDays;
+        const easy = grade(card, "easy").intervalDays;
+        expect(hard).toBeGreaterThanOrEqual(Math.min(intervalDays, 365));
+        expect(good).toBeGreaterThan(hard);
+        if (good < 365) expect(easy).toBeGreaterThan(good);
+      }
   });
-  it("accounts for successful overdue recall but does not reward a lapse", () => {
+  it("lets a word answered Hard every time grow slowly instead of sticking", () => {
+    let card = { ...review, intervalDays: 1, easeFactor: 1.3 };
+    let now = NOW;
+    for (let i = 0; i < 15; i += 1) {
+      card = grade(card, "hard", { nowMs: now });
+      now = card.dueAtMs;
+    }
+    expect(card.intervalDays).toBeGreaterThan(3);
+  });
+  it("rewards recall after a long gap, and a lapse never outlasts the old wait", () => {
     const overdue = { ...review, dueAtMs: NOW - 10 * DAY };
     expect(grade(overdue, "good").intervalDays).toBeGreaterThan(
       grade(review, "good").intervalDays,
     );
-    expect(grade(overdue, "again").intervalDays).toBe(
-      grade(review, "again").intervalDays,
-    );
-    expect(grade(overdue, "hard").intervalDays).toBe(
-      grade(review, "hard").intervalDays,
-    );
+    for (const card of [review, overdue]) {
+      const lapse = grade(card, "again");
+      expect(lapse.intervalDays).toBeLessThanOrEqual(card.intervalDays);
+      expect(lapse.stability).toBeLessThanOrEqual(10);
+    }
   });
   it("caps long intervals and always schedules a finite future date", () => {
     for (const state of ["new", "learning", "review", "relearning"]) {
@@ -238,14 +251,20 @@ describe("review scheduling", () => {
   it("rejects invalid ratings", () =>
     expect(() => grade({}, "oops")).toThrow("Unsupported SRS rating"));
   it("uses exactly the same schedule for previews and writes", () => {
-    const previews = buildRatingPreview({ card: review, nowMs: NOW });
-    expect(previews).toEqual({
+    for (const seed of [undefined, 1, 42, 9001]) {
+      const previews = buildRatingPreview({ card: review, nowMs: NOW, seed });
+      for (const rating of ["again", "hard", "good", "easy"])
+        expect(previews[rating]).toBe(
+          formatRelativeInterval(grade(review, rating, { seed }).dueAtMs, NOW),
+        );
+    }
+    // Without fuzz, a ten-day SM-2 card at ease 2.5 keeps the pace it had.
+    expect(buildRatingPreview({ card: review, nowMs: NOW })).toEqual({
       again: "10m",
-      hard: "12d",
+      hard: "13d",
       good: "25d",
-      easy: "33d",
+      easy: "55d",
     });
-    expect(grade(review, "good").dueAtMs).toBe(NOW + 25 * DAY);
   });
 });
 
@@ -395,5 +414,62 @@ describe("stale-answer protection", () => {
     expect(
       normalizeStudySettings({ shuffleMode: "always", shuffleSeed: 99 }),
     ).toMatchObject({ shuffleMode: "always", shuffleSeed: null });
+  });
+});
+
+describe("FSRS memory", () => {
+  it("stores a memory on the card and reads it back unchanged", () => {
+    const learned = grade({}, "good");
+    expect(learned.stability).toBeCloseTo(3.173, 3);
+    expect(learned.difficulty).toBeCloseTo(5.2824, 3);
+    expect(learned.lastReviewedAtMs).toBe(NOW);
+    expect(normalizeReviewCard(learned)).toMatchObject({
+      stability: learned.stability,
+      difficulty: learned.difficulty,
+      lastReviewedAtMs: NOW,
+    });
+    expect(getCardRevision(learned)).toBe(getCardRevision(normalizeReviewCard(learned)));
+  });
+  it("gives a card from before FSRS a memory from its interval and ease", () => {
+    const next = grade(review, "good");
+    expect(next.stability).toBeGreaterThan(10);
+    expect(next.difficulty).toBeGreaterThanOrEqual(1);
+    expect(next.difficulty).toBeLessThanOrEqual(10);
+    // A hard-won old card (low ease) grows more slowly than an easy one.
+    expect(grade({ ...review, easeFactor: 1.3 }, "good").intervalDays).toBeLessThan(next.intervalDays);
+  });
+  it("grows fast at first and more slowly as the memory settles", () => {
+    let card = {};
+    let now = NOW;
+    const gaps = [];
+    for (let i = 0; i < 5; i += 1) {
+      card = grade(card, "good", { nowMs: now });
+      gaps.push(card.intervalDays);
+      now = card.dueAtMs;
+    }
+    expect(gaps).toEqual([3, 11, 35, 101, 269]);
+    const ratios = gaps.slice(1).map((gap, index) => gap / gaps[index]);
+    ratios.slice(1).forEach((ratio, index) => expect(ratio).toBeLessThan(ratios[index]));
+  });
+  it("never waits past the longest gap", () => {
+    const old = { ...review, intervalDays: 3000, dueAtMs: NOW };
+    expect(grade(old, "easy").intervalDays).toBe(365);
+    expect(grade(old, "good", { srsSettings: { maximumIntervalDays: 30 } }).intervalDays).toBe(30);
+    expect(normalizeSrsSettings({ maximumIntervalDays: 36500 }).maximumIntervalDays).toBe(36500);
+  });
+  it("asks for more reviews when a higher share must be remembered", () => {
+    const at = (desiredRetention) =>
+      grade(review, "good", { srsSettings: { desiredRetention } }).intervalDays;
+    expect(at(95)).toBeLessThan(at(90));
+    expect(at(90)).toBeLessThan(at(80));
+    expect(normalizeSrsSettings({ desiredRetention: 99 }).desiredRetention).toBe(0.97);
+  });
+  it("spreads words with the same history over nearby days, the same way every time", () => {
+    const days = new Set(
+      Array.from({ length: 40 }, (_, id) => grade(review, "good", { seed: id + 1 }).intervalDays),
+    );
+    expect(days.size).toBeGreaterThan(2);
+    for (const day of days) expect(Math.abs(day - 25)).toBeLessThanOrEqual(3);
+    expect(grade(review, "good", { seed: 7 }).dueAtMs).toBe(grade(review, "good", { seed: 7 }).dueAtMs);
   });
 });

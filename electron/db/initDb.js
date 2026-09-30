@@ -136,6 +136,9 @@ export const initDb = () => {
   ensureColumn(db, "review_cards", "state", "TEXT DEFAULT 'new'");
   ensureColumn(db, "review_cards", "learning_step", "INTEGER DEFAULT 0");
   ensureColumn(db, "review_cards", "profile_scope", "TEXT DEFAULT 'guest:default'");
+  // FSRS memory state; empty for cards scheduled before FSRS.
+  ensureColumn(db, "review_cards", "stability", "REAL");
+  ensureColumn(db, "review_cards", "difficulty", "REAL");
   ensureColumn(db, "review_logs", "profile_scope", "TEXT DEFAULT 'guest:default'");
   ensureColumn(db, "review_logs", "op_id", "TEXT");
   ensureColumn(db, "review_logs", "device_id", "TEXT");

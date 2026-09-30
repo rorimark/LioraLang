@@ -7,6 +7,7 @@ import {
 } from "@shared/platform/web/db";
 import { createWebDeckRepository } from "./createWebDeckRepository.js";
 import { createWebSrsRepository } from "./createWebSrsRepository.js";
+import { createWebSyncLocalRepository } from "./createWebSyncLocalRepository.js";
 
 vi.mock("@shared/api", () => ({
   getCurrentSupabaseAuthUser: vi.fn(async () => null),
@@ -85,13 +86,39 @@ describe("web SRS persistence", () => {
       answersToday: 3,
     });
     const cards = await readAll(WEB_DB_STORES.reviewCards);
-    expect(
-      cards.find((card) => card.wordId === first.card.wordId),
-    ).toMatchObject({ state: "review", intervalDays: 3, reps: 2 });
+    const learned = cards.find((card) => card.wordId === first.card.wordId);
+    expect(learned).toMatchObject({ state: "review", reps: 2 });
+    // Two Goods on one day: about four days, spread a little per word.
+    expect(learned.intervalDays).toBeGreaterThanOrEqual(3);
+    expect(learned.intervalDays).toBeLessThanOrEqual(6);
+    // The FSRS memory is stored with the card.
+    expect(learned.stability).toBeGreaterThan(3);
+    expect(learned.difficulty).toBeGreaterThanOrEqual(1);
+    expect(learned.lastReviewedAtMs).toBe(now);
     const logs = await readAll(WEB_DB_STORES.reviewLogs);
     expect(logs).toHaveLength(3);
     expect(logs[2].payload.nextCard.state).toBe("review");
     expect(logs[2].syncStatus).toBe("pending");
+  });
+  it("keeps the FSRS memory when cards are rebuilt from the review log", async () => {
+    const first = await repository.getSrsSession(deckId, settings);
+    await repository.gradeSrsCard(ratePayload(first, "easy"));
+    const [graded] = (await readAll(WEB_DB_STORES.reviewCards)).filter(
+      (card) => card.wordId === first.card.wordId,
+    );
+    expect(graded.stability).toBeGreaterThan(10);
+
+    // Sync and profile switches rebuild cards from the log's last answer.
+    await createWebSyncLocalRepository().activateProfile("guest:default", { force: true });
+    const [rebuilt] = (await readAll(WEB_DB_STORES.reviewCards)).filter(
+      (card) => card.wordId === first.card.wordId,
+    );
+    expect(rebuilt).toMatchObject({
+      state: "review",
+      stability: graded.stability,
+      difficulty: graded.difficulty,
+      lastReviewedAtMs: graded.lastReviewedAtMs,
+    });
   });
   it("prevents stale duplicate writes inside the transaction", async () => {
     const first = await repository.getSrsSession(deckId, settings);
@@ -127,7 +154,13 @@ describe("web SRS persistence", () => {
       ...options,
     });
     expect(session.card).toBeNull();
-    expect(session.nextDueAt).toBe(new Date(NOW + 7 * 86400_000).toISOString());
+    // Easy on a new word: about sixteen days, spread a little per word; the
+    // session names the earlier of the two.
+    const cards = await readAll(WEB_DB_STORES.reviewCards);
+    const earliest = Math.min(...cards.map((card) => card.dueAtMs));
+    expect(session.nextDueAt).toBe(new Date(earliest).toISOString());
+    expect(earliest - NOW).toBeGreaterThanOrEqual(13 * 86400_000);
+    expect(earliest - NOW).toBeLessThanOrEqual(19 * 86400_000);
     expect(session.completionState.reason).toBe("empty-queue");
   });
 });
