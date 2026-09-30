@@ -145,6 +145,16 @@ export const normalizeAppPreferences = (value = {}) => {
         min: 0,
         max: 100,
       }),
+      desiredRetention: toNumberInRange(value?.spacedRepetition?.desiredRetention, {
+        fallback: DEFAULT_APP_PREFERENCES.spacedRepetition.desiredRetention,
+        min: 70,
+        max: 97,
+      }),
+      maximumIntervalDays: toNumberInRange(value?.spacedRepetition?.maximumIntervalDays, {
+        fallback: DEFAULT_APP_PREFERENCES.spacedRepetition.maximumIntervalDays,
+        min: 1,
+        max: 36500,
+      }),
     },
     deckDefaults: {
       sourceLanguage:

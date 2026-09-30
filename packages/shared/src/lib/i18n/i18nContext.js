@@ -27,9 +27,20 @@ export const buildI18nValue = (locale, messages) => {
     return unitFormats[unit].format(value);
   };
 
+  const longUnitFormats = {};
+  // "3 months", "1 year": a whole unit, written out.
+  const formatUnitLong = (value, unit) => {
+    if (!longUnitFormats[unit]) {
+      longUnitFormats[unit] = new Intl.NumberFormat(locale, { style: "unit", unit, unitDisplay: "long" });
+    }
+
+    return longUnitFormats[unit].format(value);
+  };
+
   return {
     locale,
     t,
+    formatUnitLong,
     // "10m", "12h", "7d" as the scheduler writes them, the language's way:
     // "10 мин", "12 Std.", "7日".
     formatInterval: (compact) => {

@@ -87,6 +87,18 @@ const EXPORT_FORMAT_OPTIONS = [
 ];
 
 // One switch row, the most common kind.
+// The longest a word may wait between reviews. A year by default: one
+// review a year keeps a known word known, for very little work.
+const MAXIMUM_INTERVAL_OPTIONS = [
+  { days: 30, count: 1, unit: "month" },
+  { days: 90, count: 3, unit: "month" },
+  { days: 180, count: 6, unit: "month" },
+  { days: 365, count: 1, unit: "year" },
+  { days: 730, count: 2, unit: "year" },
+  { days: 1825, count: 5, unit: "year" },
+  { days: 36500, count: 0, unit: "" },
+];
+
 const SwitchRow = memo(({ label, hint, keywords, name, checked, onChange }) => {
   const id = useId();
 
@@ -184,7 +196,7 @@ DisplayPreferences.displayName = "DisplayPreferences";
 
 export const LearningPreferences = memo(() => {
   const i18n = useI18n();
-  const { t } = i18n;
+  const { t, formatUnitLong } = i18n;
   const {
     appPreferences,
     handleBooleanFieldChange,
@@ -195,6 +207,7 @@ export const LearningPreferences = memo(() => {
   } = useAppPreferencesSection();
   const { studySession, spacedRepetition } = appPreferences;
   const stepsId = useId();
+  const maximumIntervalId = useId();
 
   return (
     <>
@@ -329,37 +342,40 @@ export const LearningPreferences = memo(() => {
           }
         />
         <SettingRow
-          label={t("prefs.easyBonus")}
-          hint={t("prefs.easyStretchesTheNextWait")}
-          keywords="multiplier interval"
+          label={t("prefs.desiredRetention")}
+          hint={t("prefs.desiredRetentionHint")}
+          keywords="retention recall fsrs target remember"
           control={
             <SettingStepper
-              name="spacedRepetition.easyBonus"
-              value={spacedRepetition.easyBonus}
-              min={100}
-              max={300}
-              step={5}
+              name="spacedRepetition.desiredRetention"
+              value={spacedRepetition.desiredRetention}
+              min={70}
+              max={97}
+              step={1}
               unit="%"
               onChange={handleNumberFieldChange}
-              ariaLabel={t("prefs.easyBonus")}
+              ariaLabel={t("prefs.desiredRetention")}
             />
           }
         />
         <SettingRow
-          label={t("prefs.intervalRetainedAfterForgetting")}
-          hint={t("prefs.aForgottenWordKeepsThis")}
-          keywords="forgot again interval"
+          label={t("prefs.maximumInterval")}
+          hint={t("prefs.maximumIntervalHint")}
+          keywords="maximum interval longest gap cap"
+          controlId={maximumIntervalId}
           control={
-            <SettingStepper
-              name="spacedRepetition.lapsePenalty"
-              value={spacedRepetition.lapsePenalty}
-              min={0}
-              max={100}
-              step={5}
-              unit="%"
+            <SettingSelect
+              id={maximumIntervalId}
+              name="spacedRepetition.maximumIntervalDays"
+              value={String(spacedRepetition.maximumIntervalDays)}
               onChange={handleNumberFieldChange}
-              ariaLabel={t("prefs.intervalRetainedAfterForgetting")}
-            />
+            >
+              {MAXIMUM_INTERVAL_OPTIONS.map((option) => (
+                <option key={option.days} value={String(option.days)}>
+                  {option.unit ? formatUnitLong(option.count, option.unit) : t("prefs.noLimit")}
+                </option>
+              ))}
+            </SettingSelect>
           }
         />
       </SettingGroup>

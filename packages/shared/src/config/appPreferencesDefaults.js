@@ -10,6 +10,11 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
     newCardsPerDay: 20,
     maxReviewsPerDay: 100,
     learningSteps: "10m",
+    // FSRS: the share of words to still know when they come back, and the
+    // longest a word may wait between reviews.
+    desiredRetention: 90,
+    maximumIntervalDays: 365,
+    // Read from older settings; the FSRS schedule does not use them.
     easyBonus: 130,
     lapsePenalty: 20,
   }),
