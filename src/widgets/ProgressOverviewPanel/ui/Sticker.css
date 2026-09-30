@@ -8,10 +8,12 @@
   --sticker-size: 78px;
 
   position: relative;
-  display: inline-grid;
+  display: inline-flex;
+  align-items: stretch;
   flex: none;
+  appearance: none;
   width: var(--sticker-size);
-  height: calc(var(--sticker-size) * 1.08);
+  min-height: calc(var(--sticker-size) * 1.08);
   padding: 0;
   border: 0;
   background: none;
@@ -30,7 +32,13 @@ span.sticker {
 
 .sticker__face {
   position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: calc(var(--sticker-size) * 1.08);
+  padding: 8px 4px 10px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-content: center;
   justify-items: center;
   gap: 1px;
@@ -55,8 +63,13 @@ span.sticker {
 
 .sticker__unit {
   font-size: max(0.62rem, calc(var(--sticker-size) * 0.12));
+  max-width: 100%;
   font-weight: 900;
-  white-space: nowrap;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 /* ----- earned ----- */
