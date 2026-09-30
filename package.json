@@ -109,6 +109,8 @@
       "dist/**/*",
       "electron/**/*",
       "packages/shared/**/*",
+      "!packages/shared/src/lib/i18n/messages/landing{,/**/*}",
+      "!packages/shared/src/lib/i18n/LandingI18nProvider.jsx",
       "package.json",
       "!node_modules/electron{,/**/*}",
       "!node_modules/electron-builder{,/**/*}",
