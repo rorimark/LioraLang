@@ -3,18 +3,28 @@ import path from "node:path";
 import { getDatabase } from "../db.js";
 import {
   buildExportDeckPackage,
+  collectWordImageAssetIds,
   getDeckImportMetadata,
+  parseDeckPackageMedia,
+  remapWordImages,
   normalizeWordsForImport,
   parseDeckPackageFileText,
   resolveImportConfig,
   validateImportLanguages,
-} from "./import-export.js";
+} from "../../../packages/shared/src/core/usecases/importExport/deckPackage.js";
 import {
   buildDeckContentHash,
   normalizeDeckOriginKind,
   normalizeDeckOriginRef,
   resolveDeckSyncId,
 } from "../../../packages/shared/src/core/usecases/sync/index.js";
+import { normalizeWordImage } from "../../../packages/shared/src/core/usecases/cardContent/index.js";
+import {
+  collectUnusedMedia,
+  readMediaForExport,
+  storeImportedMedia,
+  toImageJson,
+} from "./media.services.js";
 
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
 const MAX_DECK_TAGS = 10;
@@ -137,6 +147,7 @@ const buildInsertWordStatement = (db, schemaCompatibility) => {
     "part_of_speech",
     "tags_json",
     "examples_json",
+    "image_json",
   ];
 
   if (schemaCompatibility.hasLegacySource) {
@@ -170,6 +181,7 @@ const buildUpdateWordStatement = (db, schemaCompatibility) => {
     "part_of_speech = ?",
     "tags_json = ?",
     "examples_json = ?",
+    "image_json = ?",
   ];
 
   if (schemaCompatibility.hasLegacySource) {
@@ -203,6 +215,7 @@ const buildWordMutationParams = (
     partOfSpeech,
     tagsJson,
     examplesJson,
+    imageJson,
   },
 ) => {
   const params = [
@@ -214,6 +227,7 @@ const buildWordMutationParams = (
     partOfSpeech || null,
     tagsJson,
     examplesJson,
+    imageJson || null,
   ];
 
   if (schemaCompatibility.hasLegacySource) {
@@ -243,6 +257,7 @@ const buildInsertWordRunParams = (
     partOfSpeech,
     tagsJson,
     examplesJson,
+    imageJson,
   },
 ) => {
   return [
@@ -255,6 +270,7 @@ const buildInsertWordRunParams = (
     partOfSpeech || null,
     tagsJson,
     examplesJson,
+    imageJson || null,
     ...(schemaCompatibility.hasLegacySource ? [source] : []),
     ...(schemaCompatibility.hasLegacyTarget ? [target || null] : []),
     ...(schemaCompatibility.hasLegacyTertiary ? [tertiary || null] : []),
@@ -274,6 +290,7 @@ const buildUpdateWordRunParams = (
     partOfSpeech,
     tagsJson,
     examplesJson,
+    imageJson,
   },
 ) => {
   return [
@@ -286,6 +303,7 @@ const buildUpdateWordRunParams = (
       partOfSpeech,
       tagsJson,
       examplesJson,
+      imageJson,
     }),
     wordId,
     deckId,
@@ -356,6 +374,7 @@ const normalizeEditableWord = (word, index) => {
     partOfSpeech: toCleanString(word?.part_of_speech),
     tags: toCleanArray(word?.tags),
     examples,
+    image: normalizeWordImage(word?.image),
   };
 };
 
@@ -457,6 +476,8 @@ export const deleteDeck = (deckId) => {
     throw new Error("Deck not found");
   }
 
+  collectUnusedMedia();
+
   return {
     deckId: normalizedDeckId,
   };
@@ -482,7 +503,8 @@ export const listDecks = () => {
           decks.content_hash AS contentHash,
           decks.tags_json AS tagsJson,
           decks.created_at AS createdAt,
-          COUNT(words.id) AS wordsCount
+          COUNT(words.id) AS wordsCount,
+          COUNT(words.image_json) AS imagesCount
         FROM decks
         LEFT JOIN words ON words.deck_id = decks.id
         GROUP BY decks.id
@@ -540,7 +562,8 @@ export const getDeckWords = (deckId) => {
           level,
           part_of_speech,
           tags_json AS tagsJson,
-          examples_json AS examplesJson
+          examples_json AS examplesJson,
+          image_json AS imageJson
         FROM words
         WHERE deck_id = ?
         ORDER BY source_text COLLATE NOCASE ASC
@@ -558,6 +581,7 @@ export const getDeckWords = (deckId) => {
     part_of_speech: row.part_of_speech,
     tags: parseArray(row.tagsJson),
     examples: parseArray(row.examplesJson),
+    image: normalizeWordImage(row.imageJson),
   }));
 };
 
@@ -609,7 +633,10 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
     includeTags: importConfig.includeTags,
     includeExamples: importConfig.includeExamples,
   });
-  const persistedWords = normalizedWordsResult.words.map((word) => ({
+  // Pictures first, so every word that keeps its picture points at bytes
+  // that are already stored.
+  const { idMap, available } = storeImportedMedia(parseDeckPackageMedia(parsedPackage));
+  const persistedWords = remapWordImages(normalizedWordsResult.words, idMap, available).map((word) => ({
     externalId: toCleanString(word?.externalId),
     source: toCleanString(word?.source),
     target: toCleanString(word?.target),
@@ -618,6 +645,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
     partOfSpeech: toCleanString(word?.part_of_speech),
     tags: toCleanArray(word?.tags),
     examples: toCleanArray(word?.examples),
+    image: normalizeWordImage(word?.image),
   }));
   const skippedCount = Number(normalizedWordsResult.skippedCount) || 0;
   const importedDeckDescription = toCleanString(importConfig.description);
@@ -656,6 +684,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       part_of_speech: word.partOfSpeech,
       tags: word.tags,
       examples: word.examples,
+      image: word.image,
     })),
   });
 
@@ -707,6 +736,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
           partOfSpeech: word.partOfSpeech,
           tagsJson: JSON.stringify(word.tags),
           examplesJson: JSON.stringify(word.examples),
+          imageJson: toImageJson(word.image),
         }),
       );
     });
@@ -741,6 +771,11 @@ const buildDeckExportPayload = (deckId, exportOptions = {}) => {
       ? exportOptions.includeTags
       : true;
   const deckTags = includeTags ? normalizeDeckTags(parseArray(deck?.tagsJson)) : [];
+  // A file carries its pictures; sync sends them separately and leaves
+  // them out (includeMedia === false).
+  const media = exportOptions?.includeMedia === false
+    ? []
+    : readMediaForExport([...collectWordImageAssetIds(words)]);
   const jsonPayload = buildExportDeckPackage({
     deck: {
       ...deck,
@@ -749,6 +784,7 @@ const buildDeckExportPayload = (deckId, exportOptions = {}) => {
     words,
     includeTags,
     includeExamples,
+    media,
   });
   const wordsPayload = Array.isArray(jsonPayload?.words) ? jsonPayload.words : [];
 
@@ -912,6 +948,7 @@ export const saveDeck = (payload = {}) => {
       part_of_speech: word.partOfSpeech,
       tags: word.tags,
       examples: word.examples,
+      image: word.image,
     })),
   });
 
@@ -1005,6 +1042,7 @@ export const saveDeck = (payload = {}) => {
     normalizedWords.forEach((word) => {
       const tagsJson = JSON.stringify(word.tags);
       const examplesJson = JSON.stringify(word.examples);
+      const imageJson = toImageJson(word.image);
 
       if (word.id && existingWordIds.has(word.id)) {
         updateWord.run(
@@ -1019,6 +1057,7 @@ export const saveDeck = (payload = {}) => {
             partOfSpeech: word.partOfSpeech,
             tagsJson,
             examplesJson,
+            imageJson,
           }),
         );
         persistedWordIds.push(word.id);
@@ -1036,6 +1075,7 @@ export const saveDeck = (payload = {}) => {
           partOfSpeech: word.partOfSpeech,
           tagsJson,
           examplesJson,
+          imageJson,
         }),
       );
       persistedWordIds.push(Number(insertResult.lastInsertRowid));
@@ -1060,6 +1100,7 @@ export const saveDeck = (payload = {}) => {
   });
 
   const { deckId } = saveDeckTransaction();
+  collectUnusedMedia();
 
   return {
     deck: getDeckById(deckId),

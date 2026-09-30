@@ -1,3 +1,5 @@
+import { normalizeWordImage } from "@shared/core/usecases/cardContent";
+
 const toCleanString = (value) => {
   if (typeof value !== "string") {
     return "";
@@ -30,5 +32,6 @@ export const normalizeWord = (word, fallbackId = "") => {
     tags: Array.isArray(word?.tags) ? word.tags : [],
     examples,
     example,
+    image: normalizeWordImage(word?.image),
   };
 };

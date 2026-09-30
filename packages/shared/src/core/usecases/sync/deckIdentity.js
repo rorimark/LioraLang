@@ -1,3 +1,5 @@
+import { normalizeWordImage } from "../cardContent/cardContent.js";
+
 const DECK_ORIGIN_KIND_VALUES = ["local", "hub", "account"];
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -158,6 +160,11 @@ export const resolveDeckSyncId = ({
   return nextSyncId;
 };
 
+const imageHashPart = (value) => {
+  const image = normalizeWordImage(value);
+  return image ? { image: `${image.assetId}:${image.alt}` } : {};
+};
+
 export const buildDeckContentHash = ({
   deck = {},
   words = [],
@@ -171,6 +178,9 @@ export const buildDeckContentHash = ({
     partOfSpeech: toCleanString(word?.part_of_speech || word?.partOfSpeech),
     tags: toUniqueCleanArray(word?.tags),
     examples: toUniqueCleanArray(word?.examples),
+    // Only a word with a picture carries the key, so a deck without
+    // pictures hashes exactly as it did before pictures existed.
+    ...imageHashPart(word?.image),
   }));
 
   const payload = {

@@ -6,4 +6,7 @@ export {
   resolveImportConfig,
   validateImportLanguages,
   buildExportDeckPackage,
+  collectWordImageAssetIds,
+  parseDeckPackageMedia,
+  remapWordImages,
 } from "@shared/core/usecases/importExport";

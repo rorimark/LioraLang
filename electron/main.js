@@ -50,6 +50,7 @@ import {
 import { getAppSettings, updateAppSettings } from "./db/services/settings.services.js";
 import { getSrsSessionSnapshot, gradeSrsCard } from "./db/services/srs.services.js";
 import { getProgressOverview } from "./db/services/progress.services.js";
+import * as mediaServices from "./db/services/media.services.js";
 import {
   activateProgressProfile,
   applyRemoteProgressEvents,
@@ -380,6 +381,7 @@ const setupIpcHandlers = () => {
     renameDeck,
     deleteDeck,
     saveDeck,
+    mediaServices,
     listHubDecks,
     getHubDeckBySlug,
     createHubDeckDownloadUrl,

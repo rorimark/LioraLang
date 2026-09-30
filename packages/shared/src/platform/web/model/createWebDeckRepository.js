@@ -12,9 +12,13 @@ import {
   runReadonlyTransaction,
   runReadwriteTransaction,
 } from "@shared/platform/web/db";
+import { normalizeWordImage } from "@shared/core/usecases/cardContent";
 import {
   buildExportDeckPackage,
+  collectWordImageAssetIds,
   getDeckImportMetadata,
+  parseDeckPackageMedia,
+  remapWordImages,
   normalizeWordsForImport,
   parseDeckPackageFileText,
   resolveImportConfig,
@@ -28,6 +32,11 @@ import {
   normalizeDeckOriginRef,
   resolveDeckSyncId,
 } from "@shared/core/usecases/sync";
+import {
+  collectUnusedMedia,
+  readMediaForExport,
+  storeImportedMedia,
+} from "./webMediaStore";
 
 const MAX_DECK_TAGS = 10;
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
@@ -192,10 +201,11 @@ const normalizeEditableWord = (word, index) => {
     part_of_speech: toCleanString(word?.part_of_speech),
     tags: normalizeTags(word?.tags),
     examples,
+    image: normalizeWordImage(word?.image),
   };
 };
 
-const toDeckListRow = (deck, wordsCountByDeckId = new Map()) => {
+const toDeckListRow = (deck, wordsCountByDeckId = new Map(), imagesCountByDeckId = new Map()) => {
   const tags = parseTagsFromDeck(deck);
 
   return {
@@ -213,6 +223,7 @@ const toDeckListRow = (deck, wordsCountByDeckId = new Map()) => {
     tagsJson: JSON.stringify(tags),
     createdAt: deck.createdAt || null,
     wordsCount: Number(wordsCountByDeckId.get(deck.id) || 0),
+    imagesCount: Number(imagesCountByDeckId.get(deck.id) || 0),
   };
 };
 
@@ -226,12 +237,13 @@ const toDeckWordRow = (word) => ({
   part_of_speech: word.part_of_speech || "",
   tags: Array.isArray(word.tags) ? word.tags : [],
   examples: Array.isArray(word.examples) ? word.examples : [],
+  image: normalizeWordImage(word.image),
 });
 
-const buildWordsCountByDeckId = (words = []) => {
+const buildWordsCountByDeckId = (words = [], countsWord = () => true) => {
   const counts = new Map();
 
-  words.forEach((word) => {
+  words.filter(countsWord).forEach((word) => {
     const deckId = parseNumericId(word?.deckId);
 
     if (!deckId) {
@@ -264,6 +276,7 @@ const createWordRecord = ({
     part_of_speech: toCleanString(nextWord.part_of_speech) || "other",
     tags: normalizeTags(nextWord.tags),
     examples: toCleanArray(nextWord.examples),
+    image: normalizeWordImage(nextWord.image),
     sourceKey: toLanguageKey(nextWord.source),
     createdAt: existingWord?.createdAt || toIsoTimestamp(nowMs),
     createdAtMs: Number.isFinite(existingWord?.createdAtMs)
@@ -680,6 +693,10 @@ export const createWebDeckRepository = () => {
       includeTags: importConfig.includeTags,
       includeExamples: importConfig.includeExamples,
     });
+    // Pictures first, so every word that keeps its picture points at bytes
+    // that are already stored.
+    const { idMap, available } = await storeImportedMedia(parseDeckPackageMedia(parsedPackage));
+    normalizedWordsResult.words = remapWordImages(normalizedWordsResult.words, idMap, available);
 
     const nowMs = Date.now();
     const usesWordLevels = normalizedWordsResult.words.some((word) =>
@@ -778,6 +795,11 @@ export const createWebDeckRepository = () => {
       typeof settings?.includeExamples === "boolean" ? settings.includeExamples : true;
     const includeTags =
       typeof settings?.includeTags === "boolean" ? settings.includeTags : true;
+    // A file carries its pictures; sync sends them separately and leaves
+    // them out (settings.includeMedia === false).
+    const media = settings?.includeMedia === false
+      ? []
+      : await readMediaForExport([...collectWordImageAssetIds(words)]);
 
     const deckPackage = buildExportDeckPackage({
       deck: {
@@ -787,6 +809,7 @@ export const createWebDeckRepository = () => {
       words,
       includeExamples,
       includeTags,
+      media,
     });
 
     return {
@@ -810,6 +833,10 @@ export const createWebDeckRepository = () => {
           ]);
 
           const wordsCountByDeckId = buildWordsCountByDeckId(words);
+          const imagesCountByDeckId = buildWordsCountByDeckId(
+            words,
+            (word) => Boolean(normalizeWordImage(word?.image)),
+          );
 
           return decks
             .slice()
@@ -827,7 +854,7 @@ export const createWebDeckRepository = () => {
                 { sensitivity: "base" },
               );
             })
-            .map((deck) => toDeckListRow(deck, wordsCountByDeckId));
+            .map((deck) => toDeckListRow(deck, wordsCountByDeckId, imagesCountByDeckId));
         },
       );
     },
@@ -1067,6 +1094,7 @@ export const createWebDeckRepository = () => {
       );
 
       notifyDecksUpdated();
+      await collectUnusedMedia().catch((error) => console.warn(error));
 
       return {
         deckId: normalizedDeckId,
@@ -1257,6 +1285,7 @@ export const createWebDeckRepository = () => {
       );
 
       notifyDecksUpdated();
+      await collectUnusedMedia().catch((error) => console.warn(error));
 
       const [deck, words] = await Promise.all([
         getDeckByIdInternal(savedDeckId),

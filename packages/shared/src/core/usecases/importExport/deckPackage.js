@@ -8,6 +8,13 @@ import {
   normalizeDeckOriginRef,
   normalizeDeckSyncId,
 } from "../sync/deckIdentity.js";
+import {
+  base64ToBytes,
+  isMediaAssetId,
+  MAX_MEDIA_ASSET_BYTES,
+  normalizeWordImage,
+  sniffImageMimeType,
+} from "../cardContent/index.js";
 
 const DECK_PACKAGE_FORMAT = "lioralang.deck";
 const DECK_PACKAGE_VERSION = 1;
@@ -26,6 +33,11 @@ const SUPPORTED_DECK_PACKAGE_FORMATS = new Set([
 const WORD_LIST_KEYS = ["words", "cards", "items", "entries", "data"];
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
 const DUPLICATE_STRATEGIES = new Set(["skip", "update", "keep_both"]);
+// Pictures travel inside the package as `media`, each named by the SHA-256
+// of its bytes; a word points at one with `image.assetId`. Both are
+// optional, so a package without pictures is exactly what it always was,
+// and an older app reading a package with pictures keeps the words.
+const MAX_MEDIA_PER_PACKAGE = 10_000;
 
 const LANGUAGE_VALUE_ALIASES = {
   english: ["en", "eng", "english"],
@@ -193,6 +205,7 @@ const parseDeckPackagePayload = (value) => {
       version: null,
       deck: null,
       words: value,
+      media: [],
     };
   }
 
@@ -294,6 +307,7 @@ const parseDeckPackagePayload = (value) => {
     version: normalizedVersion,
     deck,
     words,
+    media: Array.isArray(value.media) ? value.media.slice(0, MAX_MEDIA_PER_PACKAGE) : [],
   };
 };
 
@@ -402,6 +416,7 @@ const normalizeImportedWord = (
     ),
     tags: normalizedTags,
     examples: normalizedExamples,
+    image: normalizeWordImage(word?.image),
   };
 };
 
@@ -622,11 +637,101 @@ export const validateImportLanguages = ({
   }
 };
 
+const toMediaPayload = (item) => {
+  const id = toCleanString(item?.id).toLowerCase();
+
+  if (!isMediaAssetId(id)) {
+    return null;
+  }
+
+  const payload = {
+    id,
+    mimeType: toCleanString(item?.mimeType),
+    width: Math.max(0, Math.round(Number(item?.width) || 0)),
+    height: Math.max(0, Math.round(Number(item?.height) || 0)),
+    byteSize: Math.max(0, Math.round(Number(item?.byteSize) || 0)),
+  };
+
+  if (typeof item?.data === "string" && item.data) {
+    payload.data = item.data;
+  }
+
+  return payload;
+};
+
+// Every picture the words point at.
+export const collectWordImageAssetIds = (words = []) =>
+  new Set(
+    (Array.isArray(words) ? words : [])
+      .map((word) => normalizeWordImage(word?.image)?.assetId)
+      .filter(Boolean),
+  );
+
+// The pictures a package carries, each checked: a known picture format read
+// from its bytes (never trusted from the declared type), and a sane size.
+// Anything else is dropped, and the words that pointed at it simply have no
+// picture. `declaredId` is what the words use; the importer stores the bytes
+// under the hash it computes itself and remaps the words if the two differ.
+export const parseDeckPackageMedia = (parsedPackage) => {
+  const entries = Array.isArray(parsedPackage?.media) ? parsedPackage.media : [];
+  const seen = new Set();
+
+  return entries.reduce((result, entry) => {
+    const declaredId = toCleanString(entry?.id).toLowerCase();
+
+    if (!isMediaAssetId(declaredId) || seen.has(declaredId)) {
+      return result;
+    }
+
+    const bytes = base64ToBytes(entry?.data);
+
+    if (!bytes || bytes.length === 0 || bytes.length > MAX_MEDIA_ASSET_BYTES) {
+      return result;
+    }
+
+    const mimeType = sniffImageMimeType(bytes);
+
+    if (!mimeType) {
+      return result;
+    }
+
+    seen.add(declaredId);
+    result.push({
+      declaredId,
+      bytes,
+      mimeType,
+      width: Math.max(0, Math.round(Number(entry?.width) || 0)),
+      height: Math.max(0, Math.round(Number(entry?.height) || 0)),
+    });
+    return result;
+  }, []);
+};
+
+// Points words at the ids their pictures were actually stored under, and
+// drops a picture whose bytes did not arrive (`available`, when given).
+export const remapWordImages = (words = [], idMap = new Map(), available = null) =>
+  (Array.isArray(words) ? words : []).map((word) => {
+    const image = normalizeWordImage(word?.image);
+
+    if (!image) {
+      return word?.image ? { ...word, image: null } : word;
+    }
+
+    const assetId = idMap.get(image.assetId) || image.assetId;
+
+    if (available && !available.has(assetId)) {
+      return { ...word, image: null };
+    }
+
+    return { ...word, image: { ...image, assetId } };
+  });
+
 export const buildExportDeckPackage = ({
   deck,
   words,
   includeTags = true,
   includeExamples = true,
+  media = [],
 } = {}) => {
   const safeDeck = deck || {};
   const safeWords = Array.isArray(words) ? words : [];
@@ -660,8 +765,18 @@ export const buildExportDeckPackage = ({
       payload.examples = toCleanArrayLimited(word?.examples, MAX_WORD_EXAMPLES, 1_000);
     }
 
+    const image = normalizeWordImage(word?.image);
+
+    if (image) {
+      payload.image = image;
+    }
+
     return payload;
   });
+  const referencedAssetIds = collectWordImageAssetIds(safeWords);
+  const mediaPayload = (Array.isArray(media) ? media : [])
+    .map(toMediaPayload)
+    .filter((item) => item && referencedAssetIds.has(item.id));
 
   return {
     format: DECK_PACKAGE_FORMAT,
@@ -684,5 +799,6 @@ export const buildExportDeckPackage = ({
         : {}),
     },
     words: wordsPayload,
+    ...(mediaPayload.length > 0 ? { media: mediaPayload } : {}),
   };
 };

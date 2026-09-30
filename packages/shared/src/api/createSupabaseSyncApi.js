@@ -401,6 +401,45 @@ export const createSupabaseSyncApi = () => {
       }
     },
 
+    // Pictures are objects of their own beside the deck packages, named by
+    // the SHA-256 of their bytes, so one picture is uploaded once however
+    // many decks use it, and two devices uploading it never conflict.
+    async uploadMediaAsset({ assetId, blob }) {
+      const client = ensureClient();
+      const user = await ensureAuthenticatedUser(client);
+      const filePath = `${user.id}/media/${toCleanString(assetId)}`;
+      const { error } = await client.storage.from(USER_LIBRARY_BUCKET).upload(filePath, blob, {
+        upsert: false,
+        contentType: "application/octet-stream",
+      });
+
+      if (error) {
+        const message = toCleanString(error.message).toLowerCase();
+
+        if (message.includes("exists") || message.includes("duplicate") || String(error.statusCode) === "409") {
+          return { filePath, alreadyStored: true };
+        }
+
+        throw new Error(error.message || "Failed to upload picture");
+      }
+
+      return { filePath, alreadyStored: false };
+    },
+
+    async downloadMediaAsset(assetId) {
+      const client = ensureClient();
+      const user = await ensureAuthenticatedUser(client);
+      const { data, error } = await client.storage
+        .from(USER_LIBRARY_BUCKET)
+        .download(`${user.id}/media/${toCleanString(assetId)}`);
+
+      if (error || !data) {
+        throw new Error(error?.message || "Failed to download picture");
+      }
+
+      return data;
+    },
+
     async createLibraryDeckDownloadUrl(filePath, expiresInSeconds = DEFAULT_SIGNED_URL_EXPIRES_IN_SECONDS) {
       const client = ensureClient();
       await ensureAuthenticatedUser(client);

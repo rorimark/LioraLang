@@ -8,6 +8,7 @@ import {
   getQueueTypeByState,
   getCardRevision,
 } from "./srsScheduler.js";
+import { normalizeWordImage } from "../cardContent/cardContent.js";
 
 export const EMPTY_SRS_SESSION = Object.freeze({
   deck: null,
@@ -55,6 +56,7 @@ export const toSessionCard = ({
   part_of_speech: clean(word.part_of_speech),
   tags: cleanList(word.tags),
   examples: cleanList(word.examples),
+  image: normalizeWordImage(word.image),
   ...card,
   queueType: getQueueTypeByState(card.state),
   revision: getCardRevision(card),

@@ -26,6 +26,7 @@ describe("normalizeWord", () => {
       tags: ["travel"],
       examples: ["Pack a guidebook", "Use a guidebook"],
       example: "Pack a guidebook",
+      image: null,
     });
   });
 
@@ -41,6 +42,7 @@ describe("normalizeWord", () => {
       tags: [],
       examples: [],
       example: "",
+      image: null,
     });
   });
 });

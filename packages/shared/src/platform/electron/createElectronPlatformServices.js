@@ -351,6 +351,72 @@ const createDeckRepository = () => {
   };
 };
 
+// Pictures live in the desktop database; the window gets their bytes over
+// IPC and shows them as blob: URLs, which the app's CSP allows.
+const createMediaRepository = () => {
+  const subscribers = new Set();
+  const toBytes = async (blob) => new Uint8Array(await blob.arrayBuffer());
+  const toImage = (payload) => {
+    if (!payload?.bytes) {
+      return null;
+    }
+
+    return {
+      blob: new Blob([payload.bytes], { type: payload.mimeType || "application/octet-stream" }),
+      mimeType: payload.mimeType,
+      width: payload.width || 0,
+      height: payload.height || 0,
+    };
+  };
+
+  return {
+    async saveImage({ full, thumb } = {}) {
+      if (!full?.blob) {
+        throw new Error("No picture to save");
+      }
+
+      return invokeElectron(
+        async () =>
+          ensureElectronApi().mediaSaveImage({
+            full: { bytes: await toBytes(full.blob), width: full.width, height: full.height },
+            thumb: thumb?.blob ? { bytes: await toBytes(thumb.blob) } : null,
+          }),
+        "Failed to save picture",
+      );
+    },
+    async getImage(assetId, variant = "full") {
+      const payload = await invokeElectron(
+        () => ensureElectronApi().mediaGetImage({ assetId, variant }),
+        "Failed to load picture",
+      );
+      return toImage(payload);
+    },
+    async saveThumbnail(assetId, thumb) {
+      if (!thumb?.blob) {
+        return;
+      }
+
+      await invokeElectron(
+        async () => ensureElectronApi().mediaSaveThumbnail({ assetId, thumb: { bytes: await toBytes(thumb.blob) } }),
+        "Failed to save picture",
+      );
+    },
+    findMissing: (assetIds = []) =>
+      invokeElectron(() => ensureElectronApi().mediaFindMissing(assetIds), "Failed to check pictures"),
+    async storeRemoteImage(assetId, blob) {
+      await invokeElectron(
+        async () => ensureElectronApi().mediaStoreRemoteImage({ assetId, bytes: await toBytes(blob) }),
+        "Failed to save picture",
+      );
+      subscribers.forEach((listener) => listener());
+    },
+    subscribeMediaUpdated(callback) {
+      subscribers.add(callback);
+      return () => subscribers.delete(callback);
+    },
+  };
+};
+
 const createSettingsRepository = () => {
   return {
     async getAppSettings() {
@@ -585,12 +651,14 @@ export const createElectronPlatformServices = () => {
   const authRepository = createSupabaseAuthRepository();
   const deckRepository = createDeckRepository();
   const settingsRepository = createSettingsRepository();
+  const mediaRepository = createMediaRepository();
   const runtimeGateway = createRuntimeGateway();
   const syncLocalRepository = createElectronSyncLocalRepository();
 
   return {
     authRepository,
     deckRepository,
+    mediaRepository,
     settingsRepository,
     hubRepository: createWebHubRepository(),
     srsRepository: createSrsRepository(),
@@ -599,6 +667,7 @@ export const createElectronPlatformServices = () => {
       syncApi: createSupabaseSyncApi(),
       authRepository,
       deckRepository,
+      mediaRepository,
       settingsRepository,
       syncLocalRepository,
       runtimeGateway,

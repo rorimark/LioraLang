@@ -5,6 +5,7 @@ import { createSyncRepository } from "@shared/sync";
 import {
   createWebDeckRepository,
   createWebHubRepository,
+  createWebMediaRepository,
   createWebSettingsRepository,
   createWebSyncLocalRepository,
 } from "./model";
@@ -115,6 +116,7 @@ export const createWebPlatformServices = () => {
   const authRepository = createSupabaseAuthRepository();
   const deckRepository = createWebDeckRepository();
   const settingsRepository = createWebSettingsRepository();
+  const mediaRepository = createWebMediaRepository();
   const runtimeGateway = createRuntimeGateway();
   const syncLocalRepository = createWebSyncLocalRepository({
     platform: "web",
@@ -125,6 +127,7 @@ export const createWebPlatformServices = () => {
   return {
     authRepository,
     deckRepository,
+    mediaRepository,
     settingsRepository,
     hubRepository: createWebHubRepository(),
     srsRepository: createLazySrsRepository(),
@@ -133,6 +136,7 @@ export const createWebPlatformServices = () => {
       syncApi: createSupabaseSyncApi(),
       authRepository,
       deckRepository,
+      mediaRepository,
       settingsRepository,
       syncLocalRepository,
       runtimeGateway,

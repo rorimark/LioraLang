@@ -202,6 +202,7 @@ export const registerDeckIpcHandlers = ({
     const exportResult = exportDeckToJsonPackage(normalizedDeckId, {
       includeExamples,
       includeTags,
+      includeMedia: payload?.settings?.includeMedia !== false,
     });
 
     return exportResult;

@@ -2,3 +2,4 @@ export { createWebDeckRepository } from "./createWebDeckRepository";
 export { createWebSettingsRepository } from "./createWebSettingsRepository";
 export { createWebHubRepository } from "./createWebHubRepository";
 export { createWebSyncLocalRepository } from "./createWebSyncLocalRepository";
+export { createWebMediaRepository } from "./webMediaStore";

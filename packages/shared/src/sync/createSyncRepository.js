@@ -7,6 +7,7 @@ import {
   normalizeSyncPreferences,
 } from "@shared/core/usecases/sync";
 import {
+  collectWordImageAssetIds,
   getDeckImportMetadata,
   normalizeWordsForImport,
   parseDeckPackageFileText,
@@ -14,6 +15,7 @@ import {
   validateDeckPackageObject,
 } from "@shared/core/usecases/importExport";
 import { normalizeAppPreferences } from "@shared/lib/appPreferences/appPreferences";
+import { pullMissingMedia, pushDeckMedia } from "./mediaSync";
 
 const SYNC_TICK_INTERVAL_MS = 90_000;
 const ONLINE_RETRY_DEBOUNCE_MS = 1_200;
@@ -251,6 +253,7 @@ export const createSyncRepository = ({
   syncApi,
   authRepository,
   deckRepository,
+  mediaRepository = null,
   settingsRepository,
   syncLocalRepository,
   appVersion = "",
@@ -687,9 +690,13 @@ export const createSyncRepository = ({
       const exportResult = await deckRepository.exportDeckPackage(localDeck.id, {
         includeExamples: true,
         includeTags: true,
+        includeMedia: false,
       });
       const deckDetails = await deckRepository.getDeckById(localDeck.id);
       const deckWords = await deckRepository.getDeckWords(localDeck.id);
+      // The pictures go up before the package that points at them, so no
+      // device ever reads a word whose picture is not there to fetch.
+      await pushLocalDeckMedia(profileScope, deckWords);
       const remoteResult = await syncApi.upsertLibraryDeck({
         deck: {
           ...deckDetails,
@@ -765,6 +772,53 @@ export const createSyncRepository = ({
     }
 
     return pushedCount;
+  };
+
+  const uploadedMediaIdsOf = (profileState) =>
+    Array.isArray(profileState?.uploadedMediaIds) ? profileState.uploadedMediaIds : [];
+
+  const rememberUploadedMedia = async (profileScope, assetIds) => {
+    await persistProfileState(profileScope, (currentProfileState) => ({
+      ...currentProfileState,
+      uploadedMediaIds: [...new Set([...uploadedMediaIdsOf(currentProfileState), ...assetIds])],
+    }));
+  };
+
+  const pushLocalDeckMedia = async (profileScope, deckWords) => {
+    const before = uploadedMediaIdsOf(await syncLocalRepository.getProfileState(profileScope));
+    const uploaded = await pushDeckMedia({ syncApi, mediaRepository, deckWords, uploadedIds: before });
+
+    if (uploaded.size > before.length) {
+      await rememberUploadedMedia(profileScope, [...uploaded]);
+    }
+  };
+
+  const pullLocalMissingMedia = async (profileScope) => {
+    if (!mediaRepository) {
+      return 0;
+    }
+
+    const referencedIds = [];
+
+    for (const deck of await deckRepository.listDecks()) {
+      if (Number(deck?.imagesCount) > 0) {
+        referencedIds.push(...collectWordImageAssetIds(await deckRepository.getDeckWords(deck.id)));
+      }
+    }
+
+    const fetched = await pullMissingMedia({
+      syncApi,
+      mediaRepository,
+      referencedIds,
+      isOfflineError: isOfflineLikeError,
+    });
+
+    // What came down from the account is already there: never sent back up.
+    if (fetched.length > 0) {
+      await rememberUploadedMedia(profileScope, fetched);
+    }
+
+    return fetched.length;
   };
 
   const pullRemoteProgress = async (profileScope) => {
@@ -863,6 +917,9 @@ export const createSyncRepository = ({
 
       setStatus({ phase: "pulling-decks", lastSummary: "Pulling remote deck changes…" });
       const autoResolvedConflicts = await pullRemoteDecks(profileScope);
+
+      setStatus({ phase: "pulling-media", lastSummary: "Fetching pictures…" });
+      await pullLocalMissingMedia(profileScope);
 
       setStatus({ phase: "pulling-progress", lastSummary: "Pulling remote study progress…" });
       const pulledProgress = await pullRemoteProgress(profileScope);

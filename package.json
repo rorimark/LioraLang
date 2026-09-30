@@ -28,6 +28,7 @@
     "dist:local:win": "pnpm build:desktop && electron-builder --win nsis --x64 --publish never && pnpm rebuild:native",
     "check:srs": "node electron/scripts/run-srs-check.cjs",
     "check:persistence": "node electron/scripts/run-persistence-check.cjs",
+    "check:media": "node electron/scripts/run-media-check.cjs",
     "check:boundaries": "bash scripts/check-no-electron-imports.sh",
     "check:layers": "node scripts/check-layer-imports.mjs",
     "check:i18n": "node scripts/check-ui-strings.mjs",

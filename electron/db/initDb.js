@@ -61,6 +61,19 @@ export const initDb = () => {
 
     CREATE INDEX IF NOT EXISTS idx_words_deck_id ON words(deck_id);
 
+    CREATE TABLE IF NOT EXISTS media_assets (
+      id TEXT PRIMARY KEY,
+      mime_type TEXT NOT NULL,
+      width INTEGER DEFAULT 0,
+      height INTEGER DEFAULT 0,
+      byte_size INTEGER NOT NULL,
+      data BLOB NOT NULL,
+      thumb_mime_type TEXT,
+      thumb_data BLOB,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      touched_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE TABLE IF NOT EXISTS app_settings (
       key TEXT PRIMARY KEY,
       value TEXT NOT NULL,
@@ -132,6 +145,8 @@ export const initDb = () => {
   ensureColumn(db, "words", "part_of_speech", "TEXT");
   ensureColumn(db, "words", "tags_json", "TEXT DEFAULT '[]'");
   ensureColumn(db, "words", "examples_json", "TEXT DEFAULT '[]'");
+  // The word's picture as {"assetId","alt"}; empty for a word without one.
+  ensureColumn(db, "words", "image_json", "TEXT");
   ensureColumn(db, "words", "created_at", "TEXT");
   ensureColumn(db, "review_cards", "state", "TEXT DEFAULT 'new'");
   ensureColumn(db, "review_cards", "learning_step", "INTEGER DEFAULT 0");
@@ -305,7 +320,8 @@ export const initDb = () => {
           level,
           part_of_speech,
           tags_json AS tagsJson,
-          examples_json AS examplesJson
+          examples_json AS examplesJson,
+          image_json AS imageJson
         FROM words
         ORDER BY deck_id ASC, id ASC
       `,
@@ -330,6 +346,7 @@ export const initDb = () => {
         typeof word?.part_of_speech === "string" ? word.part_of_speech : "",
       tags: parseJsonArray(word?.tagsJson),
       examples: parseJsonArray(word?.examplesJson),
+      image: word?.imageJson || null,
     });
     wordsByDeckId.set(deckId, currentWords);
   });

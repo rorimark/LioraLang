@@ -1,5 +1,5 @@
 const WEB_DB_NAME = "lioralang-web";
-const WEB_DB_VERSION = 3;
+const WEB_DB_VERSION = 4;
 
 export const WEB_DB_STORES = {
   decks: "decks",
@@ -8,6 +8,7 @@ export const WEB_DB_STORES = {
   reviewLogs: "reviewLogs",
   settings: "settings",
   syncQueue: "syncQueue",
+  mediaAssets: "mediaAssets",
 };
 
 let webDbPromise = null;
@@ -168,6 +169,11 @@ const openWebDb = () => {
         syncQueueStore.createIndex("status", "status", { unique: false });
         syncQueueStore.createIndex("createdAtMs", "createdAtMs", { unique: false });
         syncQueueStore.createIndex("actionType", "actionType", { unique: false });
+      }
+
+      // Pictures, named by the SHA-256 of their bytes; words point at them.
+      if (!database.objectStoreNames.contains(WEB_DB_STORES.mediaAssets)) {
+        database.createObjectStore(WEB_DB_STORES.mediaAssets, { keyPath: "id" });
       }
     };
 

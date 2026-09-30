@@ -54,7 +54,7 @@ export const getSrsSessionSnapshot = ({
     .prepare(
       `SELECT id, source_text AS source, target_text AS target, tertiary_text AS tertiary,
     level, part_of_speech, tags_json AS tagsJson, examples_json AS examplesJson,
-    created_at AS createdAt FROM words WHERE deck_id = ?`,
+    image_json AS image, created_at AS createdAt FROM words WHERE deck_id = ?`,
     )
     .all(id)
     .map((word) => ({
