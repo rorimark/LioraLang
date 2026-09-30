@@ -39,6 +39,7 @@ SQLite хранит:
 - words;
 - review cards;
 - review logs;
+- изображения слов (`media_assets`, см. [card-media.md](./card-media.md));
 - app settings;
 - служебные данные.
 
@@ -80,6 +81,7 @@ IndexedDB stores:
 - `reviewLogs`
 - `settings`
 - `syncQueue`
+- `mediaAssets` — изображения слов, см. [card-media.md](./card-media.md)
 
 ### PWA / offline
 
