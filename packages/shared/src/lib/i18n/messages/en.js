@@ -278,12 +278,9 @@ export default {
     "untitled": "Deck",
     "search": "Search decks",
     "searchPlaceholder": "Search by name, description, language or tag",
-    "actions": "Deck actions",
     "create": "Create deck",
     "import": "Import deck file",
-    "importing": "Importing deck file",
     "fromJson": "Create deck from JSON",
-    "refresh": "Refresh decks",
     "loading": "Loading decks…",
     "pages": "Deck pages",
     "pageSize": "Decks",
@@ -324,9 +321,7 @@ export default {
       "deck": "Deck",
       "tags": "Tags",
       "words": "Words",
-      "added": "Date added",
       "actions": "Actions",
-      "noTags": "No tags yet",
       "empty": "No decks found. Create one or import a deck file.",
       "allTags": "Show all tags for {name}",
       "openActions": "Open actions for {name}",
@@ -336,6 +331,33 @@ export default {
       "publish": "Publish",
       "publishing": "Publishing…",
       "deleting": "Deleting…"
+    },
+    "found": "{count} of {total}",
+    "newDeck": "New deck",
+    "newMenu": {
+      "empty": "Empty deck",
+      "emptyHint": "Name it and add words yourself.",
+      "file": "From a file",
+      "fileHint": ".lioradeck, .lioralang or .json",
+      "json": "From JSON",
+      "jsonHint": "Paste a deck or a list of words."
+    },
+    "row": {
+      "learned": "Learned",
+      "review": "Today",
+      "done": "All reviewed",
+      "empty": "No words yet",
+      "learn": "Learn",
+      "learnNamed": "Learn {name}",
+      "learnedOf": "{known} of {words} words learned",
+      "due": {
+        "one": "{count} to review",
+        "other": "{count} to review"
+      },
+      "new": {
+        "one": "{count} new word",
+        "other": "{count} new words"
+      }
     }
   },
   "import": {

@@ -277,12 +277,9 @@ export default {
     "untitled": "Колода",
     "search": "Пошук колод",
     "searchPlaceholder": "Назва, опис, мова або тег",
-    "actions": "Дії з колодами",
     "create": "Створити колоду",
     "import": "Імпортувати файл колоди",
-    "importing": "Імпортуємо файл колоди",
     "fromJson": "Створити колоду з JSON",
-    "refresh": "Оновити колоди",
     "loading": "Завантажуємо колоди…",
     "pages": "Сторінки колод",
     "pageSize": "Колод",
@@ -331,9 +328,7 @@ export default {
       "deck": "Колода",
       "tags": "Теги",
       "words": "Слова",
-      "added": "Додано",
       "actions": "Дії",
-      "noTags": "Тегів поки немає",
       "empty": "Колод не знайдено. Створіть колоду або імпортуйте файл.",
       "allTags": "Усі теги колоди {name}",
       "openActions": "Дії з колодою {name}",
@@ -343,6 +338,37 @@ export default {
       "publish": "Опублікувати",
       "publishing": "Публікуємо…",
       "deleting": "Видаляємо…"
+    },
+    "found": "{count} з {total}",
+    "newDeck": "Нова колода",
+    "newMenu": {
+      "empty": "Порожня колода",
+      "emptyHint": "Назвіть її й додайте слова самі.",
+      "file": "З файлу",
+      "fileHint": ".lioradeck, .lioralang або .json",
+      "json": "З JSON",
+      "jsonHint": "Вставте колоду чи список слів."
+    },
+    "row": {
+      "learned": "Вивчено",
+      "review": "Сьогодні",
+      "done": "Усе повторено",
+      "empty": "Слів поки немає",
+      "learn": "Вчити",
+      "learnNamed": "Вчити «{name}»",
+      "learnedOf": "Вивчено {known} з {words} слів",
+      "due": {
+        "one": "{count} до повторення",
+        "few": "{count} до повторення",
+        "many": "{count} до повторення",
+        "other": "{count} до повторення"
+      },
+      "new": {
+        "one": "{count} нове слово",
+        "few": "{count} нові слова",
+        "many": "{count} нових слів",
+        "other": "{count} нового слова"
+      }
     }
   },
   "import": {

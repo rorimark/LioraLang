@@ -33,7 +33,55 @@ export const useDecksOverviewPanel = () => {
   const deckRepository = usePlatformService("deckRepository");
   const hubRepository = usePlatformService("hubRepository");
   const syncRepository = usePlatformService("syncRepository");
+  const progressRepository = usePlatformService("progressRepository");
   const { decks, isLoading, error, refreshDecks } = useDecks();
+  // Where each deck stands: words known, due now, not yet started. Read
+  // from the same overview the Progress page uses, again whenever the
+  // decks change.
+  const [deckProgress, setDeckProgress] = useState({});
+
+  useEffect(() => {
+    if (typeof progressRepository?.getProgressOverview !== "function") {
+      return undefined;
+    }
+
+    let isCurrent = true;
+
+    progressRepository
+      .getProgressOverview()
+      .then((overview) => {
+        if (!isCurrent) return;
+        const rows = Array.isArray(overview?.decks) ? overview.decks : [];
+        setDeckProgress(
+          Object.fromEntries(
+            rows.map((row) => [
+              String(row.id),
+              {
+                words: Number(row.words) || 0,
+                known: Number(row.known) || 0,
+                fresh: Number(row.new) || 0,
+                dueNow: Number(row.dueNow) || 0,
+              },
+            ]),
+          ),
+        );
+      })
+      .catch((progressError) => {
+        console.warn(progressError);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [decks, progressRepository]);
+
+  // Straight into a session on this deck, the way Progress does it.
+  const learnDeck = useCallback(
+    (deckId) => {
+      navigate(ROUTE_PATHS.learn, { state: { importedDeckId: String(deckId) } });
+    },
+    [navigate],
+  );
   const { appPreferences } = useAppPreferences();
   const { t, errorText } = useI18n();
   const [message, setMessage] = useState("");
@@ -497,6 +545,8 @@ export const useDecksOverviewPanel = () => {
 
   return {
     decks: deckPage.items,
+    deckProgress,
+    learnDeck,
     matchingDecksCount: filteredDecks.length,
     deckPage,
     handleDeckPageChange,

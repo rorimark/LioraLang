@@ -275,12 +275,9 @@ export default {
     "untitled": "Deck",
     "search": "Decks durchsuchen",
     "searchPlaceholder": "Name, Beschreibung, Sprache oder Tag",
-    "actions": "Deck-Aktionen",
     "create": "Deck erstellen",
     "import": "Deck-Datei importieren",
-    "importing": "Deck-Datei wird importiert",
     "fromJson": "Deck aus JSON erstellen",
-    "refresh": "Decks aktualisieren",
     "loading": "Decks werden geladen…",
     "pages": "Deck-Seiten",
     "pageSize": "Decks",
@@ -321,9 +318,7 @@ export default {
       "deck": "Deck",
       "tags": "Tags",
       "words": "Wörter",
-      "added": "Hinzugefügt",
       "actions": "Aktionen",
-      "noTags": "Noch keine Tags",
       "empty": "Keine Decks gefunden. Erstelle eins oder importiere eine Deck-Datei.",
       "allTags": "Alle Tags von {name} zeigen",
       "openActions": "Aktionen für {name} öffnen",
@@ -333,6 +328,33 @@ export default {
       "publish": "Veröffentlichen",
       "publishing": "Wird veröffentlicht…",
       "deleting": "Wird gelöscht…"
+    },
+    "found": "{count} von {total}",
+    "newDeck": "Neues Deck",
+    "newMenu": {
+      "empty": "Leeres Deck",
+      "emptyHint": "Gib ihm einen Namen und füge selbst Wörter hinzu.",
+      "file": "Aus einer Datei",
+      "fileHint": ".lioradeck, .lioralang oder .json",
+      "json": "Aus JSON",
+      "jsonHint": "Füge ein Deck oder eine Wortliste ein."
+    },
+    "row": {
+      "learned": "Gelernt",
+      "review": "Heute",
+      "done": "Alles wiederholt",
+      "empty": "Noch keine Wörter",
+      "learn": "Lernen",
+      "learnNamed": "{name} lernen",
+      "learnedOf": "{known} von {words} Wörtern gelernt",
+      "due": {
+        "one": "{count} zu wiederholen",
+        "other": "{count} zu wiederholen"
+      },
+      "new": {
+        "one": "{count} neues Wort",
+        "other": "{count} neue Wörter"
+      }
     }
   },
   "import": {

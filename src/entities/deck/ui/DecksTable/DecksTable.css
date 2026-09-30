@@ -1,111 +1,228 @@
-.decks-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: separate;
-  border-spacing: 0;
+/* ===== Deck list =====
+   One row per deck: what it is (its name, the languages it goes between),
+   its tags on one line, how much of it is learned, what it asks for today,
+   and the way into a session. On a narrow screen the same row becomes a
+   small card. */
+
+.deck-list {
+  container: deck-list / inline-size;
+  display: grid;
   border: 2px solid var(--color-border);
-  border-radius: 16px;
-  overflow: visible;
+  border-bottom-width: var(--edge-width);
+  border-radius: var(--radius-panel);
   background: var(--color-surface);
 }
 
-.decks-table th,
-.decks-table td {
-  padding: 12px;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.85rem;
-  text-align: left;
-  color: var(--color-text);
+.deck-list__head,
+.deck-row {
+  display: grid;
+  /* The last column is the key and the menu; fixed, so the heading lines
+     up with the rows it names. */
+  grid-template-columns:
+    minmax(0, 2.2fr) minmax(0, 1.5fr) minmax(128px, 1fr) minmax(128px, 0.9fr)
+    var(--deck-actions-width, 124px);
+  align-items: center;
+  gap: 18px;
+  padding: 12px 14px 12px 18px;
+}
+
+.deck-list__head {
+  padding-block: 10px;
+  border-bottom: 2px solid var(--color-border);
+  border-radius: calc(var(--radius-panel) - 2px) calc(var(--radius-panel) - 2px) 0 0;
+  background: var(--color-surface-muted);
+  color: var(--color-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.deck-list__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deck-row {
+  position: relative;
+  min-height: 68px;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.deck-list__rows > .deck-row + .deck-row {
+  border-top: 2px solid var(--color-border);
+}
+
+.deck-list__rows > .deck-row:last-child {
+  border-radius: 0 0 calc(var(--radius-panel) - 2px) calc(var(--radius-panel) - 2px);
+}
+
+@media (hover: hover) {
+  .deck-row:hover {
+    background: color-mix(in srgb, var(--color-primary-soft) 55%, var(--color-surface));
+  }
+}
+
+.deck-row:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: -3px;
+}
+
+/* A row with an open menu or tag list sits above the rows below it. */
+.deck-row:focus-within,
+.deck-row:has(.decks-table__actions--open, .decks-table__tags-more-wrap:hover) {
+  z-index: 5;
+}
+
+.deck-row__main {
+  display: grid;
+  gap: 3px;
   min-width: 0;
+}
+
+.deck-row__name {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow-wrap: anywhere;
 }
 
-.decks-table th {
+.deck-row__langs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
   color: var(--color-text-muted);
-  font-size: 0.74rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  background: var(--color-surface-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
-.decks-table thead th:first-child {
-  border-top-left-radius: 14px;
+.deck-row__langs svg {
+  width: 13px;
+  height: 13px;
+  color: var(--color-text-subtle);
 }
 
-.decks-table thead th:last-child {
-  border-top-right-radius: 14px;
-  text-align: right;
-  padding-right: 18px;
+/* Tags stay on one line; the rest are counted and shown on demand. */
+.deck-row__tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
-.decks-table tbody tr:last-child td {
-  border-bottom: none;
+.deck-row__tag-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
 }
 
-.decks-table tbody tr:last-child td:first-child {
-  border-bottom-left-radius: 14px;
+.deck-row__tag-list > * {
+  flex: none;
+  white-space: nowrap;
 }
 
-.decks-table tbody tr:last-child td:last-child {
-  border-bottom-right-radius: 14px;
+.deck-row__more-narrow,
+.decks-table__tags-more-wrap.is-narrow-only {
+  display: none;
 }
 
-.decks-table tbody tr:nth-child(even) {
-  background: var(--color-surface-muted);
+/* A narrower list shows one tag and counts the rest, rather than cutting
+   words in half. */
+@container deck-list (max-width: 1080px) {
+  .deck-row__tag-list > :nth-child(n + 2) {
+    display: none;
+  }
+
+  .deck-row__more-wide {
+    display: none;
+  }
+
+  .deck-row__more-narrow {
+    display: inline;
+  }
+
+  .decks-table__tags-more-wrap.is-narrow-only {
+    display: inline-block;
+  }
 }
 
-.decks-table__row {
-  position: relative;
-  cursor: pointer;
-  transition: background 0.16s ease;
-}
-
-.decks-table tbody tr:hover {
-  background: var(--color-primary-soft);
-}
-
-.decks-table__row:hover,
-.decks-table__row:focus-within {
-  z-index: 6;
-}
-
-.decks-table__row:focus-visible {
-  outline: none;
-}
-
-.decks-table__row:focus-visible td {
-  background: color-mix(in srgb, var(--color-primary-soft) 78%, var(--color-surface));
-}
-
-.decks-table__empty {
-  text-align: center;
-  color: var(--color-text-muted);
-  padding: 20px;
-}
-
-.decks-table__tags-cell {
-  position: relative;
-  z-index: 1;
-  vertical-align: top;
-  overflow: visible;
-}
-
-.decks-table__tags-cell:focus-within {
-  z-index: 7;
-}
-
-.decks-table__tags-wrap {
+.deck-row__progress {
   display: grid;
   gap: 6px;
+  min-width: 0;
 }
 
-.decks-table__tags-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 6px;
+.deck-row__count {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
+
+.deck-row__count b {
+  color: var(--color-text);
+  font-weight: 900;
+}
+
+.deck-row__bar {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  overflow: hidden;
+}
+
+.deck-row__bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-success);
+}
+
+.deck-row__state {
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.deck-row__state.is-due {
+  color: var(--color-primary);
+  font-weight: 900;
+}
+
+.deck-row__state.is-done {
+  color: var(--color-success);
+}
+
+.deck-row__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  cursor: default;
+}
+
+.deck-list__empty {
+  margin: 0;
+  padding: 28px 20px;
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-panel);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ----- tags shown on demand ----- */
 
 .decks-table__tags-more-wrap {
   position: relative;
@@ -215,22 +332,13 @@
   transform: translateY(0);
 }
 
+/* ----- the row menu ----- */
 
 .decks-table__actions {
   position: relative;
   display: flex;
   justify-content: flex-end;
   padding-right: 6px;
-}
-
-.decks-table__actions-desktop {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.decks-table__actions-mobile {
-  display: none;
 }
 
 .decks-table__menu-trigger {
@@ -306,8 +414,7 @@
   transition: background 0.14s ease, color 0.14s ease;
 }
 
-.decks-table__menu button svg,
-.decks-table__actions-mobile button svg {
+.decks-table__menu button svg {
   width: 0.9rem;
   height: 0.9rem;
   flex: 0 0 auto;
@@ -334,265 +441,6 @@
 .decks-table__menu .decks-table__button--danger:hover:not(:disabled),
 .decks-table__menu .decks-table__button--danger:focus-visible:not(:disabled) {
   background: color-mix(in srgb, var(--color-danger) 12%, transparent);
-}
-
-@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
-  .decks-table {
-    display: block;
-    max-width: 100%;
-    border: none;
-    background: var(--color-transparent);
-    table-layout: auto;
-  }
-
-  .decks-table thead {
-    display: none;
-  }
-
-  .decks-table tbody {
-    display: grid;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .decks-table tbody tr {
-    display: block;
-    width: 100%;
-    border: 2px solid var(--color-border);
-    border-radius: 12px;
-    background: var(--color-surface);
-    overflow: visible;
-  }
-
-  .decks-table td {
-    display: grid;
-    grid-template-columns: minmax(92px, 118px) minmax(0, 1fr);
-    gap: 10px;
-    align-items: start;
-    font-size: 0.84rem;
-    padding: 10px 12px;
-  }
-
-  .decks-table td::before {
-    content: attr(data-label);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 0.72rem;
-    line-height: 1.2;
-  }
-
-  .decks-table__actions-cell {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  .decks-table__actions {
-    justify-content: flex-start;
-    padding-right: 0;
-    width: 100%;
-  }
-
-  .decks-table__actions-desktop {
-    display: none;
-  }
-
-  .decks-table__actions-mobile {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  .decks-table__actions-mobile button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    border: 2px solid var(--color-border);
-    border-radius: 8px;
-    background: var(--color-surface);
-    color: var(--color-text);
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    min-height: 36px;
-    padding: 7px 10px;
-    white-space: nowrap;
-  }
-
-  .decks-table__actions-mobile button:hover:not(:disabled) {
-    background: var(--color-surface-muted);
-  }
-
-  .decks-table__actions-mobile button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  .decks-table__actions-mobile .decks-table__button--publish {
-    border-color: var(--color-primary);
-    background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
-    color: var(--color-primary-strong);
-  }
-
-  .decks-table__actions-mobile .decks-table__button--danger {
-    border-color: var(--color-danger);
-    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
-    color: var(--color-danger);
-  }
-
-  .decks-table__menu {
-    left: 0;
-    right: auto;
-  }
-
-  .decks-table__tags-tooltip {
-    left: auto;
-    right: 0;
-    width: min(300px, calc(100vw - 56px));
-  }
-
-  .decks-table__empty {
-    display: block;
-    padding: 18px;
-    text-align: center;
-  }
-
-  .decks-table__empty::before {
-    content: none;
-  }
-}
-
-@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
-  .decks-table tbody {
-    gap: 8px;
-  }
-
-  .decks-table td {
-    grid-template-columns: minmax(74px, 96px) minmax(0, 1fr);
-    gap: 8px;
-    font-size: 0.82rem;
-    padding: 9px 10px;
-  }
-
-  .decks-table td::before {
-    font-size: 0.68rem;
-  }
-
-  .decks-table__actions {
-    justify-content: flex-start;
-    padding-right: 0;
-  }
-
-  .decks-table__actions-mobile {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    width: 100%;
-  }
-
-  .decks-table__actions-mobile button {
-    width: 100%;
-    min-height: 36px;
-    padding: 7px 9px;
-    font-size: 0.74rem;
-  }
-
-  .decks-table__actions-mobile button:first-child {
-    grid-column: 1 / -1;
-  }
-
-}
-
-@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
-  .decks-table td {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 9px;
-  }
-
-  .decks-table td::before {
-    font-size: 0.66rem;
-  }
-
-  .decks-table__actions-cell {
-    gap: 6px;
-  }
-
-  .decks-table__actions {
-    justify-content: flex-start;
-    padding-right: 0;
-  }
-
-  .decks-table__actions-mobile {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .decks-table__actions-mobile button {
-    min-height: 36px;
-    font-size: 0.72rem;
-    padding: 7px 8px;
-  }
-
-  .decks-table__actions-mobile button:first-child {
-    grid-column: 1 / -1;
-  }
-
-  .decks-table__tags-more {
-    min-width: 24px;
-    font-size: 0.68rem;
-    padding: 4px 7px;
-  }
-
-  .decks-table__tags-tooltip {
-    width: min(260px, 84vw);
-    font-size: 0.7rem;
-  }
-
-  .decks-table__tags-tooltip-content {
-    padding: 8px;
-  }
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .decks-table tbody tr:hover {
-    background: inherit;
-  }
-
-  .decks-table__tags-more:hover {
-    background: var(--color-surface-muted);
-  }
-
-  .decks-table__actions-mobile button:hover:not(:disabled) {
-    background: var(--color-surface);
-  }
-
-  .decks-table__actions-mobile button:active:not(:disabled) {
-    background: var(--color-surface-muted);
-  }
-
-  .decks-table__actions-mobile .decks-table__button--publish:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
-  }
-
-  .decks-table__actions-mobile .decks-table__button--publish:active:not(:disabled) {
-    background: color-mix(in srgb, var(--color-primary) 20%, var(--color-surface));
-  }
-
-  .decks-table__actions-mobile .decks-table__button--danger:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
-  }
-
-  .decks-table__actions-mobile .decks-table__button--danger:active:not(:disabled) {
-    background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
-  }
-}
-
-/* The deck's name is what a row is about. */
-.decks-table tbody td:first-child {
-  font-weight: 800;
 }
 
 /* The row menu floats like a dialog: a panel border, a soft shadow, and the
@@ -625,165 +473,69 @@
   }
 }
 
-/* On phones each deck card ends in a row of keys. Publish and delete keep
-   their tint, and take the matching colour for the thicker bottom edge. */
-.decks-table__actions-mobile button {
-  border-color: var(--color-border-strong);
-  border-bottom: var(--edge-width) solid var(--color-border-strong);
-  border-radius: var(--radius-control);
-  font-size: 0.84rem;
-  font-weight: 800;
-  transition:
-    transform 160ms var(--motion-spring),
-    border-bottom-width 160ms var(--motion-spring),
-    background-color 140ms ease;
-}
+/* ----- narrow: a row becomes a card ----- */
 
-.decks-table__actions-mobile .decks-table__button--publish {
-  border-color: var(--color-primary-border);
-  border-bottom-color: var(--color-primary);
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-}
-
-.decks-table__actions-mobile .decks-table__button--danger {
-  border-color: color-mix(in srgb, var(--color-grade-again) 45%, var(--color-border));
-  border-bottom-color: var(--color-grade-again-edge);
-}
-
-.decks-table__actions-mobile button:active:not(:disabled) {
-  transform: translateY(2px);
-  border-bottom-width: 2px;
-  transition-duration: 60ms;
-}
-
-.decks-table__actions-mobile button:focus-visible {
-  outline: 3px solid var(--color-primary-border);
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .decks-table__actions-mobile button {
-    transition: none;
-  }
-}
-
-/* A narrow table (a phone on its side, a small tablet) drops the date: the
-   name, tags and size are what you pick a deck by. */
-@media (max-width: 900px) and (orientation: landscape) {
-  .decks-table th:nth-child(4),
-  .decks-table td:nth-child(4) {
+@container deck-list (max-width: 760px) {
+  .deck-list__head {
     display: none;
   }
+
+  .deck-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "main actions"
+      "tags tags"
+      "progress review";
+    gap: 10px 14px;
+    padding: 14px;
+  }
+
+  .deck-row__main {
+    grid-area: main;
+  }
+
+  .deck-row__tags {
+    grid-area: tags;
+  }
+
+  .deck-row__tags:empty {
+    display: none;
+  }
+
+  /* The card gives tags a whole line again. */
+  .deck-row__tag-list > :nth-child(2) {
+    display: inline-flex;
+  }
+
+  .deck-row__more-wide {
+    display: inline;
+  }
+
+  .deck-row__more-narrow,
+  .decks-table__tags-more-wrap.is-narrow-only {
+    display: none;
+  }
+
+  .deck-row__progress {
+    grid-area: progress;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .deck-row__review {
+    grid-area: review;
+    justify-self: end;
+  }
+
+  .deck-row__actions {
+    grid-area: actions;
+    align-self: start;
+  }
 }
 
-/* ===== Deck cards on an upright phone =====
-   Each deck is one compact card: the name, a line with its size and date,
-   its tags, and a row of keys with Open first. The field labels of the
-   table are dropped; the values say what they are. */
-@media (max-width: 720px) and (orientation: portrait), (max-width: 540px) {
-  .decks-table tbody {
-    gap: 12px;
-  }
-
-  .decks-table tbody tr {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    grid-template-areas:
-      "name name name"
-      "words date ."
-      "tags tags tags"
-      "actions actions actions";
-    align-items: center;
-    column-gap: 10px;
-    padding: 14px 14px 12px;
-    border-bottom-width: var(--edge-width);
-    border-radius: 18px;
-  }
-
-  .decks-table tbody tr:nth-child(odd),
-  .decks-table tbody tr:nth-child(even) {
-    background: var(--color-surface);
-  }
-
-  .decks-table td {
-    display: block;
-    padding: 0;
-    border: 0;
-  }
-
-  .decks-table td::before {
-    content: none;
-  }
-
-  .decks-table td:nth-child(1) {
-    grid-area: name;
-    font-size: 1.05rem;
-    font-weight: 900;
-    line-height: 1.25;
-  }
-
-  .decks-table td:nth-child(2) {
-    grid-area: tags;
-    margin-top: 10px;
-  }
-
-  .decks-table td:nth-child(3) {
-    grid-area: words;
-    margin-top: 4px;
-    color: var(--color-text-muted);
-    font-size: 0.82rem;
-    font-weight: 800;
-  }
-
-  .decks-table td:nth-child(3)::after {
-    content: " words";
-  }
-
-  .decks-table td:nth-child(4) {
-    grid-area: date;
-    margin-top: 4px;
-    color: var(--color-text-subtle);
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-
-  .decks-table td:nth-child(5) {
-    grid-area: actions;
-    margin-top: 12px;
-  }
-
-  .decks-table__actions-mobile {
-    display: flex;
-    gap: 8px;
-  }
-
-  /* Open is the one worth a label; the rest are keys with icons, named for
-     screen readers by the text they keep. */
-  .decks-table__actions-mobile button:first-child {
-    flex: 1;
-    border-color: var(--color-primary-strong);
-    background: var(--color-primary);
-    color: var(--color-on-primary);
-  }
-
-  .decks-table__actions-mobile button:not(:first-child) {
-    flex: none;
-    width: 46px;
-    padding: 0;
-  }
-
-  .decks-table__actions-mobile button:not(:first-child) span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .decks-table__actions-mobile button svg {
-    width: 18px;
-    height: 18px;
+@media (hover: none) {
+  .deck-row:active {
+    background: var(--color-surface-muted);
   }
 }

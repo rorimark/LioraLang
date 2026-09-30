@@ -276,12 +276,9 @@ export default {
     "untitled": "Baralho",
     "search": "Pesquisar baralhos",
     "searchPlaceholder": "Nome, descrição, idioma ou etiqueta",
-    "actions": "Ações dos baralhos",
     "create": "Criar baralho",
     "import": "Importar arquivo de baralho",
-    "importing": "Importando arquivo",
     "fromJson": "Criar baralho a partir de JSON",
-    "refresh": "Atualizar baralhos",
     "loading": "Carregando baralhos…",
     "pages": "Páginas de baralhos",
     "pageSize": "Baralhos",
@@ -326,9 +323,7 @@ export default {
       "deck": "Baralho",
       "tags": "Etiquetas",
       "words": "Palavras",
-      "added": "Adicionado em",
       "actions": "Ações",
-      "noTags": "Ainda sem etiquetas",
       "empty": "Nenhum baralho. Crie um ou importe um arquivo de baralho.",
       "allTags": "Ver todas as etiquetas de {name}",
       "openActions": "Abrir ações de {name}",
@@ -338,6 +333,35 @@ export default {
       "publish": "Publicar",
       "publishing": "Publicando…",
       "deleting": "Excluindo…"
+    },
+    "found": "{count} de {total}",
+    "newDeck": "Novo baralho",
+    "newMenu": {
+      "empty": "Baralho vazio",
+      "emptyHint": "Dê um nome e adicione as palavras você mesmo.",
+      "file": "De um arquivo",
+      "fileHint": ".lioradeck, .lioralang ou .json",
+      "json": "De JSON",
+      "jsonHint": "Cole um baralho ou uma lista de palavras."
+    },
+    "row": {
+      "learned": "Aprendidas",
+      "review": "Hoje",
+      "done": "Tudo revisado",
+      "empty": "Ainda sem palavras",
+      "learn": "Estudar",
+      "learnNamed": "Estudar {name}",
+      "learnedOf": "{known} de {words} palavras aprendidas",
+      "due": {
+        "one": "{count} para revisar",
+        "many": "{count} para revisar",
+        "other": "{count} para revisar"
+      },
+      "new": {
+        "one": "{count} palavra nova",
+        "many": "{count} palavras novas",
+        "other": "{count} palavras novas"
+      }
     }
   },
   "import": {

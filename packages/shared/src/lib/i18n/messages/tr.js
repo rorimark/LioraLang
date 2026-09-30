@@ -275,12 +275,9 @@ export default {
     "untitled": "Deste",
     "search": "Destelerde ara",
     "searchPlaceholder": "Ad, açıklama, dil veya etiket",
-    "actions": "Deste işlemleri",
     "create": "Deste oluştur",
     "import": "Deste dosyası içe aktar",
-    "importing": "Deste dosyası içe aktarılıyor",
     "fromJson": "JSON'dan deste oluştur",
-    "refresh": "Desteleri yenile",
     "loading": "Desteler yükleniyor…",
     "pages": "Deste sayfaları",
     "pageSize": "Deste",
@@ -321,9 +318,7 @@ export default {
       "deck": "Deste",
       "tags": "Etiketler",
       "words": "Kelimeler",
-      "added": "Eklenme tarihi",
       "actions": "İşlemler",
-      "noTags": "Henüz etiket yok",
       "empty": "Deste bulunamadı. Bir tane oluştur ya da deste dosyası içe aktar.",
       "allTags": "{name} için tüm etiketleri göster",
       "openActions": "{name} işlemlerini aç",
@@ -333,6 +328,33 @@ export default {
       "publish": "Yayımla",
       "publishing": "Yayımlanıyor…",
       "deleting": "Siliniyor…"
+    },
+    "found": "{count} / {total}",
+    "newDeck": "Yeni deste",
+    "newMenu": {
+      "empty": "Boş deste",
+      "emptyHint": "Adını koyun, kelimeleri kendiniz ekleyin.",
+      "file": "Dosyadan",
+      "fileHint": ".lioradeck, .lioralang veya .json",
+      "json": "JSON'dan",
+      "jsonHint": "Bir deste ya da kelime listesi yapıştırın."
+    },
+    "row": {
+      "learned": "Öğrenilen",
+      "review": "Bugün",
+      "done": "Hepsi tekrarlandı",
+      "empty": "Henüz kelime yok",
+      "learn": "Çalış",
+      "learnNamed": "{name} çalış",
+      "learnedOf": "{words} kelimeden {known} tanesi öğrenildi",
+      "due": {
+        "one": "{count} tekrar bekliyor",
+        "other": "{count} tekrar bekliyor"
+      },
+      "new": {
+        "one": "{count} yeni kelime",
+        "other": "{count} yeni kelime"
+      }
     }
   },
   "import": {

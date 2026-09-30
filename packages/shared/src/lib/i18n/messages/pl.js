@@ -277,12 +277,9 @@ export default {
     "untitled": "Talia",
     "search": "Szukaj talii",
     "searchPlaceholder": "Nazwa, opis, język lub tag",
-    "actions": "Działania na taliach",
     "create": "Utwórz talię",
     "import": "Importuj plik talii",
-    "importing": "Importujemy plik talii",
     "fromJson": "Utwórz talię z JSON",
-    "refresh": "Odśwież talie",
     "loading": "Ładujemy talie…",
     "pages": "Strony talii",
     "pageSize": "Talie",
@@ -331,9 +328,7 @@ export default {
       "deck": "Talia",
       "tags": "Tagi",
       "words": "Słowa",
-      "added": "Dodano",
       "actions": "Działania",
-      "noTags": "Brak tagów",
       "empty": "Nie znaleziono talii. Utwórz talię lub zaimportuj plik.",
       "allTags": "Pokaż wszystkie tagi talii {name}",
       "openActions": "Działania dla talii {name}",
@@ -343,6 +338,37 @@ export default {
       "publish": "Opublikuj",
       "publishing": "Publikujemy…",
       "deleting": "Usuwamy…"
+    },
+    "found": "{count} z {total}",
+    "newDeck": "Nowa talia",
+    "newMenu": {
+      "empty": "Pusta talia",
+      "emptyHint": "Nazwij ją i dodaj słowa samodzielnie.",
+      "file": "Z pliku",
+      "fileHint": ".lioradeck, .lioralang lub .json",
+      "json": "Z JSON",
+      "jsonHint": "Wklej talię lub listę słów."
+    },
+    "row": {
+      "learned": "Nauczone",
+      "review": "Dziś",
+      "done": "Wszystko powtórzone",
+      "empty": "Brak słów",
+      "learn": "Ucz się",
+      "learnNamed": "Ucz się: {name}",
+      "learnedOf": "Nauczone {known} z {words} słów",
+      "due": {
+        "one": "{count} do powtórki",
+        "few": "{count} do powtórki",
+        "many": "{count} do powtórki",
+        "other": "{count} do powtórki"
+      },
+      "new": {
+        "one": "{count} nowe słowo",
+        "few": "{count} nowe słowa",
+        "many": "{count} nowych słów",
+        "other": "{count} nowego słowa"
+      }
     }
   },
   "import": {

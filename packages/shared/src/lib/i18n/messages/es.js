@@ -276,12 +276,9 @@ export default {
     "untitled": "Mazo",
     "search": "Buscar mazos",
     "searchPlaceholder": "Nombre, descripción, idioma o etiqueta",
-    "actions": "Acciones de mazos",
     "create": "Crear mazo",
     "import": "Importar archivo de mazo",
-    "importing": "Importando archivo de mazo",
     "fromJson": "Crear mazo desde JSON",
-    "refresh": "Actualizar mazos",
     "loading": "Cargando mazos…",
     "pages": "Páginas de mazos",
     "pageSize": "Mazos",
@@ -326,9 +323,7 @@ export default {
       "deck": "Mazo",
       "tags": "Etiquetas",
       "words": "Palabras",
-      "added": "Añadido",
       "actions": "Acciones",
-      "noTags": "Aún sin etiquetas",
       "empty": "No hay mazos. Crea uno o importa un archivo de mazo.",
       "allTags": "Ver todas las etiquetas de {name}",
       "openActions": "Abrir acciones de {name}",
@@ -338,6 +333,35 @@ export default {
       "publish": "Publicar",
       "publishing": "Publicando…",
       "deleting": "Eliminando…"
+    },
+    "found": "{count} de {total}",
+    "newDeck": "Nuevo mazo",
+    "newMenu": {
+      "empty": "Mazo vacío",
+      "emptyHint": "Ponle nombre y añade palabras tú.",
+      "file": "Desde un archivo",
+      "fileHint": ".lioradeck, .lioralang o .json",
+      "json": "Desde JSON",
+      "jsonHint": "Pega un mazo o una lista de palabras."
+    },
+    "row": {
+      "learned": "Aprendidas",
+      "review": "Hoy",
+      "done": "Todo repasado",
+      "empty": "Aún sin palabras",
+      "learn": "Aprender",
+      "learnNamed": "Aprender {name}",
+      "learnedOf": "{known} de {words} palabras aprendidas",
+      "due": {
+        "one": "{count} por repasar",
+        "many": "{count} por repasar",
+        "other": "{count} por repasar"
+      },
+      "new": {
+        "one": "{count} palabra nueva",
+        "many": "{count} palabras nuevas",
+        "other": "{count} palabras nuevas"
+      }
     }
   },
   "import": {

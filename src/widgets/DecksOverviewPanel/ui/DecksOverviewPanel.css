@@ -47,203 +47,141 @@
   min-width: 0;
 }
 
+/* "3 of 12" while searching; nothing when the whole list is shown. */
 .decks-page-panel__search-meta {
-  flex: 0 0 auto;
-  min-height: 36px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 10px;
-  border: 2px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface-muted);
-  line-height: 1;
-}
-
-.decks-page-panel__search-meta strong {
-  color: var(--color-text);
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-
-.decks-page-panel__search-meta span {
   color: var(--color-text-muted);
-  font-size: 0.76rem;
-}
-
-.decks-page-panel__controls {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 0;
-}
-
-.decks-page-panel__icon-action-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.decks-page-panel__icon-action {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
-  padding: 0;
-  border-radius: var(--radius-control);
-  color: var(--color-primary);
-}
-
-/* Creating a deck is the main action on this page: the one blue key. */
-.decks-page-panel__icon-action--create {
-  border-color: var(--color-primary-strong);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
-.decks-page-panel__icon-action svg {
-  display: block;
-  width: 16px;
-  height: 16px;
-  flex: 0 0 auto;
-}
-
-.decks-page-panel__icon-action--create svg {
-  transform: translateY(-0.25px);
-}
-
-.decks-page-panel__icon-action--import svg {
-  transform: translateY(-0.5px);
-}
-
-.decks-page-panel__icon-action--json svg {
-  transform: translateY(0.25px);
-}
-
-.decks-page-panel__icon-action--refresh svg {
-  transform: translateY(-0.25px);
-}
-
-.decks-page-panel__tooltip {
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 10px);
-  transform: translate(-50%, 4px);
-  transition: opacity 120ms ease, transform 120ms ease;
-  z-index: 6;
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: var(--shadow-tooltip);
-  color: var(--color-text);
-  font-size: 0.72rem;
-  padding: 6px 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.decks-page-panel__tooltip::before {
-  content: "";
+/* ----- new deck: one labelled key, its three ways as a menu ----- */
+
+.decks-page-panel__new {
+  position: relative;
+}
+
+.decks-page-panel__new-button.ui-button {
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.decks-page-panel__new-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.decks-page-panel__new-caret {
+  margin-left: -2px;
+  opacity: 0.8;
+}
+
+.decks-page-panel__new-menu {
   position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-bottom-color: var(--color-surface);
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  min-width: 260px;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 6px;
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-tooltip);
+  animation: decks-new-in 160ms var(--motion-spring);
+  transform-origin: top right;
 }
 
-.decks-page-panel__icon-action-wrap:hover .decks-page-panel__tooltip,
-.decks-page-panel__icon-action-wrap:focus-within .decks-page-panel__tooltip {
-  opacity: 1;
-  transform: translate(-50%, 0);
+.decks-page-panel__new-menu button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 11px;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
-@media (min-width: 1360px) {
-  .decks-page-panel__controls {
-    gap: 10px;
+.decks-page-panel__new-menu button:hover:not(:disabled),
+.decks-page-panel__new-menu button:focus-visible {
+  background: var(--color-surface-muted);
+  outline: none;
+}
+
+.decks-page-panel__new-menu button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.decks-page-panel__new-menu svg {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+.decks-page-panel__new-menu span {
+  display: grid;
+  gap: 2px;
+}
+
+.decks-page-panel__new-menu strong {
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.decks-page-panel__new-menu small {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+@keyframes decks-new-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
 }
 
-@media (max-width: 900px) {
+@media (prefers-reduced-motion: reduce) {
+  .decks-page-panel__new-menu {
+    animation: none;
+  }
+}
+
+/* A phone keeps the search wide and the key to its icon. */
+@media (max-width: 540px), (max-width: 720px) and (orientation: portrait) {
   .decks-page-panel {
     gap: 12px;
   }
 
   .decks-page-panel__header {
-    grid-template-columns: 1fr;
-    align-items: stretch;
+    gap: 10px;
   }
 
   .decks-page-panel__header-tools {
-    width: 100%;
-    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .decks-page-panel__new-button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .decks-page-panel__search-meta {
-    align-self: center;
-  }
-}
-
-@media (max-width: 640px) {
-  .decks-page-panel__controls {
-    gap: 6px;
-  }
-
-  .decks-page-panel__icon-action {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
-
-  .decks-page-panel__header-tools {
-    gap: 10px;
-  }
-}
-
-@media (max-width: 640px) and (orientation: portrait) {
-  .decks-page-panel__header-tools {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .decks-page-panel__controls {
-    justify-content: flex-end;
-    min-width: 0;
-  }
-
-  .decks-page-panel__search-meta {
-    justify-self: start;
-  }
-}
-
-@media (max-width: 420px) {
-  .decks-page-panel {
-    gap: 10px;
-  }
-
-  .decks-page-panel__controls {
-    gap: 6px;
-  }
-
-  .decks-page-panel__icon-action {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    border-radius: 10px;
-  }
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .decks-page-panel__icon-action:hover:not(:disabled) {
-    color: var(--color-text-muted);
-  }
-
-  .decks-page-panel__tooltip {
     display: none;
   }
 }

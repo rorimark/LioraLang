@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import {
+  FiArrowRight,
   FiDownload,
   FiEdit3,
   FiFolder,
@@ -7,14 +8,14 @@ import {
   FiSend,
   FiTrash2,
 } from "react-icons/fi";
-import { formatDeckCreatedAt } from "@shared/lib/date";
+import { Button } from "@shared/ui";
 import { DeckTagBadges } from "../DeckTagBadges/DeckTagBadges";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
 import "./DecksTable.css";
 import { useI18n } from "@shared/lib/i18n";
 
-const MAX_VISIBLE_TAGS = 5;
-const MAX_TOTAL_TAGS = 10;
+// One line of tags: the first few, and the count of the rest.
+const MAX_VISIBLE_TAGS = 2;
 const EMPTY_OBJECT = Object.freeze({});
 const EMPTY_ARRAY = Object.freeze([]);
 const normalizeTagKey = (value) =>
@@ -49,101 +50,149 @@ const parseTagsJson = (value) => {
   }
 };
 
-const buildDeckTags = (deck, { t, languageName }) => {
-  const tags = [];
-  const languages = [];
-  const seenLanguageKeys = new Set();
-  const rawLanguages = [
-    deck?.sourceLanguage?.trim(),
-    deck?.targetLanguage?.trim(),
-    deck?.tertiaryLanguage?.trim(),
-  ].filter(Boolean);
+// The deck's own tags; its languages are shown as a pair, not as tags.
+const buildDeckTags = (deck) => {
+  const languageKeys = new Set(
+    [deck?.sourceLanguage, deck?.targetLanguage, deck?.tertiaryLanguage].map(normalizeTagKey).filter(Boolean),
+  );
+  const seen = new Set();
 
-  rawLanguages.forEach((language) => {
-    const languageKey = normalizeTagKey(language);
+  return parseTagsJson(deck?.tagsJson)
+    .filter((tag) => {
+      const key = normalizeTagKey(tag);
 
-    if (!languageKey || seenLanguageKeys.has(languageKey)) {
-      return;
-    }
+      if (!key || seen.has(key) || languageKeys.has(key)) {
+        return false;
+      }
 
-    seenLanguageKeys.add(languageKey);
-    languages.push(language);
-  });
-
-  const customTags = [];
-  const seenCustomTagKeys = new Set();
-
-  parseTagsJson(deck?.tagsJson).forEach((tag) => {
-    const tagKey = normalizeTagKey(tag);
-
-    if (
-      !tagKey ||
-      seenCustomTagKeys.has(tagKey) ||
-      seenLanguageKeys.has(tagKey)
-    ) {
-      return;
-    }
-
-    seenCustomTagKeys.add(tagKey);
-    customTags.push(tag.trim());
-  });
-
-  const customTagsLimit = Math.max(0, MAX_TOTAL_TAGS - languages.length);
-
-  languages.forEach((language) => {
-    tags.push({
-      key: `lang-${language}`,
-      text: languageName(language),
-      accent: false,
-    });
-  });
-
-  customTags.slice(0, customTagsLimit).forEach((tag) => {
-    tags.push({
-      key: `tag-${tag}`,
-      text: tag,
-      accent: false,
-    });
-  });
-
-  if (tags.length === 0) {
-    tags.push({
-      key: "untagged",
-      text: t("decks.table.noTags"),
-      accent: false,
-    });
-  }
-
-  return tags;
+      seen.add(key);
+      return true;
+    })
+    .map((tag) => ({ key: `tag-${tag}`, text: tag, accent: false }));
 };
 
-const splitDeckTags = (tags, limit = MAX_VISIBLE_TAGS) => {
-  if (!Array.isArray(tags) || tags.length <= limit) {
-    return {
-      visibleTags: tags,
-      hiddenTags: [],
-    };
+// "Polish → English", and a third language after a plus.
+const DeckLanguages = ({ deck, languageName }) => {
+  const source = String(deck?.sourceLanguage || "").trim();
+  const target = String(deck?.targetLanguage || "").trim();
+  const third = String(deck?.tertiaryLanguage || "").trim();
+
+  if (!source && !target) {
+    return null;
   }
 
-  return {
-    visibleTags: tags.slice(0, limit),
-    hiddenTags: tags.slice(limit),
-  };
+  return (
+    <span className="deck-row__langs">
+      {source ? languageName(source) : "—"}
+      <FiArrowRight aria-hidden="true" />
+      {target ? languageName(target) : "—"}
+      {third && third !== source && third !== target ? <span> + {languageName(third)}</span> : null}
+    </span>
+  );
+};
+
+const DeckMenu = ({ deck, isOpen, pendingState, onToggle, onAction, stop }) => {
+  const { t } = useI18n();
+  const id = String(deck.id);
+  const isPublishing = String(pendingState.publishingDeckId) === id;
+  const isExporting = String(pendingState.exportingDeckId) === id;
+  const isDeleting = String(pendingState.deletingDeckId) === id;
+
+  return (
+    <div className={`decks-table__actions${isOpen ? " decks-table__actions--open" : ""}`} data-deck-menu-id={deck.id}>
+      <button
+        type="button"
+        data-deck-id={deck.id}
+        className="decks-table__menu-trigger"
+        aria-label={t("decks.table.openActions", { name: deck.name })}
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
+        onClick={onToggle}
+        onKeyDown={stop}
+      >
+        <FiMoreVertical aria-hidden="true" />
+      </button>
+
+      {isOpen ? (
+        <div
+          className="decks-table__menu"
+          role="menu"
+          aria-label={t("decks.table.actionsFor", { name: deck.name })}
+          onClick={stop}
+          onKeyDown={stop}
+        >
+          <button type="button" role="menuitem" onClick={() => onAction("open", deck)}>
+            <FiFolder aria-hidden />
+            <span>{t("common.open")}</span>
+          </button>
+          <button type="button" role="menuitem" onClick={() => onAction("edit", deck)}>
+            <FiEdit3 aria-hidden />
+            <span>{t("common.edit")}</span>
+          </button>
+          <button type="button" role="menuitem" onClick={() => onAction("export", deck)} disabled={isExporting}>
+            <FiDownload aria-hidden />
+            <span>{isExporting ? t("decks.table.exporting") : t("decks.table.export")}</span>
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className="decks-table__button--publish"
+            onClick={() => onAction("publish", deck)}
+            disabled={isPublishing}
+          >
+            <FiSend aria-hidden />
+            <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className="decks-table__button--danger"
+            onClick={() => onAction("delete", deck)}
+            disabled={isDeleting}
+          >
+            <FiTrash2 aria-hidden />
+            <span>{isDeleting ? t("decks.table.deleting") : t("common.delete")}</span>
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+// Where the deck stands with the learner: what is due, what is new, or
+// that it is done for now.
+const DeckReview = ({ progress, wordsCount }) => {
+  const { t } = useI18n();
+
+  if (!progress) {
+    return null;
+  }
+
+  if (wordsCount === 0) {
+    return <span className="deck-row__state">{t("decks.row.empty")}</span>;
+  }
+
+  if (progress.dueNow > 0) {
+    return <span className="deck-row__state is-due">{t("decks.row.due", { count: progress.dueNow })}</span>;
+  }
+
+  if (progress.fresh > 0) {
+    return <span className="deck-row__state">{t("decks.row.new", { count: progress.fresh })}</span>;
+  }
+
+  return <span className="deck-row__state is-done">{t("decks.row.done")}</span>;
 };
 
 export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
-  const resolvedTable = table;
-  const resolvedDecks = Array.isArray(resolvedTable.decks)
-    ? resolvedTable.decks
-    : EMPTY_ARRAY;
-  const actions = resolvedTable.actions || EMPTY_OBJECT;
-  const pendingState = resolvedTable.pendingState || EMPTY_OBJECT;
-  const tableRef = useRef(null);
+  const decks = Array.isArray(table.decks) ? table.decks : EMPTY_ARRAY;
+  const actions = table.actions || EMPTY_OBJECT;
+  const pendingState = table.pendingState || EMPTY_OBJECT;
+  const progressByDeck = table.progress || EMPTY_OBJECT;
+  const listRef = useRef(null);
   const [openMenuDeckId, setOpenMenuDeckId] = useState(null);
-  const i18n = useI18n();
-  const { t } = i18n;
+  const { t, languageName, formatNumber } = useI18n();
 
-  useDeckTagsPopover(tableRef);
+  useDeckTagsPopover(listRef);
 
   useEffect(() => {
     if (!openMenuDeckId) {
@@ -153,11 +202,9 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
     const handlePointerDown = (event) => {
       const menuContainer = event.target.closest("[data-deck-menu-id]");
 
-      if (menuContainer?.dataset.deckMenuId === String(openMenuDeckId)) {
-        return;
+      if (menuContainer?.dataset.deckMenuId !== String(openMenuDeckId)) {
+        setOpenMenuDeckId(null);
       }
-
-      setOpenMenuDeckId(null);
     };
 
     const handleKeyDown = (event) => {
@@ -175,14 +222,28 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
     };
   }, [openMenuDeckId]);
 
+  const stop = useCallback((event) => {
+    event.stopPropagation();
+  }, []);
+
   const handleToggleMenu = useCallback((event) => {
     event.stopPropagation();
     const { deckId } = event.currentTarget.dataset;
-
-    setOpenMenuDeckId((currentDeckId) =>
-      String(currentDeckId) === String(deckId) ? null : deckId,
-    );
+    setOpenMenuDeckId((current) => (String(current) === String(deckId) ? null : deckId));
   }, []);
+
+  const handleAction = useCallback(
+    (action, deck) => {
+      setOpenMenuDeckId(null);
+
+      if (action === "open") actions.onOpenDeck?.(deck.id);
+      if (action === "edit") actions.onEditDeck?.(deck.id);
+      if (action === "export") actions.onExportDeck?.(deck.id);
+      if (action === "publish") actions.onPublishDeck?.(deck.id);
+      if (action === "delete") actions.onDeleteDeck?.(deck);
+    },
+    [actions],
+  );
 
   const handleRowOpen = useCallback(
     (event) => {
@@ -193,7 +254,7 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
 
   const handleRowKeyDown = useCallback(
     (event) => {
-      if (event.key !== "Enter" && event.key !== " ") {
+      if (event.target !== event.currentTarget || (event.key !== "Enter" && event.key !== " ")) {
         return;
       }
 
@@ -203,274 +264,119 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
     [actions],
   );
 
-  const stopEventPropagation = useCallback((event) => {
-    event.stopPropagation();
-  }, []);
-
-  const handleOpenDeck = useCallback(
-    (deckId) => {
-      actions.onOpenDeck?.(deckId);
-      setOpenMenuDeckId(null);
-    },
-    [actions],
-  );
-
-  const handleExportDeck = useCallback(
-    (deckId) => {
-      actions.onExportDeck?.(deckId);
-      setOpenMenuDeckId(null);
-    },
-    [actions],
-  );
-
-  const handleEditDeck = useCallback(
-    (deckId) => {
-      actions.onEditDeck?.(deckId);
-      setOpenMenuDeckId(null);
-    },
-    [actions],
-  );
-
-  const handlePublishDeck = useCallback(
-    (deckId) => {
-      actions.onPublishDeck?.(deckId);
-      setOpenMenuDeckId(null);
-    },
-    [actions],
-  );
-
-  const handleDeleteDeck = useCallback(
-    (deck) => {
-      actions.onDeleteDeck?.(deck);
-      setOpenMenuDeckId(null);
-    },
-    [actions],
-  );
+  if (decks.length === 0) {
+    return <p className="deck-list__empty">{t("decks.table.empty")}</p>;
+  }
 
   return (
-    <table ref={tableRef} className="decks-table" aria-label={t("decks.table.label")}>
-      <thead>
-        <tr>
-          <th>{t("decks.table.deck")}</th>
-          <th>{t("decks.table.tags")}</th>
-          <th>{t("decks.table.words")}</th>
-          <th>{t("decks.table.added")}</th>
-          <th>{t("decks.table.actions")}</th>
-        </tr>
-      </thead>
+    <div className="deck-list" ref={listRef}>
+      <div className="deck-list__head" aria-hidden="true">
+        <span>{t("decks.table.deck")}</span>
+        <span>{t("decks.table.tags")}</span>
+        <span>{t("decks.row.learned")}</span>
+        <span>{t("decks.row.review")}</span>
+        <span />
+      </div>
 
-      <tbody>
-        {resolvedDecks.length === 0 ? (
-          <tr>
-            <td colSpan={5} className="decks-table__empty">
-              {t("decks.table.empty")}
-            </td>
-          </tr>
-        ) : (
-          resolvedDecks.map((deck) => {
-            const deckTags = buildDeckTags(deck, i18n);
-            const { visibleTags, hiddenTags } = splitDeckTags(deckTags);
-            const isMenuOpen = String(openMenuDeckId) === String(deck.id);
-            const isPublishing =
-              String(pendingState.publishingDeckId) === String(deck.id);
-            const isExporting =
-              String(pendingState.exportingDeckId) === String(deck.id);
-            const isDeleting =
-              String(pendingState.deletingDeckId) === String(deck.id);
+      <ul className="deck-list__rows" aria-label={t("decks.table.label")}>
+        {decks.map((deck) => {
+          const tags = buildDeckTags(deck);
+          const visibleTags = tags.slice(0, MAX_VISIBLE_TAGS);
+          const hiddenCount = tags.length - visibleTags.length;
+          const progress = progressByDeck[String(deck.id)];
+          const wordsCount = Number(deck.wordsCount ?? progress?.words ?? 0);
+          const known = Math.min(progress?.known ?? 0, wordsCount);
+          const share = wordsCount > 0 ? known / wordsCount : 0;
+          const isDue = (progress?.dueNow ?? 0) > 0;
 
-            return (
-              <tr
-                key={deck.id}
-                className="decks-table__row"
-                data-deck-id={deck.id}
-                onClick={handleRowOpen}
-                onKeyDown={handleRowKeyDown}
-                tabIndex={0}
-              >
-                <td data-label={t("decks.table.deck")}>{deck.name}</td>
-                <td data-label={t("decks.table.tags")} className="decks-table__tags-cell">
-                  <div className="decks-table__tags-wrap">
-                    <div className="decks-table__tags-row">
-                      <DeckTagBadges
-                        className="decks-table__tags"
-                        badges={visibleTags}
-                        inline
-                      />
+          return (
+            <li
+              key={deck.id}
+              className="deck-row"
+              data-deck-id={deck.id}
+              onClick={handleRowOpen}
+              onKeyDown={handleRowKeyDown}
+              tabIndex={0}
+              aria-label={deck.name}
+            >
+              <div className="deck-row__main">
+                <strong className="deck-row__name">{deck.name}</strong>
+                <DeckLanguages deck={deck} languageName={languageName} />
+              </div>
 
-                      {hiddenTags.length > 0 && (
-                        <span
-                          className="decks-table__tags-more-wrap"
-                          tabIndex={0}
-                          aria-describedby={`deck-tags-tooltip-${deck.id}`}
-                          aria-label={t("decks.table.allTags", { name: deck.name })}
-                          onClick={stopEventPropagation}
-                          onKeyDown={stopEventPropagation}
-                        >
-                          <span className="decks-table__tags-more">...</span>
-                          <span
-                            id={`deck-tags-tooltip-${deck.id}`}
-                            role="tooltip"
-                            className="decks-table__tags-tooltip"
-                          >
-                            <DeckTagBadges
-                              className="decks-table__tags-tooltip-content"
-                              badges={deckTags}
-                            />
-                          </span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </td>
-                <td data-label={t("decks.table.words")}>{i18n.formatNumber(deck.wordsCount ?? 0)}</td>
-                <td data-label={t("decks.table.added")}>
-                  {formatDeckCreatedAt(deck.createdAt, "-", i18n.locale)}
-                </td>
-                <td data-label={t("decks.table.actions")} className="decks-table__actions-cell">
-                  <div
-                    className={`decks-table__actions ${isMenuOpen ? "decks-table__actions--open" : ""}`}
-                    data-deck-menu-id={deck.id}
+              <div className="deck-row__tags">
+                {visibleTags.length > 0 ? (
+                  <DeckTagBadges className="deck-row__tag-list" badges={visibleTags} inline />
+                ) : null}
+                {tags.length > 1 ? (
+                  // Two counts: the rest after two tags, and after one when
+                  // the row is narrow and shows a single tag.
+                  <span
+                    className={`decks-table__tags-more-wrap${hiddenCount > 0 ? "" : " is-narrow-only"}`}
+                    tabIndex={0}
+                    aria-describedby={`deck-tags-tooltip-${deck.id}`}
+                    aria-label={t("decks.table.allTags", { name: deck.name })}
+                    onClick={stop}
+                    onKeyDown={stop}
                   >
-                    <div className="decks-table__actions-desktop">
-                      <button
-                        type="button"
-                        data-deck-id={deck.id}
-                        className="decks-table__menu-trigger"
-                        aria-label={t("decks.table.openActions", { name: deck.name })}
-                        aria-expanded={isMenuOpen}
-                        aria-haspopup="menu"
-                        onClick={handleToggleMenu}
-                        onKeyDown={stopEventPropagation}
-                      >
-                        <FiMoreVertical aria-hidden="true" />
-                      </button>
+                    <span className="decks-table__tags-more">
+                      <span className="deck-row__more-wide">+{hiddenCount}</span>
+                      <span className="deck-row__more-narrow">+{tags.length - 1}</span>
+                    </span>
+                    <span id={`deck-tags-tooltip-${deck.id}`} role="tooltip" className="decks-table__tags-tooltip">
+                      <DeckTagBadges className="decks-table__tags-tooltip-content" badges={tags} />
+                    </span>
+                  </span>
+                ) : null}
+              </div>
 
-                      {isMenuOpen && (
-                        <div
-                          className="decks-table__menu"
-                          role="menu"
-                          aria-label={t("decks.table.actionsFor", { name: deck.name })}
-                          onClick={stopEventPropagation}
-                          onKeyDown={stopEventPropagation}
-                        >
-                          <button
-                            type="button"
-                            role="menuitem"
-                            onClick={() => handleOpenDeck(deck.id)}
-                          >
-                            <FiFolder aria-hidden />
-                            <span>{t("common.open")}</span>
-                          </button>
-                          <button
-                            type="button"
-                            role="menuitem"
-                            onClick={() => handleEditDeck(deck.id)}
-                          >
-                            <FiEdit3 aria-hidden />
-                            <span>{t("common.edit")}</span>
-                          </button>
+              <div className="deck-row__progress">
+                <span className="deck-row__count">
+                  {progress ? (
+                    <>
+                      <b>{formatNumber(known)}</b> / {formatNumber(wordsCount)}
+                    </>
+                  ) : (
+                    t("browse.wordsCount", { count: wordsCount })
+                  )}
+                </span>
+                <span
+                  className="deck-row__bar"
+                  role="img"
+                  aria-label={t("decks.row.learnedOf", { known, words: wordsCount })}
+                >
+                  <i style={{ inlineSize: `${Math.round(share * 100)}%` }} />
+                </span>
+              </div>
 
-                          <button
-                            type="button"
-                            role="menuitem"
-                            onClick={() => handleExportDeck(deck.id)}
-                            disabled={isExporting}
-                          >
-                            <FiDownload aria-hidden />
-                            <span>{isExporting ? t("decks.table.exporting") : t("decks.table.export")}</span>
-                          </button>
-                          <button
-                            type="button"
-                            role="menuitem"
-                            className="decks-table__button--publish"
-                            onClick={() => handlePublishDeck(deck.id)}
-                            disabled={isPublishing}
-                          >
-                            <FiSend aria-hidden />
-                            <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
-                          </button>
-                          <button
-                            type="button"
-                            role="menuitem"
-                            className="decks-table__button--danger"
-                            onClick={() =>
-                              handleDeleteDeck(deck)
-                            }
-                            disabled={isDeleting}
-                          >
-                            <FiTrash2 aria-hidden />
-                            <span>{isDeleting ? t("decks.table.deleting") : t("common.delete")}</span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
+              <div className="deck-row__review">
+                <DeckReview progress={progress} wordsCount={wordsCount} />
+              </div>
 
-                    <div className="decks-table__actions-mobile">
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleOpenDeck(deck.id);
-                        }}
-                      >
-                        <FiFolder aria-hidden />
-                        <span>{t("common.open")}</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleEditDeck(deck.id);
-                        }}
-                      >
-                        <FiEdit3 aria-hidden />
-                        <span>{t("common.edit")}</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleExportDeck(deck.id);
-                        }}
-                        disabled={isExporting}
-                      >
-                        <FiDownload aria-hidden />
-                        <span>{isExporting ? t("decks.table.exporting") : t("decks.table.export")}</span>
-                      </button>
-                      <button
-                        type="button"
-                        className="decks-table__button--publish"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handlePublishDeck(deck.id);
-                        }}
-                        disabled={isPublishing}
-                      >
-                        <FiSend aria-hidden />
-                        <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        className="decks-table__button--danger"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleDeleteDeck(deck);
-                        }}
-                        disabled={isDeleting}
-                      >
-                        <FiTrash2 aria-hidden />
-                        <span>{isDeleting ? t("decks.table.deleting") : t("common.delete")}</span>
-                      </button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            );
-          })
-        )}
-      </tbody>
-    </table>
+              <div className="deck-row__actions" onClick={stop} onKeyDown={stop}>
+                <Button
+                  variant={isDue ? "primary" : "secondary"}
+                  size="sm"
+                  onClick={() => actions.onLearnDeck?.(deck.id)}
+                  disabled={wordsCount === 0}
+                  aria-label={t("decks.row.learnNamed", { name: deck.name })}
+                >
+                  {t("decks.row.learn")}
+                </Button>
+                <DeckMenu
+                  deck={deck}
+                  isOpen={String(openMenuDeckId) === String(deck.id)}
+                  pendingState={pendingState}
+                  onToggle={handleToggleMenu}
+                  onAction={handleAction}
+                  stop={stop}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 });
 

@@ -1,5 +1,5 @@
-import { memo, useCallback, useMemo, useRef } from "react";
-import { FiCode, FiFolderPlus, FiRefreshCw, FiUpload } from "react-icons/fi";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FiChevronDown, FiCode, FiFilePlus, FiPlus, FiUpload } from "react-icons/fi";
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
@@ -8,6 +8,79 @@ import { Button, InlineAlert, SearchField } from "@shared/ui";
 import { DECK_PAGE_SIZE_OPTIONS, useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
 import { useI18n } from "@shared/lib/i18n";
+
+// One labelled way to add a deck; the three ways to do it are its menu.
+const NewDeckMenu = ({ onCreate, onImport, onJson, isImporting }) => {
+  const { t } = useI18n();
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const close = (event) => {
+      if (event.type === "keydown" ? event.key === "Escape" : !wrapRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", close);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", close);
+    };
+  }, [isOpen]);
+
+  const choose = (action) => {
+    setIsOpen(false);
+    action();
+  };
+
+  return (
+    <div className="decks-page-panel__new" ref={wrapRef}>
+      <Button
+        variant="primary"
+        className="decks-page-panel__new-button"
+        onClick={() => setIsOpen((open) => !open)}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        isLoading={isImporting}
+      >
+        <FiPlus aria-hidden="true" />
+        <span>{t("decks.newDeck")}</span>
+        <FiChevronDown aria-hidden="true" className="decks-page-panel__new-caret" />
+      </Button>
+      {isOpen ? (
+        <div className="decks-page-panel__new-menu" role="menu">
+          <button type="button" role="menuitem" onClick={() => choose(onCreate)}>
+            <FiFilePlus aria-hidden="true" />
+            <span>
+              <strong>{t("decks.newMenu.empty")}</strong>
+              <small>{t("decks.newMenu.emptyHint")}</small>
+            </span>
+          </button>
+          <button type="button" role="menuitem" onClick={() => choose(onImport)} disabled={isImporting}>
+            <FiUpload aria-hidden="true" />
+            <span>
+              <strong>{t("decks.newMenu.file")}</strong>
+              <small>{t("decks.newMenu.fileHint")}</small>
+            </span>
+          </button>
+          <button type="button" role="menuitem" onClick={() => choose(onJson)} disabled={isImporting}>
+            <FiCode aria-hidden="true" />
+            <span>
+              <strong>{t("decks.newMenu.json")}</strong>
+              <small>{t("decks.newMenu.jsonHint")}</small>
+            </span>
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 export const DecksOverviewPanel = memo(() => {
   const panel = useDecksOverviewPanel();
@@ -46,7 +119,9 @@ export const DecksOverviewPanel = memo(() => {
   const table = useMemo(
     () => ({
       decks: panel.decks,
+      progress: panel.deckProgress,
       actions: {
+        onLearnDeck: panel.learnDeck,
         onOpenDeck: panel.openDeck,
         onEditDeck: panel.openEditDeck,
         onPublishDeck: panel.publishDeck,
@@ -61,6 +136,8 @@ export const DecksOverviewPanel = memo(() => {
     }),
     [
       panel.decks,
+      panel.deckProgress,
+      panel.learnDeck,
       panel.deletingDeckId,
       panel.exportDeck,
       panel.exportingDeckId,
@@ -152,66 +229,17 @@ export const DecksOverviewPanel = memo(() => {
           ariaLabel={t("decks.search")}
         />
         <div className="decks-page-panel__header-tools">
-          <div className="decks-page-panel__search-meta" aria-live="polite">
-            <strong>{panel.matchingDecksCount}</strong>
-            <span>/ {panel.totalDecksCount}</span>
-          </div>
-          <div className="decks-page-panel__controls" aria-label={t("decks.actions")}>
-            <div className="decks-page-panel__icon-action-wrap">
-              <Button
-                variant="ghost"
-                className="decks-page-panel__icon-action decks-page-panel__icon-action--create"
-                onClick={panel.openCreateDeck}
-                aria-label={t("decks.create")}
-              >
-                <FiFolderPlus size={16} strokeWidth={2.1} />
-              </Button>
-              <div className="decks-page-panel__tooltip" role="tooltip">
-                {t("decks.create")}
-              </div>
+          {panel.deckSearch.trim() ? (
+            <div className="decks-page-panel__search-meta" aria-live="polite">
+              {t("decks.found", { count: panel.matchingDecksCount, total: panel.totalDecksCount })}
             </div>
-            <div className="decks-page-panel__icon-action-wrap">
-              <Button
-                variant="ghost"
-                className="decks-page-panel__icon-action decks-page-panel__icon-action--import"
-                onClick={panel.openImportConfirm}
-                disabled={panel.isImporting}
-                aria-label={panel.isImporting ? t("decks.importing") : t("decks.import")}
-              >
-                <FiUpload size={16} strokeWidth={2.1} />
-              </Button>
-              <div className="decks-page-panel__tooltip" role="tooltip">
-                {panel.isImporting ? t("decks.importing") : t("decks.import")}
-              </div>
-            </div>
-            <div className="decks-page-panel__icon-action-wrap">
-              <Button
-                variant="ghost"
-                className="decks-page-panel__icon-action decks-page-panel__icon-action--json"
-                onClick={panel.openJsonImport}
-                disabled={panel.isImporting}
-                aria-label={t("decks.fromJson")}
-              >
-                <FiCode size={16} strokeWidth={2.1} />
-              </Button>
-              <div className="decks-page-panel__tooltip" role="tooltip">
-                {t("decks.fromJson")}
-              </div>
-            </div>
-            <div className="decks-page-panel__icon-action-wrap">
-              <Button
-                variant="ghost"
-                className="decks-page-panel__icon-action decks-page-panel__icon-action--refresh"
-                onClick={panel.refreshDecks}
-                aria-label={t("decks.refresh")}
-              >
-                <FiRefreshCw size={16} strokeWidth={2.1} />
-              </Button>
-              <div className="decks-page-panel__tooltip" role="tooltip">
-                {t("decks.refresh")}
-              </div>
-            </div>
-          </div>
+          ) : null}
+          <NewDeckMenu
+            onCreate={panel.openCreateDeck}
+            onImport={panel.openImportConfirm}
+            onJson={panel.openJsonImport}
+            isImporting={panel.isImporting}
+          />
         </div>
       </div>
 

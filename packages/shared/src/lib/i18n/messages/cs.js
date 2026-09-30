@@ -276,12 +276,9 @@ export default {
     "untitled": "Balíček",
     "search": "Hledat balíčky",
     "searchPlaceholder": "Název, popis, jazyk nebo štítek",
-    "actions": "Akce s balíčky",
     "create": "Vytvořit balíček",
     "import": "Importovat soubor balíčku",
-    "importing": "Importujeme soubor balíčku",
     "fromJson": "Vytvořit balíček z JSON",
-    "refresh": "Obnovit balíčky",
     "loading": "Načítání balíčků…",
     "pages": "Stránky balíčků",
     "pageSize": "Balíčky",
@@ -326,9 +323,7 @@ export default {
       "deck": "Balíček",
       "tags": "Štítky",
       "words": "Slova",
-      "added": "Přidáno",
       "actions": "Akce",
-      "noTags": "Zatím bez štítků",
       "empty": "Žádné balíčky. Vytvořte balíček nebo importujte soubor.",
       "allTags": "Zobrazit všechny štítky balíčku {name}",
       "openActions": "Otevřít akce balíčku {name}",
@@ -338,6 +333,35 @@ export default {
       "publish": "Zveřejnit",
       "publishing": "Zveřejňujeme…",
       "deleting": "Mažeme…"
+    },
+    "found": "{count} z {total}",
+    "newDeck": "Nový balíček",
+    "newMenu": {
+      "empty": "Prázdný balíček",
+      "emptyHint": "Pojmenujte ho a přidejte slova sami.",
+      "file": "Ze souboru",
+      "fileHint": ".lioradeck, .lioralang nebo .json",
+      "json": "Z JSON",
+      "jsonHint": "Vložte balíček nebo seznam slov."
+    },
+    "row": {
+      "learned": "Naučeno",
+      "review": "Dnes",
+      "done": "Vše zopakováno",
+      "empty": "Zatím žádná slova",
+      "learn": "Učit se",
+      "learnNamed": "Učit se {name}",
+      "learnedOf": "Naučeno {known} z {words} slov",
+      "due": {
+        "one": "{count} k opakování",
+        "few": "{count} k opakování",
+        "other": "{count} k opakování"
+      },
+      "new": {
+        "one": "{count} nové slovo",
+        "few": "{count} nová slova",
+        "other": "{count} nových slov"
+      }
     }
   },
   "import": {

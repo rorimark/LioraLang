@@ -276,12 +276,9 @@ export default {
     "untitled": "Mazzo",
     "search": "Cerca mazzi",
     "searchPlaceholder": "Nome, descrizione, lingua o tag",
-    "actions": "Azioni sui mazzi",
     "create": "Crea mazzo",
     "import": "Importa file di mazzo",
-    "importing": "Importazione del file",
     "fromJson": "Crea mazzo da JSON",
-    "refresh": "Aggiorna mazzi",
     "loading": "Caricamento dei mazzi…",
     "pages": "Pagine dei mazzi",
     "pageSize": "Mazzi",
@@ -326,9 +323,7 @@ export default {
       "deck": "Mazzo",
       "tags": "Tag",
       "words": "Parole",
-      "added": "Aggiunto il",
       "actions": "Azioni",
-      "noTags": "Ancora nessun tag",
       "empty": "Nessun mazzo. Creane uno o importa un file di mazzo.",
       "allTags": "Mostra tutti i tag di {name}",
       "openActions": "Apri le azioni per {name}",
@@ -338,6 +333,35 @@ export default {
       "publish": "Pubblica",
       "publishing": "Pubblicazione…",
       "deleting": "Eliminazione…"
+    },
+    "found": "{count} di {total}",
+    "newDeck": "Nuovo mazzo",
+    "newMenu": {
+      "empty": "Mazzo vuoto",
+      "emptyHint": "Dagli un nome e aggiungi tu le parole.",
+      "file": "Da un file",
+      "fileHint": ".lioradeck, .lioralang o .json",
+      "json": "Da JSON",
+      "jsonHint": "Incolla un mazzo o un elenco di parole."
+    },
+    "row": {
+      "learned": "Imparate",
+      "review": "Oggi",
+      "done": "Tutto ripassato",
+      "empty": "Ancora nessuna parola",
+      "learn": "Studia",
+      "learnNamed": "Studia {name}",
+      "learnedOf": "{known} parole imparate su {words}",
+      "due": {
+        "one": "{count} da ripassare",
+        "many": "{count} da ripassare",
+        "other": "{count} da ripassare"
+      },
+      "new": {
+        "one": "{count} parola nuova",
+        "many": "{count} parole nuove",
+        "other": "{count} parole nuove"
+      }
     }
   },
   "import": {

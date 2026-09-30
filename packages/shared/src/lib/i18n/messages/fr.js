@@ -276,12 +276,9 @@ export default {
     "untitled": "Paquet",
     "search": "Rechercher des paquets",
     "searchPlaceholder": "Nom, description, langue ou étiquette",
-    "actions": "Actions sur les paquets",
     "create": "Créer un paquet",
     "import": "Importer un fichier de paquet",
-    "importing": "Importation du fichier",
     "fromJson": "Créer un paquet depuis du JSON",
-    "refresh": "Actualiser les paquets",
     "loading": "Chargement des paquets…",
     "pages": "Pages de paquets",
     "pageSize": "Paquets",
@@ -326,9 +323,7 @@ export default {
       "deck": "Paquet",
       "tags": "Étiquettes",
       "words": "Mots",
-      "added": "Ajouté le",
       "actions": "Actions",
-      "noTags": "Pas encore d'étiquettes",
       "empty": "Aucun paquet. Créez-en un ou importez un fichier de paquet.",
       "allTags": "Voir toutes les étiquettes de {name}",
       "openActions": "Ouvrir les actions de {name}",
@@ -338,6 +333,35 @@ export default {
       "publish": "Publier",
       "publishing": "Publication…",
       "deleting": "Suppression…"
+    },
+    "found": "{count} sur {total}",
+    "newDeck": "Nouveau deck",
+    "newMenu": {
+      "empty": "Deck vide",
+      "emptyHint": "Nommez-le et ajoutez les mots vous-même.",
+      "file": "Depuis un fichier",
+      "fileHint": ".lioradeck, .lioralang ou .json",
+      "json": "Depuis du JSON",
+      "jsonHint": "Collez un deck ou une liste de mots."
+    },
+    "row": {
+      "learned": "Appris",
+      "review": "Aujourd'hui",
+      "done": "Tout est révisé",
+      "empty": "Aucun mot",
+      "learn": "Apprendre",
+      "learnNamed": "Apprendre {name}",
+      "learnedOf": "{known} mots appris sur {words}",
+      "due": {
+        "one": "{count} à réviser",
+        "many": "{count} à réviser",
+        "other": "{count} à réviser"
+      },
+      "new": {
+        "one": "{count} nouveau mot",
+        "many": "{count} nouveaux mots",
+        "other": "{count} nouveaux mots"
+      }
     }
   },
   "import": {

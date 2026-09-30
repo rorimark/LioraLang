@@ -274,12 +274,9 @@ export default {
     "untitled": "デッキ",
     "search": "デッキを検索",
     "searchPlaceholder": "名前、説明、言語、タグで検索",
-    "actions": "デッキの操作",
     "create": "デッキを作成",
     "import": "デッキファイルを読み込む",
-    "importing": "デッキファイルを読み込み中",
     "fromJson": "JSONからデッキを作成",
-    "refresh": "デッキを更新",
     "loading": "デッキを読み込み中…",
     "pages": "デッキのページ",
     "pageSize": "デッキ",
@@ -316,9 +313,7 @@ export default {
       "deck": "デッキ",
       "tags": "タグ",
       "words": "単語数",
-      "added": "追加日",
       "actions": "操作",
-      "noTags": "タグなし",
       "empty": "デッキがありません。作成するか、デッキファイルを読み込んでください。",
       "allTags": "{name}のタグをすべて表示",
       "openActions": "{name}の操作を開く",
@@ -328,6 +323,31 @@ export default {
       "publish": "公開",
       "publishing": "公開中…",
       "deleting": "削除中…"
+    },
+    "found": "{total}件中{count}件",
+    "newDeck": "新しいデッキ",
+    "newMenu": {
+      "empty": "空のデッキ",
+      "emptyHint": "名前を付けて、単語を自分で追加します。",
+      "file": "ファイルから",
+      "fileHint": ".lioradeck、.lioralang、.json",
+      "json": "JSONから",
+      "jsonHint": "デッキか単語リストを貼り付けます。"
+    },
+    "row": {
+      "learned": "習得",
+      "review": "今日",
+      "done": "すべて復習済み",
+      "empty": "単語はまだありません",
+      "learn": "学習",
+      "learnNamed": "{name}を学習",
+      "learnedOf": "{words}語中{known}語を習得",
+      "due": {
+        "other": "復習{count}件"
+      },
+      "new": {
+        "other": "新しい単語{count}語"
+      }
     }
   },
   "import": {
