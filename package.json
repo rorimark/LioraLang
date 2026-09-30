@@ -14,7 +14,7 @@
     "setup:web": "pnpm install",
     "setup:desktop": "pnpm install",
     "dev:electron": "wait-on tcp:5175 && VITE_DEV_SERVER_URL=http://localhost:5175 electron .",
-    "rebuild:native": "npm_config_runtime=electron npm_config_target=$(node -e \"const fs=require('node:fs'); const pkg=JSON.parse(fs.readFileSync('package.json','utf8')); process.stdout.write(pkg.optionalDependencies.electron);\") npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
+    "rebuild:native": "npm_config_runtime=electron npm_config_target=$(node -e \"const fs=require('node:fs'); const pkg=JSON.parse(fs.readFileSync('package.json','utf8')); process.stdout.write(pkg.devDependencies.electron);\") npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
     "build": "pnpm build:desktop",
     "build:desktop": "vite build --mode desktop",
     "build:web": "vite build --mode web",
@@ -57,6 +57,7 @@
     "react-router": "^7.13.1"
   },
   "devDependencies": {
+    "@electron/asar": "^3.4.1",
     "@eslint/js": "^9.39.4",
     "@feature-sliced/eslint-config": "^0.1.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -67,6 +68,8 @@
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/coverage-v8": "^4.1.2",
     "concurrently": "^9.2.1",
+    "electron": "41.1.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.39.4",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-boundaries": "^6.0.1",
@@ -81,9 +84,7 @@
     "wait-on": "^9.0.1"
   },
   "optionalDependencies": {
-    "better-sqlite3": "^12.8.0",
-    "electron": "41.1.0",
-    "electron-builder": "^26.0.12"
+    "better-sqlite3": "^12.8.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
