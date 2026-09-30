@@ -227,9 +227,7 @@ export default {
       "title": "Dirección",
       "forward": "La palabra delante, su traducción detrás.",
       "reverse": "La traducción delante, la palabra detrás.",
-      "mixed": "Ambas direcciones, mezcladas tarjeta a tarjeta.",
-      "pictureToWord": "La imagen delante, la palabra detrás.",
-      "wordToPicture": "La palabra delante, su imagen detrás."
+      "mixed": "Ambas direcciones, mezcladas tarjeta a tarjeta."
     },
     "behavior": "Sesión",
     "dailyGoal": "Meta diaria (no es un límite)",
@@ -320,7 +318,8 @@ export default {
       "delete": "No se ha podido eliminar el mazo.",
       "notFound": "Este mazo ya no existe.",
       "load": "No se han podido cargar tus mazos.",
-      "loadWords": "No se han podido cargar las palabras de este mazo."
+      "loadWords": "No se han podido cargar las palabras de este mazo.",
+      "publishPictures": "Los mazos con un lado de imágenes aún no pueden ir al Hub. Se quedan en tus dispositivos y en la sincronización."
     },
     "table": {
       "label": "Mazos",
@@ -539,13 +538,17 @@ export default {
       "load": "No se ha podido cargar el mazo para editarlo.",
       "emptyWord": "Escribe primero la palabra.",
       "nameRequired": "Ponle un nombre al mazo.",
-      "save": "No se ha podido guardar el mazo."
+      "save": "No se ha podido guardar el mazo.",
+      "emptyPicture": "Primero añade una imagen."
     },
     "status": {
       "deleted": "Eliminada: {word}",
       "updated": "Mazo guardado",
       "created": "Mazo creado"
-    }
+    },
+    "side": {
+      "language": "Idioma",
+      "pictureHint": "Cada palabra lleva una imagen en este lado en lugar de texto."}
   },
   "browse": {
     "empty": "Ningún mazo de la comunidad coincide con tu búsqueda.",
@@ -1640,7 +1643,8 @@ export default {
         "one": "{count} tarjeta añadida",
         "many": "{count} tarjetas añadidas",
         "other": "{count} tarjetas añadidas"
-      }
+      },
+      "withPicture": "Añadida: {word}, con su imagen"
     },
     "undo": "Deshacer",
     "undone": {
@@ -1660,7 +1664,8 @@ export default {
       "undo": "No se pudo deshacer. Las tarjetas siguen en el mazo.",
       "deckName": "Primero ponle nombre al mazo nuevo.",
       "deckNameTaken": "Ya existe un mazo con este nombre.",
-      "sameLanguages": "Elige dos idiomas distintos."
+      "sameLanguages": "Elige dos idiomas distintos.",
+      "emptyPicture": "Añade una imagen y pulsa Enter."
     },
     "list": {
       "label": "Tu lista",

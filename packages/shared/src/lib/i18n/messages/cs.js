@@ -227,9 +227,7 @@ export default {
       "title": "Směr",
       "forward": "Slovo vpředu, překlad vzadu.",
       "reverse": "Překlad vpředu, slovo vzadu.",
-      "mixed": "Oba směry, střídavě kartička po kartičce.",
-      "pictureToWord": "Obrázek vpředu, slovo vzadu.",
-      "wordToPicture": "Slovo vpředu, jeho obrázek vzadu."
+      "mixed": "Oba směry, střídavě kartička po kartičce."
     },
     "behavior": "Relace",
     "dailyGoal": "Denní cíl (není limit)",
@@ -320,7 +318,8 @@ export default {
       "delete": "Balíček nešlo smazat.",
       "notFound": "Tento balíček už neexistuje.",
       "load": "Vaše balíčky nešlo načíst.",
-      "loadWords": "Slova tohoto balíčku nešlo načíst."
+      "loadWords": "Slova tohoto balíčku nešlo načíst.",
+      "publishPictures": "Balíčky s obrázkovou stranou zatím nejde zveřejnit v Hubu. Zůstávají ve vašich zařízeních a v synchronizaci."
     },
     "table": {
       "label": "Balíčky",
@@ -539,13 +538,17 @@ export default {
       "load": "Balíček nešlo načíst k úpravám.",
       "emptyWord": "Nejdřív zadejte slovo.",
       "nameRequired": "Pojmenujte balíček.",
-      "save": "Balíček nešlo uložit."
+      "save": "Balíček nešlo uložit.",
+      "emptyPicture": "Nejdřív přidejte obrázek."
     },
     "status": {
       "deleted": "Smazáno: {word}",
       "updated": "Balíček uložen",
       "created": "Balíček vytvořen"
-    }
+    },
+    "side": {
+      "language": "Jazyk",
+      "pictureHint": "Každé slovo má na této straně místo textu obrázek."}
   },
   "browse": {
     "empty": "Hledání neodpovídá žádný balíček komunity.",
@@ -1640,7 +1643,8 @@ export default {
         "one": "Přidána {count} karta",
         "few": "Přidány {count} karty",
         "other": "Přidáno {count} karet"
-      }
+      },
+      "withPicture": "Přidáno: {word}, s obrázkem"
     },
     "undo": "Vrátit",
     "undone": {
@@ -1660,7 +1664,8 @@ export default {
       "undo": "Vrátit se nepodařilo. Karty zůstaly v balíčku.",
       "deckName": "Nejdřív pojmenujte nový balíček.",
       "deckNameTaken": "Balíček s tímto názvem už existuje.",
-      "sameLanguages": "Vyberte dva různé jazyky."
+      "sameLanguages": "Vyberte dva různé jazyky.",
+      "emptyPicture": "Přidejte obrázek a stiskněte Enter."
     },
     "list": {
       "label": "Váš seznam",

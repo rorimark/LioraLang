@@ -28,7 +28,6 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
       backLabel = t("flashcard.back"),
       backText,
       backImage = null,
-      backSubText = "",
       backMetaBadges = EMPTY_BADGES,
       backDetails = EMPTY_DETAILS,
       isFlipped = false,
@@ -113,7 +112,6 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
                   {backText || "-"}
                 </strong>
               )}
-              {backSubText ? <span className="flashcard__subtext">{backSubText}</span> : null}
               {backDetails.length > 0 && (
                 <span className="flashcard__details" aria-label={t("flashcard.examples")}>
                   {backDetails.map((detail, index) => (

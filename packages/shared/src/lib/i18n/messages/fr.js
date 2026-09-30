@@ -227,9 +227,7 @@ export default {
       "title": "Sens",
       "forward": "Le mot au recto, sa traduction au verso.",
       "reverse": "La traduction au recto, le mot au verso.",
-      "mixed": "Les deux sens, mélangés carte par carte.",
-      "pictureToWord": "L’image au recto, le mot au verso.",
-      "wordToPicture": "Le mot au recto, son image au verso."
+      "mixed": "Les deux sens, mélangés carte par carte."
     },
     "behavior": "Session",
     "dailyGoal": "Objectif du jour (pas une limite)",
@@ -320,7 +318,8 @@ export default {
       "delete": "Le paquet n'a pas pu être supprimé.",
       "notFound": "Ce paquet n'existe plus.",
       "load": "Vos paquets n'ont pas pu être chargés.",
-      "loadWords": "Les mots de ce paquet n'ont pas pu être chargés."
+      "loadWords": "Les mots de ce paquet n'ont pas pu être chargés.",
+      "publishPictures": "Les paquets avec un côté en images ne peuvent pas encore aller sur le Hub. Ils restent sur vos appareils et dans la synchronisation."
     },
     "table": {
       "label": "Paquets",
@@ -539,13 +538,17 @@ export default {
       "load": "Le paquet n'a pas pu être chargé pour modification.",
       "emptyWord": "Saisissez d'abord le mot.",
       "nameRequired": "Donnez un nom au paquet.",
-      "save": "Le paquet n'a pas pu être enregistré."
+      "save": "Le paquet n'a pas pu être enregistré.",
+      "emptyPicture": "Ajoutez d’abord une image."
     },
     "status": {
       "deleted": "Supprimé : {word}",
       "updated": "Paquet enregistré",
       "created": "Paquet créé"
-    }
+    },
+    "side": {
+      "language": "Langue",
+      "pictureHint": "Chaque mot a une image de ce côté au lieu d’un texte."}
   },
   "browse": {
     "empty": "Aucun paquet de la communauté ne correspond à votre recherche.",
@@ -1640,7 +1643,8 @@ export default {
         "one": "{count} carte ajoutée",
         "many": "{count} cartes ajoutées",
         "other": "{count} cartes ajoutées"
-      }
+      },
+      "withPicture": "Ajouté : {word}, avec son image"
     },
     "undo": "Annuler",
     "undone": {
@@ -1660,7 +1664,8 @@ export default {
       "undo": "Impossible d'annuler. Les cartes sont toujours dans le paquet.",
       "deckName": "Nommez d'abord le nouveau paquet.",
       "deckNameTaken": "Un paquet porte déjà ce nom.",
-      "sameLanguages": "Choisissez deux langues différentes."
+      "sameLanguages": "Choisissez deux langues différentes.",
+      "emptyPicture": "Ajoutez une image, puis appuyez sur Entrée."
     },
     "list": {
       "label": "Votre liste",

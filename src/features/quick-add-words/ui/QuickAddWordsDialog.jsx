@@ -45,8 +45,8 @@ const DeckPicker = memo(({ model }) => {
         {model.selectedDeck ? (
           <span className="quick-add__languages">
             {t("quickAdd.direction", {
-              from: languageName(model.languages.sourceLanguage),
-              to: languageName(model.languages.targetLanguage),
+              from: model.languages.pictureSide === "source" ? t("media.label") : languageName(model.languages.sourceLanguage),
+              to: model.languages.pictureSide === "target" ? t("media.label") : languageName(model.languages.targetLanguage),
             })}
           </span>
         ) : null}
@@ -144,49 +144,64 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         void model.addDraft();
       }}
     >
-      <div className="quick-add__pair">
-        <label className="quick-add__field">
-          <span>{languageName(languages.sourceLanguage)}</span>
-          <input
-            ref={sourceInputRef}
-            name="source"
-            value={model.draft.source}
-            onChange={model.handleDraftChange}
-            onKeyDown={model.handleSourceKeyDown}
-            onPaste={model.handleSourcePaste}
-            placeholder={t("quickAdd.wordPlaceholder")}
-            autoComplete="off"
-            autoCapitalize="none"
-            enterKeyHint="next"
-            data-autofocus
+      <div className={`quick-add__pair${languages.pictureSide ? " quick-add__pair--picture" : ""}`}>
+        {/* A picture side takes a picture where a language side takes a word. */}
+        {languages.pictureSide === "source" ? (
+          <WordImageField
+            value={model.draftImage}
+            onChange={model.setDraftImage}
+            word={model.draft.target}
+            isCompact
+            isRequired
+            isDisabled={model.isSaving}
           />
-        </label>
-        <label className="quick-add__field">
-          <span>{languageName(languages.targetLanguage)}</span>
-          <input
-            name="target"
-            value={model.draft.target}
-            onChange={model.handleDraftChange}
-            onKeyDown={model.handleTargetKeyDown}
-            placeholder={t("quickAdd.translationPlaceholder")}
-            autoComplete="off"
-            autoCapitalize="none"
-            enterKeyHint="done"
+        ) : (
+          <label className="quick-add__field">
+            <span>{languageName(languages.sourceLanguage)}</span>
+            <input
+              ref={sourceInputRef}
+              name="source"
+              value={model.draft.source}
+              onChange={model.handleDraftChange}
+              onKeyDown={model.handleSourceKeyDown}
+              onPaste={model.handleSourcePaste}
+              placeholder={t("quickAdd.wordPlaceholder")}
+              autoComplete="off"
+              autoCapitalize="none"
+              enterKeyHint="next"
+              data-autofocus
+            />
+          </label>
+        )}
+        {languages.pictureSide === "target" ? (
+          <WordImageField
+            value={model.draftImage}
+            onChange={model.setDraftImage}
+            word={model.draft.source}
+            isCompact
+            isRequired
+            isDisabled={model.isSaving}
           />
-        </label>
+        ) : (
+          <label className="quick-add__field">
+            <span>{languageName(languages.targetLanguage)}</span>
+            <input
+              name="target"
+              value={model.draft.target}
+              onChange={model.handleDraftChange}
+              onKeyDown={model.handleTargetKeyDown}
+              placeholder={t("quickAdd.translationPlaceholder")}
+              autoComplete="off"
+              autoCapitalize="none"
+              enterKeyHint="done"
+            />
+          </label>
+        )}
       </div>
 
       <div aria-live="polite">
         <DuplicateHint duplicate={model.draftDuplicate} />
       </div>
-
-      <WordImageField
-        value={model.draftImage}
-        onChange={model.setDraftImage}
-        word={model.draft.source}
-        isCompact
-        isDisabled={model.isSaving}
-      />
 
       <button
         type="button"
@@ -485,22 +500,25 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", onClose, onWordsA
         <div className="quick-add__body">
           <DeckPicker model={model} />
 
-          <div className="quick-add__tabs" role="tablist" aria-label={t("quickAdd.modeLabel")}>
-            {["single", "list"].map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                role="tab"
-                aria-selected={model.tab === tab}
-                className={model.tab === tab ? "is-active" : ""}
-                onClick={() => model.setTab(tab)}
-              >
-                {t(tab === "single" ? "quickAdd.tabs.single" : "quickAdd.tabs.list")}
-              </button>
-            ))}
-          </div>
+          {/* A pasted list is text; a picture deck takes its words one by one. */}
+          {model.languages.pictureSide ? null : (
+            <div className="quick-add__tabs" role="tablist" aria-label={t("quickAdd.modeLabel")}>
+              {["single", "list"].map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  role="tab"
+                  aria-selected={model.tab === tab}
+                  className={model.tab === tab ? "is-active" : ""}
+                  onClick={() => model.setTab(tab)}
+                >
+                  {t(tab === "single" ? "quickAdd.tabs.single" : "quickAdd.tabs.list")}
+                </button>
+              ))}
+            </div>
+          )}
 
-          {model.tab === "single" ? <SingleWordForm model={model} sourceInputRef={sourceInputRef} /> : <PasteList model={model} />}
+          {model.tab === "single" || model.languages.pictureSide ? <SingleWordForm model={model} sourceInputRef={sourceInputRef} /> : <PasteList model={model} />}
 
           {/* Right under the fields, so a phone keyboard never hides it. */}
           <Notice model={model} />

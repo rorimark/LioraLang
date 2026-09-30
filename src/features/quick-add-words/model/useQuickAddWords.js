@@ -148,9 +148,12 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
         sourceLanguage: selectedDeck.sourceLanguage,
         targetLanguage: selectedDeck.targetLanguage,
         tertiaryLanguage: selectedDeck.tertiaryLanguage || "",
+        // A side that is pictures takes a picture where it would take text.
+        pictureSide: selectedDeck.pictureSide || "",
       }
-    : { ...newDeck, tertiaryLanguage: "" };
+    : { ...newDeck, tertiaryLanguage: "", pictureSide: "" };
   const usesWordLevels = selectedDeck ? selectedDeck.usesWordLevels !== false : true;
+  const pictureSide = languages.pictureSide;
 
   const loadDeckWords = useCallback(async () => {
     if (!selectedDeck) {
@@ -260,13 +263,18 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
     const source = draft.source.trim();
     const target = draft.target.trim();
 
-    if (!source) {
+    if (pictureSide && !draftImage) {
+      setNotice({ kind: "error", key: "quickAdd.errors.emptyPicture" });
+      return;
+    }
+
+    if (pictureSide !== "source" && !source) {
       setNotice({ kind: "error", key: "quickAdd.errors.emptyWord" });
       focusSource();
       return;
     }
 
-    if (!target) {
+    if (pictureSide !== "target" && !target) {
       setNotice({ kind: "error", key: "quickAdd.errors.emptyTranslation" });
       return;
     }
@@ -292,7 +300,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
           part_of_speech: details.part_of_speech,
           level: usesWordLevels ? details.level : "",
           tags: splitTags(details.tagsInput),
-          image: draftImage,
+          image: pictureSide ? draftImage : null,
         },
       ]);
 
@@ -300,7 +308,11 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
       setDraftImage(null);
       setDetails((current) => ({ ...EMPTY_DETAILS, tagsInput: current.tagsInput }));
       setConfirmedPair("");
-      setNotice({ kind: "added", key: "quickAdd.added.single", params: { word: added[0]?.source || source, translation: added[0]?.target || target } });
+      setNotice(
+        pictureSide
+          ? { kind: "added", key: "quickAdd.added.withPicture", params: { word: pictureSide === "source" ? target : source } }
+          : { kind: "added", key: "quickAdd.added.single", params: { word: added[0]?.source || source, translation: added[0]?.target || target } },
+      );
       focusSource();
     } catch (error) {
       console.warn("[quick-add] add failed", error);
@@ -309,7 +321,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
     } finally {
       setIsSaving(false);
     }
-  }, [confirmedPair, details, draft, draftDuplicate.kind, draftImage, focusSource, usesWordLevels, writeWords]);
+  }, [confirmedPair, details, draft, draftDuplicate.kind, draftImage, focusSource, pictureSide, usesWordLevels, writeWords]);
 
   const undo = useCallback(
     async (entryId) => {
@@ -518,6 +530,12 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
     setNewDeck((current) => ({ ...current, [name]: value }));
   }, []);
 
+  // A new picture answers a "picture first" notice.
+  const changeDraftImage = useCallback((image) => {
+    setDraftImage(image);
+    setNotice((current) => (current?.key === "quickAdd.errors.emptyPicture" ? null : current));
+  }, []);
+
   const hasUnsavedInput =
     Boolean(draft.source.trim() || draft.target.trim() || draftImage) || rows.some((row) => row.source || row.target);
 
@@ -535,7 +553,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
     setTab,
     draft,
     draftImage,
-    setDraftImage,
+    setDraftImage: changeDraftImage,
     details,
     isDetailsOpen,
     setIsDetailsOpen,

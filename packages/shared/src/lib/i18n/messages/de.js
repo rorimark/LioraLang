@@ -227,9 +227,7 @@ export default {
       "title": "Richtung",
       "forward": "Das Wort vorne, die Übersetzung hinten.",
       "reverse": "Die Übersetzung vorne, das Wort hinten.",
-      "mixed": "Beide Richtungen, Karte für Karte gemischt.",
-      "pictureToWord": "Das Bild vorne, das Wort hinten.",
-      "wordToPicture": "Das Wort vorne, sein Bild hinten."
+      "mixed": "Beide Richtungen, Karte für Karte gemischt."
     },
     "behavior": "Sitzung",
     "dailyGoal": "Tagesziel (keine Grenze)",
@@ -315,7 +313,8 @@ export default {
       "delete": "Das Deck konnte nicht gelöscht werden.",
       "notFound": "Dieses Deck gibt es nicht mehr.",
       "load": "Deine Decks konnten nicht geladen werden.",
-      "loadWords": "Die Wörter dieses Decks konnten nicht geladen werden."
+      "loadWords": "Die Wörter dieses Decks konnten nicht geladen werden.",
+      "publishPictures": "Decks mit einer Bildseite können noch nicht in den Hub. Sie bleiben auf deinen Geräten und in der Synchronisierung."
     },
     "table": {
       "label": "Decks",
@@ -527,13 +526,17 @@ export default {
       "load": "Das Deck konnte nicht zum Bearbeiten geladen werden.",
       "emptyWord": "Gib zuerst das Wort ein.",
       "nameRequired": "Gib dem Deck einen Namen.",
-      "save": "Das Deck konnte nicht gespeichert werden."
+      "save": "Das Deck konnte nicht gespeichert werden.",
+      "emptyPicture": "Füge zuerst ein Bild hinzu."
     },
     "status": {
       "deleted": "Gelöscht: {word}",
       "updated": "Deck gespeichert",
       "created": "Deck erstellt"
-    }
+    },
+    "side": {
+      "language": "Sprache",
+      "pictureHint": "Jedes Wort bekommt auf dieser Seite ein Bild statt Text."}
   },
   "browse": {
     "empty": "Keine Community-Decks passen zu deiner Suche.",
@@ -1563,7 +1566,8 @@ export default {
       "list": {
         "one": "{count} Karte hinzugefügt",
         "other": "{count} Karten hinzugefügt"
-      }
+      },
+      "withPicture": "Hinzugefügt: {word}, mit Bild"
     },
     "undo": "Rückgängig",
     "undone": {
@@ -1582,7 +1586,8 @@ export default {
       "undo": "Rückgängig machen fehlgeschlagen. Die Karten sind noch im Stapel.",
       "deckName": "Gib dem neuen Stapel zuerst einen Namen.",
       "deckNameTaken": "Ein Stapel mit diesem Namen existiert bereits.",
-      "sameLanguages": "Wähle zwei verschiedene Sprachen."
+      "sameLanguages": "Wähle zwei verschiedene Sprachen.",
+      "emptyPicture": "Füge ein Bild hinzu und drücke Enter."
     },
     "list": {
       "label": "Deine Liste",

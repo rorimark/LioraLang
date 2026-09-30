@@ -777,3 +777,41 @@
   font-size: 0.78rem;
   font-weight: 400;
 }
+
+/* A deck side: its label with the Language / Picture choice beside it,
+   then the language list or a note on pictures. */
+.deck-editor-panel__side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.deck-editor-panel__side-head .setting-segmented {
+  font-size: 0.8rem;
+}
+
+.deck-editor-panel__side-note {
+  margin: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.deck-editor-panel__side-head .setting-segmented {
+  padding: 3px;
+  border-radius: 11px;
+}
+
+.deck-editor-panel__side-head .setting-segmented__option label {
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+}

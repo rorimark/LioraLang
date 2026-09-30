@@ -6,6 +6,8 @@ import {
   parseDeckPackageFileText,
   parseDeckPackageMedia,
   remapWordImages,
+  resolveImportConfig,
+  validateImportLanguages,
 } from "./deckPackage.js";
 import { bytesToBase64 } from "../cardContent/mediaBytes.js";
 
@@ -96,5 +98,29 @@ describe("deck packages with pictures", () => {
     expect(remapped[0].image.assetId).toBe(OTHER_ID);
     expect(remapWordImages(words, new Map(), new Set())[0].image).toBeNull();
     expect([...collectWordImageAssetIds(words)]).toEqual([ASSET_ID]);
+  });
+});
+
+describe("picture decks", () => {
+  const pictureDeck = { name: "Pictures", sourceLanguage: "", targetLanguage: "Polish", pictureSide: "source" };
+  const pictured = [
+    { externalId: "p1", source: "", target: "szparag", image: { assetId: ASSET_ID, alt: "Green stalks" } },
+    { externalId: "p2", source: "", target: "szparag", image: { assetId: OTHER_ID, alt: "" } },
+  ];
+
+  it("keeps the picture side and the words that have only a picture", () => {
+    const exported = buildExportDeckPackage({ deck: pictureDeck, words: pictured });
+    const parsed = parseDeckPackageFileText(JSON.stringify(exported));
+    const config = resolveImportConfig({ parsedPackage: parsed });
+
+    expect(exported.deck.pictureSide).toBe("source");
+    expect(config).toMatchObject({ pictureSide: "source", sourceLanguage: "", targetLanguage: "Polish" });
+    expect(() => validateImportLanguages(config)).not.toThrow();
+    expect(importWords(parsed).map((word) => word.image.assetId)).toEqual([ASSET_ID, OTHER_ID]);
+  });
+
+  it("still asks a text deck for both languages", () => {
+    expect(() => validateImportLanguages({ sourceLanguage: "", targetLanguage: "Polish" })).toThrow();
+    expect(buildExportDeckPackage({ deck, words: [] }).deck).not.toHaveProperty("pictureSide");
   });
 });

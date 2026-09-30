@@ -1,4 +1,4 @@
-import { normalizeWordImage } from "../cardContent/cardContent.js";
+import { normalizePictureSide, normalizeWordImage } from "../cardContent/cardContent.js";
 
 const DECK_ORIGIN_KIND_VALUES = ["local", "hub", "account"];
 const UUID_PATTERN =
@@ -190,6 +190,9 @@ export const buildDeckContentHash = ({
     targetLanguage: toCleanString(deck?.targetLanguage),
     tertiaryLanguage: toCleanString(deck?.tertiaryLanguage),
     usesWordLevels: Boolean(deck?.usesWordLevels),
+    // Only a deck with a picture side carries the key, so every other deck
+    // hashes exactly as before.
+    ...(normalizePictureSide(deck?.pictureSide) ? { pictureSide: normalizePictureSide(deck.pictureSide) } : {}),
     tags: toUniqueCleanArray(deck?.tags),
     words: normalizedWords,
   };

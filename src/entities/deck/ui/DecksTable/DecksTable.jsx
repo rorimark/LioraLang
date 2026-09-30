@@ -281,7 +281,11 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
             >
               <div className="deck-row__main">
                 <strong className="deck-row__name">{deck.name}</strong>
-                <DeckLanguagePair source={deck.sourceLanguage} targets={[deck.targetLanguage, deck.tertiaryLanguage]} />
+                <DeckLanguagePair
+                  source={deck.sourceLanguage}
+                  targets={[deck.targetLanguage, deck.tertiaryLanguage]}
+                  pictureSide={deck.pictureSide}
+                />
               </div>
 
               <div className="deck-row__tags">

@@ -43,9 +43,37 @@ const resolveExamples = (word) => {
       return true;
     });
 };
-export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true }) => {
+// `imageSources` shows pictures that are not stored on this device (a hub
+// deck's preview): asset id → URL. Without it pictures come from storage.
+export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true, imageSources = null }) => {
   const { t, languageName, partOfSpeechName } = useI18n();
-  const labels = resolveLanguageLabels(languageLabels, languageName);
+  const pictureSide = languageLabels?.pictureSide || "";
+  const labels = {
+    ...resolveLanguageLabels(languageLabels, languageName),
+    ...(pictureSide === "source" ? { sourceLanguage: t("media.label") } : {}),
+    ...(pictureSide === "target" ? { targetLanguage: t("media.label") } : {}),
+  };
+  // A picture side shows the small picture and its description; a word
+  // outside a picture deck shows no picture at all.
+  const renderPicture = (word, fallbackAlt) => {
+    const isShown = word.image && (!imageSources || imageSources.has(word.image.assetId));
+
+    return (
+      <>
+        {isShown ? (
+          <span className="words-table__thumb">
+            <WordImage
+              image={word.image}
+              alt={word.image.alt || fallbackAlt}
+              variant="thumb"
+              src={imageSources?.get(word.image.assetId)}
+            />
+          </span>
+        ) : null}
+        {word.image?.alt || (isShown ? "" : "-")}
+      </>
+    );
+  };
   const totalColumns =
     4 +
     (showLevelColumn ? 1 : 0) +
@@ -94,12 +122,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                   <td data-label={labels.sourceLanguage}>
                     <span className="words-table__cell-main">
                       <span className="words-table__cell-text words-table__cell-truncate">
-                        {word.image ? (
-                          <span className="words-table__thumb">
-                            <WordImage image={word.image} alt={word.image.alt || word.source} variant="thumb" />
-                          </span>
-                        ) : null}
-                        {word.source || "-"}
+                        {pictureSide === "source" ? renderPicture(word, word.target) : word.source || "-"}
                       </span>
                       <span className="words-table__tap-hint">{t("wordsTable.tapHint")}</span>
                       <span
@@ -126,7 +149,7 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                   </td>
                   <td data-label={labels.targetLanguage}>
                     <span className="words-table__cell-truncate">
-                      {word.target || "-"}
+                      {pictureSide === "target" ? renderPicture(word, word.source) : word.target || "-"}
                     </span>
                   </td>
                   {labels.hasTertiaryLanguage && (

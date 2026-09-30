@@ -444,13 +444,3 @@
 .flashcard__face--back .flashcard__picture .word-image {
   border-color: color-mix(in srgb, var(--flashcard-on-back) 30%, transparent);
 }
-
-/* The translation under the answer to a picture: read, not a headline. */
-.flashcard__subtext {
-  color: inherit;
-  opacity: 0.86;
-  font-size: clamp(1.1rem, 4.4cqi, 2.4rem);
-  font-weight: 800;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-}

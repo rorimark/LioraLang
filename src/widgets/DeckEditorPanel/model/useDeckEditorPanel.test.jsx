@@ -113,6 +113,7 @@ describe("useDeckEditorPanel", () => {
       expect(saveDeck).toHaveBeenCalledWith({
         name: "Education deck",
         description: "",
+        pictureSide: "",
         sourceLanguage: "English",
         targetLanguage: "Polish",
         tertiaryLanguage: "",

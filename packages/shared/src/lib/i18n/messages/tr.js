@@ -227,9 +227,7 @@ export default {
       "title": "Yön",
       "forward": "Önde kelime, arkada çevirisi.",
       "reverse": "Önde çeviri, arkada kelime.",
-      "mixed": "İki yön, kart kart karışık.",
-      "pictureToWord": "Önde resim, arkada kelime.",
-      "wordToPicture": "Önde kelime, arkada resmi."
+      "mixed": "İki yön, kart kart karışık."
     },
     "behavior": "Oturum",
     "dailyGoal": "Günlük hedef (sınır değil)",
@@ -315,7 +313,8 @@ export default {
       "delete": "Deste silinemedi.",
       "notFound": "Bu deste artık yok.",
       "load": "Destelerin yüklenemedi.",
-      "loadWords": "Bu destenin kelimeleri yüklenemedi."
+      "loadWords": "Bu destenin kelimeleri yüklenemedi.",
+      "publishPictures": "Bir tarafı resim olan desteler henüz Hub’a gönderilemez. Cihazlarınızda ve eşitlemede kalırlar."
     },
     "table": {
       "label": "Desteler",
@@ -527,13 +526,17 @@ export default {
       "load": "Deste düzenleme için yüklenemedi.",
       "emptyWord": "Önce kelimeyi gir.",
       "nameRequired": "Desteye bir ad ver.",
-      "save": "Deste kaydedilemedi."
+      "save": "Deste kaydedilemedi.",
+      "emptyPicture": "Önce bir resim ekleyin."
     },
     "status": {
       "deleted": "Silindi: {word}",
       "updated": "Deste kaydedildi",
       "created": "Deste oluşturuldu"
-    }
+    },
+    "side": {
+      "language": "Dil",
+      "pictureHint": "Her kelimenin bu tarafında metin yerine bir resim olur."}
   },
   "browse": {
     "empty": "Aramana uyan topluluk destesi yok.",
@@ -1563,7 +1566,8 @@ export default {
       "list": {
         "one": "{count} kart eklendi",
         "other": "{count} kart eklendi"
-      }
+      },
+      "withPicture": "Eklendi: {word}, resmiyle"
     },
     "undo": "Geri al",
     "undone": {
@@ -1582,7 +1586,8 @@ export default {
       "undo": "Geri alınamadı. Kartlar hâlâ destede.",
       "deckName": "Önce yeni desteye bir ad verin.",
       "deckNameTaken": "Bu adda bir deste zaten var.",
-      "sameLanguages": "İki farklı dil seçin."
+      "sameLanguages": "İki farklı dil seçin.",
+      "emptyPicture": "Bir resim ekleyip Enter’a basın."
     },
     "list": {
       "label": "Listeniz",

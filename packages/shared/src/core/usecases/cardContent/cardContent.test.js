@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   CARD_DIRECTIONS,
   CONTENT_TYPES,
+  hasWordContent,
   hasWordImage,
   normalizeWordImage,
   resolveCardDirection,
@@ -40,13 +41,14 @@ describe("normalizeWordImage", () => {
 });
 
 describe("resolveCardFaces", () => {
+  const pictureDeck = { pictureSide: "source", targetLanguage: "Polish" };
+
   it("shows a text card exactly as before", () => {
     const faces = resolveCardFaces(textOnly, CARD_DIRECTIONS.sourceToTarget);
 
     expect(faces.direction).toBe(CARD_DIRECTIONS.sourceToTarget);
     expect(faces.front).toEqual({ type: CONTENT_TYPES.text, role: "source", text: "house" });
     expect(faces.back).toEqual({ type: CONTENT_TYPES.text, role: "translation", text: "dom" });
-    expect(faces.detail).toBeNull();
   });
 
   it("joins every translation on the back", () => {
@@ -54,31 +56,45 @@ describe("resolveCardFaces", () => {
     expect(faces.back.text).toBe("dom • Haus");
   });
 
-  it("asks for the word from its picture, with the translation under the answer", () => {
-    const faces = resolveCardFaces(word, CARD_DIRECTIONS.imageToSource);
+  it("puts the picture where the word would be in a picture deck", () => {
+    const pictured = { ...word, source: "" };
+    const forward = resolveCardFaces(pictured, CARD_DIRECTIONS.sourceToTarget, pictureDeck);
+    const reverse = resolveCardFaces(pictured, CARD_DIRECTIONS.targetToSource, pictureDeck);
 
-    expect(faces.front).toEqual({ type: CONTENT_TYPES.image, assetId: ASSET_ID, alt: "Green stalks on a plate" });
-    expect(faces.back.text).toBe("asparagus");
-    expect(faces.detail.text).toBe("szparag");
+    expect(forward.front).toEqual({ type: CONTENT_TYPES.image, assetId: ASSET_ID, alt: "Green stalks on a plate" });
+    expect(forward.back.text).toBe("szparag");
+    expect(reverse.front.text).toBe("szparag");
+    expect(reverse.back.type).toBe(CONTENT_TYPES.image);
   });
 
-  it("asks for the picture from the word", () => {
-    const faces = resolveCardFaces(word, CARD_DIRECTIONS.sourceToImage);
+  it("can have the picture on the answer side", () => {
+    const faces = resolveCardFaces(word, CARD_DIRECTIONS.sourceToTarget, { pictureSide: "target" });
 
     expect(faces.front.text).toBe("asparagus");
     expect(faces.back.type).toBe(CONTENT_TYPES.image);
   });
 
-  it("shows a word without a picture as text in a picture direction", () => {
-    expect(resolveCardDirection(CARD_DIRECTIONS.imageToSource, textOnly)).toBe(CARD_DIRECTIONS.sourceToTarget);
-    expect(resolveCardFaces(textOnly, CARD_DIRECTIONS.sourceToImage).back.text).toBe("dom");
+  it("ignores a word's picture in a deck without a picture side", () => {
+    expect(resolveCardFaces(word, CARD_DIRECTIONS.sourceToTarget).front.text).toBe("asparagus");
   });
 
-  it("keeps mixed to the two text directions, the same way every time", () => {
-    const first = resolveCardDirection(CARD_DIRECTIONS.mixed, word);
+  it("falls back to the description when a picture side has no picture", () => {
+    const faces = resolveCardFaces({ source: "", target: "chleb" }, CARD_DIRECTIONS.sourceToTarget, pictureDeck);
+    expect(faces.front).toMatchObject({ type: CONTENT_TYPES.text, text: "" });
+  });
 
-    expect([CARD_DIRECTIONS.sourceToTarget, CARD_DIRECTIONS.targetToSource]).toContain(first);
-    expect(resolveCardDirection(CARD_DIRECTIONS.mixed, word)).toBe(first);
+  it("alternates mixed between the two directions, the same way every time", () => {
+    const seen = new Set(
+      Array.from({ length: 40 }, (_, id) => resolveCardDirection(CARD_DIRECTIONS.mixed, { ...word, id })),
+    );
+
+    expect([...seen].sort()).toEqual([CARD_DIRECTIONS.sourceToTarget, CARD_DIRECTIONS.targetToSource]);
+    expect(resolveCardDirection(CARD_DIRECTIONS.mixed, word)).toBe(resolveCardDirection(CARD_DIRECTIONS.mixed, word));
+  });
+
+  it("knows a pictured word without text is still a word", () => {
+    expect(hasWordContent({ source: "", image: { assetId: ASSET_ID } })).toBe(true);
+    expect(hasWordContent({ source: " " })).toBe(false);
   });
 });
 

@@ -8,12 +8,28 @@ import { buildPublicDeckShareUrl } from "@shared/lib/share";
 import {
   normalizeWordsForImport,
   parseDeckPackageFileText,
+  parseDeckPackageMedia,
   resolveImportConfig,
 } from "@shared/core/usecases/importExport";
 import { useCardCatalog } from "@features/card-catalog";
 import { useI18n } from "@shared/lib/i18n";
 
 const FILTERS_BREAKPOINT = 1450;
+const EMPTY_IMAGE_SOURCES = new Map();
+
+// The pictures a hub package carries, as URLs the preview can show. They
+// live only while the preview does; adding the deck stores them for good.
+const buildPreviewImageSources = (parsedPackage) =>
+  new Map(
+    parseDeckPackageMedia(parsedPackage).map((item) => [
+      item.declaredId,
+      URL.createObjectURL(new Blob([item.bytes], { type: item.mimeType })),
+    ]),
+  );
+
+const revokeImageSources = (sources) => {
+  sources.forEach((url) => URL.revokeObjectURL(url));
+};
 
 const isNarrowViewport = () => {
   if (typeof window === "undefined") {
@@ -95,6 +111,7 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
   });
   const [refreshToken, setRefreshToken] = useState(0);
   const [previewWords, setPreviewWords] = useState([]);
+  const [previewImageSources, setPreviewImageSources] = useState(EMPTY_IMAGE_SOURCES);
   const [previewLanguages, setPreviewLanguages] = useState({
     sourceLanguage: "",
     targetLanguage: "",
@@ -265,19 +282,18 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
           includeExamples: true,
         });
 
-        // The preview lists the words; their pictures arrive with the deck
-        // when it is added, not before.
         const words = normalized.words.map((word, index) => ({
           id: word.externalId || `w${index + 1}`,
           ...word,
-          image: null,
         }));
 
+        setPreviewImageSources(buildPreviewImageSources(parsedPackage));
         setPreviewWords(words);
         setPreviewLanguages({
           sourceLanguage: importConfig.sourceLanguage,
           targetLanguage: importConfig.targetLanguage,
           tertiaryLanguage: importConfig.tertiaryLanguage,
+          pictureSide: importConfig.pictureSide,
         });
       })
       .catch((loadError) => {
@@ -297,6 +313,10 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
         setIsPreviewLoading(false);
       });
   }, [deck, hubRepository, isConfigured]);
+
+  // Each set of preview pictures is released when the next one replaces it,
+  // or when the page closes.
+  useEffect(() => () => revokeImageSources(previewImageSources), [previewImageSources]);
 
   const reportMessage = useCallback((text, variant = "info") => {
     setMessage(text);
@@ -503,6 +523,7 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
     closePostImportModal,
     goToLearnAfterImport,
     previewWords,
+    previewImageSources,
     previewLanguages,
     isPreviewLoading,
     previewError: previewError ? t(previewError) : "",

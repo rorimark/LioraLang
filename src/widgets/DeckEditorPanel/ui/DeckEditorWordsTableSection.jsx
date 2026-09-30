@@ -10,6 +10,18 @@ const renderWordCell = (value) => {
   return value ? value : "-";
 };
 
+// A picture side's cell: the small picture and its description.
+const renderPictureCell = (word, fallbackAlt) => (
+  <>
+    {word.image ? (
+      <span className="deck-editor-panel__thumb">
+        <WordImage image={word.image} alt={word.image.alt || fallbackAlt} variant="thumb" />
+      </span>
+    ) : null}
+    {word.image?.alt || (word.image ? "" : "-")}
+  </>
+);
+
 const resolveExamples = (word) => {
   const examples = [];
   const seen = new Set();
@@ -81,11 +93,15 @@ export const DeckEditorWordsTableSection = memo(() => {
   const languageLabels = useMemo(
     () => ({
       ...storedLanguageLabels,
-      sourceLanguage: languageName(storedLanguageLabels.sourceLanguage),
-      targetLanguage: languageName(storedLanguageLabels.targetLanguage),
+      sourceLanguage: storedLanguageLabels.pictureSide === "source"
+        ? t("media.label")
+        : languageName(storedLanguageLabels.sourceLanguage),
+      targetLanguage: storedLanguageLabels.pictureSide === "target"
+        ? t("media.label")
+        : languageName(storedLanguageLabels.targetLanguage),
       tertiaryLanguage: languageName(storedLanguageLabels.tertiaryLanguage),
     }),
-    [languageName, storedLanguageLabels],
+    [languageName, storedLanguageLabels, t],
   );
 
   const onEditClick = useCallback(
@@ -179,15 +195,14 @@ export const DeckEditorWordsTableSection = memo(() => {
                     }
                   >
                     <td data-label={languageLabels.sourceLanguage}>
-                      {word.image ? (
-                        <span className="deck-editor-panel__thumb">
-                          <WordImage image={word.image} alt={word.image.alt || word.source} variant="thumb" />
-                        </span>
-                      ) : null}
-                      {renderWordCell(word.source)}
+                      {languageLabels.pictureSide === "source"
+                        ? renderPictureCell(word, word.target)
+                        : renderWordCell(word.source)}
                     </td>
                     <td data-label={languageLabels.targetLanguage}>
-                      {renderWordCell(word.target)}
+                      {languageLabels.pictureSide === "target"
+                        ? renderPictureCell(word, word.source)
+                        : renderWordCell(word.target)}
                     </td>
                     {languageLabels.hasTertiaryLanguage && (
                       <td data-label={languageLabels.tertiaryLanguage}>

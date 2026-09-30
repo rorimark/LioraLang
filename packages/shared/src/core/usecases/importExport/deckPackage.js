@@ -12,7 +12,9 @@ import {
   base64ToBytes,
   isMediaAssetId,
   MAX_MEDIA_ASSET_BYTES,
+  normalizePictureSide,
   normalizeWordImage,
+  PICTURE_SIDES,
   sniffImageMimeType,
 } from "../cardContent/index.js";
 
@@ -263,6 +265,7 @@ const parseDeckPackagePayload = (value) => {
   const deckContentHash = toSafeString(
     rawDeck?.contentHash ?? rawDeck?.content_hash,
   );
+  const deckPictureSide = normalizePictureSide(rawDeck?.pictureSide ?? rawDeck?.picture_side);
   const hasDeckMetadata = Boolean(
     deckName ||
     deckDescription ||
@@ -272,7 +275,8 @@ const parseDeckPackagePayload = (value) => {
     deckTags.length > 0 ||
     deckSyncId ||
     deckOriginRef ||
-    deckContentHash,
+    deckContentHash ||
+    deckPictureSide,
   );
   const deck = hasDeckMetadata
     ? {
@@ -286,6 +290,7 @@ const parseDeckPackagePayload = (value) => {
         originKind: deckOriginKind,
         originRef: deckOriginRef,
         contentHash: deckContentHash,
+        pictureSide: deckPictureSide,
       }
     : null;
 
@@ -311,9 +316,13 @@ const parseDeckPackagePayload = (value) => {
   };
 };
 
-const resolveImportLanguageConfig = (value = {}) => {
-  const sourceLanguage = toCleanString(value?.sourceLanguage) || DEFAULT_SOURCE_LANGUAGE;
-  const targetLanguage = toCleanString(value?.targetLanguage) || DEFAULT_TARGET_LANGUAGE;
+const resolveImportLanguageConfig = (value = {}, pictureSide = "") => {
+  const sourceLanguage = pictureSide === PICTURE_SIDES.source
+    ? ""
+    : toCleanString(value?.sourceLanguage) || DEFAULT_SOURCE_LANGUAGE;
+  const targetLanguage = pictureSide === PICTURE_SIDES.target
+    ? ""
+    : toCleanString(value?.targetLanguage) || DEFAULT_TARGET_LANGUAGE;
   const tertiaryLanguage = toCleanString(value?.tertiaryLanguage);
 
   return {
@@ -372,7 +381,10 @@ const normalizeImportedWord = (
     ]),
   );
 
-  if (!source) {
+  const image = normalizeWordImage(word?.image);
+
+  // A word in a picture deck may have its picture where the word would be.
+  if (!source && !image) {
     return null;
   }
 
@@ -416,7 +428,7 @@ const normalizeImportedWord = (
     ),
     tags: normalizedTags,
     examples: normalizedExamples,
-    image: normalizeWordImage(word?.image),
+    image,
   };
 };
 
@@ -467,6 +479,7 @@ export const getDeckImportMetadata = ({
       originKind: "local",
       originRef: "",
       contentHash: "",
+      pictureSide: "",
       format: "",
       version: null,
     };
@@ -486,6 +499,7 @@ export const getDeckImportMetadata = ({
     originKind: normalizeDeckOriginKind(parsedPackage?.deck?.originKind),
     originRef: normalizeDeckOriginRef(parsedPackage?.deck?.originRef),
     contentHash: toSafeString(parsedPackage?.deck?.contentHash),
+    pictureSide: normalizePictureSide(parsedPackage?.deck?.pictureSide),
     format: toCleanString(parsedPackage?.format),
     version: parsedPackage?.version ?? null,
   };
@@ -534,6 +548,8 @@ export const normalizeWordsForImport = ({
       toLanguageKey(word.source),
       toLanguageKey(word.target),
       toLanguageKey(word.tertiary),
+      // Two pictures with the same translation are two words.
+      ...(word.image ? [word.image.assetId] : []),
     ].join("\u0000");
 
     if (!dedupeKey.replaceAll("\u0000", "")) {
@@ -569,17 +585,21 @@ export const resolveImportConfig = ({
   parsedPackage = {},
   fallbackDeckName = "Imported Deck",
 } = {}) => {
-  const settings = resolveImportLanguageConfig(payload?.settings || {});
-  const sourceLanguage =
-    toSafeString(payload?.sourceLanguage) ||
-    toSafeString(parsedPackage?.deck?.sourceLanguage) ||
-    settings.sourceLanguage ||
-    DEFAULT_SOURCE_LANGUAGE;
-  const targetLanguage =
-    toSafeString(payload?.targetLanguage) ||
-    toSafeString(parsedPackage?.deck?.targetLanguage) ||
-    settings.targetLanguage ||
-    DEFAULT_TARGET_LANGUAGE;
+  // A picture side has no language; the other side keeps its own.
+  const pictureSide = normalizePictureSide(payload?.pictureSide ?? parsedPackage?.deck?.pictureSide);
+  const settings = resolveImportLanguageConfig(payload?.settings || {}, pictureSide);
+  const sourceLanguage = pictureSide === PICTURE_SIDES.source
+    ? ""
+    : toSafeString(payload?.sourceLanguage) ||
+      toSafeString(parsedPackage?.deck?.sourceLanguage) ||
+      settings.sourceLanguage ||
+      DEFAULT_SOURCE_LANGUAGE;
+  const targetLanguage = pictureSide === PICTURE_SIDES.target
+    ? ""
+    : toSafeString(payload?.targetLanguage) ||
+      toSafeString(parsedPackage?.deck?.targetLanguage) ||
+      settings.targetLanguage ||
+      DEFAULT_TARGET_LANGUAGE;
   const tertiaryLanguage =
     toSafeString(payload?.tertiaryLanguage) ||
     toSafeString(parsedPackage?.deck?.tertiaryLanguage) ||
@@ -612,23 +632,28 @@ export const resolveImportConfig = ({
     contentHash:
       toSafeString(payload?.contentHash) ||
       toSafeString(parsedPackage?.deck?.contentHash),
+    pictureSide,
   };
 };
 
+// Each text side needs a language, and no two sides share one. A picture
+// side has none.
 export const validateImportLanguages = ({
   sourceLanguage,
   targetLanguage,
   tertiaryLanguage,
+  pictureSide = "",
 } = {}) => {
+  const side = normalizePictureSide(pictureSide);
   const sourceKey = toLanguageKey(sourceLanguage);
   const targetKey = toLanguageKey(targetLanguage);
   const tertiaryKey = toLanguageKey(tertiaryLanguage);
 
-  if (!sourceKey || !targetKey) {
+  if ((side !== PICTURE_SIDES.source && !sourceKey) || (side !== PICTURE_SIDES.target && !targetKey)) {
     throw new Error("Source and target languages are required for import");
   }
 
-  if (sourceKey === targetKey) {
+  if (sourceKey && sourceKey === targetKey) {
     throw new Error("Source and target languages should be different");
   }
 
@@ -792,6 +817,9 @@ export const buildExportDeckPackage = ({
       originKind: normalizeDeckOriginKind(safeDeck.originKind),
       originRef: normalizeDeckOriginRef(safeDeck.originRef),
       contentHash,
+      ...(normalizePictureSide(safeDeck.pictureSide)
+        ? { pictureSide: normalizePictureSide(safeDeck.pictureSide) }
+        : {}),
       ...(includeTags
         ? {
             tags: normalizedDeckTags,

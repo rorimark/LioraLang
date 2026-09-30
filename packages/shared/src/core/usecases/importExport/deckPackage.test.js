@@ -155,6 +155,7 @@ describe("deckPackage", () => {
         originKind: "local",
         originRef: "",
         contentHash: "",
+        pictureSide: "",
       });
     });
   });

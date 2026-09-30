@@ -13,7 +13,7 @@ import {
   ROUTE_PATHS,
 } from "@shared/config/routes";
 import { useI18n } from "@shared/lib/i18n";
-import { normalizeWordImage } from "@shared/core/usecases/cardContent";
+import { normalizePictureSide, normalizeWordImage, PICTURE_SIDES } from "@shared/core/usecases/cardContent";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const PART_OF_SPEECH_OPTIONS = [
@@ -91,6 +91,8 @@ const createDefaultDeckForm = (deckDefaults = {}) => {
     sourceLanguage: defaultLanguages.sourceLanguage,
     targetLanguage: defaultLanguages.targetLanguage,
     tertiaryLanguage: "",
+    // Which side holds pictures instead of a language: "", "source", "target".
+    pictureSide: "",
     usesWordLevels: true,
     tagsInput: buildDefaultDeckTagsInput(deckDefaults),
   };
@@ -328,6 +330,7 @@ export const useDeckEditorPanel = () => {
       sourceLanguage: deck?.sourceLanguage || DEFAULT_SOURCE_LANGUAGE,
       targetLanguage: deck?.targetLanguage || DEFAULT_TARGET_LANGUAGE,
       tertiaryLanguage: deck?.tertiaryLanguage || "",
+      pictureSide: normalizePictureSide(deck?.pictureSide),
       usesWordLevels: deck?.usesWordLevels !== false,
       tagsInput: deckTags.join(", "),
     });
@@ -414,6 +417,14 @@ export const useDeckEditorPanel = () => {
     words.length,
   ]);
 
+  // A side is a language or pictures; at most one side is pictures.
+  const handleSideTypeChange = useCallback((side, isPicture) => {
+    setDeckForm((currentState) => ({
+      ...currentState,
+      pictureSide: isPicture ? side : currentState.pictureSide === side ? "" : currentState.pictureSide,
+    }));
+  }, []);
+
   const handleDeckFormChange = useCallback((event) => {
     const { name, value, type, checked } = event.target;
     setDeckForm((currentState) => ({
@@ -439,8 +450,16 @@ export const useDeckEditorPanel = () => {
 
   const handleUpsertWordDraft = useCallback(() => {
     const cleanedSource = wordDraft.source.trim();
+    const draftImage = normalizeWordImage(wordDraft.image);
+    const pictureSide = normalizePictureSide(deckForm.pictureSide);
 
-    if (!cleanedSource) {
+    // The picture side needs its picture; a language side needs its word.
+    if (pictureSide && !draftImage) {
+      reportStatus(t("editor.errors.emptyPicture"), "error");
+      return;
+    }
+
+    if (pictureSide !== PICTURE_SIDES.source && !cleanedSource) {
       reportStatus(t("editor.errors.emptyWord"), "error");
       return;
     }
@@ -458,7 +477,7 @@ export const useDeckEditorPanel = () => {
       examples: normalizedExamples,
       tags: normalizedTags,
       tagsInput: normalizedTags.join(", "),
-      image: normalizeWordImage(wordDraft.image),
+      image: pictureSide ? draftImage : null,
     };
 
     setWords((currentState) => {
@@ -482,6 +501,7 @@ export const useDeckEditorPanel = () => {
     setStatusMessage("");
     resetWordDraft();
   }, [
+    deckForm.pictureSide,
     deckForm.usesWordLevels,
     editingWordId,
     reportStatus,
@@ -645,15 +665,20 @@ export const useDeckEditorPanel = () => {
 
   const handleSaveDeck = useCallback(async () => {
     const deckName = deckForm.name.trim();
-    const sourceLanguage = deckForm.sourceLanguage.trim();
-    const targetLanguage = deckForm.targetLanguage.trim();
+    const pictureSide = normalizePictureSide(deckForm.pictureSide);
+    // A picture side has no language.
+    const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : deckForm.sourceLanguage.trim();
+    const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : deckForm.targetLanguage.trim();
 
     if (!deckName) {
       reportStatus(t("editor.errors.nameRequired"), "error");
       return;
     }
 
-    if (!sourceLanguage || !targetLanguage) {
+    if (
+      (pictureSide !== PICTURE_SIDES.source && !sourceLanguage) ||
+      (pictureSide !== PICTURE_SIDES.target && !targetLanguage)
+    ) {
       reportStatus(t("import.errors.languagesRequired"), "error");
       return;
     }
@@ -674,6 +699,7 @@ export const useDeckEditorPanel = () => {
         sourceLanguage,
         targetLanguage,
         tertiaryLanguage,
+        pictureSide,
         tags: parseTagsInput(deckForm.tagsInput).slice(0, customTagsLimit),
         usesWordLevels: deckForm.usesWordLevels,
         words: words.map((word, index) => ({
@@ -691,7 +717,7 @@ export const useDeckEditorPanel = () => {
             : word.example
               ? [word.example]
               : [],
-          image: normalizeWordImage(word.image),
+          image: pictureSide ? normalizeWordImage(word.image) : null,
         })),
       };
 
@@ -725,6 +751,7 @@ export const useDeckEditorPanel = () => {
     applyLoadedDeck,
     deckForm.name,
     deckForm.description,
+    deckForm.pictureSide,
     deckForm.sourceLanguage,
     deckForm.targetLanguage,
     deckForm.tertiaryLanguage,
@@ -754,8 +781,10 @@ export const useDeckEditorPanel = () => {
       targetLanguage,
       tertiaryLanguage,
       hasTertiaryLanguage: Boolean(tertiaryLanguage),
+      pictureSide: normalizePictureSide(deckForm.pictureSide),
     };
   }, [
+    deckForm.pictureSide,
     deckForm.sourceLanguage,
     deckForm.targetLanguage,
     deckForm.tertiaryLanguage,
@@ -786,6 +815,7 @@ export const useDeckEditorPanel = () => {
     partOfSpeechOptions: PART_OF_SPEECH_OPTIONS,
     languageOptions: LANGUAGE_OPTIONS,
     handleDeckFormChange,
+    handleSideTypeChange,
     handleWordDraftChange,
     handleUpsertWordDraft,
     handleWordDraftImageChange,

@@ -135,6 +135,8 @@ export const initDb = () => {
   ensureColumn(db, "decks", "origin_kind", "TEXT DEFAULT 'local'");
   ensureColumn(db, "decks", "origin_ref", "TEXT");
   ensureColumn(db, "decks", "content_hash", "TEXT");
+  // Which side of the deck is pictures instead of a language, if any.
+  ensureColumn(db, "decks", "picture_side", "TEXT");
   ensureColumn(db, "decks", "created_at", "TEXT");
   ensureColumn(db, "decks", "updated_at", "TEXT");
   ensureColumn(db, "words", "external_id", "TEXT");
@@ -301,7 +303,8 @@ export const initDb = () => {
           sync_id AS syncId,
           origin_kind AS originKind,
           origin_ref AS originRef,
-          content_hash AS contentHash
+          content_hash AS contentHash,
+          picture_side AS pictureSide
         FROM decks
         ORDER BY id ASC
       `,
@@ -380,6 +383,7 @@ export const initDb = () => {
         tertiaryLanguage: deck?.tertiaryLanguage,
         usesWordLevels: Boolean(Number(deck?.usesWordLevels)),
         tags: parseJsonArray(deck?.tagsJson),
+        pictureSide: deck?.pictureSide,
       },
       words: wordsByDeckId.get(Number(deck?.id)) || [],
     });

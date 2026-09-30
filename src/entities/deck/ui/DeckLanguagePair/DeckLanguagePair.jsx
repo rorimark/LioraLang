@@ -5,24 +5,29 @@ import "./DeckLanguagePair.css";
 
 const clean = (value) => (typeof value === "string" ? value.trim() : "");
 
-// The languages a deck goes between, read as a direction: "Polish →
-// English", with any further language after a plus.
-export const DeckLanguagePair = memo(({ source = "", targets = [], className = "" }) => {
-  const { languageName } = useI18n();
-  const from = clean(source);
+// The sides a deck goes between, read as a direction: "Polish → English",
+// with any further language after a plus. A picture side reads "Picture":
+// it is a side of its own, not a language.
+export const DeckLanguagePair = memo(({ source = "", targets = [], pictureSide = "", className = "" }) => {
+  const { t, languageName } = useI18n();
+  const from = pictureSide === "source" ? "" : clean(source);
   const to = (Array.isArray(targets) ? targets : [targets]).map(clean).filter((item) => item && item !== from);
 
-  if (!from && to.length === 0) {
+  if (!from && to.length === 0 && !pictureSide) {
     return null;
   }
 
-  const [first, ...rest] = to;
+  const picture = t("media.label");
+  const fromLabel = pictureSide === "source" ? picture : from ? languageName(from) : "—";
+  // With pictures as the answer, every language listed is an extra one.
+  const [first, ...rest] = pictureSide === "target" ? ["", ...to] : to;
+  const firstLabel = pictureSide === "target" ? picture : first ? languageName(first) : "—";
 
   return (
     <span className={["deck-language-pair", className].filter(Boolean).join(" ")}>
-      {from ? languageName(from) : "—"}
+      {fromLabel}
       <FiArrowRight aria-hidden="true" />
-      {first ? languageName(first) : "—"}
+      {firstLabel}
       {rest.length > 0 ? <span> + {rest.map((item) => languageName(item)).join(", ")}</span> : null}
     </span>
   );

@@ -42,8 +42,9 @@ export const useDeckDetailsPanel = () => {
       sourceLanguage,
       targetLanguage,
       tertiaryLanguage,
+      pictureSide: deck?.pictureSide || "",
     };
-  }, [deck?.sourceLanguage, deck?.targetLanguage, deck?.tertiaryLanguage]);
+  }, [deck?.pictureSide, deck?.sourceLanguage, deck?.targetLanguage, deck?.tertiaryLanguage]);
 
   useEffect(() => {
     if (typeof window === "undefined") {

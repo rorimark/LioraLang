@@ -232,6 +232,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
                 <div className="dictionary-table-area">
                   <WordsTable
                     words={panel.paginatedWords}
+                    imageSources={panel.previewImageSources}
                     languageLabels={panel.previewLanguages}
                     showLevelColumn={showsWordLevels}
                   />

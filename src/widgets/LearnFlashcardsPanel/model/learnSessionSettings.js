@@ -1,5 +1,5 @@
 import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
-import { CARD_DIRECTIONS, resolveCardDirection } from "@shared/core/usecases/cardContent";
+import { resolveCardDirection } from "@shared/core/usecases/cardContent";
 
 export const LEARN_SESSION_SETTINGS_SESSION_KEY = "learnSessionSettingsSession";
 export const LEARN_SESSION_SETTINGS_LOCAL_KEY = "learnSessionSettingsLocal";
@@ -8,10 +8,6 @@ export const LEARN_SESSION_SETTINGS_STORAGE_VERSION = 2;
 export const LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET = "source_to_target";
 export const LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE = "target_to_source";
 export const LEARN_SESSION_DIRECTION_MIXED = "mixed";
-// A picture is a content type, not a language: these show the same entry
-// with its picture on one side. A word without a picture is shown as text.
-export const LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE = CARD_DIRECTIONS.imageToSource;
-export const LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE = CARD_DIRECTIONS.sourceToImage;
 
 export const LEARN_EXERCISE_MODE_FLASHCARDS = "flashcards";
 export const LEARN_EXERCISE_MODE_TYPE_TRANSLATION = "type_translation";
@@ -22,8 +18,6 @@ const DIRECTION_MODE_OPTIONS = new Set([
   LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
   LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE,
   LEARN_SESSION_DIRECTION_MIXED,
-  LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE,
-  LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE,
 ]);
 
 const EXERCISE_MODE_OPTIONS = new Set([

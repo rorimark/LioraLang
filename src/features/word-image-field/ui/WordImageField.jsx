@@ -6,10 +6,17 @@ import { useI18n } from "@shared/lib/i18n";
 import { useWordImageField } from "../model/useWordImageField";
 import "./WordImageField.css";
 
-// A word's picture in a form: optional, added from a file, a drop or a
+// The picture side of a word in a form: added from a file, a drop or a
 // paste, then shown with Replace and Remove and a description for people
 // using a screen reader. `word` names the picture's fallback description.
-export const WordImageField = memo(({ value, onChange, word = "", isCompact = false, isDisabled = false }) => {
+export const WordImageField = memo(({
+  value,
+  onChange,
+  word = "",
+  isCompact = false,
+  isDisabled = false,
+  isRequired = false,
+}) => {
   const { t } = useI18n();
   const field = useWordImageField({ value, onChange });
   const fileInputRef = useRef(null);
@@ -38,7 +45,7 @@ export const WordImageField = memo(({ value, onChange, word = "", isCompact = fa
     >
       <span className="word-image-field__label" id={labelId}>
         {t("media.label")}
-        <span className="word-image-field__optional">{t("quickAdd.optional")}</span>
+        {isRequired ? null : <span className="word-image-field__optional">{t("quickAdd.optional")}</span>}
       </span>
 
       <input

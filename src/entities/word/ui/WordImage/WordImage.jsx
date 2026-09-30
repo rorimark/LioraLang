@@ -7,9 +7,12 @@ import "./WordImage.css";
 // A word's picture from local storage. It never waits on the network: a
 // picture still on its way from another device shows a quiet placeholder
 // that says so, and the word itself is always there in text beside it.
-export const WordImage = memo(({ image, alt = "", variant = "full", className = "", isEager = false }) => {
+// `src` shows a picture that is not stored here (a preview) instead.
+export const WordImage = memo(({ image, alt = "", variant = "full", className = "", isEager = false, src = "" }) => {
   const { t } = useI18n();
-  const { url, status } = useMediaImageUrl(image?.assetId || "", variant);
+  const stored = useMediaImageUrl(src ? "" : image?.assetId || "", variant);
+  const url = src || stored.url;
+  const status = src ? "ready" : stored.status;
   const classes = ["word-image", `word-image--${variant}`, className].filter(Boolean).join(" ");
 
   if (!image?.assetId) {

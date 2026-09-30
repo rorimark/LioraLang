@@ -78,27 +78,46 @@ export const DeckEditorWordFormSection = memo(() => {
       </header>
 
       <div className="deck-editor-panel__word-grid">
-        <label className="deck-editor-panel__field">
-          <span>{languageName(languageLabels.sourceLanguage)}</span>
-          <input
-            type="text"
-            name="source"
-            value={wordDraft.source}
-            onChange={handleWordDraftChange}
-            placeholder={t("editor.wordPlaceholder")}
+        {/* A picture side takes a picture where a language side takes a word. */}
+        {languageLabels.pictureSide === "source" ? (
+          <WordImageField
+            value={wordDraft.image}
+            onChange={handleWordDraftImageChange}
+            word={wordDraft.target}
+            isRequired
           />
-        </label>
+        ) : (
+          <label className="deck-editor-panel__field">
+            <span>{languageName(languageLabels.sourceLanguage)}</span>
+            <input
+              type="text"
+              name="source"
+              value={wordDraft.source}
+              onChange={handleWordDraftChange}
+              placeholder={t("editor.wordPlaceholder")}
+            />
+          </label>
+        )}
 
-        <label className="deck-editor-panel__field">
-          <span>{languageName(languageLabels.targetLanguage)}</span>
-          <input
-            type="text"
-            name="target"
-            value={wordDraft.target}
-            onChange={handleWordDraftChange}
-            placeholder={t("editor.translationPlaceholder")}
+        {languageLabels.pictureSide === "target" ? (
+          <WordImageField
+            value={wordDraft.image}
+            onChange={handleWordDraftImageChange}
+            word={wordDraft.source}
+            isRequired
           />
-        </label>
+        ) : (
+          <label className="deck-editor-panel__field">
+            <span>{languageName(languageLabels.targetLanguage)}</span>
+            <input
+              type="text"
+              name="target"
+              value={wordDraft.target}
+              onChange={handleWordDraftChange}
+              placeholder={t("editor.translationPlaceholder")}
+            />
+          </label>
+        )}
 
         {languageLabels.hasTertiaryLanguage && (
           <label className="deck-editor-panel__field">
@@ -112,12 +131,6 @@ export const DeckEditorWordFormSection = memo(() => {
             />
           </label>
         )}
-
-        <WordImageField
-          value={wordDraft.image}
-          onChange={handleWordDraftImageChange}
-          word={wordDraft.source}
-        />
 
         {usesWordLevels && (
           <label className="deck-editor-panel__field">

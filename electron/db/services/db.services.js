@@ -18,7 +18,12 @@ import {
   normalizeDeckOriginRef,
   resolveDeckSyncId,
 } from "../../../packages/shared/src/core/usecases/sync/index.js";
-import { normalizeWordImage } from "../../../packages/shared/src/core/usecases/cardContent/index.js";
+import {
+  hasWordContent,
+  normalizePictureSide,
+  normalizeWordImage,
+  PICTURE_SIDES,
+} from "../../../packages/shared/src/core/usecases/cardContent/index.js";
 import {
   collectUnusedMedia,
   readMediaForExport,
@@ -121,6 +126,7 @@ const buildDeckContentHashFromState = ({
       tertiaryLanguage: deck?.tertiaryLanguage,
       usesWordLevels: normalizeDeckUsesWordLevels(deck?.usesWordLevels, true),
       tags: Array.isArray(deck?.tags) ? deck.tags : parseArray(deck?.tagsJson),
+      pictureSide: deck?.pictureSide,
     },
     words: Array.isArray(words) ? words : [],
   });
@@ -310,10 +316,6 @@ const buildUpdateWordRunParams = (
   ];
 };
 
-const normalizeLanguageName = (value) => {
-  return toCleanString(value).toLowerCase();
-};
-
 const buildDeckDescription = ({
   sourceLanguage,
   targetLanguage,
@@ -338,13 +340,15 @@ const normalizeDeckRow = (row) => {
   return {
     ...row,
     usesWordLevels: normalizeDeckUsesWordLevels(row.usesWordLevels, true),
+    pictureSide: normalizePictureSide(row.pictureSide),
   };
 };
 
 const normalizeEditableWord = (word, index) => {
   const source = toCleanString(word?.source);
 
-  if (!source) {
+  // In a picture deck a word may be its picture alone.
+  if (!hasWordContent(word)) {
     return null;
   }
 
@@ -428,7 +432,8 @@ export const renameDeck = (deckId, nextName) => {
           target_language AS targetLanguage,
           tertiary_language AS tertiaryLanguage,
           COALESCE(uses_word_levels, 1) AS usesWordLevels,
-          tags_json AS tagsJson
+          tags_json AS tagsJson,
+          picture_side AS pictureSide
         FROM decks
         WHERE id = ?
       `,
@@ -501,6 +506,7 @@ export const listDecks = () => {
           decks.origin_kind AS originKind,
           decks.origin_ref AS originRef,
           decks.content_hash AS contentHash,
+          decks.picture_side AS pictureSide,
           decks.tags_json AS tagsJson,
           decks.created_at AS createdAt,
           COUNT(words.id) AS wordsCount,
@@ -534,6 +540,7 @@ export const getDeckById = (deckId) => {
             decks.origin_kind AS originKind,
             decks.origin_ref AS originRef,
             decks.content_hash AS contentHash,
+          decks.picture_side AS pictureSide,
             decks.tags_json AS tagsJson,
             decks.created_at AS createdAt,
             COUNT(words.id) AS wordsCount
@@ -674,6 +681,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       tertiaryLanguage: resolvedTertiaryLanguage,
       usesWordLevels,
       tags: includeTags ? importedDeckTags : [],
+      pictureSide: importConfig.pictureSide,
     },
     words: persistedWords.map((word) => ({
       externalId: word.externalId,
@@ -701,8 +709,9 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
         sync_id,
         origin_kind,
         origin_ref,
-        content_hash
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        content_hash,
+        picture_side
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const insertWord = buildInsertWordStatement(db, wordSchemaCompatibility);
@@ -720,6 +729,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       originPayload.originKind,
       originPayload.originRef || null,
       deckContentHash,
+      normalizePictureSide(importConfig.pictureSide) || null,
     );
 
     const deckId = Number(deckResult.lastInsertRowid);
@@ -833,12 +843,17 @@ export const saveDeck = (payload = {}) => {
   const providedDeckId = Number(payload?.deckId);
   const hasDeckId = Number.isInteger(providedDeckId) && providedDeckId > 0;
   const cleanedName = toCleanString(payload?.name);
-  const sourceLanguage = toCleanString(payload?.sourceLanguage);
-  const targetLanguage = toCleanString(payload?.targetLanguage);
+  // A deck keeps its picture side unless the payload names one; saving
+  // words into a deck never turns its pictures back into a language.
+  const storedPictureSide = hasDeckId
+    ? db.prepare("SELECT picture_side AS pictureSide FROM decks WHERE id = ?").get(providedDeckId)?.pictureSide
+    : "";
+  const pictureSide = normalizePictureSide(
+    payload?.pictureSide === undefined ? storedPictureSide : payload.pictureSide,
+  );
+  const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : toCleanString(payload?.sourceLanguage);
+  const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : toCleanString(payload?.targetLanguage);
   const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
-  const sourceLanguageKey = normalizeLanguageName(sourceLanguage);
-  const targetLanguageKey = normalizeLanguageName(targetLanguage);
-  const tertiaryLanguageKey = normalizeLanguageName(tertiaryLanguage);
   const tags = toCleanArray(payload?.tags);
   const usesWordLevels = normalizeDeckUsesWordLevels(
     payload?.usesWordLevels,
@@ -876,20 +891,7 @@ export const saveDeck = (payload = {}) => {
     throw new Error("Deck name cannot be empty");
   }
 
-  if (!sourceLanguage || !targetLanguage) {
-    throw new Error("Source and target languages are required");
-  }
-
-  if (sourceLanguageKey === targetLanguageKey) {
-    throw new Error("Source and target languages should be different");
-  }
-
-  if (
-    tertiaryLanguageKey &&
-    (tertiaryLanguageKey === sourceLanguageKey || tertiaryLanguageKey === targetLanguageKey)
-  ) {
-    throw new Error("Optional language should be different from source and target");
-  }
+  validateImportLanguages({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide });
 
   const duplicateDeck = hasDeckId
     ? db
@@ -938,6 +940,7 @@ export const saveDeck = (payload = {}) => {
       tertiaryLanguage,
       usesWordLevels,
       tags,
+      pictureSide,
     },
     words: normalizedWords.map((word) => ({
       externalId: word.externalId,
@@ -965,8 +968,9 @@ export const saveDeck = (payload = {}) => {
         sync_id,
         origin_kind,
         origin_ref,
-        content_hash
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        content_hash,
+        picture_side
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const updateDeck = db.prepare(
@@ -984,6 +988,7 @@ export const saveDeck = (payload = {}) => {
         origin_kind = ?,
         origin_ref = ?,
         content_hash = ?,
+        picture_side = ?,
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `,
@@ -1011,6 +1016,7 @@ export const saveDeck = (payload = {}) => {
         originPayload.originKind,
         originPayload.originRef || null,
         contentHash,
+        pictureSide || null,
         providedDeckId,
       );
 
@@ -1030,6 +1036,7 @@ export const saveDeck = (payload = {}) => {
         originPayload.originKind,
         originPayload.originRef || null,
         contentHash,
+        pictureSide || null,
       );
       resolvedDeckId = Number(insertResult.lastInsertRowid);
     }

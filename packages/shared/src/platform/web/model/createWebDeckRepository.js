@@ -12,7 +12,12 @@ import {
   runReadonlyTransaction,
   runReadwriteTransaction,
 } from "@shared/platform/web/db";
-import { normalizeWordImage } from "@shared/core/usecases/cardContent";
+import {
+  hasWordContent,
+  normalizePictureSide,
+  normalizeWordImage,
+  PICTURE_SIDES,
+} from "@shared/core/usecases/cardContent";
 import {
   buildExportDeckPackage,
   collectWordImageAssetIds,
@@ -166,7 +171,8 @@ const resolveUniqueDeckName = (desiredName, existingDecks = []) => {
 const normalizeEditableWord = (word, index) => {
   const source = toCleanString(word?.source);
 
-  if (!source) {
+  // In a picture deck a word may be its picture alone.
+  if (!hasWordContent(word)) {
     return null;
   }
 
@@ -220,6 +226,7 @@ const toDeckListRow = (deck, wordsCountByDeckId = new Map(), imagesCountByDeckId
     originKind: normalizeDeckOriginKind(deck.originKind),
     originRef: normalizeDeckOriginRef(deck.originRef),
     contentHash: toCleanString(deck.contentHash),
+    pictureSide: normalizePictureSide(deck.pictureSide),
     tagsJson: JSON.stringify(tags),
     createdAt: deck.createdAt || null,
     wordsCount: Number(wordsCountByDeckId.get(deck.id) || 0),
@@ -300,6 +307,7 @@ const buildDeckContentHashFromState = ({
       tertiaryLanguage: deck?.tertiaryLanguage,
       usesWordLevels: normalizeDeckUsesWordLevels(deck?.usesWordLevels, true),
       tags: Array.isArray(deck?.tags) ? deck.tags : parseTagsFromDeck(deck),
+      pictureSide: deck?.pictureSide,
     },
     words: Array.isArray(words) ? words : [],
   });
@@ -726,6 +734,7 @@ export const createWebDeckRepository = () => {
             tertiaryLanguage: importConfig.tertiaryLanguage,
             usesWordLevels,
             tags: normalizeTags(importConfig.tags),
+            pictureSide: importConfig.pictureSide,
           },
           words: normalizedWordsResult.words,
         });
@@ -737,6 +746,7 @@ export const createWebDeckRepository = () => {
           sourceLanguage: importConfig.sourceLanguage,
           targetLanguage: importConfig.targetLanguage,
           tertiaryLanguage: importConfig.tertiaryLanguage || "",
+          pictureSide: normalizePictureSide(importConfig.pictureSide),
           usesWordLevels,
           tags: normalizeTags(importConfig.tags),
           syncId: deckSyncId,
@@ -1106,8 +1116,8 @@ export const createWebDeckRepository = () => {
 
       const providedDeckId = parseNumericId(payload?.deckId);
       const deckName = toCleanString(payload?.name);
-      const sourceLanguage = toCleanString(payload?.sourceLanguage);
-      const targetLanguage = toCleanString(payload?.targetLanguage);
+      const requestedSourceLanguage = toCleanString(payload?.sourceLanguage);
+      const requestedTargetLanguage = toCleanString(payload?.targetLanguage);
       const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
       const description = toCleanString(payload?.description);
       const tags = normalizeTags(payload?.tags);
@@ -1115,25 +1125,25 @@ export const createWebDeckRepository = () => {
         payload?.usesWordLevels,
         true,
       );
-      const sourceKey = toLanguageKey(sourceLanguage);
-      const targetKey = toLanguageKey(targetLanguage);
-      const tertiaryKey = toLanguageKey(tertiaryLanguage);
-
       if (!deckName) {
         throw new Error("Deck name cannot be empty");
       }
 
-      if (!sourceLanguage || !targetLanguage) {
-        throw new Error("Source and target languages are required");
-      }
+      // A deck keeps its picture side unless the payload names one; saving
+      // words into a deck never turns its pictures back into a language.
+      const storedDeck = providedDeckId ? await getDeckByIdInternal(providedDeckId) : null;
+      const pictureSide = normalizePictureSide(
+        payload?.pictureSide === undefined ? storedDeck?.pictureSide : payload.pictureSide,
+      );
+      const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : requestedSourceLanguage;
+      const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : requestedTargetLanguage;
 
-      if (sourceKey === targetKey) {
-        throw new Error("Source and target languages should be different");
-      }
-
-      if (tertiaryKey && (tertiaryKey === sourceKey || tertiaryKey === targetKey)) {
-        throw new Error("Optional language should be different from source and target");
-      }
+      validateImportLanguages({
+        sourceLanguage,
+        targetLanguage,
+        tertiaryLanguage,
+        pictureSide,
+      });
 
       const normalizedWords = Array.isArray(payload?.words)
         ? payload.words
@@ -1189,6 +1199,7 @@ export const createWebDeckRepository = () => {
               sourceLanguage,
               targetLanguage,
               tertiaryLanguage,
+              pictureSide,
               usesWordLevels,
               tags,
             },
@@ -1206,6 +1217,7 @@ export const createWebDeckRepository = () => {
               sourceLanguage,
               targetLanguage,
               tertiaryLanguage,
+              pictureSide,
               usesWordLevels,
               tags,
               syncId: deckSyncId,
@@ -1225,6 +1237,7 @@ export const createWebDeckRepository = () => {
                   sourceLanguage,
                   targetLanguage,
                   tertiaryLanguage,
+                  pictureSide,
                   usesWordLevels,
                   tags,
                   syncId: deckSyncId,

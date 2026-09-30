@@ -230,9 +230,7 @@ export default {
       "title": "Direction",
       "forward": "The word on the front, its translation on the back.",
       "reverse": "The translation on the front, the word on the back.",
-      "mixed": "Both directions, mixed card by card.",
-      "pictureToWord": "The picture on the front, the word on the back.",
-      "wordToPicture": "The word on the front, its picture on the back."
+      "mixed": "Both directions, mixed card by card."
     },
     "behavior": "Session",
     "dailyGoal": "Daily goal (not a limit)",
@@ -318,7 +316,8 @@ export default {
       "delete": "Could not delete the deck.",
       "notFound": "This deck no longer exists.",
       "load": "Could not load your decks.",
-      "loadWords": "Could not load the words of this deck."
+      "loadWords": "Could not load the words of this deck.",
+      "publishPictures": "Decks with a picture side can’t go to the Hub yet. They stay on your devices and in sync."
     },
     "table": {
       "label": "Decks",
@@ -530,13 +529,17 @@ export default {
       "load": "Could not load the deck for editing.",
       "emptyWord": "Enter the word first.",
       "nameRequired": "Give the deck a name.",
-      "save": "Could not save the deck."
+      "save": "Could not save the deck.",
+      "emptyPicture": "Add a picture first."
     },
     "status": {
       "deleted": "Deleted: {word}",
       "updated": "Deck saved",
       "created": "Deck created"
-    }
+    },
+    "side": {
+      "language": "Language",
+      "pictureHint": "Every word gets a picture on this side instead of text."}
   },
   "browse": {
     "empty": "No community decks match your search.",
@@ -1566,7 +1569,8 @@ export default {
       "list": {
         "one": "Added {count} card",
         "other": "Added {count} cards"
-      }
+      },
+      "withPicture": "Added: {word}, with its picture"
     },
     "undo": "Undo",
     "undone": {
@@ -1585,7 +1589,8 @@ export default {
       "undo": "Could not undo. The cards are still in the deck.",
       "deckName": "Name the new deck first.",
       "deckNameTaken": "A deck with this name already exists.",
-      "sameLanguages": "Pick two different languages."
+      "sameLanguages": "Pick two different languages.",
+      "emptyPicture": "Add a picture, then press Enter."
     },
     "list": {
       "label": "Your list",

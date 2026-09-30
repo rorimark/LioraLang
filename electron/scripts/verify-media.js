@@ -129,11 +129,39 @@ const main = () => {
   }
   assert(mismatch, "bytes that are not the picture they claim to be are refused");
 
+  // A picture deck: pictures instead of a language on one side, words that
+  // are a picture alone, and a save of its words that keeps the side.
+  const pictureDeck = saveDeck({
+    name: "Pictures",
+    sourceLanguage: "English",
+    targetLanguage: "Polish",
+    pictureSide: "source",
+    words: [{ source: "", target: "szparag", image: { assetId: PNG_ID, alt: "" } }],
+  });
+  assert(pictureDeck.deck.pictureSide === "source", "a deck keeps its picture side");
+  assert(pictureDeck.deck.sourceLanguage === "", "a picture side has no language");
+  assert(pictureDeck.words.length === 1 && pictureDeck.words[0].image?.assetId === PNG_ID, "a word can be a picture alone");
+  const resaved = saveDeck({
+    deckId: pictureDeck.deck.id,
+    name: "Pictures",
+    targetLanguage: "Polish",
+    words: [...pictureDeck.words, { source: "", target: "chleb", image: { assetId: PNG_ID, alt: "bread" } }],
+  });
+  assert(resaved.deck.pictureSide === "source" && resaved.words.length === 2, "adding words keeps the picture side");
+  const picturePackage = exportDeckToJsonPackage(pictureDeck.deck.id, {}).package;
+  assert(picturePackage.deck.pictureSide === "source", "a picture deck's file says which side is pictures");
+  const picturePath = path.join(sandbox, "pictures.lioradeck");
+  fs.writeFileSync(picturePath, JSON.stringify(picturePackage));
+  const reimported = importDeckFromJsonFile(picturePath, {});
+  const reimportedDeck = listDecks().find((item) => item.id === reimported.deckId);
+  assert(reimportedDeck.pictureSide === "source" && reimported.importedCount === 2, "a picture deck imports as a picture deck");
+
   // Removing the picture from the word leaves it for a day, then sweeps it.
   const db = getDatabase();
   const deckWords = getDeckWords(imported.deckId).map((word) => ({ ...word, image: null }));
   saveDeck({ deckId: imported.deckId, name: "Food", sourceLanguage: "English", targetLanguage: "Polish", words: deckWords });
   assert(getImage(PNG_ID), "an unused picture survives its grace period");
+  db.prepare("DELETE FROM decks WHERE id IN (?, ?)").run(pictureDeck.deck.id, reimported.deckId);
   db.prepare("UPDATE media_assets SET touched_at = datetime('now', '-2 days')").run();
   collectUnusedMedia();
   assert(!getImage(PNG_ID), "an unused picture is swept after it");

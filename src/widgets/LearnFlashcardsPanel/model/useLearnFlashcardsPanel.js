@@ -23,9 +23,7 @@ import {
 } from "./learnProgressStorage";
 import {
   LEARN_EXERCISE_MODE_FLASHCARDS,
-  LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE,
   LEARN_SESSION_DIRECTION_MIXED,
-  LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE,
   LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
   LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE,
   normalizeLearnSessionSettings,
@@ -33,6 +31,7 @@ import {
   readLearnSessionSettingsFromStorage,
   writeLearnSessionSettingsToStorage,
 } from "./learnSessionSettings";
+import { resolveDeckSideLabels } from "./deckSideLabels";
 import { CONTENT_TYPES, resolveCardFaces, TEXT_ROLES } from "@shared/core/usecases/cardContent";
 import {
   LEARN_VIEW_MODE_BROWSE,
@@ -64,38 +63,19 @@ const createShuffleSeed = () => Math.floor(Math.random() * 2_147_483_646) + 1;
 const buildDirectionSummary = (
   directionMode = LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
   deck = {},
-  { t, languageName },
+  i18n,
 ) => {
-  const sourceLanguage = String(deck?.sourceLanguage || "").trim()
-    ? languageName(String(deck.sourceLanguage).trim())
-    : t("learn.sourceLanguage");
-  const targetLanguages = [
-    deck?.targetLanguage,
-    deck?.tertiaryLanguage,
-  ]
-    .filter(Boolean)
-    .map((value) => String(value).trim())
-    .filter(Boolean)
-    .map(languageName);
-  const targetLabel = targetLanguages.length > 0 ? targetLanguages.join(" + ") : t("learn.targetLanguage");
+  const { source, target } = resolveDeckSideLabels(deck, i18n);
 
   if (directionMode === LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE) {
-    return `${targetLabel} → ${sourceLanguage}`;
-  }
-
-  if (directionMode === LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE) {
-    return `${t("learn.picture")} → ${sourceLanguage}`;
-  }
-
-  if (directionMode === LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE) {
-    return `${sourceLanguage} → ${t("learn.picture")}`;
+    return `${target} → ${source}`;
   }
 
   if (directionMode === LEARN_SESSION_DIRECTION_MIXED) {
-    return `${sourceLanguage} ↔ ${targetLabel}`;
+    return `${source} ↔ ${target}`;
   }
 
-  return `${sourceLanguage} → ${targetLabel}`;
+  return `${source} → ${target}`;
 };
 
 // What one side of the card shows, from the entry's content: text as a
@@ -271,7 +251,7 @@ const buildCompletionMessage = (session, t) => {
 
 export const useLearnFlashcardsPanel = () => {
   const i18n = useI18n();
-  const { t, languageName, formatInterval } = i18n;
+  const { t, formatInterval } = i18n;
   const navigate = useNavigate();
   const location = useLocation();
   const srsRepository = usePlatformService("srsRepository");
@@ -373,12 +353,12 @@ export const useLearnFlashcardsPanel = () => {
     repository: srsRepository, authRepository, syncRepository });
   const isExtendedSession = session.sessionMode === "extended";
   const baseDeck = isBrowseMode ? deckDetails : session?.deck || deckDetails || null;
-  // How many words have a picture comes from the deck list; it decides
-  // whether picture directions are offered.
-  const listedImagesCount = decks.find((deck) => String(deck?.id) === String(selectedDeckId))?.imagesCount;
+  // Which side is pictures comes from the deck list; the study session's
+  // own copy of the deck carries only its languages.
+  const listedPictureSide = decks.find((deck) => String(deck?.id) === String(selectedDeckId))?.pictureSide || "";
   const currentDeck = useMemo(
-    () => (baseDeck ? { ...baseDeck, imagesCount: Number(listedImagesCount) || 0 } : null),
-    [baseDeck, listedImagesCount],
+    () => (baseDeck ? { ...baseDeck, pictureSide: baseDeck.pictureSide || listedPictureSide } : null),
+    [baseDeck, listedPictureSide],
   );
   const directionSummary = useMemo(
     () => buildDirectionSummary(sessionSettings.directionMode, currentDeck, i18n),
@@ -882,26 +862,16 @@ export const useLearnFlashcardsPanel = () => {
     }));
   }, [currentWord, formatInterval, isBrowseMode, t]);
   const cardFaces = useMemo(
-    () => resolveCardFaces(currentWord || {}, sessionSettings.directionMode),
-    [currentWord, sessionSettings.directionMode],
+    () => resolveCardFaces(currentWord || {}, sessionSettings.directionMode, currentDeck || {}),
+    [currentDeck, currentWord, sessionSettings.directionMode],
   );
-  // The language names on the card, in the interface's language.
-  const targetLanguagesLabel = [currentDeck?.targetLanguage, currentDeck?.tertiaryLanguage]
-    .filter(Boolean)
-    .map(languageName)
-    .join(" + ");
-  const sourceLanguageLabel = currentDeck?.sourceLanguage
-    ? languageName(currentDeck.sourceLanguage)
-    : t("learn.sourceLanguage");
-  const labelForContent = (content) => {
-    if (content?.type === CONTENT_TYPES.image) {
-      return t("learn.picture");
-    }
-
-    return content?.role === TEXT_ROLES.source
-      ? sourceLanguageLabel
-      : targetLanguagesLabel || t("learn.targetLanguage");
-  };
+  // The side names on the card, in the interface's language: a language,
+  // or "Picture" for a picture side.
+  const sideLabels = resolveDeckSideLabels(currentDeck || {}, i18n);
+  const labelForContent = (content) =>
+    content?.role === TEXT_ROLES.source || (content?.type === CONTENT_TYPES.image && currentDeck?.pictureSide === "source")
+      ? sideLabels.source
+      : sideLabels.target;
   const cardFrontLabel = labelForContent(cardFaces.front);
   const cardBackLabel = labelForContent(cardFaces.back);
   const cardFrontText = toFaceText(cardFaces.front, t);
@@ -909,8 +879,10 @@ export const useLearnFlashcardsPanel = () => {
   // A picture asked about on the front is described without naming the
   // word, which is the answer; one shown as the answer may name it.
   const cardFrontImage = toFaceImage(cardFaces.front, cardFaces.front?.alt || t("learn.pictureToName"));
-  const cardBackImage = toFaceImage(cardFaces.back, cardFaces.back?.alt || currentWord?.source || "");
-  const cardBackSubText = cardFaces.detail?.text || "";
+  const cardBackImage = toFaceImage(
+    cardFaces.back,
+    cardFaces.back?.alt || (cardFaces.front?.type === CONTENT_TYPES.text ? cardFaces.front.text : ""),
+  );
   const cardMetaBadges = useMemo(
     () => buildCardMetaBadges(currentWord, sessionSettings, i18n),
     [currentWord, i18n, sessionSettings],
@@ -1021,7 +993,6 @@ export const useLearnFlashcardsPanel = () => {
     cardBackText,
     cardFrontImage,
     cardBackImage,
-    cardBackSubText,
     cardMetaBadges,
     cardBackDetails,
     isBackVisible,

@@ -227,9 +227,7 @@ export default {
       "title": "出題方向",
       "forward": "表に単語、裏に訳。",
       "reverse": "表に訳、裏に単語。",
-      "mixed": "両方向をカードごとに混ぜます。",
-      "pictureToWord": "表に画像、裏に単語。",
-      "wordToPicture": "表に単語、裏にその画像。"
+      "mixed": "両方向をカードごとに混ぜます。"
     },
     "behavior": "セッション",
     "dailyGoal": "1日の目標（上限ではありません）",
@@ -310,7 +308,8 @@ export default {
       "delete": "デッキを削除できませんでした。",
       "notFound": "このデッキはもう存在しません。",
       "load": "デッキを読み込めませんでした。",
-      "loadWords": "このデッキの単語を読み込めませんでした。"
+      "loadWords": "このデッキの単語を読み込めませんでした。",
+      "publishPictures": "片面が画像のデッキは、まだ Hub に公開できません。端末と同期には残ります。"
     },
     "table": {
       "label": "デッキ",
@@ -515,13 +514,17 @@ export default {
       "load": "編集するデッキを読み込めませんでした。",
       "emptyWord": "先に単語を入力してください。",
       "nameRequired": "デッキに名前を付けてください。",
-      "save": "デッキを保存できませんでした。"
+      "save": "デッキを保存できませんでした。",
+      "emptyPicture": "先に画像を追加してください。"
     },
     "status": {
       "deleted": "削除しました：{word}",
       "updated": "デッキを保存しました",
       "created": "デッキを作成しました"
-    }
+    },
+    "side": {
+      "language": "言語",
+      "pictureHint": "この面には、すべての単語でテキストの代わりに画像が入ります。"}
   },
   "browse": {
     "empty": "検索に一致するコミュニティのデッキはありません。",
@@ -1486,7 +1489,8 @@ export default {
       "single": "追加しました：{word} — {translation}",
       "list": {
         "other": "{count}枚のカードを追加しました"
-      }
+      },
+      "withPicture": "追加しました：{word}（画像付き）"
     },
     "undo": "元に戻す",
     "undone": {
@@ -1504,7 +1508,8 @@ export default {
       "undo": "元に戻せませんでした。カードはデッキに残っています。",
       "deckName": "先に新しいデッキに名前を付けてください。",
       "deckNameTaken": "この名前のデッキはすでにあります。",
-      "sameLanguages": "異なる2つの言語を選んでください。"
+      "sameLanguages": "異なる2つの言語を選んでください。",
+      "emptyPicture": "画像を追加してから Enter を押してください。"
     },
     "list": {
       "label": "リスト",

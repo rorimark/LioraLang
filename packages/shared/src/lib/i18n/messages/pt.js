@@ -227,9 +227,7 @@ export default {
       "title": "Direção",
       "forward": "A palavra na frente, a tradução no verso.",
       "reverse": "A tradução na frente, a palavra no verso.",
-      "mixed": "As duas direções, misturadas cartão a cartão.",
-      "pictureToWord": "A imagem na frente, a palavra no verso.",
-      "wordToPicture": "A palavra na frente, a imagem no verso."
+      "mixed": "As duas direções, misturadas cartão a cartão."
     },
     "behavior": "Sessão",
     "dailyGoal": "Meta diária (não é limite)",
@@ -320,7 +318,8 @@ export default {
       "delete": "Não foi possível excluir o baralho.",
       "notFound": "Este baralho não existe mais.",
       "load": "Não foi possível carregar seus baralhos.",
-      "loadWords": "Não foi possível carregar as palavras deste baralho."
+      "loadWords": "Não foi possível carregar as palavras deste baralho.",
+      "publishPictures": "Baralhos com um lado de imagens ainda não podem ir para o Hub. Ficam nos seus dispositivos e na sincronização."
     },
     "table": {
       "label": "Baralhos",
@@ -539,13 +538,17 @@ export default {
       "load": "Não foi possível carregar o baralho para edição.",
       "emptyWord": "Digite a palavra primeiro.",
       "nameRequired": "Dê um nome ao baralho.",
-      "save": "Não foi possível salvar o baralho."
+      "save": "Não foi possível salvar o baralho.",
+      "emptyPicture": "Adicione primeiro uma imagem."
     },
     "status": {
       "deleted": "Excluída: {word}",
       "updated": "Baralho salvo",
       "created": "Baralho criado"
-    }
+    },
+    "side": {
+      "language": "Idioma",
+      "pictureHint": "Cada palavra tem uma imagem deste lado em vez de texto."}
   },
   "browse": {
     "empty": "Nenhum baralho da comunidade corresponde à sua pesquisa.",
@@ -1640,7 +1643,8 @@ export default {
         "one": "{count} cartão adicionado",
         "many": "{count} cartões adicionados",
         "other": "{count} cartões adicionados"
-      }
+      },
+      "withPicture": "Adicionada: {word}, com a imagem"
     },
     "undo": "Desfazer",
     "undone": {
@@ -1660,7 +1664,8 @@ export default {
       "undo": "Não foi possível desfazer. Os cartões continuam no baralho.",
       "deckName": "Dê um nome ao novo baralho primeiro.",
       "deckNameTaken": "Já existe um baralho com este nome.",
-      "sameLanguages": "Escolha dois idiomas diferentes."
+      "sameLanguages": "Escolha dois idiomas diferentes.",
+      "emptyPicture": "Adicione uma imagem e prima Enter."
     },
     "list": {
       "label": "Sua lista",

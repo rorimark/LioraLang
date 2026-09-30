@@ -227,9 +227,7 @@ export default {
       "title": "Direzione",
       "forward": "La parola davanti, la traduzione dietro.",
       "reverse": "La traduzione davanti, la parola dietro.",
-      "mixed": "Entrambe le direzioni, mescolate carta per carta.",
-      "pictureToWord": "L’immagine sul fronte, la parola sul retro.",
-      "wordToPicture": "La parola sul fronte, la sua immagine sul retro."
+      "mixed": "Entrambe le direzioni, mescolate carta per carta."
     },
     "behavior": "Sessione",
     "dailyGoal": "Obiettivo giornaliero (non un limite)",
@@ -320,7 +318,8 @@ export default {
       "delete": "Non è stato possibile eliminare il mazzo.",
       "notFound": "Questo mazzo non esiste più.",
       "load": "Non è stato possibile caricare i tuoi mazzi.",
-      "loadWords": "Non è stato possibile caricare le parole di questo mazzo."
+      "loadWords": "Non è stato possibile caricare le parole di questo mazzo.",
+      "publishPictures": "I mazzi con un lato di immagini non possono ancora andare nell’Hub. Restano sui tuoi dispositivi e nella sincronizzazione."
     },
     "table": {
       "label": "Mazzi",
@@ -539,13 +538,17 @@ export default {
       "load": "Non è stato possibile caricare il mazzo da modificare.",
       "emptyWord": "Scrivi prima la parola.",
       "nameRequired": "Dai un nome al mazzo.",
-      "save": "Non è stato possibile salvare il mazzo."
+      "save": "Non è stato possibile salvare il mazzo.",
+      "emptyPicture": "Prima aggiungi un’immagine."
     },
     "status": {
       "deleted": "Eliminata: {word}",
       "updated": "Mazzo salvato",
       "created": "Mazzo creato"
-    }
+    },
+    "side": {
+      "language": "Lingua",
+      "pictureHint": "Ogni parola ha un’immagine su questo lato al posto del testo."}
   },
   "browse": {
     "empty": "Nessun mazzo della community corrisponde alla ricerca.",
@@ -1640,7 +1643,8 @@ export default {
         "one": "{count} carta aggiunta",
         "many": "{count} carte aggiunte",
         "other": "{count} carte aggiunte"
-      }
+      },
+      "withPicture": "Aggiunta: {word}, con la sua immagine"
     },
     "undo": "Annulla",
     "undone": {
@@ -1660,7 +1664,8 @@ export default {
       "undo": "Impossibile annullare. Le carte sono ancora nel mazzo.",
       "deckName": "Dai prima un nome al nuovo mazzo.",
       "deckNameTaken": "Esiste già un mazzo con questo nome.",
-      "sameLanguages": "Scegli due lingue diverse."
+      "sameLanguages": "Scegli due lingue diverse.",
+      "emptyPicture": "Aggiungi un’immagine, poi premi Invio."
     },
     "list": {
       "label": "Il tuo elenco",

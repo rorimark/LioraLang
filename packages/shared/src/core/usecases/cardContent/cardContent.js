@@ -1,14 +1,14 @@
 // What a vocabulary entry holds, and how one entry becomes the two sides of
 // a card.
 //
-// An entry has content of different types. Text is written in one of the
-// deck's languages (the word, its translation); an image shows the thing
-// itself. An image is a content type, never a language: it has no language
-// code, only an asset it points to.
+// A deck has two sides. Each is either text in a language (English,
+// Polish…) or a picture. A picture is a content type, never a language: a
+// deck "Picture → Polish" has no source language at all, and its words
+// carry a picture ({ assetId, alt }) where other decks carry a word.
 //
-// One entry, one SRS card. A direction only decides which content goes on
-// the front and which on the back, so "picture → word" and "word → picture"
-// are ways of showing the same entry, not extra cards to schedule.
+// One entry, one SRS card. The direction only decides which side goes on
+// the front, so in a picture deck "source → target" is picture → word and
+// "target → source" is word → picture, with nothing new to schedule.
 
 export const CONTENT_TYPES = Object.freeze({
   text: "text",
@@ -24,10 +24,19 @@ export const TEXT_ROLES = Object.freeze({
 export const CARD_DIRECTIONS = Object.freeze({
   sourceToTarget: "source_to_target",
   targetToSource: "target_to_source",
-  imageToSource: "image_to_source",
-  sourceToImage: "source_to_image",
   mixed: "mixed",
 });
+
+// Which side of a deck, if any, is a picture. At most one: a deck needs
+// text on the other side to be a vocabulary deck.
+export const PICTURE_SIDES = Object.freeze({
+  none: "",
+  source: "source",
+  target: "target",
+});
+
+export const normalizePictureSide = (value) =>
+  value === PICTURE_SIDES.source || value === PICTURE_SIDES.target ? value : PICTURE_SIDES.none;
 
 export const MAX_IMAGE_ALT_LENGTH = 200;
 
@@ -74,27 +83,10 @@ export const normalizeWordImage = (value) => {
 
 export const hasWordImage = (word) => Boolean(normalizeWordImage(word?.image));
 
-export const isImageDirection = (direction) =>
-  direction === CARD_DIRECTIONS.imageToSource || direction === CARD_DIRECTIONS.sourceToImage;
-
-const SIDES = Object.freeze({
-  source: Object.freeze({ type: CONTENT_TYPES.text, role: TEXT_ROLES.source }),
-  translation: Object.freeze({ type: CONTENT_TYPES.text, role: TEXT_ROLES.translation }),
-  image: Object.freeze({ type: CONTENT_TYPES.image }),
-});
-
-// Each direction as a pair of sides. `detail` is shown under the answer:
-// naming a picture asks for the word, and the translation follows it.
-export const CARD_PRESENTATIONS = Object.freeze({
-  [CARD_DIRECTIONS.sourceToTarget]: Object.freeze({ front: SIDES.source, back: SIDES.translation }),
-  [CARD_DIRECTIONS.targetToSource]: Object.freeze({ front: SIDES.translation, back: SIDES.source }),
-  [CARD_DIRECTIONS.imageToSource]: Object.freeze({
-    front: SIDES.image,
-    back: SIDES.source,
-    detail: SIDES.translation,
-  }),
-  [CARD_DIRECTIONS.sourceToImage]: Object.freeze({ front: SIDES.source, back: SIDES.image }),
-});
+// An entry is worth keeping when its first side has something on it: the
+// word, or in a picture deck, the picture.
+export const hasWordContent = (word) =>
+  Boolean((typeof word?.source === "string" && word.source.trim()) || hasWordImage(word));
 
 const hashValue = (value) => {
   const source = String(value || "");
@@ -108,9 +100,7 @@ const hashValue = (value) => {
 };
 
 // The direction one entry is actually shown in. "Mixed" alternates between
-// the two text directions, the same way for the same entry every time. A
-// picture direction needs a picture: an entry without one is shown as text,
-// word first, so a deck with a few pictures still studies every word.
+// the two, the same way for the same entry every time.
 export const resolveCardDirection = (direction = CARD_DIRECTIONS.sourceToTarget, word = {}) => {
   if (direction === CARD_DIRECTIONS.mixed) {
     const mixedSeed =
@@ -121,11 +111,9 @@ export const resolveCardDirection = (direction = CARD_DIRECTIONS.sourceToTarget,
       : CARD_DIRECTIONS.targetToSource;
   }
 
-  if (isImageDirection(direction)) {
-    return hasWordImage(word) ? direction : CARD_DIRECTIONS.sourceToTarget;
-  }
-
-  return CARD_PRESENTATIONS[direction] ? direction : CARD_DIRECTIONS.sourceToTarget;
+  return direction === CARD_DIRECTIONS.targetToSource
+    ? CARD_DIRECTIONS.targetToSource
+    : CARD_DIRECTIONS.sourceToTarget;
 };
 
 const TRANSLATION_SEPARATOR = " • ";
@@ -136,32 +124,38 @@ const buildTranslationText = (word) =>
     .filter(Boolean)
     .join(TRANSLATION_SEPARATOR);
 
-export const buildSideContent = (side, word = {}) => {
-  if (!side) {
-    return null;
+const cleanText = (value) => (typeof value === "string" ? value.trim() : "");
+
+// What one side of the deck shows for an entry. A picture side whose
+// picture is missing falls back to the picture's description, so the card
+// still has something to ask.
+export const buildSideContent = (side, word = {}, deck = {}) => {
+  const isPictureSide = normalizePictureSide(deck?.pictureSide) === side;
+  const image = normalizeWordImage(word?.image);
+
+  if (isPictureSide && image) {
+    return { type: CONTENT_TYPES.image, ...image };
   }
 
-  if (side.type === CONTENT_TYPES.image) {
-    const image = normalizeWordImage(word?.image);
-    return image ? { type: CONTENT_TYPES.image, ...image } : null;
-  }
+  const text = side === PICTURE_SIDES.source ? cleanText(word?.source) : buildTranslationText(word);
 
-  const text = side.role === TEXT_ROLES.source
-    ? (typeof word?.source === "string" ? word.source.trim() : "")
-    : buildTranslationText(word);
-
-  return { type: CONTENT_TYPES.text, role: side.role, text };
+  return {
+    type: CONTENT_TYPES.text,
+    role: side === PICTURE_SIDES.source ? TEXT_ROLES.source : TEXT_ROLES.translation,
+    text: text || (isPictureSide ? image?.alt || "" : ""),
+  };
 };
 
 // Both sides of the card one entry makes in a direction.
-export const resolveCardFaces = (word, direction) => {
+export const resolveCardFaces = (word, direction, deck = {}) => {
   const resolvedDirection = resolveCardDirection(direction, word);
-  const presentation = CARD_PRESENTATIONS[resolvedDirection];
+  const [frontSide, backSide] = resolvedDirection === CARD_DIRECTIONS.targetToSource
+    ? [PICTURE_SIDES.target, PICTURE_SIDES.source]
+    : [PICTURE_SIDES.source, PICTURE_SIDES.target];
 
   return {
     direction: resolvedDirection,
-    front: buildSideContent(presentation.front, word),
-    back: buildSideContent(presentation.back, word),
-    detail: buildSideContent(presentation.detail, word),
+    front: buildSideContent(frontSide, word, deck),
+    back: buildSideContent(backSide, word, deck),
   };
 };

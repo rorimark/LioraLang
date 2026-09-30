@@ -15,7 +15,9 @@ import {
   validateDeckPackageObject,
 } from "@shared/core/usecases/importExport";
 import { normalizeAppPreferences } from "@shared/lib/appPreferences/appPreferences";
-import { pullMissingMedia, pushDeckMedia } from "./mediaSync";
+import { cleanUpRemoteMedia, pullMissingMedia, pushDeckMedia } from "./mediaSync";
+
+const MEDIA_CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 const SYNC_TICK_INTERVAL_MS = 90_000;
 const ONLINE_RETRY_DEBOUNCE_MS = 1_200;
@@ -238,6 +240,7 @@ const toSaveDeckPayloadFromPackage = ({
     sourceLanguage: importConfig.sourceLanguage,
     targetLanguage: importConfig.targetLanguage,
     tertiaryLanguage: importConfig.tertiaryLanguage,
+    pictureSide: importConfig.pictureSide,
     usesWordLevels: Boolean(parsedPackage?.deck?.usesWordLevels ?? true),
     tags: importConfig.tags,
     syncId: importConfig.syncId,
@@ -403,6 +406,7 @@ export const createSyncRepository = ({
       sourceLanguage: deckDetails?.sourceLanguage,
       targetLanguage: deckDetails?.targetLanguage,
       tertiaryLanguage: deckDetails?.tertiaryLanguage,
+      pictureSide: deckDetails?.pictureSide || "",
       usesWordLevels: Boolean(deckDetails?.usesWordLevels),
       tags: Array.isArray(deckDetails?.tags) ? deckDetails.tags : JSON.parse(deckDetails?.tagsJson || "[]"),
       syncId: createDeckSyncId(),
@@ -696,7 +700,7 @@ export const createSyncRepository = ({
       const deckWords = await deckRepository.getDeckWords(localDeck.id);
       // The pictures go up before the package that points at them, so no
       // device ever reads a word whose picture is not there to fetch.
-      await pushLocalDeckMedia(profileScope, deckWords);
+      await pushLocalDeckMedia(deckWords);
       const remoteResult = await syncApi.upsertLibraryDeck({
         deck: {
           ...deckDetails,
@@ -774,51 +778,117 @@ export const createSyncRepository = ({
     return pushedCount;
   };
 
-  const uploadedMediaIdsOf = (profileState) =>
-    Array.isArray(profileState?.uploadedMediaIds) ? profileState.uploadedMediaIds : [];
+  // What the account's storage holds, read once per sync run and kept up to
+  // date as this run uploads. Listing it, rather than remembering what was
+  // sent, means a picture removed from the account is sent again when a
+  // deck needs it.
+  let remoteMediaForRun = null;
 
-  const rememberUploadedMedia = async (profileScope, assetIds) => {
-    await persistProfileState(profileScope, (currentProfileState) => ({
-      ...currentProfileState,
-      uploadedMediaIds: [...new Set([...uploadedMediaIdsOf(currentProfileState), ...assetIds])],
-    }));
-  };
-
-  const pushLocalDeckMedia = async (profileScope, deckWords) => {
-    const before = uploadedMediaIdsOf(await syncLocalRepository.getProfileState(profileScope));
-    const uploaded = await pushDeckMedia({ syncApi, mediaRepository, deckWords, uploadedIds: before });
-
-    if (uploaded.size > before.length) {
-      await rememberUploadedMedia(profileScope, [...uploaded]);
-    }
-  };
-
-  const pullLocalMissingMedia = async (profileScope) => {
-    if (!mediaRepository) {
-      return 0;
+  const getRemoteMedia = async () => {
+    if (!remoteMediaForRun) {
+      remoteMediaForRun = await syncApi.listMediaAssets();
     }
 
-    const referencedIds = [];
+    return remoteMediaForRun;
+  };
+
+  const collectLocalReferencedMedia = async () => {
+    const referencedIds = new Set();
 
     for (const deck of await deckRepository.listDecks()) {
       if (Number(deck?.imagesCount) > 0) {
-        referencedIds.push(...collectWordImageAssetIds(await deckRepository.getDeckWords(deck.id)));
+        collectWordImageAssetIds(await deckRepository.getDeckWords(deck.id)).forEach((assetId) =>
+          referencedIds.add(assetId),
+        );
       }
+    }
+
+    return [...referencedIds];
+  };
+
+  const pushLocalDeckMedia = async (deckWords) => {
+    if (!mediaRepository || collectWordImageAssetIds(deckWords).size === 0) {
+      return;
+    }
+
+    const remoteMedia = await getRemoteMedia();
+    const before = new Set(remoteMedia.map((item) => item.id));
+    const uploaded = await pushDeckMedia({ syncApi, mediaRepository, deckWords, uploadedIds: [...before] });
+    const storedAt = toIsoTimestamp();
+
+    uploaded.forEach((assetId) => {
+      if (!before.has(assetId)) {
+        remoteMedia.push({ id: assetId, createdAt: storedAt });
+      }
+    });
+  };
+
+  const pullLocalMissingMedia = async () => {
+    if (!mediaRepository) {
+      return 0;
     }
 
     const fetched = await pullMissingMedia({
       syncApi,
       mediaRepository,
-      referencedIds,
+      referencedIds: await collectLocalReferencedMedia(),
       isOfflineError: isOfflineLikeError,
     });
 
-    // What came down from the account is already there: never sent back up.
-    if (fetched.length > 0) {
-      await rememberUploadedMedia(profileScope, fetched);
+    return fetched.length;
+  };
+
+  // The pictures every deck the account holds points at, read from each
+  // deck's latest package.
+  const loadAccountReferencedMedia = async () => {
+    const referencedIds = new Set();
+
+    for (const remoteDeck of await syncApi.listLibraryDecks()) {
+      if (toCleanString(remoteDeck?.deletedAt) || !remoteDeck?.latestPackage?.filePath) {
+        continue;
+      }
+
+      const parsedPackage = parseDeckPackageFileText(
+        await downloadDeckPackageText(syncApi, remoteDeck.latestPackage.filePath),
+      );
+      collectWordImageAssetIds(parsedPackage.words).forEach((assetId) => referencedIds.add(assetId));
     }
 
-    return fetched.length;
+    return [...referencedIds];
+  };
+
+  // Once a day, pictures the account holds and nothing uses are removed.
+  // A failure here never fails the sync; it is tried again next time.
+  const cleanUpAccountMedia = async (profileScope) => {
+    if (!mediaRepository) {
+      return 0;
+    }
+
+    const profileState = await syncLocalRepository.getProfileState(profileScope);
+    const lastCleanupMs = Date.parse(toCleanString(profileState?.lastMediaCleanupAt));
+
+    if (Number.isFinite(lastCleanupMs) && Date.now() - lastCleanupMs < MEDIA_CLEANUP_INTERVAL_MS) {
+      return 0;
+    }
+
+    try {
+      const removed = await cleanUpRemoteMedia({
+        syncApi,
+        remoteMedia: await getRemoteMedia(),
+        localReferencedIds: await collectLocalReferencedMedia(),
+        loadRemoteReferencedIds: loadAccountReferencedMedia,
+      });
+
+      await persistProfileState(profileScope, (currentProfileState) => ({
+        ...currentProfileState,
+        lastMediaCleanupAt: toIsoTimestamp(),
+      }));
+
+      return removed.length;
+    } catch (error) {
+      console.warn("[LioraLang] Unused pictures were not cleaned up this time", error);
+      return 0;
+    }
   };
 
   const pullRemoteProgress = async (profileScope) => {
@@ -907,6 +977,8 @@ export const createSyncRepository = ({
       lastSummary: "Registering this device for sync…",
     });
 
+    remoteMediaForRun = null;
+
     try {
       await syncApi.registerDevice({
         deviceId: runtimeState?.deviceId,
@@ -919,13 +991,14 @@ export const createSyncRepository = ({
       const autoResolvedConflicts = await pullRemoteDecks(profileScope);
 
       setStatus({ phase: "pulling-media", lastSummary: "Fetching pictures…" });
-      await pullLocalMissingMedia(profileScope);
+      await pullLocalMissingMedia();
 
       setStatus({ phase: "pulling-progress", lastSummary: "Pulling remote study progress…" });
       const pulledProgress = await pullRemoteProgress(profileScope);
 
       setStatus({ phase: "pushing-decks", lastSummary: "Pushing local deck changes…" });
       const pushedDecks = await pushLocalDecks(profileScope);
+      await cleanUpAccountMedia(profileScope);
 
       setStatus({ phase: "pushing-progress", lastSummary: "Pushing local study progress…" });
       const pushedProgress = await pushLocalProgress(profileScope);

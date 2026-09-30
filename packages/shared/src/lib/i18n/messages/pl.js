@@ -227,9 +227,7 @@ export default {
       "title": "Kierunek",
       "forward": "Słowo na przodzie, tłumaczenie z tyłu.",
       "reverse": "Tłumaczenie na przodzie, słowo z tyłu.",
-      "mixed": "Oba kierunki na przemian.",
-      "pictureToWord": "Obrazek z przodu, słowo z tyłu.",
-      "wordToPicture": "Słowo z przodu, obrazek z tyłu."
+      "mixed": "Oba kierunki na przemian."
     },
     "behavior": "Sesja",
     "dailyGoal": "Cel dzienny (nie limit)",
@@ -325,7 +323,8 @@ export default {
       "delete": "Nie udało się usunąć talii.",
       "notFound": "Ta talia już nie istnieje.",
       "load": "Nie udało się wczytać twoich talii.",
-      "loadWords": "Nie udało się wczytać słów tej talii."
+      "loadWords": "Nie udało się wczytać słów tej talii.",
+      "publishPictures": "Talii z obrazkami po jednej stronie nie można jeszcze opublikować w Hubie. Zostają na Twoich urządzeniach i w synchronizacji."
     },
     "table": {
       "label": "Talie",
@@ -551,13 +550,17 @@ export default {
       "load": "Nie udało się wczytać talii do edycji.",
       "emptyWord": "Najpierw wpisz słowo.",
       "nameRequired": "Nadaj talii nazwę.",
-      "save": "Nie udało się zapisać talii."
+      "save": "Nie udało się zapisać talii.",
+      "emptyPicture": "Najpierw dodaj obrazek."
     },
     "status": {
       "deleted": "Usunięto: {word}",
       "updated": "Talia zapisana",
       "created": "Talia utworzona"
-    }
+    },
+    "side": {
+      "language": "Język",
+      "pictureHint": "Każde słowo ma po tej stronie obrazek zamiast tekstu."}
   },
   "browse": {
     "empty": "Żadna talia społeczności nie pasuje do wyszukiwania.",
@@ -1717,7 +1720,8 @@ export default {
         "few": "Dodano {count} fiszki",
         "many": "Dodano {count} fiszek",
         "other": "Dodano {count} fiszek"
-      }
+      },
+      "withPicture": "Dodano: {word}, z obrazkiem"
     },
     "undo": "Cofnij",
     "undone": {
@@ -1738,7 +1742,8 @@ export default {
       "undo": "Nie udało się cofnąć. Fiszki zostały w talii.",
       "deckName": "Najpierw nazwij nową talię.",
       "deckNameTaken": "Talia o tej nazwie już istnieje.",
-      "sameLanguages": "Wybierz dwa różne języki."
+      "sameLanguages": "Wybierz dwa różne języki.",
+      "emptyPicture": "Dodaj obrazek i naciśnij Enter."
     },
     "list": {
       "label": "Twoja lista",
