@@ -760,3 +760,20 @@
   font-size: 0.9rem;
   line-height: 1.45;
 }
+
+.deck-editor-panel__thumb {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+  overflow: hidden;
+  border-radius: 7px;
+  background: var(--color-surface-muted);
+  vertical-align: middle;
+}
+
+/* The picture field reads like the fields around it. */
+.deck-editor-panel__word-grid .word-image-field__label {
+  font-size: 0.78rem;
+  font-weight: 400;
+}

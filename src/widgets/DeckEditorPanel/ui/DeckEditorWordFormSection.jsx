@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { FiEdit3, FiPlus, FiRotateCcw, FiSave } from "react-icons/fi";
 import { QuickAddWordsDialog } from "@features/quick-add-words";
+import { WordImageField } from "@features/word-image-field";
 import { useDeckEditorPanelContext } from "../model";
 import { Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -55,6 +56,7 @@ export const DeckEditorWordFormSection = memo(() => {
     levelOptions,
     partOfSpeechOptions,
     handleWordDraftChange,
+    handleWordDraftImageChange,
     handleUpsertWordDraft,
     resetWordDraft,
   } = useDeckEditorPanelContext();
@@ -110,6 +112,12 @@ export const DeckEditorWordFormSection = memo(() => {
             />
           </label>
         )}
+
+        <WordImageField
+          value={wordDraft.image}
+          onChange={handleWordDraftImageChange}
+          word={wordDraft.source}
+        />
 
         {usesWordLevels && (
           <label className="deck-editor-panel__field">

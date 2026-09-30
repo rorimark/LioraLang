@@ -265,9 +265,12 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
           includeExamples: true,
         });
 
+        // The preview lists the words; their pictures arrive with the deck
+        // when it is added, not before.
         const words = normalized.words.map((word, index) => ({
           id: word.externalId || `w${index + 1}`,
           ...word,
+          image: null,
         }));
 
         setPreviewWords(words);

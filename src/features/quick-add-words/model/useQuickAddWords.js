@@ -100,6 +100,8 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
   const [tab, setTab] = useState("single");
   const [draft, setDraft] = useState({ source: "", target: "" });
   const [details, setDetails] = useState(EMPTY_DETAILS);
+  // The picture for the word being typed, already stored locally.
+  const [draftImage, setDraftImage] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [confirmedPair, setConfirmedPair] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -290,10 +292,12 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
           part_of_speech: details.part_of_speech,
           level: usesWordLevels ? details.level : "",
           tags: splitTags(details.tagsInput),
+          image: draftImage,
         },
       ]);
 
       setDraft({ source: "", target: "" });
+      setDraftImage(null);
       setDetails((current) => ({ ...EMPTY_DETAILS, tagsInput: current.tagsInput }));
       setConfirmedPair("");
       setNotice({ kind: "added", key: "quickAdd.added.single", params: { word: added[0]?.source || source, translation: added[0]?.target || target } });
@@ -305,7 +309,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
     } finally {
       setIsSaving(false);
     }
-  }, [confirmedPair, details, draft, draftDuplicate.kind, focusSource, usesWordLevels, writeWords]);
+  }, [confirmedPair, details, draft, draftDuplicate.kind, draftImage, focusSource, usesWordLevels, writeWords]);
 
   const undo = useCallback(
     async (entryId) => {
@@ -515,7 +519,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
   }, []);
 
   const hasUnsavedInput =
-    Boolean(draft.source.trim() || draft.target.trim()) || rows.some((row) => row.source || row.target);
+    Boolean(draft.source.trim() || draft.target.trim() || draftImage) || rows.some((row) => row.source || row.target);
 
   return {
     decks,
@@ -530,6 +534,8 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
     tab,
     setTab,
     draft,
+    draftImage,
+    setDraftImage,
     details,
     isDetailsOpen,
     setIsDetailsOpen,

@@ -1,5 +1,6 @@
 import { memo, useCallback, useId, useRef, useState } from "react";
 import { FiAlertTriangle, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, FiX } from "react-icons/fi";
+import { WordImageField } from "@features/word-image-field";
 import { Button, Select } from "@shared/ui";
 import { useDialogA11y } from "@shared/lib/a11y";
 import { useI18n } from "@shared/lib/i18n";
@@ -178,6 +179,14 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
       <div aria-live="polite">
         <DuplicateHint duplicate={model.draftDuplicate} />
       </div>
+
+      <WordImageField
+        value={model.draftImage}
+        onChange={model.setDraftImage}
+        word={model.draft.source}
+        isCompact
+        isDisabled={model.isSaving}
+      />
 
       <button
         type="button"

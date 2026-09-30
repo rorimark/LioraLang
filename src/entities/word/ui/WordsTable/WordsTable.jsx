@@ -1,5 +1,6 @@
 import { Fragment, memo } from "react";
 import { useWordsTable } from "../../model/useWordsTable";
+import { WordImage } from "../WordImage/WordImage";
 import "./WordsTable.css";
 import { useI18n } from "@shared/lib/i18n";
 
@@ -93,6 +94,11 @@ export const WordsTable = memo(({ words, languageLabels, showLevelColumn = true 
                   <td data-label={labels.sourceLanguage}>
                     <span className="words-table__cell-main">
                       <span className="words-table__cell-text words-table__cell-truncate">
+                        {word.image ? (
+                          <span className="words-table__thumb">
+                            <WordImage image={word.image} alt={word.image.alt || word.source} variant="thumb" />
+                          </span>
+                        ) : null}
                         {word.source || "-"}
                       </span>
                       <span className="words-table__tap-hint">{t("wordsTable.tapHint")}</span>

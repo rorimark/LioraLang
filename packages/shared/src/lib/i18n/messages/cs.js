@@ -193,7 +193,9 @@ export default {
       "browse": "Procházet hub"
     },
     "rateCard": "Ohodnoťte kartičku",
-    "rateOption": "{label}: {description}. Další opakování za {interval}."
+    "rateOption": "{label}: {description}. Další opakování za {interval}.",
+    "picture": "Obrázek",
+    "pictureToName": "Obrázek k pojmenování"
   },
   "session": {
     "close": "Zavřít nastavení relace",
@@ -225,7 +227,9 @@ export default {
       "title": "Směr",
       "forward": "Slovo vpředu, překlad vzadu.",
       "reverse": "Překlad vpředu, slovo vzadu.",
-      "mixed": "Oba směry, střídavě kartička po kartičce."
+      "mixed": "Oba směry, střídavě kartička po kartičce.",
+      "pictureToWord": "Obrázek vpředu, slovo vzadu.",
+      "wordToPicture": "Slovo vpředu, jeho obrázek vzadu."
     },
     "behavior": "Relace",
     "dailyGoal": "Denní cíl (není limit)",
@@ -1690,5 +1694,22 @@ export default {
       "rowField": "{field}, řádek {line}",
       "remove": "Odebrat „{word}“"
     }
-  }
+  },
+  "media": {
+    "label": "Obrázek",
+    "add": "Přidat obrázek",
+    "replace": "Nahradit",
+    "remove": "Odebrat",
+    "dropHint": "nebo ho sem přetáhněte či vložte",
+    "processing": "Připravujeme obrázek…",
+    "altLabel": "Popis",
+    "altPlaceholder": "Co obrázek ukazuje",
+    "altHint": "Předčítají ho čtečky obrazovky. Popište obrázek, aniž byste uvedli slovo, aby zůstal otázkou.",
+    "loading": "Načítání obrázku",
+    "notOnDevice": "Obrázek zatím není v tomto zařízení",
+    "errors": {
+      "notImage": "Tento soubor není obrázek. Použijte JPEG, PNG, WebP nebo GIF.",
+      "tooLarge": "Obrázek má přes 25 MB. Vyberte menší.",
+      "unreadable": "Obrázek se nepodařilo přečíst. Zkuste jiný soubor.",
+      "saveFailed": "Obrázek se nepodařilo uložit. Zkuste to znovu."}}
 };

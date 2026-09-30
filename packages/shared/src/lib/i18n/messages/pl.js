@@ -193,7 +193,9 @@ export default {
       "browse": "Otwórz hub"
     },
     "rateCard": "Oceń kartę",
-    "rateOption": "{label}: {description}. Następna powtórka za {interval}."
+    "rateOption": "{label}: {description}. Następna powtórka za {interval}.",
+    "picture": "Obrazek",
+    "pictureToName": "Nazwij to, co jest na obrazku"
   },
   "session": {
     "close": "Zamknij ustawienia sesji",
@@ -225,7 +227,9 @@ export default {
       "title": "Kierunek",
       "forward": "Słowo na przodzie, tłumaczenie z tyłu.",
       "reverse": "Tłumaczenie na przodzie, słowo z tyłu.",
-      "mixed": "Oba kierunki na przemian."
+      "mixed": "Oba kierunki na przemian.",
+      "pictureToWord": "Obrazek z przodu, słowo z tyłu.",
+      "wordToPicture": "Słowo z przodu, obrazek z tyłu."
     },
     "behavior": "Sesja",
     "dailyGoal": "Cel dzienny (nie limit)",
@@ -1771,5 +1775,22 @@ export default {
       "rowField": "{field}, wiersz {line}",
       "remove": "Usuń „{word}”"
     }
-  }
+  },
+  "media": {
+    "label": "Obrazek",
+    "add": "Dodaj obrazek",
+    "replace": "Zamień",
+    "remove": "Usuń",
+    "dropHint": "albo upuść go tutaj lub wklej",
+    "processing": "Przygotowujemy obrazek…",
+    "altLabel": "Opis",
+    "altPlaceholder": "Co przedstawia obrazek",
+    "altHint": "Czytają go czytniki ekranu. Opisz obrazek bez podawania słowa, żeby nadal był pytaniem.",
+    "loading": "Wczytywanie obrazka",
+    "notOnDevice": "Obrazka nie ma jeszcze na tym urządzeniu",
+    "errors": {
+      "notImage": "To nie jest obrazek. Użyj pliku JPEG, PNG, WebP lub GIF.",
+      "tooLarge": "Obrazek ma ponad 25 MB. Wybierz mniejszy.",
+      "unreadable": "Nie udało się odczytać obrazka. Spróbuj innego pliku.",
+      "saveFailed": "Nie udało się zapisać obrazka. Spróbuj ponownie."}}
 };

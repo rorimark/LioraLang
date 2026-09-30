@@ -1,0 +1,47 @@
+.word-image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.word-image--thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.word-image--placeholder {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  min-height: 3rem;
+  padding: 8px;
+  border: 2px dashed var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text-subtle);
+  text-align: center;
+}
+
+.word-image--placeholder svg {
+  width: 1.4em;
+  height: 1.4em;
+}
+
+.word-image--thumb.word-image--placeholder {
+  min-height: 0;
+  padding: 0;
+  border-width: 1px;
+}
+
+.word-image__note {
+  max-width: 24ch;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+}

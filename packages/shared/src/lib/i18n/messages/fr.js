@@ -193,7 +193,9 @@ export default {
       "browse": "Parcourir le hub"
     },
     "rateCard": "Évaluer la carte",
-    "rateOption": "{label} : {description}. Prochaine révision dans {interval}."
+    "rateOption": "{label} : {description}. Prochaine révision dans {interval}.",
+    "picture": "Image",
+    "pictureToName": "Une image à nommer"
   },
   "session": {
     "close": "Fermer les réglages de la session",
@@ -225,7 +227,9 @@ export default {
       "title": "Sens",
       "forward": "Le mot au recto, sa traduction au verso.",
       "reverse": "La traduction au recto, le mot au verso.",
-      "mixed": "Les deux sens, mélangés carte par carte."
+      "mixed": "Les deux sens, mélangés carte par carte.",
+      "pictureToWord": "L’image au recto, le mot au verso.",
+      "wordToPicture": "Le mot au recto, son image au verso."
     },
     "behavior": "Session",
     "dailyGoal": "Objectif du jour (pas une limite)",
@@ -1690,5 +1694,22 @@ export default {
       "rowField": "{field}, ligne {line}",
       "remove": "Retirer « {word} »"
     }
-  }
+  },
+  "media": {
+    "label": "Image",
+    "add": "Ajouter une image",
+    "replace": "Remplacer",
+    "remove": "Retirer",
+    "dropHint": "ou déposez-la ici, ou collez-la",
+    "processing": "Préparation de l’image…",
+    "altLabel": "Description",
+    "altPlaceholder": "Ce que montre l’image",
+    "altHint": "Lue par les lecteurs d’écran. Décrivez l’image sans nommer le mot, pour qu’elle reste une question.",
+    "loading": "Chargement de l’image",
+    "notOnDevice": "L’image n’est pas encore sur cet appareil",
+    "errors": {
+      "notImage": "Ce fichier n’est pas une image. Utilisez un JPEG, PNG, WebP ou GIF.",
+      "tooLarge": "L’image dépasse 25 Mo. Choisissez-en une plus petite.",
+      "unreadable": "L’image n’a pas pu être lue. Essayez un autre fichier.",
+      "saveFailed": "L’image n’a pas pu être enregistrée. Réessayez."}}
 };

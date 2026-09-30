@@ -193,7 +193,9 @@ export default {
       "browse": "Hub'a göz at"
     },
     "rateCard": "Kartı değerlendir",
-    "rateOption": "{label}: {description}. Sonraki tekrar {interval} sonra."
+    "rateOption": "{label}: {description}. Sonraki tekrar {interval} sonra.",
+    "picture": "Resim",
+    "pictureToName": "Adını söyleyeceğiniz bir resim"
   },
   "session": {
     "close": "Oturum ayarlarını kapat",
@@ -225,7 +227,9 @@ export default {
       "title": "Yön",
       "forward": "Önde kelime, arkada çevirisi.",
       "reverse": "Önde çeviri, arkada kelime.",
-      "mixed": "İki yön, kart kart karışık."
+      "mixed": "İki yön, kart kart karışık.",
+      "pictureToWord": "Önde resim, arkada kelime.",
+      "wordToPicture": "Önde kelime, arkada resmi."
     },
     "behavior": "Oturum",
     "dailyGoal": "Günlük hedef (sınır değil)",
@@ -1609,5 +1613,22 @@ export default {
       "rowField": "{field}, satır {line}",
       "remove": "“{word}” kaldır"
     }
-  }
+  },
+  "media": {
+    "label": "Resim",
+    "add": "Resim ekle",
+    "replace": "Değiştir",
+    "remove": "Kaldır",
+    "dropHint": "ya da buraya sürükleyin veya yapıştırın",
+    "processing": "Resim hazırlanıyor…",
+    "altLabel": "Açıklama",
+    "altPlaceholder": "Resimde ne var",
+    "altHint": "Ekran okuyucular bunu sesli okur. Resmi kelimeyi söylemeden anlatın; böylece soru olarak kalır.",
+    "loading": "Resim yükleniyor",
+    "notOnDevice": "Resim henüz bu cihazda değil",
+    "errors": {
+      "notImage": "Bu dosya bir resim değil. JPEG, PNG, WebP veya GIF kullanın.",
+      "tooLarge": "Resim 25 MB’tan büyük. Daha küçük bir tane seçin.",
+      "unreadable": "Resim okunamadı. Başka bir dosya deneyin.",
+      "saveFailed": "Resim kaydedilemedi. Tekrar deneyin."}}
 };

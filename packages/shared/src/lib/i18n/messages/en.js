@@ -196,7 +196,9 @@ export default {
       "browse": "Browse the hub"
     },
     "rateCard": "Rate card",
-    "rateOption": "{label}: {description}. Next review in {interval}."
+    "rateOption": "{label}: {description}. Next review in {interval}.",
+    "picture": "Picture",
+    "pictureToName": "A picture to name"
   },
   "session": {
     "close": "Close session settings",
@@ -228,7 +230,9 @@ export default {
       "title": "Direction",
       "forward": "The word on the front, its translation on the back.",
       "reverse": "The translation on the front, the word on the back.",
-      "mixed": "Both directions, mixed card by card."
+      "mixed": "Both directions, mixed card by card.",
+      "pictureToWord": "The picture on the front, the word on the back.",
+      "wordToPicture": "The word on the front, its picture on the back."
     },
     "behavior": "Session",
     "dailyGoal": "Daily goal (not a limit)",
@@ -1612,5 +1616,22 @@ export default {
       "rowField": "{field}, line {line}",
       "remove": "Remove “{word}”"
     }
-  }
+  },
+  "media": {
+    "label": "Picture",
+    "add": "Add picture",
+    "replace": "Replace",
+    "remove": "Remove",
+    "dropHint": "or drop one here, or paste it",
+    "processing": "Preparing the picture…",
+    "altLabel": "Description",
+    "altPlaceholder": "What the picture shows",
+    "altHint": "Read aloud by screen readers. Describe the picture without naming the word, so it still works as a question.",
+    "loading": "Loading picture",
+    "notOnDevice": "Picture not on this device yet",
+    "errors": {
+      "notImage": "This file is not a picture. Use a JPEG, PNG, WebP or GIF.",
+      "tooLarge": "This picture is over 25 MB. Choose a smaller one.",
+      "unreadable": "This picture could not be read. Try another file.",
+      "saveFailed": "The picture could not be saved. Try again."}}
 };

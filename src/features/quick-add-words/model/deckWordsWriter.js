@@ -47,6 +47,7 @@ const toStoredWord = (word) => ({
   part_of_speech: word.part_of_speech || "",
   tags: Array.isArray(word.tags) ? word.tags : [],
   examples: Array.isArray(word.examples) ? word.examples : [],
+  image: word.image || null,
 });
 
 const buildSavePayload = (deck, words) => ({
@@ -89,6 +90,7 @@ export const toNewWord = (draft, index = 0) => ({
   part_of_speech: draft?.part_of_speech || "",
   tags: Array.isArray(draft?.tags) ? draft.tags : [],
   examples: Array.isArray(draft?.examples) ? draft.examples : [],
+  image: draft?.image || null,
 });
 
 export const appendWordsToDeck = (deckRepository, deckId, drafts) =>

@@ -193,7 +193,9 @@ export default {
       "browse": "Zum Hub"
     },
     "rateCard": "Karte bewerten",
-    "rateOption": "{label}: {description}. Nächste Wiederholung in {interval}."
+    "rateOption": "{label}: {description}. Nächste Wiederholung in {interval}.",
+    "picture": "Bild",
+    "pictureToName": "Ein Bild zum Benennen"
   },
   "session": {
     "close": "Sitzungseinstellungen schließen",
@@ -225,7 +227,9 @@ export default {
       "title": "Richtung",
       "forward": "Das Wort vorne, die Übersetzung hinten.",
       "reverse": "Die Übersetzung vorne, das Wort hinten.",
-      "mixed": "Beide Richtungen, Karte für Karte gemischt."
+      "mixed": "Beide Richtungen, Karte für Karte gemischt.",
+      "pictureToWord": "Das Bild vorne, das Wort hinten.",
+      "wordToPicture": "Das Wort vorne, sein Bild hinten."
     },
     "behavior": "Sitzung",
     "dailyGoal": "Tagesziel (keine Grenze)",
@@ -1609,5 +1613,22 @@ export default {
       "rowField": "{field}, Zeile {line}",
       "remove": "„{word}“ entfernen"
     }
-  }
+  },
+  "media": {
+    "label": "Bild",
+    "add": "Bild hinzufügen",
+    "replace": "Ersetzen",
+    "remove": "Entfernen",
+    "dropHint": "oder hierher ziehen oder einfügen",
+    "processing": "Bild wird vorbereitet…",
+    "altLabel": "Beschreibung",
+    "altPlaceholder": "Was das Bild zeigt",
+    "altHint": "Wird von Screenreadern vorgelesen. Beschreibe das Bild, ohne das Wort zu nennen, damit es eine Frage bleibt.",
+    "loading": "Bild wird geladen",
+    "notOnDevice": "Bild noch nicht auf diesem Gerät",
+    "errors": {
+      "notImage": "Diese Datei ist kein Bild. Verwende JPEG, PNG, WebP oder GIF.",
+      "tooLarge": "Das Bild ist größer als 25 MB. Wähle ein kleineres.",
+      "unreadable": "Das Bild konnte nicht gelesen werden. Versuche eine andere Datei.",
+      "saveFailed": "Das Bild konnte nicht gespeichert werden. Versuche es noch einmal."}}
 };

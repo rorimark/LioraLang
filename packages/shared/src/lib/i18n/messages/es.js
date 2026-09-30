@@ -193,7 +193,9 @@ export default {
       "browse": "Explorar el hub"
     },
     "rateCard": "Valorar tarjeta",
-    "rateOption": "{label}: {description}. Próximo repaso en {interval}."
+    "rateOption": "{label}: {description}. Próximo repaso en {interval}.",
+    "picture": "Imagen",
+    "pictureToName": "Una imagen para nombrar"
   },
   "session": {
     "close": "Cerrar ajustes de la sesión",
@@ -225,7 +227,9 @@ export default {
       "title": "Dirección",
       "forward": "La palabra delante, su traducción detrás.",
       "reverse": "La traducción delante, la palabra detrás.",
-      "mixed": "Ambas direcciones, mezcladas tarjeta a tarjeta."
+      "mixed": "Ambas direcciones, mezcladas tarjeta a tarjeta.",
+      "pictureToWord": "La imagen delante, la palabra detrás.",
+      "wordToPicture": "La palabra delante, su imagen detrás."
     },
     "behavior": "Sesión",
     "dailyGoal": "Meta diaria (no es un límite)",
@@ -1690,5 +1694,22 @@ export default {
       "rowField": "{field}, línea {line}",
       "remove": "Quitar «{word}»"
     }
-  }
+  },
+  "media": {
+    "label": "Imagen",
+    "add": "Añadir imagen",
+    "replace": "Cambiar",
+    "remove": "Quitar",
+    "dropHint": "o arrástrala aquí o pégala",
+    "processing": "Preparando la imagen…",
+    "altLabel": "Descripción",
+    "altPlaceholder": "Qué muestra la imagen",
+    "altHint": "La leen los lectores de pantalla. Describe la imagen sin decir la palabra, para que siga siendo una pregunta.",
+    "loading": "Cargando imagen",
+    "notOnDevice": "La imagen aún no está en este dispositivo",
+    "errors": {
+      "notImage": "Este archivo no es una imagen. Usa JPEG, PNG, WebP o GIF.",
+      "tooLarge": "La imagen pesa más de 25 MB. Elige una más pequeña.",
+      "unreadable": "No se pudo leer la imagen. Prueba con otro archivo.",
+      "saveFailed": "No se pudo guardar la imagen. Inténtalo de nuevo."}}
 };

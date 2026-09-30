@@ -193,7 +193,9 @@ export default {
       "browse": "ハブを見る"
     },
     "rateCard": "カードを評価",
-    "rateOption": "{label}：{description}。次の復習は {interval} 後。"
+    "rateOption": "{label}：{description}。次の復習は {interval} 後。",
+    "picture": "画像",
+    "pictureToName": "名前を答える画像"
   },
   "session": {
     "close": "セッション設定を閉じる",
@@ -225,7 +227,9 @@ export default {
       "title": "出題方向",
       "forward": "表に単語、裏に訳。",
       "reverse": "表に訳、裏に単語。",
-      "mixed": "両方向をカードごとに混ぜます。"
+      "mixed": "両方向をカードごとに混ぜます。",
+      "pictureToWord": "表に画像、裏に単語。",
+      "wordToPicture": "表に単語、裏にその画像。"
     },
     "behavior": "セッション",
     "dailyGoal": "1日の目標（上限ではありません）",
@@ -1528,5 +1532,22 @@ export default {
       "rowField": "{field}、{line}行目",
       "remove": "「{word}」を削除"
     }
-  }
+  },
+  "media": {
+    "label": "画像",
+    "add": "画像を追加",
+    "replace": "差し替え",
+    "remove": "削除",
+    "dropHint": "またはここにドロップ、または貼り付け",
+    "processing": "画像を準備しています…",
+    "altLabel": "説明",
+    "altPlaceholder": "画像に写っているもの",
+    "altHint": "スクリーンリーダーが読み上げます。問題として使えるよう、単語を書かずに画像を説明してください。",
+    "loading": "画像を読み込んでいます",
+    "notOnDevice": "この端末にはまだ画像がありません",
+    "errors": {
+      "notImage": "このファイルは画像ではありません。JPEG、PNG、WebP、GIF を使ってください。",
+      "tooLarge": "画像が 25 MB を超えています。もっと小さい画像を選んでください。",
+      "unreadable": "画像を読み取れませんでした。別のファイルを試してください。",
+      "saveFailed": "画像を保存できませんでした。もう一度お試しください。"}}
 };

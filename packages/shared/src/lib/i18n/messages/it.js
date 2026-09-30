@@ -193,7 +193,9 @@ export default {
       "browse": "Esplora l'hub"
     },
     "rateCard": "Valuta la carta",
-    "rateOption": "{label}: {description}. Prossimo ripasso tra {interval}."
+    "rateOption": "{label}: {description}. Prossimo ripasso tra {interval}.",
+    "picture": "Immagine",
+    "pictureToName": "Un’immagine da nominare"
   },
   "session": {
     "close": "Chiudi impostazioni della sessione",
@@ -225,7 +227,9 @@ export default {
       "title": "Direzione",
       "forward": "La parola davanti, la traduzione dietro.",
       "reverse": "La traduzione davanti, la parola dietro.",
-      "mixed": "Entrambe le direzioni, mescolate carta per carta."
+      "mixed": "Entrambe le direzioni, mescolate carta per carta.",
+      "pictureToWord": "L’immagine sul fronte, la parola sul retro.",
+      "wordToPicture": "La parola sul fronte, la sua immagine sul retro."
     },
     "behavior": "Sessione",
     "dailyGoal": "Obiettivo giornaliero (non un limite)",
@@ -1690,5 +1694,22 @@ export default {
       "rowField": "{field}, riga {line}",
       "remove": "Rimuovi «{word}»"
     }
-  }
+  },
+  "media": {
+    "label": "Immagine",
+    "add": "Aggiungi immagine",
+    "replace": "Sostituisci",
+    "remove": "Rimuovi",
+    "dropHint": "oppure trascinala qui o incollala",
+    "processing": "Preparazione dell’immagine…",
+    "altLabel": "Descrizione",
+    "altPlaceholder": "Che cosa mostra l’immagine",
+    "altHint": "Viene letta dagli screen reader. Descrivi l’immagine senza dire la parola, così resta una domanda.",
+    "loading": "Caricamento dell’immagine",
+    "notOnDevice": "L’immagine non è ancora su questo dispositivo",
+    "errors": {
+      "notImage": "Questo file non è un’immagine. Usa JPEG, PNG, WebP o GIF.",
+      "tooLarge": "L’immagine supera i 25 MB. Scegline una più piccola.",
+      "unreadable": "Impossibile leggere l’immagine. Prova un altro file.",
+      "saveFailed": "Impossibile salvare l’immagine. Riprova."}}
 };

@@ -4,6 +4,7 @@ import { CardCatalogPagination } from "@features/card-catalog";
 import { useDeckEditorPanelContext } from "../model";
 import { WORD_FORM_ID } from "./DeckEditorWordFormSection";
 import { useI18n } from "@shared/lib/i18n";
+import { WordImage } from "@entities/word";
 
 const renderWordCell = (value) => {
   return value ? value : "-";
@@ -178,6 +179,11 @@ export const DeckEditorWordsTableSection = memo(() => {
                     }
                   >
                     <td data-label={languageLabels.sourceLanguage}>
+                      {word.image ? (
+                        <span className="deck-editor-panel__thumb">
+                          <WordImage image={word.image} alt={word.image.alt || word.source} variant="thumb" />
+                        </span>
+                      ) : null}
                       {renderWordCell(word.source)}
                     </td>
                     <td data-label={languageLabels.targetLanguage}>

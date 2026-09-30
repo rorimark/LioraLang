@@ -13,6 +13,7 @@ import {
   ROUTE_PATHS,
 } from "@shared/config/routes";
 import { useI18n } from "@shared/lib/i18n";
+import { normalizeWordImage } from "@shared/core/usecases/cardContent";
 
 const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const PART_OF_SPEECH_OPTIONS = [
@@ -114,6 +115,7 @@ const createDefaultWordDraft = (deckDefaults = {}) => {
       : "",
     examplesInput: "",
     tagsInput: "",
+    image: null,
   };
 };
 
@@ -159,6 +161,7 @@ const toEditableWord = (word, fallbackIndex) => {
     examples,
     example: examples[0] || "",
     tagsInput: Array.isArray(word?.tags) ? parseTagsJson(word.tags).join(", ") : "",
+    image: normalizeWordImage(word?.image),
   };
 };
 
@@ -176,6 +179,7 @@ const toWordDraft = (word) => {
     Array.isArray(word?.tags) && word.tags.length > 0
       ? parseTagsJson(word.tags).join(", ")
       : "",
+  image: normalizeWordImage(word?.image),
   };
 };
 
@@ -397,7 +401,8 @@ export const useDeckEditorPanel = () => {
         !currentState.target.trim() &&
         !currentState.tertiary.trim() &&
         !currentState.examplesInput.trim() &&
-        !currentState.tagsInput.trim();
+        !currentState.tagsInput.trim() &&
+        !currentState.image;
 
       return isPristine ? defaultWordDraft : currentState;
     });
@@ -425,6 +430,13 @@ export const useDeckEditorPanel = () => {
     }));
   }, []);
 
+  const handleWordDraftImageChange = useCallback((image) => {
+    setWordDraft((currentState) => ({
+      ...currentState,
+      image,
+    }));
+  }, []);
+
   const handleUpsertWordDraft = useCallback(() => {
     const cleanedSource = wordDraft.source.trim();
 
@@ -446,6 +458,7 @@ export const useDeckEditorPanel = () => {
       examples: normalizedExamples,
       tags: normalizedTags,
       tagsInput: normalizedTags.join(", "),
+      image: normalizeWordImage(wordDraft.image),
     };
 
     setWords((currentState) => {
@@ -678,6 +691,7 @@ export const useDeckEditorPanel = () => {
             : word.example
               ? [word.example]
               : [],
+          image: normalizeWordImage(word.image),
         })),
       };
 
@@ -774,6 +788,7 @@ export const useDeckEditorPanel = () => {
     handleDeckFormChange,
     handleWordDraftChange,
     handleUpsertWordDraft,
+    handleWordDraftImageChange,
     handleEditWord,
     handleDeleteWord,
     handleQuickAddWords,
