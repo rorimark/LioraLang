@@ -979,7 +979,7 @@ export default {
       "back": "Torna all'accesso"
     },
     "providersLabel": "Accedi con un servizio",
-    "desktopProvidersNote": "L'accesso con Google e GitHub arriverà presto nell'app desktop. Email e password funzionano già qui.",
+    "desktopProvidersNote": "L'accesso si apre nel browser. Quando hai finito, torna su LioraLang.",
     "hub": {
       "loading": "Caricamento dei tuoi mazzi nell'hub…",
       "emptyTitle": "Ancora niente di pubblicato.",
@@ -1149,7 +1149,11 @@ export default {
       "missing_credentials": "Inserisci email e password.",
       "missing_email": "Inserisci l'email.",
       "missing_password": "Inserisci una password.",
-      "social_desktop_unavailable": "L'accesso con Google e GitHub arriverà presto nell'app desktop. Per ora usa email e password."
+      "social_desktop_unavailable": "Per accedere con Google e GitHub serve una versione più recente dell'app. Per ora usa email e password.",
+      "social_port_busy": "Un altro accesso sta usando la connessione che serve a LioraLang. Chiudilo e riprova.",
+      "social_timeout": "L'accesso ha richiesto troppo tempo. Riprova.",
+      "social_cancelled": "Accesso annullato.",
+      "social_failed": "L'accesso non è stato completato. Riprova."
     }
   },
   "prefs": {
@@ -1468,6 +1472,12 @@ export default {
     "deviceWeb": "Browser web"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Accesso eseguito",
+      "doneText": "Puoi chiudere questa scheda e tornare su LioraLang.",
+      "failedTitle": "Accesso non completato",
+      "failedText": "Torna su LioraLang e riprova."
+    },
     "menu": {
       "about": "Informazioni su {app}",
       "services": "Servizi",

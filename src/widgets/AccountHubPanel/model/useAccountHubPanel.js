@@ -38,6 +38,10 @@ const KNOWN_AUTH_ERRORS = new Set([
   "same_password",
   "email_address_invalid",
   "over_email_send_rate_limit",
+  "social_port_busy",
+  "social_timeout",
+  "social_cancelled",
+  "social_failed",
   "over_request_rate_limit",
   "signup_disabled",
   "missing_credentials",
@@ -450,7 +454,16 @@ export const useAccountHubPanel = () => {
 
   const handleSocialSignIn = useCallback(async (provider) => {
     await runAction(`social-${provider}`, async () => {
-      await authRepository.signInWithProvider(provider);
+      const result = await authRepository.signInWithProvider(provider);
+
+      // The desktop app finishes sign-in in the browser and comes back
+      // signed in; the web leaves for the provider's page instead.
+      if (result?.completed) {
+        setAuthState((currentState) => ({ ...currentState, ...result }));
+        reportStatus({ key: "account.status.signedIn" }, "success");
+        return;
+      }
+
       reportStatus({ key: "account.status.redirecting", params: { provider: PROVIDER_NAMES[provider] || provider } }, "success");
     });
   }, [authRepository, reportStatus, runAction]);
@@ -566,13 +579,35 @@ export const useAccountHubPanel = () => {
     () => SIGNED_IN_TAB_ITEMS.map((item) => ({ ...item, label: t(`account.tabs.${item.key}`) })),
     [t],
   );
+  // Only the providers the project has switched on in Supabase: a button
+  // that leads to "provider is not enabled" is worse than no button.
+  const [enabledProviders, setEnabledProviders] = useState([]);
+
+  useEffect(() => {
+    if (!isConfigured || typeof authRepository.getSocialProviders !== "function") {
+      return undefined;
+    }
+
+    let isCurrent = true;
+    authRepository
+      .getSocialProviders(SOCIAL_PROVIDERS.map((item) => item.key))
+      .then((providers) => {
+        if (isCurrent) setEnabledProviders(Array.isArray(providers) ? providers : []);
+      })
+      .catch(() => {});
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [authRepository, isConfigured]);
+
   const socialProviders = useMemo(
     () =>
-      SOCIAL_PROVIDERS.map((item) => ({
+      SOCIAL_PROVIDERS.filter((item) => enabledProviders.includes(item.key)).map((item) => ({
         ...item,
         label: t("account.continueWith", { provider: PROVIDER_NAMES[item.key] }),
       })),
-    [t],
+    [enabledProviders, t],
   );
   const syncState = useMemo(() => {
     if (!syncStatus.configured) {

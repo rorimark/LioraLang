@@ -1,4 +1,4 @@
-import { hasSupabaseConfig, getSupabaseClient } from "./supabaseClient";
+import { fetchEnabledSocialProviders, hasSupabaseConfig, getSupabaseClient } from "./supabaseClient";
 
 const toCleanString = (value) => {
   if (typeof value !== "string") {
@@ -112,8 +112,59 @@ const resolveSessionWithUpdatedUser = async (client, user) => {
 const authFailure = (error, fallbackMessage) =>
   Object.assign(new Error(error?.message || fallbackMessage), { code: String(error?.code || "") });
 
+const DESKTOP_OAUTH_ERRORS = {
+  social_port_busy: "social_port_busy",
+  timeout: "social_timeout",
+  cancelled: "social_cancelled",
+};
+
+// The desktop app: a one-time address on this computer, the provider in
+// the system browser, and the code it brings back exchanged here with the
+// PKCE secret this app kept. Resolves signed in, or throws a coded error.
+const signInWithProviderOnDesktop = async (client, provider) => {
+  const electronApi = typeof window !== "undefined" ? window.electronAPI : undefined;
+
+  if (typeof electronApi?.oauthPrepare !== "function") {
+    throw authFailure({ code: "social_desktop_unavailable" }, "Social sign-in is unavailable in this build");
+  }
+
+  const prepared = await electronApi.oauthPrepare();
+
+  if (prepared?.error || !prepared?.redirectTo) {
+    throw authFailure({ code: DESKTOP_OAUTH_ERRORS[prepared?.error] || "social_failed" }, "Could not start social sign-in");
+  }
+
+  const { data, error } = await client.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: prepared.redirectTo, skipBrowserRedirect: true },
+  });
+
+  if (error || !data?.url) {
+    await electronApi.oauthCancel?.();
+    throw authFailure(error || {}, "Failed to start social sign-in");
+  }
+
+  const result = await electronApi.oauthAwaitCode(data.url);
+
+  if (!result?.code) {
+    throw authFailure({ code: DESKTOP_OAUTH_ERRORS[result?.error] || "social_failed" }, result?.error || "Social sign-in did not finish");
+  }
+
+  const exchanged = await client.auth.exchangeCodeForSession(result.code);
+
+  if (exchanged.error) {
+    throw authFailure(exchanged.error, "Failed to complete sign-in");
+  }
+
+  return { ...toAuthSummary(exchanged.data?.session || null), completed: true };
+};
+
 export const createSupabaseAuthRepository = () => {
   return {
+    // Google and GitHub, when the project has switched them on.
+    async getSocialProviders(candidates = ["google", "github"]) {
+      return fetchEnabledSocialProviders(candidates);
+    },
     isConfigured() {
       return hasSupabaseConfig();
     },
@@ -207,7 +258,7 @@ export const createSupabaseAuthRepository = () => {
       }
 
       if (isDesktopRuntime()) {
-        throw authFailure({ code: "social_desktop_unavailable" }, "Social sign-in will be added for desktop next. Use email and password for now.");
+        return signInWithProviderOnDesktop(client, normalizedProvider);
       }
 
       const { data, error } = await client.auth.signInWithOAuth({

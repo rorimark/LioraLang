@@ -1040,7 +1040,7 @@ export default {
       "back": "Назад ко входу"
     },
     "providersLabel": "Вход через сервис",
-    "desktopProvidersNote": "Вход через Google и GitHub скоро появится в приложении для компьютера. Почта и пароль уже работают.",
+    "desktopProvidersNote": "Вход откроется в браузере. Когда закончите, вернитесь в LioraLang.",
     "hub": {
       "loading": "Загружаем ваши колоды в хабе…",
       "emptyTitle": "Пока ничего не опубликовано.",
@@ -1216,7 +1216,11 @@ export default {
       "missing_credentials": "Введите почту и пароль.",
       "missing_email": "Введите почту.",
       "missing_password": "Введите пароль.",
-      "social_desktop_unavailable": "Вход через Google и GitHub скоро появится в приложении для компьютера. Пока используйте почту и пароль."
+      "social_desktop_unavailable": "Для входа через Google и GitHub нужна новая версия приложения. Пока войдите по почте и паролю.",
+      "social_port_busy": "Соединение, нужное для входа, занято другим входом. Закройте его и попробуйте снова.",
+      "social_timeout": "Вход занял слишком много времени. Попробуйте снова.",
+      "social_cancelled": "Вход отменён.",
+      "social_failed": "Вход не завершился. Попробуйте снова."
     }
   },
   "prefs": {
@@ -1538,6 +1542,12 @@ export default {
     "deviceWeb": "Браузер"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Вы вошли",
+      "doneText": "Эту вкладку можно закрыть и вернуться в LioraLang.",
+      "failedTitle": "Вход не завершился",
+      "failedText": "Вернитесь в LioraLang и попробуйте снова."
+    },
     "menu": {
       "about": "О приложении {app}",
       "services": "Службы",

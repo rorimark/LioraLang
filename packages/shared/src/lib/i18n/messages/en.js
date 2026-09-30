@@ -921,7 +921,7 @@ export default {
       "back": "Back to sign in"
     },
     "providersLabel": "Sign in with a provider",
-    "desktopProvidersNote": "Google and GitHub sign-in are coming to the desktop app. Email and password work here already.",
+    "desktopProvidersNote": "Sign-in opens in your browser. When it is done, come back to LioraLang.",
     "hub": {
       "loading": "Loading your Hub decks…",
       "emptyTitle": "Nothing published yet.",
@@ -1085,7 +1085,11 @@ export default {
       "missing_credentials": "Enter your email and password.",
       "missing_email": "Enter your email.",
       "missing_password": "Enter a password.",
-      "social_desktop_unavailable": "Google and GitHub sign-in are coming to the desktop app. Use email and password for now."
+      "social_desktop_unavailable": "Google and GitHub sign-in need a newer version of the desktop app. Use email and password for now.",
+      "social_port_busy": "Another sign-in is using the connection LioraLang needs. Close it and try again.",
+      "social_timeout": "Sign-in took too long. Try again.",
+      "social_cancelled": "Sign-in was cancelled.",
+      "social_failed": "Sign-in did not finish. Try again."
     }
   },
   "prefs": {
@@ -1401,6 +1405,12 @@ export default {
     "deviceWeb": "Web browser"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "You are signed in",
+      "doneText": "You can close this tab and go back to LioraLang.",
+      "failedTitle": "Sign-in did not finish",
+      "failedText": "Go back to LioraLang and try again."
+    },
     "menu": {
       "about": "About {app}",
       "services": "Services",

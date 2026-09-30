@@ -979,7 +979,7 @@ export default {
       "back": "Volver a iniciar sesión"
     },
     "providersLabel": "Iniciar sesión con un servicio",
-    "desktopProvidersNote": "El inicio de sesión con Google y GitHub llegará pronto a la aplicación de escritorio. Correo y contraseña ya funcionan aquí.",
+    "desktopProvidersNote": "El inicio de sesión se abre en el navegador. Cuando termines, vuelve a LioraLang.",
     "hub": {
       "loading": "Cargando tus mazos del hub…",
       "emptyTitle": "Aún no has publicado nada.",
@@ -1149,7 +1149,11 @@ export default {
       "missing_credentials": "Escribe tu correo y tu contraseña.",
       "missing_email": "Escribe tu correo.",
       "missing_password": "Escribe una contraseña.",
-      "social_desktop_unavailable": "El inicio de sesión con Google y GitHub llegará pronto a la aplicación de escritorio. De momento, usa correo y contraseña."
+      "social_desktop_unavailable": "Para entrar con Google y GitHub necesitas una versión más reciente de la aplicación. Por ahora usa correo y contraseña.",
+      "social_port_busy": "Otro inicio de sesión está usando la conexión que necesita LioraLang. Ciérralo e inténtalo de nuevo.",
+      "social_timeout": "El inicio de sesión tardó demasiado. Inténtalo de nuevo.",
+      "social_cancelled": "Inicio de sesión cancelado.",
+      "social_failed": "El inicio de sesión no terminó. Inténtalo de nuevo."
     }
   },
   "prefs": {
@@ -1468,6 +1472,12 @@ export default {
     "deviceWeb": "Navegador web"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Has iniciado sesión",
+      "doneText": "Puedes cerrar esta pestaña y volver a LioraLang.",
+      "failedTitle": "El inicio de sesión no terminó",
+      "failedText": "Vuelve a LioraLang e inténtalo de nuevo."
+    },
     "menu": {
       "about": "Acerca de {app}",
       "services": "Servicios",

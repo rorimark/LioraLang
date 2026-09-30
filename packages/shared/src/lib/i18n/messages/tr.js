@@ -918,7 +918,7 @@ export default {
       "back": "Girişe dön"
     },
     "providersLabel": "Bir hizmetle giriş yap",
-    "desktopProvidersNote": "Google ve GitHub ile giriş yakında masaüstü uygulamasına geliyor. E-posta ve parola burada zaten çalışıyor.",
+    "desktopProvidersNote": "Giriş tarayıcınızda açılır. Bitince LioraLang'e dönün.",
     "hub": {
       "loading": "Hub'daki destelerin yükleniyor…",
       "emptyTitle": "Henüz bir şey yayımlanmadı.",
@@ -1082,7 +1082,11 @@ export default {
       "missing_credentials": "E-postanı ve parolanı gir.",
       "missing_email": "E-postanı gir.",
       "missing_password": "Bir parola gir.",
-      "social_desktop_unavailable": "Google ve GitHub ile giriş yakında masaüstü uygulamasına geliyor. Şimdilik e-posta ve parola kullan."
+      "social_desktop_unavailable": "Google ve GitHub ile giriş için uygulamanın daha yeni bir sürümü gerekiyor. Şimdilik e-posta ve parola kullanın.",
+      "social_port_busy": "LioraLang'in ihtiyaç duyduğu bağlantıyı başka bir giriş kullanıyor. Onu kapatıp tekrar deneyin.",
+      "social_timeout": "Giriş çok uzun sürdü. Tekrar deneyin.",
+      "social_cancelled": "Giriş iptal edildi.",
+      "social_failed": "Giriş tamamlanmadı. Tekrar deneyin."
     }
   },
   "prefs": {
@@ -1398,6 +1402,12 @@ export default {
     "deviceWeb": "Web tarayıcısı"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Giriş yaptınız",
+      "doneText": "Bu sekmeyi kapatıp LioraLang'e dönebilirsiniz.",
+      "failedTitle": "Giriş tamamlanmadı",
+      "failedText": "LioraLang'e dönüp tekrar deneyin."
+    },
     "menu": {
       "about": "{app} hakkında",
       "services": "Hizmetler",

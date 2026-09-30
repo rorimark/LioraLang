@@ -1040,7 +1040,7 @@ export default {
       "back": "Wróć do logowania"
     },
     "providersLabel": "Zaloguj się przez usługę",
-    "desktopProvidersNote": "Logowanie przez Google i GitHub pojawi się wkrótce w aplikacji na komputer. E-mail i hasło już tu działają.",
+    "desktopProvidersNote": "Logowanie otworzy się w przeglądarce. Gdy skończysz, wróć do LioraLang.",
     "hub": {
       "loading": "Ładujemy twoje talie w hubie…",
       "emptyTitle": "Nic jeszcze nie opublikowano.",
@@ -1216,7 +1216,11 @@ export default {
       "missing_credentials": "Wpisz e-mail i hasło.",
       "missing_email": "Wpisz e-mail.",
       "missing_password": "Wpisz hasło.",
-      "social_desktop_unavailable": "Logowanie przez Google i GitHub pojawi się wkrótce w aplikacji na komputer. Na razie użyj e-maila i hasła."
+      "social_desktop_unavailable": "Logowanie przez Google i GitHub wymaga nowszej wersji aplikacji. Na razie użyj e-maila i hasła.",
+      "social_port_busy": "Połączenie potrzebne do logowania zajmuje inne logowanie. Zamknij je i spróbuj ponownie.",
+      "social_timeout": "Logowanie trwało zbyt długo. Spróbuj ponownie.",
+      "social_cancelled": "Logowanie anulowane.",
+      "social_failed": "Logowanie nie zostało dokończone. Spróbuj ponownie."
     }
   },
   "prefs": {
@@ -1538,6 +1542,12 @@ export default {
     "deviceWeb": "Przeglądarka"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Zalogowano",
+      "doneText": "Możesz zamknąć tę kartę i wrócić do LioraLang.",
+      "failedTitle": "Logowanie nie zostało dokończone",
+      "failedText": "Wróć do LioraLang i spróbuj ponownie."
+    },
     "menu": {
       "about": "O {app}",
       "services": "Usługi",

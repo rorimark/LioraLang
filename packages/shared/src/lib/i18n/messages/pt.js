@@ -979,7 +979,7 @@ export default {
       "back": "Voltar para entrar"
     },
     "providersLabel": "Entrar com um serviço",
-    "desktopProvidersNote": "O login com Google e GitHub chega em breve ao app para computador. E-mail e senha já funcionam aqui.",
+    "desktopProvidersNote": "O login abre no seu navegador. Quando terminar, volte ao LioraLang.",
     "hub": {
       "loading": "Carregando seus baralhos no hub…",
       "emptyTitle": "Nada publicado ainda.",
@@ -1149,7 +1149,11 @@ export default {
       "missing_credentials": "Digite seu e-mail e sua senha.",
       "missing_email": "Digite seu e-mail.",
       "missing_password": "Digite uma senha.",
-      "social_desktop_unavailable": "O login com Google e GitHub chega em breve ao app para computador. Por enquanto, use e-mail e senha."
+      "social_desktop_unavailable": "Para entrar com Google e GitHub é preciso uma versão mais recente do app. Por enquanto, use e-mail e senha.",
+      "social_port_busy": "Outro login está usando a conexão de que o LioraLang precisa. Feche-o e tente de novo.",
+      "social_timeout": "O login demorou demais. Tente de novo.",
+      "social_cancelled": "Login cancelado.",
+      "social_failed": "O login não foi concluído. Tente de novo."
     }
   },
   "prefs": {
@@ -1468,6 +1472,12 @@ export default {
     "deviceWeb": "Navegador"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Você entrou",
+      "doneText": "Pode fechar esta aba e voltar ao LioraLang.",
+      "failedTitle": "O login não foi concluído",
+      "failedText": "Volte ao LioraLang e tente de novo."
+    },
     "menu": {
       "about": "Sobre o {app}",
       "services": "Serviços",

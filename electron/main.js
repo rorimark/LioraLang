@@ -370,6 +370,7 @@ const setupIpcHandlers = () => {
     fs,
     path,
     getMainWindow: mainState.getMainWindow,
+    showMainWindow,
     dbFileName: DB_FILE_NAME,
     listDecks,
     getDeckById,

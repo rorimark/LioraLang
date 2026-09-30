@@ -979,7 +979,7 @@ export default {
       "back": "Zpět na přihlášení"
     },
     "providersLabel": "Přihlásit se přes službu",
-    "desktopProvidersNote": "Přihlášení přes Google a GitHub brzy přibude v aplikaci pro počítač. E-mail a heslo tu už fungují.",
+    "desktopProvidersNote": "Přihlášení se otevře v prohlížeči. Až skončíte, vraťte se do LioraLang.",
     "hub": {
       "loading": "Načítání vašich balíčků v hubu…",
       "emptyTitle": "Zatím nic nezveřejněno.",
@@ -1149,7 +1149,11 @@ export default {
       "missing_credentials": "Zadejte e-mail a heslo.",
       "missing_email": "Zadejte e-mail.",
       "missing_password": "Zadejte heslo.",
-      "social_desktop_unavailable": "Přihlášení přes Google a GitHub brzy přibude v aplikaci pro počítač. Zatím použijte e-mail a heslo."
+      "social_desktop_unavailable": "Přihlášení přes Google a GitHub vyžaduje novější verzi aplikace. Zatím použijte e-mail a heslo.",
+      "social_port_busy": "Připojení, které LioraLang potřebuje, používá jiné přihlášení. Zavřete ho a zkuste to znovu.",
+      "social_timeout": "Přihlášení trvalo příliš dlouho. Zkuste to znovu.",
+      "social_cancelled": "Přihlášení bylo zrušeno.",
+      "social_failed": "Přihlášení se nedokončilo. Zkuste to znovu."
     }
   },
   "prefs": {
@@ -1468,6 +1472,12 @@ export default {
     "deviceWeb": "Webový prohlížeč"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Jste přihlášeni",
+      "doneText": "Tuto kartu můžete zavřít a vrátit se do LioraLang.",
+      "failedTitle": "Přihlášení se nedokončilo",
+      "failedText": "Vraťte se do LioraLang a zkuste to znovu."
+    },
     "menu": {
       "about": "O aplikaci {app}",
       "services": "Služby",

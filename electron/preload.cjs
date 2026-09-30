@@ -51,6 +51,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.invoke("hub:increment-downloads", payload),
   hubDeleteDeck: (payload) => ipcRenderer.invoke("hub:delete-deck", payload),
   authStorageGetItem: (key) => ipcRenderer.invoke("auth-storage:get-item", key),
+  oauthPrepare: () => ipcRenderer.invoke("auth-oauth:prepare"),
+  oauthAwaitCode: (authorizeUrl) => ipcRenderer.invoke("auth-oauth:await-code", authorizeUrl),
+  oauthCancel: () => ipcRenderer.invoke("auth-oauth:cancel"),
   authStorageSetItem: (payload) =>
     ipcRenderer.invoke("auth-storage:set-item", payload),
   authStorageRemoveItem: (key) =>

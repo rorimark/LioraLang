@@ -979,7 +979,7 @@ export default {
       "back": "Retour à la connexion"
     },
     "providersLabel": "Se connecter avec un service",
-    "desktopProvidersNote": "La connexion avec Google et GitHub arrive bientôt dans l'application de bureau. L'e-mail et le mot de passe fonctionnent déjà ici.",
+    "desktopProvidersNote": "La connexion s'ouvre dans votre navigateur. Une fois terminée, revenez dans LioraLang.",
     "hub": {
       "loading": "Chargement de vos paquets du hub…",
       "emptyTitle": "Rien de publié pour l'instant.",
@@ -1149,7 +1149,11 @@ export default {
       "missing_credentials": "Saisissez votre e-mail et votre mot de passe.",
       "missing_email": "Saisissez votre e-mail.",
       "missing_password": "Saisissez un mot de passe.",
-      "social_desktop_unavailable": "La connexion avec Google et GitHub arrive bientôt dans l'application de bureau. Utilisez l'e-mail et le mot de passe en attendant."
+      "social_desktop_unavailable": "La connexion avec Google et GitHub demande une version plus récente de l'application. Utilisez l'e-mail et le mot de passe pour l'instant.",
+      "social_port_busy": "Une autre connexion utilise l'accès dont LioraLang a besoin. Fermez-la et réessayez.",
+      "social_timeout": "La connexion a pris trop de temps. Réessayez.",
+      "social_cancelled": "Connexion annulée.",
+      "social_failed": "La connexion n'a pas abouti. Réessayez."
     }
   },
   "prefs": {
@@ -1468,6 +1472,12 @@ export default {
     "deviceWeb": "Navigateur web"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Vous êtes connecté",
+      "doneText": "Vous pouvez fermer cet onglet et revenir dans LioraLang.",
+      "failedTitle": "La connexion n'a pas abouti",
+      "failedText": "Revenez dans LioraLang et réessayez."
+    },
     "menu": {
       "about": "À propos de {app}",
       "services": "Services",

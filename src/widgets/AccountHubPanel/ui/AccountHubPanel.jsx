@@ -206,7 +206,7 @@ const SignedOutForms = memo(({ panel }) => {
         </form>
       ) : null}
 
-      {isReset ? null : (
+      {isReset || panel.socialProviders.length === 0 ? null : (
         <>
           <div className="account__divider" role="separator">
             <span>{t("common.or")}</span>

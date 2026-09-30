@@ -41,6 +41,29 @@ const createDesktopAuthStorage = () => {
   };
 };
 
+// Which social providers the project has switched on, from Supabase's
+// public auth settings; empty when they cannot be read.
+export const fetchEnabledSocialProviders = async (candidates = []) => {
+  if (!hasSupabaseConfig() || typeof fetch !== "function") {
+    return [];
+  }
+
+  try {
+    const response = await fetch(`${supabaseUrl}/auth/v1/settings`, {
+      headers: { apikey: supabasePublishableKey },
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const settings = await response.json();
+    return candidates.filter((provider) => settings?.external?.[provider] === true);
+  } catch {
+    return [];
+  }
+};
+
 export const hasSupabaseConfig = () => {
   return Boolean(supabaseUrl && supabasePublishableKey);
 };
@@ -61,6 +84,10 @@ export const getSupabaseClient = () => {
       autoRefreshToken: true,
       detectSessionInUrl: false,
       lock: supabaseAuthLock,
+      // The desktop app signs in with Google and GitHub through the system
+      // browser and a loopback address, which only a PKCE code can cross.
+      // The web keeps the default flow, so email links work on any device.
+      ...(hasDesktopAuthStorageBridge() ? { flowType: "pkce" } : {}),
     },
   });
 

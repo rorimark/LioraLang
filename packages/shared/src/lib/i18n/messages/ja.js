@@ -857,7 +857,7 @@ export default {
       "back": "ログインに戻る"
     },
     "providersLabel": "外部サービスでログイン",
-    "desktopProvidersNote": "GoogleとGitHubでのログインはまもなくデスクトップアプリに対応します。メールとパスワードはすでに使えます。",
+    "desktopProvidersNote": "ログインはブラウザで開きます。終わったらLioraLangに戻ってください。",
     "hub": {
       "loading": "ハブのデッキを読み込み中…",
       "emptyTitle": "まだ何も公開していません。",
@@ -1015,7 +1015,11 @@ export default {
       "missing_credentials": "メールアドレスとパスワードを入力してください。",
       "missing_email": "メールアドレスを入力してください。",
       "missing_password": "パスワードを入力してください。",
-      "social_desktop_unavailable": "GoogleとGitHubでのログインはまもなくデスクトップアプリに対応します。今はメールとパスワードをお使いください。"
+      "social_desktop_unavailable": "GoogleとGitHubでのログインには新しいバージョンのアプリが必要です。今はメールとパスワードを使ってください。",
+      "social_port_busy": "LioraLangが必要とする接続を別のログインが使用中です。それを閉じてもう一度お試しください。",
+      "social_timeout": "ログインに時間がかかりすぎました。もう一度お試しください。",
+      "social_cancelled": "ログインをキャンセルしました。",
+      "social_failed": "ログインが完了しませんでした。もう一度お試しください。"
     }
   },
   "prefs": {
@@ -1328,6 +1332,12 @@ export default {
     "deviceWeb": "ウェブブラウザー"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "ログインしました",
+      "doneText": "このタブを閉じてLioraLangに戻れます。",
+      "failedTitle": "ログインが完了しませんでした",
+      "failedText": "LioraLangに戻ってもう一度お試しください。"
+    },
     "menu": {
       "about": "{app}について",
       "services": "サービス",

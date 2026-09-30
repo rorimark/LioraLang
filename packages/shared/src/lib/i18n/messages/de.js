@@ -918,7 +918,7 @@ export default {
       "back": "Zurück zur Anmeldung"
     },
     "providersLabel": "Mit einem Dienst anmelden",
-    "desktopProvidersNote": "Die Anmeldung mit Google und GitHub kommt bald in die Desktop-App. E-Mail und Passwort funktionieren hier schon.",
+    "desktopProvidersNote": "Die Anmeldung öffnet sich im Browser. Kehre danach zu LioraLang zurück.",
     "hub": {
       "loading": "Deine Hub-Decks werden geladen…",
       "emptyTitle": "Noch nichts veröffentlicht.",
@@ -1082,7 +1082,11 @@ export default {
       "missing_credentials": "Gib E-Mail und Passwort ein.",
       "missing_email": "Gib deine E-Mail ein.",
       "missing_password": "Gib ein Passwort ein.",
-      "social_desktop_unavailable": "Die Anmeldung mit Google und GitHub kommt bald in die Desktop-App. Nutze bis dahin E-Mail und Passwort."
+      "social_desktop_unavailable": "Für die Anmeldung mit Google und GitHub brauchst du eine neuere Version der Desktop-App. Nutze vorerst E-Mail und Passwort.",
+      "social_port_busy": "Eine andere Anmeldung belegt die Verbindung, die LioraLang braucht. Schließe sie und versuche es erneut.",
+      "social_timeout": "Die Anmeldung hat zu lange gedauert. Versuche es erneut.",
+      "social_cancelled": "Anmeldung abgebrochen.",
+      "social_failed": "Die Anmeldung wurde nicht abgeschlossen. Versuche es erneut."
     }
   },
   "prefs": {
@@ -1398,6 +1402,12 @@ export default {
     "deviceWeb": "Webbrowser"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Du bist angemeldet",
+      "doneText": "Du kannst diesen Tab schließen und zu LioraLang zurückkehren.",
+      "failedTitle": "Anmeldung nicht abgeschlossen",
+      "failedText": "Kehre zu LioraLang zurück und versuche es erneut."
+    },
     "menu": {
       "about": "Über {app}",
       "services": "Dienste",

@@ -1040,7 +1040,7 @@ export default {
       "back": "Назад до входу"
     },
     "providersLabel": "Вхід через сервіс",
-    "desktopProvidersNote": "Вхід через Google і GitHub незабаром з'явиться в застосунку для комп'ютера. Пошта й пароль уже працюють.",
+    "desktopProvidersNote": "Вхід відкриється в браузері. Коли завершите, поверніться до LioraLang.",
     "hub": {
       "loading": "Завантажуємо ваші колоди в хабі…",
       "emptyTitle": "Поки нічого не опубліковано.",
@@ -1216,7 +1216,11 @@ export default {
       "missing_credentials": "Введіть пошту й пароль.",
       "missing_email": "Введіть пошту.",
       "missing_password": "Введіть пароль.",
-      "social_desktop_unavailable": "Вхід через Google і GitHub незабаром з'явиться в застосунку для комп'ютера. Поки що використовуйте пошту й пароль."
+      "social_desktop_unavailable": "Для входу через Google і GitHub потрібна новіша версія застосунку. Поки увійдіть поштою й паролем.",
+      "social_port_busy": "З'єднання, потрібне для входу, зайняте іншим входом. Закрийте його й спробуйте знову.",
+      "social_timeout": "Вхід тривав надто довго. Спробуйте знову.",
+      "social_cancelled": "Вхід скасовано.",
+      "social_failed": "Вхід не завершився. Спробуйте знову."
     }
   },
   "prefs": {
@@ -1538,6 +1542,12 @@ export default {
     "deviceWeb": "Браузер"
   },
   "desktop": {
+    "oauth": {
+      "doneTitle": "Ви увійшли",
+      "doneText": "Цю вкладку можна закрити й повернутися до LioraLang.",
+      "failedTitle": "Вхід не завершився",
+      "failedText": "Поверніться до LioraLang і спробуйте знову."
+    },
     "menu": {
       "about": "Про {app}",
       "services": "Служби",
