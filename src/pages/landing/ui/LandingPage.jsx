@@ -1,12 +1,14 @@
 import { LandingMockPanel } from "@widgets/LandingMockPanel";
 import { usePageMeta } from "@shared/lib/seo";
+import { useI18n } from "@shared/lib/i18n";
 import "./LandingPage.css";
 
 export const LandingPage = () => {
+  const { t } = useI18n();
+
   usePageMeta({
-    title: "LioraLang - Flashcards and spaced repetition that actually stick",
-    description:
-      "Stop forgetting words after one review. Build decks, study with spaced repetition, and use LioraLang on web, desktop, or your phone home screen.",
+    title: t("landing.meta.title"),
+    description: t("landing.meta.description"),
   });
 
   return (

@@ -7,14 +7,14 @@ describe("buildReviewTimeline", () => {
 
     expect(timeline.reviews).toBe(8);
     expect(timeline.points.map((point) => point.gapLabel)).toEqual([
-      "+3d",
-      "+8d",
-      "+20d",
-      "+50d",
-      "+125d",
-      "+313d",
-      "+783d",
-      "+1958d",
+      "3d",
+      "8d",
+      "20d",
+      "50d",
+      "125d",
+      "313d",
+      "783d",
+      "1958d",
     ]);
     expect(timeline.points.at(-1).day).toBe(3260);
     expect(timeline.months).toBe(109);

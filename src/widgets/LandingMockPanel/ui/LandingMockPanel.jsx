@@ -1,7 +1,8 @@
-import { memo, useRef } from "react";
-import { IoCheckmark } from "react-icons/io5";
+import { Fragment, memo, useRef } from "react";
+import { IoCheckmark, IoGlobeOutline } from "react-icons/io5";
 import { Link } from "react-router";
 import { AppIcon } from "@shared/ui";
+import { useI18n } from "@shared/lib/i18n";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLandingMockPanel } from "../model/useLandingMockPanel";
@@ -18,10 +19,33 @@ import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";
 
+// A message with elements inside it ("{keys} grade", "Made by {name}"):
+// each {slot} is replaced by the element given for it, wherever the
+// translation puts it.
+const SLOT_MARK = "\u0001";
+const withSlots = (t, key, slots) => {
+  const markers = Object.fromEntries(Object.keys(slots).map((name) => [name, `${SLOT_MARK}${name}${SLOT_MARK}`]));
+
+  return t(key, markers)
+    .split(new RegExp(`${SLOT_MARK}(\\w+)${SLOT_MARK}`))
+    .map((part, index) =>
+      index % 2 === 1 ? <Fragment key={index}>{slots[part]}</Fragment> : part,
+    );
+};
+
+// The headline's accent: the word between ** is set in italics.
+const withAccent = (message) =>
+  String(message)
+    .split(/(\*\*[^*]+\*\*)/)
+    .filter(Boolean)
+    .map((part, index) =>
+      part.startsWith("**") ? <em key={index}>{part.slice(2, -2)}</em> : part,
+    );
+
 const DemoSession = memo(() => {
   const demoRef = useRef(null);
+  const { t, formatInterval } = useI18n();
   const {
-    deckName,
     card,
     ratingOptions,
     canRate,
@@ -37,7 +61,7 @@ const DemoSession = memo(() => {
   return (
     <div className="lp-demo" ref={demoRef}>
       <div className="lp-demo__head">
-        <span>{deckName}</span>
+        <span>{t("landing.demo.deckName")}</span>
         <span className="lp-demo__progress" aria-hidden>
           <span style={{ width: `${((isDone ? total : position - 1) / total) * 100}%` }} />
         </span>
@@ -50,25 +74,22 @@ const DemoSession = memo(() => {
             <span className="lp-demo__badge" aria-hidden>
               <IoCheckmark />
             </span>
-            <strong>Nice work.</strong>
+            <strong>{t("landing.demo.doneTitle")}</strong>
           </div>
-          <p>
-            Every word now has its own next review. In the app each one comes
-            back on that day.
-          </p>
-          <ol className="lp-demo__log" aria-label="Your answers">
+          <p>{t("landing.demo.doneText")}</p>
+          <ol className="lp-demo__log" aria-label={t("landing.demo.answers")}>
             {log.map((entry) => (
               <li key={entry.word}>
                 <span>{entry.word}</span>
-                <span className={`lp-demo__grade lp-grade-${entry.rating.toLowerCase()}`}>
-                  {entry.rating}
+                <span className={`lp-demo__grade lp-grade-${entry.rating}`}>
+                  {t(`grades.${entry.rating}.label`)}
                 </span>
-                <span>back in {entry.interval}</span>
+                <span>{t("landing.demo.backIn", { interval: formatInterval(entry.interval) })}</span>
               </li>
             ))}
           </ol>
           <button type="button" className="lp-btn lp-btn--secondary" onClick={handleRestart}>
-            Study them again
+            {t("landing.demo.again")}
           </button>
         </div>
       ) : (
@@ -88,24 +109,24 @@ const DemoSession = memo(() => {
                 className="lp-btn lp-btn--primary lp-demo__reveal"
                 onClick={handleReveal}
               >
-                Show answer
+                {t("landing.demo.reveal")}
               </button>
             )}
           </div>
           <p className="lp-demo__hint" aria-live="polite">
-            {canRate
-              ? "How well did you know it? The time is when it comes back."
-              : "Think of the translation, then check yourself."}
+            {canRate ? t("landing.demo.hintGrade") : t("landing.demo.hintThink")}
             <span className="lp-demo__keys">
-              {canRate ? (
-                <>
-                  <kbd>1</kbd>–<kbd>4</kbd> grade
-                </>
-              ) : (
-                <>
-                  <kbd>Space</kbd> shows the answer
-                </>
-              )}
+              {canRate
+                ? withSlots(t, "landing.demo.keysGrade", {
+                    keys: (
+                      <>
+                        <kbd>1</kbd>–<kbd>4</kbd>
+                      </>
+                    ),
+                  })
+                : withSlots(t, "landing.demo.keysReveal", {
+                    key: <kbd>{t("landing.demo.spaceKey")}</kbd>,
+                  })}
             </span>
           </p>
         </>
@@ -118,14 +139,17 @@ DemoSession.displayName = "DemoSession";
 
 const TimelineChart = memo(() => {
   const { points } = useReviewTimeline();
+  const { t, formatNumber } = useI18n();
 
+  // Above the bars, the number of days alone: the axis below already says
+  // "day", and a unit on every bar would not fit eight bars on a phone.
   return (
-    <ol className="lp-art lp-chart" aria-label="Days between reviews of one word">
+    <ol className="lp-art lp-chart" aria-label={t("landing.memory.chartLabel")}>
       {points.map((point, index) => (
         <li key={point.review} style={{ "--height": point.height, "--bar": index }}>
-          <span className="lp-chart__gap">{point.gapLabel}</span>
+          <span className="lp-chart__gap">+{formatNumber(Math.round(point.gapDays))}</span>
           <span className="lp-chart__bar" aria-hidden />
-          <span className="lp-chart__day">day {point.day}</span>
+          <span className="lp-chart__day">{t("landing.memory.day", { day: point.day })}</span>
         </li>
       ))}
     </ol>
@@ -152,10 +176,16 @@ const FeatureRow = memo(({ title, children, art, isReversed = false, id }) => (
 FeatureRow.displayName = "FeatureRow";
 
 export const LandingMockPanel = memo(() => {
+  const { t, languageName, formatInterval } = useI18n();
   const {
+    locale,
+    locales,
+    handleLanguageChange,
     deckLanguages,
     exampleDecks,
     authorUrl,
+    authorName,
+    hubExampleDeck,
     platforms,
     footerLinks,
     openWebTo,
@@ -181,25 +211,35 @@ export const LandingMockPanel = memo(() => {
             <AppIcon size={36} />
             <span>lioralang</span>
           </Link>
-          <Link to={openWebTo} className="lp-btn lp-btn--primary lp-btn--sm" {...prefetchProps}>
-            Open web app
-          </Link>
+          <div className="lp-topbar__actions">
+            {/* A native select over a small key: the phone's own picker,
+                and the code of the current language always in view. */}
+            <label className="lp-lang">
+              <IoGlobeOutline aria-hidden />
+              <span aria-hidden>{locale.toUpperCase()}</span>
+              <select value={locale} onChange={handleLanguageChange} aria-label={t("landing.topbar.language")}>
+                {locales.map((item) => (
+                  <option key={item.code} value={item.code} lang={item.code}>
+                    {item.nativeName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <Link to={openWebTo} className="lp-btn lp-btn--primary lp-btn--sm" {...prefetchProps}>
+              {t("landing.topbar.open")}
+            </Link>
+          </div>
         </div>
       </header>
 
       <section className="lp-hero" aria-labelledby="lp-title">
         <HeroIllustration />
         <div className="lp-hero__copy">
-          <h1 id="lp-title">
-            The flashcard app that knows when you’ll <em>forget.</em>
-          </h1>
-          <p>
-            Grade each word, and LioraLang brings it back right before it slips
-            away. Free, and your cards stay on your device.
-          </p>
+          <h1 id="lp-title">{withAccent(t("landing.hero.title"))}</h1>
+          <p>{t("landing.hero.text")}</p>
           <div className="lp-hero__actions">
             <Link to={openWebTo} className="lp-btn lp-btn--primary" {...prefetchProps}>
-              Start learning
+              {t("landing.hero.start")}
             </Link>
             <a
               href={desktopReleaseUrl}
@@ -207,7 +247,7 @@ export const LandingMockPanel = memo(() => {
               target="_blank"
               rel={EXTERNAL_LINK_REL}
             >
-              Download for desktop
+              {t("landing.hero.download")}
             </a>
           </div>
         </div>
@@ -216,12 +256,12 @@ export const LandingMockPanel = memo(() => {
       <div className="lp-langs">
         <div className="lp-langs__inner">
           <span className="lp-langs__label">
-            {deckLanguages.length} languages, any pair
+            {t("landing.langs.label", { count: deckLanguages.length })}
           </span>
           <ul>
             {deckLanguages.map((language) => (
               <li key={language.name} className={`lp-tone-${language.tone}`}>
-                {language.name}
+                {languageName(language.name)}
               </li>
             ))}
           </ul>
@@ -229,71 +269,62 @@ export const LandingMockPanel = memo(() => {
       </div>
 
       <section className="lp-try" aria-labelledby="lp-try-title">
-        <h2 id="lp-try-title">Try it right now.</h2>
-        <p>Six words, a real review session, no sign-up.</p>
+        <h2 id="lp-try-title">{t("landing.try.title")}</h2>
+        <p>{t("landing.try.text")}</p>
         <DemoSession />
       </section>
 
 
       <FeatureRow
         id="lp-memory"
-        title="Learn it once. Remember it for months."
+        title={t("landing.memory.title")}
         art={<TimelineChart />}
       >
         <p>
-          Answer Good and a new word comes back tomorrow, then in three days,
-          then weeks later. {reviews} reviews carry it across {months} months,
-          so the words you know stop crowding your day.
+          {t("landing.memory.text", {
+            reviews: t("landing.memory.reviews", { count: reviews }),
+            months: t("landing.memory.months", { count: months }),
+          })}
         </p>
       </FeatureRow>
 
       <FeatureRow
         id="lp-decks"
-        title="Your words. Your decks."
+        title={t("landing.decks.title")}
         art={<DecksIllustration decks={exampleDecks} />}
         isReversed
       >
-        <p>
-          Make a deck for any language pair, add levels, tags and example
-          sentences, and study only what you actually need. Import and export
-          as JSON whenever you like.
-        </p>
+        <p>{t("landing.decks.text")}</p>
       </FeatureRow>
 
-      <FeatureRow id="lp-hub" title="Somebody already made that deck." art={<HubIllustration to={browseTo} />}>
-        <p>
-          LioraLangHub is full of decks other learners published. Find one,
-          import it in a click, and start reviewing. Share your own the same way.
-        </p>
+      <FeatureRow id="lp-hub" title={t("landing.hub.title")} art={<HubIllustration to={browseTo} deckName={hubExampleDeck} />}>
+        <p>{t("landing.hub.text")}</p>
         <Link to={browseTo} className="lp-link" {...prefetchProps}>
-          Browse the hub
+          {t("landing.hub.browse")}
         </Link>
       </FeatureRow>
 
       <FeatureRow
         id="lp-anywhere"
-        title="Learn wherever you are."
+        title={t("landing.anywhere.title")}
         art={<PlatformsIllustration platforms={platforms} />}
         isReversed
       >
-        <p>
-          Use it in the browser, install the desktop app for macOS or Windows,
-          or add it to your phone’s home screen. It keeps working offline.
-        </p>
+        <p>{t("landing.anywhere.text")}</p>
       </FeatureRow>
 
       <section className="lp-cta" aria-labelledby="lp-cta-title">
         <span className="lp-sticker lp-tone-green lp-cta__sticker lp-cta__sticker--l" aria-hidden>
-          Easy
-          <small>3d</small>
+          {t("grades.easy.label")}
+          <small>{formatInterval("3d")}</small>
         </span>
         <span className="lp-sticker lp-tone-amber lp-cta__sticker lp-cta__sticker--r" aria-hidden>
-          Good
-          <small>24h</small>
+          {t("grades.good.label")}
+          <small>{formatInterval("24h")}</small>
         </span>
-        <h2 id="lp-cta-title">Your first review takes a minute.</h2>
+        <h2 id="lp-cta-title">{t("landing.cta.title")}</h2>
         <Link to={openWebTo} className="lp-btn lp-btn--inverse" {...prefetchProps}>
-          Start learning
+          {t("landing.hero.start")}
         </Link>
       </section>
 
@@ -303,20 +334,23 @@ export const LandingMockPanel = memo(() => {
           <span>lioralang</span>
         </span>
         <p className="lp-footer__credit">
-          Made by{" "}
-          <a href={authorUrl} target="_blank" rel={EXTERNAL_LINK_REL}>
-            Mark Storchovyi
-          </a>
+          {withSlots(t, "landing.footer.madeBy", {
+            name: (
+              <a href={authorUrl} target="_blank" rel={EXTERNAL_LINK_REL}>
+                {authorName}
+              </a>
+            ),
+          })}
         </p>
         <ul>
           {footerLinks.map((link) => (
-            <li key={link.title}>
+            <li key={link.key}>
               <a
                 href={link.href}
                 target={link.isExternal ? "_blank" : undefined}
                 rel={link.isExternal ? EXTERNAL_LINK_REL : undefined}
               >
-                {link.title}
+                {t(`landing.footer.${link.key}`)}
               </a>
             </li>
           ))}

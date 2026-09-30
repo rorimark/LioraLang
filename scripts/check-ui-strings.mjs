@@ -12,11 +12,11 @@ const require = createRequire(import.meta.url);
 const espree = createRequire(require.resolve("eslint"))("espree");
 
 const ROOTS = ["src", "packages/shared/src"];
-// The landing has its own copy and is not part of the app's languages yet.
-const SKIP = [/LandingMockPanel/, /pages\/landing/, /pages\/share/, /\.test\./, /node_modules/];
+// The share page is a server-rendered preview with its own copy.
+const SKIP = [/pages\/share/, /\.test\./, /node_modules/];
 const READ_ATTRIBUTES = new Set(["aria-label", "placeholder", "title", "alt", "label", "aria-description"]);
 // Not words: the brand, and marks that read the same in every language.
-const ALLOWED = new Set(["LioraLang", "·", "—", "–", "…", "/", "→", "×", "+", "−", "%", "#", "?", "Liora"]);
+const ALLOWED = new Set(["LioraLang", "lioralang", "·", "—", "–", "…", "/", "→", "×", "+", "−", "%", "#", "?", "Liora"]);
 
 const files = [];
 const scripts = [];

@@ -10,9 +10,9 @@ const REVIEW_COUNT = 8;
 const START_MS = 0;
 
 const formatGap = (days) => {
-  if (days < 1 / 24) return `+${Math.round(days * 1440)}m`;
-  if (days < 1) return `+${Math.round(days * 24)}h`;
-  return `+${Math.round(days)}d`;
+  if (days < 1 / 24) return `${Math.round(days * 1440)}m`;
+  if (days < 1) return `${Math.round(days * 24)}h`;
+  return `${Math.round(days)}d`;
 };
 
 // The schedule the app itself produces for a new word answered Good at every

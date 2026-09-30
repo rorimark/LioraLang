@@ -6,82 +6,101 @@ import {
   IoGlobeOutline,
   IoPhonePortraitOutline,
 } from "react-icons/io5";
+import { useI18n } from "@shared/lib/i18n";
+import { buildLandingDemoDeck } from "../model/landingDemoDeck";
 
 // Illustrations drawn from the product's own pieces: cards, the four grades,
 // decks. The headings and copy beside them carry the meaning; the hub and
 // platform pictures are also links to where they point.
 
 const STICKERS = [
-  { label: "Again", value: "10m", tone: "red", className: "lp-sticker--a" },
-  { label: "Hard", value: "15m", tone: "amber", className: "lp-sticker--b" },
-  { label: "Good", value: "24h", tone: "blue", className: "lp-sticker--c" },
-  { label: "Easy", value: "3d", tone: "green", className: "lp-sticker--d" },
+  { key: "again", value: "10m", tone: "red", className: "lp-sticker--a" },
+  { key: "hard", value: "15m", tone: "amber", className: "lp-sticker--b" },
+  { key: "good", value: "24h", tone: "blue", className: "lp-sticker--c" },
+  { key: "easy", value: "3d", tone: "green", className: "lp-sticker--d" },
 ];
 
-export const HeroIllustration = memo(() => (
-  <div className="lp-hero-art" aria-hidden="true">
-    <span className="lp-hero-art__disc" />
-    <span className="lp-card lp-card--back">
-      <span className="lp-card__label">Polish</span>
-      <span className="lp-card__word">podróż</span>
-    </span>
-    <span className="lp-card lp-card--front">
-      <span className="lp-card__label">English</span>
-      <span className="lp-card__word">journey</span>
-    </span>
-    {STICKERS.map((sticker) => (
-      <span
-        key={sticker.label}
-        className={`lp-sticker lp-tone-${sticker.tone} ${sticker.className}`}
-      >
-        {sticker.label}
-        <small>{sticker.value}</small>
+// The first demo word, turned over into the visitor's language.
+export const HeroIllustration = memo(() => {
+  const { t, locale, languageName, formatInterval } = useI18n();
+  const deck = buildLandingDemoDeck(locale);
+  const [word] = deck.words;
+
+  return (
+    <div className="lp-hero-art" aria-hidden="true">
+      <span className="lp-hero-art__disc" />
+      <span className="lp-card lp-card--back">
+        <span className="lp-card__label">{languageName(deck.targetLanguage)}</span>
+        <span className="lp-card__word">{word.target}</span>
       </span>
-    ))}
-  </div>
-));
+      <span className="lp-card lp-card--front">
+        <span className="lp-card__label">{languageName(deck.sourceLanguage)}</span>
+        <span className="lp-card__word">{word.source}</span>
+      </span>
+      {STICKERS.map((sticker) => (
+        <span
+          key={sticker.key}
+          className={`lp-sticker lp-tone-${sticker.tone} ${sticker.className}`}
+        >
+          {t(`grades.${sticker.key}.label`)}
+          <small>{formatInterval(sticker.value)}</small>
+        </span>
+      ))}
+    </div>
+  );
+});
 
 HeroIllustration.displayName = "HeroIllustration";
 
-export const DecksIllustration = memo(({ decks }) => (
-  <div className="lp-art lp-decks-art" aria-hidden="true">
-    {decks.map((deck, index) => (
-      <span
-        key={deck.name}
-        className={`lp-deck lp-tone-${deck.tone}`}
-        style={{ "--i": index }}
-      >
-        <span className="lp-deck__top" />
-        <strong>{deck.name}</strong>
-        <span className="lp-deck__meta">
-          <span>{deck.pair}</span>
-          <span>{deck.words} words</span>
+export const DecksIllustration = memo(({ decks }) => {
+  const { t } = useI18n();
+
+  return (
+    <div className="lp-art lp-decks-art" aria-hidden="true">
+      {decks.map((deck, index) => (
+        <span
+          key={deck.key}
+          className={`lp-deck lp-tone-${deck.tone}`}
+          style={{ "--i": index }}
+        >
+          <span className="lp-deck__top" />
+          <strong>{t(`landing.decks.examples.${deck.key}`)}</strong>
+          <span className="lp-deck__meta">
+            <span>{deck.pair}</span>
+            <span>{t("landing.decks.words", { count: deck.words })}</span>
+          </span>
         </span>
-      </span>
-    ))}
-  </div>
-));
+      ))}
+    </div>
+  );
+});
 
 DecksIllustration.displayName = "DecksIllustration";
 
 // The whole illustration opens the hub, so its Import button is not a dead
 // control.
-export const HubIllustration = memo(({ to }) => (
-  <Link to={to} className="lp-art lp-hub-art lp-art-link" aria-label="Browse the hub">
-    <span className="lp-hub-card" aria-hidden="true">
-      <span className="lp-hub-card__row">
-        <strong>Game of Thrones B1–C2</strong>
-        <span className="lp-hub-card__pill">250 words</span>
+export const HubIllustration = memo(({ to, deckName }) => {
+  const { t, languageName } = useI18n();
+
+  return (
+    <Link to={to} className="lp-art lp-hub-art lp-art-link" aria-label={t("landing.hub.browse")}>
+      <span className="lp-hub-card" aria-hidden="true">
+        <span className="lp-hub-card__row">
+          <strong>{deckName}</strong>
+          <span className="lp-hub-card__pill">{t("landing.decks.words", { count: 250 })}</span>
+        </span>
+        <span className="lp-hub-card__langs">
+          {["English", "Polish", "Russian"].map(languageName).join(" · ")}
+        </span>
+        <span className="lp-hub-card__button">{t("landing.hub.import")}</span>
       </span>
-      <span className="lp-hub-card__langs">English · Polish · Russian</span>
-      <span className="lp-hub-card__button">Import</span>
-    </span>
-    <span className="lp-hub-arrow" aria-hidden="true" />
-    <span className="lp-hub-done lp-tone-green" aria-hidden="true">
-      In your library
-    </span>
-  </Link>
-));
+      <span className="lp-hub-arrow" aria-hidden="true" />
+      <span className="lp-hub-done lp-tone-green" aria-hidden="true">
+        {t("landing.hub.inLibrary")}
+      </span>
+    </Link>
+  );
+});
 
 HubIllustration.displayName = "HubIllustration";
 
@@ -91,7 +110,10 @@ const PLATFORM_ICONS = {
   phone: IoPhonePortraitOutline,
 };
 
-export const PlatformsIllustration = memo(({ platforms }) => (
+export const PlatformsIllustration = memo(({ platforms }) => {
+  const { t } = useI18n();
+
+  return (
   <div className="lp-art lp-platforms-art">
     {platforms.map((platform, index) => {
       const Icon = PLATFORM_ICONS[platform.key];
@@ -102,8 +124,8 @@ export const PlatformsIllustration = memo(({ platforms }) => (
             {Icon ? <Icon /> : null}
           </span>
           <span className="lp-platform__text">
-            <strong>{platform.title}</strong>
-            <span>{platform.text}</span>
+            <strong>{t(`landing.anywhere.${platform.key}.title`)}</strong>
+            <span>{t(`landing.anywhere.${platform.key}.text`)}</span>
           </span>
           <IoArrowForward className="lp-platform__go" aria-hidden />
         </>
@@ -126,6 +148,7 @@ export const PlatformsIllustration = memo(({ platforms }) => (
       );
     })}
   </div>
-));
+  );
+});
 
 PlatformsIllustration.displayName = "PlatformsIllustration";

@@ -5,14 +5,16 @@ import {
   buildRatingPreview,
   normalizeReviewCard,
 } from "@shared/core/usecases/srs";
-import { LANDING_DEMO_DECK } from "./landingDemoDeck";
+import { useI18n } from "@shared/lib/i18n";
+import { buildLandingDemoDeck } from "./landingDemoDeck";
 
-// Same labels and tones as the Learn page's grading buttons.
+// Same grades and tones as the Learn page's buttons; the words for them
+// come from the interface's language when shown.
 const RATING_OPTIONS = [
-  { key: "again", label: "Again", tone: "danger" },
-  { key: "hard", label: "Hard", tone: "warning" },
-  { key: "good", label: "Good", tone: "neutral" },
-  { key: "easy", label: "Easy", tone: "success" },
+  { key: "again", tone: "danger" },
+  { key: "hard", tone: "warning" },
+  { key: "good", tone: "neutral" },
+  { key: "easy", tone: "success" },
 ];
 
 // Every demo word is new, so the preview the engine gives for a new card is
@@ -37,7 +39,9 @@ const isOnScreen = (element) => {
 };
 
 export const useLandingDemoSession = (demoRef) => {
-  const { words } = LANDING_DEMO_DECK;
+  const { t, locale, languageName, formatInterval } = useI18n();
+  const deck = useMemo(() => buildLandingDemoDeck(locale), [locale]);
+  const { words } = deck;
   const [index, setIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [log, setLog] = useState([]);
@@ -51,12 +55,11 @@ export const useLandingDemoSession = (demoRef) => {
   const handleRate = useCallback(
     (ratingKey) => {
       if (!word) return;
-      const option = RATING_OPTIONS.find((item) => item.key === ratingKey);
       setLog((entries) => [
         ...entries,
         {
           word: word.source,
-          rating: option?.label ?? ratingKey,
+          rating: ratingKey,
           interval: NEW_CARD_PREVIEW[ratingKey],
         },
       ]);
@@ -106,28 +109,29 @@ export const useLandingDemoSession = (demoRef) => {
   const card = useMemo(() => {
     if (!word) return null;
     return {
-      frontLabel: LANDING_DEMO_DECK.sourceLanguage,
+      frontLabel: languageName(deck.sourceLanguage),
       frontText: word.source,
-      backLabel: LANDING_DEMO_DECK.targetLanguage,
+      backLabel: languageName(deck.targetLanguage),
       backText: word.target,
       backMetaBadges: [{ key: "level", text: word.level }],
       backDetails: [word.example],
       isFlipped,
       onFlip: handleFlip,
     };
-  }, [handleFlip, isFlipped, word]);
+  }, [deck, handleFlip, isFlipped, languageName, word]);
 
   const ratingOptions = useMemo(
     () =>
       RATING_OPTIONS.map((option) => ({
         ...option,
-        value: NEW_CARD_PREVIEW[option.key] || "-",
+        label: t(`grades.${option.key}.label`),
+        value: NEW_CARD_PREVIEW[option.key] ? formatInterval(NEW_CARD_PREVIEW[option.key]) : "-",
       })),
-    [],
+    [formatInterval, t],
   );
 
   return {
-    deckName: LANDING_DEMO_DECK.name,
+    deck,
     card,
     ratingOptions,
     canRate: isFlipped,
