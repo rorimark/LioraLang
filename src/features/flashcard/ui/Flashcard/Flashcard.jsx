@@ -1,6 +1,7 @@
 import { memo } from "react";
-import "./Flashcard.css";
+import { WordImage } from "@entities/word";
 import { useI18n } from "@shared/lib/i18n";
+import "./Flashcard.css";
 
 const EMPTY_CARD = Object.freeze({});
 const EMPTY_BADGES = Object.freeze([]);
@@ -23,8 +24,11 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
     const {
       frontLabel = t("flashcard.front"),
       frontText,
+      frontImage = null,
       backLabel = t("flashcard.back"),
       backText,
+      backImage = null,
+      backSubText = "",
       backMetaBadges = EMPTY_BADGES,
       backDetails = EMPTY_DETAILS,
       isFlipped = false,
@@ -59,10 +63,16 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
             aria-hidden={isFlipped}
           >
             <span className="flashcard__label">{frontLabel}</span>
-            <span className="flashcard__content">
-              <strong className={`flashcard__text${resolveTextLengthClass(frontText)}`}>
-                {frontText || "-"}
-              </strong>
+            <span className={`flashcard__content${frontImage ? " flashcard__content--picture" : ""}`}>
+              {frontImage ? (
+                <span className="flashcard__picture">
+                  <WordImage image={frontImage} alt={frontImage.alt} isEager />
+                </span>
+              ) : (
+                <strong className={`flashcard__text${resolveTextLengthClass(frontText)}`}>
+                  {frontText || "-"}
+                </strong>
+              )}
             </span>
             <span className="flashcard__foot">
               <span className="flashcard__note">{frontNote}</span>
@@ -93,10 +103,17 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
                 </span>
               )}
             </span>
-            <span className="flashcard__content">
-              <strong className={`flashcard__text${resolveTextLengthClass(backText)}`}>
-                {backText || "-"}
-              </strong>
+            <span className={`flashcard__content${backImage ? " flashcard__content--picture" : ""}`}>
+              {backImage ? (
+                <span className="flashcard__picture">
+                  <WordImage image={backImage} alt={backImage.alt} isEager={isFlipped} />
+                </span>
+              ) : (
+                <strong className={`flashcard__text${resolveTextLengthClass(backText)}`}>
+                  {backText || "-"}
+                </strong>
+              )}
+              {backSubText ? <span className="flashcard__subtext">{backSubText}</span> : null}
               {backDetails.length > 0 && (
                 <span className="flashcard__details" aria-label={t("flashcard.examples")}>
                   {backDetails.map((detail, index) => (

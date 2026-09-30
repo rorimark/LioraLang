@@ -19,7 +19,9 @@ import {
   LEARN_EXERCISE_MODE_FLASHCARDS,
   LEARN_EXERCISE_MODE_MULTIPLE_CHOICE,
   LEARN_EXERCISE_MODE_TYPE_TRANSLATION,
+  LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE,
   LEARN_SESSION_DIRECTION_MIXED,
+  LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE,
   LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
   LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE,
 } from "../../model/learnSessionSettings";
@@ -43,7 +45,9 @@ const AUTO_FLIP_OPTIONS = Object.freeze([
 
 const SHUFFLE_OPTIONS = Object.freeze(["off", "per_session", "always"]);
 
-const resolveDirectionOptions = (deck = {}, { t, languageName }) => {
+// Picture directions are offered once a deck has pictures (and stay while
+// one is chosen), so a text-only deck's choices look exactly as before.
+const resolveDirectionOptions = (deck = {}, selectedDirection, { t, languageName }) => {
   const source = String(deck?.sourceLanguage || "").trim()
     ? languageName(String(deck.sourceLanguage).trim())
     : t("learn.sourceLanguage");
@@ -53,6 +57,10 @@ const resolveDirectionOptions = (deck = {}, { t, languageName }) => {
     .filter(Boolean)
     .map(languageName)
     .join(" + ") || t("learn.targetLanguage");
+  const hasPictureDirections =
+    Number(deck?.imagesCount) > 0 ||
+    selectedDirection === LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE ||
+    selectedDirection === LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE;
 
   return [
     {
@@ -70,6 +78,20 @@ const resolveDirectionOptions = (deck = {}, { t, languageName }) => {
       title: `${source} ↔ ${target}`,
       description: t("session.direction.mixed"),
     },
+    ...(hasPictureDirections
+      ? [
+          {
+            value: LEARN_SESSION_DIRECTION_IMAGE_TO_SOURCE,
+            title: `${t("learn.picture")} → ${source}`,
+            description: t("session.direction.pictureToWord"),
+          },
+          {
+            value: LEARN_SESSION_DIRECTION_SOURCE_TO_IMAGE,
+            title: `${source} → ${t("learn.picture")}`,
+            description: t("session.direction.wordToPicture"),
+          },
+        ]
+      : []),
   ];
 };
 
@@ -124,8 +146,8 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
   const titleId = useId();
   const descriptionId = useId();
   const directionOptions = useMemo(
-    () => resolveDirectionOptions(currentDeck, i18n),
-    [currentDeck, i18n],
+    () => resolveDirectionOptions(currentDeck, sessionSettings.directionMode, i18n),
+    [currentDeck, i18n, sessionSettings.directionMode],
   );
 
   useDialogA11y({
