@@ -466,10 +466,13 @@
 
   .deck-row {
     grid-template-columns: minmax(0, 1fr) auto;
+    /* The menu beside the name, the way into a session at the bottom,
+       next to what the deck asks for today. */
     grid-template-areas:
-      "main actions"
+      "main menu"
       "tags tags"
-      "progress review";
+      "progress progress"
+      "review learn";
     gap: 10px 14px;
     padding: 14px;
   }
@@ -509,12 +512,24 @@
 
   .deck-row__review {
     grid-area: review;
-    justify-self: end;
+    align-self: center;
   }
 
   .deck-row__actions {
-    grid-area: actions;
+    display: contents;
+  }
+
+  .deck-row__actions > .ui-button {
+    grid-area: learn;
+    align-self: center;
+  }
+
+  .deck-row__actions > .decks-table__actions {
+    grid-area: menu;
     align-self: start;
+    margin-top: -4px;
+    margin-right: -6px;
+    padding-right: 0;
   }
 }
 
