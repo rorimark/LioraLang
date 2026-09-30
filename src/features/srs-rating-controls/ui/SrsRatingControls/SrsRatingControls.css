@@ -89,7 +89,10 @@
 .srs-rating-controls__label {
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
+  /* Cut sideways only. "overflow: hidden" would let a short key squeeze
+     the label's row to nothing and slice the tops off the letters. */
+  min-height: min-content;
+  overflow-x: clip;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: min(0.95rem, calc(125cqi / var(--label-chars, 6)));
