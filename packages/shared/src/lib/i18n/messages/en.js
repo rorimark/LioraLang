@@ -1574,7 +1574,7 @@ export default {
     },
     "memory": {
       "title": "Learn it once. Remember it for months.",
-      "text": "Answer Good and a new word comes back tomorrow, then in three days, then weeks later. {reviews} carry it across {months}, so the words you know stop crowding your day.",
+      "text": "Answer Good and a new word comes back in {first}, then in {second}, then in {third}, and each gap is longer than the last. {reviews} carry it across {span}, so the words you know stop crowding your day.",
       "reviews": {
         "one": "{count} review",
         "other": "{count} reviews"
@@ -1582,6 +1582,14 @@ export default {
       "months": {
         "one": "{count} month",
         "other": "{count} months"
+      },
+      "days": {
+        "one": "{count} day",
+        "other": "{count} days"
+      },
+      "years": {
+        "one": "{count} year",
+        "other": "{count} years"
       },
       "chartLabel": "Days between reviews of one word",
       "day": "day {day}"

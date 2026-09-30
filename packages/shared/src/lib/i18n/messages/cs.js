@@ -1647,7 +1647,7 @@ export default {
     },
     "memory": {
       "title": "Naučte se jednou. Pamatujte si měsíce.",
-      "text": "Odpovězte „Dobré“ a nové slovo se vrátí zítra, pak za tři dny, pak za několik týdnů. {reviews} ho udrží {months}, takže slova, která znáte, vám už nezabírají den.",
+      "text": "Odpovězte „Dobré“ a nové slovo se vrátí za {first}, pak za {second}, pak za {third} a každá přestávka je delší než ta předchozí. {reviews} ho udrží {span}, takže slova, která znáte, vám už nezabírají den.",
       "reviews": {
         "one": "{count} opakování",
         "few": "{count} opakování",
@@ -1657,6 +1657,16 @@ export default {
         "one": "{count} měsíc",
         "few": "{count} měsíce",
         "other": "{count} měsíců"
+      },
+      "days": {
+        "one": "{count} den",
+        "few": "{count} dny",
+        "other": "{count} dní"
+      },
+      "years": {
+        "one": "{count} rok",
+        "few": "{count} roky",
+        "other": "{count} let"
       },
       "chartLabel": "Dny mezi opakováními jednoho slova",
       "day": "den {day}"

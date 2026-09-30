@@ -1571,7 +1571,7 @@ export default {
     },
     "memory": {
       "title": "Einmal lernen. Monatelang behalten.",
-      "text": "Antworte mit „Gut“, und ein neues Wort kommt morgen wieder, dann in drei Tagen, dann Wochen später. {reviews} tragen es über {months}, damit die Wörter, die du kennst, deinen Tag nicht mehr füllen.",
+      "text": "Antworte mit „Gut“, und ein neues Wort kommt {first} später wieder, dann {second} später, dann {third} später, und jeder Abstand ist länger als der letzte. {reviews} tragen es über {span}, damit die Wörter, die du kennst, deinen Tag nicht mehr füllen.",
       "reviews": {
         "one": "{count} Wiederholung",
         "other": "{count} Wiederholungen"
@@ -1579,6 +1579,14 @@ export default {
       "months": {
         "one": "{count} Monat",
         "other": "{count} Monate"
+      },
+      "days": {
+        "one": "{count} Tag",
+        "other": "{count} Tage"
+      },
+      "years": {
+        "one": "{count} Jahr",
+        "other": "{count} Jahre"
       },
       "chartLabel": "Tage zwischen den Wiederholungen eines Wortes",
       "day": "Tag {day}"

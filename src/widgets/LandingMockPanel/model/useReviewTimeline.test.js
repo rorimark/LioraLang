@@ -5,19 +5,11 @@ describe("buildReviewTimeline", () => {
   it("follows the engine's schedule for a word answered Good every time", () => {
     const timeline = buildReviewTimeline();
 
-    expect(timeline.reviews).toBe(8);
-    expect(timeline.points.map((point) => point.gapLabel)).toEqual([
-      "3d",
-      "8d",
-      "20d",
-      "50d",
-      "125d",
-      "313d",
-      "783d",
-      "1958d",
-    ]);
-    expect(timeline.points.at(-1).day).toBe(3260);
-    expect(timeline.months).toBe(109);
+    expect(timeline.reviews).toBe(6);
+    expect(timeline.points.map((point) => point.gapLabel)).toEqual(["3d", "8d", "20d", "50d", "125d", "313d"]);
+    expect(timeline.points.at(-1).day).toBe(519);
+    expect(timeline.firstGaps).toEqual([3, 8, 20]);
+    expect(timeline.span).toEqual({ unit: "months", count: 17 });
   });
 
   it("scales each bar by its gap, with the longest gap at full height", () => {

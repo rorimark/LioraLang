@@ -1647,7 +1647,7 @@ export default {
     },
     "memory": {
       "title": "Aprenda uma vez. Lembre por meses.",
-      "text": "Responda “Bom” e uma palavra nova volta amanhã, depois em três dias, depois semanas mais tarde. {reviews} a levam por {months}, e as palavras que você já sabe param de lotar o seu dia.",
+      "text": "Responda “Bom” e uma palavra nova volta em {first}, depois em {second}, depois em {third}, e cada intervalo é maior que o anterior. {reviews} a levam por {span}, e as palavras que você já sabe param de lotar o seu dia.",
       "reviews": {
         "one": "{count} revisão",
         "many": "{count} revisões",
@@ -1657,6 +1657,16 @@ export default {
         "one": "{count} mês",
         "many": "{count} meses",
         "other": "{count} meses"
+      },
+      "days": {
+        "one": "{count} dia",
+        "many": "{count} dias",
+        "other": "{count} dias"
+      },
+      "years": {
+        "one": "{count} ano",
+        "many": "{count} anos",
+        "other": "{count} anos"
       },
       "chartLabel": "Dias entre as revisões de uma palavra",
       "day": "dia {day}"

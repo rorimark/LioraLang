@@ -1723,7 +1723,7 @@ export default {
     },
     "memory": {
       "title": "Naucz się raz. Pamiętaj miesiącami.",
-      "text": "Odpowiedz „Dobrze”, a nowe słowo wróci jutro, potem za trzy dni, potem za kilka tygodni. {reviews} trzyma je w pamięci przez {months}, więc znane słowa przestają zajmować ci dzień.",
+      "text": "Odpowiedz „Dobrze”, a nowe słowo wróci za {first}, potem za {second}, potem za {third}, a każda przerwa jest dłuższa od poprzedniej. {reviews} trzyma je w pamięci przez {span}, więc znane słowa przestają zajmować ci dzień.",
       "reviews": {
         "one": "{count} powtórka",
         "few": "{count} powtórki",
@@ -1735,6 +1735,18 @@ export default {
         "few": "{count} miesiące",
         "many": "{count} miesięcy",
         "other": "{count} miesięcy"
+      },
+      "days": {
+        "one": "{count} dzień",
+        "few": "{count} dni",
+        "many": "{count} dni",
+        "other": "{count} dni"
+      },
+      "years": {
+        "one": "{count} rok",
+        "few": "{count} lata",
+        "many": "{count} lat",
+        "other": "{count} lat"
       },
       "chartLabel": "Dni między powtórkami jednego słowa",
       "day": "dzień {day}"

@@ -1571,7 +1571,7 @@ export default {
     },
     "memory": {
       "title": "Bir kez öğrenin. Aylarca hatırlayın.",
-      "text": "“İyi” deyin; yeni bir kelime yarın, sonra üç gün sonra, sonra haftalar sonra geri gelir. {reviews} onu {months} boyunca taşır; bildiğiniz kelimeler gününüzü doldurmaz.",
+      "text": "“İyi” deyin; yeni bir kelime önce {first}, sonra {second}, sonra {third} sonra geri gelir ve her ara bir öncekinden uzundur. {reviews} onu {span} boyunca taşır; bildiğiniz kelimeler gününüzü doldurmaz.",
       "reviews": {
         "one": "{count} tekrar",
         "other": "{count} tekrar"
@@ -1579,6 +1579,14 @@ export default {
       "months": {
         "one": "{count} ay",
         "other": "{count} ay"
+      },
+      "days": {
+        "one": "{count} gün",
+        "other": "{count} gün"
+      },
+      "years": {
+        "one": "{count} yıl",
+        "other": "{count} yıl"
       },
       "chartLabel": "Bir kelimenin tekrarları arasındaki günler",
       "day": "{day}. gün"

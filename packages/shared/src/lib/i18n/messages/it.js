@@ -1647,7 +1647,7 @@ export default {
     },
     "memory": {
       "title": "Impara una volta. Ricorda per mesi.",
-      "text": "Rispondi «Bene» e una parola nuova torna domani, poi tra tre giorni, poi settimane dopo. {reviews} la portano avanti per {months}, così le parole che sai non riempiono più la tua giornata.",
+      "text": "Rispondi «Bene» e una parola nuova torna tra {first}, poi tra {second}, poi tra {third}, e ogni pausa è più lunga della precedente. {reviews} la portano avanti per {span}, così le parole che sai non riempiono più la tua giornata.",
       "reviews": {
         "one": "{count} ripasso",
         "many": "{count} ripassi",
@@ -1657,6 +1657,16 @@ export default {
         "one": "{count} mese",
         "many": "{count} mesi",
         "other": "{count} mesi"
+      },
+      "days": {
+        "one": "{count} giorno",
+        "many": "{count} giorni",
+        "other": "{count} giorni"
+      },
+      "years": {
+        "one": "{count} anno",
+        "many": "{count} anni",
+        "other": "{count} anni"
       },
       "chartLabel": "Giorni tra i ripassi di una parola",
       "day": "giorno {day}"

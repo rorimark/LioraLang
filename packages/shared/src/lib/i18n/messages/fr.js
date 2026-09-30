@@ -1647,7 +1647,7 @@ export default {
     },
     "memory": {
       "title": "Apprenez une fois. Retenez pendant des mois.",
-      "text": "Répondez « Bien » et un nouveau mot revient demain, puis dans trois jours, puis des semaines plus tard. {reviews} le portent sur {months}, et les mots que vous connaissez n'encombrent plus votre journée.",
+      "text": "Répondez « Bien » et un nouveau mot revient dans {first}, puis dans {second}, puis dans {third}, chaque écart plus long que le précédent. {reviews} le portent sur {span}, et les mots que vous connaissez n'encombrent plus votre journée.",
       "reviews": {
         "one": "{count} révision",
         "many": "{count} révisions",
@@ -1657,6 +1657,16 @@ export default {
         "one": "{count} mois",
         "many": "{count} mois",
         "other": "{count} mois"
+      },
+      "days": {
+        "one": "{count} jour",
+        "many": "{count} jours",
+        "other": "{count} jours"
+      },
+      "years": {
+        "one": "{count} an",
+        "many": "{count} ans",
+        "other": "{count} ans"
       },
       "chartLabel": "Jours entre les révisions d'un mot",
       "day": "jour {day}"

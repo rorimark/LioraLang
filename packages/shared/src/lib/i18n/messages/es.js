@@ -1647,7 +1647,7 @@ export default {
     },
     "memory": {
       "title": "Apréndelo una vez. Recuérdalo durante meses.",
-      "text": "Responde «Bien» y una palabra nueva vuelve mañana, luego en tres días y luego semanas después. {reviews} la mantienen durante {months}, así las palabras que ya sabes dejan de ocupar tu día.",
+      "text": "Responde «Bien» y una palabra nueva vuelve en {first}, luego en {second}, luego en {third}, y cada pausa es más larga que la anterior. {reviews} la mantienen durante {span}, así las palabras que ya sabes dejan de ocupar tu día.",
       "reviews": {
         "one": "{count} repaso",
         "many": "{count} repasos",
@@ -1657,6 +1657,16 @@ export default {
         "one": "{count} mes",
         "many": "{count} meses",
         "other": "{count} meses"
+      },
+      "days": {
+        "one": "{count} día",
+        "many": "{count} días",
+        "other": "{count} días"
+      },
+      "years": {
+        "one": "{count} año",
+        "many": "{count} años",
+        "other": "{count} años"
       },
       "chartLabel": "Días entre repasos de una palabra",
       "day": "día {day}"

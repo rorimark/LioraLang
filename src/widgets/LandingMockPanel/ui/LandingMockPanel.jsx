@@ -193,7 +193,7 @@ export const LandingMockPanel = memo(() => {
     desktopReleaseUrl,
     handlePrefetchApp,
   } = useLandingMockPanel();
-  const { reviews, months } = useReviewTimeline();
+  const { reviews, firstGaps, span } = useReviewTimeline();
   const rootRef = useRef(null);
   useRevealOnScroll(rootRef);
 
@@ -282,8 +282,11 @@ export const LandingMockPanel = memo(() => {
       >
         <p>
           {t("landing.memory.text", {
+            first: t("landing.memory.days", { count: firstGaps[0] }),
+            second: t("landing.memory.days", { count: firstGaps[1] }),
+            third: t("landing.memory.days", { count: firstGaps[2] }),
             reviews: t("landing.memory.reviews", { count: reviews }),
-            months: t("landing.memory.months", { count: months }),
+            span: t(`landing.memory.${span.unit}`, { count: span.count }),
           })}
         </p>
       </FeatureRow>

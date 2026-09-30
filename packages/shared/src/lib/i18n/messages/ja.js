@@ -1495,12 +1495,18 @@ export default {
     },
     "memory": {
       "title": "一度覚えれば、何か月も忘れない。",
-      "text": "「正解」と答えると、新しい単語は明日、次は3日後、その次は数週間後に出題されます。{reviews}の復習で{months}記憶が続くので、覚えた単語に一日を取られることはありません。",
+      "text": "「正解」と答えると、新しい単語は{first}後、次は{second}後、その次は{third}後に出題され、間隔はどんどん長くなります。{reviews}の復習で{span}記憶が続くので、覚えた単語に一日を取られることはありません。",
       "reviews": {
         "other": "{count}回"
       },
       "months": {
         "other": "{count}か月"
+      },
+      "days": {
+        "other": "{count}日"
+      },
+      "years": {
+        "other": "{count}年"
       },
       "chartLabel": "1つの単語の復習間隔（日数）",
       "day": "{day}日目"

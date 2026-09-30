@@ -6,7 +6,9 @@ import {
 } from "@shared/core/usecases/srs";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-const REVIEW_COUNT = 8;
+// Six reviews: about a year and a half of a word answered Good. Beyond
+// that the chart would promise years nobody has lived with the app.
+const REVIEW_COUNT = 6;
 const START_MS = 0;
 
 const formatGap = (days) => {
@@ -47,10 +49,15 @@ export const buildReviewTimeline = () => {
   // the one-day learning steps visible next to a four-month gap.
   const toHeight = (gapDays) => Math.sqrt(gapDays) / Math.sqrt(longestGap);
 
+  const months = Math.round(lastDay / 30.44);
+
   return {
     points: points.map((point) => ({ ...point, height: toHeight(point.gapDays) })),
     reviews: points.length,
-    months: Math.round(lastDay / 30),
+    // The first gaps, as the copy names them, straight from the engine.
+    firstGaps: points.slice(0, 3).map((point) => Math.round(point.gapDays)),
+    // The whole span, said the way a person would: months, then years.
+    span: months < 24 ? { unit: "months", count: months } : { unit: "years", count: Math.round(lastDay / 365.25) },
   };
 };
 
