@@ -79,7 +79,7 @@ const markRows = (rows, index) =>
         row.duplicate.kind !== DUPLICATE_KIND.repeatedInList,
   }));
 
-export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sourceInputRef } = {}) => {
+export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "single", onWordsAdded, sourceInputRef } = {}) => {
   const deckRepository = usePlatformService("deckRepository");
   const { decks, isLoading: isDecksLoading } = useDecks();
   const { appPreferences } = useAppPreferences();
@@ -97,7 +97,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", onWordsAdded, sou
   // A deck made in this dialog, used until the deck list catches up.
   const [createdDeck, setCreatedDeck] = useState(null);
   const [deckWords, setDeckWords] = useState([]);
-  const [tab, setTab] = useState("single");
+  const [tab, setTab] = useState(initialTab === "list" ? "list" : "single");
   const [draft, setDraft] = useState({ source: "", target: "" });
   const [details, setDetails] = useState(EMPTY_DETAILS);
   // The picture for the word being typed, already stored locally.

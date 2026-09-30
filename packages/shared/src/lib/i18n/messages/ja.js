@@ -481,7 +481,6 @@ export default {
     "loading": "デッキエディターを読み込み中…",
     "openDetails": "デッキを開く",
     "saving": "保存中…",
-    "saveDeck": "デッキを保存",
     "settings": "デッキの設定",
     "namePlaceholder": "日常のフレーズ",
     "description": "説明",
@@ -490,11 +489,6 @@ export default {
     "enableLevels": "CEFRレベル（A1–C2）を使う",
     "tags": "タグ（カンマ区切り）",
     "tagsPlaceholder": "旅行, 句動詞, 仕事",
-    "wordsInDeck": {
-      "other": "デッキ内の単語：{count}語"
-    },
-    "editWord": "単語を編集",
-    "addWords": "単語を追加",
     "wordPlaceholder": "単語またはフレーズ",
     "translationPlaceholder": "訳",
     "optionalPlaceholder": "任意",
@@ -503,30 +497,51 @@ export default {
     "wordTagsPlaceholder": "学校, 文法, 仕事",
     "saveWord": "変更を保存",
     "addWord": "単語を追加",
-    "clearForm": "フォームをクリア",
     "wordsTable": "単語",
     "empty": "最初の単語を追加して、デッキ作りを始めましょう。",
-    "part": "品詞",
     "editNamed": "「{word}」を編集",
     "deleteNamed": "「{word}」を削除",
-    "preview": "プレビュー",
-    "examplesLabel": "例文：",
-    "tagsLabel": "タグ：",
     "errors": {
       "load": "編集するデッキを読み込めませんでした。",
       "emptyWord": "先に単語を入力してください。",
       "nameRequired": "デッキに名前を付けてください。",
       "save": "デッキを保存できませんでした。",
-      "emptyPicture": "先に画像を追加してください。"
+      "emptyPicture": "先に画像を追加してください。",
+      "emptyTranslation": "訳も入力してください。",
+      "sameLanguages": "面ごとに異なる言語を選んでください。",
+      "nameTaken": "同じ名前のデッキがすでにあります。"
     },
     "status": {
-      "deleted": "削除しました：{word}",
-      "updated": "デッキを保存しました",
-      "created": "デッキを作成しました"
+      "deleted": "削除しました：{word}"
     },
     "side": {
       "language": "言語",
-      "pictureHint": "この面には、すべての単語でテキストの代わりに画像が入ります。"}
+      "pictureHint": "この面には、すべての単語でテキストの代わりに画像が入ります。"
+    },
+    "nameLabel": "デッキ名",
+    "saved": "保存済み",
+    "study": "学習する",
+    "create": "デッキを作成",
+    "creating": "作成中…",
+    "createHint": {
+      "other": "{count}語がデッキと一緒に保存されます。"
+    },
+    "moreDetails": "詳細を表示",
+    "lessDetails": "詳細を隠す",
+    "enterHint": "Enterで単語を追加し、カーソルはここに残ります",
+    "searchPlaceholder": "単語を検索",
+    "emptyNew": "今すぐ、またはデッキ作成後に単語を追加できます。",
+    "noMatches": "「{query}」に一致する単語はありません。",
+    "showMore": "さらに表示（{total}件中{shown}件）",
+    "sides": {
+      "title": "カード",
+      "front": "表",
+      "back": "裏",
+      "swap": "表と裏を入れ替える",
+      "locked": "デッキに単語があると、面は変更できません。",
+      "extra": "追加の言語",
+      "extraHint": "カードの裏に表示される3行目"
+    }
   },
   "browse": {
     "empty": "検索に一致するコミュニティのデッキはありません。",
@@ -1502,7 +1517,6 @@ export default {
     "unsaved": "まだ追加していない単語があります。",
     "keepEditing": "編集を続ける",
     "discard": "破棄する",
-    "editorHint": "ここで追加したカードはすぐにデッキに保存されます。",
     "errors": {
       "emptyWord": "先に単語を入力してください。",
       "emptyTranslation": "訳を入力してからEnterを押してください。",
@@ -1556,5 +1570,7 @@ export default {
       "notImage": "このファイルは画像ではありません。JPEG、PNG、WebP、GIF を使ってください。",
       "tooLarge": "画像が 25 MB を超えています。もっと小さい画像を選んでください。",
       "unreadable": "画像を読み取れませんでした。別のファイルを試してください。",
-      "saveFailed": "画像を保存できませんでした。もう一度お試しください。"}}
+      "saveFailed": "画像を保存できませんでした。もう一度お試しください。"
+    }
+  }
 };

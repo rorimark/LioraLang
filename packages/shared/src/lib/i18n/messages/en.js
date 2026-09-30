@@ -1,6 +1,3 @@
-// The interface in English: the source every other language is checked
-// against. A plural message is an object of forms (one / other here; the
-// other languages add the forms their grammar has).
 export default {
   "common": {
     "language": "Language",
@@ -495,7 +492,6 @@ export default {
     "loading": "Loading deck editor…",
     "openDetails": "Open details",
     "saving": "Saving…",
-    "saveDeck": "Save deck",
     "settings": "Deck settings",
     "namePlaceholder": "Everyday phrases",
     "description": "Description",
@@ -504,12 +500,6 @@ export default {
     "enableLevels": "Use CEFR levels (A1–C2)",
     "tags": "Tags, separated by commas",
     "tagsPlaceholder": "travel, phrasal verbs, business",
-    "wordsInDeck": {
-      "one": "{count} word in the deck",
-      "other": "{count} words in the deck"
-    },
-    "editWord": "Edit word",
-    "addWords": "Add words",
     "wordPlaceholder": "Word or phrase",
     "translationPlaceholder": "Translation",
     "optionalPlaceholder": "Optional",
@@ -518,30 +508,52 @@ export default {
     "wordTagsPlaceholder": "school, grammar, work",
     "saveWord": "Save changes",
     "addWord": "Add word",
-    "clearForm": "Clear form",
     "wordsTable": "Words",
     "empty": "Add the first word to start building this deck.",
-    "part": "Part",
     "editNamed": "Edit “{word}”",
     "deleteNamed": "Delete “{word}”",
-    "preview": "Preview",
-    "examplesLabel": "Examples:",
-    "tagsLabel": "Tags:",
     "errors": {
       "load": "Could not load the deck for editing.",
       "emptyWord": "Enter the word first.",
       "nameRequired": "Give the deck a name.",
       "save": "Could not save the deck.",
-      "emptyPicture": "Add a picture first."
+      "emptyPicture": "Add a picture first.",
+      "emptyTranslation": "Enter the translation too.",
+      "sameLanguages": "Pick a different language for each side.",
+      "nameTaken": "You already have a deck with this name."
     },
     "status": {
-      "deleted": "Deleted: {word}",
-      "updated": "Deck saved",
-      "created": "Deck created"
+      "deleted": "Deleted: {word}"
     },
     "side": {
       "language": "Language",
-      "pictureHint": "Every word gets a picture on this side instead of text."}
+      "pictureHint": "Every word gets a picture on this side instead of text."
+    },
+    "nameLabel": "Deck name",
+    "saved": "Saved",
+    "study": "Study",
+    "create": "Create deck",
+    "creating": "Creating…",
+    "createHint": {
+      "one": "{count} word will be saved with the deck.",
+      "other": "{count} words will be saved with the deck."
+    },
+    "moreDetails": "More details",
+    "lessDetails": "Fewer details",
+    "enterHint": "Enter adds the word and keeps the cursor here",
+    "searchPlaceholder": "Search words",
+    "emptyNew": "Add words now or after creating the deck.",
+    "noMatches": "No words match “{query}”.",
+    "showMore": "Show more ({shown} of {total})",
+    "sides": {
+      "title": "Cards",
+      "front": "Front",
+      "back": "Back",
+      "swap": "Swap sides",
+      "locked": "The sides are fixed once the deck has words.",
+      "extra": "Extra language",
+      "extraHint": "A third line on the back of the card"
+    }
   },
   "browse": {
     "empty": "No community decks match your search.",
@@ -1583,7 +1595,6 @@ export default {
     "unsaved": "Some words are not added yet.",
     "keepEditing": "Keep editing",
     "discard": "Discard them",
-    "editorHint": "Cards you add here are saved to the deck straight away.",
     "errors": {
       "emptyWord": "Type a word first.",
       "emptyTranslation": "Add a translation, then press Enter.",
@@ -1640,5 +1651,7 @@ export default {
       "notImage": "This file is not a picture. Use a JPEG, PNG, WebP or GIF.",
       "tooLarge": "This picture is over 25 MB. Choose a smaller one.",
       "unreadable": "This picture could not be read. Try another file.",
-      "saveFailed": "The picture could not be saved. Try again."}}
+      "saveFailed": "The picture could not be saved. Try again."
+    }
+  }
 };

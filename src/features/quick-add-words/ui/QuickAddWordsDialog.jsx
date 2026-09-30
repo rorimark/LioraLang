@@ -462,10 +462,10 @@ const Notice = memo(({ model }) => {
 
 Notice.displayName = "Notice";
 
-export const QuickAddWordsDialog = memo(({ initialDeckId = "", onClose, onWordsAdded }) => {
+export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "single", onClose, onWordsAdded }) => {
   const { t } = useI18n();
   const sourceInputRef = useRef(null);
-  const model = useQuickAddWords({ isOpen: true, initialDeckId, onWordsAdded, sourceInputRef });
+  const model = useQuickAddWords({ isOpen: true, initialDeckId, initialTab, onWordsAdded, sourceInputRef });
   const sheetRef = useRef(null);
   const titleId = useId();
   const [isConfirmingClose, setIsConfirmingClose] = useState(false);

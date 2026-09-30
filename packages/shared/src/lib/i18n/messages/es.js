@@ -503,7 +503,6 @@ export default {
     "loading": "Cargando el editor…",
     "openDetails": "Abrir mazo",
     "saving": "Guardando…",
-    "saveDeck": "Guardar mazo",
     "settings": "Ajustes del mazo",
     "namePlaceholder": "Frases cotidianas",
     "description": "Descripción",
@@ -512,13 +511,6 @@ export default {
     "enableLevels": "Usar niveles MCER (A1–C2)",
     "tags": "Etiquetas, separadas por comas",
     "tagsPlaceholder": "viajes, phrasal verbs, trabajo",
-    "wordsInDeck": {
-      "one": "{count} palabra en el mazo",
-      "other": "{count} palabras en el mazo",
-      "many": "{count} palabras en el mazo"
-    },
-    "editWord": "Editar palabra",
-    "addWords": "Añadir palabras",
     "wordPlaceholder": "Palabra o expresión",
     "translationPlaceholder": "Traducción",
     "optionalPlaceholder": "Opcional",
@@ -527,30 +519,53 @@ export default {
     "wordTagsPlaceholder": "escuela, gramática, trabajo",
     "saveWord": "Guardar cambios",
     "addWord": "Añadir palabra",
-    "clearForm": "Vaciar formulario",
     "wordsTable": "Palabras",
     "empty": "Añade la primera palabra para empezar a crear este mazo.",
-    "part": "Categoría",
     "editNamed": "Editar «{word}»",
     "deleteNamed": "Eliminar «{word}»",
-    "preview": "Vista previa",
-    "examplesLabel": "Ejemplos:",
-    "tagsLabel": "Etiquetas:",
     "errors": {
       "load": "No se ha podido cargar el mazo para editarlo.",
       "emptyWord": "Escribe primero la palabra.",
       "nameRequired": "Ponle un nombre al mazo.",
       "save": "No se ha podido guardar el mazo.",
-      "emptyPicture": "Primero añade una imagen."
+      "emptyPicture": "Primero añade una imagen.",
+      "emptyTranslation": "Escribe también la traducción.",
+      "sameLanguages": "Elige un idioma distinto para cada lado.",
+      "nameTaken": "Ya tienes un mazo con este nombre."
     },
     "status": {
-      "deleted": "Eliminada: {word}",
-      "updated": "Mazo guardado",
-      "created": "Mazo creado"
+      "deleted": "Eliminada: {word}"
     },
     "side": {
       "language": "Idioma",
-      "pictureHint": "Cada palabra lleva una imagen en este lado en lugar de texto."}
+      "pictureHint": "Cada palabra lleva una imagen en este lado en lugar de texto."
+    },
+    "nameLabel": "Nombre del mazo",
+    "saved": "Guardado",
+    "study": "Estudiar",
+    "create": "Crear mazo",
+    "creating": "Creando…",
+    "createHint": {
+      "one": "{count} palabra se guardará con el mazo.",
+      "many": "{count} palabras se guardarán con el mazo.",
+      "other": "{count} palabras se guardarán con el mazo."
+    },
+    "moreDetails": "Más detalles",
+    "lessDetails": "Menos detalles",
+    "enterHint": "Enter añade la palabra y deja el cursor aquí",
+    "searchPlaceholder": "Buscar palabras",
+    "emptyNew": "Añade palabras ahora o después de crear el mazo.",
+    "noMatches": "Ninguna palabra coincide con «{query}».",
+    "showMore": "Mostrar más ({shown} de {total})",
+    "sides": {
+      "title": "Tarjetas",
+      "front": "Anverso",
+      "back": "Reverso",
+      "swap": "Intercambiar lados",
+      "locked": "Cuando el mazo tiene palabras, los lados ya no cambian.",
+      "extra": "Idioma extra",
+      "extraHint": "Una tercera línea en el reverso"
+    }
   },
   "browse": {
     "empty": "Ningún mazo de la comunidad coincide con tu búsqueda.",
@@ -1658,7 +1673,6 @@ export default {
     "unsaved": "Algunas palabras aún no se han añadido.",
     "keepEditing": "Seguir editando",
     "discard": "Descartarlas",
-    "editorHint": "Las tarjetas que añadas aquí se guardan en el mazo al instante.",
     "errors": {
       "emptyWord": "Escribe primero una palabra.",
       "emptyTranslation": "Añade una traducción y pulsa Enter.",
@@ -1718,5 +1732,7 @@ export default {
       "notImage": "Este archivo no es una imagen. Usa JPEG, PNG, WebP o GIF.",
       "tooLarge": "La imagen pesa más de 25 MB. Elige una más pequeña.",
       "unreadable": "No se pudo leer la imagen. Prueba con otro archivo.",
-      "saveFailed": "No se pudo guardar la imagen. Inténtalo de nuevo."}}
+      "saveFailed": "No se pudo guardar la imagen. Inténtalo de nuevo."
+    }
+  }
 };

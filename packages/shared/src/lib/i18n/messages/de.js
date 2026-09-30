@@ -492,7 +492,6 @@ export default {
     "loading": "Deck-Editor wird geladen…",
     "openDetails": "Deck öffnen",
     "saving": "Wird gespeichert…",
-    "saveDeck": "Deck speichern",
     "settings": "Deck-Einstellungen",
     "namePlaceholder": "Alltagsphrasen",
     "description": "Beschreibung",
@@ -501,12 +500,6 @@ export default {
     "enableLevels": "GER-Niveaus verwenden (A1–C2)",
     "tags": "Tags, durch Kommas getrennt",
     "tagsPlaceholder": "Reisen, Phrasal Verbs, Beruf",
-    "wordsInDeck": {
-      "one": "{count} Wort im Deck",
-      "other": "{count} Wörter im Deck"
-    },
-    "editWord": "Wort bearbeiten",
-    "addWords": "Wörter hinzufügen",
     "wordPlaceholder": "Wort oder Wendung",
     "translationPlaceholder": "Übersetzung",
     "optionalPlaceholder": "Optional",
@@ -515,30 +508,52 @@ export default {
     "wordTagsPlaceholder": "Schule, Grammatik, Arbeit",
     "saveWord": "Änderungen speichern",
     "addWord": "Wort hinzufügen",
-    "clearForm": "Formular leeren",
     "wordsTable": "Wörter",
     "empty": "Füge das erste Wort hinzu, um dieses Deck aufzubauen.",
-    "part": "Wortart",
     "editNamed": "„{word}“ bearbeiten",
     "deleteNamed": "„{word}“ löschen",
-    "preview": "Vorschau",
-    "examplesLabel": "Beispiele:",
-    "tagsLabel": "Tags:",
     "errors": {
       "load": "Das Deck konnte nicht zum Bearbeiten geladen werden.",
       "emptyWord": "Gib zuerst das Wort ein.",
       "nameRequired": "Gib dem Deck einen Namen.",
       "save": "Das Deck konnte nicht gespeichert werden.",
-      "emptyPicture": "Füge zuerst ein Bild hinzu."
+      "emptyPicture": "Füge zuerst ein Bild hinzu.",
+      "emptyTranslation": "Gib auch die Übersetzung ein.",
+      "sameLanguages": "Wähle für jede Seite eine andere Sprache.",
+      "nameTaken": "Du hast bereits ein Deck mit diesem Namen."
     },
     "status": {
-      "deleted": "Gelöscht: {word}",
-      "updated": "Deck gespeichert",
-      "created": "Deck erstellt"
+      "deleted": "Gelöscht: {word}"
     },
     "side": {
       "language": "Sprache",
-      "pictureHint": "Jedes Wort bekommt auf dieser Seite ein Bild statt Text."}
+      "pictureHint": "Jedes Wort bekommt auf dieser Seite ein Bild statt Text."
+    },
+    "nameLabel": "Name des Decks",
+    "saved": "Gespeichert",
+    "study": "Lernen",
+    "create": "Deck erstellen",
+    "creating": "Wird erstellt…",
+    "createHint": {
+      "one": "{count} Wort wird mit dem Deck gespeichert.",
+      "other": "{count} Wörter werden mit dem Deck gespeichert."
+    },
+    "moreDetails": "Mehr Details",
+    "lessDetails": "Weniger Details",
+    "enterHint": "Enter fügt das Wort hinzu, der Cursor bleibt hier",
+    "searchPlaceholder": "Wörter suchen",
+    "emptyNew": "Füge jetzt Wörter hinzu oder nach dem Erstellen des Decks.",
+    "noMatches": "Keine Wörter passen zu „{query}“.",
+    "showMore": "Mehr anzeigen ({shown} von {total})",
+    "sides": {
+      "title": "Karten",
+      "front": "Vorderseite",
+      "back": "Rückseite",
+      "swap": "Seiten tauschen",
+      "locked": "Sobald das Deck Wörter hat, stehen die Seiten fest.",
+      "extra": "Zusatzsprache",
+      "extraHint": "Eine dritte Zeile auf der Rückseite"
+    }
   },
   "browse": {
     "empty": "Keine Community-Decks passen zu deiner Suche.",
@@ -1580,7 +1595,6 @@ export default {
     "unsaved": "Einige Wörter sind noch nicht hinzugefügt.",
     "keepEditing": "Weiter bearbeiten",
     "discard": "Verwerfen",
-    "editorHint": "Karten, die du hier hinzufügst, werden sofort im Stapel gespeichert.",
     "errors": {
       "emptyWord": "Gib zuerst ein Wort ein.",
       "emptyTranslation": "Gib eine Übersetzung ein und drücke Enter.",
@@ -1637,5 +1651,7 @@ export default {
       "notImage": "Diese Datei ist kein Bild. Verwende JPEG, PNG, WebP oder GIF.",
       "tooLarge": "Das Bild ist größer als 25 MB. Wähle ein kleineres.",
       "unreadable": "Das Bild konnte nicht gelesen werden. Versuche eine andere Datei.",
-      "saveFailed": "Das Bild konnte nicht gespeichert werden. Versuche es noch einmal."}}
+      "saveFailed": "Das Bild konnte nicht gespeichert werden. Versuche es noch einmal."
+    }
+  }
 };

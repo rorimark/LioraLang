@@ -514,7 +514,6 @@ export default {
     "loading": "Ładujemy edytor talii…",
     "openDetails": "Otwórz talię",
     "saving": "Zapisujemy…",
-    "saveDeck": "Zapisz talię",
     "settings": "Ustawienia talii",
     "namePlaceholder": "Codzienne zwroty",
     "description": "Opis",
@@ -523,14 +522,6 @@ export default {
     "enableLevels": "Używaj poziomów CEFR (A1–C2)",
     "tags": "Tagi, oddzielone przecinkami",
     "tagsPlaceholder": "podróże, phrasal verbs, praca",
-    "wordsInDeck": {
-      "one": "{count} słowo w talii",
-      "few": "{count} słowa w talii",
-      "many": "{count} słów w talii",
-      "other": "{count} słów w talii"
-    },
-    "editWord": "Edytuj słowo",
-    "addWords": "Dodaj słowa",
     "wordPlaceholder": "Słowo lub wyrażenie",
     "translationPlaceholder": "Tłumaczenie",
     "optionalPlaceholder": "Opcjonalnie",
@@ -539,30 +530,54 @@ export default {
     "wordTagsPlaceholder": "szkoła, gramatyka, praca",
     "saveWord": "Zapisz zmiany",
     "addWord": "Dodaj słowo",
-    "clearForm": "Wyczyść formularz",
     "wordsTable": "Słowa",
     "empty": "Dodaj pierwsze słowo, aby zacząć budować talię.",
-    "part": "Część mowy",
     "editNamed": "Edytuj „{word}”",
     "deleteNamed": "Usuń „{word}”",
-    "preview": "Podgląd",
-    "examplesLabel": "Przykłady:",
-    "tagsLabel": "Tagi:",
     "errors": {
       "load": "Nie udało się wczytać talii do edycji.",
       "emptyWord": "Najpierw wpisz słowo.",
       "nameRequired": "Nadaj talii nazwę.",
       "save": "Nie udało się zapisać talii.",
-      "emptyPicture": "Najpierw dodaj obrazek."
+      "emptyPicture": "Najpierw dodaj obrazek.",
+      "emptyTranslation": "Wpisz też tłumaczenie.",
+      "sameLanguages": "Wybierz inny język dla każdej strony.",
+      "nameTaken": "Masz już talię o tej nazwie."
     },
     "status": {
-      "deleted": "Usunięto: {word}",
-      "updated": "Talia zapisana",
-      "created": "Talia utworzona"
+      "deleted": "Usunięto: {word}"
     },
     "side": {
       "language": "Język",
-      "pictureHint": "Każde słowo ma po tej stronie obrazek zamiast tekstu."}
+      "pictureHint": "Każde słowo ma po tej stronie obrazek zamiast tekstu."
+    },
+    "nameLabel": "Nazwa talii",
+    "saved": "Zapisano",
+    "study": "Ucz się",
+    "create": "Utwórz talię",
+    "creating": "Tworzenie…",
+    "createHint": {
+      "one": "{count} słowo zostanie zapisane z talią.",
+      "few": "{count} słowa zostaną zapisane z talią.",
+      "many": "{count} słów zostanie zapisanych z talią.",
+      "other": "{count} słowa zostaną zapisane z talią."
+    },
+    "moreDetails": "Więcej szczegółów",
+    "lessDetails": "Mniej szczegółów",
+    "enterHint": "Enter dodaje słowo, kursor zostaje tutaj",
+    "searchPlaceholder": "Szukaj słów",
+    "emptyNew": "Dodaj słowa teraz lub po utworzeniu talii.",
+    "noMatches": "Brak słów pasujących do „{query}”.",
+    "showMore": "Pokaż więcej ({shown} z {total})",
+    "sides": {
+      "title": "Karty",
+      "front": "Przód",
+      "back": "Tył",
+      "swap": "Zamień strony",
+      "locked": "Gdy talia ma słowa, stron nie można już zmienić.",
+      "extra": "Dodatkowy język",
+      "extraHint": "Trzecia linia na tyle karty"
+    }
   },
   "browse": {
     "empty": "Żadna talia społeczności nie pasuje do wyszukiwania.",
@@ -1736,7 +1751,6 @@ export default {
     "unsaved": "Część słów nie została jeszcze dodana.",
     "keepEditing": "Wróć do edycji",
     "discard": "Nie dodawaj",
-    "editorHint": "Fiszki dodane tutaj od razu zapisują się w talii.",
     "errors": {
       "emptyWord": "Najpierw wpisz słowo.",
       "emptyTranslation": "Dodaj tłumaczenie i naciśnij Enter.",
@@ -1799,5 +1813,7 @@ export default {
       "notImage": "To nie jest obrazek. Użyj pliku JPEG, PNG, WebP lub GIF.",
       "tooLarge": "Obrazek ma ponad 25 MB. Wybierz mniejszy.",
       "unreadable": "Nie udało się odczytać obrazka. Spróbuj innego pliku.",
-      "saveFailed": "Nie udało się zapisać obrazka. Spróbuj ponownie."}}
+      "saveFailed": "Nie udało się zapisać obrazka. Spróbuj ponownie."
+    }
+  }
 };

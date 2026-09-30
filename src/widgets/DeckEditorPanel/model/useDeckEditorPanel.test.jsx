@@ -20,6 +20,40 @@ vi.mock("@shared/lib/appPreferences", () => ({
   useAppPreferences: () => useAppPreferencesMock(),
 }));
 
+const change = (handler, name, value) => handler({ target: { name, value } });
+
+const savedResult = (payload, deckId = 55) => ({
+  deck: { id: deckId, name: payload.name },
+  words: payload.words.map((word, index) => ({ ...word, id: word.id || 100 + index })),
+});
+
+const storedDeck = {
+  id: 12,
+  name: "Travel deck",
+  description: "",
+  sourceLanguage: "English",
+  targetLanguage: "Polish",
+  tertiaryLanguage: "",
+  usesWordLevels: true,
+  tagsJson: JSON.stringify(["travel"]),
+};
+
+const storedWord = {
+  id: 90,
+  externalId: "w-90",
+  source: "ticket",
+  target: "bilet",
+  level: "A1",
+  part_of_speech: "noun",
+  tags: ["transport", "booking"],
+  examples: ["Buy a ticket", "Show the ticket"],
+};
+
+const renderEditor = async () => {
+  const { useDeckEditorPanel } = await import("./useDeckEditorPanel.js");
+  return renderHook(() => useDeckEditorPanel());
+};
+
 describe("useDeckEditorPanel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -38,147 +72,237 @@ describe("useDeckEditorPanel", () => {
   });
 
   describe("create mode", () => {
-    it("saves the deck with every example intact and word tags separate from deck tags", async () => {
-      const saveDeck = vi.fn(async (payload) => ({
-        deck: {
-          id: 55,
-          name: payload.name,
-          description: payload.description,
-          sourceLanguage: payload.sourceLanguage,
-          targetLanguage: payload.targetLanguage,
-          tertiaryLanguage: payload.tertiaryLanguage,
-          usesWordLevels: payload.usesWordLevels,
-          tagsJson: JSON.stringify(payload.tags),
-          wordsCount: payload.words.length,
-        },
-        words: payload.words.map((word, index) => ({
-          ...word,
-          id: index + 1,
-        })),
-      }));
-      usePlatformServiceMock.mockReturnValue({
-        saveDeck,
-      });
-
-      const { useDeckEditorPanel } = await import("./useDeckEditorPanel.js");
-      const { result } = renderHook(() => useDeckEditorPanel());
+    it("creates the deck with the words typed before it existed, then opens it for editing", async () => {
+      const saveDeck = vi.fn(async (payload) => savedResult(payload));
+      usePlatformServiceMock.mockReturnValue({ saveDeck });
+      const { result } = await renderEditor();
 
       act(() => {
-        result.current.handleDeckFormChange({
-          target: { name: "name", value: "Education deck" },
-        });
-        result.current.handleDeckFormChange({
-          target: { name: "sourceLanguage", value: "English" },
-        });
-        result.current.handleDeckFormChange({
-          target: { name: "targetLanguage", value: "Polish" },
-        });
+        change(result.current.handleDeckFormChange, "name", "Education deck");
         result.current.handleDeckFormChange({
           target: { name: "usesWordLevels", type: "checkbox", checked: false },
         });
-        result.current.handleDeckFormChange({
-          target: { name: "tagsInput", value: "education, school" },
-        });
-
-        result.current.handleWordDraftChange({
-          target: { name: "source", value: "guidebook" },
-        });
-        result.current.handleWordDraftChange({
-          target: { name: "target", value: "przewodnik" },
-        });
-        result.current.handleWordDraftChange({
-          target: {
-            name: "examplesInput",
-            value: "Pack a guidebook\nUse a guidebook\nPack a guidebook",
-          },
-        });
-        result.current.handleWordDraftChange({
-          target: { name: "tagsInput", value: "reading, school, reading" },
-        });
+        change(result.current.handleDeckFormChange, "tagsInput", "education, school");
+        change(result.current.handleAddDraftChange, "source", "guidebook");
+        change(result.current.handleAddDraftChange, "target", "przewodnik");
+        change(result.current.handleAddDraftChange, "examplesInput", "Pack a guidebook\nUse a guidebook\nPack a guidebook");
+        change(result.current.handleAddDraftChange, "tagsInput", "reading, school, reading");
       });
 
       act(() => {
-        result.current.handleUpsertWordDraft();
+        expect(result.current.submitAddDraft()).toBe(true);
       });
 
-      await waitFor(() => {
-        expect(result.current.words).toHaveLength(1);
-      });
+      // Nothing is written before "Create deck".
+      expect(saveDeck).not.toHaveBeenCalled();
+      expect(result.current.words).toHaveLength(1);
+      expect(result.current.addDraft.source).toBe("");
+      expect(result.current.addDraft.tagsInput).toBe("reading, school, reading");
 
       await act(async () => {
-        await result.current.handleSaveDeck();
+        await result.current.createDeck();
       });
 
       expect(saveDeck).toHaveBeenCalledTimes(1);
-      expect(saveDeck).toHaveBeenCalledWith({
-        name: "Education deck",
-        description: "",
-        pictureSide: "",
-        sourceLanguage: "English",
-        targetLanguage: "Polish",
-        tertiaryLanguage: "",
-        tags: ["education", "school"],
-        usesWordLevels: false,
-        words: [
-          expect.objectContaining({
-            source: "guidebook",
-            target: "przewodnik",
-            level: null,
-            tags: ["reading", "school"],
-            example: "Pack a guidebook",
-            examples: ["Pack a guidebook", "Use a guidebook"],
-          }),
-        ],
+      expect(saveDeck).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Education deck",
+          pictureSide: "",
+          sourceLanguage: "English",
+          targetLanguage: "Polish",
+          tags: ["education", "school"],
+          usesWordLevels: false,
+          words: [
+            expect.objectContaining({
+              id: null,
+              source: "guidebook",
+              target: "przewodnik",
+              level: null,
+              tags: ["reading", "school"],
+              examples: ["Pack a guidebook", "Use a guidebook"],
+            }),
+          ],
+        }),
+      );
+      expect(navigateMock).toHaveBeenCalledWith(buildDeckEditRoute(55), { replace: true });
+    });
+
+    it("says what is missing instead of creating a deck without a name", async () => {
+      const saveDeck = vi.fn();
+      usePlatformServiceMock.mockReturnValue({ saveDeck });
+      const { result } = await renderEditor();
+
+      await act(async () => {
+        await result.current.createDeck();
       });
-      expect(navigateMock).toHaveBeenCalledWith(buildDeckEditRoute(55), {
-        replace: true,
+
+      expect(saveDeck).not.toHaveBeenCalled();
+      expect(result.current.createError).toBe("Give the deck a name.");
+    });
+
+    it("refuses a word with only one side filled in", async () => {
+      usePlatformServiceMock.mockReturnValue({ saveDeck: vi.fn() });
+      const { result } = await renderEditor();
+
+      act(() => {
+        change(result.current.handleAddDraftChange, "source", "guidebook");
       });
+      act(() => {
+        expect(result.current.submitAddDraft()).toBe(false);
+      });
+
+      expect(result.current.words).toHaveLength(0);
+      expect(result.current.addError).toBe("Enter the translation too.");
     });
   });
 
   describe("edit mode", () => {
-    it("loads the full word back into the editor, including every example and tag", async () => {
+    const setUpStoredDeck = (overrides = {}) => {
       useParamsMock.mockReturnValue({ deckId: "12" });
-      usePlatformServiceMock.mockReturnValue({
-        getDeckById: vi.fn().mockResolvedValue({
-          id: 12,
-          name: "Travel deck",
-          description: "",
-          sourceLanguage: "English",
-          targetLanguage: "Polish",
-          tertiaryLanguage: "",
-          usesWordLevels: true,
-          tagsJson: JSON.stringify(["travel"]),
-        }),
-        getDeckWords: vi.fn().mockResolvedValue([
-          {
-            id: 90,
-            source: "ticket",
-            target: "bilet",
-            level: "A1",
-            part_of_speech: "noun",
-            tags: ["transport", "booking"],
-            examples: ["Buy a ticket", "Show the ticket"],
-          },
-        ]),
-        saveDeck: vi.fn(),
-      });
+      const repository = {
+        getDeckById: vi.fn().mockResolvedValue(storedDeck),
+        getDeckWords: vi.fn().mockResolvedValue([storedWord]),
+        saveDeck: vi.fn(async (payload) => savedResult(payload, 12)),
+        ...overrides,
+      };
+      usePlatformServiceMock.mockReturnValue(repository);
+      return repository;
+    };
 
-      const { useDeckEditorPanel } = await import("./useDeckEditorPanel.js");
-      const { result } = renderHook(() => useDeckEditorPanel());
+    it("loads the full word back into the editor, including every example and tag", async () => {
+      setUpStoredDeck();
+      const { result } = await renderEditor();
 
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
       act(() => {
-        result.current.handleEditWord(90);
+        result.current.startEditWord(result.current.words[0]);
       });
 
-      expect(result.current.wordDraft.examplesInput).toBe(
-        "Buy a ticket\nShow the ticket",
-      );
-      expect(result.current.wordDraft.tagsInput).toBe("transport, booking");
+      expect(result.current.editingWordId).toBe("w-90");
+      expect(result.current.editDraft.examplesInput).toBe("Buy a ticket\nShow the ticket");
+      expect(result.current.editDraft.tagsInput).toBe("transport, booking");
+    });
+
+    it("saves a new word the moment it is added, keeping the words already there", async () => {
+      const repository = setUpStoredDeck();
+      const { result } = await renderEditor();
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      act(() => {
+        change(result.current.handleAddDraftChange, "source", "train");
+        change(result.current.handleAddDraftChange, "target", "pociąg");
+      });
+      act(() => {
+        result.current.submitAddDraft();
+      });
+
+      await waitFor(() => expect(result.current.saveState).toBe("saved"));
+
+      expect(repository.saveDeck).toHaveBeenCalledTimes(1);
+      const payload = repository.saveDeck.mock.calls[0][0];
+      expect(payload.deckId).toBe(12);
+      expect(payload.words.map((word) => [word.id, word.source])).toEqual([
+        [null, "train"],
+        [90, "ticket"],
+      ]);
+      // The new word takes the id storage gave it, so the next save updates it.
+      expect(result.current.words[0].id).toBe(100);
+    });
+
+    it("adds several words in a row, each one saved", async () => {
+      const repository = setUpStoredDeck();
+      const { result } = await renderEditor();
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      for (const [source, target] of [["train", "pociąg"], ["bus", "autobus"], ["plane", "samolot"]]) {
+        act(() => {
+          change(result.current.handleAddDraftChange, "source", source);
+          change(result.current.handleAddDraftChange, "target", target);
+        });
+        act(() => {
+          result.current.submitAddDraft();
+        });
+      }
+
+      await waitFor(() => expect(result.current.saveState).toBe("saved"));
+
+      expect(result.current.words.map((word) => word.source)).toEqual(["plane", "bus", "train", "ticket"]);
+      const lastPayload = repository.saveDeck.mock.calls.at(-1)[0];
+      expect(lastPayload.words.map((word) => word.source)).toEqual(["plane", "bus", "train", "ticket"]);
+    });
+
+    it("brings a deleted word back with undo", async () => {
+      const repository = setUpStoredDeck();
+      const { result } = await renderEditor();
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      act(() => {
+        result.current.deleteWord(result.current.words[0]);
+      });
+
+      expect(result.current.words).toHaveLength(0);
+      expect(result.current.lastDeleted.word.source).toBe("ticket");
+
+      act(() => {
+        result.current.undoDelete();
+      });
+
+      await waitFor(() => expect(result.current.saveState).toBe("saved"));
+
+      expect(result.current.words.map((word) => word.source)).toEqual(["ticket"]);
+      expect(result.current.lastDeleted).toBeNull();
+      expect(repository.saveDeck.mock.calls.at(-1)[0].words.map((word) => word.source)).toEqual(["ticket"]);
+    });
+
+    it("shows a failed save and saves again on retry", async () => {
+      const saveDeck = vi
+        .fn()
+        .mockRejectedValueOnce(new Error("disk is full"))
+        .mockImplementation(async (payload) => savedResult(payload, 12));
+      setUpStoredDeck({ saveDeck });
+      vi.spyOn(console, "warn").mockImplementation(() => {});
+      const { result } = await renderEditor();
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      act(() => {
+        change(result.current.handleAddDraftChange, "source", "train");
+        change(result.current.handleAddDraftChange, "target", "pociąg");
+      });
+      act(() => {
+        result.current.submitAddDraft();
+      });
+
+      await waitFor(() => expect(result.current.saveState).toBe("error"));
+      expect(result.current.saveError).toBe("Could not save the deck.");
+
+      act(() => {
+        result.current.retrySave();
+      });
+
+      await waitFor(() => expect(result.current.saveState).toBe("saved"));
+      expect(saveDeck).toHaveBeenCalledTimes(2);
+    });
+
+    it("locks the sides once the deck has words", async () => {
+      setUpStoredDeck();
+      const { result } = await renderEditor();
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+      expect(result.current.canChangeSides).toBe(false);
+
+      act(() => {
+        result.current.handleSideTypeChange("source", true);
+        result.current.swapSides();
+      });
+
+      expect(result.current.deckForm.pictureSide).toBe("");
+      expect(result.current.deckForm.sourceLanguage).toBe("English");
     });
   });
 });

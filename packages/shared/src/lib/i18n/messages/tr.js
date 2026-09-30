@@ -492,7 +492,6 @@ export default {
     "loading": "Deste düzenleyici yükleniyor…",
     "openDetails": "Desteyi aç",
     "saving": "Kaydediliyor…",
-    "saveDeck": "Desteyi kaydet",
     "settings": "Deste ayarları",
     "namePlaceholder": "Günlük ifadeler",
     "description": "Açıklama",
@@ -501,12 +500,6 @@ export default {
     "enableLevels": "CEFR seviyelerini kullan (A1–C2)",
     "tags": "Etiketler, virgülle ayrılmış",
     "tagsPlaceholder": "seyahat, phrasal verbs, iş",
-    "wordsInDeck": {
-      "one": "Destede {count} kelime",
-      "other": "Destede {count} kelime"
-    },
-    "editWord": "Kelimeyi düzenle",
-    "addWords": "Kelime ekle",
     "wordPlaceholder": "Kelime veya ifade",
     "translationPlaceholder": "Çeviri",
     "optionalPlaceholder": "İsteğe bağlı",
@@ -515,30 +508,52 @@ export default {
     "wordTagsPlaceholder": "okul, dil bilgisi, iş",
     "saveWord": "Değişiklikleri kaydet",
     "addWord": "Kelime ekle",
-    "clearForm": "Formu temizle",
     "wordsTable": "Kelimeler",
     "empty": "Bu desteyi oluşturmaya başlamak için ilk kelimeyi ekle.",
-    "part": "Tür",
     "editNamed": "“{word}” düzenle",
     "deleteNamed": "“{word}” sil",
-    "preview": "Önizleme",
-    "examplesLabel": "Örnekler:",
-    "tagsLabel": "Etiketler:",
     "errors": {
       "load": "Deste düzenleme için yüklenemedi.",
       "emptyWord": "Önce kelimeyi gir.",
       "nameRequired": "Desteye bir ad ver.",
       "save": "Deste kaydedilemedi.",
-      "emptyPicture": "Önce bir resim ekleyin."
+      "emptyPicture": "Önce bir resim ekleyin.",
+      "emptyTranslation": "Çeviriyi de girin.",
+      "sameLanguages": "Her yüz için farklı bir dil seçin.",
+      "nameTaken": "Bu adda bir desteniz zaten var."
     },
     "status": {
-      "deleted": "Silindi: {word}",
-      "updated": "Deste kaydedildi",
-      "created": "Deste oluşturuldu"
+      "deleted": "Silindi: {word}"
     },
     "side": {
       "language": "Dil",
-      "pictureHint": "Her kelimenin bu tarafında metin yerine bir resim olur."}
+      "pictureHint": "Her kelimenin bu tarafında metin yerine bir resim olur."
+    },
+    "nameLabel": "Deste adı",
+    "saved": "Kaydedildi",
+    "study": "Çalış",
+    "create": "Deste oluştur",
+    "creating": "Oluşturuluyor…",
+    "createHint": {
+      "one": "{count} kelime desteyle birlikte kaydedilecek.",
+      "other": "{count} kelime desteyle birlikte kaydedilecek."
+    },
+    "moreDetails": "Daha fazla ayrıntı",
+    "lessDetails": "Daha az ayrıntı",
+    "enterHint": "Enter kelimeyi ekler, imleç burada kalır",
+    "searchPlaceholder": "Kelime ara",
+    "emptyNew": "Kelimeleri şimdi veya desteyi oluşturduktan sonra ekleyin.",
+    "noMatches": "“{query}” ile eşleşen kelime yok.",
+    "showMore": "Daha fazla göster ({shown} / {total})",
+    "sides": {
+      "title": "Kartlar",
+      "front": "Ön yüz",
+      "back": "Arka yüz",
+      "swap": "Yüzleri değiştir",
+      "locked": "Destede kelime olduğunda yüzler artık değişmez.",
+      "extra": "Ek dil",
+      "extraHint": "Kartın arkasında üçüncü bir satır"
+    }
   },
   "browse": {
     "empty": "Aramana uyan topluluk destesi yok.",
@@ -1580,7 +1595,6 @@ export default {
     "unsaved": "Bazı kelimeler henüz eklenmedi.",
     "keepEditing": "Düzenlemeye devam et",
     "discard": "Vazgeç",
-    "editorHint": "Burada eklediğiniz kartlar desteye hemen kaydedilir.",
     "errors": {
       "emptyWord": "Önce bir kelime yazın.",
       "emptyTranslation": "Bir çeviri ekleyip Enter'a basın.",
@@ -1637,5 +1651,7 @@ export default {
       "notImage": "Bu dosya bir resim değil. JPEG, PNG, WebP veya GIF kullanın.",
       "tooLarge": "Resim 25 MB’tan büyük. Daha küçük bir tane seçin.",
       "unreadable": "Resim okunamadı. Başka bir dosya deneyin.",
-      "saveFailed": "Resim kaydedilemedi. Tekrar deneyin."}}
+      "saveFailed": "Resim kaydedilemedi. Tekrar deneyin."
+    }
+  }
 };

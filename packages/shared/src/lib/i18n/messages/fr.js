@@ -503,7 +503,6 @@ export default {
     "loading": "Chargement de l'éditeur…",
     "openDetails": "Ouvrir le paquet",
     "saving": "Enregistrement…",
-    "saveDeck": "Enregistrer le paquet",
     "settings": "Réglages du paquet",
     "namePlaceholder": "Expressions du quotidien",
     "description": "Description",
@@ -512,13 +511,6 @@ export default {
     "enableLevels": "Utiliser les niveaux CECRL (A1–C2)",
     "tags": "Étiquettes, séparées par des virgules",
     "tagsPlaceholder": "voyage, verbes à particule, travail",
-    "wordsInDeck": {
-      "one": "{count} mot dans le paquet",
-      "other": "{count} mots dans le paquet",
-      "many": "{count} mots dans le paquet"
-    },
-    "editWord": "Modifier le mot",
-    "addWords": "Ajouter des mots",
     "wordPlaceholder": "Mot ou expression",
     "translationPlaceholder": "Traduction",
     "optionalPlaceholder": "Facultatif",
@@ -527,30 +519,53 @@ export default {
     "wordTagsPlaceholder": "école, grammaire, travail",
     "saveWord": "Enregistrer les modifications",
     "addWord": "Ajouter le mot",
-    "clearForm": "Vider le formulaire",
     "wordsTable": "Mots",
     "empty": "Ajoutez le premier mot pour commencer à construire ce paquet.",
-    "part": "Nature",
     "editNamed": "Modifier « {word} »",
     "deleteNamed": "Supprimer « {word} »",
-    "preview": "Aperçu",
-    "examplesLabel": "Exemples :",
-    "tagsLabel": "Étiquettes :",
     "errors": {
       "load": "Le paquet n'a pas pu être chargé pour modification.",
       "emptyWord": "Saisissez d'abord le mot.",
       "nameRequired": "Donnez un nom au paquet.",
       "save": "Le paquet n'a pas pu être enregistré.",
-      "emptyPicture": "Ajoutez d’abord une image."
+      "emptyPicture": "Ajoutez d’abord une image.",
+      "emptyTranslation": "Saisissez aussi la traduction.",
+      "sameLanguages": "Choisissez une langue différente pour chaque face.",
+      "nameTaken": "Vous avez déjà un paquet portant ce nom."
     },
     "status": {
-      "deleted": "Supprimé : {word}",
-      "updated": "Paquet enregistré",
-      "created": "Paquet créé"
+      "deleted": "Supprimé : {word}"
     },
     "side": {
       "language": "Langue",
-      "pictureHint": "Chaque mot a une image de ce côté au lieu d’un texte."}
+      "pictureHint": "Chaque mot a une image de ce côté au lieu d’un texte."
+    },
+    "nameLabel": "Nom du paquet",
+    "saved": "Enregistré",
+    "study": "Réviser",
+    "create": "Créer le paquet",
+    "creating": "Création…",
+    "createHint": {
+      "one": "{count} mot sera enregistré avec le paquet.",
+      "many": "{count} mots seront enregistrés avec le paquet.",
+      "other": "{count} mots seront enregistrés avec le paquet."
+    },
+    "moreDetails": "Plus de détails",
+    "lessDetails": "Moins de détails",
+    "enterHint": "Entrée ajoute le mot, le curseur reste ici",
+    "searchPlaceholder": "Rechercher des mots",
+    "emptyNew": "Ajoutez des mots maintenant ou après avoir créé le paquet.",
+    "noMatches": "Aucun mot ne correspond à « {query} ».",
+    "showMore": "Afficher plus ({shown} sur {total})",
+    "sides": {
+      "title": "Cartes",
+      "front": "Recto",
+      "back": "Verso",
+      "swap": "Inverser les faces",
+      "locked": "Une fois que le paquet contient des mots, les faces sont fixées.",
+      "extra": "Langue supplémentaire",
+      "extraHint": "Une troisième ligne au verso"
+    }
   },
   "browse": {
     "empty": "Aucun paquet de la communauté ne correspond à votre recherche.",
@@ -1658,7 +1673,6 @@ export default {
     "unsaved": "Certains mots ne sont pas encore ajoutés.",
     "keepEditing": "Continuer",
     "discard": "Les abandonner",
-    "editorHint": "Les cartes ajoutées ici sont enregistrées dans le paquet tout de suite.",
     "errors": {
       "emptyWord": "Saisissez d'abord un mot.",
       "emptyTranslation": "Ajoutez une traduction, puis appuyez sur Entrée.",
@@ -1718,5 +1732,7 @@ export default {
       "notImage": "Ce fichier n’est pas une image. Utilisez un JPEG, PNG, WebP ou GIF.",
       "tooLarge": "L’image dépasse 25 Mo. Choisissez-en une plus petite.",
       "unreadable": "L’image n’a pas pu être lue. Essayez un autre fichier.",
-      "saveFailed": "L’image n’a pas pu être enregistrée. Réessayez."}}
+      "saveFailed": "L’image n’a pas pu être enregistrée. Réessayez."
+    }
+  }
 };

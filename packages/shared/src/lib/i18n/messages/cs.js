@@ -503,7 +503,6 @@ export default {
     "loading": "Načítání editoru balíčku…",
     "openDetails": "Otevřít balíček",
     "saving": "Ukládáme…",
-    "saveDeck": "Uložit balíček",
     "settings": "Nastavení balíčku",
     "namePlaceholder": "Běžné fráze",
     "description": "Popis",
@@ -512,13 +511,6 @@ export default {
     "enableLevels": "Používat úrovně SERR (A1–C2)",
     "tags": "Štítky oddělené čárkami",
     "tagsPlaceholder": "cestování, frázová slovesa, práce",
-    "wordsInDeck": {
-      "one": "{count} slovo v balíčku",
-      "few": "{count} slova v balíčku",
-      "other": "{count} slov v balíčku"
-    },
-    "editWord": "Upravit slovo",
-    "addWords": "Přidat slova",
     "wordPlaceholder": "Slovo nebo fráze",
     "translationPlaceholder": "Překlad",
     "optionalPlaceholder": "Nepovinné",
@@ -527,30 +519,54 @@ export default {
     "wordTagsPlaceholder": "škola, gramatika, práce",
     "saveWord": "Uložit změny",
     "addWord": "Přidat slovo",
-    "clearForm": "Vyčistit formulář",
     "wordsTable": "Slova",
     "empty": "Přidejte první slovo a začněte balíček skládat.",
-    "part": "Druh",
     "editNamed": "Upravit „{word}“",
     "deleteNamed": "Smazat „{word}“",
-    "preview": "Náhled",
-    "examplesLabel": "Příklady:",
-    "tagsLabel": "Štítky:",
     "errors": {
       "load": "Balíček nešlo načíst k úpravám.",
       "emptyWord": "Nejdřív zadejte slovo.",
       "nameRequired": "Pojmenujte balíček.",
       "save": "Balíček nešlo uložit.",
-      "emptyPicture": "Nejdřív přidejte obrázek."
+      "emptyPicture": "Nejdřív přidejte obrázek.",
+      "emptyTranslation": "Zadejte i překlad.",
+      "sameLanguages": "Pro každou stranu zvolte jiný jazyk.",
+      "nameTaken": "Balíček s tímto názvem už máte."
     },
     "status": {
-      "deleted": "Smazáno: {word}",
-      "updated": "Balíček uložen",
-      "created": "Balíček vytvořen"
+      "deleted": "Smazáno: {word}"
     },
     "side": {
       "language": "Jazyk",
-      "pictureHint": "Každé slovo má na této straně místo textu obrázek."}
+      "pictureHint": "Každé slovo má na této straně místo textu obrázek."
+    },
+    "nameLabel": "Název balíčku",
+    "saved": "Uloženo",
+    "study": "Učit se",
+    "create": "Vytvořit balíček",
+    "creating": "Vytváří se…",
+    "createHint": {
+      "one": "{count} slovo se uloží s balíčkem.",
+      "few": "{count} slova se uloží s balíčkem.",
+      "many": "{count} slova se uloží s balíčkem.",
+      "other": "{count} slov se uloží s balíčkem."
+    },
+    "moreDetails": "Více podrobností",
+    "lessDetails": "Méně podrobností",
+    "enterHint": "Enter přidá slovo a kurzor zůstane tady",
+    "searchPlaceholder": "Hledat slova",
+    "emptyNew": "Přidejte slova teď nebo po vytvoření balíčku.",
+    "noMatches": "Žádné slovo neodpovídá „{query}“.",
+    "showMore": "Zobrazit další ({shown} z {total})",
+    "sides": {
+      "title": "Karty",
+      "front": "Líc",
+      "back": "Rub",
+      "swap": "Prohodit strany",
+      "locked": "Jakmile má balíček slova, strany se už nemění.",
+      "extra": "Další jazyk",
+      "extraHint": "Třetí řádek na rubu karty"
+    }
   },
   "browse": {
     "empty": "Hledání neodpovídá žádný balíček komunity.",
@@ -1658,7 +1674,6 @@ export default {
     "unsaved": "Některá slova ještě nejsou přidaná.",
     "keepEditing": "Pokračovat",
     "discard": "Zahodit je",
-    "editorHint": "Karty přidané zde se hned uloží do balíčku.",
     "errors": {
       "emptyWord": "Nejdřív napište slovo.",
       "emptyTranslation": "Přidejte překlad a stiskněte Enter.",
@@ -1718,5 +1733,7 @@ export default {
       "notImage": "Tento soubor není obrázek. Použijte JPEG, PNG, WebP nebo GIF.",
       "tooLarge": "Obrázek má přes 25 MB. Vyberte menší.",
       "unreadable": "Obrázek se nepodařilo přečíst. Zkuste jiný soubor.",
-      "saveFailed": "Obrázek se nepodařilo uložit. Zkuste to znovu."}}
+      "saveFailed": "Obrázek se nepodařilo uložit. Zkuste to znovu."
+    }
+  }
 };

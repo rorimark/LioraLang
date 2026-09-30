@@ -2,282 +2,59 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import {
-  DEFAULT_SOURCE_LANGUAGE,
-  DEFAULT_TARGET_LANGUAGE,
-  LANGUAGE_OPTIONS,
-} from "@shared/config/languages";
-import {
-  buildDeckDetailsRoute,
-  buildDeckEditRoute,
-  ROUTE_PATHS,
-} from "@shared/config/routes";
+import { LANGUAGE_OPTIONS } from "@shared/config/languages";
+import { buildDeckDetailsRoute, buildDeckEditRoute, ROUTE_PATHS } from "@shared/config/routes";
+import { normalizePictureSide, PICTURE_SIDES } from "@shared/core/usecases/cardContent";
 import { useI18n } from "@shared/lib/i18n";
-import { normalizePictureSide, normalizeWordImage, PICTURE_SIDES } from "@shared/core/usecases/cardContent";
+import {
+  applySavedIds,
+  buildSavePayload,
+  createDefaultDeckForm,
+  createEmptyWordDraft,
+  draftToWord,
+  LEVEL_OPTIONS,
+  matchesWordQuery,
+  PART_OF_SPEECH_OPTIONS,
+  toDeckForm,
+  toEditableWord,
+  toWordDraft,
+  validateDeckForm,
+  validateWordDraft,
+} from "./deckEditorModel";
 
-const LEVEL_OPTIONS = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const PART_OF_SPEECH_OPTIONS = [
-  "noun",
-  "verb",
-  "adjective",
-  "adverb",
-  "pronoun",
-  "preposition",
-  "conjunction",
-  "phrase",
-  "other",
-];
-const WORDS_PAGE_SIZE_OPTIONS = [10, 20, 50];
-const DEFAULT_WORDS_PAGE_SIZE = WORDS_PAGE_SIZE_OPTIONS[0];
-const MAX_TOTAL_TAGS = 10;
-const MAX_WORD_TAGS = 10;
-const LEVEL_OPTIONS_SET = new Set(LEVEL_OPTIONS);
-const PART_OF_SPEECH_OPTIONS_SET = new Set(PART_OF_SPEECH_OPTIONS);
+// A deck being made or changed.
+//
+// A new deck is written once, with "Create deck". From then on every change
+// is saved as it happens: a word the moment it is added, changed or
+// removed, the deck's settings a moment after typing stops. Saves run one
+// at a time, and a change made while one is on its way goes in the next.
 
-const buildDefaultDeckLanguages = (deckDefaults = {}) => {
-  const preferredSource =
-    typeof deckDefaults?.sourceLanguage === "string"
-      ? deckDefaults.sourceLanguage.trim()
-      : "";
-  const preferredTarget =
-    typeof deckDefaults?.targetLanguage === "string"
-      ? deckDefaults.targetLanguage.trim()
-      : "";
-  const sourceLanguage = preferredSource || DEFAULT_SOURCE_LANGUAGE;
-  const fallbackTarget =
-    LANGUAGE_OPTIONS.find((language) => language !== sourceLanguage) ||
-    DEFAULT_TARGET_LANGUAGE;
-  const targetLanguage =
-    preferredTarget &&
-    preferredTarget.toLowerCase() !== sourceLanguage.toLowerCase()
-      ? preferredTarget
-      : fallbackTarget;
+const SETTINGS_SAVE_DELAY_MS = 700;
+const WORDS_PAGE = 60;
 
-  return {
-    sourceLanguage,
-    targetLanguage,
-  };
-};
-
-const buildDefaultDeckTagsInput = (deckDefaults = {}) => {
-  if (!Array.isArray(deckDefaults?.tags)) {
-    return "";
-  }
-
-  const tags = [];
-  const seen = new Set();
-
-  deckDefaults.tags.forEach((item) => {
-    const tag = typeof item === "string" ? item.trim() : "";
-    const key = tag.toLowerCase();
-
-    if (!tag || seen.has(key)) {
-      return;
-    }
-
-    seen.add(key);
-    tags.push(tag);
-  });
-
-  return tags.slice(0, MAX_TOTAL_TAGS).join(", ");
-};
-
-const createDefaultDeckForm = (deckDefaults = {}) => {
-  const defaultLanguages = buildDefaultDeckLanguages(deckDefaults);
-
-  return {
-    name: "",
-    description: "",
-    sourceLanguage: defaultLanguages.sourceLanguage,
-    targetLanguage: defaultLanguages.targetLanguage,
-    tertiaryLanguage: "",
-    // Which side holds pictures instead of a language: "", "source", "target".
-    pictureSide: "",
-    usesWordLevels: true,
-    tagsInput: buildDefaultDeckTagsInput(deckDefaults),
-  };
-};
-
-const createDefaultWordDraft = (deckDefaults = {}) => {
-  const preferredLevel =
-    typeof deckDefaults?.level === "string" ? deckDefaults.level.trim() : "";
-  const preferredPart =
-    typeof deckDefaults?.partOfSpeech === "string"
-      ? deckDefaults.partOfSpeech.trim()
-      : "";
-
-  return {
-    source: "",
-    target: "",
-    tertiary: "",
-    // An unknown word stays unknown: no level or part of speech is assumed.
-    level: LEVEL_OPTIONS_SET.has(preferredLevel) ? preferredLevel : "",
-    part_of_speech: PART_OF_SPEECH_OPTIONS_SET.has(preferredPart)
-      ? preferredPart
-      : "",
-    examplesInput: "",
-    tagsInput: "",
-    image: null,
-  };
-};
-
-const resolveExamples = (word) => {
-  const dedupedExamples = [];
-  const seen = new Set();
-  const pushExample = (value) => {
-    if (typeof value !== "string") {
-      return;
-    }
-
-    const example = value.trim();
-
-    if (!example || seen.has(example)) {
-      return;
-    }
-
-    seen.add(example);
-    dedupedExamples.push(example);
-  };
-
-  if (Array.isArray(word?.examples)) {
-    word.examples.forEach(pushExample);
-  }
-
-  pushExample(word?.example);
-
-  return dedupedExamples;
-};
-
-const toEditableWord = (word, fallbackIndex) => {
-  const examples = resolveExamples(word);
-
-  return {
-    id: word?.id ?? `tmp-${fallbackIndex}`,
-    externalId: word?.externalId ?? "",
-    source: word?.source ?? "",
-    target: word?.target ?? "",
-    tertiary: word?.tertiary ?? "",
-    level: word?.level || "",
-    part_of_speech: word?.part_of_speech || "",
-    tags: Array.isArray(word?.tags) ? parseTagsJson(word.tags) : [],
-    examples,
-    example: examples[0] || "",
-    tagsInput: Array.isArray(word?.tags) ? parseTagsJson(word.tags).join(", ") : "",
-    image: normalizeWordImage(word?.image),
-  };
-};
-
-const toWordDraft = (word) => {
-  const examples = resolveExamples(word);
-
-  return {
-  source: word?.source ?? "",
-  target: word?.target ?? "",
-  tertiary: word?.tertiary ?? "",
-  level: word?.level || "",
-  part_of_speech: word?.part_of_speech || "",
-  examplesInput: examples.join("\n"),
-  tagsInput:
-    Array.isArray(word?.tags) && word.tags.length > 0
-      ? parseTagsJson(word.tags).join(", ")
-      : "",
-  image: normalizeWordImage(word?.image),
-  };
-};
+const SAVE_STATE = Object.freeze({
+  idle: "idle",
+  pending: "pending",
+  saving: "saving",
+  saved: "saved",
+  error: "error",
+});
 
 const parseNumericId = (value) => {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
 };
 
-const parseTagsJson = (value) => {
-  const rawTags = (() => {
-    if (Array.isArray(value)) {
-      return value;
-    }
+// Storage says "already exists" in English; the editor says it in the
+// person's language.
+const toSaveErrorKey = (error) => {
+  const message = String(error?.message || "").toLowerCase();
 
-    if (typeof value !== "string" || !value.trim()) {
-      return [];
-    }
-
-    try {
-      const parsed = JSON.parse(value);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  })();
-
-  const seen = new Set();
-  const uniqueTags = [];
-
-  rawTags.forEach((item) => {
-    if (typeof item !== "string") {
-      return;
-    }
-
-    const tag = item.trim();
-    const normalizedTag = tag.toLowerCase();
-
-    if (!tag || seen.has(normalizedTag)) {
-      return;
-    }
-
-    seen.add(normalizedTag);
-    uniqueTags.push(tag);
-  });
-
-  return uniqueTags;
-};
-
-const parseTagsInput = (value) => {
-  if (typeof value !== "string" || !value.trim()) {
-    return [];
+  if (message.includes("already exists")) {
+    return "editor.errors.nameTaken";
   }
 
-  const seen = new Set();
-  const uniqueTags = [];
-
-  value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .forEach((tag) => {
-      const normalizedTag = tag.toLowerCase();
-
-      if (seen.has(normalizedTag)) {
-        return;
-      }
-
-      seen.add(normalizedTag);
-      uniqueTags.push(tag);
-    });
-
-  return uniqueTags;
-};
-
-const parseExamplesInput = (value) => {
-  if (typeof value !== "string" || !value.trim()) {
-    return [];
-  }
-
-  const seen = new Set();
-  const uniqueExamples = [];
-
-  value
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .forEach((example) => {
-      if (seen.has(example)) {
-        return;
-      }
-
-      seen.add(example);
-      uniqueExamples.push(example);
-    });
-
-  return uniqueExamples;
+  return error?.i18nKey || "editor.errors.save";
 };
 
 export const useDeckEditorPanel = () => {
@@ -285,66 +62,50 @@ export const useDeckEditorPanel = () => {
   const deckRepository = usePlatformService("deckRepository");
   const { deckId } = useParams();
   const { appPreferences } = useAppPreferences();
+  const { t } = useI18n();
   const numericDeckId = parseNumericId(deckId);
   const isEditMode = Boolean(numericDeckId);
-  const defaultDeckForm = useMemo(
-    () => createDefaultDeckForm(appPreferences.deckDefaults),
-    [appPreferences.deckDefaults],
-  );
-  const defaultWordDraft = useMemo(
-    () => createDefaultWordDraft(appPreferences.deckDefaults),
-    [appPreferences.deckDefaults],
-  );
-  const nextTempIdRef = useRef(1);
+  const deckDefaults = appPreferences.deckDefaults;
+  const emptyDraft = useMemo(() => createEmptyWordDraft(deckDefaults), [deckDefaults]);
+
   const [isLoading, setIsLoading] = useState(isEditMode);
-  const [isSaving, setIsSaving] = useState(false);
-  // A message key, said in the current language when it is read.
   const [loadError, setLoadError] = useState("");
-  const { t, errorText } = useI18n();
-  const [statusMessage, setStatusMessage] = useState("");
-  const [statusVariant, setStatusVariant] = useState("info");
-  const [deckForm, setDeckForm] = useState(() => defaultDeckForm);
+  const [deckForm, setDeckForm] = useState(() => createDefaultDeckForm(deckDefaults));
   const [words, setWords] = useState([]);
-  const [wordsPage, setWordsPage] = useState(1);
-  const [wordsPageSize, setWordsPageSize] = useState(DEFAULT_WORDS_PAGE_SIZE);
-  const [wordDraft, setWordDraft] = useState(() => defaultWordDraft);
+  const [addDraft, setAddDraft] = useState(emptyDraft);
+  const [addError, setAddError] = useState("");
   const [editingWordId, setEditingWordId] = useState(null);
-  const [previewWordId, setPreviewWordId] = useState(null);
+  const [editDraft, setEditDraft] = useState(emptyDraft);
+  const [editError, setEditError] = useState("");
+  const [lastDeleted, setLastDeleted] = useState(null);
+  const [wordsQuery, setWordsQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(WORDS_PAGE);
+  const [saveState, setSaveState] = useState(SAVE_STATE.idle);
+  const [saveErrorKey, setSaveErrorKey] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+  const [createErrorKey, setCreateErrorKey] = useState("");
+  const [isPasteOpen, setIsPasteOpen] = useState(false);
 
-  const reportStatus = useCallback((text, variant = "info") => {
-    setStatusMessage(text);
-    setStatusVariant(variant);
-  }, []);
+  const formRef = useRef(deckForm);
+  const wordsRef = useRef(words);
+  const saveTimerRef = useRef(null);
+  const saveInFlightRef = useRef(null);
+  const saveAgainRef = useRef(false);
 
-  const resetWordDraft = useCallback(() => {
-    setWordDraft(defaultWordDraft);
-    setEditingWordId(null);
-  }, [defaultWordDraft]);
+  useEffect(() => {
+    formRef.current = deckForm;
+  }, [deckForm]);
 
-  const applyLoadedDeck = useCallback((deck, loadedWords) => {
-    const deckTags = parseTagsJson(deck?.tagsJson);
+  useEffect(() => {
+    wordsRef.current = words;
+  }, [words]);
 
-    setDeckForm({
-      name: deck?.name || "",
-      description: deck?.description || "",
-      sourceLanguage: deck?.sourceLanguage || DEFAULT_SOURCE_LANGUAGE,
-      targetLanguage: deck?.targetLanguage || DEFAULT_TARGET_LANGUAGE,
-      tertiaryLanguage: deck?.tertiaryLanguage || "",
-      pictureSide: normalizePictureSide(deck?.pictureSide),
-      usesWordLevels: deck?.usesWordLevels !== false,
-      tagsInput: deckTags.join(", "),
-    });
+  const pictureSide = normalizePictureSide(deckForm.pictureSide);
+  const hasTertiary = Boolean(deckForm.tertiaryLanguage.trim());
 
-    const editableWords = Array.isArray(loadedWords)
-      ? loadedWords.map((word, index) => toEditableWord(word, index + 1))
-      : [];
+  // ——— Loading ———
 
-    setWords(editableWords);
-    setPreviewWordId(editableWords[0]?.id ?? null);
-    resetWordDraft();
-  }, [resetWordDraft]);
-
-  const loadDeckForEdit = useCallback(async () => {
+  const loadDeck = useCallback(async () => {
     if (!numericDeckId) {
       return;
     }
@@ -363,473 +124,439 @@ export const useDeckEditorPanel = () => {
         return;
       }
 
-      applyLoadedDeck(deck, loadedWords);
+      const form = toDeckForm(deck);
+      const editable = (Array.isArray(loadedWords) ? loadedWords : []).map(toEditableWord);
+      formRef.current = form;
+      wordsRef.current = editable;
+      setDeckForm(form);
+      setWords(editable);
+      setSaveState(SAVE_STATE.idle);
     } catch (error) {
       console.warn(error);
       setLoadError("editor.errors.load");
     } finally {
       setIsLoading(false);
     }
-  }, [applyLoadedDeck, deckRepository, numericDeckId]);
-
-  useEffect(() => {
-    if (!isEditMode) {
-      return;
-    }
-
-    loadDeckForEdit();
-  }, [isEditMode, loadDeckForEdit]);
+  }, [deckRepository, numericDeckId]);
 
   useEffect(() => {
     if (isEditMode) {
-      return;
+      void loadDeck();
+    } else {
+      setIsLoading(false);
     }
+  }, [isEditMode, loadDeck]);
 
-    setIsLoading(false);
-    setDeckForm((currentState) => {
-      const isPristine =
-        words.length === 0 &&
-        !currentState.name.trim() &&
-        !currentState.description.trim() &&
-        !currentState.tertiaryLanguage.trim() &&
-        currentState.usesWordLevels === defaultDeckForm.usesWordLevels &&
-        !currentState.tagsInput.trim();
+  // ——— Saving (edit mode) ———
 
-      return isPristine ? defaultDeckForm : currentState;
-    });
-    setWordDraft((currentState) => {
-      const isPristine =
-        editingWordId === null &&
-        !currentState.source.trim() &&
-        !currentState.target.trim() &&
-        !currentState.tertiary.trim() &&
-        !currentState.examplesInput.trim() &&
-        !currentState.tagsInput.trim() &&
-        !currentState.image;
-
-      return isPristine ? defaultWordDraft : currentState;
-    });
-  }, [
-    defaultDeckForm,
-    defaultWordDraft,
-    editingWordId,
-    isEditMode,
-    words.length,
-  ]);
-
-  // A side is a language or pictures; at most one side is pictures.
-  const handleSideTypeChange = useCallback((side, isPicture) => {
-    setDeckForm((currentState) => ({
-      ...currentState,
-      pictureSide: isPicture ? side : currentState.pictureSide === side ? "" : currentState.pictureSide,
-    }));
-  }, []);
-
-  const handleDeckFormChange = useCallback((event) => {
-    const { name, value, type, checked } = event.target;
-    setDeckForm((currentState) => ({
-      ...currentState,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }, []);
-
-  const handleWordDraftChange = useCallback((event) => {
-    const { name, value } = event.target;
-    setWordDraft((currentState) => ({
-      ...currentState,
-      [name]: value,
-    }));
-  }, []);
-
-  const handleWordDraftImageChange = useCallback((image) => {
-    setWordDraft((currentState) => ({
-      ...currentState,
-      image,
-    }));
-  }, []);
-
-  const handleUpsertWordDraft = useCallback(() => {
-    const cleanedSource = wordDraft.source.trim();
-    const draftImage = normalizeWordImage(wordDraft.image);
-    const pictureSide = normalizePictureSide(deckForm.pictureSide);
-
-    // The picture side needs its picture; a language side needs its word.
-    if (pictureSide && !draftImage) {
-      reportStatus(t("editor.errors.emptyPicture"), "error");
-      return;
-    }
-
-    if (pictureSide !== PICTURE_SIDES.source && !cleanedSource) {
-      reportStatus(t("editor.errors.emptyWord"), "error");
-      return;
-    }
-
-    const normalizedExamples = parseExamplesInput(wordDraft.examplesInput);
-    const normalizedTags = parseTagsInput(wordDraft.tagsInput).slice(0, MAX_WORD_TAGS);
-    const nextWord = {
-      id: editingWordId ?? `tmp-${nextTempIdRef.current++}`,
-      source: cleanedSource,
-      target: wordDraft.target.trim(),
-      tertiary: wordDraft.tertiary.trim(),
-      level: deckForm.usesWordLevels ? wordDraft.level || null : null,
-      part_of_speech: wordDraft.part_of_speech || "",
-      example: normalizedExamples[0] || "",
-      examples: normalizedExamples,
-      tags: normalizedTags,
-      tagsInput: normalizedTags.join(", "),
-      image: pictureSide ? draftImage : null,
-    };
-
-    setWords((currentState) => {
-      if (editingWordId === null) {
-        return [...currentState, nextWord];
-      }
-
-      return currentState.map((word) => {
-        if (String(word.id) !== String(editingWordId)) {
-          return word;
-        }
-
-        return {
-          ...word,
-          ...nextWord,
-        };
-      });
-    });
-
-    setPreviewWordId(nextWord.id);
-    setStatusMessage("");
-    resetWordDraft();
-  }, [
-    deckForm.pictureSide,
-    deckForm.usesWordLevels,
-    editingWordId,
-    reportStatus,
-    resetWordDraft,
-    t,
-    wordDraft,
-  ]);
-
-  // Words added through the add dialog are already stored; the editor takes
-  // them into its list so a later "Save deck" keeps them.
-  const handleQuickAddWords = useCallback(({ added = [], removedIds = [] } = {}) => {
-    const removed = new Set(removedIds.map((id) => String(id)));
-
-    setWords((currentState) => {
-      const kept = removed.size
-        ? currentState.filter((word) => !removed.has(String(word.id)))
-        : currentState;
-      const known = new Set(kept.map((word) => String(word.id)));
-      const appended = added
-        .filter((word) => !known.has(String(word.id)))
-        .map((word, index) => toEditableWord(word, kept.length + index + 1));
-
-      return appended.length || kept.length !== currentState.length
-        ? [...kept, ...appended]
-        : currentState;
-    });
-  }, []);
-
-  const handleEditWord = useCallback(
-    (wordId) => {
-      const editableWord = words.find((word) => String(word.id) === String(wordId));
-
-      if (!editableWord) {
-        return;
-      }
-
-      setWordDraft(toWordDraft(editableWord));
-      setEditingWordId(editableWord.id);
-      setPreviewWordId(editableWord.id);
-      setStatusMessage("");
-    },
-    [words],
-  );
-
-  const handleDeleteWord = useCallback(
-    (wordId) => {
-      const normalizedWordId = String(wordId);
-      const removedWord = words.find(
-        (word) => String(word.id) === normalizedWordId,
-      );
-
-      setWords((currentState) =>
-        currentState.filter((word) => {
-          return String(word.id) !== normalizedWordId;
-        }),
-      );
-
-      if (String(editingWordId) === normalizedWordId) {
-        resetWordDraft();
-      }
-
-      if (String(previewWordId) === normalizedWordId) {
-        setPreviewWordId(null);
-      }
-
-      if (removedWord) {
-        const removedWordLabel = removedWord.source?.trim() || "—";
-        reportStatus(t("editor.status.deleted", { word: removedWordLabel }), "danger");
-      }
-    },
-    [editingWordId, previewWordId, reportStatus, resetWordDraft, t, words],
-  );
-
-  const wordsTotalPages = useMemo(() => {
-    return Math.max(1, Math.ceil(words.length / wordsPageSize));
-  }, [words.length, wordsPageSize]);
-
-  useEffect(() => {
-    setWordsPage((currentPage) => {
-      if (currentPage > wordsTotalPages) {
-        return wordsTotalPages;
-      }
-
-      if (currentPage < 1) {
-        return 1;
-      }
-
-      return currentPage;
-    });
-  }, [wordsTotalPages]);
-
-  const handleWordsPageChange = useCallback((nextPage) => {
-    setWordsPage((currentPage) => {
-      const parsedPage = Number(nextPage);
-
-      if (!Number.isInteger(parsedPage)) {
-        return currentPage;
-      }
-
-      if (parsedPage < 1) {
-        return 1;
-      }
-
-      if (parsedPage > wordsTotalPages) {
-        return wordsTotalPages;
-      }
-
-      return parsedPage;
-    });
-  }, [wordsTotalPages]);
-
-  const handleWordsPageSizeChange = useCallback((nextPageSize) => {
-    const parsedPageSize = Number(nextPageSize);
-
-    if (!WORDS_PAGE_SIZE_OPTIONS.includes(parsedPageSize)) {
-      return;
-    }
-
-    setWordsPageSize(parsedPageSize);
-    setWordsPage(1);
-  }, []);
-
-  const paginatedWords = useMemo(() => {
-    const rangeStart = (wordsPage - 1) * wordsPageSize;
-    const rangeEnd = rangeStart + wordsPageSize;
-
-    return words.slice(rangeStart, rangeEnd);
-  }, [words, wordsPage, wordsPageSize]);
-
-  const wordsRangeStart = useMemo(() => {
-    if (words.length === 0) {
-      return 0;
-    }
-
-    return (wordsPage - 1) * wordsPageSize + 1;
-  }, [words.length, wordsPage, wordsPageSize]);
-
-  const wordsRangeEnd = useMemo(() => {
-    if (words.length === 0) {
-      return 0;
-    }
-
-    return Math.min(words.length, wordsRangeStart + paginatedWords.length - 1);
-  }, [words.length, wordsRangeStart, paginatedWords.length]);
-
-  const clearStatus = useCallback(() => {
-    setStatusMessage("");
-  }, []);
-
-  const goToDecks = useCallback(() => {
-    navigate(ROUTE_PATHS.decks);
-  }, [navigate]);
-
-  const goToDeckDetails = useCallback(() => {
+  const runSave = useCallback(async () => {
     if (!numericDeckId) {
       return;
     }
 
-    navigate(buildDeckDetailsRoute(numericDeckId));
-  }, [navigate, numericDeckId]);
-
-  const handleSaveDeck = useCallback(async () => {
-    const deckName = deckForm.name.trim();
-    const pictureSide = normalizePictureSide(deckForm.pictureSide);
-    // A picture side has no language.
-    const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : deckForm.sourceLanguage.trim();
-    const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : deckForm.targetLanguage.trim();
-
-    if (!deckName) {
-      reportStatus(t("editor.errors.nameRequired"), "error");
+    if (saveInFlightRef.current) {
+      saveAgainRef.current = true;
       return;
     }
 
-    if (
-      (pictureSide !== PICTURE_SIDES.source && !sourceLanguage) ||
-      (pictureSide !== PICTURE_SIDES.target && !targetLanguage)
-    ) {
-      reportStatus(t("import.errors.languagesRequired"), "error");
+    const form = formRef.current;
+    const formErrorKey = validateDeckForm(form);
+
+    if (formErrorKey) {
+      setSaveState(SAVE_STATE.error);
+      setSaveErrorKey(formErrorKey);
       return;
     }
 
-    setIsSaving(true);
-    setStatusMessage("");
+    setSaveState(SAVE_STATE.saving);
+    const payload = buildSavePayload({ deckId: numericDeckId, form, words: wordsRef.current });
 
-    try {
-      const tertiaryLanguage = deckForm.tertiaryLanguage.trim();
-      const hasTertiaryLanguage = Boolean(tertiaryLanguage);
-      const deckLanguagesCount = new Set(
-        [sourceLanguage, targetLanguage, tertiaryLanguage].filter(Boolean),
-      ).size;
-      const customTagsLimit = Math.max(0, MAX_TOTAL_TAGS - deckLanguagesCount);
-      const savePayload = {
-        name: deckName,
-        description: deckForm.description.trim(),
-        sourceLanguage,
-        targetLanguage,
-        tertiaryLanguage,
-        pictureSide,
-        tags: parseTagsInput(deckForm.tagsInput).slice(0, customTagsLimit),
-        usesWordLevels: deckForm.usesWordLevels,
-        words: words.map((word, index) => ({
-          id: parseNumericId(word.id),
-          externalId: word.externalId || `manual-${index + 1}`,
-          source: word.source,
-          target: word.target,
-          tertiary: hasTertiaryLanguage ? word.tertiary : "",
-          level: deckForm.usesWordLevels ? word.level || null : null,
-          part_of_speech: word.part_of_speech,
-          tags: Array.isArray(word.tags) ? word.tags : [],
-          example: word.example,
-          examples: Array.isArray(word.examples)
-            ? word.examples
-            : word.example
-              ? [word.example]
-              : [],
-          image: pictureSide ? normalizeWordImage(word.image) : null,
-        })),
-      };
+    saveInFlightRef.current = deckRepository
+      .saveDeck(payload)
+      .then((result) => {
+        const savedWords = Array.isArray(result?.words) ? result.words : [];
+        setWords((current) => applySavedIds(current, savedWords));
+        setSaveErrorKey("");
+        setSaveState(saveAgainRef.current ? SAVE_STATE.pending : SAVE_STATE.saved);
+      })
+      .catch((error) => {
+        console.warn(error);
+        setSaveErrorKey(toSaveErrorKey(error));
+        setSaveState(SAVE_STATE.error);
+      })
+      .finally(() => {
+        saveInFlightRef.current = null;
 
-      if (numericDeckId) {
-        savePayload.deckId = numericDeckId;
+        if (saveAgainRef.current) {
+          saveAgainRef.current = false;
+          void runSave();
+        }
+      });
+
+    await saveInFlightRef.current;
+  }, [deckRepository, numericDeckId]);
+
+  const scheduleSave = useCallback(
+    (delayMs = 0) => {
+      if (!numericDeckId) {
+        return;
       }
 
-      const saveResult = await deckRepository.saveDeck(savePayload);
-      const savedDeck = saveResult?.deck || null;
-      const savedWords = Array.isArray(saveResult?.words) ? saveResult.words : [];
+      window.clearTimeout(saveTimerRef.current);
+      setSaveState(SAVE_STATE.pending);
+      saveTimerRef.current = window.setTimeout(() => {
+        saveTimerRef.current = null;
+        void runSave();
+      }, delayMs);
+    },
+    [numericDeckId, runSave],
+  );
 
-      if (!savedDeck) {
+  // Whatever is still waiting is written before the editor goes away.
+  const flushSave = useCallback(async () => {
+    if (saveTimerRef.current) {
+      window.clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = null;
+      await runSave();
+    }
+
+    if (saveInFlightRef.current) {
+      await saveInFlightRef.current;
+    }
+  }, [runSave]);
+
+  useEffect(
+    () => () => {
+      if (saveTimerRef.current) {
+        window.clearTimeout(saveTimerRef.current);
+        void runSave();
+      }
+    },
+    [runSave],
+  );
+
+  // ——— Deck settings ———
+
+  const updateForm = useCallback(
+    (patch) => {
+      setDeckForm((current) => {
+        const next = { ...current, ...patch };
+        formRef.current = next;
+        return next;
+      });
+      scheduleSave(SETTINGS_SAVE_DELAY_MS);
+    },
+    [scheduleSave],
+  );
+
+  const handleDeckFormChange = useCallback(
+    (event) => {
+      const { name, value, type, checked } = event.target;
+      updateForm({ [name]: type === "checkbox" ? checked : value });
+    },
+    [updateForm],
+  );
+
+  // A side is a language or pictures, and at most one side is pictures.
+  // Once words exist the sides are what those words were written for.
+  const canChangeSides = words.length === 0;
+
+  const handleSideTypeChange = useCallback(
+    (side, isPicture) => {
+      if (!canChangeSides) {
+        return;
+      }
+
+      const current = formRef.current.pictureSide;
+      updateForm({ pictureSide: isPicture ? side : current === side ? "" : current });
+    },
+    [canChangeSides, updateForm],
+  );
+
+  const swapSides = useCallback(() => {
+    if (!canChangeSides) {
+      return;
+    }
+
+    const form = formRef.current;
+    const swappedSide =
+      form.pictureSide === PICTURE_SIDES.source
+        ? PICTURE_SIDES.target
+        : form.pictureSide === PICTURE_SIDES.target
+          ? PICTURE_SIDES.source
+          : "";
+    updateForm({
+      sourceLanguage: form.targetLanguage,
+      targetLanguage: form.sourceLanguage,
+      pictureSide: swappedSide,
+    });
+  }, [canChangeSides, updateForm]);
+
+  // ——— Words ———
+
+  const commitWords = useCallback(
+    (nextWords) => {
+      wordsRef.current = nextWords;
+      setWords(nextWords);
+      scheduleSave(0);
+    },
+    [scheduleSave],
+  );
+
+  const wordOptions = useMemo(
+    () => ({ pictureSide, usesWordLevels: deckForm.usesWordLevels, hasTertiary }),
+    [deckForm.usesWordLevels, hasTertiary, pictureSide],
+  );
+
+  const handleAddDraftChange = useCallback((event) => {
+    const { name, value } = event.target;
+    setAddDraft((current) => ({ ...current, [name]: value }));
+    setAddError("");
+  }, []);
+
+  const handleAddDraftImageChange = useCallback((image) => {
+    setAddDraft((current) => ({ ...current, image }));
+    setAddError("");
+  }, []);
+
+  // Adds the typed word at the top of the list and keeps the tags, level
+  // and part of speech for the next one: words come in runs.
+  const submitAddDraft = useCallback(() => {
+    const errorKey = validateWordDraft(addDraft, pictureSide);
+
+    if (errorKey) {
+      setAddError(errorKey);
+      return false;
+    }
+
+    const word = draftToWord(addDraft, wordOptions);
+    commitWords([word, ...wordsRef.current]);
+    setAddDraft((current) => ({
+      ...emptyDraft,
+      level: current.level,
+      part_of_speech: current.part_of_speech,
+      tagsInput: current.tagsInput,
+    }));
+    setAddError("");
+    setLastDeleted(null);
+    return true;
+  }, [addDraft, commitWords, emptyDraft, pictureSide, wordOptions]);
+
+  const startEditWord = useCallback((word) => {
+    setEditingWordId(word.externalId);
+    setEditDraft(toWordDraft(word));
+    setEditError("");
+  }, []);
+
+  const cancelEdit = useCallback(() => {
+    setEditingWordId(null);
+    setEditError("");
+  }, []);
+
+  const handleEditDraftChange = useCallback((event) => {
+    const { name, value } = event.target;
+    setEditDraft((current) => ({ ...current, [name]: value }));
+    setEditError("");
+  }, []);
+
+  const handleEditDraftImageChange = useCallback((image) => {
+    setEditDraft((current) => ({ ...current, image }));
+    setEditError("");
+  }, []);
+
+  const submitEditDraft = useCallback(() => {
+    const errorKey = validateWordDraft(editDraft, pictureSide);
+
+    if (errorKey) {
+      setEditError(errorKey);
+      return false;
+    }
+
+    commitWords(
+      wordsRef.current.map((word) =>
+        word.externalId === editingWordId ? draftToWord(editDraft, { ...wordOptions, base: word }) : word,
+      ),
+    );
+    setEditingWordId(null);
+    return true;
+  }, [commitWords, editDraft, editingWordId, pictureSide, wordOptions]);
+
+  // A removed word can be brought back until the next change. It comes back
+  // as the same word, though its study history does not.
+  const deleteWord = useCallback(
+    (word) => {
+      const index = wordsRef.current.findIndex((item) => item.externalId === word.externalId);
+
+      if (index < 0) {
+        return;
+      }
+
+      commitWords(wordsRef.current.filter((item) => item.externalId !== word.externalId));
+      setLastDeleted({ word: { ...word, id: null }, index });
+
+      if (editingWordId === word.externalId) {
+        setEditingWordId(null);
+      }
+    },
+    [commitWords, editingWordId],
+  );
+
+  const undoDelete = useCallback(() => {
+    if (!lastDeleted) {
+      return;
+    }
+
+    const next = [...wordsRef.current];
+    next.splice(Math.min(lastDeleted.index, next.length), 0, lastDeleted.word);
+    commitWords(next);
+    setLastDeleted(null);
+  }, [commitWords, lastDeleted]);
+
+  const filteredWords = useMemo(
+    () => words.filter((word) => matchesWordQuery(word, wordsQuery)),
+    [words, wordsQuery],
+  );
+  const visibleWords = useMemo(() => filteredWords.slice(0, visibleCount), [filteredWords, visibleCount]);
+
+  const handleWordsQueryChange = useCallback((event) => {
+    setWordsQuery(event.target.value);
+    setVisibleCount(WORDS_PAGE);
+  }, []);
+
+  const showMoreWords = useCallback(() => setVisibleCount((count) => count + WORDS_PAGE), []);
+
+  // ——— Creating ———
+
+  const createDeck = useCallback(async () => {
+    const form = formRef.current;
+    const formErrorKey = validateDeckForm(form);
+
+    if (formErrorKey) {
+      setCreateErrorKey(formErrorKey);
+      return;
+    }
+
+    setIsCreating(true);
+    setCreateErrorKey("");
+
+    try {
+      const result = await deckRepository.saveDeck(buildSavePayload({ form, words: wordsRef.current }));
+
+      if (!result?.deck?.id) {
         throw new Error("save result is invalid");
       }
 
-      applyLoadedDeck(savedDeck, savedWords);
-      reportStatus(
-        numericDeckId ? t("editor.status.updated") : t("editor.status.created"),
-        "info",
-      );
-
-      if (!numericDeckId) {
-        navigate(buildDeckEditRoute(savedDeck.id), { replace: true });
-      }
-    } catch (saveError) {
-      reportStatus(errorText(saveError, "editor.errors.save"), "error");
+      navigate(buildDeckEditRoute(result.deck.id), { replace: true });
+    } catch (error) {
+      console.warn(error);
+      setCreateErrorKey(toSaveErrorKey(error));
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
-  }, [
-    applyLoadedDeck,
-    deckForm.name,
-    deckForm.description,
-    deckForm.pictureSide,
-    deckForm.sourceLanguage,
-    deckForm.targetLanguage,
-    deckForm.tertiaryLanguage,
-    deckForm.usesWordLevels,
-    deckForm.tagsInput,
-    deckRepository,
-    errorText,
-    navigate,
-    numericDeckId,
-    reportStatus,
-    t,
-    words,
-  ]);
+  }, [deckRepository, navigate]);
 
-  const previewWord = useMemo(
-    () => words.find((word) => String(word.id) === String(previewWordId)) || null,
-    [previewWordId, words],
-  );
+  // ——— A pasted list ———
+  // The list dialog writes to storage itself, so everything waiting here is
+  // written first and the words are read back when it closes.
 
-  const languageLabels = useMemo(() => {
-    const sourceLanguage = deckForm.sourceLanguage.trim() || "Source";
-    const targetLanguage = deckForm.targetLanguage.trim() || "Target";
-    const tertiaryLanguage = deckForm.tertiaryLanguage.trim();
+  const openPaste = useCallback(async () => {
+    await flushSave();
+    setIsPasteOpen(true);
+  }, [flushSave]);
 
-    return {
-      sourceLanguage,
-      targetLanguage,
-      tertiaryLanguage,
-      hasTertiaryLanguage: Boolean(tertiaryLanguage),
-      pictureSide: normalizePictureSide(deckForm.pictureSide),
-    };
-  }, [
-    deckForm.pictureSide,
-    deckForm.sourceLanguage,
-    deckForm.targetLanguage,
-    deckForm.tertiaryLanguage,
-  ]);
+  const closePaste = useCallback(async () => {
+    setIsPasteOpen(false);
+
+    if (numericDeckId) {
+      const loadedWords = await deckRepository.getDeckWords(numericDeckId);
+      const editable = (Array.isArray(loadedWords) ? loadedWords : []).map(toEditableWord);
+      wordsRef.current = editable;
+      setWords(editable);
+    }
+  }, [deckRepository, numericDeckId]);
+
+  // ——— Leaving ———
+
+  const goToDecks = useCallback(async () => {
+    await flushSave();
+    navigate(ROUTE_PATHS.decks);
+  }, [flushSave, navigate]);
+
+  const goToDeckDetails = useCallback(async () => {
+    await flushSave();
+
+    if (numericDeckId) {
+      navigate(buildDeckDetailsRoute(numericDeckId));
+    }
+  }, [flushSave, navigate, numericDeckId]);
+
+  const goToLearn = useCallback(async () => {
+    await flushSave();
+    navigate(ROUTE_PATHS.learn, { state: { importedDeckId: String(numericDeckId) } });
+  }, [flushSave, navigate, numericDeckId]);
+
+  const retrySave = useCallback(() => scheduleSave(0), [scheduleSave]);
 
   return {
     isEditMode,
     isLoading,
-    isSaving,
     loadError: loadError ? t(loadError) : "",
-    statusMessage,
-    statusVariant,
+    reloadDeck: loadDeck,
+    deckId: numericDeckId,
+
     deckForm,
-    words,
-    paginatedWords,
-    wordDraft,
-    editingWordId,
-    previewWord,
-    wordsPage,
-    wordsPageSize,
-    wordsPageSizeOptions: WORDS_PAGE_SIZE_OPTIONS,
-    wordsTotalPages,
-    wordsRangeStart,
-    wordsRangeEnd,
-    languageLabels,
-    usesWordLevels: deckForm.usesWordLevels,
+    pictureSide,
+    hasTertiary,
+    canChangeSides,
+    languageOptions: LANGUAGE_OPTIONS,
     levelOptions: LEVEL_OPTIONS,
     partOfSpeechOptions: PART_OF_SPEECH_OPTIONS,
-    languageOptions: LANGUAGE_OPTIONS,
     handleDeckFormChange,
     handleSideTypeChange,
-    handleWordDraftChange,
-    handleUpsertWordDraft,
-    handleWordDraftImageChange,
-    handleEditWord,
-    handleDeleteWord,
-    handleQuickAddWords,
-    deckId: numericDeckId,
-    handleWordsPageChange,
-    handleWordsPageSizeChange,
-    handleSaveDeck,
-    resetWordDraft,
-    clearStatus,
+    swapSides,
+
+    words,
+    totalWords: words.length,
+    filteredCount: filteredWords.length,
+    visibleWords,
+    hasMoreWords: filteredWords.length > visibleWords.length,
+    showMoreWords,
+    wordsQuery,
+    handleWordsQueryChange,
+
+    addDraft,
+    addError: addError ? t(addError) : "",
+    handleAddDraftChange,
+    handleAddDraftImageChange,
+    submitAddDraft,
+
+    editingWordId,
+    editDraft,
+    editError: editError ? t(editError) : "",
+    startEditWord,
+    cancelEdit,
+    handleEditDraftChange,
+    handleEditDraftImageChange,
+    submitEditDraft,
+
+    deleteWord,
+    lastDeleted,
+    undoDelete,
+
+    saveState,
+    saveError: saveErrorKey ? t(saveErrorKey) : "",
+    retrySave,
+
+    createDeck,
+    isCreating,
+    createError: createErrorKey ? t(createErrorKey) : "",
+
+    isPasteOpen,
+    openPaste,
+    closePaste,
+
     goToDecks,
     goToDeckDetails,
-    reloadDeck: loadDeckForEdit,
+    goToLearn,
   };
 };

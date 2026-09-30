@@ -503,7 +503,6 @@ export default {
     "loading": "Caricamento dell'editor…",
     "openDetails": "Apri il mazzo",
     "saving": "Salvataggio…",
-    "saveDeck": "Salva mazzo",
     "settings": "Impostazioni del mazzo",
     "namePlaceholder": "Frasi di tutti i giorni",
     "description": "Descrizione",
@@ -512,13 +511,6 @@ export default {
     "enableLevels": "Usa i livelli QCER (A1–C2)",
     "tags": "Tag, separati da virgole",
     "tagsPlaceholder": "viaggi, phrasal verb, lavoro",
-    "wordsInDeck": {
-      "one": "{count} parola nel mazzo",
-      "other": "{count} parole nel mazzo",
-      "many": "{count} parole nel mazzo"
-    },
-    "editWord": "Modifica parola",
-    "addWords": "Aggiungi parole",
     "wordPlaceholder": "Parola o espressione",
     "translationPlaceholder": "Traduzione",
     "optionalPlaceholder": "Facoltativo",
@@ -527,30 +519,53 @@ export default {
     "wordTagsPlaceholder": "scuola, grammatica, lavoro",
     "saveWord": "Salva modifiche",
     "addWord": "Aggiungi parola",
-    "clearForm": "Svuota modulo",
     "wordsTable": "Parole",
     "empty": "Aggiungi la prima parola per iniziare a costruire il mazzo.",
-    "part": "Categoria",
     "editNamed": "Modifica «{word}»",
     "deleteNamed": "Elimina «{word}»",
-    "preview": "Anteprima",
-    "examplesLabel": "Esempi:",
-    "tagsLabel": "Tag:",
     "errors": {
       "load": "Non è stato possibile caricare il mazzo da modificare.",
       "emptyWord": "Scrivi prima la parola.",
       "nameRequired": "Dai un nome al mazzo.",
       "save": "Non è stato possibile salvare il mazzo.",
-      "emptyPicture": "Prima aggiungi un’immagine."
+      "emptyPicture": "Prima aggiungi un’immagine.",
+      "emptyTranslation": "Inserisci anche la traduzione.",
+      "sameLanguages": "Scegli una lingua diversa per ogni lato.",
+      "nameTaken": "Hai già un mazzo con questo nome."
     },
     "status": {
-      "deleted": "Eliminata: {word}",
-      "updated": "Mazzo salvato",
-      "created": "Mazzo creato"
+      "deleted": "Eliminata: {word}"
     },
     "side": {
       "language": "Lingua",
-      "pictureHint": "Ogni parola ha un’immagine su questo lato al posto del testo."}
+      "pictureHint": "Ogni parola ha un’immagine su questo lato al posto del testo."
+    },
+    "nameLabel": "Nome del mazzo",
+    "saved": "Salvato",
+    "study": "Studia",
+    "create": "Crea mazzo",
+    "creating": "Creazione…",
+    "createHint": {
+      "one": "{count} parola verrà salvata con il mazzo.",
+      "many": "{count} parole verranno salvate con il mazzo.",
+      "other": "{count} parole verranno salvate con il mazzo."
+    },
+    "moreDetails": "Più dettagli",
+    "lessDetails": "Meno dettagli",
+    "enterHint": "Invio aggiunge la parola e lascia qui il cursore",
+    "searchPlaceholder": "Cerca parole",
+    "emptyNew": "Aggiungi parole ora o dopo aver creato il mazzo.",
+    "noMatches": "Nessuna parola corrisponde a «{query}».",
+    "showMore": "Mostra altre ({shown} di {total})",
+    "sides": {
+      "title": "Carte",
+      "front": "Fronte",
+      "back": "Retro",
+      "swap": "Scambia i lati",
+      "locked": "Quando il mazzo ha delle parole, i lati sono fissi.",
+      "extra": "Lingua extra",
+      "extraHint": "Una terza riga sul retro della carta"
+    }
   },
   "browse": {
     "empty": "Nessun mazzo della community corrisponde alla ricerca.",
@@ -1658,7 +1673,6 @@ export default {
     "unsaved": "Alcune parole non sono ancora state aggiunte.",
     "keepEditing": "Continua",
     "discard": "Scartale",
-    "editorHint": "Le carte aggiunte qui vengono salvate subito nel mazzo.",
     "errors": {
       "emptyWord": "Scrivi prima una parola.",
       "emptyTranslation": "Aggiungi una traduzione e premi Invio.",
@@ -1718,5 +1732,7 @@ export default {
       "notImage": "Questo file non è un’immagine. Usa JPEG, PNG, WebP o GIF.",
       "tooLarge": "L’immagine supera i 25 MB. Scegline una più piccola.",
       "unreadable": "Impossibile leggere l’immagine. Prova un altro file.",
-      "saveFailed": "Impossibile salvare l’immagine. Riprova."}}
+      "saveFailed": "Impossibile salvare l’immagine. Riprova."
+    }
+  }
 };

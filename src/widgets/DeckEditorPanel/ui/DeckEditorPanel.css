@@ -1,817 +1,930 @@
-.deck-editor-panel {
+/* ===== Deck editor =====
+   The deck on the left: its name, the two sides of its cards, and a few
+   settings in rows. Its words on the right: a line for adding the next one
+   that never goes away, and the list under it. On a narrow screen the two
+   stack. Everything is saved as it changes, so there is no Save button. */
+
+.deck-editor {
+  container-type: inline-size;
   display: grid;
-  gap: 14px;
-}
-
-.deck-editor-panel__header {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.deck-editor-panel__header h2 {
-  margin: 0;
-  font-size: var(--font-size-section-title);
+  gap: 18px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
   color: var(--color-text);
 }
 
-.deck-editor-panel__toolbar {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.deck-editor--message {
+  justify-items: start;
+  padding: 24px 0;
+  color: var(--color-text-muted);
 }
 
-.deck-editor-panel__toolbar button,
-.deck-editor-panel__word-actions button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+.deck-editor--message p {
+  margin: 0;
+}
+
+/* ----- controls shared by the editor ----- */
+
+.deck-editor input[type="text"],
+.deck-editor textarea {
+  width: 100%;
+  min-width: 0;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
   color: var(--color-text);
   font-family: inherit;
-  font-size: 0.8rem;
-  cursor: pointer;
-  padding: 7px 11px;
-  white-space: nowrap;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  transition: border-color 140ms ease;
 }
 
-.deck-editor-panel__toolbar button:hover,
-.deck-editor-panel__word-actions button:hover {
-  background: var(--color-surface-muted);
-}
-
-.deck-editor-panel__toolbar button:disabled,
-.deck-editor-panel__word-actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.deck-editor-panel__button--secondary {
-  background: var(--color-transparent);
-}
-
-.deck-editor-panel__button--danger {
-  border-color: var(--color-danger);
-  color: var(--color-danger);
-}
-
-.deck-editor-panel__toolbar button svg,
-.deck-editor-panel__word-actions button svg,
-.deck-editor-panel__table-actions button svg {
-  flex: 0 0 auto;
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
-.deck-editor-panel__section {
-  border: 2px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-  padding: 12px;
-  display: grid;
-  gap: 12px;
-}
-
-.deck-editor-panel__section-header h3 {
-  margin: 0;
-  font-size: 0.98rem;
-}
-
-.deck-editor-panel__section-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.deck-editor-panel__section-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
-  flex: 0 0 auto;
-}
-
-.deck-editor-panel__section-icon svg {
-  width: 0.96rem;
-  height: 0.96rem;
-}
-
-.deck-editor-panel__section-meta {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-}
-
-.deck-editor-panel__settings-grid,
-.deck-editor-panel__word-grid {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.deck-editor-panel__field {
-  display: grid;
-  gap: 6px;
-  min-width: 0;
-}
-
-.deck-editor-panel__field--toggle {
-  align-content: start;
-}
-
-.deck-editor-panel__field span {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-}
-
-.deck-editor-panel__field .ui-select {
-  width: 100%;
-}
-
-.deck-editor-panel__field input:not([type="checkbox"]),
-.deck-editor-panel__field textarea {
-  width: 100%;
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: 0.84rem;
-  padding: 8px 10px;
-}
-
-.deck-editor-panel__field textarea {
+.deck-editor textarea {
   resize: vertical;
-  min-height: 92px;
   line-height: 1.45;
 }
 
-.deck-editor-panel__toggle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 48px;
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
-  background: var(--color-surface);
-  padding: 8px 10px;
+.deck-editor input[type="text"]:hover,
+.deck-editor textarea:hover {
+  border-color: var(--color-border-strong);
 }
 
-.deck-editor-panel__toggle input[type="checkbox"] {
-  margin: 0;
-  flex: 0 0 auto;
+.deck-editor input[type="text"]:focus,
+.deck-editor textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
 }
 
-.deck-editor-panel__toggle-copy {
-  min-width: 0;
+.deck-editor input::placeholder,
+.deck-editor textarea::placeholder {
+  color: var(--color-text-subtle);
 }
 
-.deck-editor-panel__toggle-copy strong {
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.deck-editor-panel__field--wide {
-  grid-column: 1 / -1;
-}
-
-.deck-editor-panel__word-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.deck-editor-panel__empty {
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
-  border: 1px dashed var(--color-border);
-  border-radius: 10px;
-  padding: 14px;
-}
-
-.deck-editor-panel__table-wrap {
-  min-width: 0;
-  overflow: auto;
-}
-
-.deck-editor-panel__table {
+.deck-editor .ui-select {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  overflow: hidden;
 }
 
-.deck-editor-panel__table th,
-.deck-editor-panel__table td {
-  border-bottom: 1px solid var(--color-border);
-  padding: 10px;
-  text-align: left;
-  font-size: 0.8rem;
-  color: var(--color-text);
-  vertical-align: top;
-}
-
-.deck-editor-panel__table th {
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-}
-
-.deck-editor-panel__table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.deck-editor-panel__table-row--active {
-  background: var(--color-primary-soft);
-}
-
-.deck-editor-panel__cell--example {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.deck-editor-panel__cell--actions {
-  width: 1%;
-  white-space: nowrap;
-}
-
-.deck-editor-panel__table-actions {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  gap: 6px;
-}
-
-.deck-editor-panel__table-actions button {
+.deck-editor__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
   color: var(--color-text);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.74rem;
-  padding: 5px 8px;
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-
-.deck-editor-panel__table-actions button:hover {
-  background: var(--color-surface-muted);
-}
-
-.deck-editor-panel__table-actions .deck-editor-panel__button--danger {
-  border-color: var(--color-danger);
-  background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
-  color: var(--color-danger);
-  font-size: 0.76rem;
-  padding: 6px 10px;
-}
-
-.deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover {
-  background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .deck-editor-panel__toolbar button:hover,
-  .deck-editor-panel__word-actions button:hover,
-  .deck-editor-panel__table-actions button:hover {
-    background: var(--color-surface);
-  }
-
-  .deck-editor-panel__toolbar button:active,
-  .deck-editor-panel__word-actions button:active,
-  .deck-editor-panel__table-actions button:active {
-    background: var(--color-surface-muted);
-  }
-
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover {
-    background: color-mix(in srgb, var(--color-danger) 10%, var(--color-surface));
-  }
-
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:active {
-    background: color-mix(in srgb, var(--color-danger) 16%, var(--color-surface));
-  }
-}
-
-.deck-editor-panel__preview {
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-surface-muted);
-  padding: 10px;
-  display: grid;
-  gap: 6px;
-}
-
-.deck-editor-panel__preview h4 {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+  font: inherit;
   font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
-.deck-editor-panel__preview p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--color-text);
+.deck-editor__button:hover:not(:disabled) {
+  background: var(--color-surface-muted);
 }
 
-.deck-editor-panel__preview-list {
-  margin: -2px 0 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 4px;
-  font-size: 0.8rem;
-  color: var(--color-text);
+.deck-editor__button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-.deck-editor-panel__error {
-  color: var(--color-danger);
-  font-size: 0.9rem;
+.deck-editor__button svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
 }
 
-@media (max-width: 1080px) {
-  .deck-editor-panel__settings-grid,
-  .deck-editor-panel__word-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 860px) {
-  .deck-editor-panel__table {
-    border: none;
-  }
-
-  .deck-editor-panel__table thead {
-    display: none;
-  }
-
-  .deck-editor-panel__table tbody {
-    display: grid;
-    gap: 8px;
-  }
-
-  .deck-editor-panel__table tr {
-    display: block;
-    border: 2px solid var(--color-border);
-    border-radius: 10px;
-    background: var(--color-surface);
-  }
-
-  .deck-editor-panel__table td {
-    display: grid;
-    grid-template-columns: 110px minmax(0, 1fr);
-    gap: 8px;
-    border-bottom: 1px solid var(--color-border);
-    padding: 9px 10px;
-  }
-
-  .deck-editor-panel__table td::before {
-    content: attr(data-label);
-    color: var(--color-text-muted);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .deck-editor-panel__cell--actions {
-    width: auto;
-    white-space: normal;
-  }
-
-  .deck-editor-panel__table-actions {
-    display: inline-flex;
-    flex-wrap: nowrap;
-    width: auto;
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 640px) {
-  .deck-editor-panel {
-    gap: 12px;
-  }
-
-  .deck-editor-panel__header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  .deck-editor-panel__toolbar {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .deck-editor-panel__toolbar button {
-    width: 100%;
-    min-height: 36px;
-  }
-
-  .deck-editor-panel__section {
-    padding: 10px;
-    gap: 10px;
-  }
-}
-
-@media (max-width: 520px) {
-  .deck-editor-panel__toolbar {
-    grid-template-columns: 1fr;
-  }
-
-  .deck-editor-panel__table td {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 8px 9px;
-  }
-
-  .deck-editor-panel__table td::before {
-    font-size: 0.68rem;
-  }
-
-  .deck-editor-panel__table-actions button {
-    width: auto;
-    min-width: 68px;
-    min-height: 34px;
-    font-size: 0.72rem;
-    padding: 6px 7px;
-  }
-
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger {
-    font-size: 0.72rem;
-    padding: 6px 7px;
-  }
-}
-
-/* === Keys ===
-   Saving and adding a word are the actions this screen exists for, so they
-   are the filled blue keys; going back and clearing stay neutral. */
-.deck-editor-panel__toolbar button,
-.deck-editor-panel__word-actions button,
-.deck-editor-panel__table-actions button {
-  border-color: var(--color-border-strong);
-  border-bottom: var(--edge-width) solid var(--color-border-strong);
-  background: var(--color-surface);
-  font-weight: 800;
-  transition:
-    transform 160ms var(--motion-spring),
-    border-bottom-width 160ms var(--motion-spring),
-    background-color 140ms ease,
-    filter 140ms ease;
-}
-
-.deck-editor-panel__table-actions button {
-  border-bottom-width: 3px;
-}
-
-.deck-editor-panel__toolbar button:not([class]),
-.deck-editor-panel__word-actions button:not([class]) {
+.deck-editor__button--primary {
   border-color: var(--color-primary-strong);
+  border-bottom-width: 4px;
   background: var(--color-primary);
   color: var(--color-on-primary);
 }
 
-.deck-editor-panel__toolbar .deck-editor-panel__button--secondary,
-.deck-editor-panel__word-actions .deck-editor-panel__button--secondary {
+.deck-editor__button--primary:hover:not(:disabled) {
+  background: var(--color-primary-strong);
+}
+
+.deck-editor__button--quiet {
+  border-color: var(--color-transparent);
+  background: var(--color-transparent);
   color: var(--color-text-muted);
 }
 
-.deck-editor-panel__table-actions .deck-editor-panel__button--danger {
-  border-color: var(--color-grade-again-edge);
-  background: var(--color-grade-again);
-  color: var(--color-on-primary);
-  font-weight: 800;
+.deck-editor__button--quiet:hover:not(:disabled) {
+  color: var(--color-text);
 }
 
-/* Touch devices keep a sticky :hover; the filled danger key stays filled. */
-.deck-editor-panel__table-actions .deck-editor-panel__button--danger:is(:hover, :active) {
-  background: var(--color-grade-again);
+.deck-editor__button--danger {
+  color: var(--color-danger);
 }
 
-@media (hover: hover) {
-  .deck-editor-panel__toolbar button:hover:not(:disabled),
-  .deck-editor-panel__word-actions button:hover:not(:disabled),
-  .deck-editor-panel__table-actions button:hover:not(:disabled) {
-    transform: translateY(-1px);
-    border-bottom-width: calc(var(--edge-width) + 1px);
-  }
+/* ----- top bar ----- */
 
-  .deck-editor-panel__toolbar button:not([class]):hover:not(:disabled),
-  .deck-editor-panel__word-actions button:not([class]):hover:not(:disabled),
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover:not(:disabled) {
-    filter: brightness(1.06);
-  }
-
-  .deck-editor-panel__toolbar button:not([class]):hover:not(:disabled),
-  .deck-editor-panel__word-actions button:not([class]):hover:not(:disabled) {
-    background: var(--color-primary);
-  }
-
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger:hover:not(:disabled) {
-    background: var(--color-grade-again);
-  }
-}
-
-.deck-editor-panel__toolbar button:active:not(:disabled),
-.deck-editor-panel__word-actions button:active:not(:disabled),
-.deck-editor-panel__table-actions button:active:not(:disabled) {
-  transform: translateY(2px);
-  border-bottom-width: 2px;
-  transition-duration: 60ms;
-}
-
-.deck-editor-panel__toolbar button:focus-visible,
-.deck-editor-panel__word-actions button:focus-visible,
-.deck-editor-panel__table-actions button:focus-visible {
-  outline: 3px solid var(--color-primary-border);
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .deck-editor-panel__toolbar button,
-  .deck-editor-panel__word-actions button,
-  .deck-editor-panel__table-actions button {
-    transition: none;
-  }
-}
-
-/* On a phone: back and details become icon keys, and Save takes the rest
-   of the row, where the thumb is. */
-@media (max-width: 640px) {
-  .deck-editor-panel__toolbar {
-    display: flex;
-    gap: 8px;
-  }
-
-  .deck-editor-panel__toolbar button {
-    min-height: 44px;
-  }
-
-  .deck-editor-panel__toolbar .deck-editor-panel__button--secondary {
-    flex: none;
-    width: 48px;
-    padding: 0;
-  }
-
-  .deck-editor-panel__toolbar .deck-editor-panel__button--secondary span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .deck-editor-panel__toolbar button:not([class]) {
-    flex: 1;
-  }
-}
-
-/* ===== Word cards =====
-   Below table width each word is a small card read like a flashcard: the
-   word large, its part of speech and level as tags, the translation under
-   its language, the examples quieter, and the keys at the foot, Edit wide
-   and Delete a red square. The word being edited is the blue one. */
-@media (max-width: 860px) {
-  .deck-editor-panel__table tbody {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    gap: 12px;
-  }
-
-  /* A grid, not a wrapping row: the last track takes the spare height, so
-     the keys sit on the card's floor and line up across a row of cards. */
-  .deck-editor-panel__table tbody tr {
-    display: grid;
-    grid-template-columns: auto auto minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto auto 1fr;
-    grid-template-areas:
-      "word word word"
-      "part level ."
-      "target target target"
-      "tertiary tertiary tertiary"
-      "examples examples examples"
-      "actions actions actions";
-    align-items: start;
-    column-gap: 6px;
-    padding: 14px 14px 12px;
-    border: 2px solid var(--color-border);
-    border-bottom-width: var(--edge-width);
-    border-radius: 16px;
-    background: var(--color-surface);
-  }
-
-  .deck-editor-panel__table tbody tr.deck-editor-panel__table-row--active {
-    border-color: var(--color-primary-border);
-    border-bottom-color: var(--color-primary);
-    background: var(--color-primary-soft);
-  }
-
-  .deck-editor-panel__table td,
-  .deck-editor-panel__table tbody tr:last-child td {
-    display: block;
-    width: 100%;
-    padding: 0;
-    border: 0;
-    color: var(--color-text);
-    font-size: 0.9rem;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-  }
-
-  .deck-editor-panel__table td::before {
-    display: block;
-    margin-bottom: 1px;
-    color: var(--color-text-subtle);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-  }
-
-  /* The word. */
-  .deck-editor-panel__table td:first-child {
-    grid-area: word;
-    font-size: 1.1rem;
-    font-weight: 900;
-    line-height: 1.25;
-  }
-
-  .deck-editor-panel__table td:first-child::before,
-  .deck-editor-panel__table td[data-label="Level"]::before,
-  .deck-editor-panel__table td[data-label="Part"]::before,
-  .deck-editor-panel__table td[data-label="Examples"]::before,
-  .deck-editor-panel__table td[data-label="Actions"]::before {
-    content: none;
-  }
-
-  /* Part of speech and level, as tags under the word. */
-  .deck-editor-panel__table td[data-label="Part"],
-  .deck-editor-panel__table td[data-label="Level"] {
-    justify-self: start;
-    width: auto;
-    margin-top: 6px;
-    padding: 2px 9px;
-    border-radius: 999px;
-    background: var(--color-surface-muted);
-    color: var(--color-text-muted);
-    font-size: 0.76rem;
-    font-weight: 800;
-  }
-
-  .deck-editor-panel__table td[data-label="Part"] {
-    grid-area: part;
-  }
-
-  .deck-editor-panel__table td[data-label="Level"] {
-    grid-area: level;
-    background: var(--color-primary-soft);
-    color: var(--color-primary);
-  }
-
-  /* Translations, under the name of their language. */
-  .deck-editor-panel__table td:nth-child(2) {
-    grid-area: target;
-  }
-
-  .deck-editor-panel__table td:nth-child(3):not([data-label="Level"], [data-label="Part"]) {
-    grid-area: tertiary;
-  }
-
-  .deck-editor-panel__table td:nth-child(2),
-  .deck-editor-panel__table td:nth-child(3):not([data-label="Level"], [data-label="Part"]) {
-    margin-top: 8px;
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-
-  .deck-editor-panel__table td[data-label="Examples"] {
-    grid-area: examples;
-    margin-top: 4px;
-    color: var(--color-text-muted);
-    font-size: 0.84rem;
-  }
-
-  .deck-editor-panel__table td.deck-editor-panel__cell--actions {
-    grid-area: actions;
-    align-self: end;
-    margin-top: 12px;
-  }
-
-  .deck-editor-panel__table-actions,
-  .deck-editor-panel__table .deck-editor-panel__table-actions {
-    display: flex;
-    width: 100%;
-    gap: 8px;
-  }
-
-  .deck-editor-panel__table-actions button {
-    min-height: 40px;
-    font-size: 0.86rem;
-  }
-
-  .deck-editor-panel__table-actions button:first-child {
-    flex: 1;
-  }
-
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger {
-    flex: none;
-    width: 46px;
-    padding: 0;
-  }
-
-  .deck-editor-panel__table-actions .deck-editor-panel__button--danger span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-}
-
-/* A saved deck: new words go through the add dialog. */
-.deck-editor-panel__quick-add-text {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
-
-.deck-editor-panel__thumb {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  margin-right: 8px;
-  overflow: hidden;
-  border-radius: 7px;
-  background: var(--color-surface-muted);
-  vertical-align: middle;
-}
-
-/* The picture field reads like the fields around it. */
-.deck-editor-panel__word-grid .word-image-field__label {
-  font-size: 0.78rem;
-  font-weight: 400;
-}
-
-/* A deck side: its label with the Language / Picture choice beside it,
-   then the language list or a note on pictures. */
-.deck-editor-panel__side-head {
+.deck-editor__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 6px 10px;
 }
 
-.deck-editor-panel__side-head .setting-segmented {
-  font-size: 0.8rem;
+.deck-editor__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.deck-editor-panel__side-note {
-  margin: 0;
-  min-height: 44px;
+.deck-editor__back:hover {
+  color: var(--color-text);
+}
+
+.deck-editor__actions {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  border: 2px dashed var(--color-border);
-  border-radius: var(--radius-control);
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.deck-editor__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.deck-editor__status svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--color-success);
+}
+
+.deck-editor__status.is-busy svg {
+  color: var(--color-text-subtle);
+  animation: deck-editor-spin 1s linear infinite;
+}
+
+.deck-editor__status--error,
+.deck-editor__status--error svg {
+  color: var(--color-danger);
+}
+
+.deck-editor__status--error button {
+  border: 0;
+  background: none;
+  padding: 0 2px;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+@keyframes deck-editor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.deck-editor__alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 2px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.deck-editor__alert svg {
+  flex: 0 0 auto;
+}
+
+/* ----- layout ----- */
+
+.deck-editor__layout {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+}
+
+/* On a narrow screen a deck that exists opens on its words: adding the
+   next one is what the page is mostly for. */
+@container (max-width: 899px) {
+  .deck-editor--editing .deck-editor__words {
+    order: -1;
+  }
+}
+
+@container (min-width: 900px) {
+  .deck-editor__layout {
+    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+    gap: 36px;
+  }
+
+  .deck-editor__deck {
+    position: sticky;
+    top: 12px;
+  }
+}
+
+/* ----- the deck ----- */
+
+.deck-editor__deck {
+  container-type: inline-size;
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.deck-editor__eyebrow {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.deck-editor__name {
+  display: grid;
+  gap: 4px;
+}
+
+.deck-editor .deck-editor__name input {
+  padding: 4px 0 6px;
+  border: 0;
+  border-bottom: 2px solid var(--color-border);
+  border-radius: 0;
+  background: none;
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.deck-editor .deck-editor__name input:focus {
+  border-bottom-color: var(--color-primary);
+}
+
+.deck-editor .deck-editor__description textarea {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  resize: none;
+  field-sizing: content;
+}
+
+.deck-editor__block {
+  display: grid;
+  gap: 10px;
+}
+
+.deck-editor__hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.deck-editor__hint svg {
+  flex: 0 0 auto;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* The two sides, drawn as the two faces of a card: the front white with
+   its red header rule, the back in the card's blue, as in Learn. */
+.deck-sides {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.deck-side {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  min-height: 100%;
+  padding: 0 10px 12px;
+  border: 2px solid var(--flashcard-border);
+  border-bottom-width: 5px;
+  border-radius: 16px;
+  background: var(--flashcard-front-bg);
+  overflow: hidden;
+}
+
+.deck-side__face {
+  margin: 0 -10px;
+  padding: 8px 12px 6px;
+  border-bottom: 2px solid var(--flashcard-header-rule);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.deck-side--back {
+  border-color: var(--flashcard-back-edge);
+}
+
+.deck-side--back .deck-side__face {
+  border-bottom-color: var(--flashcard-back-edge);
+  background: var(--flashcard-back-bg);
+  color: var(--flashcard-on-back);
+}
+
+.deck-side .setting-segmented {
+  display: flex;
+  width: 100%;
+}
+
+.deck-side .setting-segmented__option {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.deck-side .setting-segmented__option label {
+  width: 100%;
+  padding-inline: 6px;
+}
+
+.deck-side__note {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
   line-height: 1.4;
 }
 
-.deck-editor-panel__side-head .setting-segmented {
-  padding: 3px;
-  border-radius: 11px;
+.deck-sides__swap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: transform 220ms ease, color 140ms ease;
 }
 
-.deck-editor-panel__side-head .setting-segmented__option label {
-  min-height: 28px;
-  padding: 0 10px;
-  border-radius: 8px;
+.deck-sides__swap:hover:not(:disabled) {
+  color: var(--color-primary);
+  transform: rotate(180deg);
+}
+
+.deck-sides__swap:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@container (max-width: 340px) {
+  .deck-sides {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+  }
+
+  .deck-sides__swap {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+
+  .deck-sides__swap:hover:not(:disabled) {
+    transform: rotate(270deg);
+  }
+}
+
+/* The deck's other settings, as rows. */
+.deck-editor__rows {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+}
+
+.deck-editor__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 11rem);
+  align-items: center;
+  gap: 8px 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.deck-editor__row:has(.setting-switch) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.deck-editor__row--stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.deck-editor__row-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.deck-editor__row-text small {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* ----- the words ----- */
+
+.deck-editor__words {
+  container-type: inline-size;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.deck-editor__words-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+}
+
+.deck-editor__words-head h3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.deck-editor__count {
+  min-width: 1.8rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The line for the next word. It stays where it is after every word, so
+   words go in one after another with Enter. */
+.deck-composer {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 2px solid var(--color-border);
+  border-bottom-width: 5px;
+  border-radius: 18px;
+  background: var(--color-surface);
+}
+
+.deck-composer:focus-within {
+  border-color: var(--color-primary-border);
+}
+
+.deck-composer__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+}
+
+.deck-composer__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 18px;
+  border: 2px solid var(--color-primary-strong);
+  border-bottom-width: 4px;
+  border-radius: var(--radius-control);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.deck-composer__add:hover {
+  background: var(--color-primary-strong);
+}
+
+.deck-composer__add:active {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+
+.deck-composer__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.deck-composer__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deck-composer__more:hover {
+  color: var(--color-text);
+}
+
+.deck-composer__more svg {
+  transition: transform 160ms ease;
+}
+
+.deck-composer__more[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.deck-composer__hint,
+.deck-composer__error {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.deck-composer__hint {
+  color: var(--color-text-subtle);
+}
+
+.deck-composer__error {
+  color: var(--color-danger);
+  font-weight: 700;
+}
+
+@container (max-width: 560px) {
+  .deck-composer__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .deck-composer__add {
+    justify-content: center;
+  }
+
+  .deck-composer__hint {
+    display: none;
+  }
+}
+
+/* The fields of one word. */
+.deck-word-fields__sides {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 10px;
+}
+
+.deck-word-fields__side,
+.deck-word-fields__field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.deck-word-fields__side--picture {
+  align-self: stretch;
+}
+
+.deck-word-fields__label {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.deck-word-fields__details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.deck-word-fields__field--wide {
+  grid-column: 1 / -1;
+}
+
+@container (max-width: 440px) {
+  .deck-word-fields__sides,
+  .deck-word-fields__details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A word taken out, with the way to put it back. */
+.deck-editor__undo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 8px 8px 14px;
+  border-radius: var(--radius-control);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.88rem;
+  animation: deck-editor-rise 180ms ease-out;
+}
+
+.deck-editor__undo span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deck-editor__undo button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.deck-editor__undo button:hover {
+  background: color-mix(in srgb, var(--color-bg) 16%, var(--color-transparent));
+}
+
+@keyframes deck-editor-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.deck-editor__search {
+  width: 100%;
+}
+
+.deck-editor__empty {
+  margin: 0;
+  padding: 28px 16px;
+  border: 2px dashed var(--color-border);
+  border-radius: 16px;
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+/* The list: two columns, front and back, like the sides above. */
+.deck-words__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px;
+  gap: 12px;
+  padding: 0 14px;
+  margin-bottom: -8px;
+  color: var(--color-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.deck-words__columns span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deck-words {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.deck-word {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.deck-word:first-child {
+  border-top: 0;
+}
+
+.deck-word:first-child:not(.deck-word--editing) {
+  animation: deck-editor-rise 200ms ease-out;
+}
+
+.deck-word__open {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 0 8px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.deck-word:hover {
+  background: var(--color-surface-muted);
+}
+
+.deck-word__side {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.deck-word__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.deck-word__side--back .deck-word__text {
+  font-weight: 500;
+}
+
+.deck-word__meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-subtle);
+  font-size: 0.76rem;
+}
+
+.deck-word__picture {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-surface-muted);
+}
+
+.deck-word__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.deck-word__delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.deck-word:hover .deck-word__delete,
+.deck-word__delete:focus-visible {
+  opacity: 1;
+}
+
+.deck-word__delete:hover {
+  color: var(--color-danger);
+}
+
+@media (hover: none) {
+  .deck-word__delete {
+    opacity: 1;
+  }
+}
+
+.deck-word--editing {
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--color-surface-muted);
+}
+
+.deck-word--editing:hover {
+  background: var(--color-surface-muted);
+}
+
+.deck-word-editor {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.deck-word-editor__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.deck-word-editor__actions .deck-editor__button--danger {
+  margin-left: auto;
+}
+
+.deck-editor__more {
+  justify-self: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deck-editor__more:hover {
+  color: var(--color-text);
+}
+
+/* ----- creating ----- */
+
+.deck-editor__create {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.deck-editor__create p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+}
+
+@container (max-width: 560px) {
+  .deck-editor__create .deck-editor__button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-editor *,
+  .deck-editor *::before,
+  .deck-editor *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

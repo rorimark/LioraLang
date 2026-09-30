@@ -503,7 +503,6 @@ export default {
     "loading": "Carregando o editor…",
     "openDetails": "Abrir baralho",
     "saving": "Salvando…",
-    "saveDeck": "Salvar baralho",
     "settings": "Configurações do baralho",
     "namePlaceholder": "Frases do dia a dia",
     "description": "Descrição",
@@ -512,13 +511,6 @@ export default {
     "enableLevels": "Usar níveis QECR (A1–C2)",
     "tags": "Etiquetas, separadas por vírgulas",
     "tagsPlaceholder": "viagem, phrasal verbs, trabalho",
-    "wordsInDeck": {
-      "one": "{count} palavra no baralho",
-      "other": "{count} palavras no baralho",
-      "many": "{count} palavras no baralho"
-    },
-    "editWord": "Editar palavra",
-    "addWords": "Adicionar palavras",
     "wordPlaceholder": "Palavra ou expressão",
     "translationPlaceholder": "Tradução",
     "optionalPlaceholder": "Opcional",
@@ -527,30 +519,53 @@ export default {
     "wordTagsPlaceholder": "escola, gramática, trabalho",
     "saveWord": "Salvar alterações",
     "addWord": "Adicionar palavra",
-    "clearForm": "Limpar formulário",
     "wordsTable": "Palavras",
     "empty": "Adicione a primeira palavra para começar este baralho.",
-    "part": "Classe",
     "editNamed": "Editar “{word}”",
     "deleteNamed": "Excluir “{word}”",
-    "preview": "Pré-visualização",
-    "examplesLabel": "Exemplos:",
-    "tagsLabel": "Etiquetas:",
     "errors": {
       "load": "Não foi possível carregar o baralho para edição.",
       "emptyWord": "Digite a palavra primeiro.",
       "nameRequired": "Dê um nome ao baralho.",
       "save": "Não foi possível salvar o baralho.",
-      "emptyPicture": "Adicione primeiro uma imagem."
+      "emptyPicture": "Adicione primeiro uma imagem.",
+      "emptyTranslation": "Digite também a tradução.",
+      "sameLanguages": "Escolha um idioma diferente para cada lado.",
+      "nameTaken": "Você já tem um baralho com este nome."
     },
     "status": {
-      "deleted": "Excluída: {word}",
-      "updated": "Baralho salvo",
-      "created": "Baralho criado"
+      "deleted": "Excluída: {word}"
     },
     "side": {
       "language": "Idioma",
-      "pictureHint": "Cada palavra tem uma imagem deste lado em vez de texto."}
+      "pictureHint": "Cada palavra tem uma imagem deste lado em vez de texto."
+    },
+    "nameLabel": "Nome do baralho",
+    "saved": "Salvo",
+    "study": "Estudar",
+    "create": "Criar baralho",
+    "creating": "Criando…",
+    "createHint": {
+      "one": "{count} palavra será salva com o baralho.",
+      "many": "{count} palavras serão salvas com o baralho.",
+      "other": "{count} palavras serão salvas com o baralho."
+    },
+    "moreDetails": "Mais detalhes",
+    "lessDetails": "Menos detalhes",
+    "enterHint": "Enter adiciona a palavra e mantém o cursor aqui",
+    "searchPlaceholder": "Buscar palavras",
+    "emptyNew": "Adicione palavras agora ou depois de criar o baralho.",
+    "noMatches": "Nenhuma palavra corresponde a “{query}”.",
+    "showMore": "Mostrar mais ({shown} de {total})",
+    "sides": {
+      "title": "Cartões",
+      "front": "Frente",
+      "back": "Verso",
+      "swap": "Trocar os lados",
+      "locked": "Quando o baralho tem palavras, os lados ficam fixos.",
+      "extra": "Idioma extra",
+      "extraHint": "Uma terceira linha no verso do cartão"
+    }
   },
   "browse": {
     "empty": "Nenhum baralho da comunidade corresponde à sua pesquisa.",
@@ -1658,7 +1673,6 @@ export default {
     "unsaved": "Algumas palavras ainda não foram adicionadas.",
     "keepEditing": "Continuar editando",
     "discard": "Descartar",
-    "editorHint": "Os cartões adicionados aqui são salvos no baralho na hora.",
     "errors": {
       "emptyWord": "Digite uma palavra primeiro.",
       "emptyTranslation": "Adicione uma tradução e pressione Enter.",
@@ -1718,5 +1732,7 @@ export default {
       "notImage": "Este ficheiro não é uma imagem. Use JPEG, PNG, WebP ou GIF.",
       "tooLarge": "A imagem tem mais de 25 MB. Escolha uma mais pequena.",
       "unreadable": "Não foi possível ler a imagem. Experimente outro ficheiro.",
-      "saveFailed": "Não foi possível guardar a imagem. Tente novamente."}}
+      "saveFailed": "Não foi possível guardar a imagem. Tente novamente."
+    }
+  }
 };
