@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { pullMissingMedia, pushDeckMedia } from "./mediaSync";
+import { cleanUpRemoteMedia, pullMissingMedia, pushDeckMedia } from "./mediaSync";
 
 const A = "a".repeat(64);
 const B = "b".repeat(64);
@@ -98,5 +98,64 @@ describe("pullMissingMedia", () => {
     });
 
     expect(fetched).toHaveLength(2);
+  });
+});
+
+describe("cleanUpRemoteMedia", () => {
+  const DAY = 24 * 60 * 60 * 1000;
+  const now = Date.parse("2026-10-01T00:00:00Z");
+  const storedDaysAgo = (days) => new Date(now - days * DAY).toISOString();
+
+  it("removes only old pictures that no local deck and no account deck uses", async () => {
+    const D = "d".repeat(64);
+    const syncApi = { deleteMediaAssets: vi.fn(async () => {}) };
+    const loadRemoteReferencedIds = vi.fn(async () => [B]);
+
+    const removed = await cleanUpRemoteMedia({
+      syncApi,
+      remoteMedia: [
+        { id: A, createdAt: storedDaysAgo(30) }, // used by a local deck
+        { id: B, createdAt: storedDaysAgo(30) }, // used by a deck in the account
+        { id: C, createdAt: storedDaysAgo(30) }, // used by nothing
+        { id: D, createdAt: storedDaysAgo(2) }, // used by nothing, but too new
+        { id: "notes.txt", createdAt: storedDaysAgo(30) },
+      ],
+      localReferencedIds: [A],
+      loadRemoteReferencedIds,
+      nowMs: now,
+    });
+
+    expect(removed).toEqual([C]);
+    expect(syncApi.deleteMediaAssets).toHaveBeenCalledWith([C]);
+  });
+
+  it("does not read the account's decks when there is nothing to remove", async () => {
+    const loadRemoteReferencedIds = vi.fn();
+    const syncApi = { deleteMediaAssets: vi.fn() };
+
+    await cleanUpRemoteMedia({
+      syncApi,
+      remoteMedia: [{ id: A, createdAt: storedDaysAgo(30) }],
+      localReferencedIds: [A],
+      loadRemoteReferencedIds,
+      nowMs: now,
+    });
+
+    expect(loadRemoteReferencedIds).not.toHaveBeenCalled();
+    expect(syncApi.deleteMediaAssets).not.toHaveBeenCalled();
+  });
+
+  it("keeps everything when the account's decks cannot be read", async () => {
+    const syncApi = { deleteMediaAssets: vi.fn() };
+
+    await expect(
+      cleanUpRemoteMedia({
+        syncApi,
+        remoteMedia: [{ id: C, createdAt: storedDaysAgo(30) }],
+        loadRemoteReferencedIds: async () => Promise.reject(new Error("offline")),
+        nowMs: now,
+      }),
+    ).rejects.toThrow("offline");
+    expect(syncApi.deleteMediaAssets).not.toHaveBeenCalled();
   });
 });

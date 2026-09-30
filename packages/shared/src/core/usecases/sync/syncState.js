@@ -88,8 +88,8 @@ const normalizeProfileRuntimeState = (value = {}, profileScope = GUEST_PROFILE_S
   knownRemoteSyncIds: normalizeSyncIdList(value?.knownRemoteSyncIds),
   removedLocalSyncIds: normalizeSyncIdList(value?.removedLocalSyncIds),
   pendingLibraryDeletionSyncIds: normalizeSyncIdList(value?.pendingLibraryDeletionSyncIds),
-  // Pictures this account already holds, so each is uploaded once.
-  uploadedMediaIds: normalizeSyncIdList(value?.uploadedMediaIds),
+  // When pictures nothing uses were last removed from the account.
+  lastMediaCleanupAt: toCleanString(value?.lastMediaCleanupAt),
 });
 
 const normalizeProfilesMap = (value = {}) => {

@@ -426,6 +426,47 @@ export const createSupabaseSyncApi = () => {
       return { filePath, alreadyStored: false };
     },
 
+    // Every picture the account holds, with when it was stored.
+    async listMediaAssets() {
+      const client = ensureClient();
+      const user = await ensureAuthenticatedUser(client);
+      const pageSize = 1000;
+      const items = [];
+
+      for (let offset = 0; ; offset += pageSize) {
+        const { data, error } = await client.storage
+          .from(USER_LIBRARY_BUCKET)
+          .list(`${user.id}/media`, { limit: pageSize, offset, sortBy: { column: "name", order: "asc" } });
+
+        if (error) {
+          throw new Error(error.message || "Failed to list pictures");
+        }
+
+        const page = Array.isArray(data) ? data : [];
+        page.forEach((item) => {
+          items.push({ id: toCleanString(item?.name), createdAt: toCleanString(item?.created_at) });
+        });
+
+        if (page.length < pageSize) {
+          return items;
+        }
+      }
+    },
+
+    async deleteMediaAssets(assetIds = []) {
+      const client = ensureClient();
+      const user = await ensureAuthenticatedUser(client);
+      const paths = assetIds.map((assetId) => `${user.id}/media/${toCleanString(assetId)}`);
+
+      for (let index = 0; index < paths.length; index += 1000) {
+        const { error } = await client.storage.from(USER_LIBRARY_BUCKET).remove(paths.slice(index, index + 1000));
+
+        if (error) {
+          throw new Error(error.message || "Failed to remove pictures");
+        }
+      }
+    },
+
     async downloadMediaAsset(assetId) {
       const client = ensureClient();
       const user = await ensureAuthenticatedUser(client);
