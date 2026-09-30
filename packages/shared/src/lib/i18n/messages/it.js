@@ -955,7 +955,6 @@ export default {
     "emailPassword": "Email e password",
     "email": "Email",
     "verified": "Verificato",
-    "notVerified": "Email non verificata",
     "desktopApp": "App desktop",
     "authLabel": "Accedi o crea un account",
     "accessLabel": "Accesso all'account",
@@ -995,17 +994,10 @@ export default {
       "copy": "Copia link",
       "openNamed": "Apri {name} nell'hub",
       "deleteNamed": "Elimina {name} dall'hub",
-      "confirmDelete": "Eliminare «{name}» dall'hub?",
-      "published": {
-        "one": "{count} pubblicato",
-        "many": "{count} pubblicati",
-        "other": "{count} pubblicati"
-      }
+      "confirmDelete": "Eliminare «{name}» dall'hub?"
     },
     "learner": "Studente",
-    "statusLabel": "Stato dell'account",
     "sendAgain": "Invia di nuovo",
-    "manage": "Gestisci",
     "signOut": "Esci",
     "security": {
       "setNew": "Imposta una nuova password",
@@ -1074,9 +1066,7 @@ export default {
       "turn": "Gira"
     },
     "overview": {
-      "sync": "Sincronizzazione",
-      "hubDecks": "Mazzi pubblicati nell'hub",
-      "noHubDecks": "Questo account non ha ancora mazzi nell'hub."
+      "sync": "Sincronizzazione"
     },
     "sync": {
       "unavailable": {
@@ -1162,7 +1152,8 @@ export default {
     "profile": {
       "emailText": "Invieremo un link al nuovo indirizzo. La modifica vale quando lo apri.",
       "pendingEmail": "In attesa di conferma: {email}. Apri il link che abbiamo inviato lì.",
-      "sendLink": "Invia link"
+      "sendLink": "Invia link",
+      "notConfirmed": "Non ancora confermata. Apri il link inviato a questo indirizzo."
     },
     "sessions": {
       "text": "Chiude tutte le sessioni, compresa questa.",

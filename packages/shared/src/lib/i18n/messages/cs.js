@@ -955,7 +955,6 @@ export default {
     "emailPassword": "E-mail a heslo",
     "email": "E-mail",
     "verified": "Ověřeno",
-    "notVerified": "E-mail neověřen",
     "desktopApp": "Aplikace pro počítač",
     "authLabel": "Přihlaste se nebo si vytvořte účet",
     "accessLabel": "Přístup k účtu",
@@ -995,17 +994,10 @@ export default {
       "copy": "Kopírovat odkaz",
       "openNamed": "Otevřít {name} v hubu",
       "deleteNamed": "Smazat {name} z hubu",
-      "confirmDelete": "Smazat „{name}“ z hubu?",
-      "published": {
-        "one": "{count} zveřejněný",
-        "few": "{count} zveřejněné",
-        "other": "{count} zveřejněných"
-      }
+      "confirmDelete": "Smazat „{name}“ z hubu?"
     },
     "learner": "Student",
-    "statusLabel": "Stav účtu",
     "sendAgain": "Poslat znovu",
-    "manage": "Spravovat",
     "signOut": "Odhlásit se",
     "security": {
       "setNew": "Nastavte nové heslo",
@@ -1074,9 +1066,7 @@ export default {
       "turn": "Otočit"
     },
     "overview": {
-      "sync": "Synchronizace",
-      "hubDecks": "Zveřejněné balíčky v hubu",
-      "noHubDecks": "K tomuto účtu zatím nepatří žádné balíčky v hubu."
+      "sync": "Synchronizace"
     },
     "sync": {
       "unavailable": {
@@ -1162,7 +1152,8 @@ export default {
     "profile": {
       "emailText": "Na novou adresu pošleme odkaz. Změna platí, jakmile ho otevřete.",
       "pendingEmail": "Čeká na potvrzení: {email}. Otevřete odkaz, který jsme tam poslali.",
-      "sendLink": "Poslat odkaz"
+      "sendLink": "Poslat odkaz",
+      "notConfirmed": "Zatím nepotvrzeno. Otevřete odkaz, který jsme na tuto adresu poslali."
     },
     "sessions": {
       "text": "Ukončí všechny relace včetně této.",

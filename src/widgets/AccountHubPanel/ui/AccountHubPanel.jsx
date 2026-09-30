@@ -318,6 +318,14 @@ const ProfileTab = memo(({ panel }) => {
   const nameId = useId();
   const emailId = useId();
   const isNameChanged = panel.displayName.trim() !== String(authState.displayName || "").trim();
+  let emailHint = t("account.profile.emailText");
+
+  if (authState.pendingEmail) {
+    emailHint = t("account.profile.pendingEmail", { email: authState.pendingEmail });
+  } else if (!authState.isEmailVerified) {
+    emailHint = t("account.profile.notConfirmed");
+  }
+
   const isEmailChanged =
     panel.newEmail.trim().toLowerCase() !== String(authState.email || "").trim().toLowerCase();
 
@@ -358,11 +366,7 @@ const ProfileTab = memo(({ panel }) => {
       <SettingRow
         wide
         label={t("account.email")}
-        hint={
-          authState.pendingEmail
-            ? t("account.profile.pendingEmail", { email: authState.pendingEmail })
-            : t("account.profile.emailText")
-        }
+        hint={emailHint}
         controlId={emailId}
         control={
           <form
@@ -387,6 +391,16 @@ const ProfileTab = memo(({ panel }) => {
             >
               {t("account.profile.sendLink")}
             </Button>
+            {authState.isEmailVerified || isEmailChanged ? null : (
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={panel.handleResendVerification}
+                isLoading={panel.pendingAction === "resend-verification"}
+              >
+                {t("account.sendAgain")}
+              </Button>
+            )}
           </form>
         }
       />
@@ -499,72 +513,87 @@ SecurityTab.displayName = "SecurityTab";
 
 const DevicesTab = memo(({ panel }) => {
   const { t, formatDate } = useI18n();
+  let listState = null;
 
   if (panel.devicesState === "loading" || panel.devicesState === "idle") {
-    return <p className="account__muted">{t("account.devices.loading")}</p>;
-  }
-
-  if (panel.devicesState === "error") {
-    return (
-      <p className="account__muted">
-        {t("account.devices.errorTitle")}{" "}
-        <button type="button" className="account__text-link" onClick={panel.loadDevices}>
-          {t("common.retry")}
-        </button>
-      </p>
-    );
-  }
-
-  if (panel.devices.length === 0) {
-    return (
-      <p className="account__muted">
-        {t("account.devices.emptyTitle")} {t("account.devices.emptyText")}
-      </p>
-    );
+    listState = t("account.devices.loading");
+  } else if (panel.devicesState === "error") {
+    listState = t("account.devices.errorTitle");
+  } else if (panel.devices.length === 0) {
+    listState = `${t("account.devices.emptyTitle")} ${t("account.devices.emptyText")}`;
   }
 
   return (
     <SettingGroup>
-      {panel.devices.map((device) => {
-        const name = device.deviceName || t("account.devices.unnamed");
-        const hint = [
-          t(device.platform === "desktop" ? "account.devices.desktop" : "account.devices.web"),
-          device.lastSeenAt
-            ? t("account.devices.lastSeen", {
-                time: formatDate(device.lastSeenAt, { dateStyle: "medium", timeStyle: "short" }),
-              })
-            : "",
-        ]
-          .filter(Boolean)
-          .join(" · ");
+      <SettingRow
+        label={t("account.overview.sync")}
+        hint={panel.syncOverview.state === "synced" && panel.lastSyncedLabel ? panel.lastSyncedLabel : panel.syncOverview.text}
+        control={
+          panel.canSyncNow ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={panel.handleSyncNow}
+              isLoading={panel.pendingAction === "sync-now"}
+            >
+              {t("account.sync.now")}
+            </Button>
+          ) : null
+        }
+      />
+      {listState ? (
+        <SettingRow
+          label={listState}
+          control={
+            panel.devicesState === "error" ? (
+              <Button variant="ghost" size="sm" onClick={panel.loadDevices}>
+                {t("common.retry")}
+              </Button>
+            ) : null
+          }
+        />
+      ) : (
+        panel.devices.map((device) => {
+          const name = device.deviceName || t("account.devices.unnamed");
+          const hint = [
+            t(device.platform === "desktop" ? "account.devices.desktop" : "account.devices.web"),
+            device.lastSeenAt
+              ? t("account.devices.lastSeen", {
+                  time: formatDate(device.lastSeenAt, { dateStyle: "medium", timeStyle: "short" }),
+                })
+              : "",
+          ]
+            .filter(Boolean)
+            .join(" · ");
 
-        return (
-          <SettingRow
-            key={device.deviceId}
-            label={
-              <>
-                {name}
-                {device.isCurrent ? <span className="account__here"> · {t("account.devices.thisDevice")}</span> : null}
-              </>
-            }
-            hint={hint}
-            control={
-              device.isCurrent ? null : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="account__remove"
-                  onClick={() => panel.handleForgetDevice(device)}
-                  isLoading={panel.forgettingDeviceId === device.deviceId}
-                  aria-label={t("account.devices.forgetNamed", { name })}
-                >
-                  {t("account.devices.forget")}
-                </Button>
-              )
-            }
-          />
-        );
-      })}
+          return (
+            <SettingRow
+              key={device.deviceId}
+              label={
+                <>
+                  {name}
+                  {device.isCurrent ? <span className="account__here"> · {t("account.devices.thisDevice")}</span> : null}
+                </>
+              }
+              hint={hint}
+              control={
+                device.isCurrent ? null : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="account__remove"
+                    onClick={() => panel.handleForgetDevice(device)}
+                    isLoading={panel.forgettingDeviceId === device.deviceId}
+                    aria-label={t("account.devices.forgetNamed", { name })}
+                  >
+                    {t("account.devices.forget")}
+                  </Button>
+                )
+              }
+            />
+          );
+        })
+      )}
     </SettingGroup>
   );
 });
@@ -622,86 +651,43 @@ const SignedInView = memo(({ panel }) => {
           />
         </div>
 
-        <section className="account__status" aria-label={t("account.statusLabel")}>
-          <SettingGroup>
-            <SettingRow
-              label={t("account.email")}
-              hint={`${authState.email} · ${authState.isEmailVerified ? t("account.verified") : t("account.notVerified")}`}
-              control={
-                authState.isEmailVerified ? null : (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={panel.handleResendVerification}
-                    isLoading={panel.pendingAction === "resend-verification"}
-                  >
-                    {t("account.sendAgain")}
-                  </Button>
-                )
-              }
-            />
-            <SettingRow
-              label={t("account.overview.sync")}
-              hint={panel.syncOverview.state === "synced" && panel.lastSyncedLabel ? panel.lastSyncedLabel : panel.syncOverview.text}
-              control={
-                panel.canSyncNow ? (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={panel.handleSyncNow}
-                    isLoading={panel.pendingAction === "sync-now"}
-                  >
-                    {t("account.sync.now")}
-                  </Button>
-                ) : null
-              }
-            />
-            <SettingRow
-              label={t("account.overview.hubDecks")}
-              hint={panel.ownDecks.length > 0 ? t("account.hub.published", { count: panel.ownDecks.length }) : t("account.overview.noHubDecks")}
-              control={
-                panel.ownDecks.length > 0 ? (
-                  <Button variant="ghost" size="sm" onClick={() => panel.setActiveTab("hub")}>
-                    {t("account.manage")}
-                  </Button>
-                ) : null
-              }
-            />
-          </SettingGroup>
-          <Button
-            variant="secondary"
-            fullWidth
-            className="account__sign-out"
-            onClick={panel.handleSignOut}
-            isLoading={panel.pendingAction === "sign-out"}
-          >
-            <FiLogOut aria-hidden="true" />
-            <span>{t("account.signOut")}</span>
-          </Button>
-        </section>
+        <div className="account__main">
+          <div className="account__bar">
+            <nav className="account__tabs" role="tablist" aria-label={t("nav.account")}>
+              {panel.signedInTabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={panel.activeTab === tab.key}
+                  className={panel.activeTab === tab.key ? "is-active" : ""}
+                  onClick={() => panel.setActiveTab(tab.key)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="account__sign-out"
+              onClick={panel.handleSignOut}
+              isLoading={panel.pendingAction === "sign-out"}
+            >
+              <FiLogOut aria-hidden="true" />
+              <span>{t("account.signOut")}</span>
+            </Button>
+          </div>
+
+          <section className="account__panel" key={panel.activeTab}>
+            {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
+            {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
+            {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
+            {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
+          </section>
+
+        </div>
       </div>
-
-      <nav className="account__tabs" role="tablist" aria-label={t("nav.account")}>
-        {panel.signedInTabs.map((tab) => (
-          <button
-            key={tab.key}
-            type="button"
-            role="tab"
-            aria-selected={panel.activeTab === tab.key}
-            className={panel.activeTab === tab.key ? "is-active" : ""}
-            onClick={() => panel.setActiveTab(tab.key)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </nav>
-
-      <section className="account__panel" key={panel.activeTab}>
-        {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
-        {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
-        {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
-        {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
-      </section>
     </>
   );
 });

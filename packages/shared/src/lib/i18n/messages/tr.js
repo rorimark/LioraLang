@@ -895,7 +895,6 @@ export default {
     "emailPassword": "E-posta ve parola",
     "email": "E-posta",
     "verified": "Doğrulandı",
-    "notVerified": "E-posta doğrulanmadı",
     "desktopApp": "Masaüstü uygulaması",
     "authLabel": "Giriş yap veya hesap oluştur",
     "accessLabel": "Hesap erişimi",
@@ -933,16 +932,10 @@ export default {
       "copy": "Bağlantıyı kopyala",
       "openNamed": "{name} destesini hub'da aç",
       "deleteNamed": "{name} destesini hub'dan sil",
-      "confirmDelete": "“{name}” hub'dan silinsin mi?",
-      "published": {
-        "one": "{count} yayında",
-        "other": "{count} yayında"
-      }
+      "confirmDelete": "“{name}” hub'dan silinsin mi?"
     },
     "learner": "Öğrenci",
-    "statusLabel": "Hesap durumu",
     "sendAgain": "Yeniden gönder",
-    "manage": "Yönet",
     "signOut": "Çıkış yap",
     "security": {
       "setNew": "Yeni parola belirle",
@@ -1007,9 +1000,7 @@ export default {
       "turn": "Çevir"
     },
     "overview": {
-      "sync": "Eşitleme",
-      "hubDecks": "Hub'da yayımlanan desteler",
-      "noHubDecks": "Bu hesaba bağlı henüz hub destesi yok."
+      "sync": "Eşitleme"
     },
     "sync": {
       "unavailable": {
@@ -1094,7 +1085,8 @@ export default {
     "profile": {
       "emailText": "Yeni adrese bir bağlantı gönderilir. Değişiklik, bağlantıyı açınca geçerli olur.",
       "pendingEmail": "Onay bekliyor: {email}. Oraya gönderdiğimiz bağlantıyı açın.",
-      "sendLink": "Bağlantı gönder"
+      "sendLink": "Bağlantı gönder",
+      "notConfirmed": "Henüz onaylanmadı. Bu adrese gönderdiğimiz bağlantıyı açın."
     },
     "sessions": {
       "text": "Bu dahil tüm oturumları kapatır.",

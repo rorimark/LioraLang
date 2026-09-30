@@ -955,7 +955,6 @@ export default {
     "emailPassword": "Correo y contraseña",
     "email": "Correo electrónico",
     "verified": "Verificado",
-    "notVerified": "Correo sin verificar",
     "desktopApp": "Aplicación de escritorio",
     "authLabel": "Inicia sesión o crea una cuenta",
     "accessLabel": "Acceso a la cuenta",
@@ -995,17 +994,10 @@ export default {
       "copy": "Copiar enlace",
       "openNamed": "Abrir {name} en el hub",
       "deleteNamed": "Eliminar {name} del hub",
-      "confirmDelete": "¿Eliminar «{name}» del hub?",
-      "published": {
-        "one": "{count} publicado",
-        "many": "{count} publicados",
-        "other": "{count} publicados"
-      }
+      "confirmDelete": "¿Eliminar «{name}» del hub?"
     },
     "learner": "Estudiante",
-    "statusLabel": "Estado de la cuenta",
     "sendAgain": "Volver a enviar",
-    "manage": "Gestionar",
     "signOut": "Cerrar sesión",
     "security": {
       "setNew": "Crea una contraseña nueva",
@@ -1074,9 +1066,7 @@ export default {
       "turn": "Dar la vuelta"
     },
     "overview": {
-      "sync": "Sincronización",
-      "hubDecks": "Mazos publicados en el hub",
-      "noHubDecks": "Esta cuenta aún no tiene mazos en el hub."
+      "sync": "Sincronización"
     },
     "sync": {
       "unavailable": {
@@ -1162,7 +1152,8 @@ export default {
     "profile": {
       "emailText": "Enviaremos un enlace a la nueva dirección. El cambio se aplica al abrirlo.",
       "pendingEmail": "Pendiente de confirmar: {email}. Abre el enlace que enviamos allí.",
-      "sendLink": "Enviar enlace"
+      "sendLink": "Enviar enlace",
+      "notConfirmed": "Aún sin confirmar. Abre el enlace que enviamos a esta dirección."
     },
     "sessions": {
       "text": "Cierra todas las sesiones, incluida esta.",

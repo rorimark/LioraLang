@@ -1015,7 +1015,6 @@ export default {
     "emailPassword": "E-mail i hasło",
     "email": "E-mail",
     "verified": "Potwierdzone",
-    "notVerified": "E-mail niepotwierdzony",
     "desktopApp": "Aplikacja na komputer",
     "authLabel": "Zaloguj się lub załóż konto",
     "accessLabel": "Dostęp do konta",
@@ -1057,18 +1056,10 @@ export default {
       "copy": "Kopiuj link",
       "openNamed": "Otwórz „{name}” w hubie",
       "deleteNamed": "Usuń „{name}” z hubu",
-      "confirmDelete": "Usunąć „{name}” z hubu?",
-      "published": {
-        "one": "{count} opublikowana",
-        "few": "{count} opublikowane",
-        "many": "{count} opublikowanych",
-        "other": "{count} opublikowanej"
-      }
+      "confirmDelete": "Usunąć „{name}” z hubu?"
     },
     "learner": "Uczeń",
-    "statusLabel": "Stan konta",
     "sendAgain": "Wyślij ponownie",
-    "manage": "Zarządzaj",
     "signOut": "Wyloguj się",
     "security": {
       "setNew": "Ustaw nowe hasło",
@@ -1141,9 +1132,7 @@ export default {
       "turn": "Odwróć"
     },
     "overview": {
-      "sync": "Synchronizacja",
-      "hubDecks": "Talie w hubie",
-      "noHubDecks": "To konto nie ma jeszcze talii w hubie."
+      "sync": "Synchronizacja"
     },
     "sync": {
       "unavailable": {
@@ -1230,7 +1219,8 @@ export default {
     "profile": {
       "emailText": "Wyślemy link na nowy adres. Zmiana nastąpi po jego otwarciu.",
       "pendingEmail": "Czeka na potwierdzenie: {email}. Otwórz link, który tam wysłaliśmy.",
-      "sendLink": "Wyślij link"
+      "sendLink": "Wyślij link",
+      "notConfirmed": "Jeszcze niepotwierdzony. Otwórz link wysłany na ten adres."
     },
     "sessions": {
       "text": "Kończy wszystkie sesje, także tę.",

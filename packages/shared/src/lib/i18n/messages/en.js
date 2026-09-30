@@ -898,7 +898,6 @@ export default {
     "emailPassword": "Email and password",
     "email": "Email",
     "verified": "Verified",
-    "notVerified": "Email not verified",
     "desktopApp": "Desktop app",
     "authLabel": "Sign in or create an account",
     "accessLabel": "Account access",
@@ -936,16 +935,10 @@ export default {
       "copy": "Copy link",
       "openNamed": "Open {name} in the Hub",
       "deleteNamed": "Delete {name} from the Hub",
-      "confirmDelete": "Delete “{name}” from the Hub?",
-      "published": {
-        "one": "{count} published",
-        "other": "{count} published"
-      }
+      "confirmDelete": "Delete “{name}” from the Hub?"
     },
     "learner": "Learner",
-    "statusLabel": "Account status",
     "sendAgain": "Send again",
-    "manage": "Manage",
     "signOut": "Sign out",
     "security": {
       "setNew": "Set a new password",
@@ -1010,9 +1003,7 @@ export default {
       "turn": "Turn over"
     },
     "overview": {
-      "sync": "Sync",
-      "hubDecks": "Published Hub decks",
-      "noHubDecks": "No Hub decks are attached to this account yet."
+      "sync": "Sync"
     },
     "sync": {
       "unavailable": {
@@ -1097,7 +1088,8 @@ export default {
     "profile": {
       "emailText": "A link goes to the new address. The change takes effect once you open it.",
       "pendingEmail": "Waiting for confirmation: {email}. Open the link we sent there.",
-      "sendLink": "Send confirmation link"
+      "sendLink": "Send confirmation link",
+      "notConfirmed": "Not confirmed yet. Open the link we sent to this address."
     },
     "sessions": {
       "text": "Ends every session, this one included.",

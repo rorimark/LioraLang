@@ -955,7 +955,6 @@ export default {
     "emailPassword": "E-mail et mot de passe",
     "email": "E-mail",
     "verified": "Vérifié",
-    "notVerified": "E-mail non vérifié",
     "desktopApp": "Application de bureau",
     "authLabel": "Se connecter ou créer un compte",
     "accessLabel": "Accès au compte",
@@ -995,17 +994,10 @@ export default {
       "copy": "Copier le lien",
       "openNamed": "Ouvrir {name} dans le hub",
       "deleteNamed": "Supprimer {name} du hub",
-      "confirmDelete": "Supprimer « {name} » du hub ?",
-      "published": {
-        "one": "{count} publié",
-        "many": "{count} publiés",
-        "other": "{count} publiés"
-      }
+      "confirmDelete": "Supprimer « {name} » du hub ?"
     },
     "learner": "Apprenant",
-    "statusLabel": "État du compte",
     "sendAgain": "Renvoyer",
-    "manage": "Gérer",
     "signOut": "Se déconnecter",
     "security": {
       "setNew": "Choisir un nouveau mot de passe",
@@ -1074,9 +1066,7 @@ export default {
       "turn": "Retourner"
     },
     "overview": {
-      "sync": "Synchronisation",
-      "hubDecks": "Paquets publiés sur le hub",
-      "noHubDecks": "Aucun paquet du hub n'est encore lié à ce compte."
+      "sync": "Synchronisation"
     },
     "sync": {
       "unavailable": {
@@ -1162,7 +1152,8 @@ export default {
     "profile": {
       "emailText": "Un lien part vers la nouvelle adresse. Le changement s'applique quand vous l'ouvrez.",
       "pendingEmail": "En attente de confirmation : {email}. Ouvrez le lien envoyé à cette adresse.",
-      "sendLink": "Envoyer le lien"
+      "sendLink": "Envoyer le lien",
+      "notConfirmed": "Pas encore confirmé. Ouvrez le lien envoyé à cette adresse."
     },
     "sessions": {
       "text": "Ferme toutes les sessions, celle-ci comprise.",

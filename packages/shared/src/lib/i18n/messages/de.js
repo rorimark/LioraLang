@@ -895,7 +895,6 @@ export default {
     "emailPassword": "E-Mail und Passwort",
     "email": "E-Mail",
     "verified": "Bestätigt",
-    "notVerified": "E-Mail nicht bestätigt",
     "desktopApp": "Desktop-App",
     "authLabel": "Anmelden oder Konto erstellen",
     "accessLabel": "Kontozugang",
@@ -933,16 +932,10 @@ export default {
       "copy": "Link kopieren",
       "openNamed": "{name} im Hub öffnen",
       "deleteNamed": "{name} aus dem Hub löschen",
-      "confirmDelete": "„{name}“ aus dem Hub löschen?",
-      "published": {
-        "one": "{count} veröffentlicht",
-        "other": "{count} veröffentlicht"
-      }
+      "confirmDelete": "„{name}“ aus dem Hub löschen?"
     },
     "learner": "Lernende Person",
-    "statusLabel": "Kontostatus",
     "sendAgain": "Erneut senden",
-    "manage": "Verwalten",
     "signOut": "Abmelden",
     "security": {
       "setNew": "Neues Passwort festlegen",
@@ -1007,9 +1000,7 @@ export default {
       "turn": "Umdrehen"
     },
     "overview": {
-      "sync": "Synchronisierung",
-      "hubDecks": "Veröffentlichte Hub-Decks",
-      "noHubDecks": "Diesem Konto sind noch keine Hub-Decks zugeordnet."
+      "sync": "Synchronisierung"
     },
     "sync": {
       "unavailable": {
@@ -1094,7 +1085,8 @@ export default {
     "profile": {
       "emailText": "Ein Link geht an die neue Adresse. Die Änderung gilt, sobald du ihn öffnest.",
       "pendingEmail": "Wartet auf Bestätigung: {email}. Öffne den Link, den wir dorthin geschickt haben.",
-      "sendLink": "Bestätigungslink senden"
+      "sendLink": "Bestätigungslink senden",
+      "notConfirmed": "Noch nicht bestätigt. Öffne den Link, den wir an diese Adresse geschickt haben."
     },
     "sessions": {
       "text": "Beendet alle Sitzungen, auch diese.",

@@ -955,7 +955,6 @@ export default {
     "emailPassword": "E-mail e senha",
     "email": "E-mail",
     "verified": "Verificado",
-    "notVerified": "E-mail não verificado",
     "desktopApp": "App para computador",
     "authLabel": "Entre ou crie uma conta",
     "accessLabel": "Acesso à conta",
@@ -995,17 +994,10 @@ export default {
       "copy": "Copiar link",
       "openNamed": "Abrir {name} no hub",
       "deleteNamed": "Excluir {name} do hub",
-      "confirmDelete": "Excluir “{name}” do hub?",
-      "published": {
-        "one": "{count} publicado",
-        "many": "{count} publicados",
-        "other": "{count} publicados"
-      }
+      "confirmDelete": "Excluir “{name}” do hub?"
     },
     "learner": "Estudante",
-    "statusLabel": "Status da conta",
     "sendAgain": "Enviar de novo",
-    "manage": "Gerenciar",
     "signOut": "Sair",
     "security": {
       "setNew": "Defina uma nova senha",
@@ -1074,9 +1066,7 @@ export default {
       "turn": "Virar"
     },
     "overview": {
-      "sync": "Sincronização",
-      "hubDecks": "Baralhos publicados no hub",
-      "noHubDecks": "Esta conta ainda não tem baralhos no hub."
+      "sync": "Sincronização"
     },
     "sync": {
       "unavailable": {
@@ -1162,7 +1152,8 @@ export default {
     "profile": {
       "emailText": "Enviaremos um link para o novo endereço. A troca vale quando você abri-lo.",
       "pendingEmail": "Aguardando confirmação: {email}. Abra o link que enviamos para lá.",
-      "sendLink": "Enviar link"
+      "sendLink": "Enviar link",
+      "notConfirmed": "Ainda não confirmado. Abra o link que enviamos para este endereço."
     },
     "sessions": {
       "text": "Encerra todas as sessões, inclusive esta.",

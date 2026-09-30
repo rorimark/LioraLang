@@ -835,7 +835,6 @@ export default {
     "emailPassword": "メールとパスワード",
     "email": "メール",
     "verified": "確認済み",
-    "notVerified": "メール未確認",
     "desktopApp": "デスクトップアプリ",
     "authLabel": "ログインまたはアカウント作成",
     "accessLabel": "アカウントへのアクセス",
@@ -871,15 +870,10 @@ export default {
       "copy": "リンクをコピー",
       "openNamed": "{name}をハブで開く",
       "deleteNamed": "{name}をハブから削除",
-      "confirmDelete": "「{name}」をハブから削除しますか？",
-      "published": {
-        "other": "{count}件公開中"
-      }
+      "confirmDelete": "「{name}」をハブから削除しますか？"
     },
     "learner": "学習者",
-    "statusLabel": "アカウントの状態",
     "sendAgain": "再送信",
-    "manage": "管理",
     "signOut": "ログアウト",
     "security": {
       "setNew": "新しいパスワードを設定",
@@ -940,9 +934,7 @@ export default {
       "turn": "裏返す"
     },
     "overview": {
-      "sync": "同期",
-      "hubDecks": "ハブで公開したデッキ",
-      "noHubDecks": "このアカウントにはまだハブのデッキがありません。"
+      "sync": "同期"
     },
     "sync": {
       "unavailable": {
@@ -1026,7 +1018,8 @@ export default {
     "profile": {
       "emailText": "新しいアドレスにリンクを送ります。開くと変更されます。",
       "pendingEmail": "確認待ち：{email}。そのアドレスに送ったリンクを開いてください。",
-      "sendLink": "確認リンクを送る"
+      "sendLink": "確認リンクを送る",
+      "notConfirmed": "まだ確認されていません。このアドレスに送ったリンクを開いてください。"
     },
     "sessions": {
       "text": "このデバイスを含むすべてのセッションを終了します。",
