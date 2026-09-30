@@ -889,7 +889,10 @@
 /* Chart: the gap before each review, from the real scheduler. */
 .lp-chart {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  /* One column per review, however many the engine returns, so the bars
+     always fill the width. */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   /* Columns line up at the top: every bar then stands on the same line,
      and a day label that takes two lines hangs below without lifting its
      bar above the others. */
@@ -1379,7 +1382,7 @@
   }
 
   .lp-chart {
-    gap: 5px;
+    gap: 8px;
   }
 
   .lp-chart li {
@@ -1387,11 +1390,11 @@
   }
 
   .lp-chart__gap {
-    font-size: 0.66rem;
+    font-size: 0.74rem;
   }
 
   .lp-chart__day {
-    font-size: 0.58rem;
+    font-size: 0.66rem;
   }
 
   .lp-card {

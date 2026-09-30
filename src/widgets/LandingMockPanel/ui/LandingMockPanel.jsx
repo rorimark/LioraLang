@@ -142,7 +142,7 @@ const TimelineChart = memo(() => {
   const { t, formatNumber } = useI18n();
 
   // Above the bars, the number of days alone: the axis below already says
-  // "day", and a unit on every bar would not fit eight bars on a phone.
+  // "day", and a unit on every bar would not fit on a phone.
   return (
     <ol className="lp-art lp-chart" aria-label={t("landing.memory.chartLabel")}>
       {points.map((point, index) => (
