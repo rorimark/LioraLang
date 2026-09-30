@@ -232,6 +232,7 @@
    of the search. */
 .account-layout {
   display: grid;
+  align-content: start;
   grid-template-columns: clamp(300px, 34cqi, 400px) minmax(0, 1fr);
   align-items: start;
   gap: clamp(24px, 3.4vw, 52px);
@@ -373,6 +374,7 @@
 
 .account-content {
   display: grid;
+  align-content: start;
   min-width: 0;
   max-width: 780px;
   padding-top: 22px;
@@ -380,6 +382,7 @@
 
 .account-content__body {
   display: grid;
+  align-content: start;
   gap: 22px;
   animation: account-tab-in 120ms ease both;
 }

@@ -694,10 +694,19 @@ const findScrollParent = (element) => {
   return document.scrollingElement;
 };
 
-// Switching tabs keeps the page where it was. The new tab starts at least
-// as tall as the one it replaces, so a short tab (or one still loading)
-// cannot pull the page up, and the scroll position is put back after it
-// renders.
+// Switching sections keeps the page where it was. While the page is
+// scrolled, the whole layout (card, menu and section) keeps the height it
+// had, so a shorter section cannot pull the page up; unscrolled, nothing
+// is held and no empty space is left. The height is held by the layout,
+// never by the section, so nothing inside it is ever stretched.
+const holdLayout = (layout, pending) => {
+  layout.style.minHeight = pending?.height ? `${pending.height}px` : "";
+
+  if (pending?.scroller) {
+    pending.scroller.scrollTop = pending.top;
+  }
+};
+
 const useSteadyTabs = (activeTab, setActiveTab) => {
   const panelRef = useRef(null);
   const pendingRef = useRef(null);
@@ -705,11 +714,12 @@ const useSteadyTabs = (activeTab, setActiveTab) => {
   const switchTab = useCallback(
     (key) => {
       const panel = panelRef.current;
+      const layout = panel?.parentElement;
 
       if (panel && panel.offsetParent === null) {
         // A phone showing the menu: the section opens as a new screen, at
         // its top.
-        const scroller = findScrollParent(panel.parentElement || panel);
+        const scroller = findScrollParent(layout || panel);
         setActiveTab(key);
         requestAnimationFrame(() => {
           if (scroller) scroller.scrollTop = 0;
@@ -717,15 +727,10 @@ const useSteadyTabs = (activeTab, setActiveTab) => {
         return;
       }
 
-      if (panel && key !== activeTab) {
-        const scroller = findScrollParent(panel);
+      if (panel && layout && key !== activeTab) {
+        const scroller = findScrollParent(layout);
         const top = scroller?.scrollTop ?? 0;
-        // Only as tall as it takes to keep this scroll position: what the
-        // rest of the page lacks to fill the screen below the current top.
-        // Unscrolled, that is nothing, and no empty space is left behind.
-        const rest = (scroller?.scrollHeight ?? 0) - panel.offsetHeight;
-        const height = top > 0 ? Math.max(0, top + (scroller?.clientHeight ?? 0) - rest) : 0;
-        pendingRef.current = { scroller, top, height };
+        pendingRef.current = { scroller, top, height: top > 0 ? layout.offsetHeight : 0 };
       }
 
       setActiveTab(key);
@@ -734,19 +739,15 @@ const useSteadyTabs = (activeTab, setActiveTab) => {
   );
 
   useLayoutEffect(() => {
-    const panel = panelRef.current;
+    const layout = panelRef.current?.parentElement;
     const pending = pendingRef.current;
     pendingRef.current = null;
 
-    if (!panel) {
+    if (!layout) {
       return;
     }
 
-    panel.style.minHeight = pending?.height ? `${pending.height}px` : "";
-
-    if (pending?.scroller) {
-      pending.scroller.scrollTop = pending.top;
-    }
+    holdLayout(layout, pending);
   }, [activeTab]);
 
   return { panelRef, switchTab };
