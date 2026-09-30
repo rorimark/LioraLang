@@ -75,6 +75,12 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
 
+      # A missing or wrong package inside the app only shows when it is
+      # launched; stop the release here instead.
+      - name: Check the packaged app's dependencies
+        shell: bash
+        run: node scripts/check-packaged-deps.mjs "$(find release -name app.asar | head -1)"
+
       - uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.os }}
