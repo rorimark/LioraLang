@@ -1,5 +1,6 @@
 /* global __APP_VERSION__ */
 import { createSupabaseAuthRepository, createSupabaseSyncApi } from "@shared/api";
+import { describeThisDevice } from "@shared/lib/device";
 import { createSyncRepository } from "@shared/sync";
 import {
   createWebDeckRepository,
@@ -117,7 +118,7 @@ export const createWebPlatformServices = () => {
   const runtimeGateway = createRuntimeGateway();
   const syncLocalRepository = createWebSyncLocalRepository({
     platform: "web",
-    deviceName: "Web browser",
+    deviceName: describeThisDevice() || "Web browser",
     appVersion: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "",
   });
 
@@ -136,7 +137,7 @@ export const createWebPlatformServices = () => {
       syncLocalRepository,
       runtimeGateway,
       platform: "web",
-      deviceName: "Web browser",
+      deviceName: describeThisDevice() || "Web browser",
       appVersion: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "",
     }),
     systemRepository: createSystemRepository(),

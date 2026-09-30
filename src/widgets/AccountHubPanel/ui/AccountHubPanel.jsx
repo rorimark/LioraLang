@@ -5,11 +5,14 @@ import {
   FiCheckCircle,
   FiCopy,
   FiExternalLink,
+  FiGlobe,
   FiKey,
   FiLogOut,
   FiMail,
+  FiMonitor,
   FiRefreshCw,
   FiShield,
+  FiSmartphone,
   FiTrash2,
   FiUploadCloud,
 } from "react-icons/fi";
@@ -314,6 +317,291 @@ const HubDecksList = memo(({ panel }) => {
 
 HubDecksList.displayName = "HubDecksList";
 
+// One job per card: a title that names it, a line that says what happens,
+// the fields, and the action.
+const Section = ({ title, text, children, tone, onSubmit }) => {
+  const className = `account__section${tone ? ` account__section--${tone}` : ""}`;
+  const content = (
+    <>
+      <header className="account__form-head">
+        <h3>{title}</h3>
+        {text ? <p>{text}</p> : null}
+      </header>
+      {children}
+    </>
+  );
+
+  return onSubmit ? (
+    <form className={className} onSubmit={onSubmit}>
+      {content}
+    </form>
+  ) : (
+    <section className={className}>{content}</section>
+  );
+};
+
+const ProfileTab = memo(({ panel }) => {
+  const { t } = useI18n();
+  const { authState } = panel;
+  const isNameChanged = panel.displayName.trim() !== String(authState.displayName || "").trim();
+
+  return (
+    <div className="account__sections">
+      <Section
+        title={t("account.profile.nameTitle")}
+        text={t("account.displayNameHint")}
+        onSubmit={(event) => {
+          event.preventDefault();
+          panel.handleSaveProfile();
+        }}
+      >
+        <label className="account__field">
+          <span>{t("account.displayName")}</span>
+          <TextInput
+            value={panel.displayName}
+            onChange={(event) => panel.setDisplayName(event.target.value)}
+            placeholder={t("account.displayNamePlaceholderSelf")}
+            autoComplete="nickname"
+            maxLength={60}
+          />
+        </label>
+        <div className="account__form-actions">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={!isNameChanged}
+            isLoading={panel.pendingAction === "save-profile"}
+          >
+            {t("account.saveProfile")}
+          </Button>
+        </div>
+      </Section>
+
+      <Section
+        title={t("account.profile.emailTitle")}
+        text={t("account.profile.emailText")}
+        onSubmit={(event) => {
+          event.preventDefault();
+          panel.handleChangeEmail();
+        }}
+      >
+        <div className="account__fact">
+          <span>{t("account.profile.currentEmail")}</span>
+          <strong>{authState.email}</strong>
+        </div>
+        {authState.pendingEmail ? (
+          <p className="account__pending">
+            <FiMail aria-hidden="true" />
+            <span>{t("account.profile.pendingEmail", { email: authState.pendingEmail })}</span>
+          </p>
+        ) : null}
+        <label className="account__field">
+          <span>{t("account.profile.newEmail")}</span>
+          <TextInput
+            type="email"
+            value={panel.newEmail}
+            onChange={(event) => panel.setNewEmail(event.target.value)}
+            placeholder={t("account.emailPlaceholder")}
+            autoComplete="email"
+          />
+        </label>
+        <div className="account__form-actions">
+          <Button
+            variant="secondary"
+            type="submit"
+            disabled={!panel.newEmail.trim()}
+            isLoading={panel.pendingAction === "change-email"}
+          >
+            {t("account.profile.sendLink")}
+          </Button>
+        </div>
+      </Section>
+    </div>
+  );
+});
+
+ProfileTab.displayName = "ProfileTab";
+
+const SecurityTab = memo(({ panel }) => {
+  const { t } = useI18n();
+  const { authState } = panel;
+  const hasPassword = authState.hasPassword || panel.isRecoveryFlow;
+  let passwordTitle = t("account.security.add");
+
+  if (panel.isRecoveryFlow) {
+    passwordTitle = t("account.security.setNew");
+  } else if (hasPassword) {
+    passwordTitle = t("account.security.change");
+  }
+
+  return (
+    <div className="account__sections">
+      <Section
+        title={passwordTitle}
+        text={
+          hasPassword
+            ? t("account.security.hint", { count: 10 })
+            : t("account.security.addHint", { count: 10, email: authState.email })
+        }
+        onSubmit={(event) => {
+          event.preventDefault();
+          panel.handleUpdatePassword();
+        }}
+      >
+        {/* Lets a password manager file the new password under this account. */}
+        <input type="email" name="username" value={authState.email} autoComplete="username" readOnly hidden />
+        <label className="account__field">
+          <span>{t("account.security.new")}</span>
+          <TextInput
+            type="password"
+            value={panel.nextPassword}
+            onChange={(event) => panel.setNextPassword(event.target.value)}
+            autoComplete="new-password"
+          />
+        </label>
+        <label className="account__field">
+          <span>{t("account.security.repeat")}</span>
+          <TextInput
+            type="password"
+            value={panel.confirmPassword}
+            onChange={(event) => panel.setConfirmPassword(event.target.value)}
+            autoComplete="new-password"
+          />
+        </label>
+        <div className="account__form-actions">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={!panel.nextPassword}
+            isLoading={panel.pendingAction === "update-password"}
+          >
+            <FiShield aria-hidden="true" />
+            <span>{panel.isRecoveryFlow ? t("account.security.saveNew") : t("account.security.update")}</span>
+          </Button>
+          {hasPassword && !panel.isRecoveryFlow ? (
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={panel.handlePasswordResetRequest}
+              isLoading={panel.pendingAction === "reset-password"}
+            >
+              {t("account.security.emailLink")}
+            </Button>
+          ) : null}
+        </div>
+      </Section>
+
+      <Section title={t("account.sessions.title")} text={t("account.sessions.text")}>
+        <div className="account__fact">
+          <span>{t("account.sessions.method")}</span>
+          <strong>{panel.signInMethodLabel}</strong>
+        </div>
+        <div className="account__form-actions">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={panel.handleSignOutEverywhere}
+            isLoading={panel.pendingAction === "sign-out-everywhere"}
+          >
+            <FiLogOut aria-hidden="true" />
+            <span>{t("account.sessions.signOutEverywhere")}</span>
+          </Button>
+        </div>
+      </Section>
+    </div>
+  );
+});
+
+SecurityTab.displayName = "SecurityTab";
+
+const MOBILE_SYSTEMS = /iPhone|iPad|Android/;
+
+const deviceIcon = (device) => {
+  if (MOBILE_SYSTEMS.test(device.deviceName)) return FiSmartphone;
+  return device.platform === "desktop" ? FiMonitor : FiGlobe;
+};
+
+const DevicesTab = memo(({ panel }) => {
+  const { t, formatDate } = useI18n();
+
+  if (panel.devicesState === "loading" || panel.devicesState === "idle") {
+    return <p className="account__muted">{t("account.devices.loading")}</p>;
+  }
+
+  if (panel.devicesState === "error") {
+    return (
+      <div className="account__empty">
+        <strong>{t("account.devices.errorTitle")}</strong>
+        <p>{t("account.devices.errorText")}</p>
+        <Button variant="secondary" size="sm" onClick={panel.loadDevices}>
+          <FiRefreshCw aria-hidden="true" />
+          <span>{t("common.retry")}</span>
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="account__devices">
+      <p className="account__lead">{t("account.devices.text")}</p>
+      {panel.devices.length === 0 ? (
+        <div className="account__empty">
+          <strong>{t("account.devices.emptyTitle")}</strong>
+          <p>{t("account.devices.emptyText")}</p>
+        </div>
+      ) : (
+        <ul className="account__decks">
+          {panel.devices.map((device) => {
+            const Icon = deviceIcon(device);
+            const name = device.deviceName || t("account.devices.unnamed");
+
+            return (
+              <li className={`account__deck account__device${device.isCurrent ? " is-current" : ""}`} key={device.deviceId}>
+                <span className="account__status-icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                <div className="account__deck-copy">
+                  <strong>
+                    {name}
+                    {device.isCurrent ? <em className="account__badge">{t("account.devices.thisDevice")}</em> : null}
+                  </strong>
+                  <span className="account__deck-meta">
+                    <span>{t(device.platform === "desktop" ? "account.devices.desktop" : "account.devices.web")}</span>
+                    {device.lastSeenAt ? (
+                      <span>
+                        {t("account.devices.lastSeen", {
+                          time: formatDate(device.lastSeenAt, { dateStyle: "medium", timeStyle: "short" }),
+                        })}
+                      </span>
+                    ) : null}
+                    {device.appVersion ? <span>v{device.appVersion}</span> : null}
+                  </span>
+                </div>
+                {device.isCurrent ? null : (
+                  <div className="account__deck-actions">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => panel.handleForgetDevice(device)}
+                      isLoading={panel.forgettingDeviceId === device.deviceId}
+                      aria-label={t("account.devices.forgetNamed", { name })}
+                    >
+                      <FiTrash2 aria-hidden="true" />
+                      <span>{t("account.devices.forget")}</span>
+                    </Button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+});
+
+DevicesTab.displayName = "DevicesTab";
+
 const STATUS_ICONS = {
   verification: FiMail,
   sync: FiRefreshCw,
@@ -389,6 +677,7 @@ const SignedInView = memo(({ panel }) => {
                     <span className="account__status-title">{card.title}</span>
                     <strong>{card.value}</strong>
                     <small>{card.note}</small>
+                    {card.key === "sync" && panel.lastSyncedLabel ? <small>{panel.lastSyncedLabel}</small> : null}
                   </span>
                   {card.key === "verification" && !authState.isEmailVerified ? (
                     <Button
@@ -398,6 +687,16 @@ const SignedInView = memo(({ panel }) => {
                       isLoading={panel.pendingAction === "resend-verification"}
                     >
                       {t("account.sendAgain")}
+                    </Button>
+                  ) : null}
+                  {card.key === "sync" && panel.canSyncNow ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={panel.handleSyncNow}
+                      isLoading={panel.pendingAction === "sync-now"}
+                    >
+                      {t("account.sync.now")}
                     </Button>
                   ) : null}
                   {card.key === "hub-decks" && panel.ownDecks.length > 0 ? (
@@ -438,86 +737,9 @@ const SignedInView = memo(({ panel }) => {
       </nav>
 
       <section className="account__panel" key={panel.activeTab}>
-        {panel.activeTab === "profile" ? (
-          <form
-            className="account__form account__form--card"
-            onSubmit={(event) => {
-              event.preventDefault();
-              panel.handleSaveProfile();
-            }}
-          >
-            <label className="account__field">
-              <span>{t("account.displayName")}</span>
-              <TextInput
-                value={panel.displayName}
-                onChange={(event) => panel.setDisplayName(event.target.value)}
-                placeholder={t("account.displayNamePlaceholderSelf")}
-                autoComplete="nickname"
-              />
-              <small>{t("account.displayNameHint")}</small>
-            </label>
-            <label className="account__field">
-              <span>{t("account.email")}</span>
-              <TextInput value={authState.email} disabled />
-            </label>
-            <div className="account__form-actions">
-              <Button
-                variant="primary"
-                type="submit"
-                isLoading={panel.pendingAction === "save-profile"}
-              >
-                {t("account.saveProfile")}
-              </Button>
-            </div>
-          </form>
-        ) : null}
-
-        {panel.activeTab === "security" ? (
-          <form
-            className="account__form account__form--card"
-            onSubmit={(event) => {
-              event.preventDefault();
-              panel.handleUpdatePassword();
-            }}
-          >
-            <header className="account__form-head">
-              <h3>{panel.isRecoveryFlow ? t("account.security.setNew") : t("account.security.change")}</h3>
-              <p>{t("account.security.hint", { count: 10 })}</p>
-            </header>
-            <label className="account__field">
-              <span>{t("account.security.new")}</span>
-              <TextInput
-                type="password"
-                value={panel.nextPassword}
-                onChange={(event) => panel.setNextPassword(event.target.value)}
-                autoComplete="new-password"
-              />
-            </label>
-            <label className="account__field">
-              <span>{t("account.security.repeat")}</span>
-              <TextInput
-                type="password"
-                value={panel.confirmPassword}
-                onChange={(event) => panel.setConfirmPassword(event.target.value)}
-                autoComplete="new-password"
-              />
-            </label>
-            <div className="account__form-actions">
-              <Button
-                variant="primary"
-                type="submit"
-                isLoading={panel.pendingAction === "update-password"}
-              >
-                <FiShield aria-hidden="true" />
-                <span>{panel.isRecoveryFlow ? t("account.security.saveNew") : t("account.security.update")}</span>
-              </Button>
-              <Button variant="ghost" type="button" onClick={panel.handlePasswordResetRequest}>
-                {t("account.security.emailLink")}
-              </Button>
-            </div>
-          </form>
-        ) : null}
-
+        {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
+        {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
+        {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
         {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
       </section>
     </>

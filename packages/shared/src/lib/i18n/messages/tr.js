@@ -888,7 +888,8 @@ export default {
       "reset": "Parolayı sıfırla",
       "profile": "Profil",
       "security": "Güvenlik",
-      "hub": "Hub'daki destelerim"
+      "hub": "Hub'daki destelerim",
+      "devices": "Cihazlar"
     },
     "continueWith": "{provider} ile devam et",
     "emailPassword": "E-posta ve parola",
@@ -952,7 +953,9 @@ export default {
       "repeat": "Yeni parolayı tekrarla",
       "saveNew": "Yeni parolayı kaydet",
       "update": "Parolayı güncelle",
-      "emailLink": "Bana sıfırlama bağlantısı gönder"
+      "emailLink": "Bana sıfırlama bağlantısı gönder",
+      "add": "Parola ekle",
+      "addHint": "Böylece {email} ve bir parolayla da giriş yapabilirsiniz."
     },
     "notConfigured": {
       "title": "Bu sürümde hesaplar ayarlanmamış",
@@ -1042,7 +1045,9 @@ export default {
       "ready": {
         "label": "Hazır",
         "text": "Eşitleme açık ve değişiklik olduğunda başlar."
-      }
+      },
+      "now": "Şimdi eşitle",
+      "lastSynced": "Son eşitleme: {time}"
     },
     "status": {
       "signedIn": "Giriş yapıldı.",
@@ -1055,7 +1060,10 @@ export default {
       "profileSaved": "Profil kaydedildi.",
       "passwordSaved": "Parola güncellendi.",
       "signedOut": "Çıkış yapıldı.",
-      "hubDeckDeleted": "Hub destesi silindi."
+      "hubDeckDeleted": "Hub destesi silindi.",
+      "emailChangeSent": "Bağlantı {email} adresine gönderildi. E-postanız, bağlantıyı açınca değişir.",
+      "signedOutEverywhere": "Tüm cihazlarda çıkış yapıldı.",
+      "deviceForgotten": "{name} cihazlarınızdan kaldırıldı."
     },
     "errors": {
       "session": "Hesap oturumun yüklenemedi.",
@@ -1066,7 +1074,8 @@ export default {
         "one": "Yeni parola en az {count} karakter olmalı.",
         "other": "Yeni parola en az {count} karakter olmalı."
       },
-      "passwordMismatch": "İki parola eşleşmiyor."
+      "passwordMismatch": "İki parola eşleşmiyor.",
+      "sameEmail": "Bu zaten e-postanız."
     },
     "authErrors": {
       "invalid_credentials": "E-posta veya parola yanlış.",
@@ -1087,6 +1096,37 @@ export default {
       "social_timeout": "Giriş çok uzun sürdü. Tekrar deneyin.",
       "social_cancelled": "Giriş iptal edildi.",
       "social_failed": "Giriş tamamlanmadı. Tekrar deneyin."
+    },
+    "profile": {
+      "nameTitle": "Ad",
+      "emailTitle": "E-posta",
+      "emailText": "Yeni adrese bir bağlantı gönderilir. Değişiklik, bağlantıyı açınca geçerli olur.",
+      "currentEmail": "Kullanılan",
+      "pendingEmail": "Onay bekliyor: {email}. Oraya gönderdiğimiz bağlantıyı açın.",
+      "newEmail": "Yeni e-posta",
+      "sendLink": "Bağlantı gönder"
+    },
+    "sessions": {
+      "title": "Oturumlar",
+      "text": "Artık kullanmadığınız bir yerde oturum açık mı kaldı? Bu dahil tüm oturumları kapatın.",
+      "method": "Giriş yöntemi",
+      "signOutEverywhere": "Tüm cihazlarda çıkış yap",
+      "confirm": "Bu dahil tüm cihazlarda çıkış yapılsın mı?"
+    },
+    "devices": {
+      "text": "Bu hesapla eşitlenen cihazlar. Kaldırılan bir cihaz yeniden eşitlenirse listeye döner.",
+      "loading": "Cihazlarınız yükleniyor…",
+      "errorTitle": "Cihazlar yüklenemedi.",
+      "errorText": "Bağlantınızı kontrol edip tekrar deneyin.",
+      "emptyTitle": "Henüz cihaz yok.",
+      "emptyText": "Bir cihaz ilk eşitlemesinden sonra burada görünür.",
+      "unnamed": "Adsız cihaz",
+      "thisDevice": "Bu cihaz",
+      "desktop": "Masaüstü uygulaması",
+      "web": "Web",
+      "lastSeen": "Son eşitleme: {time}",
+      "forget": "Kaldır",
+      "forgetNamed": "{name} cihazını kaldır"
     }
   },
   "prefs": {

@@ -384,13 +384,113 @@
   animation: account-in 200ms ease both;
 }
 
-.account__form--card {
-  max-width: 560px;
+/* The cards of a tab, side by side while each keeps a comfortable
+   width, one under another when they would not. */
+.account__sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  align-items: start;
+  gap: 16px;
+}
+
+.account__section {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
   padding: clamp(18px, 2.4vw, 26px);
   border: 2px solid var(--color-border);
   border-bottom-width: var(--edge-width);
   border-radius: var(--radius-panel);
   background: var(--color-surface);
+}
+
+/* A value the card is about, read-only: the address in use, the way in. */
+.account__fact {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--color-surface-muted);
+}
+
+.account__fact span {
+  color: var(--color-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.account__fact strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.account__pending {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.account__pending svg {
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  color: var(--color-accent-strong);
+}
+
+.account__lead {
+  max-width: 64ch;
+  margin: 0 0 14px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* A device: what it is, when it last synced, and a way to drop an old one. */
+.account__deck.account__device {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.account__device.is-current {
+  border-color: var(--color-primary-border);
+}
+
+.account__device .account__deck-copy strong {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.account__badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.account__empty .ui-button {
+  margin-top: 14px;
+  gap: 6px;
 }
 
 .account__form-actions {
@@ -589,6 +689,18 @@
 
   .account__deck-actions .ui-button:first-child {
     flex: 1;
+  }
+
+  .account__deck.account__device {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .account__device .account__deck-actions {
+    grid-column: 2;
+  }
+
+  .account__form-actions > .ui-button {
+    flex: 1 1 auto;
   }
 
   .account__tabs {

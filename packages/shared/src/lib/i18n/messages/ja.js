@@ -828,7 +828,8 @@ export default {
       "reset": "パスワードを再設定",
       "profile": "プロフィール",
       "security": "セキュリティ",
-      "hub": "ハブのマイデッキ"
+      "hub": "ハブのマイデッキ",
+      "devices": "デバイス"
     },
     "continueWith": "{provider}で続ける",
     "emailPassword": "メールとパスワード",
@@ -889,7 +890,9 @@ export default {
       "repeat": "新しいパスワード（確認）",
       "saveNew": "新しいパスワードを保存",
       "update": "パスワードを更新",
-      "emailLink": "再設定リンクをメールで送る"
+      "emailLink": "再設定リンクをメールで送る",
+      "add": "パスワードを追加",
+      "addHint": "{email}とパスワードでもログインできるようになります。"
     },
     "notConfigured": {
       "title": "このビルドではアカウントが設定されていません",
@@ -976,7 +979,9 @@ export default {
       "ready": {
         "label": "準備完了",
         "text": "同期はオンです。変更があるとすぐに始まります。"
-      }
+      },
+      "now": "今すぐ同期",
+      "lastSynced": "最終同期：{time}"
     },
     "status": {
       "signedIn": "ログインしました。",
@@ -989,7 +994,10 @@ export default {
       "profileSaved": "プロフィールを保存しました。",
       "passwordSaved": "パスワードを更新しました。",
       "signedOut": "ログアウトしました。",
-      "hubDeckDeleted": "ハブのデッキを削除しました。"
+      "hubDeckDeleted": "ハブのデッキを削除しました。",
+      "emailChangeSent": "{email}に確認リンクを送りました。開くとメールが変更されます。",
+      "signedOutEverywhere": "すべてのデバイスでログアウトしました。",
+      "deviceForgotten": "{name}をデバイス一覧から削除しました。"
     },
     "errors": {
       "session": "アカウントのセッションを読み込めませんでした。",
@@ -999,7 +1007,8 @@ export default {
       "passwordShort": {
         "other": "新しいパスワードは{count}文字以上にしてください。"
       },
-      "passwordMismatch": "2つのパスワードが一致しません。"
+      "passwordMismatch": "2つのパスワードが一致しません。",
+      "sameEmail": "それはすでにあなたのメールです。"
     },
     "authErrors": {
       "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
@@ -1020,6 +1029,37 @@ export default {
       "social_timeout": "ログインに時間がかかりすぎました。もう一度お試しください。",
       "social_cancelled": "ログインをキャンセルしました。",
       "social_failed": "ログインが完了しませんでした。もう一度お試しください。"
+    },
+    "profile": {
+      "nameTitle": "名前",
+      "emailTitle": "メール",
+      "emailText": "新しいアドレスにリンクを送ります。開くと変更されます。",
+      "currentEmail": "使用中",
+      "pendingEmail": "確認待ち：{email}。そのアドレスに送ったリンクを開いてください。",
+      "newEmail": "新しいメール",
+      "sendLink": "確認リンクを送る"
+    },
+    "sessions": {
+      "title": "セッション",
+      "text": "もう使わない場所でログインしたままですか？このデバイスを含むすべてのセッションを終了します。",
+      "method": "ログイン方法",
+      "signOutEverywhere": "すべてのデバイスでログアウト",
+      "confirm": "このデバイスを含むすべてのデバイスでログアウトしますか？"
+    },
+    "devices": {
+      "text": "このアカウントと同期したデバイスです。削除しても、再び同期すると一覧に戻ります。",
+      "loading": "デバイスを読み込んでいます…",
+      "errorTitle": "デバイスを読み込めませんでした。",
+      "errorText": "接続を確認してもう一度お試しください。",
+      "emptyTitle": "まだデバイスはありません。",
+      "emptyText": "最初の同期のあと、ここにデバイスが表示されます。",
+      "unnamed": "名前のないデバイス",
+      "thisDevice": "このデバイス",
+      "desktop": "デスクトップアプリ",
+      "web": "Web",
+      "lastSeen": "最終同期：{time}",
+      "forget": "削除",
+      "forgetNamed": "{name}を削除"
     }
   },
   "prefs": {

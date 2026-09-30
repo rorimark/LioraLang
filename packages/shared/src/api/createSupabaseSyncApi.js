@@ -173,6 +173,45 @@ export const createSupabaseSyncApi = () => {
       return ensureAuthenticatedUser(client);
     },
 
+    // The devices this account has synced from, most recently seen first.
+    async listDevices() {
+      const client = ensureClient();
+      const user = await ensureAuthenticatedUser(client);
+      const { data, error } = await client
+        .from("user_devices")
+        .select("device_id,device_name,platform,app_version,last_seen_at,created_at")
+        .eq("user_id", user.id)
+        .order("last_seen_at", { ascending: false });
+
+      if (error) {
+        throw new Error(error.message || "Failed to list sync devices");
+      }
+
+      return (Array.isArray(data) ? data : []).map((row) => ({
+        deviceId: toCleanString(row.device_id).toLowerCase(),
+        deviceName: toCleanString(row.device_name),
+        platform: toCleanString(row.platform),
+        appVersion: toCleanString(row.app_version),
+        lastSeenAt: toCleanString(row.last_seen_at),
+        createdAt: toCleanString(row.created_at),
+      }));
+    },
+
+    // Takes a device off the list. It comes back if it syncs again.
+    async forgetDevice(deviceId) {
+      const client = ensureClient();
+      const user = await ensureAuthenticatedUser(client);
+      const { error } = await client
+        .from("user_devices")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("device_id", toCleanString(deviceId).toLowerCase());
+
+      if (error) {
+        throw new Error(error.message || "Failed to forget sync device");
+      }
+    },
+
     async registerDevice({ deviceId, deviceName, platform, appVersion } = {}) {
       const client = ensureClient();
       const user = await ensureAuthenticatedUser(client);

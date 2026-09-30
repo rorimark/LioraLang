@@ -948,7 +948,8 @@ export default {
       "reset": "Réinitialiser le mot de passe",
       "profile": "Profil",
       "security": "Sécurité",
-      "hub": "Mes paquets du hub"
+      "hub": "Mes paquets du hub",
+      "devices": "Appareils"
     },
     "continueWith": "Continuer avec {provider}",
     "emailPassword": "E-mail et mot de passe",
@@ -1015,7 +1016,9 @@ export default {
       "repeat": "Répéter le nouveau mot de passe",
       "saveNew": "Enregistrer le nouveau mot de passe",
       "update": "Mettre à jour le mot de passe",
-      "emailLink": "M'envoyer un lien de réinitialisation"
+      "emailLink": "M'envoyer un lien de réinitialisation",
+      "add": "Ajouter un mot de passe",
+      "addHint": "Vous pourrez alors aussi vous connecter avec {email} et un mot de passe."
     },
     "notConfigured": {
       "title": "Les comptes ne sont pas configurés dans cette version",
@@ -1108,7 +1111,9 @@ export default {
       "ready": {
         "label": "Prête",
         "text": "La synchronisation est active et démarre dès qu'il y a des changements."
-      }
+      },
+      "now": "Synchroniser",
+      "lastSynced": "Dernière synchronisation : {time}"
     },
     "status": {
       "signedIn": "Connecté.",
@@ -1121,7 +1126,10 @@ export default {
       "profileSaved": "Profil enregistré.",
       "passwordSaved": "Mot de passe mis à jour.",
       "signedOut": "Déconnecté.",
-      "hubDeckDeleted": "Paquet du hub supprimé."
+      "hubDeckDeleted": "Paquet du hub supprimé.",
+      "emailChangeSent": "Lien envoyé à {email}. Votre e-mail change dès que vous l'ouvrez.",
+      "signedOutEverywhere": "Déconnecté sur tous les appareils.",
+      "deviceForgotten": "{name} retiré de vos appareils."
     },
     "errors": {
       "session": "La session de votre compte n'a pas pu être chargée.",
@@ -1133,7 +1141,8 @@ export default {
         "other": "Le nouveau mot de passe doit comporter au moins {count} caractères.",
         "many": "Le nouveau mot de passe doit comporter au moins {count} caractères."
       },
-      "passwordMismatch": "Les deux mots de passe ne correspondent pas."
+      "passwordMismatch": "Les deux mots de passe ne correspondent pas.",
+      "sameEmail": "C'est déjà votre e-mail."
     },
     "authErrors": {
       "invalid_credentials": "L'e-mail ou le mot de passe est incorrect.",
@@ -1154,6 +1163,37 @@ export default {
       "social_timeout": "La connexion a pris trop de temps. Réessayez.",
       "social_cancelled": "Connexion annulée.",
       "social_failed": "La connexion n'a pas abouti. Réessayez."
+    },
+    "profile": {
+      "nameTitle": "Nom",
+      "emailTitle": "E-mail",
+      "emailText": "Un lien part vers la nouvelle adresse. Le changement s'applique quand vous l'ouvrez.",
+      "currentEmail": "Actuelle",
+      "pendingEmail": "En attente de confirmation : {email}. Ouvrez le lien envoyé à cette adresse.",
+      "newEmail": "Nouvel e-mail",
+      "sendLink": "Envoyer le lien"
+    },
+    "sessions": {
+      "title": "Sessions",
+      "text": "Encore connecté là où vous n'allez plus ? Fermez toutes les sessions, celle-ci comprise.",
+      "method": "Connecté avec",
+      "signOutEverywhere": "Se déconnecter partout",
+      "confirm": "Se déconnecter sur tous les appareils, celui-ci compris ?"
+    },
+    "devices": {
+      "text": "Les appareils synchronisés avec ce compte. Un appareil retiré revient dans la liste s'il se synchronise à nouveau.",
+      "loading": "Chargement des appareils…",
+      "errorTitle": "Impossible de charger les appareils.",
+      "errorText": "Vérifiez la connexion et réessayez.",
+      "emptyTitle": "Aucun appareil pour l'instant.",
+      "emptyText": "Un appareil apparaît ici après sa première synchronisation.",
+      "unnamed": "Appareil sans nom",
+      "thisDevice": "Cet appareil",
+      "desktop": "Application de bureau",
+      "web": "Web",
+      "lastSeen": "Dernière synchronisation : {time}",
+      "forget": "Retirer",
+      "forgetNamed": "Retirer {name}"
     }
   },
   "prefs": {

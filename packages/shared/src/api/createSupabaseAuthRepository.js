@@ -17,6 +17,9 @@ const EMPTY_AUTH_SUMMARY = Object.freeze({
   email: "",
   displayName: "",
   provider: "email",
+  pendingEmail: "",
+  hasPassword: false,
+  linkedProviders: [],
 });
 
 const isDesktopRuntime = () => {
@@ -42,6 +45,14 @@ const resolveVerificationState = (user) => {
       user?.confirmedAt ||
       user?.identities?.some((identity) => identity?.provider !== "email"),
   );
+};
+
+const linkedProviders = (user) => {
+  const fromMetadata = Array.isArray(user?.app_metadata?.providers) ? user.app_metadata.providers : [];
+  const fromIdentities = Array.isArray(user?.identities) ? user.identities.map((identity) => identity?.provider) : [];
+  const single = user?.app_metadata?.provider ? [user.app_metadata.provider] : [];
+
+  return [...new Set([...fromMetadata, ...fromIdentities, ...single].map(toCleanString).filter(Boolean))];
 };
 
 const toAuthSummary = (session) => {
@@ -70,6 +81,12 @@ const toAuthSummary = (session) => {
       toCleanString(appMetadata.provider) ||
       toCleanString(user?.identities?.[0]?.provider) ||
       "email",
+    // A new address waiting for its confirmation link.
+    pendingEmail: toCleanString(user?.new_email),
+    // Signed up with a password, or added one later; a Google or GitHub
+    // account has neither until it sets one.
+    hasPassword: linkedProviders(user).includes("email"),
+    linkedProviders: linkedProviders(user),
   };
 };
 
@@ -384,6 +401,38 @@ export const createSupabaseAuthRepository = () => {
       }
 
       return resolveSessionWithUpdatedUser(client, data?.user || null);
+    },
+    // Supabase sends a link to the new address (and, with "secure email
+    // change", to the old one too); the address changes once it is opened.
+    async updateEmail(email) {
+      const client = ensureClient();
+      const normalizedEmail = toCleanString(email).toLowerCase();
+
+      if (!normalizedEmail) {
+        throw authFailure({ code: "missing_email" }, "Email is required");
+      }
+
+      const { data, error } = await client.auth.updateUser(
+        { email: normalizedEmail },
+        { emailRedirectTo: resolveEmailRedirectTo() },
+      );
+
+      if (error) {
+        throw authFailure(error, "Failed to change email");
+      }
+
+      return resolveSessionWithUpdatedUser(client, data?.user || null);
+    },
+    // Every session of this account ends, this one included.
+    async signOutEverywhere() {
+      const client = ensureClient();
+      const { error } = await client.auth.signOut({ scope: "global" });
+
+      if (error) {
+        throw authFailure(error, "Failed to sign out everywhere");
+      }
+
+      return EMPTY_AUTH_SUMMARY;
     },
     async signOut() {
       const client = ensureClient();

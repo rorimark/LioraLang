@@ -948,7 +948,8 @@ export default {
       "reset": "Obnovit heslo",
       "profile": "Profil",
       "security": "Zabezpečení",
-      "hub": "Moje balíčky v hubu"
+      "hub": "Moje balíčky v hubu",
+      "devices": "Zařízení"
     },
     "continueWith": "Pokračovat přes {provider}",
     "emailPassword": "E-mail a heslo",
@@ -1015,7 +1016,9 @@ export default {
       "repeat": "Zopakujte nové heslo",
       "saveNew": "Uložit nové heslo",
       "update": "Změnit heslo",
-      "emailLink": "Poslat mi odkaz pro obnovení"
+      "emailLink": "Poslat mi odkaz pro obnovení",
+      "add": "Přidat heslo",
+      "addHint": "Pak se můžete přihlásit i adresou {email} a heslem."
     },
     "notConfigured": {
       "title": "Účty nejsou v této verzi nastavené",
@@ -1108,7 +1111,9 @@ export default {
       "ready": {
         "label": "Připraveno",
         "text": "Synchronizace je zapnutá a spustí se, jakmile budou změny."
-      }
+      },
+      "now": "Synchronizovat",
+      "lastSynced": "Naposledy synchronizováno {time}"
     },
     "status": {
       "signedIn": "Přihlášeno.",
@@ -1121,7 +1126,10 @@ export default {
       "profileSaved": "Profil uložen.",
       "passwordSaved": "Heslo změněno.",
       "signedOut": "Odhlášeno.",
-      "hubDeckDeleted": "Balíček smazán z hubu."
+      "hubDeckDeleted": "Balíček smazán z hubu.",
+      "emailChangeSent": "Odkaz odeslán na {email}. E-mail se změní, jakmile ho otevřete.",
+      "signedOutEverywhere": "Odhlášeno ze všech zařízení.",
+      "deviceForgotten": "{name} odebráno z vašich zařízení."
     },
     "errors": {
       "session": "Relaci účtu nešlo načíst.",
@@ -1133,7 +1141,8 @@ export default {
         "few": "Nové heslo musí mít aspoň {count} znaky.",
         "other": "Nové heslo musí mít aspoň {count} znaků."
       },
-      "passwordMismatch": "Hesla se neshodují."
+      "passwordMismatch": "Hesla se neshodují.",
+      "sameEmail": "To už je váš e-mail."
     },
     "authErrors": {
       "invalid_credentials": "E-mail nebo heslo nesouhlasí.",
@@ -1154,6 +1163,37 @@ export default {
       "social_timeout": "Přihlášení trvalo příliš dlouho. Zkuste to znovu.",
       "social_cancelled": "Přihlášení bylo zrušeno.",
       "social_failed": "Přihlášení se nedokončilo. Zkuste to znovu."
+    },
+    "profile": {
+      "nameTitle": "Jméno",
+      "emailTitle": "E-mail",
+      "emailText": "Na novou adresu pošleme odkaz. Změna platí, jakmile ho otevřete.",
+      "currentEmail": "Používaný",
+      "pendingEmail": "Čeká na potvrzení: {email}. Otevřete odkaz, který jsme tam poslali.",
+      "newEmail": "Nový e-mail",
+      "sendLink": "Poslat odkaz"
+    },
+    "sessions": {
+      "title": "Relace",
+      "text": "Zůstali jste přihlášeni tam, kam už nechodíte? Ukončete všechny relace včetně této.",
+      "method": "Způsob přihlášení",
+      "signOutEverywhere": "Odhlásit ze všech zařízení",
+      "confirm": "Odhlásit ze všech zařízení včetně tohoto?"
+    },
+    "devices": {
+      "text": "Zařízení, která se synchronizovala s tímto účtem. Odebrané zařízení se vrátí, jakmile se znovu synchronizuje.",
+      "loading": "Načítáme zařízení…",
+      "errorTitle": "Zařízení se nepodařilo načíst.",
+      "errorText": "Zkontrolujte připojení a zkuste to znovu.",
+      "emptyTitle": "Zatím žádná zařízení.",
+      "emptyText": "Zařízení se tu objeví po první synchronizaci.",
+      "unnamed": "Zařízení bez názvu",
+      "thisDevice": "Toto zařízení",
+      "desktop": "Aplikace pro počítač",
+      "web": "Web",
+      "lastSeen": "Naposledy synchronizováno {time}",
+      "forget": "Odebrat",
+      "forgetNamed": "Odebrat {name}"
     }
   },
   "prefs": {

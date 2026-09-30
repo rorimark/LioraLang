@@ -3,6 +3,7 @@ import {
   getCurrentSupabaseAuthUser,
   createSupabaseSyncApi,
 } from "@shared/api";
+import { describeThisDevice } from "@shared/lib/device";
 import { buildUserProfileScope, GUEST_PROFILE_SCOPE } from "@shared/core/usecases/sync";
 import { createWebHubRepository } from "@shared/platform/web/model";
 import { createSyncRepository } from "@shared/sync";
@@ -602,7 +603,7 @@ export const createElectronPlatformServices = () => {
       syncLocalRepository,
       runtimeGateway,
       platform: "desktop",
-      deviceName: "Desktop app",
+      deviceName: describeThisDevice({ isDesktopApp: true }) || "Desktop app",
     }),
     systemRepository: createSystemRepository(),
     runtimeGateway,

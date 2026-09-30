@@ -888,7 +888,8 @@ export default {
       "reset": "Passwort zurücksetzen",
       "profile": "Profil",
       "security": "Sicherheit",
-      "hub": "Meine Hub-Decks"
+      "hub": "Meine Hub-Decks",
+      "devices": "Geräte"
     },
     "continueWith": "Weiter mit {provider}",
     "emailPassword": "E-Mail und Passwort",
@@ -952,7 +953,9 @@ export default {
       "repeat": "Neues Passwort wiederholen",
       "saveNew": "Neues Passwort speichern",
       "update": "Passwort aktualisieren",
-      "emailLink": "Link zum Zurücksetzen senden"
+      "emailLink": "Link zum Zurücksetzen senden",
+      "add": "Passwort hinzufügen",
+      "addHint": "Dann kannst du dich auch mit {email} und Passwort anmelden."
     },
     "notConfigured": {
       "title": "Konten sind in diesem Build nicht eingerichtet",
@@ -1042,7 +1045,9 @@ export default {
       "ready": {
         "label": "Bereit",
         "text": "Die Synchronisierung ist an und startet, sobald es Änderungen gibt."
-      }
+      },
+      "now": "Jetzt synchronisieren",
+      "lastSynced": "Zuletzt synchronisiert {time}"
     },
     "status": {
       "signedIn": "Angemeldet.",
@@ -1055,7 +1060,10 @@ export default {
       "profileSaved": "Profil gespeichert.",
       "passwordSaved": "Passwort aktualisiert.",
       "signedOut": "Abgemeldet.",
-      "hubDeckDeleted": "Hub-Deck gelöscht."
+      "hubDeckDeleted": "Hub-Deck gelöscht.",
+      "emailChangeSent": "Bestätigungslink an {email} gesendet. Die Adresse ändert sich, sobald du ihn öffnest.",
+      "signedOutEverywhere": "Auf allen Geräten abgemeldet.",
+      "deviceForgotten": "{name} aus deinen Geräten entfernt."
     },
     "errors": {
       "session": "Deine Kontositzung konnte nicht geladen werden.",
@@ -1066,7 +1074,8 @@ export default {
         "one": "Das neue Passwort braucht mindestens {count} Zeichen.",
         "other": "Das neue Passwort braucht mindestens {count} Zeichen."
       },
-      "passwordMismatch": "Die beiden Passwörter stimmen nicht überein."
+      "passwordMismatch": "Die beiden Passwörter stimmen nicht überein.",
+      "sameEmail": "Das ist bereits deine E-Mail."
     },
     "authErrors": {
       "invalid_credentials": "E-Mail oder Passwort stimmt nicht.",
@@ -1087,6 +1096,37 @@ export default {
       "social_timeout": "Die Anmeldung hat zu lange gedauert. Versuche es erneut.",
       "social_cancelled": "Anmeldung abgebrochen.",
       "social_failed": "Die Anmeldung wurde nicht abgeschlossen. Versuche es erneut."
+    },
+    "profile": {
+      "nameTitle": "Name",
+      "emailTitle": "E-Mail",
+      "emailText": "Ein Link geht an die neue Adresse. Die Änderung gilt, sobald du ihn öffnest.",
+      "currentEmail": "Aktuell",
+      "pendingEmail": "Wartet auf Bestätigung: {email}. Öffne den Link, den wir dorthin geschickt haben.",
+      "newEmail": "Neue E-Mail",
+      "sendLink": "Bestätigungslink senden"
+    },
+    "sessions": {
+      "title": "Sitzungen",
+      "text": "Noch irgendwo angemeldet, wo du nicht mehr bist? Beende alle Sitzungen, auch diese.",
+      "method": "Angemeldet mit",
+      "signOutEverywhere": "Auf allen Geräten abmelden",
+      "confirm": "Auf allen Geräten abmelden, auch auf diesem?"
+    },
+    "devices": {
+      "text": "Geräte, die mit diesem Konto synchronisiert haben. Ein entferntes Gerät erscheint wieder, sobald es erneut synchronisiert.",
+      "loading": "Geräte werden geladen…",
+      "errorTitle": "Die Geräte konnten nicht geladen werden.",
+      "errorText": "Prüfe die Verbindung und versuche es erneut.",
+      "emptyTitle": "Noch keine Geräte.",
+      "emptyText": "Ein Gerät erscheint hier nach seiner ersten Synchronisierung.",
+      "unnamed": "Unbenanntes Gerät",
+      "thisDevice": "Dieses Gerät",
+      "desktop": "Desktop-App",
+      "web": "Web",
+      "lastSeen": "Zuletzt synchronisiert {time}",
+      "forget": "Entfernen",
+      "forgetNamed": "{name} entfernen"
     }
   },
   "prefs": {

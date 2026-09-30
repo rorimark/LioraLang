@@ -1051,6 +1051,19 @@ export const createSyncRepository = ({
 
       return syncInFlightPromise;
     },
+    async listDevices() {
+      await bootstrap();
+      const [devices, runtimeState] = await Promise.all([
+        syncApi.listDevices(),
+        syncLocalRepository.getRuntimeState?.().catch(() => null),
+      ]);
+      const currentDeviceId = toCleanString(runtimeState?.deviceId || status.deviceId).toLowerCase();
+
+      return devices.map((device) => ({ ...device, isCurrent: Boolean(currentDeviceId) && device.deviceId === currentDeviceId }));
+    },
+    async forgetDevice(deviceId) {
+      await syncApi.forgetDevice(deviceId);
+    },
     async clearError() {
       await bootstrap();
       const profileScope = resolveProfileScope(authSnapshot);

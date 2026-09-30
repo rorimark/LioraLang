@@ -948,7 +948,8 @@ export default {
       "reset": "Restablecer contraseña",
       "profile": "Perfil",
       "security": "Seguridad",
-      "hub": "Mis mazos del hub"
+      "hub": "Mis mazos del hub",
+      "devices": "Dispositivos"
     },
     "continueWith": "Continuar con {provider}",
     "emailPassword": "Correo y contraseña",
@@ -1015,7 +1016,9 @@ export default {
       "repeat": "Repite la contraseña nueva",
       "saveNew": "Guardar contraseña nueva",
       "update": "Actualizar contraseña",
-      "emailLink": "Enviarme un enlace para restablecerla"
+      "emailLink": "Enviarme un enlace para restablecerla",
+      "add": "Añadir contraseña",
+      "addHint": "Así también podrás entrar con {email} y una contraseña."
     },
     "notConfigured": {
       "title": "Las cuentas no están configuradas en esta versión",
@@ -1108,7 +1111,9 @@ export default {
       "ready": {
         "label": "Listo",
         "text": "La sincronización está activa y empezará en cuanto haya cambios."
-      }
+      },
+      "now": "Sincronizar ahora",
+      "lastSynced": "Última sincronización: {time}"
     },
     "status": {
       "signedIn": "Sesión iniciada.",
@@ -1121,7 +1126,10 @@ export default {
       "profileSaved": "Perfil guardado.",
       "passwordSaved": "Contraseña actualizada.",
       "signedOut": "Sesión cerrada.",
-      "hubDeckDeleted": "Mazo del hub eliminado."
+      "hubDeckDeleted": "Mazo del hub eliminado.",
+      "emailChangeSent": "Enlace enviado a {email}. Tu correo cambiará cuando lo abras.",
+      "signedOutEverywhere": "Sesión cerrada en todos los dispositivos.",
+      "deviceForgotten": "{name} se quitó de tus dispositivos."
     },
     "errors": {
       "session": "No se ha podido cargar la sesión de tu cuenta.",
@@ -1133,7 +1141,8 @@ export default {
         "other": "La contraseña nueva debe tener al menos {count} caracteres.",
         "many": "La contraseña nueva debe tener al menos {count} caracteres."
       },
-      "passwordMismatch": "Las dos contraseñas no coinciden."
+      "passwordMismatch": "Las dos contraseñas no coinciden.",
+      "sameEmail": "Ese ya es tu correo."
     },
     "authErrors": {
       "invalid_credentials": "El correo o la contraseña no son correctos.",
@@ -1154,6 +1163,37 @@ export default {
       "social_timeout": "El inicio de sesión tardó demasiado. Inténtalo de nuevo.",
       "social_cancelled": "Inicio de sesión cancelado.",
       "social_failed": "El inicio de sesión no terminó. Inténtalo de nuevo."
+    },
+    "profile": {
+      "nameTitle": "Nombre",
+      "emailTitle": "Correo",
+      "emailText": "Enviaremos un enlace a la nueva dirección. El cambio se aplica al abrirlo.",
+      "currentEmail": "En uso",
+      "pendingEmail": "Pendiente de confirmar: {email}. Abre el enlace que enviamos allí.",
+      "newEmail": "Nuevo correo",
+      "sendLink": "Enviar enlace"
+    },
+    "sessions": {
+      "title": "Sesiones",
+      "text": "¿Sigues conectado donde ya no usas la cuenta? Cierra todas las sesiones, incluida esta.",
+      "method": "Método de acceso",
+      "signOutEverywhere": "Cerrar sesión en todos los dispositivos",
+      "confirm": "¿Cerrar sesión en todos los dispositivos, incluido este?"
+    },
+    "devices": {
+      "text": "Dispositivos que se han sincronizado con esta cuenta. Si quitas uno, vuelve a la lista cuando se sincronice de nuevo.",
+      "loading": "Cargando tus dispositivos…",
+      "errorTitle": "No se pudieron cargar los dispositivos.",
+      "errorText": "Revisa la conexión e inténtalo de nuevo.",
+      "emptyTitle": "Aún no hay dispositivos.",
+      "emptyText": "Un dispositivo aparece aquí tras su primera sincronización.",
+      "unnamed": "Dispositivo sin nombre",
+      "thisDevice": "Este dispositivo",
+      "desktop": "Aplicación de escritorio",
+      "web": "Web",
+      "lastSeen": "Última sincronización: {time}",
+      "forget": "Quitar",
+      "forgetNamed": "Quitar {name}"
     }
   },
   "prefs": {

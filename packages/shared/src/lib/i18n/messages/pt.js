@@ -948,7 +948,8 @@ export default {
       "reset": "Redefinir senha",
       "profile": "Perfil",
       "security": "Segurança",
-      "hub": "Meus baralhos no hub"
+      "hub": "Meus baralhos no hub",
+      "devices": "Dispositivos"
     },
     "continueWith": "Continuar com {provider}",
     "emailPassword": "E-mail e senha",
@@ -1015,7 +1016,9 @@ export default {
       "repeat": "Repita a nova senha",
       "saveNew": "Salvar nova senha",
       "update": "Atualizar senha",
-      "emailLink": "Enviar link de redefinição"
+      "emailLink": "Enviar link de redefinição",
+      "add": "Adicionar senha",
+      "addHint": "Assim você também entra com {email} e uma senha."
     },
     "notConfigured": {
       "title": "Contas não estão configuradas nesta versão",
@@ -1108,7 +1111,9 @@ export default {
       "ready": {
         "label": "Pronta",
         "text": "A sincronização está ativa e começa assim que houver alterações."
-      }
+      },
+      "now": "Sincronizar agora",
+      "lastSynced": "Última sincronização: {time}"
     },
     "status": {
       "signedIn": "Você entrou.",
@@ -1121,7 +1126,10 @@ export default {
       "profileSaved": "Perfil salvo.",
       "passwordSaved": "Senha atualizada.",
       "signedOut": "Você saiu.",
-      "hubDeckDeleted": "Baralho excluído do hub."
+      "hubDeckDeleted": "Baralho excluído do hub.",
+      "emailChangeSent": "Link enviado para {email}. Seu e-mail muda quando você abri-lo.",
+      "signedOutEverywhere": "Você saiu de todos os dispositivos.",
+      "deviceForgotten": "{name} removido dos seus dispositivos."
     },
     "errors": {
       "session": "Não foi possível carregar a sessão da sua conta.",
@@ -1133,7 +1141,8 @@ export default {
         "other": "A nova senha precisa de pelo menos {count} caracteres.",
         "many": "A nova senha precisa de pelo menos {count} caracteres."
       },
-      "passwordMismatch": "As duas senhas não coincidem."
+      "passwordMismatch": "As duas senhas não coincidem.",
+      "sameEmail": "Esse já é o seu e-mail."
     },
     "authErrors": {
       "invalid_credentials": "O e-mail ou a senha não estão corretos.",
@@ -1154,6 +1163,37 @@ export default {
       "social_timeout": "O login demorou demais. Tente de novo.",
       "social_cancelled": "Login cancelado.",
       "social_failed": "O login não foi concluído. Tente de novo."
+    },
+    "profile": {
+      "nameTitle": "Nome",
+      "emailTitle": "E-mail",
+      "emailText": "Enviaremos um link para o novo endereço. A troca vale quando você abri-lo.",
+      "currentEmail": "Em uso",
+      "pendingEmail": "Aguardando confirmação: {email}. Abra o link que enviamos para lá.",
+      "newEmail": "Novo e-mail",
+      "sendLink": "Enviar link"
+    },
+    "sessions": {
+      "title": "Sessões",
+      "text": "Ainda conectado onde não usa mais? Encerre todas as sessões, inclusive esta.",
+      "method": "Entrou com",
+      "signOutEverywhere": "Sair de todos os dispositivos",
+      "confirm": "Sair de todos os dispositivos, inclusive deste?"
+    },
+    "devices": {
+      "text": "Dispositivos que sincronizaram com esta conta. Um removido volta à lista se sincronizar de novo.",
+      "loading": "Carregando seus dispositivos…",
+      "errorTitle": "Não foi possível carregar os dispositivos.",
+      "errorText": "Verifique a conexão e tente de novo.",
+      "emptyTitle": "Nenhum dispositivo ainda.",
+      "emptyText": "Um dispositivo aparece aqui após a primeira sincronização.",
+      "unnamed": "Dispositivo sem nome",
+      "thisDevice": "Este dispositivo",
+      "desktop": "App para computador",
+      "web": "Web",
+      "lastSeen": "Última sincronização: {time}",
+      "forget": "Remover",
+      "forgetNamed": "Remover {name}"
     }
   },
   "prefs": {

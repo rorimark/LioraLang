@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
 import { buildPublicDeckShareUrl } from "@shared/lib/share";
@@ -13,14 +14,24 @@ const DEFAULT_AUTH_STATE = Object.freeze({
   email: "",
   displayName: "",
   provider: "email",
+  pendingEmail: "",
+  hasPassword: false,
+  linkedProviders: [],
 });
 
 // Labels are account.tabs.<key>.
 const SIGNED_OUT_TAB_ITEMS = [{ key: "sign-in" }, { key: "sign-up" }, { key: "reset" }];
 
 // What the account is (the card, its status) is always on screen above
-// these; the tabs are for changing things.
-const SIGNED_IN_TAB_ITEMS = [{ key: "profile" }, { key: "security" }, { key: "hub" }];
+// these; the tabs are for changing things. Each is its own address
+// (?tab=), so Back returns to the previous one and a link can open one.
+const SIGNED_IN_TAB_ITEMS = [{ key: "profile" }, { key: "security" }, { key: "devices" }, { key: "hub" }];
+const SIGNED_IN_TAB_KEYS = new Set(SIGNED_IN_TAB_ITEMS.map((item) => item.key));
+export const ACCOUNT_TAB_QUERY_KEY = "tab";
+const DEFAULT_SIGNED_IN_TAB = "profile";
+
+// Before signing out, unsent changes get this long to reach the server.
+const SIGN_OUT_SYNC_WAIT_MS = 8000;
 
 const PROVIDER_NAMES = { google: "Google", github: "GitHub" };
 
@@ -159,16 +170,49 @@ export const useAccountHubPanel = () => {
   const runtimeGateway = usePlatformService("runtimeGateway");
   const [authState, setAuthState] = useState(DEFAULT_AUTH_STATE);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("sign-in");
+  // Signing in, signing up and the reset form are steps of one form, kept
+  // in state; the signed-in tabs live in the address.
+  const [signedOutTab, setSignedOutTab] = useState("sign-in");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = searchParams.get(ACCOUNT_TAB_QUERY_KEY);
+  const signedInTab = SIGNED_IN_TAB_KEYS.has(requestedTab) ? requestedTab : DEFAULT_SIGNED_IN_TAB;
+  const setActiveTab = useCallback(
+    (key, { replace = false } = {}) => {
+      if (!SIGNED_IN_TAB_KEYS.has(key)) {
+        setSignedOutTab(key);
+        return;
+      }
+
+      setSearchParams(
+        (current) => {
+          const next = new URLSearchParams(current);
+
+          if (key === DEFAULT_SIGNED_IN_TAB) {
+            next.delete(ACCOUNT_TAB_QUERY_KEY);
+          } else {
+            next.set(ACCOUNT_TAB_QUERY_KEY, key);
+          }
+
+          return next;
+        },
+        { replace },
+      );
+    },
+    [setSearchParams],
+  );
   // A message key and its values, said in the current language on render.
   const [status, setStatus] = useState(null);
-  const { t } = useI18n();
+  const { t, formatDate } = useI18n();
   const [statusVariant, setStatusVariant] = useState("info");
   const [pendingAction, setPendingAction] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [resetEmail, setResetEmail] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [devices, setDevices] = useState([]);
+  const [devicesState, setDevicesState] = useState("idle");
+  const [forgettingDeviceId, setForgettingDeviceId] = useState("");
   const [nextPassword, setNextPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isRecoveryFlow, setIsRecoveryFlow] = useState(false);
@@ -240,7 +284,7 @@ export const useAccountHubPanel = () => {
           stripAuthParamsFromUrl();
           if (redirectPayload.isRecovery) {
             setIsRecoveryFlow(true);
-            setActiveTab("security");
+            setActiveTab("security", { replace: true });
             reportStatus({ key: "account.status.setNewPassword" }, "warning");
           } else {
             reportStatus({ key: "account.status.signedIn" }, "success");
@@ -283,7 +327,7 @@ export const useAccountHubPanel = () => {
       isSubscribed = false;
       unsubscribe?.();
     };
-  }, [authRepository, isConfigured, reportStatus]);
+  }, [authRepository, isConfigured, reportStatus, setActiveTab]);
 
   useEffect(() => {
     if (!syncRepository?.isConfigured?.()) {
@@ -337,7 +381,6 @@ export const useAccountHubPanel = () => {
     setDisplayName(authState.displayName || "");
     setEmail(authState.email || "");
     setResetEmail(authState.email || "");
-    setActiveTab((currentTab) => (currentTab === "sign-in" || currentTab === "sign-up" || currentTab === "reset" ? "profile" : currentTab));
   }, [authState.displayName, authState.email, authState.isAuthenticated]);
 
   useEffect(() => {
@@ -356,7 +399,9 @@ export const useAccountHubPanel = () => {
     setDisplayName("");
     setEmail("");
     setResetEmail("");
-    setActiveTab((currentTab) => (SIGNED_OUT_TAB_ITEMS.some((item) => item.key === currentTab) ? currentTab : "sign-in"));
+    setNewEmail("");
+    setDevices([]);
+    setDevicesState("idle");
   }, [authState.isAuthenticated]);
 
   useEffect(() => {
@@ -416,7 +461,6 @@ export const useAccountHubPanel = () => {
       setAuthState(nextAuthState);
       setPassword("");
       reportStatus({ key: "account.status.signedIn" }, "success");
-      setActiveTab("profile");
     });
   }, [authRepository, email, password, reportStatus, runAction]);
 
@@ -441,9 +485,8 @@ export const useAccountHubPanel = () => {
       }
 
       reportStatus({ key: "account.status.created" }, "success");
-      setActiveTab("profile");
     });
-  }, [authRepository, displayName, email, password, reportStatus, runAction]);
+  }, [authRepository, displayName, email, password, reportStatus, runAction, setActiveTab]);
 
   const handlePasswordResetRequest = useCallback(async () => {
     await runAction("reset-password", async () => {
@@ -509,14 +552,120 @@ export const useAccountHubPanel = () => {
     });
   }, [authRepository, confirmPassword, nextPassword, reportStatus, runAction]);
 
+  const handleChangeEmail = useCallback(async () => {
+    const nextEmail = toCleanString(newEmail).toLowerCase();
+
+    if (!nextEmail) {
+      reportStatus({ key: "account.authErrors.missing_email" }, "error");
+      return;
+    }
+
+    if (nextEmail === toCleanString(authState.email).toLowerCase()) {
+      reportStatus({ key: "account.errors.sameEmail" }, "error");
+      return;
+    }
+
+    await runAction("change-email", async () => {
+      const nextAuthState = await authRepository.updateEmail(nextEmail);
+      setAuthState((currentState) => ({ ...currentState, ...nextAuthState }));
+      setNewEmail("");
+      reportStatus({ key: "account.status.emailChangeSent", params: { email: nextEmail } }, "success");
+    });
+  }, [authRepository, authState.email, newEmail, reportStatus, runAction]);
+
+  // Changes made on this device and not yet sent go first, so signing out
+  // never strands them; if the server does not answer in time they wait
+  // here for the next sign-in.
+  const flushPendingChanges = useCallback(async () => {
+    const pending = Number(syncStatus.pendingDeckChanges || 0) + Number(syncStatus.pendingProgressChanges || 0);
+
+    if (pending === 0 || !syncStatus.online || !syncRepository?.isConfigured?.()) {
+      return;
+    }
+
+    await Promise.race([
+      syncRepository.runNow({ reason: "sign-out" }).catch(() => {}),
+      new Promise((resolve) => setTimeout(resolve, SIGN_OUT_SYNC_WAIT_MS)),
+    ]);
+  }, [syncRepository, syncStatus.online, syncStatus.pendingDeckChanges, syncStatus.pendingProgressChanges]);
+
+  const leaveAccount = useCallback(() => {
+    setAuthState(DEFAULT_AUTH_STATE);
+    setSignedOutTab("sign-in");
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        next.delete(ACCOUNT_TAB_QUERY_KEY);
+        return next;
+      },
+      { replace: true },
+    );
+  }, [setSearchParams]);
+
   const handleSignOut = useCallback(async () => {
     await runAction("sign-out", async () => {
+      await flushPendingChanges();
       await authRepository.signOut();
-      setAuthState(DEFAULT_AUTH_STATE);
-      setActiveTab("sign-in");
+      leaveAccount();
       reportStatus({ key: "account.status.signedOut" }, "success");
     });
-  }, [authRepository, reportStatus, runAction]);
+  }, [authRepository, flushPendingChanges, leaveAccount, reportStatus, runAction]);
+
+  const handleSignOutEverywhere = useCallback(async () => {
+    if (typeof window !== "undefined" && !window.confirm(t("account.sessions.confirm"))) {
+      return;
+    }
+
+    await runAction("sign-out-everywhere", async () => {
+      await flushPendingChanges();
+      await authRepository.signOutEverywhere();
+      leaveAccount();
+      reportStatus({ key: "account.status.signedOutEverywhere" }, "success");
+    });
+  }, [authRepository, flushPendingChanges, leaveAccount, reportStatus, runAction, t]);
+
+  const handleSyncNow = useCallback(async () => {
+    await runAction("sync-now", async () => {
+      await syncRepository.clearError?.();
+      await syncRepository.runNow({ reason: "manual" });
+    });
+  }, [runAction, syncRepository]);
+
+  const loadDevices = useCallback(async () => {
+    if (typeof syncRepository?.listDevices !== "function") {
+      setDevicesState("unavailable");
+      return;
+    }
+
+    setDevicesState((current) => (current === "ready" ? "ready" : "loading"));
+
+    try {
+      setDevices(await syncRepository.listDevices());
+      setDevicesState("ready");
+    } catch (error) {
+      console.warn(error);
+      setDevicesState("error");
+    }
+  }, [syncRepository]);
+
+  const handleForgetDevice = useCallback(async (device) => {
+    if (!device?.deviceId || device.isCurrent) {
+      return;
+    }
+
+    setForgettingDeviceId(device.deviceId);
+    clearStatus();
+
+    try {
+      await syncRepository.forgetDevice(device.deviceId);
+      setDevices((current) => current.filter((item) => item.deviceId !== device.deviceId));
+      reportStatus({ key: "account.status.deviceForgotten", params: { name: device.deviceName || t("account.devices.unnamed") } }, "success");
+    } catch (error) {
+      reportStatus(describeFailure(error, "account.errors.action"), "error");
+    } finally {
+      setForgettingDeviceId("");
+    }
+  }, [clearStatus, reportStatus, syncRepository, t]);
 
   const handleDeleteHubDeck = useCallback(async (deck) => {
     const deckId = toCleanString(deck?.id);
@@ -575,9 +724,34 @@ export const useAccountHubPanel = () => {
     () => SIGNED_OUT_TAB_ITEMS.map((item) => ({ ...item, label: t(`account.tabs.${item.key}`) })),
     [t],
   );
+  const isSyncConfigured = Boolean(syncRepository?.isConfigured?.());
   const signedInTabs = useMemo(
-    () => SIGNED_IN_TAB_ITEMS.map((item) => ({ ...item, label: t(`account.tabs.${item.key}`) })),
-    [t],
+    () =>
+      SIGNED_IN_TAB_ITEMS.filter((item) => item.key !== "devices" || isSyncConfigured).map((item) => ({
+        ...item,
+        label: t(`account.tabs.${item.key}`),
+      })),
+    [isSyncConfigured, t],
+  );
+
+  // The device list is read when its tab opens, and again after each sync,
+  // which is when this device's "last seen" moves.
+  const isDevicesTabOpen = authState.isAuthenticated && signedInTab === "devices";
+
+  useEffect(() => {
+    if (isDevicesTabOpen) {
+      void loadDevices();
+    }
+  }, [isDevicesTabOpen, loadDevices, syncStatus.lastSuccessfulSyncAt]);
+
+  const lastSyncedLabel = useMemo(
+    () =>
+      syncStatus.lastSuccessfulSyncAt
+        ? t("account.sync.lastSynced", {
+            time: formatDate(syncStatus.lastSuccessfulSyncAt, { dateStyle: "medium", timeStyle: "short" }),
+          })
+        : "",
+    [formatDate, syncStatus.lastSuccessfulSyncAt, t],
   );
   // Only the providers the project has switched on in Supabase: a button
   // that leads to "provider is not enabled" is worse than no button.
@@ -655,6 +829,12 @@ export const useAccountHubPanel = () => {
     [syncState.state, t],
   );
 
+  const signInMethodLabel =
+    PROVIDER_NAMES[authState.provider] || (authState.provider === "email" ? t("account.emailPassword") : authState.provider);
+  // Offline there is nothing to reach, and mid-sync the button would only
+  // queue a second pass.
+  const canSyncNow = ["synced", "ready", "attention"].includes(syncState.state);
+
   const overviewCards = useMemo(() => {
     return [
       {
@@ -680,15 +860,15 @@ export const useAccountHubPanel = () => {
       {
         key: "provider",
         title: t("account.overview.provider"),
-        value: PROVIDER_NAMES[authState.provider] || (authState.provider === "email" ? t("account.emailPassword") : authState.provider),
+        value: signInMethodLabel,
         note: isDesktopMode ? t("account.overview.desktopSession") : t("account.overview.webSession"),
       },
     ];
   }, [
     authState.isEmailVerified,
-    authState.provider,
     isDesktopMode,
     ownDecks.length,
+    signInMethodLabel,
     syncOverview.label,
     syncOverview.text,
     t,
@@ -722,7 +902,7 @@ export const useAccountHubPanel = () => {
     isDesktopMode,
     isAuthLoading,
     authState,
-    activeTab,
+    activeTab: authState.isAuthenticated ? signedInTab : signedOutTab,
     isBusy,
     pendingAction,
     statusAlert,
@@ -737,6 +917,19 @@ export const useAccountHubPanel = () => {
     password,
     displayName,
     resetEmail,
+    newEmail,
+    setNewEmail,
+    devices,
+    devicesState,
+    forgettingDeviceId,
+    lastSyncedLabel,
+    canSyncNow,
+    signInMethodLabel,
+    handleChangeEmail,
+    handleSignOutEverywhere,
+    handleSyncNow,
+    handleForgetDevice,
+    loadDevices,
     nextPassword,
     confirmPassword,
     isRecoveryFlow,

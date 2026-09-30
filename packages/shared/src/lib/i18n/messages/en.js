@@ -891,7 +891,8 @@ export default {
       "reset": "Reset password",
       "profile": "Profile",
       "security": "Security",
-      "hub": "My Hub decks"
+      "hub": "My Hub decks",
+      "devices": "Devices"
     },
     "continueWith": "Continue with {provider}",
     "emailPassword": "Email and password",
@@ -955,7 +956,9 @@ export default {
       "repeat": "Repeat new password",
       "saveNew": "Save new password",
       "update": "Update password",
-      "emailLink": "Email me a reset link"
+      "emailLink": "Email me a reset link",
+      "add": "Add a password",
+      "addHint": "Then you can also sign in with {email} and a password."
     },
     "notConfigured": {
       "title": "Accounts are not set up in this build",
@@ -1045,7 +1048,9 @@ export default {
       "ready": {
         "label": "Ready",
         "text": "Sync is on and starts as soon as there are changes to exchange."
-      }
+      },
+      "now": "Sync now",
+      "lastSynced": "Last synced {time}"
     },
     "status": {
       "signedIn": "Signed in.",
@@ -1058,7 +1063,10 @@ export default {
       "profileSaved": "Profile saved.",
       "passwordSaved": "Password updated.",
       "signedOut": "Signed out.",
-      "hubDeckDeleted": "Hub deck deleted."
+      "hubDeckDeleted": "Hub deck deleted.",
+      "emailChangeSent": "Confirmation link sent to {email}. Your email changes once you open it.",
+      "signedOutEverywhere": "Signed out on all devices.",
+      "deviceForgotten": "{name} removed from your devices."
     },
     "errors": {
       "session": "Could not load your account session.",
@@ -1069,7 +1077,8 @@ export default {
         "one": "Use at least {count} character for the new password.",
         "other": "Use at least {count} characters for the new password."
       },
-      "passwordMismatch": "The two passwords do not match."
+      "passwordMismatch": "The two passwords do not match.",
+      "sameEmail": "That is already your email."
     },
     "authErrors": {
       "invalid_credentials": "The email or password is not right.",
@@ -1090,6 +1099,37 @@ export default {
       "social_timeout": "Sign-in took too long. Try again.",
       "social_cancelled": "Sign-in was cancelled.",
       "social_failed": "Sign-in did not finish. Try again."
+    },
+    "profile": {
+      "nameTitle": "Name",
+      "emailTitle": "Email",
+      "emailText": "A link goes to the new address. The change takes effect once you open it.",
+      "currentEmail": "In use",
+      "pendingEmail": "Waiting for confirmation: {email}. Open the link we sent there.",
+      "newEmail": "New email",
+      "sendLink": "Send confirmation link"
+    },
+    "sessions": {
+      "title": "Sessions",
+      "text": "Signed in somewhere you no longer use? End every session, this one included.",
+      "method": "Signed in with",
+      "signOutEverywhere": "Sign out on all devices",
+      "confirm": "Sign out on every device, this one included?"
+    },
+    "devices": {
+      "text": "Devices that have synced with this account. Removing one takes it off this list; it comes back if it syncs again.",
+      "loading": "Loading your devices…",
+      "errorTitle": "Could not load your devices.",
+      "errorText": "Check your connection and try again.",
+      "emptyTitle": "No devices yet.",
+      "emptyText": "A device appears here after its first sync.",
+      "unnamed": "Unnamed device",
+      "thisDevice": "This device",
+      "desktop": "Desktop app",
+      "web": "Web",
+      "lastSeen": "Last synced {time}",
+      "forget": "Remove",
+      "forgetNamed": "Remove {name}"
     }
   },
   "prefs": {

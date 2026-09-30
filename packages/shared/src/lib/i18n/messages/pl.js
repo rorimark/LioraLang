@@ -1008,7 +1008,8 @@ export default {
       "reset": "Reset hasła",
       "profile": "Profil",
       "security": "Bezpieczeństwo",
-      "hub": "Moje talie w hubie"
+      "hub": "Moje talie w hubie",
+      "devices": "Urządzenia"
     },
     "continueWith": "Kontynuuj z {provider}",
     "emailPassword": "E-mail i hasło",
@@ -1078,7 +1079,9 @@ export default {
       "repeat": "Powtórz nowe hasło",
       "saveNew": "Zapisz nowe hasło",
       "update": "Zmień hasło",
-      "emailLink": "Wyślij mi link do resetu"
+      "emailLink": "Wyślij mi link do resetu",
+      "add": "Dodaj hasło",
+      "addHint": "Wtedy zalogujesz się też adresem {email} i hasłem."
     },
     "notConfigured": {
       "title": "Konta nie są skonfigurowane w tej wersji",
@@ -1174,7 +1177,9 @@ export default {
       "ready": {
         "label": "Gotowe",
         "text": "Synchronizacja jest włączona i ruszy, gdy pojawią się zmiany."
-      }
+      },
+      "now": "Synchronizuj teraz",
+      "lastSynced": "Ostatnia synchronizacja: {time}"
     },
     "status": {
       "signedIn": "Zalogowano.",
@@ -1187,7 +1192,10 @@ export default {
       "profileSaved": "Profil zapisany.",
       "passwordSaved": "Hasło zmienione.",
       "signedOut": "Wylogowano.",
-      "hubDeckDeleted": "Talia usunięta z hubu."
+      "hubDeckDeleted": "Talia usunięta z hubu.",
+      "emailChangeSent": "Link wysłany na {email}. Adres zmieni się po jego otwarciu.",
+      "signedOutEverywhere": "Wylogowano ze wszystkich urządzeń.",
+      "deviceForgotten": "Usunięto {name} z listy urządzeń."
     },
     "errors": {
       "session": "Nie udało się wczytać sesji konta.",
@@ -1200,7 +1208,8 @@ export default {
         "many": "Nowe hasło musi mieć co najmniej {count} znaków.",
         "other": "Nowe hasło musi mieć co najmniej {count} znaków."
       },
-      "passwordMismatch": "Hasła nie są takie same."
+      "passwordMismatch": "Hasła nie są takie same.",
+      "sameEmail": "To już jest Twój adres."
     },
     "authErrors": {
       "invalid_credentials": "Nieprawidłowy e-mail lub hasło.",
@@ -1221,6 +1230,37 @@ export default {
       "social_timeout": "Logowanie trwało zbyt długo. Spróbuj ponownie.",
       "social_cancelled": "Logowanie anulowane.",
       "social_failed": "Logowanie nie zostało dokończone. Spróbuj ponownie."
+    },
+    "profile": {
+      "nameTitle": "Imię",
+      "emailTitle": "E-mail",
+      "emailText": "Wyślemy link na nowy adres. Zmiana nastąpi po jego otwarciu.",
+      "currentEmail": "Obecny",
+      "pendingEmail": "Czeka na potwierdzenie: {email}. Otwórz link, który tam wysłaliśmy.",
+      "newEmail": "Nowy e-mail",
+      "sendLink": "Wyślij link"
+    },
+    "sessions": {
+      "title": "Sesje",
+      "text": "Jesteś zalogowany tam, gdzie już nie bywasz? Zakończ wszystkie sesje, także tę.",
+      "method": "Sposób logowania",
+      "signOutEverywhere": "Wyloguj ze wszystkich urządzeń",
+      "confirm": "Wylogować ze wszystkich urządzeń, także z tego?"
+    },
+    "devices": {
+      "text": "Urządzenia, które synchronizowały się z tym kontem. Usunięte wróci na listę, jeśli znów się zsynchronizuje.",
+      "loading": "Wczytywanie urządzeń…",
+      "errorTitle": "Nie udało się wczytać urządzeń.",
+      "errorText": "Sprawdź połączenie i spróbuj ponownie.",
+      "emptyTitle": "Brak urządzeń.",
+      "emptyText": "Urządzenie pojawi się tu po pierwszej synchronizacji.",
+      "unnamed": "Urządzenie bez nazwy",
+      "thisDevice": "To urządzenie",
+      "desktop": "Aplikacja na komputer",
+      "web": "Przeglądarka",
+      "lastSeen": "Synchronizacja: {time}",
+      "forget": "Usuń",
+      "forgetNamed": "Usuń {name}"
     }
   },
   "prefs": {
