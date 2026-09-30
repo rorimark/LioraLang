@@ -965,8 +965,7 @@ export default {
         "label": "準備完了",
         "text": "同期はオンです。変更があるとすぐに始まります。"
       },
-      "now": "今すぐ同期",
-      "lastSynced": "最終同期：{time}"
+      "now": "今すぐ同期"
     },
     "status": {
       "signedIn": "ログインしました。",
@@ -982,7 +981,10 @@ export default {
       "hubDeckDeleted": "ハブのデッキを削除しました。",
       "emailChangeSent": "{email}に確認リンクを送りました。開くとメールが変更されます。",
       "signedOutEverywhere": "すべてのデバイスでログアウトしました。",
-      "deviceForgotten": "{name}をデバイス一覧から削除しました。"
+      "deviceForgotten": "{name}をデバイス一覧から削除しました。",
+      "devicesForgotten": {
+        "other": "{count}台のデバイスを削除しました。"
+      }
     },
     "errors": {
       "session": "アカウントのセッションを読み込めませんでした。",
@@ -1030,15 +1032,29 @@ export default {
     "devices": {
       "loading": "デバイスを読み込んでいます…",
       "errorTitle": "デバイスを読み込めませんでした。",
-      "emptyTitle": "まだデバイスはありません。",
-      "emptyText": "最初の同期のあと、ここにデバイスが表示されます。",
       "unnamed": "名前のないデバイス",
       "thisDevice": "このデバイス",
-      "desktop": "デスクトップアプリ",
-      "web": "Web",
-      "lastSeen": "最終同期：{time}",
       "forget": "削除",
-      "forgetNamed": "{name}を削除"
+      "forgetNamed": "{name}を削除",
+      "app": "LioraLangアプリ",
+      "browser": "ブラウザ",
+      "activeNow": "使用中",
+      "active": "{time}に使用",
+      "lastActive": "最終使用：{date}",
+      "others": "ほかのデバイス",
+      "noOthers": "ほかのデバイスはまだありません",
+      "noOthersHint": "スマートフォンや別のパソコンでこのアカウントにログインしてください。最初の同期のあとここに表示されます。",
+      "inactive": "2か月使われていません",
+      "inactiveHint": "もう手元にないデバイスかもしれません。削除しても一覧から外れるだけです。",
+      "removeAll": "すべて削除",
+      "syncedNow": "たった今同期しました",
+      "synced": "{time}に同期",
+      "removeAllLabel": {
+        "other": "2か月使われていないデバイス：{count}台"
+      },
+      "pending": {
+        "other": "同期待ちの変更：{count}件"
+      }
     }
   },
   "prefs": {

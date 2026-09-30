@@ -1097,8 +1097,7 @@ export default {
         "label": "Připraveno",
         "text": "Synchronizace je zapnutá a spustí se, jakmile budou změny."
       },
-      "now": "Synchronizovat",
-      "lastSynced": "Naposledy synchronizováno {time}"
+      "now": "Synchronizovat"
     },
     "status": {
       "signedIn": "Přihlášeno.",
@@ -1114,7 +1113,12 @@ export default {
       "hubDeckDeleted": "Balíček smazán z hubu.",
       "emailChangeSent": "Odkaz odeslán na {email}. E-mail se změní, jakmile ho otevřete.",
       "signedOutEverywhere": "Odhlášeno ze všech zařízení.",
-      "deviceForgotten": "{name} odebráno z vašich zařízení."
+      "deviceForgotten": "{name} odebráno z vašich zařízení.",
+      "devicesForgotten": {
+        "one": "Odebráno {count} zařízení.",
+        "few": "Odebrána {count} zařízení.",
+        "other": "Odebráno {count} zařízení."
+      }
     },
     "errors": {
       "session": "Relaci účtu nešlo načíst.",
@@ -1164,15 +1168,33 @@ export default {
     "devices": {
       "loading": "Načítáme zařízení…",
       "errorTitle": "Zařízení se nepodařilo načíst.",
-      "emptyTitle": "Zatím žádná zařízení.",
-      "emptyText": "Zařízení se tu objeví po první synchronizaci.",
       "unnamed": "Zařízení bez názvu",
       "thisDevice": "Toto zařízení",
-      "desktop": "Aplikace pro počítač",
-      "web": "Web",
-      "lastSeen": "Naposledy synchronizováno {time}",
       "forget": "Odebrat",
-      "forgetNamed": "Odebrat {name}"
+      "forgetNamed": "Odebrat {name}",
+      "app": "Aplikace LioraLang",
+      "browser": "Prohlížeč",
+      "activeNow": "Právě aktivní",
+      "active": "Aktivní {time}",
+      "lastActive": "Naposledy aktivní {date}",
+      "others": "Další zařízení",
+      "noOthers": "Zatím žádná další zařízení",
+      "noOthersHint": "Přihlaste se k tomuto účtu na telefonu nebo jiném počítači. Po první synchronizaci se objeví tady.",
+      "inactive": "Nepoužívaná dva měsíce",
+      "inactiveHint": "Nejspíš zařízení, která už nemáte. Odebrání je jen smaže ze seznamu.",
+      "removeAll": "Odebrat vše",
+      "syncedNow": "Právě synchronizováno",
+      "synced": "Synchronizováno {time}",
+      "removeAllLabel": {
+        "one": "{count} zařízení nepoužívané dva měsíce",
+        "few": "{count} zařízení nepoužívaná dva měsíce",
+        "other": "{count} zařízení nepoužívaných dva měsíce"
+      },
+      "pending": {
+        "one": "{count} změna čeká na synchronizaci",
+        "few": "{count} změny čekají na synchronizaci",
+        "other": "{count} změn čeká na synchronizaci"
+      }
     }
   },
   "prefs": {

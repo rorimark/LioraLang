@@ -1,4 +1,4 @@
-import { memo, useId, useMemo } from "react";
+import { memo, useCallback, useId, useLayoutEffect, useMemo, useRef } from "react";
 import { Link } from "react-router";
 import {
   FiAlertCircle,
@@ -6,6 +6,10 @@ import {
   FiCopy,
   FiExternalLink,
   FiLogOut,
+  FiMonitor,
+  FiRefreshCw,
+  FiSmartphone,
+  FiTablet,
   FiTrash2,
 } from "react-icons/fi";
 import { Button, InlineAlert, SettingGroup, SettingRow, TextInput } from "@shared/ui";
@@ -511,94 +515,243 @@ const SecurityTab = memo(({ panel }) => {
 
 SecurityTab.displayName = "SecurityTab";
 
-const DevicesTab = memo(({ panel }) => {
-  const { t, formatDate } = useI18n();
-  let listState = null;
+const DEVICE_ICONS = { phone: FiSmartphone, tablet: FiTablet, computer: FiMonitor };
 
-  if (panel.devicesState === "loading" || panel.devicesState === "idle") {
-    listState = t("account.devices.loading");
-  } else if (panel.devicesState === "error") {
-    listState = t("account.devices.errorTitle");
-  } else if (panel.devices.length === 0) {
-    listState = `${t("account.devices.emptyTitle")} ${t("account.devices.emptyText")}`;
+// "Mac", "iPhone"; an old entry without a system reads as what ran there.
+const deviceTitle = (identity, t) => {
+  if (identity.title) return identity.title;
+  return identity.isApp ? t("account.devices.app") : t("account.devices.browser");
+};
+
+// What runs LioraLang there: the browser, or the app with its version.
+const deviceClient = (device, t) => {
+  const { identity } = device;
+
+  if (identity.isApp) {
+    return [t("account.devices.app"), device.appVersion ? `v${device.appVersion}` : ""].filter(Boolean).join(" ");
   }
 
+  return identity.client || (identity.title ? t("account.devices.browser") : "");
+};
+
+const useActivityText = () => {
+  const { t, locale, formatDate } = useI18n();
+  const relative = useMemo(() => new Intl.RelativeTimeFormat(locale, { numeric: "auto" }), [locale]);
+
+  return useCallback(
+    (activity) => {
+      if (activity.state === "now") return t("account.devices.activeNow");
+      if (activity.state === "recent") {
+        return t("account.devices.active", { time: relative.format(activity.value, activity.unit) });
+      }
+      if (activity.state === "old" || activity.state === "inactive") {
+        return t("account.devices.lastActive", { date: formatDate(activity.date, { dateStyle: "medium" }) });
+      }
+      return "";
+    },
+    [formatDate, relative, t],
+  );
+};
+
+const DeviceRow = ({ device, detail, control, isLive = false, isQuiet = false }) => {
+  const { t } = useI18n();
+  const Icon = DEVICE_ICONS[device.identity.kind] || FiMonitor;
+  const title = deviceTitle(device.identity, t);
+  const client = deviceClient(device, t);
+
   return (
-    <SettingGroup>
-      <SettingRow
-        label={t("account.overview.sync")}
-        hint={panel.syncOverview.state === "synced" && panel.lastSyncedLabel ? panel.lastSyncedLabel : panel.syncOverview.text}
-        control={
-          panel.canSyncNow ? (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={panel.handleSyncNow}
-              isLoading={panel.pendingAction === "sync-now"}
-            >
-              {t("account.sync.now")}
-            </Button>
-          ) : null
-        }
-      />
-      {listState ? (
-        <SettingRow
-          label={listState}
-          control={
-            panel.devicesState === "error" ? (
+    <div className={`setting-row account-device${device.isCurrent ? " is-current" : ""}${isQuiet ? " is-quiet" : ""}`}>
+      <span className="account-device__icon" aria-hidden="true">
+        <Icon />
+        {isLive ? <i className="account-device__live" /> : null}
+      </span>
+      <div className="setting-row__text">
+        <span className="setting-row__label">
+          {title}
+          {client ? <span className="account-device__client"> · {client}</span> : null}
+        </span>
+        {detail ? <span className="setting-row__hint">{detail}</span> : null}
+      </div>
+      {control ? <div className="setting-row__control">{control}</div> : null}
+    </div>
+  );
+};
+
+const DevicesTab = memo(({ panel }) => {
+  const { t, locale } = useI18n();
+  const activityText = useActivityText();
+  const relative = useMemo(() => new Intl.RelativeTimeFormat(locale, { numeric: "auto" }), [locale]);
+  const { current, active, inactive } = panel.deviceGroups;
+  const isLoading = panel.devicesState === "loading" || panel.devicesState === "idle";
+  const isBusy = panel.forgettingDeviceId === "all";
+
+  // This device's line says what matters about its sync: waiting changes,
+  // no connection, a problem, or when it last went through.
+  let syncLine = panel.syncOverview.text;
+
+  if (panel.pendingChanges > 0) {
+    syncLine = t("account.devices.pending", { count: panel.pendingChanges });
+  } else if (panel.syncOverview.state === "synced" && panel.syncStatus.lastSuccessfulSyncAt) {
+    const minutes = Math.round((Date.parse(panel.syncStatus.lastSuccessfulSyncAt) - panel.nowMs) / 60_000);
+    syncLine =
+      minutes > -1
+        ? t("account.devices.syncedNow")
+        : t("account.devices.synced", {
+            time: Math.abs(minutes) < 60 ? relative.format(minutes, "minute") : relative.format(Math.round(minutes / 60), "hour"),
+          });
+  }
+
+  const forgetButton = (device) => (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="account__remove"
+      onClick={() => panel.handleForgetDevice(device)}
+      isLoading={panel.forgettingDeviceId === device.deviceId}
+      disabled={isBusy}
+      aria-label={t("account.devices.forgetNamed", { name: deviceTitle(device.identity, t) })}
+    >
+      {t("account.devices.forget")}
+    </Button>
+  );
+
+  const syncButton = panel.canSyncNow ? (
+    <Button
+      variant="secondary"
+      size="sm"
+      onClick={panel.handleSyncNow}
+      isLoading={panel.pendingAction === "sync-now"}
+    >
+      <FiRefreshCw aria-hidden="true" />
+      <span>{t("account.sync.now")}</span>
+    </Button>
+  ) : null;
+
+  return (
+    <div className="account-devices">
+      <SettingGroup title={t("account.devices.thisDevice")}>
+        {current ? (
+          <DeviceRow device={current} detail={syncLine} control={syncButton} isLive />
+        ) : (
+          <SettingRow label={t("account.overview.sync")} hint={syncLine} control={syncButton} />
+        )}
+      </SettingGroup>
+
+      <SettingGroup title={t("account.devices.others")}>
+        {isLoading ? <SettingRow label={t("account.devices.loading")} /> : null}
+        {panel.devicesState === "error" ? (
+          <SettingRow
+            label={t("account.devices.errorTitle")}
+            control={
               <Button variant="ghost" size="sm" onClick={panel.loadDevices}>
                 {t("common.retry")}
               </Button>
-            ) : null
-          }
-        />
-      ) : (
-        panel.devices.map((device) => {
-          const name = device.deviceName || t("account.devices.unnamed");
-          const hint = [
-            t(device.platform === "desktop" ? "account.devices.desktop" : "account.devices.web"),
-            device.lastSeenAt
-              ? t("account.devices.lastSeen", {
-                  time: formatDate(device.lastSeenAt, { dateStyle: "medium", timeStyle: "short" }),
-                })
-              : "",
-          ]
-            .filter(Boolean)
-            .join(" · ");
+            }
+          />
+        ) : null}
+        {panel.devicesState === "ready" && active.length === 0 ? (
+          <SettingRow label={t("account.devices.noOthers")} hint={t("account.devices.noOthersHint")} />
+        ) : null}
+        {active.map((device) => (
+          <DeviceRow
+            key={device.deviceId}
+            device={device}
+            detail={activityText(device.activity)}
+            isLive={device.activity.state === "now"}
+            control={forgetButton(device)}
+          />
+        ))}
+      </SettingGroup>
 
-          return (
-            <SettingRow
+      {inactive.length > 0 ? (
+        <SettingGroup title={t("account.devices.inactive")} description={t("account.devices.inactiveHint")}>
+          {inactive.map((device) => (
+            <DeviceRow
               key={device.deviceId}
-              label={
-                <>
-                  {name}
-                  {device.isCurrent ? <span className="account__here"> · {t("account.devices.thisDevice")}</span> : null}
-                </>
-              }
-              hint={hint}
+              device={device}
+              detail={activityText(device.activity)}
+              control={forgetButton(device)}
+              isQuiet
+            />
+          ))}
+          {inactive.length > 1 ? (
+            <SettingRow
+              label={t("account.devices.removeAllLabel", { count: inactive.length })}
               control={
-                device.isCurrent ? null : (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="account__remove"
-                    onClick={() => panel.handleForgetDevice(device)}
-                    isLoading={panel.forgettingDeviceId === device.deviceId}
-                    aria-label={t("account.devices.forgetNamed", { name })}
-                  >
-                    {t("account.devices.forget")}
-                  </Button>
-                )
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => panel.handleForgetDevices(inactive)}
+                  isLoading={isBusy}
+                >
+                  {t("account.devices.removeAll")}
+                </Button>
               }
             />
-          );
-        })
-      )}
-    </SettingGroup>
+          ) : null}
+        </SettingGroup>
+      ) : null}
+    </div>
   );
 });
 
 DevicesTab.displayName = "DevicesTab";
+
+// The element that scrolls the page: the nearest ancestor that scrolls,
+// or the document.
+const findScrollParent = (element) => {
+  for (let node = element?.parentElement; node; node = node.parentElement) {
+    const { overflowY } = getComputedStyle(node);
+
+    if ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight) {
+      return node;
+    }
+  }
+
+  return document.scrollingElement;
+};
+
+// Switching tabs keeps the page where it was. The new tab starts at least
+// as tall as the one it replaces, so a short tab (or one still loading)
+// cannot pull the page up, and the scroll position is put back after it
+// renders.
+const useSteadyTabs = (activeTab, setActiveTab) => {
+  const panelRef = useRef(null);
+  const pendingRef = useRef(null);
+
+  const switchTab = useCallback(
+    (key) => {
+      const panel = panelRef.current;
+
+      if (panel && key !== activeTab) {
+        const scroller = findScrollParent(panel);
+        const content = panel.firstElementChild || panel;
+        pendingRef.current = { scroller, top: scroller?.scrollTop ?? 0, height: content.offsetHeight };
+      }
+
+      setActiveTab(key);
+    },
+    [activeTab, setActiveTab],
+  );
+
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    const pending = pendingRef.current;
+    pendingRef.current = null;
+
+    if (!panel) {
+      return;
+    }
+
+    panel.style.minHeight = pending ? `${pending.height}px` : "";
+
+    if (pending?.scroller) {
+      pending.scroller.scrollTop = pending.top;
+    }
+  }, [activeTab]);
+
+  return { panelRef, switchTab };
+};
 
 // Sync reads as on for every state but a problem.
 const isSyncOn = (state) => ["synced", "ready", "syncing"].includes(state);
@@ -608,6 +761,7 @@ const SignedInView = memo(({ panel }) => {
   const { t } = i18n;
   const { authState } = panel;
   const cardStats = useAccountCardStats(authState.isAuthenticated ? authState.user?.id : "");
+  const { panelRef, switchTab } = useSteadyTabs(panel.activeTab, panel.setActiveTab);
   const name = resolveCardName(authState) || t("account.learner");
   const providerValue = panel.signInMethodLabel;
   // Kept stable between sync status updates, so the card does not redraw
@@ -661,7 +815,7 @@ const SignedInView = memo(({ panel }) => {
                   role="tab"
                   aria-selected={panel.activeTab === tab.key}
                   className={panel.activeTab === tab.key ? "is-active" : ""}
-                  onClick={() => panel.setActiveTab(tab.key)}
+                  onClick={() => switchTab(tab.key)}
                 >
                   {tab.label}
                 </button>
@@ -679,11 +833,13 @@ const SignedInView = memo(({ panel }) => {
             </Button>
           </div>
 
-          <section className="account__panel" key={panel.activeTab}>
-            {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
-            {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
-            {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
-            {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
+          <section className="account__panel" ref={panelRef}>
+            <div className="account__panel-body" key={panel.activeTab}>
+              {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
+              {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
+              {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
+              {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
+            </div>
           </section>
 
         </div>

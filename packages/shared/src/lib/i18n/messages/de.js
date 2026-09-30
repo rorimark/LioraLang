@@ -1031,8 +1031,7 @@ export default {
         "label": "Bereit",
         "text": "Die Synchronisierung ist an und startet, sobald es Änderungen gibt."
       },
-      "now": "Jetzt synchronisieren",
-      "lastSynced": "Zuletzt synchronisiert {time}"
+      "now": "Jetzt synchronisieren"
     },
     "status": {
       "signedIn": "Angemeldet.",
@@ -1048,7 +1047,11 @@ export default {
       "hubDeckDeleted": "Hub-Deck gelöscht.",
       "emailChangeSent": "Bestätigungslink an {email} gesendet. Die Adresse ändert sich, sobald du ihn öffnest.",
       "signedOutEverywhere": "Auf allen Geräten abgemeldet.",
-      "deviceForgotten": "{name} aus deinen Geräten entfernt."
+      "deviceForgotten": "{name} aus deinen Geräten entfernt.",
+      "devicesForgotten": {
+        "one": "{count} Gerät entfernt.",
+        "other": "{count} Geräte entfernt."
+      }
     },
     "errors": {
       "session": "Deine Kontositzung konnte nicht geladen werden.",
@@ -1097,15 +1100,31 @@ export default {
     "devices": {
       "loading": "Geräte werden geladen…",
       "errorTitle": "Die Geräte konnten nicht geladen werden.",
-      "emptyTitle": "Noch keine Geräte.",
-      "emptyText": "Ein Gerät erscheint hier nach seiner ersten Synchronisierung.",
       "unnamed": "Unbenanntes Gerät",
       "thisDevice": "Dieses Gerät",
-      "desktop": "Desktop-App",
-      "web": "Web",
-      "lastSeen": "Zuletzt synchronisiert {time}",
       "forget": "Entfernen",
-      "forgetNamed": "{name} entfernen"
+      "forgetNamed": "{name} entfernen",
+      "app": "LioraLang-App",
+      "browser": "Browser",
+      "activeNow": "Gerade aktiv",
+      "active": "Aktiv {time}",
+      "lastActive": "Zuletzt aktiv am {date}",
+      "others": "Andere Geräte",
+      "noOthers": "Noch keine anderen Geräte",
+      "noOthersHint": "Melde dich auf deinem Handy oder einem anderen Computer mit diesem Konto an. Nach der ersten Synchronisierung erscheint es hier.",
+      "inactive": "Seit zwei Monaten nicht benutzt",
+      "inactiveHint": "Wahrscheinlich Geräte, die du nicht mehr hast. Entfernen nimmt sie nur von dieser Liste.",
+      "removeAll": "Alle entfernen",
+      "syncedNow": "Gerade synchronisiert",
+      "synced": "Synchronisiert {time}",
+      "removeAllLabel": {
+        "one": "{count} Gerät seit zwei Monaten nicht benutzt",
+        "other": "{count} Geräte seit zwei Monaten nicht benutzt"
+      },
+      "pending": {
+        "one": "{count} Änderung wartet auf Synchronisierung",
+        "other": "{count} Änderungen warten auf Synchronisierung"
+      }
     }
   },
   "prefs": {

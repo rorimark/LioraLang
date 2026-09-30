@@ -1097,8 +1097,7 @@ export default {
         "label": "Listo",
         "text": "La sincronización está activa y empezará en cuanto haya cambios."
       },
-      "now": "Sincronizar ahora",
-      "lastSynced": "Última sincronización: {time}"
+      "now": "Sincronizar ahora"
     },
     "status": {
       "signedIn": "Sesión iniciada.",
@@ -1114,7 +1113,12 @@ export default {
       "hubDeckDeleted": "Mazo del hub eliminado.",
       "emailChangeSent": "Enlace enviado a {email}. Tu correo cambiará cuando lo abras.",
       "signedOutEverywhere": "Sesión cerrada en todos los dispositivos.",
-      "deviceForgotten": "{name} se quitó de tus dispositivos."
+      "deviceForgotten": "{name} se quitó de tus dispositivos.",
+      "devicesForgotten": {
+        "one": "{count} dispositivo quitado.",
+        "many": "{count} dispositivos quitados.",
+        "other": "{count} dispositivos quitados."
+      }
     },
     "errors": {
       "session": "No se ha podido cargar la sesión de tu cuenta.",
@@ -1164,15 +1168,33 @@ export default {
     "devices": {
       "loading": "Cargando tus dispositivos…",
       "errorTitle": "No se pudieron cargar los dispositivos.",
-      "emptyTitle": "Aún no hay dispositivos.",
-      "emptyText": "Un dispositivo aparece aquí tras su primera sincronización.",
       "unnamed": "Dispositivo sin nombre",
       "thisDevice": "Este dispositivo",
-      "desktop": "Aplicación de escritorio",
-      "web": "Web",
-      "lastSeen": "Última sincronización: {time}",
       "forget": "Quitar",
-      "forgetNamed": "Quitar {name}"
+      "forgetNamed": "Quitar {name}",
+      "app": "App LioraLang",
+      "browser": "Navegador",
+      "activeNow": "Activo ahora",
+      "active": "Activo {time}",
+      "lastActive": "Última actividad: {date}",
+      "others": "Otros dispositivos",
+      "noOthers": "Aún no hay otros dispositivos",
+      "noOthersHint": "Inicia sesión con esta cuenta en tu móvil u otro ordenador. Aparecerá aquí tras su primera sincronización.",
+      "inactive": "Sin usar desde hace dos meses",
+      "inactiveHint": "Probablemente ya no los tienes. Quitar uno solo lo saca de esta lista.",
+      "removeAll": "Quitar todos",
+      "syncedNow": "Sincronizado ahora mismo",
+      "synced": "Sincronizado {time}",
+      "removeAllLabel": {
+        "one": "{count} dispositivo sin usar desde hace dos meses",
+        "many": "{count} dispositivos sin usar desde hace dos meses",
+        "other": "{count} dispositivos sin usar desde hace dos meses"
+      },
+      "pending": {
+        "one": "{count} cambio pendiente de sincronizar",
+        "many": "{count} cambios pendientes de sincronizar",
+        "other": "{count} cambios pendientes de sincronizar"
+      }
     }
   },
   "prefs": {

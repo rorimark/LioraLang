@@ -1031,8 +1031,7 @@ export default {
         "label": "Hazır",
         "text": "Eşitleme açık ve değişiklik olduğunda başlar."
       },
-      "now": "Şimdi eşitle",
-      "lastSynced": "Son eşitleme: {time}"
+      "now": "Şimdi eşitle"
     },
     "status": {
       "signedIn": "Giriş yapıldı.",
@@ -1048,7 +1047,11 @@ export default {
       "hubDeckDeleted": "Hub destesi silindi.",
       "emailChangeSent": "Bağlantı {email} adresine gönderildi. E-postanız, bağlantıyı açınca değişir.",
       "signedOutEverywhere": "Tüm cihazlarda çıkış yapıldı.",
-      "deviceForgotten": "{name} cihazlarınızdan kaldırıldı."
+      "deviceForgotten": "{name} cihazlarınızdan kaldırıldı.",
+      "devicesForgotten": {
+        "one": "{count} cihaz kaldırıldı.",
+        "other": "{count} cihaz kaldırıldı."
+      }
     },
     "errors": {
       "session": "Hesap oturumun yüklenemedi.",
@@ -1097,15 +1100,31 @@ export default {
     "devices": {
       "loading": "Cihazlarınız yükleniyor…",
       "errorTitle": "Cihazlar yüklenemedi.",
-      "emptyTitle": "Henüz cihaz yok.",
-      "emptyText": "Bir cihaz ilk eşitlemesinden sonra burada görünür.",
       "unnamed": "Adsız cihaz",
       "thisDevice": "Bu cihaz",
-      "desktop": "Masaüstü uygulaması",
-      "web": "Web",
-      "lastSeen": "Son eşitleme: {time}",
       "forget": "Kaldır",
-      "forgetNamed": "{name} cihazını kaldır"
+      "forgetNamed": "{name} cihazını kaldır",
+      "app": "LioraLang uygulaması",
+      "browser": "Tarayıcı",
+      "activeNow": "Şu an etkin",
+      "active": "Son etkinlik: {time}",
+      "lastActive": "Son etkinlik: {date}",
+      "others": "Diğer cihazlar",
+      "noOthers": "Henüz başka cihaz yok",
+      "noOthersHint": "Telefonunuzda ya da başka bir bilgisayarda bu hesapla giriş yapın. İlk eşitlemeden sonra burada görünür.",
+      "inactive": "İki aydır kullanılmıyor",
+      "inactiveHint": "Muhtemelen artık sizde olmayan cihazlar. Kaldırmak yalnızca listeden çıkarır.",
+      "removeAll": "Tümünü kaldır",
+      "syncedNow": "Az önce eşitlendi",
+      "synced": "Eşitlendi: {time}",
+      "removeAllLabel": {
+        "one": "{count} cihaz iki aydır kullanılmıyor",
+        "other": "{count} cihaz iki aydır kullanılmıyor"
+      },
+      "pending": {
+        "one": "{count} değişiklik eşitlenmeyi bekliyor",
+        "other": "{count} değişiklik eşitlenmeyi bekliyor"
+      }
     }
   },
   "prefs": {

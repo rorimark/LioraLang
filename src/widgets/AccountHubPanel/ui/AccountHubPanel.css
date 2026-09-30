@@ -301,6 +301,7 @@
   color: var(--color-text-muted);
   font-size: 0.95rem;
   font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
   user-select: none;
   transition: color 140ms ease;
@@ -330,7 +331,7 @@
   height: 4px;
 }
 
-.account__panel {
+.account__panel-body {
   animation: account-in 200ms ease both;
 }
 
@@ -495,7 +496,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .account__form,
-  .account__panel {
+  .account__panel-body {
     animation: none;
   }
 
@@ -571,5 +572,83 @@
   .account .setting-row__control > .ui-button--ghost {
     width: auto;
     margin-left: -10px;
+  }
+}
+
+/* ---------- devices ---------- */
+
+.account-devices {
+  display: grid;
+  gap: 22px;
+}
+
+/* A device is a settings row with the thing itself in front: a phone, a
+   tablet or a screen, lit green while it is in use. */
+.setting-row.account-device {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px 14px;
+}
+
+.account-device__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+.account-device.is-current .account-device__icon {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.account-device__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.account-device__live {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 12px;
+  height: 12px;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-success);
+}
+
+/* Gone quiet for months: still there, in a lower voice. */
+.account-device.is-quiet .account-device__icon,
+.account-device.is-quiet .setting-row__label {
+  opacity: 0.6;
+}
+
+.account-device__client {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.account-device .ui-button {
+  gap: 6px;
+}
+
+/* Narrow: the row keeps its three parts; the actions are short words. */
+@container setting-group (max-width: 480px) {
+  .setting-row.account-device {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 6px 12px;
+  }
+
+  .account .account-device .setting-row__control {
+    justify-content: flex-end;
+  }
+
+  .account .account-device .setting-row__control > .ui-button {
+    width: auto;
+    margin-left: 0;
   }
 }

@@ -1163,8 +1163,7 @@ export default {
         "label": "Gotowe",
         "text": "Synchronizacja jest włączona i ruszy, gdy pojawią się zmiany."
       },
-      "now": "Synchronizuj teraz",
-      "lastSynced": "Ostatnia synchronizacja: {time}"
+      "now": "Synchronizuj teraz"
     },
     "status": {
       "signedIn": "Zalogowano.",
@@ -1180,7 +1179,13 @@ export default {
       "hubDeckDeleted": "Talia usunięta z hubu.",
       "emailChangeSent": "Link wysłany na {email}. Adres zmieni się po jego otwarciu.",
       "signedOutEverywhere": "Wylogowano ze wszystkich urządzeń.",
-      "deviceForgotten": "Usunięto {name} z listy urządzeń."
+      "deviceForgotten": "Usunięto {name} z listy urządzeń.",
+      "devicesForgotten": {
+        "one": "Usunięto {count} urządzenie.",
+        "few": "Usunięto {count} urządzenia.",
+        "many": "Usunięto {count} urządzeń.",
+        "other": "Usunięto {count} urządzenia."
+      }
     },
     "errors": {
       "session": "Nie udało się wczytać sesji konta.",
@@ -1231,15 +1236,35 @@ export default {
     "devices": {
       "loading": "Wczytywanie urządzeń…",
       "errorTitle": "Nie udało się wczytać urządzeń.",
-      "emptyTitle": "Brak urządzeń.",
-      "emptyText": "Urządzenie pojawi się tu po pierwszej synchronizacji.",
       "unnamed": "Urządzenie bez nazwy",
       "thisDevice": "To urządzenie",
-      "desktop": "Aplikacja na komputer",
-      "web": "Przeglądarka",
-      "lastSeen": "Synchronizacja: {time}",
       "forget": "Usuń",
-      "forgetNamed": "Usuń {name}"
+      "forgetNamed": "Usuń {name}",
+      "app": "Aplikacja LioraLang",
+      "browser": "Przeglądarka",
+      "activeNow": "Aktywne teraz",
+      "active": "Aktywne {time}",
+      "lastActive": "Ostatnio aktywne {date}",
+      "others": "Inne urządzenia",
+      "noOthers": "Brak innych urządzeń",
+      "noOthersHint": "Zaloguj się na to konto na telefonie lub innym komputerze. Urządzenie pojawi się tu po pierwszej synchronizacji.",
+      "inactive": "Nieużywane od dwóch miesięcy",
+      "inactiveHint": "Pewnie już ich nie masz. Usunięcie tylko zdejmuje urządzenie z listy.",
+      "removeAll": "Usuń wszystkie",
+      "syncedNow": "Zsynchronizowano przed chwilą",
+      "synced": "Zsynchronizowano {time}",
+      "removeAllLabel": {
+        "one": "{count} urządzenie nieużywane od dwóch miesięcy",
+        "few": "{count} urządzenia nieużywane od dwóch miesięcy",
+        "many": "{count} urządzeń nieużywanych od dwóch miesięcy",
+        "other": "{count} urządzenia nieużywanego od dwóch miesięcy"
+      },
+      "pending": {
+        "one": "{count} zmiana czeka na synchronizację",
+        "few": "{count} zmiany czekają na synchronizację",
+        "many": "{count} zmian czeka na synchronizację",
+        "other": "{count} zmiany czeka na synchronizację"
+      }
     }
   },
   "prefs": {

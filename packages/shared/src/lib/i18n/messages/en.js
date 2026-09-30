@@ -1034,8 +1034,7 @@ export default {
         "label": "Ready",
         "text": "Sync is on and starts as soon as there are changes to exchange."
       },
-      "now": "Sync now",
-      "lastSynced": "Last synced {time}"
+      "now": "Sync now"
     },
     "status": {
       "signedIn": "Signed in.",
@@ -1051,7 +1050,11 @@ export default {
       "hubDeckDeleted": "Hub deck deleted.",
       "emailChangeSent": "Confirmation link sent to {email}. Your email changes once you open it.",
       "signedOutEverywhere": "Signed out on all devices.",
-      "deviceForgotten": "{name} removed from your devices."
+      "deviceForgotten": "{name} removed from your devices.",
+      "devicesForgotten": {
+        "one": "{count} device removed.",
+        "other": "{count} devices removed."
+      }
     },
     "errors": {
       "session": "Could not load your account session.",
@@ -1100,15 +1103,31 @@ export default {
     "devices": {
       "loading": "Loading your devices…",
       "errorTitle": "Could not load your devices.",
-      "emptyTitle": "No devices yet.",
-      "emptyText": "A device appears here after its first sync.",
       "unnamed": "Unnamed device",
       "thisDevice": "This device",
-      "desktop": "Desktop app",
-      "web": "Web",
-      "lastSeen": "Last synced {time}",
       "forget": "Remove",
-      "forgetNamed": "Remove {name}"
+      "forgetNamed": "Remove {name}",
+      "app": "LioraLang app",
+      "browser": "Browser",
+      "activeNow": "Active now",
+      "active": "Active {time}",
+      "lastActive": "Last active {date}",
+      "others": "Other devices",
+      "noOthers": "No other devices yet",
+      "noOthersHint": "Sign in with this account on your phone or another computer. It appears here after its first sync.",
+      "inactive": "Not used for two months",
+      "inactiveHint": "Probably devices you no longer have. Removing one only takes it off this list.",
+      "removeAll": "Remove all",
+      "syncedNow": "Synced just now",
+      "synced": "Synced {time}",
+      "removeAllLabel": {
+        "one": "{count} device not used for two months",
+        "other": "{count} devices not used for two months"
+      },
+      "pending": {
+        "one": "{count} change waiting to sync",
+        "other": "{count} changes waiting to sync"
+      }
     }
   },
   "prefs": {

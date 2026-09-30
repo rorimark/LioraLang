@@ -4,6 +4,7 @@ import { usePlatformService } from "@shared/providers";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
 import { buildPublicDeckShareUrl } from "@shared/lib/share";
 import { useI18n } from "@shared/lib/i18n";
+import { groupDevices } from "./deviceList";
 
 const DEFAULT_AUTH_STATE = Object.freeze({
   session: null,
@@ -176,6 +177,11 @@ export const useAccountHubPanel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get(ACCOUNT_TAB_QUERY_KEY);
   const signedInTab = SIGNED_IN_TAB_KEYS.has(requestedTab) ? requestedTab : DEFAULT_SIGNED_IN_TAB;
+  // The router hands out a new setter on every change of address; kept in
+  // a ref, so switching tabs never looks like a new session to the effects
+  // that depend on this.
+  const setSearchParamsRef = useRef(setSearchParams);
+  setSearchParamsRef.current = setSearchParams;
   const setActiveTab = useCallback(
     (key, { replace = false } = {}) => {
       if (!SIGNED_IN_TAB_KEYS.has(key)) {
@@ -183,7 +189,7 @@ export const useAccountHubPanel = () => {
         return;
       }
 
-      setSearchParams(
+      setSearchParamsRef.current(
         (current) => {
           const next = new URLSearchParams(current);
 
@@ -198,11 +204,11 @@ export const useAccountHubPanel = () => {
         { replace },
       );
     },
-    [setSearchParams],
+    [],
   );
   // A message key and its values, said in the current language on render.
   const [status, setStatus] = useState(null);
-  const { t, formatDate } = useI18n();
+  const { t } = useI18n();
   const [statusVariant, setStatusVariant] = useState("info");
   const [pendingAction, setPendingAction] = useState("");
   const [email, setEmail] = useState("");
@@ -653,6 +659,31 @@ export const useAccountHubPanel = () => {
     }
   }, [syncRepository]);
 
+  // Every device gone quiet for months, in one go; each is removed on its
+  // own, so one failure leaves the rest done.
+  const handleForgetDevices = useCallback(async (list) => {
+    const targets = (Array.isArray(list) ? list : []).filter((device) => device?.deviceId && !device.isCurrent);
+
+    if (targets.length === 0) {
+      return;
+    }
+
+    setForgettingDeviceId("all");
+    clearStatus();
+
+    const results = await Promise.allSettled(targets.map((device) => syncRepository.forgetDevice(device.deviceId)));
+    const removed = new Set(targets.filter((_, index) => results[index].status === "fulfilled").map((device) => device.deviceId));
+
+    setDevices((current) => current.filter((item) => !removed.has(item.deviceId)));
+    setForgettingDeviceId("");
+
+    if (removed.size === targets.length) {
+      reportStatus({ key: "account.status.devicesForgotten", params: { count: removed.size } }, "success");
+    } else {
+      reportStatus({ key: "account.errors.action" }, "error");
+    }
+  }, [clearStatus, reportStatus, syncRepository]);
+
   const handleForgetDevice = useCallback(async (device) => {
     if (!device?.deviceId || device.isCurrent) {
       return;
@@ -742,6 +773,22 @@ export const useAccountHubPanel = () => {
   // The device list is read when its tab opens, and again after each sync,
   // which is when this device's "last seen" moves.
   const isDevicesTabOpen = authState.isAuthenticated && signedInTab === "devices";
+  // "Active 5 minutes ago" moves on while the list is open.
+  const [nowMs, setNowMs] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!isDevicesTabOpen) {
+      return undefined;
+    }
+
+    setNowMs(Date.now());
+    const timer = setInterval(() => setNowMs(Date.now()), 60_000);
+    return () => clearInterval(timer);
+  }, [isDevicesTabOpen]);
+
+  const deviceGroups = useMemo(() => groupDevices(devices, nowMs), [devices, nowMs]);
+  const pendingChanges =
+    Number(syncStatus.pendingDeckChanges || 0) + Number(syncStatus.pendingProgressChanges || 0);
 
   useEffect(() => {
     if (isDevicesTabOpen) {
@@ -749,15 +796,6 @@ export const useAccountHubPanel = () => {
     }
   }, [isDevicesTabOpen, loadDevices, syncStatus.lastSuccessfulSyncAt]);
 
-  const lastSyncedLabel = useMemo(
-    () =>
-      syncStatus.lastSuccessfulSyncAt
-        ? t("account.sync.lastSynced", {
-            time: formatDate(syncStatus.lastSuccessfulSyncAt, { dateStyle: "medium", timeStyle: "short" }),
-          })
-        : "",
-    [formatDate, syncStatus.lastSuccessfulSyncAt, t],
-  );
   // Only the providers the project has switched on in Supabase: a button
   // that leads to "provider is not enabled" is worse than no button.
   const [enabledProviders, setEnabledProviders] = useState([]);
@@ -861,9 +899,12 @@ export const useAccountHubPanel = () => {
     newEmail,
     setNewEmail,
     devices,
+    deviceGroups,
+    nowMs,
+    pendingChanges,
+    handleForgetDevices,
     devicesState,
     forgettingDeviceId,
-    lastSyncedLabel,
     canSyncNow,
     signInMethodLabel,
     handleChangeEmail,
