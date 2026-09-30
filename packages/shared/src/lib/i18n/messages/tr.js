@@ -1443,5 +1443,91 @@ export default {
       "deckFiles": "Deste dosyaları",
       "legacyPackages": "Eski LioraLang desteleri"
     }
+  },
+  "quickAdd": {
+    "open": "Kelime ekle",
+    "title": "Kelime ekle",
+    "deck": "Deste",
+    "newDeck": "Yeni deste…",
+    "direction": "{from} → {to}",
+    "deckName": "Deste adı",
+    "deckNamePlaceholder": "Günlük ifadeler",
+    "wordsIn": "Kelime dili",
+    "translationsIn": "Çeviri dili",
+    "newDeckHint": "Deste, eklediğiniz ilk kartla oluşturulur.",
+    "modeLabel": "Ekleme şekli",
+    "tabs": {
+      "single": "Tek tek",
+      "list": "Liste yapıştır"
+    },
+    "wordPlaceholder": "Kelime veya ifade",
+    "translationPlaceholder": "Çeviri",
+    "details": "Daha fazla ayrıntı",
+    "optional": "isteğe bağlı",
+    "examplesPlaceholder": "Her satıra bir örnek",
+    "notSet": "Belirtilmedi",
+    "tagsKept": "Etiketler bir sonraki kart için kalır.",
+    "addCard": "Kartı ekle",
+    "enterHint": "Enter kartı ekler",
+    "duplicate": {
+      "exact": "Bu destede zaten var: {word} — {translation}.",
+      "otherMeaning": "Destede “{translations}” olarak zaten var. Başka bir anlamsa ekleyin.",
+      "confirm": "Bu kart destede zaten var. Yine de eklemek için Enter'a tekrar basın."
+    },
+    "added": {
+      "single": "Eklendi: {word} — {translation}",
+      "list": {
+        "one": "{count} kart eklendi",
+        "other": "{count} kart eklendi"
+      }
+    },
+    "undo": "Geri al",
+    "undone": {
+      "one": "{count} kart kaldırıldı",
+      "other": "{count} kart kaldırıldı"
+    },
+    "doneLabel": "Tamam",
+    "unsaved": "Bazı kelimeler henüz eklenmedi.",
+    "keepEditing": "Düzenlemeye devam et",
+    "discard": "Vazgeç",
+    "editorHint": "Burada eklediğiniz kartlar desteye hemen kaydedilir.",
+    "errors": {
+      "emptyWord": "Önce bir kelime yazın.",
+      "emptyTranslation": "Bir çeviri ekleyip Enter'a basın.",
+      "save": "Kart kaydedilmedi. Metniniz hâlâ burada, tekrar deneyin.",
+      "undo": "Geri alınamadı. Kartlar hâlâ destede.",
+      "deckName": "Önce yeni desteye bir ad verin.",
+      "deckNameTaken": "Bu adda bir deste zaten var.",
+      "sameLanguages": "İki farklı dil seçin."
+    },
+    "list": {
+      "label": "Listeniz",
+      "placeholder": "apple — elma\npear — armut\nplum — erik",
+      "help": "Her satıra bir kart. Kelime ile çevirisi arasında tire, sekme, eşittir işareti veya noktalı virgül kullanabilirsiniz; bir tablodan kopyalanan liste de olur.",
+      "preview": "Listeyi kontrol et",
+      "summary": {
+        "one": "{count} kart hazır.",
+        "other": "{count} kart hazır."
+      },
+      "toFix": {
+        "one": "{count} satırın düzeltilmesi gerekiyor.",
+        "other": "{count} satırın düzeltilmesi gerekiyor."
+      },
+      "swap": "Sütunları değiştir",
+      "startOver": "Baştan başla",
+      "add": {
+        "one": "{count} kart ekle",
+        "other": "{count} kart ekle"
+      },
+      "fixStays": "Düzeltilmesi gereken satırlar burada kalır.",
+      "missingTranslation": "Satır {line}: çeviri bulunamadı. Yazın.",
+      "missingWord": "Satır {line}: kelime eksik.",
+      "exact": "Destede zaten var. Yine de eklemek için işaretleyin.",
+      "repeated": "Bu listede tekrar ediyor. Yine de eklemek için işaretleyin.",
+      "otherMeaning": "Destede “{translations}” olarak var, başka bir anlam olarak eklenir.",
+      "include": "“{word}” ekle",
+      "rowField": "{field}, satır {line}",
+      "remove": "“{word}” kaldır"
+    }
   }
 };

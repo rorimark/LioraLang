@@ -1513,5 +1513,96 @@ export default {
       "deckFiles": "Fichiers de paquets",
       "legacyPackages": "Anciens paquets LioraLang"
     }
+  },
+  "quickAdd": {
+    "open": "Ajouter des mots",
+    "title": "Ajouter des mots",
+    "deck": "Paquet",
+    "newDeck": "Nouveau paquet…",
+    "direction": "{from} → {to}",
+    "deckName": "Nom du paquet",
+    "deckNamePlaceholder": "Phrases du quotidien",
+    "wordsIn": "Mots en",
+    "translationsIn": "Traductions en",
+    "newDeckHint": "Le paquet est créé avec la première carte ajoutée.",
+    "modeLabel": "Mode d'ajout",
+    "tabs": {
+      "single": "Un par un",
+      "list": "Coller une liste"
+    },
+    "wordPlaceholder": "Mot ou expression",
+    "translationPlaceholder": "Traduction",
+    "details": "Plus de détails",
+    "optional": "facultatif",
+    "examplesPlaceholder": "Un exemple par ligne",
+    "notSet": "Non précisé",
+    "tagsKept": "Les étiquettes restent pour la carte suivante.",
+    "addCard": "Ajouter la carte",
+    "enterHint": "Entrée ajoute la carte",
+    "duplicate": {
+      "exact": "Déjà dans ce paquet : {word} — {translation}.",
+      "otherMeaning": "Déjà dans le paquet comme « {translations} ». Ajoutez-le s'il s'agit d'un autre sens.",
+      "confirm": "Cette carte est déjà dans le paquet. Appuyez de nouveau sur Entrée pour l'ajouter quand même."
+    },
+    "added": {
+      "single": "Ajouté : {word} — {translation}",
+      "list": {
+        "one": "{count} carte ajoutée",
+        "many": "{count} cartes ajoutées",
+        "other": "{count} cartes ajoutées"
+      }
+    },
+    "undo": "Annuler",
+    "undone": {
+      "one": "{count} carte retirée",
+      "many": "{count} cartes retirées",
+      "other": "{count} cartes retirées"
+    },
+    "doneLabel": "Terminé",
+    "unsaved": "Certains mots ne sont pas encore ajoutés.",
+    "keepEditing": "Continuer",
+    "discard": "Les abandonner",
+    "editorHint": "Les cartes ajoutées ici sont enregistrées dans le paquet tout de suite.",
+    "errors": {
+      "emptyWord": "Saisissez d'abord un mot.",
+      "emptyTranslation": "Ajoutez une traduction, puis appuyez sur Entrée.",
+      "save": "La carte n'a pas été enregistrée. Votre texte est toujours là, réessayez.",
+      "undo": "Impossible d'annuler. Les cartes sont toujours dans le paquet.",
+      "deckName": "Nommez d'abord le nouveau paquet.",
+      "deckNameTaken": "Un paquet porte déjà ce nom.",
+      "sameLanguages": "Choisissez deux langues différentes."
+    },
+    "list": {
+      "label": "Votre liste",
+      "placeholder": "apple — pomme\npear — poire\nplum — prune",
+      "help": "Une carte par ligne. Entre le mot et sa traduction, un tiret, une tabulation, un signe égal ou un point-virgule conviennent, tout comme un tableau copié d'un tableur.",
+      "preview": "Vérifier la liste",
+      "summary": {
+        "one": "{count} carte prête.",
+        "many": "{count} cartes prêtes.",
+        "other": "{count} cartes prêtes."
+      },
+      "toFix": {
+        "one": "{count} ligne à corriger.",
+        "many": "{count} lignes à corriger.",
+        "other": "{count} lignes à corriger."
+      },
+      "swap": "Inverser les colonnes",
+      "startOver": "Recommencer",
+      "add": {
+        "one": "Ajouter {count} carte",
+        "many": "Ajouter {count} cartes",
+        "other": "Ajouter {count} cartes"
+      },
+      "fixStays": "Les lignes à corriger restent ici.",
+      "missingTranslation": "Ligne {line} : aucune traduction trouvée. Saisissez-la.",
+      "missingWord": "Ligne {line} : le mot manque.",
+      "exact": "Déjà dans le paquet. Cochez pour l'ajouter quand même.",
+      "repeated": "Répété dans cette liste. Cochez pour l'ajouter quand même.",
+      "otherMeaning": "Dans le paquet comme « {translations} », ajouté comme autre sens.",
+      "include": "Ajouter « {word} »",
+      "rowField": "{field}, ligne {line}",
+      "remove": "Retirer « {word} »"
+    }
   }
 };

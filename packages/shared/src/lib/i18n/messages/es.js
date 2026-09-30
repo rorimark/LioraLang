@@ -1513,5 +1513,96 @@ export default {
       "deckFiles": "Archivos de mazos",
       "legacyPackages": "Mazos antiguos de LioraLang"
     }
+  },
+  "quickAdd": {
+    "open": "Añadir palabras",
+    "title": "Añadir palabras",
+    "deck": "Mazo",
+    "newDeck": "Mazo nuevo…",
+    "direction": "{from} → {to}",
+    "deckName": "Nombre del mazo",
+    "deckNamePlaceholder": "Frases del día a día",
+    "wordsIn": "Palabras en",
+    "translationsIn": "Traducciones en",
+    "newDeckHint": "El mazo se crea con la primera tarjeta que añadas.",
+    "modeLabel": "Cómo añadir",
+    "tabs": {
+      "single": "Una a una",
+      "list": "Pegar una lista"
+    },
+    "wordPlaceholder": "Palabra o frase",
+    "translationPlaceholder": "Traducción",
+    "details": "Más detalles",
+    "optional": "opcional",
+    "examplesPlaceholder": "Un ejemplo por línea",
+    "notSet": "Sin indicar",
+    "tagsKept": "Las etiquetas se mantienen para la siguiente tarjeta.",
+    "addCard": "Añadir tarjeta",
+    "enterHint": "Enter añade la tarjeta",
+    "duplicate": {
+      "exact": "Ya está en este mazo: {word} — {translation}.",
+      "otherMeaning": "Ya está en el mazo como «{translations}». Añádela si es otro significado.",
+      "confirm": "Esta tarjeta ya está en el mazo. Pulsa Enter otra vez para añadirla de todos modos."
+    },
+    "added": {
+      "single": "Añadida: {word} — {translation}",
+      "list": {
+        "one": "{count} tarjeta añadida",
+        "many": "{count} tarjetas añadidas",
+        "other": "{count} tarjetas añadidas"
+      }
+    },
+    "undo": "Deshacer",
+    "undone": {
+      "one": "{count} tarjeta quitada",
+      "many": "{count} tarjetas quitadas",
+      "other": "{count} tarjetas quitadas"
+    },
+    "doneLabel": "Listo",
+    "unsaved": "Algunas palabras aún no se han añadido.",
+    "keepEditing": "Seguir editando",
+    "discard": "Descartarlas",
+    "editorHint": "Las tarjetas que añadas aquí se guardan en el mazo al instante.",
+    "errors": {
+      "emptyWord": "Escribe primero una palabra.",
+      "emptyTranslation": "Añade una traducción y pulsa Enter.",
+      "save": "La tarjeta no se guardó. Tu texto sigue aquí, inténtalo de nuevo.",
+      "undo": "No se pudo deshacer. Las tarjetas siguen en el mazo.",
+      "deckName": "Primero ponle nombre al mazo nuevo.",
+      "deckNameTaken": "Ya existe un mazo con este nombre.",
+      "sameLanguages": "Elige dos idiomas distintos."
+    },
+    "list": {
+      "label": "Tu lista",
+      "placeholder": "apple — manzana\npear — pera\nplum — ciruela",
+      "help": "Una tarjeta por línea. Entre la palabra y su traducción vale un guion, un tabulador, un signo igual o un punto y coma, y también una tabla copiada de una hoja de cálculo.",
+      "preview": "Revisar la lista",
+      "summary": {
+        "one": "{count} tarjeta lista.",
+        "many": "{count} tarjetas listas.",
+        "other": "{count} tarjetas listas."
+      },
+      "toFix": {
+        "one": "{count} línea necesita un arreglo.",
+        "many": "{count} líneas necesitan un arreglo.",
+        "other": "{count} líneas necesitan un arreglo."
+      },
+      "swap": "Intercambiar columnas",
+      "startOver": "Empezar de nuevo",
+      "add": {
+        "one": "Añadir {count} tarjeta",
+        "many": "Añadir {count} tarjetas",
+        "other": "Añadir {count} tarjetas"
+      },
+      "fixStays": "Las líneas por arreglar se quedan aquí.",
+      "missingTranslation": "Línea {line}: no hay traducción. Escríbela.",
+      "missingWord": "Línea {line}: falta la palabra.",
+      "exact": "Ya está en el mazo. Márcala para añadirla de todos modos.",
+      "repeated": "Repetida en esta lista. Márcala para añadirla de todos modos.",
+      "otherMeaning": "En el mazo como «{translations}», se añade como otro significado.",
+      "include": "Añadir «{word}»",
+      "rowField": "{field}, línea {line}",
+      "remove": "Quitar «{word}»"
+    }
   }
 };

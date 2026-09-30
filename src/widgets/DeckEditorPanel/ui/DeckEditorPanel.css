@@ -752,3 +752,11 @@
     white-space: nowrap;
   }
 }
+
+/* A saved deck: new words go through the add dialog. */
+.deck-editor-panel__quick-add-text {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}

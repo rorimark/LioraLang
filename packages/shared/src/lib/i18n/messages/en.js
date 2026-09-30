@@ -1446,5 +1446,91 @@ export default {
       "deckFiles": "Deck files",
       "legacyPackages": "Older LioraLang decks"
     }
+  },
+  "quickAdd": {
+    "open": "Add words",
+    "title": "Add words",
+    "deck": "Deck",
+    "newDeck": "New deck…",
+    "direction": "{from} → {to}",
+    "deckName": "Deck name",
+    "deckNamePlaceholder": "Everyday phrases",
+    "wordsIn": "Words in",
+    "translationsIn": "Translations in",
+    "newDeckHint": "The deck is created with the first card you add.",
+    "modeLabel": "How to add",
+    "tabs": {
+      "single": "One by one",
+      "list": "Paste a list"
+    },
+    "wordPlaceholder": "Word or phrase",
+    "translationPlaceholder": "Translation",
+    "details": "More details",
+    "optional": "optional",
+    "examplesPlaceholder": "One example per line",
+    "notSet": "Not set",
+    "tagsKept": "Tags stay filled in for the next card.",
+    "addCard": "Add card",
+    "enterHint": "Enter adds the card",
+    "duplicate": {
+      "exact": "Already in this deck: {word} — {translation}.",
+      "otherMeaning": "Already in this deck as “{translations}”. Add it if this is another meaning.",
+      "confirm": "This card is already in the deck. Press Enter again to add it anyway."
+    },
+    "added": {
+      "single": "Added: {word} — {translation}",
+      "list": {
+        "one": "Added {count} card",
+        "other": "Added {count} cards"
+      }
+    },
+    "undo": "Undo",
+    "undone": {
+      "one": "Removed {count} card",
+      "other": "Removed {count} cards"
+    },
+    "doneLabel": "Done",
+    "unsaved": "Some words are not added yet.",
+    "keepEditing": "Keep editing",
+    "discard": "Discard them",
+    "editorHint": "Cards you add here are saved to the deck straight away.",
+    "errors": {
+      "emptyWord": "Type a word first.",
+      "emptyTranslation": "Add a translation, then press Enter.",
+      "save": "The card was not saved. Your text is still here, try again.",
+      "undo": "Could not undo. The cards are still in the deck.",
+      "deckName": "Name the new deck first.",
+      "deckNameTaken": "A deck with this name already exists.",
+      "sameLanguages": "Pick two different languages."
+    },
+    "list": {
+      "label": "Your list",
+      "placeholder": "apple — jabłko\npear — gruszka\nplum — śliwka",
+      "help": "One card per line. A dash, tab, equals sign or semicolon between the word and its translation all work, and so does a table copied from a spreadsheet.",
+      "preview": "Check the list",
+      "summary": {
+        "one": "{count} card ready.",
+        "other": "{count} cards ready."
+      },
+      "toFix": {
+        "one": "{count} line needs a fix.",
+        "other": "{count} lines need a fix."
+      },
+      "swap": "Swap columns",
+      "startOver": "Start over",
+      "add": {
+        "one": "Add {count} card",
+        "other": "Add {count} cards"
+      },
+      "fixStays": "Lines that need a fix stay here.",
+      "missingTranslation": "Line {line}: no translation found. Type it in.",
+      "missingWord": "Line {line}: the word is missing.",
+      "exact": "Already in this deck. Tick to add it anyway.",
+      "repeated": "Repeated in this list. Tick to add it anyway.",
+      "otherMeaning": "In the deck as “{translations}”, added as another meaning.",
+      "include": "Add “{word}”",
+      "rowField": "{field}, line {line}",
+      "remove": "Remove “{word}”"
+    }
   }
 };

@@ -198,6 +198,44 @@
   outline-offset: 2px;
 }
 
+/* Adding words sits beside the session settings: a key with its name on a
+   wide desk, the plus alone on a narrow one. */
+.learn-desk__add {
+  width: auto;
+  min-width: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: var(--color-primary-strong);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .learn-desk__add {
+    padding: 0;
+    justify-content: center;
+  }
+
+  .learn-desk__add-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.learn-desk__note-actions .learn-desk__key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .learn-desk__status {
   padding: 10px 14px;
   border-radius: var(--radius-control);

@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react";
-import { FiChevronLeft, FiChevronRight, FiSliders } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiPlus, FiSliders } from "react-icons/fi";
 import { Flashcard } from "@features/flashcard";
+import { QuickAddWordsDialog } from "@features/quick-add-words";
 import { SrsRatingControls } from "@features/srs-rating-controls";
 import { useLearnFlashcardsPanel, useLeavingCard } from "../model";
 import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
@@ -168,6 +169,18 @@ export const LearnFlashcardsPanel = memo(() => {
 
         <button
           type="button"
+          className="learn-desk__session learn-desk__add"
+          onClick={panel.openQuickAdd}
+          aria-label={t("quickAdd.open")}
+          title={t("quickAdd.open")}
+          aria-haspopup="dialog"
+        >
+          <FiPlus aria-hidden="true" />
+          <span className="learn-desk__add-label">{t("quickAdd.open")}</span>
+        </button>
+
+        <button
+          type="button"
           className="learn-desk__session"
           onClick={sessionControl.onOpen}
           aria-label={t("learn.openSessionSettings")}
@@ -198,7 +211,7 @@ export const LearnFlashcardsPanel = memo(() => {
       >
         {!panel.hasDecks ? (
           <LearnEmptyDeckState
-            onCreateDeck={panel.openDeckCreatePage}
+            onCreateDeck={panel.openQuickAdd}
             onOpenBrowse={panel.openBrowsePage}
           />
         ) : panel.isWordsLoading ? (
@@ -220,15 +233,29 @@ export const LearnFlashcardsPanel = memo(() => {
                 })}
               </p>
             )}
-            {panel.canStartNewSession && (
+            <div className="learn-desk__note-actions">
+              {panel.canStartNewSession && (
+                <button
+                  type="button"
+                  className="learn-desk__key learn-desk__key--primary"
+                  onClick={panel.handleStartNewSession}
+                >
+                  {t("learn.studyRemaining")}
+                </button>
+              )}
               <button
                 type="button"
-                className="learn-desk__key learn-desk__key--primary"
-                onClick={panel.handleStartNewSession}
+                className={
+                  panel.canStartNewSession
+                    ? "learn-desk__key"
+                    : "learn-desk__key learn-desk__key--primary"
+                }
+                onClick={panel.openQuickAdd}
               >
-                {t("learn.studyRemaining")}
+                <FiPlus aria-hidden="true" />
+                {t("quickAdd.open")}
               </button>
-            )}
+            </div>
           </div>
         ) : null}
 
@@ -360,6 +387,13 @@ export const LearnFlashcardsPanel = memo(() => {
       </div>
 
       <LearnSessionSettingsDialog sessionControl={sessionControl} />
+      {panel.isQuickAddOpen ? (
+        <QuickAddWordsDialog
+          initialDeckId={panel.hasDecks ? panel.selectedDeckId : ""}
+          onWordsAdded={panel.handleQuickAddWords}
+          onClose={panel.closeQuickAdd}
+        />
+      ) : null}
     </article>
   );
 });

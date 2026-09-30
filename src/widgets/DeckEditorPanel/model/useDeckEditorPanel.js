@@ -107,10 +107,11 @@ const createDefaultWordDraft = (deckDefaults = {}) => {
     source: "",
     target: "",
     tertiary: "",
-    level: LEVEL_OPTIONS_SET.has(preferredLevel) ? preferredLevel : "A1",
+    // An unknown word stays unknown: no level or part of speech is assumed.
+    level: LEVEL_OPTIONS_SET.has(preferredLevel) ? preferredLevel : "",
     part_of_speech: PART_OF_SPEECH_OPTIONS_SET.has(preferredPart)
       ? preferredPart
-      : "noun",
+      : "",
     examplesInput: "",
     tagsInput: "",
   };
@@ -152,8 +153,8 @@ const toEditableWord = (word, fallbackIndex) => {
     source: word?.source ?? "",
     target: word?.target ?? "",
     tertiary: word?.tertiary ?? "",
-    level: word?.level || "A1",
-    part_of_speech: word?.part_of_speech || "other",
+    level: word?.level || "",
+    part_of_speech: word?.part_of_speech || "",
     tags: Array.isArray(word?.tags) ? parseTagsJson(word.tags) : [],
     examples,
     example: examples[0] || "",
@@ -168,8 +169,8 @@ const toWordDraft = (word) => {
   source: word?.source ?? "",
   target: word?.target ?? "",
   tertiary: word?.tertiary ?? "",
-  level: word?.level || "A1",
-  part_of_speech: word?.part_of_speech || "noun",
+  level: word?.level || "",
+  part_of_speech: word?.part_of_speech || "",
   examplesInput: examples.join("\n"),
   tagsInput:
     Array.isArray(word?.tags) && word.tags.length > 0
@@ -439,8 +440,8 @@ export const useDeckEditorPanel = () => {
       source: cleanedSource,
       target: wordDraft.target.trim(),
       tertiary: wordDraft.tertiary.trim(),
-      level: deckForm.usesWordLevels ? wordDraft.level || "A1" : null,
-      part_of_speech: wordDraft.part_of_speech || "other",
+      level: deckForm.usesWordLevels ? wordDraft.level || null : null,
+      part_of_speech: wordDraft.part_of_speech || "",
       example: normalizedExamples[0] || "",
       examples: normalizedExamples,
       tags: normalizedTags,
@@ -475,6 +476,26 @@ export const useDeckEditorPanel = () => {
     t,
     wordDraft,
   ]);
+
+  // Words added through the add dialog are already stored; the editor takes
+  // them into its list so a later "Save deck" keeps them.
+  const handleQuickAddWords = useCallback(({ added = [], removedIds = [] } = {}) => {
+    const removed = new Set(removedIds.map((id) => String(id)));
+
+    setWords((currentState) => {
+      const kept = removed.size
+        ? currentState.filter((word) => !removed.has(String(word.id)))
+        : currentState;
+      const known = new Set(kept.map((word) => String(word.id)));
+      const appended = added
+        .filter((word) => !known.has(String(word.id)))
+        .map((word, index) => toEditableWord(word, kept.length + index + 1));
+
+      return appended.length || kept.length !== currentState.length
+        ? [...kept, ...appended]
+        : currentState;
+    });
+  }, []);
 
   const handleEditWord = useCallback(
     (wordId) => {
@@ -648,7 +669,7 @@ export const useDeckEditorPanel = () => {
           source: word.source,
           target: word.target,
           tertiary: hasTertiaryLanguage ? word.tertiary : "",
-          level: deckForm.usesWordLevels ? word.level : null,
+          level: deckForm.usesWordLevels ? word.level || null : null,
           part_of_speech: word.part_of_speech,
           tags: Array.isArray(word.tags) ? word.tags : [],
           example: word.example,
@@ -755,6 +776,8 @@ export const useDeckEditorPanel = () => {
     handleUpsertWordDraft,
     handleEditWord,
     handleDeleteWord,
+    handleQuickAddWords,
+    deckId: numericDeckId,
     handleWordsPageChange,
     handleWordsPageSizeChange,
     handleSaveDeck,

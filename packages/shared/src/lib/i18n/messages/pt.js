@@ -1513,5 +1513,96 @@ export default {
       "deckFiles": "Arquivos de baralho",
       "legacyPackages": "Baralhos antigos do LioraLang"
     }
+  },
+  "quickAdd": {
+    "open": "Adicionar palavras",
+    "title": "Adicionar palavras",
+    "deck": "Baralho",
+    "newDeck": "Novo baralho…",
+    "direction": "{from} → {to}",
+    "deckName": "Nome do baralho",
+    "deckNamePlaceholder": "Frases do dia a dia",
+    "wordsIn": "Palavras em",
+    "translationsIn": "Traduções em",
+    "newDeckHint": "O baralho é criado com o primeiro cartão que você adicionar.",
+    "modeLabel": "Como adicionar",
+    "tabs": {
+      "single": "Uma por vez",
+      "list": "Colar uma lista"
+    },
+    "wordPlaceholder": "Palavra ou frase",
+    "translationPlaceholder": "Tradução",
+    "details": "Mais detalhes",
+    "optional": "opcional",
+    "examplesPlaceholder": "Um exemplo por linha",
+    "notSet": "Não informado",
+    "tagsKept": "As tags continuam para o próximo cartão.",
+    "addCard": "Adicionar cartão",
+    "enterHint": "Enter adiciona o cartão",
+    "duplicate": {
+      "exact": "Já está neste baralho: {word} — {translation}.",
+      "otherMeaning": "Já está no baralho como “{translations}”. Adicione se for outro significado.",
+      "confirm": "Este cartão já está no baralho. Pressione Enter de novo para adicionar mesmo assim."
+    },
+    "added": {
+      "single": "Adicionado: {word} — {translation}",
+      "list": {
+        "one": "{count} cartão adicionado",
+        "many": "{count} cartões adicionados",
+        "other": "{count} cartões adicionados"
+      }
+    },
+    "undo": "Desfazer",
+    "undone": {
+      "one": "{count} cartão removido",
+      "many": "{count} cartões removidos",
+      "other": "{count} cartões removidos"
+    },
+    "doneLabel": "Pronto",
+    "unsaved": "Algumas palavras ainda não foram adicionadas.",
+    "keepEditing": "Continuar editando",
+    "discard": "Descartar",
+    "editorHint": "Os cartões adicionados aqui são salvos no baralho na hora.",
+    "errors": {
+      "emptyWord": "Digite uma palavra primeiro.",
+      "emptyTranslation": "Adicione uma tradução e pressione Enter.",
+      "save": "O cartão não foi salvo. Seu texto continua aqui, tente de novo.",
+      "undo": "Não foi possível desfazer. Os cartões continuam no baralho.",
+      "deckName": "Dê um nome ao novo baralho primeiro.",
+      "deckNameTaken": "Já existe um baralho com este nome.",
+      "sameLanguages": "Escolha dois idiomas diferentes."
+    },
+    "list": {
+      "label": "Sua lista",
+      "placeholder": "apple — maçã\npear — pera\nplum — ameixa",
+      "help": "Um cartão por linha. Entre a palavra e a tradução vale travessão, tabulação, sinal de igual ou ponto e vírgula, e também uma tabela copiada de uma planilha.",
+      "preview": "Conferir a lista",
+      "summary": {
+        "one": "{count} cartão pronto.",
+        "many": "{count} cartões prontos.",
+        "other": "{count} cartões prontos."
+      },
+      "toFix": {
+        "one": "{count} linha precisa de ajuste.",
+        "many": "{count} linhas precisam de ajuste.",
+        "other": "{count} linhas precisam de ajuste."
+      },
+      "swap": "Trocar as colunas",
+      "startOver": "Recomeçar",
+      "add": {
+        "one": "Adicionar {count} cartão",
+        "many": "Adicionar {count} cartões",
+        "other": "Adicionar {count} cartões"
+      },
+      "fixStays": "As linhas que precisam de ajuste ficam aqui.",
+      "missingTranslation": "Linha {line}: nenhuma tradução encontrada. Digite-a.",
+      "missingWord": "Linha {line}: falta a palavra.",
+      "exact": "Já está no baralho. Marque para adicionar mesmo assim.",
+      "repeated": "Repetido nesta lista. Marque para adicionar mesmo assim.",
+      "otherMeaning": "No baralho como “{translations}”, será adicionado como outro significado.",
+      "include": "Adicionar “{word}”",
+      "rowField": "{field}, linha {line}",
+      "remove": "Remover “{word}”"
+    }
   }
 };

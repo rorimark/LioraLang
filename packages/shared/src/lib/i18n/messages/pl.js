@@ -1583,5 +1583,101 @@ export default {
       "deckFiles": "Pliki talii",
       "legacyPackages": "Starsze talie LioraLang"
     }
+  },
+  "quickAdd": {
+    "open": "Dodaj słowa",
+    "title": "Dodaj słowa",
+    "deck": "Talia",
+    "newDeck": "Nowa talia…",
+    "direction": "{from} → {to}",
+    "deckName": "Nazwa talii",
+    "deckNamePlaceholder": "Zwroty na co dzień",
+    "wordsIn": "Słowa po",
+    "translationsIn": "Tłumaczenia po",
+    "newDeckHint": "Talia powstanie razem z pierwszą fiszką.",
+    "modeLabel": "Jak dodać",
+    "tabs": {
+      "single": "Po jednym",
+      "list": "Wklej listę"
+    },
+    "wordPlaceholder": "Słowo lub zwrot",
+    "translationPlaceholder": "Tłumaczenie",
+    "details": "Więcej",
+    "optional": "opcjonalnie",
+    "examplesPlaceholder": "Jeden przykład w wierszu",
+    "notSet": "Nie podano",
+    "tagsKept": "Tagi zostaną dla następnej fiszki.",
+    "addCard": "Dodaj fiszkę",
+    "enterHint": "Enter dodaje fiszkę",
+    "duplicate": {
+      "exact": "Już jest w tej talii: {word} — {translation}.",
+      "otherMeaning": "Już jest w talii jako „{translations}”. Dodaj, jeśli to inne znaczenie.",
+      "confirm": "Ta fiszka już jest w talii. Naciśnij Enter jeszcze raz, żeby i tak ją dodać."
+    },
+    "added": {
+      "single": "Dodano: {word} — {translation}",
+      "list": {
+        "one": "Dodano {count} fiszkę",
+        "few": "Dodano {count} fiszki",
+        "many": "Dodano {count} fiszek",
+        "other": "Dodano {count} fiszek"
+      }
+    },
+    "undo": "Cofnij",
+    "undone": {
+      "one": "Usunięto {count} fiszkę",
+      "few": "Usunięto {count} fiszki",
+      "many": "Usunięto {count} fiszek",
+      "other": "Usunięto {count} fiszek"
+    },
+    "doneLabel": "Gotowe",
+    "unsaved": "Część słów nie została jeszcze dodana.",
+    "keepEditing": "Wróć do edycji",
+    "discard": "Nie dodawaj",
+    "editorHint": "Fiszki dodane tutaj od razu zapisują się w talii.",
+    "errors": {
+      "emptyWord": "Najpierw wpisz słowo.",
+      "emptyTranslation": "Dodaj tłumaczenie i naciśnij Enter.",
+      "save": "Fiszka nie została zapisana. Tekst został w polach, spróbuj ponownie.",
+      "undo": "Nie udało się cofnąć. Fiszki zostały w talii.",
+      "deckName": "Najpierw nazwij nową talię.",
+      "deckNameTaken": "Talia o tej nazwie już istnieje.",
+      "sameLanguages": "Wybierz dwa różne języki."
+    },
+    "list": {
+      "label": "Twoja lista",
+      "placeholder": "apple — jabłko\npear — gruszka\nplum — śliwka",
+      "help": "Jedna fiszka w wierszu. Między słowem a tłumaczeniem może być myślnik, tabulator, znak równości lub średnik, a także tabela skopiowana z arkusza.",
+      "preview": "Sprawdź listę",
+      "summary": {
+        "one": "Gotowa {count} fiszka.",
+        "few": "Gotowe {count} fiszki.",
+        "many": "Gotowych {count} fiszek.",
+        "other": "Gotowych {count} fiszek."
+      },
+      "toFix": {
+        "one": "{count} wiersz do poprawy.",
+        "few": "{count} wiersze do poprawy.",
+        "many": "{count} wierszy do poprawy.",
+        "other": "{count} wierszy do poprawy."
+      },
+      "swap": "Zamień kolumny",
+      "startOver": "Zacznij od nowa",
+      "add": {
+        "one": "Dodaj {count} fiszkę",
+        "few": "Dodaj {count} fiszki",
+        "many": "Dodaj {count} fiszek",
+        "other": "Dodaj {count} fiszek"
+      },
+      "fixStays": "Wiersze do poprawy zostaną tutaj.",
+      "missingTranslation": "Wiersz {line}: brak tłumaczenia. Wpisz je.",
+      "missingWord": "Wiersz {line}: brak słowa.",
+      "exact": "Już jest w talii. Zaznacz, żeby i tak dodać.",
+      "repeated": "Powtórzone na tej liście. Zaznacz, żeby i tak dodać.",
+      "otherMeaning": "W talii jako „{translations}”, zostanie dodane jako inne znaczenie.",
+      "include": "Dodaj „{word}”",
+      "rowField": "{field}, wiersz {line}",
+      "remove": "Usuń „{word}”"
+    }
   }
 };

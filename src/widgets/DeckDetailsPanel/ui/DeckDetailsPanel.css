@@ -250,6 +250,17 @@
   color: var(--color-text-muted);
 }
 
+/* Adding words is what a deck page is for: the one filled key. */
+.cards-panel__actions .cards-panel__button--primary {
+  border-color: var(--color-primary-strong);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.cards-panel__actions .cards-panel__button--primary:is(:hover, :active):not(:disabled) {
+  background: var(--color-primary);
+}
+
 .cards-panel__actions .cards-panel__filters-button {
   border-color: var(--color-primary-border) !important;
   border-bottom-color: var(--color-primary) !important;
@@ -280,9 +291,9 @@
   }
 }
 
-/* On a phone the toolbar is one row that fits without scrolling: Edit deck
-   is the labelled key and takes the room; back, export, refresh and the
-   filters are square icon keys, named for screen readers by their text. */
+/* On a phone the toolbar is one row that fits without scrolling: Add words
+   is the labelled key and takes the room; back, edit, export, refresh and
+   the filters are square icon keys, named for screen readers by their text. */
 @media (max-width: 640px) {
   .cards-panel__actions {
     display: flex;
@@ -304,7 +315,7 @@
     height: 19px;
   }
 
-  .cards-panel__actions button:not(:nth-child(2)) span {
+  .cards-panel__actions button:not(.cards-panel__button--primary) span {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -313,17 +324,19 @@
     white-space: nowrap;
   }
 
-  .cards-panel__actions button:nth-child(2) {
+  .cards-panel__actions .cards-panel__button--primary {
     flex: 1;
     width: auto;
-    padding: 0 14px;
+    min-width: 0;
+    padding: 0 10px;
+    white-space: nowrap;
     border-color: var(--color-primary-strong);
     background: var(--color-primary);
     color: var(--color-on-primary);
   }
 
   /* Touch keeps a sticky :hover; the filled key stays filled. */
-  .cards-panel__actions button:nth-child(2):is(:hover, :active):not(:disabled) {
+  .cards-panel__actions .cards-panel__button--primary:is(:hover, :active):not(:disabled) {
     background: var(--color-primary);
   }
 }
@@ -338,7 +351,7 @@
     min-height: 44px;
   }
 
-  .cards-panel__actions button:nth-child(2) {
+  .cards-panel__actions .cards-panel__button--primary {
     gap: 6px;
     padding: 0 8px;
     white-space: nowrap;

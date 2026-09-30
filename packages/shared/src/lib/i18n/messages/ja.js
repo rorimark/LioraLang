@@ -1373,5 +1373,86 @@ export default {
       "deckFiles": "デッキファイル",
       "legacyPackages": "以前のLioraLangのデッキ"
     }
+  },
+  "quickAdd": {
+    "open": "単語を追加",
+    "title": "単語を追加",
+    "deck": "デッキ",
+    "newDeck": "新しいデッキ…",
+    "direction": "{from} → {to}",
+    "deckName": "デッキ名",
+    "deckNamePlaceholder": "日常のフレーズ",
+    "wordsIn": "単語の言語",
+    "translationsIn": "訳の言語",
+    "newDeckHint": "最初のカードを追加したときにデッキが作成されます。",
+    "modeLabel": "追加の方法",
+    "tabs": {
+      "single": "1語ずつ",
+      "list": "リストを貼り付け"
+    },
+    "wordPlaceholder": "単語またはフレーズ",
+    "translationPlaceholder": "訳",
+    "details": "詳細",
+    "optional": "任意",
+    "examplesPlaceholder": "1行に1つの例文",
+    "notSet": "未設定",
+    "tagsKept": "タグは次のカードにも残ります。",
+    "addCard": "カードを追加",
+    "enterHint": "Enterでカードを追加",
+    "duplicate": {
+      "exact": "このデッキにすでにあります：{word} — {translation}。",
+      "otherMeaning": "デッキに「{translations}」としてすでにあります。別の意味なら追加してください。",
+      "confirm": "このカードはすでにデッキにあります。それでも追加するにはもう一度Enterを押してください。"
+    },
+    "added": {
+      "single": "追加しました：{word} — {translation}",
+      "list": {
+        "other": "{count}枚のカードを追加しました"
+      }
+    },
+    "undo": "元に戻す",
+    "undone": {
+      "other": "{count}枚のカードを削除しました"
+    },
+    "doneLabel": "完了",
+    "unsaved": "まだ追加していない単語があります。",
+    "keepEditing": "編集を続ける",
+    "discard": "破棄する",
+    "editorHint": "ここで追加したカードはすぐにデッキに保存されます。",
+    "errors": {
+      "emptyWord": "先に単語を入力してください。",
+      "emptyTranslation": "訳を入力してからEnterを押してください。",
+      "save": "カードを保存できませんでした。入力内容は残っています。もう一度お試しください。",
+      "undo": "元に戻せませんでした。カードはデッキに残っています。",
+      "deckName": "先に新しいデッキに名前を付けてください。",
+      "deckNameTaken": "この名前のデッキはすでにあります。",
+      "sameLanguages": "異なる2つの言語を選んでください。"
+    },
+    "list": {
+      "label": "リスト",
+      "placeholder": "apple — りんご\npear — 梨\nplum — 梅",
+      "help": "1行に1枚のカード。単語と訳の間はダッシュ、タブ、イコール、セミコロンのどれでも使えます。表計算ソフトからコピーした表もそのまま貼り付けられます。",
+      "preview": "リストを確認",
+      "summary": {
+        "other": "{count}枚のカードを追加できます。"
+      },
+      "toFix": {
+        "other": "{count}行の修正が必要です。"
+      },
+      "swap": "列を入れ替える",
+      "startOver": "最初からやり直す",
+      "add": {
+        "other": "{count}枚のカードを追加"
+      },
+      "fixStays": "修正が必要な行はここに残ります。",
+      "missingTranslation": "{line}行目：訳が見つかりません。入力してください。",
+      "missingWord": "{line}行目：単語がありません。",
+      "exact": "すでにデッキにあります。それでも追加するにはチェックしてください。",
+      "repeated": "このリスト内で重複しています。それでも追加するにはチェックしてください。",
+      "otherMeaning": "デッキに「{translations}」としてあります。別の意味として追加されます。",
+      "include": "「{word}」を追加",
+      "rowField": "{field}、{line}行目",
+      "remove": "「{word}」を削除"
+    }
   }
 };

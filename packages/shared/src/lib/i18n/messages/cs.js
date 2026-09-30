@@ -1513,5 +1513,96 @@ export default {
       "deckFiles": "Soubory balíčků",
       "legacyPackages": "Starší balíčky LioraLang"
     }
+  },
+  "quickAdd": {
+    "open": "Přidat slova",
+    "title": "Přidat slova",
+    "deck": "Balíček",
+    "newDeck": "Nový balíček…",
+    "direction": "{from} → {to}",
+    "deckName": "Název balíčku",
+    "deckNamePlaceholder": "Každodenní fráze",
+    "wordsIn": "Slova v jazyce",
+    "translationsIn": "Překlady v jazyce",
+    "newDeckHint": "Balíček vznikne s první přidanou kartou.",
+    "modeLabel": "Jak přidat",
+    "tabs": {
+      "single": "Po jednom",
+      "list": "Vložit seznam"
+    },
+    "wordPlaceholder": "Slovo nebo fráze",
+    "translationPlaceholder": "Překlad",
+    "details": "Další podrobnosti",
+    "optional": "nepovinné",
+    "examplesPlaceholder": "Jeden příklad na řádek",
+    "notSet": "Neuvedeno",
+    "tagsKept": "Štítky zůstanou pro další kartu.",
+    "addCard": "Přidat kartu",
+    "enterHint": "Enter přidá kartu",
+    "duplicate": {
+      "exact": "Už je v tomto balíčku: {word} — {translation}.",
+      "otherMeaning": "Už je v balíčku jako „{translations}“. Přidejte ho, pokud jde o jiný význam.",
+      "confirm": "Tato karta už v balíčku je. Stiskněte znovu Enter a přidá se i tak."
+    },
+    "added": {
+      "single": "Přidáno: {word} — {translation}",
+      "list": {
+        "one": "Přidána {count} karta",
+        "few": "Přidány {count} karty",
+        "other": "Přidáno {count} karet"
+      }
+    },
+    "undo": "Vrátit",
+    "undone": {
+      "one": "Odebrána {count} karta",
+      "few": "Odebrány {count} karty",
+      "other": "Odebráno {count} karet"
+    },
+    "doneLabel": "Hotovo",
+    "unsaved": "Některá slova ještě nejsou přidaná.",
+    "keepEditing": "Pokračovat",
+    "discard": "Zahodit je",
+    "editorHint": "Karty přidané zde se hned uloží do balíčku.",
+    "errors": {
+      "emptyWord": "Nejdřív napište slovo.",
+      "emptyTranslation": "Přidejte překlad a stiskněte Enter.",
+      "save": "Karta se neuložila. Text zůstal v polích, zkuste to znovu.",
+      "undo": "Vrátit se nepodařilo. Karty zůstaly v balíčku.",
+      "deckName": "Nejdřív pojmenujte nový balíček.",
+      "deckNameTaken": "Balíček s tímto názvem už existuje.",
+      "sameLanguages": "Vyberte dva různé jazyky."
+    },
+    "list": {
+      "label": "Váš seznam",
+      "placeholder": "apple — jablko\npear — hruška\nplum — švestka",
+      "help": "Jedna karta na řádek. Mezi slovem a překladem může být pomlčka, tabulátor, rovnítko nebo středník, případně tabulka zkopírovaná z tabulkového editoru.",
+      "preview": "Zkontrolovat seznam",
+      "summary": {
+        "one": "{count} karta připravena.",
+        "few": "{count} karty připraveny.",
+        "other": "{count} karet připraveno."
+      },
+      "toFix": {
+        "one": "{count} řádek je třeba opravit.",
+        "few": "{count} řádky je třeba opravit.",
+        "other": "{count} řádků je třeba opravit."
+      },
+      "swap": "Prohodit sloupce",
+      "startOver": "Začít znovu",
+      "add": {
+        "one": "Přidat {count} kartu",
+        "few": "Přidat {count} karty",
+        "other": "Přidat {count} karet"
+      },
+      "fixStays": "Řádky k opravě tu zůstanou.",
+      "missingTranslation": "Řádek {line}: překlad nenalezen. Doplňte ho.",
+      "missingWord": "Řádek {line}: chybí slovo.",
+      "exact": "Už je v balíčku. Zaškrtněte a přidá se i tak.",
+      "repeated": "V tomto seznamu se opakuje. Zaškrtněte a přidá se i tak.",
+      "otherMeaning": "V balíčku jako „{translations}“, přidá se jako jiný význam.",
+      "include": "Přidat „{word}“",
+      "rowField": "{field}, řádek {line}",
+      "remove": "Odebrat „{word}“"
+    }
   }
 };

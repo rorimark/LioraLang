@@ -361,6 +361,7 @@ export const useLearnFlashcardsPanel = () => {
     words: deckWords,
     isLoading: isDeckWordsLoading,
     error: deckWordsError,
+    refreshDeckWords,
   } = useDeckWords(selectedDeckId);
 
   const srsSettings = useMemo(() => ({
@@ -802,7 +803,11 @@ export const useLearnFlashcardsPanel = () => {
     }
 
     const handleWindowKeyDown = (event) => {
-      if (isInteractiveEventTarget(event.target)) {
+      // Keys pressed in a dialog over the desk belong to the dialog.
+      if (
+        isInteractiveEventTarget(event.target) ||
+        event.target?.closest?.('[aria-modal="true"]')
+      ) {
         return;
       }
 
@@ -916,6 +921,42 @@ export const useLearnFlashcardsPanel = () => {
   const handleOpenDeckCreatePage = useCallback(() => {
     navigate(ROUTE_PATHS.deckCreate);
   }, [navigate]);
+
+  // Adding words from the desk: the dialog writes straight to the deck, and
+  // the desk picks the new cards up once it closes, so the card on the table
+  // does not change under the user while they type.
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const quickAddDeckIdRef = useRef("");
+  const openQuickAdd = useCallback(() => {
+    quickAddDeckIdRef.current = "";
+    setIsQuickAddOpen(true);
+  }, []);
+  const handleQuickAddWords = useCallback(({ deck } = {}) => {
+    if (deck?.id) {
+      quickAddDeckIdRef.current = String(deck.id);
+    }
+  }, []);
+  const closeQuickAdd = useCallback(
+    ({ addedTotal = 0 } = {}) => {
+      setIsQuickAddOpen(false);
+      const touchedDeckId = quickAddDeckIdRef.current;
+
+      if (!touchedDeckId) {
+        return;
+      }
+
+      if (touchedDeckId !== String(selectedDeckId)) {
+        if (addedTotal > 0) {
+          handleDeckChange(touchedDeckId);
+        }
+        return;
+      }
+
+      void refreshDeckWords();
+      void refreshSession();
+    },
+    [handleDeckChange, refreshDeckWords, refreshSession, selectedDeckId],
+  );
   const handleOpenBrowsePage = useCallback(() => {
     navigate(ROUTE_PATHS.browse);
   }, [navigate]);
@@ -1020,5 +1061,9 @@ export const useLearnFlashcardsPanel = () => {
     toggleBackVisibility,
     openDeckCreatePage: handleOpenDeckCreatePage,
     openBrowsePage: handleOpenBrowsePage,
+    isQuickAddOpen,
+    openQuickAdd,
+    closeQuickAdd,
+    handleQuickAddWords,
   };
 };

@@ -1513,5 +1513,96 @@ export default {
       "deckFiles": "File di mazzi",
       "legacyPackages": "Mazzi LioraLang precedenti"
     }
+  },
+  "quickAdd": {
+    "open": "Aggiungi parole",
+    "title": "Aggiungi parole",
+    "deck": "Mazzo",
+    "newDeck": "Nuovo mazzo…",
+    "direction": "{from} → {to}",
+    "deckName": "Nome del mazzo",
+    "deckNamePlaceholder": "Frasi di tutti i giorni",
+    "wordsIn": "Parole in",
+    "translationsIn": "Traduzioni in",
+    "newDeckHint": "Il mazzo viene creato con la prima carta che aggiungi.",
+    "modeLabel": "Come aggiungere",
+    "tabs": {
+      "single": "Una alla volta",
+      "list": "Incolla un elenco"
+    },
+    "wordPlaceholder": "Parola o frase",
+    "translationPlaceholder": "Traduzione",
+    "details": "Altri dettagli",
+    "optional": "facoltativo",
+    "examplesPlaceholder": "Un esempio per riga",
+    "notSet": "Non indicato",
+    "tagsKept": "I tag restano per la carta successiva.",
+    "addCard": "Aggiungi carta",
+    "enterHint": "Invio aggiunge la carta",
+    "duplicate": {
+      "exact": "Già in questo mazzo: {word} — {translation}.",
+      "otherMeaning": "Già nel mazzo come «{translations}». Aggiungila se è un altro significato.",
+      "confirm": "Questa carta è già nel mazzo. Premi di nuovo Invio per aggiungerla comunque."
+    },
+    "added": {
+      "single": "Aggiunta: {word} — {translation}",
+      "list": {
+        "one": "{count} carta aggiunta",
+        "many": "{count} carte aggiunte",
+        "other": "{count} carte aggiunte"
+      }
+    },
+    "undo": "Annulla",
+    "undone": {
+      "one": "{count} carta rimossa",
+      "many": "{count} carte rimosse",
+      "other": "{count} carte rimosse"
+    },
+    "doneLabel": "Fatto",
+    "unsaved": "Alcune parole non sono ancora state aggiunte.",
+    "keepEditing": "Continua",
+    "discard": "Scartale",
+    "editorHint": "Le carte aggiunte qui vengono salvate subito nel mazzo.",
+    "errors": {
+      "emptyWord": "Scrivi prima una parola.",
+      "emptyTranslation": "Aggiungi una traduzione e premi Invio.",
+      "save": "La carta non è stata salvata. Il testo è ancora qui, riprova.",
+      "undo": "Impossibile annullare. Le carte sono ancora nel mazzo.",
+      "deckName": "Dai prima un nome al nuovo mazzo.",
+      "deckNameTaken": "Esiste già un mazzo con questo nome.",
+      "sameLanguages": "Scegli due lingue diverse."
+    },
+    "list": {
+      "label": "Il tuo elenco",
+      "placeholder": "apple — mela\npear — pera\nplum — prugna",
+      "help": "Una carta per riga. Tra la parola e la traduzione vanno bene un trattino, una tabulazione, un segno uguale o un punto e virgola, e anche una tabella copiata da un foglio di calcolo.",
+      "preview": "Controlla l'elenco",
+      "summary": {
+        "one": "{count} carta pronta.",
+        "many": "{count} carte pronte.",
+        "other": "{count} carte pronte."
+      },
+      "toFix": {
+        "one": "{count} riga da sistemare.",
+        "many": "{count} righe da sistemare.",
+        "other": "{count} righe da sistemare."
+      },
+      "swap": "Scambia le colonne",
+      "startOver": "Ricomincia",
+      "add": {
+        "one": "Aggiungi {count} carta",
+        "many": "Aggiungi {count} carte",
+        "other": "Aggiungi {count} carte"
+      },
+      "fixStays": "Le righe da sistemare restano qui.",
+      "missingTranslation": "Riga {line}: nessuna traduzione trovata. Scrivila.",
+      "missingWord": "Riga {line}: manca la parola.",
+      "exact": "Già nel mazzo. Spunta per aggiungerla comunque.",
+      "repeated": "Ripetuta in questo elenco. Spunta per aggiungerla comunque.",
+      "otherMeaning": "Nel mazzo come «{translations}», aggiunta come altro significato.",
+      "include": "Aggiungi «{word}»",
+      "rowField": "{field}, riga {line}",
+      "remove": "Rimuovi «{word}»"
+    }
   }
 };

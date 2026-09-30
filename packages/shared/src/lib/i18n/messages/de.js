@@ -1443,5 +1443,91 @@ export default {
       "deckFiles": "Deck-Dateien",
       "legacyPackages": "Ältere LioraLang-Decks"
     }
+  },
+  "quickAdd": {
+    "open": "Wörter hinzufügen",
+    "title": "Wörter hinzufügen",
+    "deck": "Stapel",
+    "newDeck": "Neuer Stapel…",
+    "direction": "{from} → {to}",
+    "deckName": "Name des Stapels",
+    "deckNamePlaceholder": "Alltagsphrasen",
+    "wordsIn": "Wörter auf",
+    "translationsIn": "Übersetzungen auf",
+    "newDeckHint": "Der Stapel entsteht mit der ersten Karte.",
+    "modeLabel": "Wie hinzufügen",
+    "tabs": {
+      "single": "Einzeln",
+      "list": "Liste einfügen"
+    },
+    "wordPlaceholder": "Wort oder Ausdruck",
+    "translationPlaceholder": "Übersetzung",
+    "details": "Mehr Details",
+    "optional": "optional",
+    "examplesPlaceholder": "Ein Beispiel pro Zeile",
+    "notSet": "Nicht angegeben",
+    "tagsKept": "Die Tags bleiben für die nächste Karte stehen.",
+    "addCard": "Karte hinzufügen",
+    "enterHint": "Enter fügt die Karte hinzu",
+    "duplicate": {
+      "exact": "Schon in diesem Stapel: {word} — {translation}.",
+      "otherMeaning": "Schon im Stapel als „{translations}“. Füge es hinzu, wenn es eine andere Bedeutung ist.",
+      "confirm": "Diese Karte gibt es schon. Drücke noch einmal Enter, um sie trotzdem hinzuzufügen."
+    },
+    "added": {
+      "single": "Hinzugefügt: {word} — {translation}",
+      "list": {
+        "one": "{count} Karte hinzugefügt",
+        "other": "{count} Karten hinzugefügt"
+      }
+    },
+    "undo": "Rückgängig",
+    "undone": {
+      "one": "{count} Karte entfernt",
+      "other": "{count} Karten entfernt"
+    },
+    "doneLabel": "Fertig",
+    "unsaved": "Einige Wörter sind noch nicht hinzugefügt.",
+    "keepEditing": "Weiter bearbeiten",
+    "discard": "Verwerfen",
+    "editorHint": "Karten, die du hier hinzufügst, werden sofort im Stapel gespeichert.",
+    "errors": {
+      "emptyWord": "Gib zuerst ein Wort ein.",
+      "emptyTranslation": "Gib eine Übersetzung ein und drücke Enter.",
+      "save": "Die Karte wurde nicht gespeichert. Dein Text ist noch da, versuche es erneut.",
+      "undo": "Rückgängig machen fehlgeschlagen. Die Karten sind noch im Stapel.",
+      "deckName": "Gib dem neuen Stapel zuerst einen Namen.",
+      "deckNameTaken": "Ein Stapel mit diesem Namen existiert bereits.",
+      "sameLanguages": "Wähle zwei verschiedene Sprachen."
+    },
+    "list": {
+      "label": "Deine Liste",
+      "placeholder": "apple — der Apfel\npear — die Birne\nplum — die Pflaume",
+      "help": "Eine Karte pro Zeile. Zwischen Wort und Übersetzung funktionieren Gedankenstrich, Tabulator, Gleichheitszeichen oder Semikolon, auch eine aus einer Tabelle kopierte Liste.",
+      "preview": "Liste prüfen",
+      "summary": {
+        "one": "{count} Karte bereit.",
+        "other": "{count} Karten bereit."
+      },
+      "toFix": {
+        "one": "{count} Zeile muss korrigiert werden.",
+        "other": "{count} Zeilen müssen korrigiert werden."
+      },
+      "swap": "Spalten tauschen",
+      "startOver": "Neu beginnen",
+      "add": {
+        "one": "{count} Karte hinzufügen",
+        "other": "{count} Karten hinzufügen"
+      },
+      "fixStays": "Zeilen, die korrigiert werden müssen, bleiben hier.",
+      "missingTranslation": "Zeile {line}: keine Übersetzung gefunden. Trage sie ein.",
+      "missingWord": "Zeile {line}: das Wort fehlt.",
+      "exact": "Schon im Stapel. Anhaken, um es trotzdem hinzuzufügen.",
+      "repeated": "Doppelt in dieser Liste. Anhaken, um es trotzdem hinzuzufügen.",
+      "otherMeaning": "Im Stapel als „{translations}“, wird als andere Bedeutung hinzugefügt.",
+      "include": "„{word}“ hinzufügen",
+      "rowField": "{field}, Zeile {line}",
+      "remove": "„{word}“ entfernen"
+    }
   }
 };

@@ -1,8 +1,9 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import {
   FiArrowLeft,
   FiDownload,
   FiEdit3,
+  FiPlus,
   FiRefreshCw,
   FiSliders,
 } from "react-icons/fi";
@@ -13,6 +14,7 @@ import {
   PAGE_SIZE_OPTIONS,
   SORT_OPTIONS,
 } from "@features/card-catalog";
+import { QuickAddWordsDialog } from "@features/quick-add-words";
 import { ActionModal, InlineAlert } from "@shared/ui";
 import { useDeckDetailsPanel } from "../model";
 import "./DeckDetailsPanel.css";
@@ -28,6 +30,18 @@ DeckLoadingState.displayName = "DeckLoadingState";
 export const DeckDetailsPanel = memo(() => {
   const panel = useDeckDetailsPanel();
   const { t } = useI18n();
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const { refreshDeckWords } = panel;
+  const closeQuickAdd = useCallback(
+    ({ addedTotal = 0 } = {}) => {
+      setIsQuickAddOpen(false);
+
+      if (addedTotal > 0) {
+        void refreshDeckWords();
+      }
+    },
+    [refreshDeckWords],
+  );
 
   const showsWordLevels =
     panel.deck?.usesWordLevels !== false && panel.levelOptions.length > 0;
@@ -150,6 +164,15 @@ export const DeckDetailsPanel = memo(() => {
           <FiArrowLeft aria-hidden />
           <span>{t("common.backToDecks")}</span>
         </button>
+        <button
+          type="button"
+          className="cards-panel__button--primary"
+          onClick={() => setIsQuickAddOpen(true)}
+          aria-haspopup="dialog"
+        >
+          <FiPlus aria-hidden />
+          <span>{t("quickAdd.open")}</span>
+        </button>
         <button type="button" onClick={panel.openEditDeck}>
           <FiEdit3 aria-hidden />
           <span>{t("deck.edit")}</span>
@@ -196,6 +219,13 @@ export const DeckDetailsPanel = memo(() => {
           )}
         </aside>
       </div>
+
+      {isQuickAddOpen ? (
+        <QuickAddWordsDialog
+          initialDeckId={panel.deck.id}
+          onClose={closeQuickAdd}
+        />
+      ) : null}
 
       {panel.isNarrowFiltersViewport && (
         <ActionModal dialog={filtersDialog}>

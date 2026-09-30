@@ -1,13 +1,53 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { FiEdit3, FiPlus, FiRotateCcw, FiSave } from "react-icons/fi";
+import { QuickAddWordsDialog } from "@features/quick-add-words";
 import { useDeckEditorPanelContext } from "../model";
 import { Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 
 export const WORD_FORM_ID = "deck-editor-word-form";
 
+// A saved deck takes new words through the add dialog, which stores each
+// card at once. The form below is for changing one word, and for the words
+// of a deck that does not exist yet.
+const QuickAddSection = memo(() => {
+  const { deckId, handleQuickAddWords } = useDeckEditorPanelContext();
+  const { t } = useI18n();
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <section id={WORD_FORM_ID} className="deck-editor-panel__section deck-editor-panel__quick-add">
+      <header className="deck-editor-panel__section-header">
+        <div className="deck-editor-panel__section-title">
+          <span className="deck-editor-panel__section-icon" aria-hidden>
+            <FiPlus />
+          </span>
+          <h3>{t("editor.addWords")}</h3>
+        </div>
+      </header>
+      <p className="deck-editor-panel__quick-add-text">{t("quickAdd.editorHint")}</p>
+      <div className="deck-editor-panel__word-actions">
+        <button type="button" onClick={() => setIsOpen(true)} aria-haspopup="dialog">
+          <FiPlus aria-hidden />
+          <span>{t("quickAdd.open")}</span>
+        </button>
+      </div>
+      {isOpen ? (
+        <QuickAddWordsDialog
+          initialDeckId={deckId}
+          onWordsAdded={handleQuickAddWords}
+          onClose={() => setIsOpen(false)}
+        />
+      ) : null}
+    </section>
+  );
+});
+
+QuickAddSection.displayName = "QuickAddSection";
+
 export const DeckEditorWordFormSection = memo(() => {
   const {
+    deckId,
     wordDraft,
     editingWordId,
     languageLabels,
@@ -19,6 +59,10 @@ export const DeckEditorWordFormSection = memo(() => {
     resetWordDraft,
   } = useDeckEditorPanelContext();
   const { t, languageName, partOfSpeechName } = useI18n();
+
+  if (deckId && !editingWordId) {
+    return <QuickAddSection />;
+  }
 
   return (
     <section id={WORD_FORM_ID} className="deck-editor-panel__section">
@@ -75,6 +119,7 @@ export const DeckEditorWordFormSection = memo(() => {
               value={wordDraft.level}
               onChange={handleWordDraftChange}
             >
+              <option value="">{t("quickAdd.notSet")}</option>
               {levelOptions.map((level) => (
                 <option key={level} value={level}>
                   {level}
@@ -91,6 +136,7 @@ export const DeckEditorWordFormSection = memo(() => {
             value={wordDraft.part_of_speech}
             onChange={handleWordDraftChange}
           >
+            <option value="">{t("quickAdd.notSet")}</option>
             {partOfSpeechOptions.map((part) => (
               <option key={part} value={part}>
                 {partOfSpeechName(part)}
