@@ -1041,19 +1041,27 @@ export default {
       "activeNow": "使用中",
       "active": "{time}に使用",
       "lastActive": "最終使用：{date}",
-      "others": "ほかのデバイス",
       "noOthers": "ほかのデバイスはまだありません",
       "noOthersHint": "スマートフォンや別のパソコンでこのアカウントにログインしてください。最初の同期のあとここに表示されます。",
-      "inactive": "2か月使われていません",
-      "inactiveHint": "もう手元にないデバイスかもしれません。削除しても一覧から外れるだけです。",
-      "removeAll": "すべて削除",
       "syncedNow": "たった今同期しました",
       "synced": "{time}に同期",
-      "removeAllLabel": {
-        "other": "2か月使われていないデバイス：{count}台"
-      },
       "pending": {
         "other": "同期待ちの変更：{count}件"
+      },
+      "removeUnused": {
+        "other": "未使用の{count}台を削除"
+      }
+    },
+    "sectionText": {
+      "profile": "公開したデッキに表示される名前と、ログインに使うメールです。",
+      "security": "パスワードとログイン中の場所です。",
+      "devices": "このアカウントがデッキと進捗を同期している場所です。",
+      "hub": "ほかの人のために公開したデッキです。"
+    },
+    "menu": {
+      "hubNone": "公開なし",
+      "hubCount": {
+        "other": "{count}件公開中"
       }
     }
   },

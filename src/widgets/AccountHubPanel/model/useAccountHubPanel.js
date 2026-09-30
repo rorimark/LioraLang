@@ -177,6 +177,8 @@ export const useAccountHubPanel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get(ACCOUNT_TAB_QUERY_KEY);
   const signedInTab = SIGNED_IN_TAB_KEYS.has(requestedTab) ? requestedTab : DEFAULT_SIGNED_IN_TAB;
+  // On a phone the account opens on its menu; a section is its own screen.
+  const isSectionRequested = SIGNED_IN_TAB_KEYS.has(requestedTab);
   // The router hands out a new setter on every change of address; kept in
   // a ref, so switching tabs never looks like a new session to the effects
   // that depend on this.
@@ -193,12 +195,7 @@ export const useAccountHubPanel = () => {
         (current) => {
           const next = new URLSearchParams(current);
 
-          if (key === DEFAULT_SIGNED_IN_TAB) {
-            next.delete(ACCOUNT_TAB_QUERY_KEY);
-          } else {
-            next.set(ACCOUNT_TAB_QUERY_KEY, key);
-          }
-
+          next.set(ACCOUNT_TAB_QUERY_KEY, key);
           return next;
         },
         { replace },
@@ -884,6 +881,13 @@ export const useAccountHubPanel = () => {
     isAuthLoading,
     authState,
     activeTab: authState.isAuthenticated ? signedInTab : signedOutTab,
+    isSectionRequested,
+    showMenu: () =>
+      setSearchParamsRef.current((current) => {
+        const next = new URLSearchParams(current);
+        next.delete(ACCOUNT_TAB_QUERY_KEY);
+        return next;
+      }),
     isBusy,
     pendingAction,
     statusAlert,

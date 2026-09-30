@@ -1109,21 +1109,30 @@ export default {
       "activeNow": "Şu an etkin",
       "active": "Son etkinlik: {time}",
       "lastActive": "Son etkinlik: {date}",
-      "others": "Diğer cihazlar",
       "noOthers": "Henüz başka cihaz yok",
       "noOthersHint": "Telefonunuzda ya da başka bir bilgisayarda bu hesapla giriş yapın. İlk eşitlemeden sonra burada görünür.",
-      "inactive": "İki aydır kullanılmıyor",
-      "inactiveHint": "Muhtemelen artık sizde olmayan cihazlar. Kaldırmak yalnızca listeden çıkarır.",
-      "removeAll": "Tümünü kaldır",
       "syncedNow": "Az önce eşitlendi",
       "synced": "Eşitlendi: {time}",
-      "removeAllLabel": {
-        "one": "{count} cihaz iki aydır kullanılmıyor",
-        "other": "{count} cihaz iki aydır kullanılmıyor"
-      },
       "pending": {
         "one": "{count} değişiklik eşitlenmeyi bekliyor",
         "other": "{count} değişiklik eşitlenmeyi bekliyor"
+      },
+      "removeUnused": {
+        "one": "Kullanılmayan {count} cihazı kaldır",
+        "other": "Kullanılmayan {count} cihazı kaldır"
+      }
+    },
+    "sectionText": {
+      "profile": "Yayımlanan destelerdeki adınız ve giriş e-postanız.",
+      "security": "Parolanız ve nerede oturum açtığınız.",
+      "devices": "Bu hesabın desteleri ve ilerlemeyi nerede eşitlediği.",
+      "hub": "Başkaları için yayımladığınız desteler."
+    },
+    "menu": {
+      "hubNone": "Yayımlanan yok",
+      "hubCount": {
+        "one": "{count} yayında",
+        "other": "{count} yayında"
       }
     }
   },

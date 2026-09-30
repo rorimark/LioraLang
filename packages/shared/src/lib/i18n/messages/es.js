@@ -1177,23 +1177,33 @@ export default {
       "activeNow": "Activo ahora",
       "active": "Activo {time}",
       "lastActive": "Última actividad: {date}",
-      "others": "Otros dispositivos",
       "noOthers": "Aún no hay otros dispositivos",
       "noOthersHint": "Inicia sesión con esta cuenta en tu móvil u otro ordenador. Aparecerá aquí tras su primera sincronización.",
-      "inactive": "Sin usar desde hace dos meses",
-      "inactiveHint": "Probablemente ya no los tienes. Quitar uno solo lo saca de esta lista.",
-      "removeAll": "Quitar todos",
       "syncedNow": "Sincronizado ahora mismo",
       "synced": "Sincronizado {time}",
-      "removeAllLabel": {
-        "one": "{count} dispositivo sin usar desde hace dos meses",
-        "many": "{count} dispositivos sin usar desde hace dos meses",
-        "other": "{count} dispositivos sin usar desde hace dos meses"
-      },
       "pending": {
         "one": "{count} cambio pendiente de sincronizar",
         "many": "{count} cambios pendientes de sincronizar",
         "other": "{count} cambios pendientes de sincronizar"
+      },
+      "removeUnused": {
+        "one": "Quitar {count} sin usar",
+        "many": "Quitar {count} sin usar",
+        "other": "Quitar {count} sin usar"
+      }
+    },
+    "sectionText": {
+      "profile": "Tu nombre en los mazos publicados y el correo con el que entras.",
+      "security": "Tu contraseña y dónde has iniciado sesión.",
+      "devices": "Dónde sincroniza esta cuenta tus mazos y tu progreso.",
+      "hub": "Mazos que has publicado para otros."
+    },
+    "menu": {
+      "hubNone": "Nada publicado",
+      "hubCount": {
+        "one": "{count} publicado",
+        "many": "{count} publicados",
+        "other": "{count} publicados"
       }
     }
   },

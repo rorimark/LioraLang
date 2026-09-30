@@ -1177,23 +1177,33 @@ export default {
       "activeNow": "Actif maintenant",
       "active": "Actif {time}",
       "lastActive": "Dernière activité le {date}",
-      "others": "Autres appareils",
       "noOthers": "Aucun autre appareil pour l'instant",
       "noOthersHint": "Connectez-vous à ce compte sur votre téléphone ou un autre ordinateur. Il apparaîtra ici après sa première synchronisation.",
-      "inactive": "Inutilisés depuis deux mois",
-      "inactiveHint": "Sans doute des appareils que vous n'avez plus. En retirer un le sort seulement de cette liste.",
-      "removeAll": "Tout retirer",
       "syncedNow": "Synchronisé à l'instant",
       "synced": "Synchronisé {time}",
-      "removeAllLabel": {
-        "one": "{count} appareil inutilisé depuis deux mois",
-        "many": "{count} appareils inutilisés depuis deux mois",
-        "other": "{count} appareils inutilisés depuis deux mois"
-      },
       "pending": {
         "one": "{count} modification en attente de synchronisation",
         "many": "{count} modifications en attente de synchronisation",
         "other": "{count} modifications en attente de synchronisation"
+      },
+      "removeUnused": {
+        "one": "Retirer {count} inutilisé",
+        "many": "Retirer {count} inutilisés",
+        "other": "Retirer {count} inutilisés"
+      }
+    },
+    "sectionText": {
+      "profile": "Votre nom sur les decks publiés et l'e-mail de connexion.",
+      "security": "Votre mot de passe et où vous êtes connecté.",
+      "devices": "Où ce compte synchronise vos decks et votre progression.",
+      "hub": "Les decks que vous avez publiés pour les autres."
+    },
+    "menu": {
+      "hubNone": "Rien de publié",
+      "hubCount": {
+        "one": "{count} publié",
+        "many": "{count} publiés",
+        "other": "{count} publiés"
       }
     }
   },

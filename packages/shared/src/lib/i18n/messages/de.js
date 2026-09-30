@@ -1109,21 +1109,30 @@ export default {
       "activeNow": "Gerade aktiv",
       "active": "Aktiv {time}",
       "lastActive": "Zuletzt aktiv am {date}",
-      "others": "Andere Geräte",
       "noOthers": "Noch keine anderen Geräte",
       "noOthersHint": "Melde dich auf deinem Handy oder einem anderen Computer mit diesem Konto an. Nach der ersten Synchronisierung erscheint es hier.",
-      "inactive": "Seit zwei Monaten nicht benutzt",
-      "inactiveHint": "Wahrscheinlich Geräte, die du nicht mehr hast. Entfernen nimmt sie nur von dieser Liste.",
-      "removeAll": "Alle entfernen",
       "syncedNow": "Gerade synchronisiert",
       "synced": "Synchronisiert {time}",
-      "removeAllLabel": {
-        "one": "{count} Gerät seit zwei Monaten nicht benutzt",
-        "other": "{count} Geräte seit zwei Monaten nicht benutzt"
-      },
       "pending": {
         "one": "{count} Änderung wartet auf Synchronisierung",
         "other": "{count} Änderungen warten auf Synchronisierung"
+      },
+      "removeUnused": {
+        "one": "{count} ungenutztes entfernen",
+        "other": "{count} ungenutzte entfernen"
+      }
+    },
+    "sectionText": {
+      "profile": "Dein Name auf veröffentlichten Decks und die E-Mail zur Anmeldung.",
+      "security": "Dein Passwort und wo du angemeldet bist.",
+      "devices": "Wo dieses Konto Decks und Fortschritt synchronisiert.",
+      "hub": "Decks, die du für andere veröffentlicht hast."
+    },
+    "menu": {
+      "hubNone": "Nichts veröffentlicht",
+      "hubCount": {
+        "one": "{count} veröffentlicht",
+        "other": "{count} veröffentlicht"
       }
     }
   },

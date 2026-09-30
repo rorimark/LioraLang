@@ -1112,21 +1112,30 @@ export default {
       "activeNow": "Active now",
       "active": "Active {time}",
       "lastActive": "Last active {date}",
-      "others": "Other devices",
       "noOthers": "No other devices yet",
       "noOthersHint": "Sign in with this account on your phone or another computer. It appears here after its first sync.",
-      "inactive": "Not used for two months",
-      "inactiveHint": "Probably devices you no longer have. Removing one only takes it off this list.",
-      "removeAll": "Remove all",
       "syncedNow": "Synced just now",
       "synced": "Synced {time}",
-      "removeAllLabel": {
-        "one": "{count} device not used for two months",
-        "other": "{count} devices not used for two months"
-      },
       "pending": {
         "one": "{count} change waiting to sync",
         "other": "{count} changes waiting to sync"
+      },
+      "removeUnused": {
+        "one": "Remove {count} unused",
+        "other": "Remove {count} unused"
+      }
+    },
+    "sectionText": {
+      "profile": "Your name on published decks, and the email you sign in with.",
+      "security": "Your password and where you are signed in.",
+      "devices": "Where this account syncs your decks and progress.",
+      "hub": "Decks you have published for others to use."
+    },
+    "menu": {
+      "hubNone": "Nothing published",
+      "hubCount": {
+        "one": "{count} published",
+        "other": "{count} published"
       }
     }
   },

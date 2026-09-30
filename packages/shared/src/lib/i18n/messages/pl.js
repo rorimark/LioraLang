@@ -1245,25 +1245,36 @@ export default {
       "activeNow": "Aktywne teraz",
       "active": "Aktywne {time}",
       "lastActive": "Ostatnio aktywne {date}",
-      "others": "Inne urządzenia",
       "noOthers": "Brak innych urządzeń",
       "noOthersHint": "Zaloguj się na to konto na telefonie lub innym komputerze. Urządzenie pojawi się tu po pierwszej synchronizacji.",
-      "inactive": "Nieużywane od dwóch miesięcy",
-      "inactiveHint": "Pewnie już ich nie masz. Usunięcie tylko zdejmuje urządzenie z listy.",
-      "removeAll": "Usuń wszystkie",
       "syncedNow": "Zsynchronizowano przed chwilą",
       "synced": "Zsynchronizowano {time}",
-      "removeAllLabel": {
-        "one": "{count} urządzenie nieużywane od dwóch miesięcy",
-        "few": "{count} urządzenia nieużywane od dwóch miesięcy",
-        "many": "{count} urządzeń nieużywanych od dwóch miesięcy",
-        "other": "{count} urządzenia nieużywanego od dwóch miesięcy"
-      },
       "pending": {
         "one": "{count} zmiana czeka na synchronizację",
         "few": "{count} zmiany czekają na synchronizację",
         "many": "{count} zmian czeka na synchronizację",
         "other": "{count} zmiany czeka na synchronizację"
+      },
+      "removeUnused": {
+        "one": "Usuń {count} nieużywane",
+        "few": "Usuń {count} nieużywane",
+        "many": "Usuń {count} nieużywanych",
+        "other": "Usuń {count} nieużywanego"
+      }
+    },
+    "sectionText": {
+      "profile": "Imię na opublikowanych taliach i e-mail do logowania.",
+      "security": "Hasło i miejsca, w których jesteś zalogowany.",
+      "devices": "Gdzie to konto synchronizuje talie i postępy.",
+      "hub": "Talie opublikowane dla innych."
+    },
+    "menu": {
+      "hubNone": "Nic nie opublikowano",
+      "hubCount": {
+        "one": "{count} opublikowana",
+        "few": "{count} opublikowane",
+        "many": "{count} opublikowanych",
+        "other": "{count} opublikowanej"
       }
     }
   },

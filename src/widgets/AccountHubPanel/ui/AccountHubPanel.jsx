@@ -5,8 +5,13 @@ import {
   FiCheckCircle,
   FiCopy,
   FiExternalLink,
+  FiChevronLeft,
+  FiChevronRight,
   FiLogOut,
   FiMonitor,
+  FiShield,
+  FiUploadCloud,
+  FiUser,
   FiRefreshCw,
   FiSmartphone,
   FiTablet,
@@ -569,6 +574,7 @@ const DeviceRow = ({ device, detail, control, isLive = false, isQuiet = false })
         <span className="setting-row__label">
           {title}
           {client ? <span className="account-device__client"> · {client}</span> : null}
+          {device.isCurrent ? <span className="account__here"> · {t("account.devices.thisDevice")}</span> : null}
         </span>
         {detail ? <span className="setting-row__hint">{detail}</span> : null}
       </div>
@@ -627,71 +633,48 @@ const DevicesTab = memo(({ panel }) => {
     </Button>
   ) : null;
 
+  // One list: this device first, with its sync; then the others by how
+  // recently they were used, the long-quiet ones last and dimmed.
   return (
-    <div className="account-devices">
-      <SettingGroup title={t("account.devices.thisDevice")}>
-        {current ? (
-          <DeviceRow device={current} detail={syncLine} control={syncButton} isLive />
-        ) : (
-          <SettingRow label={t("account.overview.sync")} hint={syncLine} control={syncButton} />
-        )}
-      </SettingGroup>
-
-      <SettingGroup title={t("account.devices.others")}>
-        {isLoading ? <SettingRow label={t("account.devices.loading")} /> : null}
-        {panel.devicesState === "error" ? (
-          <SettingRow
-            label={t("account.devices.errorTitle")}
-            control={
-              <Button variant="ghost" size="sm" onClick={panel.loadDevices}>
-                {t("common.retry")}
-              </Button>
-            }
-          />
-        ) : null}
-        {panel.devicesState === "ready" && active.length === 0 ? (
-          <SettingRow label={t("account.devices.noOthers")} hint={t("account.devices.noOthersHint")} />
-        ) : null}
-        {active.map((device) => (
-          <DeviceRow
-            key={device.deviceId}
-            device={device}
-            detail={activityText(device.activity)}
-            isLive={device.activity.state === "now"}
-            control={forgetButton(device)}
-          />
-        ))}
-      </SettingGroup>
-
-      {inactive.length > 0 ? (
-        <SettingGroup title={t("account.devices.inactive")} description={t("account.devices.inactiveHint")}>
-          {inactive.map((device) => (
-            <DeviceRow
-              key={device.deviceId}
-              device={device}
-              detail={activityText(device.activity)}
-              control={forgetButton(device)}
-              isQuiet
-            />
-          ))}
-          {inactive.length > 1 ? (
-            <SettingRow
-              label={t("account.devices.removeAllLabel", { count: inactive.length })}
-              control={
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => panel.handleForgetDevices(inactive)}
-                  isLoading={isBusy}
-                >
-                  {t("account.devices.removeAll")}
-                </Button>
-              }
-            />
-          ) : null}
-        </SettingGroup>
+    <SettingGroup>
+      {current ? (
+        <DeviceRow device={current} detail={syncLine} control={syncButton} isLive />
+      ) : (
+        <SettingRow label={t("account.overview.sync")} hint={syncLine} control={syncButton} />
+      )}
+      {isLoading ? <SettingRow label={t("account.devices.loading")} /> : null}
+      {panel.devicesState === "error" ? (
+        <SettingRow
+          label={t("account.devices.errorTitle")}
+          control={
+            <Button variant="ghost" size="sm" onClick={panel.loadDevices}>
+              {t("common.retry")}
+            </Button>
+          }
+        />
       ) : null}
-    </div>
+      {panel.devicesState === "ready" && active.length + inactive.length === 0 ? (
+        <SettingRow label={t("account.devices.noOthers")} hint={t("account.devices.noOthersHint")} />
+      ) : null}
+      {active.map((device) => (
+        <DeviceRow
+          key={device.deviceId}
+          device={device}
+          detail={activityText(device.activity)}
+          isLive={device.activity.state === "now"}
+          control={forgetButton(device)}
+        />
+      ))}
+      {inactive.map((device) => (
+        <DeviceRow
+          key={device.deviceId}
+          device={device}
+          detail={activityText(device.activity)}
+          control={forgetButton(device)}
+          isQuiet
+        />
+      ))}
+    </SettingGroup>
   );
 });
 
@@ -703,7 +686,7 @@ const findScrollParent = (element) => {
   for (let node = element?.parentElement; node; node = node.parentElement) {
     const { overflowY } = getComputedStyle(node);
 
-    if ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight) {
+    if (overflowY === "auto" || overflowY === "scroll") {
       return node;
     }
   }
@@ -722,6 +705,17 @@ const useSteadyTabs = (activeTab, setActiveTab) => {
   const switchTab = useCallback(
     (key) => {
       const panel = panelRef.current;
+
+      if (panel && panel.offsetParent === null) {
+        // A phone showing the menu: the section opens as a new screen, at
+        // its top.
+        const scroller = findScrollParent(panel.parentElement || panel);
+        setActiveTab(key);
+        requestAnimationFrame(() => {
+          if (scroller) scroller.scrollTop = 0;
+        });
+        return;
+      }
 
       if (panel && key !== activeTab) {
         const scroller = findScrollParent(panel);
@@ -795,9 +789,36 @@ const SignedInView = memo(({ panel }) => {
     [authState.isEmailVerified, panel.isDesktopMode, panel.syncOverview.label, panel.syncOverview.state, providerValue, t],
   );
 
+  const sectionIcons = { profile: FiUser, security: FiShield, devices: FiMonitor, hub: FiUploadCloud };
+  const summaries = {
+    profile: authState.displayName || authState.email,
+    security: panel.signInMethodLabel,
+    devices: panel.syncOverview.label,
+    hub:
+      panel.ownDecks.length > 0
+        ? t("account.menu.hubCount", { count: panel.ownDecks.length })
+        : t("account.menu.hubNone"),
+  };
+  const activeSection = panel.signedInTabs.find((tab) => tab.key === panel.activeTab) || panel.signedInTabs[0];
+  let sectionAction = null;
+
+  if (panel.activeTab === "devices" && panel.deviceGroups.inactive.length > 1) {
+    sectionAction = (
+      <Button
+        variant="ghost"
+        size="sm"
+        className="account__remove"
+        onClick={() => panel.handleForgetDevices(panel.deviceGroups.inactive)}
+        isLoading={panel.forgettingDeviceId === "all"}
+      >
+        {t("account.devices.removeUnused", { count: panel.deviceGroups.inactive.length })}
+      </Button>
+    );
+  }
+
   return (
-    <>
-      <div className="account__top">
+    <div className="account-layout" data-view={panel.isSectionRequested ? "section" : "menu"}>
+      <aside className="account-side">
         <div className="account__card-side">
           <AccountCard
             name={name}
@@ -810,46 +831,71 @@ const SignedInView = memo(({ panel }) => {
           />
         </div>
 
-        <div className="account__main">
-          <div className="account__bar">
-            <nav className="account__tabs" role="tablist" aria-label={t("nav.account")}>
-              {panel.signedInTabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={panel.activeTab === tab.key}
-                  className={panel.activeTab === tab.key ? "is-active" : ""}
-                  onClick={() => switchTab(tab.key)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </nav>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="account__sign-out"
-              onClick={panel.handleSignOut}
-              isLoading={panel.pendingAction === "sign-out"}
-            >
-              <FiLogOut aria-hidden="true" />
-              <span>{t("account.signOut")}</span>
-            </Button>
-          </div>
+        <nav className="account-menu" aria-label={t("nav.account")}>
+          <ul>
+            {panel.signedInTabs.map((tab) => {
+              const Icon = sectionIcons[tab.key] || FiUser;
+              const isActive = panel.activeTab === tab.key;
 
-          <section className="account__panel" ref={panelRef}>
-            <div className="account__panel-body" key={panel.activeTab}>
-              {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
-              {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
-              {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
-              {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
+              return (
+                <li key={tab.key}>
+                  <button
+                    type="button"
+                    className={`account-menu__item${isActive ? " is-active" : ""}`}
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={() => switchTab(tab.key)}
+                  >
+                    <span className="account-menu__icon" aria-hidden="true">
+                      <Icon />
+                    </span>
+                    <span className="account-menu__copy">
+                      <strong>{tab.label}</strong>
+                      <span>{summaries[tab.key]}</span>
+                    </span>
+                    <FiChevronRight className="account-menu__chevron" aria-hidden="true" />
+                  </button>
+                </li>
+              );
+            })}
+            <li>
+              <button
+                type="button"
+                className="account-menu__item account-menu__item--out"
+                onClick={panel.handleSignOut}
+                disabled={panel.pendingAction === "sign-out"}
+              >
+                <span className="account-menu__icon" aria-hidden="true">
+                  <FiLogOut />
+                </span>
+                <span className="account-menu__copy">
+                  <strong>{t("account.signOut")}</strong>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <section className="account-content" ref={panelRef}>
+        <button type="button" className="account-content__back" onClick={panel.showMenu}>
+          <FiChevronLeft aria-hidden="true" />
+          <span>{t("nav.account")}</span>
+        </button>
+        <div className="account-content__body" key={panel.activeTab}>
+          <header className="account-content__head">
+            <div>
+              <h2>{activeSection?.label}</h2>
+              <p>{t(`account.sectionText.${panel.activeTab}`)}</p>
             </div>
-          </section>
-
+            {sectionAction}
+          </header>
+          {panel.activeTab === "profile" ? <ProfileTab panel={panel} /> : null}
+          {panel.activeTab === "security" ? <SecurityTab panel={panel} /> : null}
+          {panel.activeTab === "devices" ? <DevicesTab panel={panel} /> : null}
+          {panel.activeTab === "hub" ? <HubDecksList panel={panel} /> : null}
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 });
 

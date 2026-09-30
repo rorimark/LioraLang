@@ -1177,23 +1177,33 @@ export default {
       "activeNow": "Ativo agora",
       "active": "Ativo {time}",
       "lastActive": "Última atividade em {date}",
-      "others": "Outros dispositivos",
       "noOthers": "Nenhum outro dispositivo ainda",
       "noOthersHint": "Entre com esta conta no celular ou em outro computador. Ele aparece aqui após a primeira sincronização.",
-      "inactive": "Sem uso há dois meses",
-      "inactiveHint": "Provavelmente dispositivos que você não tem mais. Remover só tira da lista.",
-      "removeAll": "Remover todos",
       "syncedNow": "Sincronizado agora",
       "synced": "Sincronizado {time}",
-      "removeAllLabel": {
-        "one": "{count} dispositivo sem uso há dois meses",
-        "many": "{count} dispositivos sem uso há dois meses",
-        "other": "{count} dispositivos sem uso há dois meses"
-      },
       "pending": {
         "one": "{count} alteração aguardando sincronização",
         "many": "{count} alterações aguardando sincronização",
         "other": "{count} alterações aguardando sincronização"
+      },
+      "removeUnused": {
+        "one": "Remover {count} sem uso",
+        "many": "Remover {count} sem uso",
+        "other": "Remover {count} sem uso"
+      }
+    },
+    "sectionText": {
+      "profile": "Seu nome nos baralhos publicados e o e-mail de acesso.",
+      "security": "Sua senha e onde você está conectado.",
+      "devices": "Onde esta conta sincroniza baralhos e progresso.",
+      "hub": "Baralhos que você publicou para outras pessoas."
+    },
+    "menu": {
+      "hubNone": "Nada publicado",
+      "hubCount": {
+        "one": "{count} publicado",
+        "many": "{count} publicados",
+        "other": "{count} publicados"
       }
     }
   },

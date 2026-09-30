@@ -124,7 +124,6 @@
 }
 
 .account__switch button:focus-visible,
-.account__tabs button:focus-visible,
 .account__text-link:focus-visible {
   outline: 3px solid var(--color-primary-border);
   outline-offset: 2px;
@@ -228,119 +227,196 @@
 
 /* ---------- signed in ---------- */
 
-/* The card on the left stays in view; everything that changes the
-   account is beside it, in tabs. */
-.account__top {
+/* The card with the account's menu under it on the left, the open
+   section on the right: the settings' own shape, with the card in place
+   of the search. */
+.account-layout {
   display: grid;
-  grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+  grid-template-columns: clamp(300px, 34cqi, 400px) minmax(0, 1fr);
   align-items: start;
-  gap: clamp(22px, 3vw, 44px);
+  gap: clamp(24px, 3.4vw, 52px);
+}
+
+.account-side {
+  position: sticky;
+  top: 12px;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
 }
 
 /* Room above for the stickers on the card's corner, below for the key
    that turns it over. */
 .account__card-side {
-  position: sticky;
-  top: 12px;
-  padding: 22px 8px 64px 0;
+  padding: 22px 6px 62px 0;
 }
 
-.account__main {
+.account-menu ul {
   display: grid;
-  gap: 18px;
-  min-width: 0;
-  padding-top: 22px;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* The tabs and the way out share one rule underneath. */
-.account__bar {
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
-  min-width: 0;
-  box-shadow: inset 0 -2px 0 var(--color-border);
-}
-
-.account__bar .account__tabs {
-  flex: 1 1 auto;
-  min-width: 0;
-  box-shadow: none;
-}
-
-.account__sign-out.ui-button {
-  flex: none;
-  gap: 8px;
-  align-self: center;
-}
-
-/* Tabs carry the navigation's mark: a short blue bar under the open one. */
-/* Scrolls sideways only when the tabs do not fit (a narrow phone, a long
-   language). The rule and the active line are drawn inside the row, so
-   nothing hangs below it and it never scrolls up and down. */
-.account__tabs {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  box-shadow: inset 0 -2px 0 var(--color-border);
-}
-
-.account__tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.account__tabs button {
+.account-menu__item {
   position: relative;
-  flex: none;
-  min-height: 46px;
-  padding: 0 14px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 10px 10px 8px;
   border: 0;
+  border-radius: 14px;
   background: none;
-  color: var(--color-text-muted);
-  font-size: 0.95rem;
-  font-weight: 800;
-  white-space: nowrap;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
   cursor: pointer;
-  user-select: none;
-  transition: color 140ms ease;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 140ms ease;
 }
 
-.account__tabs button::after {
+@media (hover: hover) {
+  .account-menu__item:hover {
+    background: var(--color-surface);
+  }
+}
+
+.account-menu__item:focus-visible {
+  outline: 3px solid var(--color-primary-border);
+  outline-offset: 1px;
+}
+
+/* The open section: its icon filled in blue and a short blue mark at the
+   edge, as in the settings and the app's rail. */
+.account-menu__item::before {
   content: "";
   position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 0;
+  left: -6px;
+  top: 50%;
+  width: 4px;
   height: 0;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
   background: var(--color-primary);
-  transition: height 220ms var(--motion-spring);
+  transform: translateY(-50%);
+  transition: height 260ms var(--motion-spring);
 }
 
-.account__tabs button:hover {
-  color: var(--color-text);
+.account-menu__item.is-active::before {
+  height: 26px;
 }
 
-.account__tabs button.is-active {
+.account-menu__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.account-menu__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.account-menu__item.is-active .account-menu__icon {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.account-menu__copy {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.account-menu__copy strong {
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.account-menu__item.is-active .account-menu__copy strong {
   color: var(--color-primary);
 }
 
-.account__tabs button.is-active::after {
-  height: 4px;
+.account-menu__copy span {
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* A tab changes in place: a short fade, no slide, nothing that reads as
-   the page reloading. */
-.account__panel-body {
+.account-menu__chevron {
+  display: none;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-subtle);
+}
+
+/* The way out sits last, set apart by a rule. */
+.account-menu li:last-child {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 2px solid var(--color-border);
+}
+
+.account-menu__item--out .account-menu__copy strong {
+  color: var(--color-text-muted);
+}
+
+.account-content {
+  display: grid;
+  min-width: 0;
+  max-width: 780px;
+  padding-top: 22px;
+}
+
+.account-content__body {
+  display: grid;
+  gap: 22px;
   animation: account-tab-in 120ms ease both;
 }
 
+/* A section changes in place: a short fade, nothing that reads as the
+   page reloading. */
 @keyframes account-tab-in {
   from {
     opacity: 0.4;
   }
+}
+
+.account-content__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.account-content__head h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.7rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.account-content__head p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.account-content__back {
+  display: none;
 }
 
 .account__form-actions {
@@ -412,59 +488,17 @@
   }
 }
 
-/* ---------- large screens ---------- */
-
-/* A tall window gets the account a little lower, as if the page had a
-   middle; the offset follows the window, never the open tab, so switching
-   tabs does not move anything. */
-@container account (min-width: 1001px) {
-  .account--signed-in {
-    padding-top: max(0px, calc((100dvh - 860px) / 2));
-  }
-}
-
-/* A wide window gets a wider page and a larger card. */
-@container account (min-width: 1300px) {
-  .account--signed-in {
-    max-width: 1320px;
-  }
-
-  .account__top {
-    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
-  }
-}
-
 /* ---------- narrow ---------- */
-
-/* Card and tabs side by side need room for four tabs beside the card;
-   short of that, the card goes on top. */
-@container account (max-width: 1000px) {
-  .account__top {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .account__card-side {
-    position: static;
-    justify-self: center;
-    width: min(100%, 520px);
-  }
-
-  .account__main {
-    padding-top: 0;
-  }
-}
 
 @container account (max-width: 860px) {
   .account--signed-out {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .account__card-side,
   .account__intro .acard {
     justify-self: center;
     width: min(100%, 520px);
   }
-
 
   /* Signing in is what you came for: the form first, the card after. */
   .account--signed-out .account__intro {
@@ -478,42 +512,108 @@
   }
 }
 
-@container account (max-width: 600px) {
-  /* On a phone the way out is its icon, so the four tabs keep the row. */
-  .account__sign-out.ui-button {
-    padding-inline: 10px;
+/* One screen at a time, as in the settings: the card and the menu, or a
+   section with the way back. */
+@container account (max-width: 760px) {
+  .account-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
   }
 
-  .account__sign-out span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  .account-side {
+    position: static;
+    gap: 8px;
   }
 
   .account__card-side {
-    padding: 18px 4px 64px 0;
+    justify-self: center;
+    width: min(100%, 520px);
+    padding: 18px 4px 62px 0;
+  }
+
+  .account-layout[data-view="menu"] .account-content,
+  .account-layout[data-view="section"] .account-side {
+    display: none;
+  }
+
+  .account-menu ul {
+    gap: 0;
+    border: 2px solid var(--color-border);
+    border-bottom-width: var(--edge-width);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+
+  .account-menu li + li {
+    border-top: 2px solid var(--color-border);
+  }
+
+  .account-menu li:last-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .account-menu__item {
+    min-height: 64px;
+    padding: 12px 14px;
+    border-radius: 0;
+  }
+
+  .account-menu__item::before {
+    content: none;
+  }
+
+  .account-menu__item.is-active .account-menu__icon {
+    background: var(--color-surface-muted);
+    color: var(--color-text-muted);
+  }
+
+  .account-menu__item.is-active .account-menu__copy strong {
+    color: inherit;
+  }
+
+  .account-menu__item:active {
+    background: var(--color-surface-muted);
+  }
+
+  .account-menu__chevron {
+    display: block;
+  }
+
+  .account-content {
+    padding-top: 0;
+    max-width: none;
+  }
+
+  .account-content__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    justify-self: start;
+    min-height: 40px;
+    margin: -6px 0 6px -6px;
+    padding: 0 12px 0 4px;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: var(--color-primary);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .account-content__back svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .account-content__back:focus-visible {
+    outline: 3px solid var(--color-primary-border);
   }
 
   .account__form-actions > .ui-button {
     flex: 1 1 auto;
-  }
-
-  .account__tabs {
-    gap: 0;
-  }
-
-  .account__tabs button {
-    flex: 1 1 auto;
-    padding: 0 6px;
-    font-size: 0.88rem;
-  }
-
-  .account__tabs button::after {
-    left: 6px;
-    right: 6px;
   }
 }
 
@@ -521,16 +621,15 @@
   .account__providers {
     grid-template-columns: 1fr;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
   .account__form,
-  .account__panel-body {
+  .account-content__body {
     animation: none;
   }
 
-  .account__tabs button::after {
+  .account-menu__item::before {
     transition: none;
   }
 }
@@ -589,7 +688,7 @@
 }
 
 /* A field as long as the page is hard to read; one address long is enough. */
-.account__panel .setting-row--wide .setting-row__control > * {
+.account-content .setting-row--wide .setting-row__control > * {
   max-width: 620px;
 }
 
@@ -606,11 +705,6 @@
 }
 
 /* ---------- devices ---------- */
-
-.account-devices {
-  display: grid;
-  gap: 22px;
-}
 
 /* A device is a settings row with the thing itself in front: a phone, a
    tablet or a screen, lit green while it is in use. */

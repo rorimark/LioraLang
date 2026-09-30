@@ -1177,23 +1177,33 @@ export default {
       "activeNow": "Attivo ora",
       "active": "Attivo {time}",
       "lastActive": "Ultima attività il {date}",
-      "others": "Altri dispositivi",
       "noOthers": "Nessun altro dispositivo",
       "noOthersHint": "Accedi con questo account sul telefono o su un altro computer. Comparirà qui dopo la prima sincronizzazione.",
-      "inactive": "Non usati da due mesi",
-      "inactiveHint": "Probabilmente dispositivi che non hai più. Rimuoverne uno lo toglie solo da questo elenco.",
-      "removeAll": "Rimuovi tutti",
       "syncedNow": "Sincronizzato ora",
       "synced": "Sincronizzato {time}",
-      "removeAllLabel": {
-        "one": "{count} dispositivo non usato da due mesi",
-        "many": "{count} dispositivi non usati da due mesi",
-        "other": "{count} dispositivi non usati da due mesi"
-      },
       "pending": {
         "one": "{count} modifica in attesa di sincronizzazione",
         "many": "{count} modifiche in attesa di sincronizzazione",
         "other": "{count} modifiche in attesa di sincronizzazione"
+      },
+      "removeUnused": {
+        "one": "Rimuovi {count} inutilizzato",
+        "many": "Rimuovi {count} inutilizzati",
+        "other": "Rimuovi {count} inutilizzati"
+      }
+    },
+    "sectionText": {
+      "profile": "Il tuo nome sui mazzi pubblicati e l'email per accedere.",
+      "security": "La password e dove hai effettuato l'accesso.",
+      "devices": "Dove questo account sincronizza mazzi e progressi.",
+      "hub": "Mazzi che hai pubblicato per gli altri."
+    },
+    "menu": {
+      "hubNone": "Niente di pubblicato",
+      "hubCount": {
+        "one": "{count} pubblicato",
+        "many": "{count} pubblicati",
+        "other": "{count} pubblicati"
       }
     }
   },

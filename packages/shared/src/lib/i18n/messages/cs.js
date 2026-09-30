@@ -1177,23 +1177,33 @@ export default {
       "activeNow": "Právě aktivní",
       "active": "Aktivní {time}",
       "lastActive": "Naposledy aktivní {date}",
-      "others": "Další zařízení",
       "noOthers": "Zatím žádná další zařízení",
       "noOthersHint": "Přihlaste se k tomuto účtu na telefonu nebo jiném počítači. Po první synchronizaci se objeví tady.",
-      "inactive": "Nepoužívaná dva měsíce",
-      "inactiveHint": "Nejspíš zařízení, která už nemáte. Odebrání je jen smaže ze seznamu.",
-      "removeAll": "Odebrat vše",
       "syncedNow": "Právě synchronizováno",
       "synced": "Synchronizováno {time}",
-      "removeAllLabel": {
-        "one": "{count} zařízení nepoužívané dva měsíce",
-        "few": "{count} zařízení nepoužívaná dva měsíce",
-        "other": "{count} zařízení nepoužívaných dva měsíce"
-      },
       "pending": {
         "one": "{count} změna čeká na synchronizaci",
         "few": "{count} změny čekají na synchronizaci",
         "other": "{count} změn čeká na synchronizaci"
+      },
+      "removeUnused": {
+        "one": "Odebrat {count} nepoužívané",
+        "few": "Odebrat {count} nepoužívaná",
+        "other": "Odebrat {count} nepoužívaných"
+      }
+    },
+    "sectionText": {
+      "profile": "Jméno na zveřejněných balíčcích a e-mail k přihlášení.",
+      "security": "Heslo a kde jste přihlášeni.",
+      "devices": "Kde tento účet synchronizuje balíčky a pokrok.",
+      "hub": "Balíčky, které jste zveřejnili pro ostatní."
+    },
+    "menu": {
+      "hubNone": "Nic nezveřejněno",
+      "hubCount": {
+        "one": "{count} zveřejněný",
+        "few": "{count} zveřejněné",
+        "other": "{count} zveřejněných"
       }
     }
   },
