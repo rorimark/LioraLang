@@ -2,6 +2,7 @@ import {
   createSupabaseAuthRepository,
   getCurrentSupabaseAuthUser,
   createSupabaseSyncApi,
+  createSupabaseWordSuggestApi,
 } from "@shared/api";
 import { describeThisDevice } from "@shared/lib/device";
 import { buildUserProfileScope, GUEST_PROFILE_SCOPE } from "@shared/core/usecases/sync";
@@ -680,6 +681,7 @@ export const createElectronPlatformServices = () => {
       deviceName: describeThisDevice({ isDesktopApp: true }) || "Desktop app",
     }),
     systemRepository: createSystemRepository(),
+    wordSuggestRepository: createSupabaseWordSuggestApi(),
     runtimeGateway,
   };
 };

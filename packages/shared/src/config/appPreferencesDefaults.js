@@ -24,6 +24,8 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
     level: "A1",
     partOfSpeech: "noun",
     tags: Object.freeze([]),
+    // Suggestions for the rest of a card once a word is typed.
+    wordSuggestions: true,
   }),
   importExport: Object.freeze({
     autoOpenLanguageReview: false,

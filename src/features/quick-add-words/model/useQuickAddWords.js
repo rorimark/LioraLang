@@ -259,6 +259,26 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     setDetails((current) => ({ ...current, [name]: value }));
   }, []);
 
+  // A suggestion fills the card's sides and its details; each goes back to
+  // where the form keeps it.
+  const applySuggestion = useCallback((patch) => {
+    const { source, target, ...rest } = patch || {};
+    const sides = Object.fromEntries(
+      Object.entries({ source, target }).filter(([, value]) => typeof value === "string"),
+    );
+
+    if (Object.keys(sides).length) {
+      setDraft((current) => ({ ...current, ...sides }));
+      setConfirmedPair("");
+    }
+
+    if (Object.keys(rest).length) {
+      setDetails((current) => ({ ...current, ...rest }));
+    }
+
+    setNotice((current) => (current?.kind === "error" ? null : current));
+  }, []);
+
   const addDraft = useCallback(async () => {
     const source = draft.source.trim();
     const target = draft.target.trim();
@@ -572,6 +592,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     handleNewDeckChange,
     handleDraftChange,
     handleDetailsChange,
+    applySuggestion,
     handleSourceKeyDown,
     handleTargetKeyDown,
     handleSourcePaste,

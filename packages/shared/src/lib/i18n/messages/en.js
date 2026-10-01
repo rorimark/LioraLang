@@ -1326,7 +1326,9 @@ export default {
     "useRecommendedSettings": "Use recommended settings",
     "interfaceLanguage": "Language",
     "interfaceLanguageHint": "The language of menus, buttons and messages. Your decks stay as they are.",
-    "interfaceLanguageAuto": "Same as the device"
+    "interfaceLanguageAuto": "Same as the device",
+    "wordSuggestions": "Suggest the rest of the card",
+    "wordSuggestionsHint": "As you type a word, it and the deck's languages are sent to Google Gemini to suggest a translation, examples, the level and part of speech. Needs an account."
   },
   "settingsPage": {
     "sections": {
@@ -1708,6 +1710,26 @@ export default {
       "tooLarge": "This picture is over 25 MB. Choose a smaller one.",
       "unreadable": "This picture could not be read. Try another file.",
       "saveFailed": "The picture could not be saved. Try again."
+    }
+  },
+  "suggest": {
+    "thinking": "Suggesting…",
+    "ready": "Suggestion ready",
+    "fill": "Fill in",
+    "tabKey": "Tab",
+    "dismiss": "Dismiss the suggestion",
+    "useField": "Use “{value}”",
+    "examples": {
+      "one": "{count} example",
+      "other": "{count} examples"
+    },
+    "didYouMean": "Did you mean “{word}”?",
+    "useCorrection": "Use it",
+    "quota": "Suggestions are back tomorrow.",
+    "signIn": "Sign in to get the rest of the card suggested as you type.",
+    "detailsFilled": {
+      "one": "{count} detail filled in",
+      "other": "{count} details filled in"
     }
   }
 };

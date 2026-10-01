@@ -1412,7 +1412,9 @@ export default {
     "useRecommendedSettings": "Použít doporučené nastavení",
     "interfaceLanguage": "Jazyk",
     "interfaceLanguageHint": "Jazyk nabídek, tlačítek a zpráv. Vaše balíčky zůstanou, jak jsou.",
-    "interfaceLanguageAuto": "Podle zařízení"
+    "interfaceLanguageAuto": "Podle zařízení",
+    "wordSuggestions": "Navrhovat zbytek karty",
+    "wordSuggestionsHint": "Při psaní slova se ono a jazyky balíčku posílají do Google Gemini, aby navrhl překlad, příklady, úroveň a slovní druh. Vyžaduje účet."
   },
   "settingsPage": {
     "sections": {
@@ -1802,6 +1804,30 @@ export default {
       "tooLarge": "Obrázek má přes 25 MB. Vyberte menší.",
       "unreadable": "Obrázek se nepodařilo přečíst. Zkuste jiný soubor.",
       "saveFailed": "Obrázek se nepodařilo uložit. Zkuste to znovu."
+    }
+  },
+  "suggest": {
+    "thinking": "Hledáme…",
+    "ready": "Návrh je připraven",
+    "fill": "Doplnit",
+    "tabKey": "Tab",
+    "dismiss": "Skrýt návrh",
+    "useField": "Použít „{value}“",
+    "examples": {
+      "one": "{count} příklad",
+      "few": "{count} příklady",
+      "many": "{count} příklady",
+      "other": "{count} příkladů"
+    },
+    "didYouMean": "Mysleli jste „{word}“?",
+    "useCorrection": "Opravit",
+    "quota": "Návrhy budou zase zítra.",
+    "signIn": "Přihlaste se a zbytek karty vám bude navrhován už při psaní.",
+    "detailsFilled": {
+      "one": "Doplněn {count} údaj",
+      "few": "Doplněny {count} údaje",
+      "many": "Doplněny {count} údaje",
+      "other": "Doplněno {count} údajů"
     }
   }
 };

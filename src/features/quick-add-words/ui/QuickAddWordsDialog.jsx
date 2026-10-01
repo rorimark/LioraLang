@@ -1,6 +1,7 @@
-import { memo, useCallback, useId, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useId, useRef, useState } from "react";
 import { FiAlertTriangle, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, FiX } from "react-icons/fi";
 import { WordImageField } from "@features/word-image-field";
+import { SuggestChip, SuggestField, SuggestionBar, useSuggestionSummary, useWordSuggestion } from "@features/word-suggest";
 import { Button, Select } from "@shared/ui";
 import { useDialogA11y } from "@shared/lib/a11y";
 import { useI18n } from "@shared/lib/i18n";
@@ -125,6 +126,16 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
   const { t, languageName, partOfSpeechName } = useI18n();
   const detailsId = useId();
   const { languages } = model;
+  const suggestDraft = useMemo(() => ({ ...model.draft, ...model.details }), [model.draft, model.details]);
+  // The languages are rebuilt on every render; their values are what count.
+  const { sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide } = languages;
+  const { usesWordLevels } = model;
+  const suggestDeck = useMemo(
+    () => ({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide, usesWordLevels }),
+    [pictureSide, sourceLanguage, targetLanguage, tertiaryLanguage, usesWordLevels],
+  );
+  const suggest = useWordSuggestion({ draft: suggestDraft, deck: suggestDeck, onFill: model.applySuggestion });
+  const summary = useSuggestionSummary(suggest);
 
   const handleDetailsKeyDown = useCallback(
     (event) => {
@@ -139,6 +150,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
   return (
     <form
       className="quick-add__form"
+      onKeyDown={suggest.handleKeyDown}
       onSubmit={(event) => {
         event.preventDefault();
         void model.addDraft();
@@ -158,6 +170,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         ) : (
           <label className="quick-add__field">
             <span>{languageName(languages.sourceLanguage)}</span>
+            <SuggestField field="source" suggest={suggest}>
             <input
               ref={sourceInputRef}
               name="source"
@@ -171,6 +184,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
               enterKeyHint="next"
               data-autofocus
             />
+            </SuggestField>
           </label>
         )}
         {languages.pictureSide === "target" ? (
@@ -185,6 +199,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         ) : (
           <label className="quick-add__field">
             <span>{languageName(languages.targetLanguage)}</span>
+            <SuggestField field="target" suggest={suggest}>
             <input
               name="target"
               value={model.draft.target}
@@ -195,6 +210,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
               autoCapitalize="none"
               enterKeyHint="done"
             />
+            </SuggestField>
           </label>
         )}
       </div>
@@ -220,27 +236,35 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
           {languages.tertiaryLanguage ? (
             <label className="quick-add__field quick-add__field--wide">
               <span>{languageName(languages.tertiaryLanguage)}</span>
-              <input
-                name="tertiary"
-                value={model.details.tertiary}
-                onChange={model.handleDetailsChange}
-                autoComplete="off"
-              />
+              <SuggestField field="tertiary" suggest={suggest}>
+                <input
+                  name="tertiary"
+                  value={model.details.tertiary}
+                  onChange={model.handleDetailsChange}
+                  placeholder={t("editor.optionalPlaceholder")}
+                  autoComplete="off"
+                />
+              </SuggestField>
             </label>
           ) : null}
           <label className="quick-add__field quick-add__field--wide">
             <span>{t("flashcard.examples")}</span>
-            <textarea
-              name="examplesInput"
-              rows={3}
-              value={model.details.examplesInput}
-              onChange={model.handleDetailsChange}
-              onKeyDown={handleDetailsKeyDown}
-              placeholder={t("quickAdd.examplesPlaceholder")}
-            />
+            <SuggestField field="examplesInput" suggest={suggest} multiline>
+              <textarea
+                name="examplesInput"
+                rows={3}
+                value={model.details.examplesInput}
+                onChange={model.handleDetailsChange}
+                onKeyDown={handleDetailsKeyDown}
+                placeholder={t("quickAdd.examplesPlaceholder")}
+              />
+            </SuggestField>
           </label>
           <label className="quick-add__field">
-            <span>{t("catalog.partOfSpeech")}</span>
+            <span>
+              {t("catalog.partOfSpeech")}
+              <SuggestChip field="part_of_speech" suggest={suggest} label={partOfSpeechName} />
+            </span>
             <Select name="part_of_speech" value={model.details.part_of_speech} onChange={model.handleDetailsChange}>
               <option value="">{t("quickAdd.notSet")}</option>
               {PART_OF_SPEECH_OPTIONS.map((part) => (
@@ -252,7 +276,10 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
           </label>
           {model.usesWordLevels ? (
             <label className="quick-add__field">
-              <span>{t("catalog.level")}</span>
+              <span>
+                {t("catalog.level")}
+                <SuggestChip field="level" suggest={suggest} />
+              </span>
               <Select name="level" value={model.details.level} onChange={model.handleDetailsChange}>
                 <option value="">{t("quickAdd.notSet")}</option>
                 {LEVEL_OPTIONS.map((level) => (
@@ -281,9 +308,11 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         <Button type="submit" variant="primary" disabled={model.isSaving}>
           {t("quickAdd.addCard")}
         </Button>
-        <span className="quick-add__key-hint" aria-hidden="true">
-          <FiCornerDownLeft /> {t("quickAdd.enterHint")}
-        </span>
+        <SuggestionBar suggest={suggest} summary={summary}>
+          <span className="quick-add__key-hint" aria-hidden="true">
+            <FiCornerDownLeft /> {t("quickAdd.enterHint")}
+          </span>
+        </SuggestionBar>
       </div>
     </form>
   );

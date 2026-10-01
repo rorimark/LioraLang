@@ -1,12 +1,31 @@
 import { memo } from "react";
 import { WordImageField } from "@features/word-image-field";
+import { SuggestChip, SuggestField } from "@features/word-suggest";
 import { Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 
 // The fields of one word, for adding and for changing it. The two sides
 // come first, in the order the card shows them; a picture side takes a
 // picture where a language side takes text. Everything else is details.
-const SideInput = memo(({ side, label, draft, onChange, onImageChange, isPicture, otherText, autoFocus, placeholder }) => {
+// With suggestions on, an empty field may hold one in pencil.
+
+const TextInput = memo(({ name, value, onChange, placeholder, autoFocus = false }) => (
+  <input
+    type="text"
+    name={name}
+    value={value}
+    onChange={onChange}
+    placeholder={placeholder}
+    autoComplete="off"
+    autoCapitalize="off"
+    spellCheck="false"
+    autoFocus={autoFocus}
+  />
+));
+
+TextInput.displayName = "TextInput";
+
+const SideInput = memo(({ side, label, draft, onChange, onImageChange, isPicture, otherText, autoFocus, placeholder, suggest }) => {
   if (isPicture) {
     return (
       <div className="deck-word-fields__side deck-word-fields__side--picture">
@@ -18,17 +37,9 @@ const SideInput = memo(({ side, label, draft, onChange, onImageChange, isPicture
   return (
     <label className="deck-word-fields__side">
       <span className="deck-word-fields__label">{label}</span>
-      <input
-        type="text"
-        name={side}
-        value={draft[side]}
-        onChange={onChange}
-        placeholder={placeholder}
-        autoComplete="off"
-        autoCapitalize="off"
-        spellCheck="false"
-        autoFocus={autoFocus}
-      />
+      <SuggestField field={side} suggest={suggest}>
+        <TextInput name={side} value={draft[side]} onChange={onChange} placeholder={placeholder} autoFocus={autoFocus} />
+      </SuggestField>
     </label>
   );
 });
@@ -44,6 +55,7 @@ export const WordSideFields = memo(({
   backLabel,
   tertiaryLabel = "",
   autoFocus = false,
+  suggest = null,
 }) => {
   const { t } = useI18n();
 
@@ -59,6 +71,7 @@ export const WordSideFields = memo(({
         otherText={draft.target}
         autoFocus={autoFocus}
         placeholder={t("editor.wordPlaceholder")}
+        suggest={suggest}
       />
       <SideInput
         side="target"
@@ -70,22 +83,16 @@ export const WordSideFields = memo(({
         otherText={draft.source}
         autoFocus={autoFocus && pictureSide === "source"}
         placeholder={t(pictureSide === "source" ? "editor.wordPlaceholder" : "editor.translationPlaceholder")}
+        suggest={suggest}
       />
       {/* The deck's extra language sits beside the two sides: it is part of
           every word, shown on the back of the card with the translation. */}
       {tertiaryLabel ? (
         <label className="deck-word-fields__side">
           <span className="deck-word-fields__label">{tertiaryLabel}</span>
-          <input
-            type="text"
-            name="tertiary"
-            value={draft.tertiary}
-            onChange={onChange}
-            placeholder={t("editor.optionalPlaceholder")}
-            autoComplete="off"
-            autoCapitalize="off"
-            spellCheck="false"
-          />
+          <SuggestField field="tertiary" suggest={suggest}>
+            <TextInput name="tertiary" value={draft.tertiary} onChange={onChange} placeholder={t("editor.optionalPlaceholder")} />
+          </SuggestField>
         </label>
       ) : null}
     </div>
@@ -100,47 +107,61 @@ export const WordDetailFields = memo(({
   usesWordLevels,
   levelOptions,
   partOfSpeechOptions,
+  suggest = null,
 }) => {
   const { t, partOfSpeechName } = useI18n();
+  const levelInked = suggest?.inked?.has("level");
+  const partInked = suggest?.inked?.has("part_of_speech");
 
   return (
     <div className="deck-word-fields__details">
-
       {usesWordLevels ? (
         <label className="deck-word-fields__field deck-word-fields__field--short">
-          <span className="deck-word-fields__label">{t("catalog.level")}</span>
-          <Select name="level" value={draft.level} onChange={onChange} label={t("catalog.level")}>
-            <option value="">{t("quickAdd.notSet")}</option>
-            {levelOptions.map((level) => (
-              <option key={level} value={level}>
-                {level}
-              </option>
-            ))}
-          </Select>
+          <span className="deck-word-fields__label">
+            {t("catalog.level")}
+            <SuggestChip field="level" suggest={suggest} />
+          </span>
+          <span className={levelInked ? "suggest-inked deck-word-fields__select" : "deck-word-fields__select"}>
+            <Select name="level" value={draft.level} onChange={onChange} label={t("catalog.level")}>
+              <option value="">{t("quickAdd.notSet")}</option>
+              {levelOptions.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </Select>
+          </span>
         </label>
       ) : null}
 
       <label className="deck-word-fields__field deck-word-fields__field--short">
-        <span className="deck-word-fields__label">{t("catalog.partOfSpeech")}</span>
-        <Select name="part_of_speech" value={draft.part_of_speech} onChange={onChange} label={t("catalog.partOfSpeech")}>
-          <option value="">{t("quickAdd.notSet")}</option>
-          {partOfSpeechOptions.map((part) => (
-            <option key={part} value={part}>
-              {partOfSpeechName(part)}
-            </option>
-          ))}
-        </Select>
+        <span className="deck-word-fields__label">
+          {t("catalog.partOfSpeech")}
+          <SuggestChip field="part_of_speech" suggest={suggest} label={partOfSpeechName} />
+        </span>
+        <span className={partInked ? "suggest-inked deck-word-fields__select" : "deck-word-fields__select"}>
+          <Select name="part_of_speech" value={draft.part_of_speech} onChange={onChange} label={t("catalog.partOfSpeech")}>
+            <option value="">{t("quickAdd.notSet")}</option>
+            {partOfSpeechOptions.map((part) => (
+              <option key={part} value={part}>
+                {partOfSpeechName(part)}
+              </option>
+            ))}
+          </Select>
+        </span>
       </label>
 
       <label className="deck-word-fields__field deck-word-fields__field--wide">
         <span className="deck-word-fields__label">{t("flashcard.examples")}</span>
-        <textarea
-          name="examplesInput"
-          value={draft.examplesInput}
-          onChange={onChange}
-          placeholder={t("editor.examplesPlaceholder")}
-          rows={3}
-        />
+        <SuggestField field="examplesInput" suggest={suggest} multiline>
+          <textarea
+            name="examplesInput"
+            value={draft.examplesInput}
+            onChange={onChange}
+            placeholder={t("editor.examplesPlaceholder")}
+            rows={3}
+          />
+        </SuggestField>
       </label>
 
       <label className="deck-word-fields__field deck-word-fields__field--wide">

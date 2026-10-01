@@ -174,6 +174,10 @@ export const normalizeAppPreferences = (value = {}) => {
         DEFAULT_APP_PREFERENCES.deckDefaults.partOfSpeech,
       ),
       tags: normalizeTags(value?.deckDefaults?.tags),
+      wordSuggestions: toBoolean(
+        value?.deckDefaults?.wordSuggestions,
+        DEFAULT_APP_PREFERENCES.deckDefaults.wordSuggestions,
+      ),
     },
     importExport: {
       autoOpenLanguageReview: toBoolean(

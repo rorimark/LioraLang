@@ -1,0 +1,339 @@
+/* ===== Word suggestions =====
+   A suggestion is written in pencil: it sits in an empty field in the
+   accent colour, lighter than anything the person typed, and turns to ink
+   when taken. Nothing moves while the person is typing; the only motion is
+   the field's shimmer while an answer is on its way, the pencil fading in,
+   and one wash of colour when it is taken. */
+
+.suggest-spark {
+  flex: 0 0 auto;
+  width: 0.9em;
+  height: 0.9em;
+  fill: currentColor;
+}
+
+.suggest-spark.is-breathing {
+  animation: suggest-breathe 1.6s ease-in-out infinite;
+}
+
+@keyframes suggest-breathe {
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82) rotate(45deg);
+  }
+}
+
+/* ----- a field ----- */
+
+.suggest-field {
+  --suggest-pad-x: 14px;
+  --suggest-pad-y: 12px;
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.suggest-field > input,
+.suggest-field > textarea {
+  width: 100%;
+}
+
+.suggest-field.has-ghost > input,
+.suggest-field.has-ghost > textarea {
+  padding-right: 44px;
+}
+
+.suggest-field.has-ghost > input::placeholder,
+.suggest-field.has-ghost > textarea::placeholder {
+  color: transparent;
+}
+
+.suggest-field__ghost {
+  position: absolute;
+  top: 50%;
+  left: var(--suggest-pad-x);
+  right: 44px;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--color-primary) 72%, var(--color-text-subtle));
+  font-size: 0.95rem;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-50%);
+  text-decoration: underline dashed color-mix(in srgb, var(--color-primary) 40%, var(--color-transparent));
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  animation: suggest-pencil-in 320ms ease-out both;
+}
+
+.suggest-field--multiline .suggest-field__ghost {
+  top: var(--suggest-pad-y);
+  bottom: var(--suggest-pad-y);
+  white-space: pre-line;
+  transform: none;
+  animation-name: suggest-pencil-in-block;
+}
+
+/* Typing writes over the pencil. */
+.suggest-field:has(> input:not(:placeholder-shown)) .suggest-field__ghost,
+.suggest-field:has(> textarea:not(:placeholder-shown)) .suggest-field__ghost {
+  visibility: hidden;
+}
+
+@keyframes suggest-pencil-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate(-4px, -50%);
+  }
+}
+
+@keyframes suggest-pencil-in-block {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+.suggest-field__take {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transform: translateY(-50%);
+  animation: suggest-take-in 320ms cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.suggest-field--multiline .suggest-field__take {
+  top: 8px;
+  transform: none;
+  animation-name: suggest-take-in-block;
+}
+
+.suggest-field__take:hover,
+.suggest-field__take:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@keyframes suggest-take-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.4) rotate(-45deg);
+  }
+}
+
+@keyframes suggest-take-in-block {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-45deg);
+  }
+}
+
+/* While the answer is on its way. */
+.suggest-field.is-pending::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: calc(var(--radius-control) - 2px);
+  background: linear-gradient(
+    100deg,
+    var(--color-transparent) 30%,
+    color-mix(in srgb, var(--color-primary) 13%, var(--color-transparent)) 50%,
+    var(--color-transparent) 70%
+  );
+  background-size: 220% 100%;
+  pointer-events: none;
+  animation: suggest-shimmer 1.3s ease-in-out infinite;
+}
+
+@keyframes suggest-shimmer {
+  from {
+    background-position: 120% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* Taken: one wash of colour that fades into the field. */
+.suggest-field.is-inked > input,
+.suggest-field.is-inked > textarea,
+.suggest-inked .ui-select__trigger {
+  animation: suggest-ink 900ms ease-out;
+}
+
+@keyframes suggest-ink {
+  0% {
+    background-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-surface));
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  60% {
+    border-color: var(--color-primary-border);
+  }
+}
+
+/* ----- a choice from a list ----- */
+
+.suggest-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 2px 8px 2px 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 800;
+  vertical-align: middle;
+  cursor: pointer;
+  animation: suggest-take-in-block 320ms cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.suggest-chip:hover,
+.suggest-chip:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* ----- the line under the fields ----- */
+
+.suggest-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 32px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  animation: suggest-bar-in 220ms ease-out both;
+}
+
+.suggest-bar > .suggest-spark {
+  color: var(--color-primary);
+}
+
+.suggest-bar__summary {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggest-bar__action {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 0 6px 0 12px;
+  border: 2px solid var(--color-primary-border);
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.suggest-bar__action:only-of-type,
+.suggest-bar--correction .suggest-bar__action {
+  padding-right: 12px;
+}
+
+.suggest-bar__action:hover {
+  border-color: var(--color-primary);
+}
+
+.suggest-bar__key {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* A thumb has no Tab key. */
+@media (pointer: coarse) {
+  .suggest-bar__key {
+    display: none;
+  }
+
+  .suggest-bar__action {
+    padding-right: 12px;
+  }
+}
+
+.suggest-bar__dismiss {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+}
+
+.suggest-bar__dismiss:hover {
+  color: var(--color-text);
+}
+
+.suggest-bar--correction strong,
+.suggest-bar--correction span {
+  color: var(--color-text);
+}
+
+.suggest-bar--quiet {
+  color: var(--color-text-subtle);
+}
+
+@keyframes suggest-bar-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .suggest-spark.is-breathing,
+  .suggest-field__ghost,
+  .suggest-field__take,
+  .suggest-field.is-pending::after,
+  .suggest-field.is-inked > input,
+  .suggest-field.is-inked > textarea,
+  .suggest-inked .ui-select__trigger,
+  .suggest-chip,
+  .suggest-bar {
+    animation: none;
+  }
+}

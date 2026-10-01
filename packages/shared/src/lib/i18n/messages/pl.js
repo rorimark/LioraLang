@@ -1484,7 +1484,9 @@ export default {
     "useRecommendedSettings": "Użyj zalecanych ustawień",
     "interfaceLanguage": "Język",
     "interfaceLanguageHint": "Język menu, przycisków i komunikatów. Twoje talie się nie zmieniają.",
-    "interfaceLanguageAuto": "Jak na urządzeniu"
+    "interfaceLanguageAuto": "Jak na urządzeniu",
+    "wordSuggestions": "Podpowiadaj resztę karty",
+    "wordSuggestionsHint": "Gdy wpisujesz słowo, ono i języki talii trafiają do Google Gemini, aby zaproponować tłumaczenie, przykłady, poziom i część mowy. Wymaga konta."
   },
   "settingsPage": {
     "sections": {
@@ -1882,6 +1884,30 @@ export default {
       "tooLarge": "Obrazek ma ponad 25 MB. Wybierz mniejszy.",
       "unreadable": "Nie udało się odczytać obrazka. Spróbuj innego pliku.",
       "saveFailed": "Nie udało się zapisać obrazka. Spróbuj ponownie."
+    }
+  },
+  "suggest": {
+    "thinking": "Szukamy…",
+    "ready": "Podpowiedź gotowa",
+    "fill": "Uzupełnij",
+    "tabKey": "Tab",
+    "dismiss": "Ukryj podpowiedź",
+    "useField": "Użyj „{value}”",
+    "examples": {
+      "one": "{count} przykład",
+      "few": "{count} przykłady",
+      "many": "{count} przykładów",
+      "other": "{count} przykłady"
+    },
+    "didYouMean": "Czy chodziło o „{word}”?",
+    "useCorrection": "Popraw",
+    "quota": "Podpowiedzi wrócą jutro.",
+    "signIn": "Zaloguj się, aby podczas pisania dostawać podpowiedzi do reszty karty.",
+    "detailsFilled": {
+      "one": "Uzupełniono {count} szczegół",
+      "few": "Uzupełniono {count} szczegóły",
+      "many": "Uzupełniono {count} szczegółów",
+      "other": "Uzupełniono {count} szczegóły"
     }
   }
 };

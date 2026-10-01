@@ -618,3 +618,17 @@
     animation: none;
   }
 }
+
+/* A suggestion in pencil matches the field it sits in. */
+.quick-add__field .suggest-field__ghost {
+  font-size: 1rem;
+}
+
+.quick-add__pair .quick-add__field .suggest-field__ghost {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.quick-add__submit .suggest-bar {
+  flex: 1 1 auto;
+}

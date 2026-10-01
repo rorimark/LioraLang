@@ -314,14 +314,27 @@ export const useDeckEditorPanel = () => {
     setAddError("");
   }, []);
 
+  // A suggestion fills fields of the draft; what it fills is the person's
+  // to change like anything they typed.
+  const applyAddDraftPatch = useCallback((patch) => {
+    setAddDraft((current) => ({ ...current, ...patch }));
+    setAddError("");
+  }, []);
+
+  const applyEditDraftPatch = useCallback((patch) => {
+    setEditDraft((current) => ({ ...current, ...patch }));
+    setEditError("");
+  }, []);
+
   const handleAddDraftImageChange = useCallback((image) => {
     setAddDraft((current) => ({ ...current, image }));
     setAddError("");
   }, []);
 
   // Adds the typed word at the top of the list and keeps the tags, level
-  // and part of speech for the next one: words come in runs.
-  const submitAddDraft = useCallback(() => {
+  // and part of speech for the next one: words come in runs. What a
+  // suggestion filled in belonged to that word and is not kept.
+  const submitAddDraft = useCallback((suggestedFields = null) => {
     const errorKey = validateWordDraft(addDraft, pictureSide);
 
     if (errorKey) {
@@ -331,10 +344,11 @@ export const useDeckEditorPanel = () => {
 
     const word = draftToWord(addDraft, wordOptions);
     commitWords([word, ...wordsRef.current]);
+    const keep = (field, current) => (suggestedFields?.has?.(field) ? emptyDraft[field] : current[field]);
     setAddDraft((current) => ({
       ...emptyDraft,
-      level: current.level,
-      part_of_speech: current.part_of_speech,
+      level: keep("level", current),
+      part_of_speech: keep("part_of_speech", current),
       tagsInput: current.tagsInput,
     }));
     setAddError("");
@@ -525,8 +539,10 @@ export const useDeckEditorPanel = () => {
     handleWordsQueryChange,
 
     addDraft,
+    addDraftDefaults: emptyDraft,
     addError: addError ? t(addError) : "",
     handleAddDraftChange,
+    applyAddDraftPatch,
     handleAddDraftImageChange,
     submitAddDraft,
 
@@ -537,6 +553,7 @@ export const useDeckEditorPanel = () => {
     cancelEdit,
     handleEditDraftChange,
     handleEditDraftImageChange,
+    applyEditDraftPatch,
     submitEditDraft,
 
     deleteWord,

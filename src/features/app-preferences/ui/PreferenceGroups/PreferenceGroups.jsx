@@ -388,7 +388,7 @@ LearningPreferences.displayName = "LearningPreferences";
 export const DeckDefaultPreferences = memo(() => {
   const i18n = useI18n();
   const { t } = i18n;
-  const { appPreferences, handleSelectFieldChange, handleTextFieldChange } =
+  const { appPreferences, handleSelectFieldChange, handleTextFieldChange, handleBooleanFieldChange } =
     useAppPreferencesSection();
   const { deckDefaults } = appPreferences;
   const sourceId = useId();
@@ -474,6 +474,15 @@ export const DeckDefaultPreferences = memo(() => {
             autoComplete="off"
           />
         }
+      />
+      {/* Says plainly where a typed word goes before anyone turns it on. */}
+      <SwitchRow
+        label={t("prefs.wordSuggestions")}
+        hint={t("prefs.wordSuggestionsHint")}
+        keywords="ai assistant gemini suggest autofill translation"
+        name="deckDefaults.wordSuggestions"
+        checked={deckDefaults.wordSuggestions}
+        onChange={handleBooleanFieldChange}
       />
     </SettingGroup>
   );

@@ -1484,7 +1484,9 @@ export default {
     "useRecommendedSettings": "Применить рекомендуемые",
     "interfaceLanguage": "Язык",
     "interfaceLanguageHint": "Язык меню, кнопок и сообщений. Ваши колоды не меняются.",
-    "interfaceLanguageAuto": "Как на устройстве"
+    "interfaceLanguageAuto": "Как на устройстве",
+    "wordSuggestions": "Подсказывать остальное в карточке",
+    "wordSuggestionsHint": "Когда вы вводите слово, оно и языки колоды отправляются в Google Gemini, чтобы предложить перевод, примеры, уровень и часть речи. Нужен аккаунт."
   },
   "settingsPage": {
     "sections": {
@@ -1882,6 +1884,30 @@ export default {
       "tooLarge": "Изображение больше 25 МБ. Выберите поменьше.",
       "unreadable": "Не удалось прочитать изображение. Попробуйте другой файл.",
       "saveFailed": "Не удалось сохранить изображение. Попробуйте ещё раз."
+    }
+  },
+  "suggest": {
+    "thinking": "Подбираем…",
+    "ready": "Подсказка готова",
+    "fill": "Заполнить",
+    "tabKey": "Tab",
+    "dismiss": "Скрыть подсказку",
+    "useField": "Взять «{value}»",
+    "examples": {
+      "one": "{count} пример",
+      "few": "{count} примера",
+      "many": "{count} примеров",
+      "other": "{count} примера"
+    },
+    "didYouMean": "Может быть, «{word}»?",
+    "useCorrection": "Исправить",
+    "quota": "Подсказки вернутся завтра.",
+    "signIn": "Войдите, чтобы получать подсказки для карточки прямо во время ввода.",
+    "detailsFilled": {
+      "one": "Заполнена {count} деталь",
+      "few": "Заполнены {count} детали",
+      "many": "Заполнено {count} деталей",
+      "other": "Заполнены {count} детали"
     }
   }
 };

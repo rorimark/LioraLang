@@ -1405,7 +1405,9 @@ export default {
     "useRecommendedSettings": "Usar los valores recomendados",
     "interfaceLanguage": "Idioma",
     "interfaceLanguageHint": "El idioma de menús, botones y mensajes. Tus mazos no cambian.",
-    "interfaceLanguageAuto": "El del dispositivo"
+    "interfaceLanguageAuto": "El del dispositivo",
+    "wordSuggestions": "Sugerir el resto de la tarjeta",
+    "wordSuggestionsHint": "Mientras escribes una palabra, esta y los idiomas del mazo se envían a Google Gemini para sugerir la traducción, ejemplos, el nivel y la categoría gramatical. Requiere una cuenta."
   },
   "settingsPage": {
     "sections": {
@@ -1795,6 +1797,28 @@ export default {
       "tooLarge": "La imagen pesa más de 25 MB. Elige una más pequeña.",
       "unreadable": "No se pudo leer la imagen. Prueba con otro archivo.",
       "saveFailed": "No se pudo guardar la imagen. Inténtalo de nuevo."
+    }
+  },
+  "suggest": {
+    "thinking": "Buscando sugerencia…",
+    "ready": "Sugerencia lista",
+    "fill": "Rellenar",
+    "tabKey": "Tab",
+    "dismiss": "Ocultar la sugerencia",
+    "useField": "Usar «{value}»",
+    "examples": {
+      "one": "{count} ejemplo",
+      "many": "{count} ejemplos",
+      "other": "{count} ejemplos"
+    },
+    "didYouMean": "¿Querías decir «{word}»?",
+    "useCorrection": "Corregir",
+    "quota": "Las sugerencias vuelven mañana.",
+    "signIn": "Inicia sesión para que te sugiramos el resto de la tarjeta mientras escribes.",
+    "detailsFilled": {
+      "one": "{count} detalle completado",
+      "many": "{count} detalles completados",
+      "other": "{count} detalles completados"
     }
   }
 };

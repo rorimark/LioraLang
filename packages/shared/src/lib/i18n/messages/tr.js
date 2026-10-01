@@ -1326,7 +1326,9 @@ export default {
     "useRecommendedSettings": "Önerilen ayarları kullan",
     "interfaceLanguage": "Dil",
     "interfaceLanguageHint": "Menülerin, düğmelerin ve mesajların dili. Destelerin değişmez.",
-    "interfaceLanguageAuto": "Cihazla aynı"
+    "interfaceLanguageAuto": "Cihazla aynı",
+    "wordSuggestions": "Kartın geri kalanını öner",
+    "wordSuggestionsHint": "Bir kelime yazarken kelime ve destenin dilleri; çeviri, örnekler, seviye ve sözcük türü önermek için Google Gemini'ye gönderilir. Hesap gerekir."
   },
   "settingsPage": {
     "sections": {
@@ -1708,6 +1710,26 @@ export default {
       "tooLarge": "Resim 25 MB’tan büyük. Daha küçük bir tane seçin.",
       "unreadable": "Resim okunamadı. Başka bir dosya deneyin.",
       "saveFailed": "Resim kaydedilemedi. Tekrar deneyin."
+    }
+  },
+  "suggest": {
+    "thinking": "Öneri hazırlanıyor…",
+    "ready": "Öneri hazır",
+    "fill": "Doldur",
+    "tabKey": "Tab",
+    "dismiss": "Öneriyi gizle",
+    "useField": "“{value}” kullan",
+    "examples": {
+      "one": "{count} örnek",
+      "other": "{count} örnek"
+    },
+    "didYouMean": "“{word}” mü demek istediniz?",
+    "useCorrection": "Düzelt",
+    "quota": "Öneriler yarın geri gelecek.",
+    "signIn": "Yazarken kartın geri kalanının önerilmesi için giriş yapın.",
+    "detailsFilled": {
+      "one": "{count} ayrıntı dolduruldu",
+      "other": "{count} ayrıntı dolduruldu"
     }
   }
 };

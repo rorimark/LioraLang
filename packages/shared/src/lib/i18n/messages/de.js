@@ -1326,7 +1326,9 @@ export default {
     "useRecommendedSettings": "Empfohlene Werte verwenden",
     "interfaceLanguage": "Sprache",
     "interfaceLanguageHint": "Die Sprache von Menüs, Schaltflächen und Meldungen. Deine Decks bleiben, wie sie sind.",
-    "interfaceLanguageAuto": "Wie auf dem Gerät"
+    "interfaceLanguageAuto": "Wie auf dem Gerät",
+    "wordSuggestions": "Rest der Karte vorschlagen",
+    "wordSuggestionsHint": "Während du ein Wort tippst, werden es und die Sprachen des Decks an Google Gemini gesendet, um Übersetzung, Beispiele, Niveau und Wortart vorzuschlagen. Erfordert ein Konto."
   },
   "settingsPage": {
     "sections": {
@@ -1708,6 +1710,26 @@ export default {
       "tooLarge": "Das Bild ist größer als 25 MB. Wähle ein kleineres.",
       "unreadable": "Das Bild konnte nicht gelesen werden. Versuche eine andere Datei.",
       "saveFailed": "Das Bild konnte nicht gespeichert werden. Versuche es noch einmal."
+    }
+  },
+  "suggest": {
+    "thinking": "Vorschlag kommt…",
+    "ready": "Vorschlag bereit",
+    "fill": "Ausfüllen",
+    "tabKey": "Tab",
+    "dismiss": "Vorschlag ausblenden",
+    "useField": "„{value}“ übernehmen",
+    "examples": {
+      "one": "{count} Beispiel",
+      "other": "{count} Beispiele"
+    },
+    "didYouMean": "Meintest du „{word}“?",
+    "useCorrection": "Korrigieren",
+    "quota": "Vorschläge gibt es morgen wieder.",
+    "signIn": "Melde dich an, damit der Rest der Karte schon beim Tippen vorgeschlagen wird.",
+    "detailsFilled": {
+      "one": "{count} Detail ausgefüllt",
+      "other": "{count} Details ausgefüllt"
     }
   }
 };

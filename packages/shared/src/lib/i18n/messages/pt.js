@@ -1405,7 +1405,9 @@ export default {
     "useRecommendedSettings": "Usar configurações recomendadas",
     "interfaceLanguage": "Idioma",
     "interfaceLanguageHint": "O idioma de menus, botões e mensagens. Seus baralhos continuam como estão.",
-    "interfaceLanguageAuto": "O do dispositivo"
+    "interfaceLanguageAuto": "O do dispositivo",
+    "wordSuggestions": "Sugerir o resto do cartão",
+    "wordSuggestionsHint": "Enquanto você digita uma palavra, ela e os idiomas do baralho são enviados ao Google Gemini para sugerir tradução, exemplos, nível e classe gramatical. Requer uma conta."
   },
   "settingsPage": {
     "sections": {
@@ -1795,6 +1797,28 @@ export default {
       "tooLarge": "A imagem tem mais de 25 MB. Escolha uma mais pequena.",
       "unreadable": "Não foi possível ler a imagem. Experimente outro ficheiro.",
       "saveFailed": "Não foi possível guardar a imagem. Tente novamente."
+    }
+  },
+  "suggest": {
+    "thinking": "Buscando sugestão…",
+    "ready": "Sugestão pronta",
+    "fill": "Preencher",
+    "tabKey": "Tab",
+    "dismiss": "Ocultar a sugestão",
+    "useField": "Usar “{value}”",
+    "examples": {
+      "one": "{count} exemplo",
+      "many": "{count} exemplos",
+      "other": "{count} exemplos"
+    },
+    "didYouMean": "Você quis dizer “{word}”?",
+    "useCorrection": "Corrigir",
+    "quota": "As sugestões voltam amanhã.",
+    "signIn": "Entre na conta para receber sugestões do resto do cartão enquanto digita.",
+    "detailsFilled": {
+      "one": "{count} detalhe preenchido",
+      "many": "{count} detalhes preenchidos",
+      "other": "{count} detalhes preenchidos"
     }
   }
 };

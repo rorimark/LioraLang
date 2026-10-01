@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useId, useRef, useState } from "react";
 import { FiCheck, FiChevronDown, FiClipboard, FiPlus, FiRotateCcw, FiTrash2, FiX } from "react-icons/fi";
 import { QuickAddWordsDialog } from "@features/quick-add-words";
+import { SparkIcon, SuggestionBar, useSuggestionSummary, useWordSuggestion } from "@features/word-suggest";
 import { WordImage } from "@entities/word";
 import { SearchField } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -39,9 +40,11 @@ const WordComposer = memo(({ labels }) => {
     levelOptions,
     partOfSpeechOptions,
     addDraft,
+    addDraftDefaults,
     addError,
     handleAddDraftChange,
     handleAddDraftImageChange,
+    applyAddDraftPatch,
     submitAddDraft,
   } = useDeckEditorPanelContext();
   const { t } = useI18n();
@@ -49,22 +52,32 @@ const WordComposer = memo(({ labels }) => {
   const detailsId = useId();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [autoFocus] = useState(() => isEditMode && hasFinePointer());
+  const suggest = useWordSuggestion({
+    draft: addDraft,
+    deck: deckForm,
+    defaults: addDraftDefaults,
+    onFill: applyAddDraftPatch,
+  });
+  const summary = useSuggestionSummary(suggest);
+  // Details the suggestion filled while they were folded away.
+  const detailsInked = ["level", "part_of_speech", "examplesInput"].filter((field) => suggest.inked.has(field)).length;
 
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
 
-      if (submitAddDraft()) {
+      if (submitAddDraft(suggest.suggestedFields)) {
         focusFirstField(formRef.current);
       }
     },
-    [submitAddDraft],
+    [submitAddDraft, suggest.suggestedFields],
   );
 
   return (
-    <form ref={formRef} className="deck-composer" onSubmit={handleSubmit} noValidate>
+    <form ref={formRef} className="deck-composer" onSubmit={handleSubmit} onKeyDown={suggest.handleKeyDown} noValidate>
       <div className="deck-composer__main">
         <WordSideFields
+          suggest={suggest}
           draft={addDraft}
           onChange={handleAddDraftChange}
           onImageChange={handleAddDraftImageChange}
@@ -90,19 +103,28 @@ const WordComposer = memo(({ labels }) => {
         >
           <FiChevronDown aria-hidden />
           <span>{t(isDetailsOpen ? "editor.lessDetails" : "editor.moreDetails")}</span>
+          {!isDetailsOpen && detailsInked ? (
+            <span className="deck-composer__filled" aria-label={t("suggest.detailsFilled", { count: detailsInked })}>
+              <SparkIcon />
+              {detailsInked}
+            </span>
+          ) : null}
         </button>
         {addError ? (
           <p className="deck-composer__error" role="alert">
             {addError}
           </p>
         ) : (
-          <p className="deck-composer__hint">{t("editor.enterHint")}</p>
+          <SuggestionBar suggest={suggest} summary={summary}>
+            <p className="deck-composer__hint">{t("editor.enterHint")}</p>
+          </SuggestionBar>
         )}
       </div>
 
       <div id={detailsId} hidden={!isDetailsOpen}>
         {isDetailsOpen ? (
           <WordDetailFields
+            suggest={suggest}
             draft={addDraft}
             onChange={handleAddDraftChange}
             usesWordLevels={deckForm.usesWordLevels}
@@ -130,12 +152,15 @@ const WordEditor = memo(({ word, labels }) => {
     editError,
     handleEditDraftChange,
     handleEditDraftImageChange,
+    applyEditDraftPatch,
     submitEditDraft,
     cancelEdit,
     deleteWord,
   } = useDeckEditorPanelContext();
   const { t } = useI18n();
   const formRef = useRef(null);
+  const suggest = useWordSuggestion({ draft: editDraft, deck: deckForm, onFill: applyEditDraftPatch });
+  const summary = useSuggestionSummary(suggest);
 
   useEffect(() => {
     focusFirstField(formRef.current);
@@ -151,17 +176,20 @@ const WordEditor = memo(({ word, labels }) => {
 
   const handleKeyDown = useCallback(
     (event) => {
-      if (event.key === "Escape") {
+      suggest.handleKeyDown(event);
+
+      if (event.key === "Escape" && !event.defaultPrevented) {
         event.stopPropagation();
         cancelEdit();
       }
     },
-    [cancelEdit],
+    [cancelEdit, suggest],
   );
 
   return (
     <form ref={formRef} className="deck-word-editor" onSubmit={handleSubmit} onKeyDown={handleKeyDown} noValidate>
       <WordSideFields
+        suggest={suggest}
         draft={editDraft}
         onChange={handleEditDraftChange}
         onImageChange={handleEditDraftImageChange}
@@ -171,6 +199,7 @@ const WordEditor = memo(({ word, labels }) => {
         tertiaryLabel={hasTertiary ? labels.tertiary : ""}
       />
       <WordDetailFields
+        suggest={suggest}
         draft={editDraft}
         onChange={handleEditDraftChange}
         usesWordLevels={deckForm.usesWordLevels}
@@ -181,7 +210,9 @@ const WordEditor = memo(({ word, labels }) => {
         <p className="deck-composer__error" role="alert">
           {editError}
         </p>
-      ) : null}
+      ) : (
+        <SuggestionBar suggest={suggest} summary={summary} />
+      )}
       <div className="deck-word-editor__actions">
         <button type="submit" className="deck-editor__button deck-editor__button--primary">
           <FiCheck aria-hidden />

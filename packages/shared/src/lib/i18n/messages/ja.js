@@ -1247,7 +1247,9 @@ export default {
     "useRecommendedSettings": "おすすめ設定を使う",
     "interfaceLanguage": "言語",
     "interfaceLanguageHint": "メニュー、ボタン、メッセージの言語です。デッキはそのままです。",
-    "interfaceLanguageAuto": "デバイスと同じ"
+    "interfaceLanguageAuto": "デバイスと同じ",
+    "wordSuggestions": "カードの残りを提案する",
+    "wordSuggestionsHint": "単語を入力すると、その単語とデッキの言語が Google Gemini に送信され、訳・例文・レベル・品詞を提案します。アカウントが必要です。"
   },
   "settingsPage": {
     "sections": {
@@ -1621,6 +1623,24 @@ export default {
       "tooLarge": "画像が 25 MB を超えています。もっと小さい画像を選んでください。",
       "unreadable": "画像を読み取れませんでした。別のファイルを試してください。",
       "saveFailed": "画像を保存できませんでした。もう一度お試しください。"
+    }
+  },
+  "suggest": {
+    "thinking": "候補を作成中…",
+    "ready": "候補があります",
+    "fill": "入力する",
+    "tabKey": "Tab",
+    "dismiss": "候補を閉じる",
+    "useField": "「{value}」を使う",
+    "examples": {
+      "other": "例文{count}件"
+    },
+    "didYouMean": "「{word}」ですか？",
+    "useCorrection": "修正する",
+    "quota": "候補は明日また使えます。",
+    "signIn": "ログインすると、入力中にカードの残りを提案します。",
+    "detailsFilled": {
+      "other": "{count}件の詳細を入力しました"
     }
   }
 };

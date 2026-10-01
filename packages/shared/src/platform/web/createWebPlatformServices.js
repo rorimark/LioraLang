@@ -1,5 +1,5 @@
 /* global __APP_VERSION__ */
-import { createSupabaseAuthRepository, createSupabaseSyncApi } from "@shared/api";
+import { createSupabaseAuthRepository, createSupabaseSyncApi, createSupabaseWordSuggestApi } from "@shared/api";
 import { describeThisDevice } from "@shared/lib/device";
 import { createSyncRepository } from "@shared/sync";
 import {
@@ -149,6 +149,7 @@ export const createWebPlatformServices = () => {
       appVersion: typeof __APP_VERSION__ === "string" ? __APP_VERSION__ : "",
     }),
     systemRepository: createSystemRepository(),
+    wordSuggestRepository: createSupabaseWordSuggestApi(),
     runtimeGateway,
   };
 };

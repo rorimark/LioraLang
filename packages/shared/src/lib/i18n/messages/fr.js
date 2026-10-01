@@ -1405,7 +1405,9 @@ export default {
     "useRecommendedSettings": "Utiliser les réglages recommandés",
     "interfaceLanguage": "Langue",
     "interfaceLanguageHint": "La langue des menus, boutons et messages. Vos paquets ne changent pas.",
-    "interfaceLanguageAuto": "Celle de l'appareil"
+    "interfaceLanguageAuto": "Celle de l'appareil",
+    "wordSuggestions": "Suggérer le reste de la carte",
+    "wordSuggestionsHint": "Pendant que vous tapez un mot, celui-ci et les langues du paquet sont envoyés à Google Gemini pour suggérer la traduction, des exemples, le niveau et la nature du mot. Nécessite un compte."
   },
   "settingsPage": {
     "sections": {
@@ -1795,6 +1797,28 @@ export default {
       "tooLarge": "L’image dépasse 25 Mo. Choisissez-en une plus petite.",
       "unreadable": "L’image n’a pas pu être lue. Essayez un autre fichier.",
       "saveFailed": "L’image n’a pas pu être enregistrée. Réessayez."
+    }
+  },
+  "suggest": {
+    "thinking": "Suggestion en cours…",
+    "ready": "Suggestion prête",
+    "fill": "Remplir",
+    "tabKey": "Tab",
+    "dismiss": "Masquer la suggestion",
+    "useField": "Utiliser « {value} »",
+    "examples": {
+      "one": "{count} exemple",
+      "many": "{count} exemples",
+      "other": "{count} exemples"
+    },
+    "didYouMean": "Vouliez-vous dire « {word} » ?",
+    "useCorrection": "Corriger",
+    "quota": "Les suggestions reviennent demain.",
+    "signIn": "Connectez-vous pour que le reste de la carte vous soit suggéré pendant la saisie.",
+    "detailsFilled": {
+      "one": "{count} détail rempli",
+      "many": "{count} détails remplis",
+      "other": "{count} détails remplis"
     }
   }
 };
