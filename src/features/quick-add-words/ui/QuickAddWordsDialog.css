@@ -235,6 +235,28 @@
   line-height: 1.4;
 }
 
+/* The front of a new deck's cards: a label and a small switch on one line,
+   like a settings row. */
+.quick-add__front {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  grid-column: 1 / -1;
+}
+
+.quick-add__front > span {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.quick-add__front .quick-add__hint {
+  flex-basis: 100%;
+  margin: 0;
+}
+
 .quick-add__new-deck .quick-add__hint {
   grid-column: 1 / -1;
 }

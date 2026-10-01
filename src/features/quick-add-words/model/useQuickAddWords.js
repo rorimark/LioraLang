@@ -128,6 +128,9 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     // Filled when the assistant drafts a deck on a topic.
     description: "",
     tags: [],
+    // "source" makes the new deck a picture deck: a picture on the front,
+    // a word in the target language on the back.
+    pictureSide: "",
     ...pickDefaultLanguages(appPreferences.deckDefaults),
   }));
   // A deck made in this dialog, used until the deck list catches up.
@@ -187,7 +190,12 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
         // A side that is pictures takes a picture where it would take text.
         pictureSide: selectedDeck.pictureSide || "",
       }
-    : { ...newDeck, tertiaryLanguage: "", pictureSide: "" };
+    : {
+        ...newDeck,
+        sourceLanguage: newDeck.pictureSide === "source" ? "" : newDeck.sourceLanguage,
+        tertiaryLanguage: "",
+        pictureSide: newDeck.pictureSide || "",
+      };
   const usesWordLevels = selectedDeck ? selectedDeck.usesWordLevels !== false : true;
   const pictureSide = languages.pictureSide;
 
@@ -245,7 +253,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
       throw Object.assign(new Error("taken"), { i18nKey: "quickAdd.errors.deckNameTaken" });
     }
 
-    if (newDeck.sourceLanguage === newDeck.targetLanguage) {
+    if (!newDeck.pictureSide && newDeck.sourceLanguage === newDeck.targetLanguage) {
       throw Object.assign(new Error("languages"), { i18nKey: "quickAdd.errors.sameLanguages" });
     }
 
@@ -746,6 +754,13 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     setNewDeck((current) => ({ ...current, [name]: value }));
   }, []);
 
+  // The front of the new deck's cards: a word, or a picture.
+  const handleNewDeckFrontChange = useCallback((event) => {
+    const pictureSide = event.target.value === "picture" ? "source" : "";
+    setNewDeck((current) => ({ ...current, pictureSide }));
+    setNotice(null);
+  }, []);
+
   // A new picture answers a "picture first" notice.
   const changeDraftImage = useCallback((image) => {
     setDraftImage(image);
@@ -786,6 +801,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     hasUnsavedInput,
     handleDeckChoiceChange,
     handleNewDeckChange,
+    handleNewDeckFrontChange,
     handleDraftChange,
     handleDetailsChange,
     applySuggestion,

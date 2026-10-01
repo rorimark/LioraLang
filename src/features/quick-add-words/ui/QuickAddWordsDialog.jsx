@@ -10,7 +10,7 @@ import {
   useWordSuggestion,
 } from "@features/word-suggest";
 import { AI_TOPIC_COUNTS } from "@shared/core/usecases/wordSuggest";
-import { Button, Select } from "@shared/ui";
+import { Button, Select, SettingSegmented } from "@shared/ui";
 import { useDialogA11y } from "@shared/lib/a11y";
 import { useI18n } from "@shared/lib/i18n";
 import {
@@ -26,6 +26,7 @@ import "./QuickAddWordsDialog.css";
 
 const DeckPicker = memo(({ model }) => {
   const { t, languageName } = useI18n();
+  const isPictureDeck = model.newDeck.pictureSide === "source";
 
   return (
     <div className="quick-add__deck">
@@ -74,18 +75,36 @@ const DeckPicker = memo(({ model }) => {
               autoComplete="off"
             />
           </label>
-          <label className="quick-add__field">
-            <span>{t("quickAdd.wordsIn")}</span>
-            <Select name="sourceLanguage" value={model.newDeck.sourceLanguage} onChange={model.handleNewDeckChange}>
-              {model.languageOptions.map((language) => (
-                <option key={language} value={language}>
-                  {languageName(language)}
-                </option>
-              ))}
-            </Select>
-          </label>
-          <label className="quick-add__field">
-            <span>{t("quickAdd.translationsIn")}</span>
+          {/* The front of the cards: a word, or a picture with the word on
+              the back, the same choice as in the deck's settings. */}
+          <div className="quick-add__front">
+            <span>{t("editor.sides.front")}</span>
+            <SettingSegmented
+              name="newDeckFront"
+              value={isPictureDeck ? "picture" : "language"}
+              ariaLabel={t("editor.sides.front")}
+              onChange={model.handleNewDeckFrontChange}
+              options={[
+                { value: "language", label: t("editor.side.language") },
+                { value: "picture", label: t("media.label") },
+              ]}
+            />
+            {isPictureDeck ? <small className="quick-add__hint">{t("editor.side.pictureHint")}</small> : null}
+          </div>
+          {isPictureDeck ? null : (
+            <label className="quick-add__field">
+              <span>{t("quickAdd.wordsIn")}</span>
+              <Select name="sourceLanguage" value={model.newDeck.sourceLanguage} onChange={model.handleNewDeckChange}>
+                {model.languageOptions.map((language) => (
+                  <option key={language} value={language}>
+                    {languageName(language)}
+                  </option>
+                ))}
+              </Select>
+            </label>
+          )}
+          <label className={`quick-add__field${isPictureDeck ? " quick-add__field--wide" : ""}`}>
+            <span>{t(isPictureDeck ? "quickAdd.wordsIn" : "quickAdd.translationsIn")}</span>
             <Select name="targetLanguage" value={model.newDeck.targetLanguage} onChange={model.handleNewDeckChange}>
               {model.languageOptions.map((language) => (
                 <option key={language} value={language}>

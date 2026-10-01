@@ -207,4 +207,17 @@ describe("deckWordsWriter on the web store", () => {
     const { added } = await appendWordsToDeck(repository, deck.id, [{ source: "ticket", target: "die Fahrkarte" }]);
     expect(added[0]).toMatchObject({ source: "ticket", target: "die Fahrkarte" });
   });
+
+  it("creates a picture deck: pictures on the front, words on the back", async () => {
+    const repository = createWebDeckRepository();
+    const { deck } = await createDeckForWords(repository, {
+      name: "Animals",
+      sourceLanguage: "English",
+      targetLanguage: "Polish",
+      pictureSide: "source",
+    });
+    const stored = await repository.getDeckById(deck.id);
+
+    expect(stored).toMatchObject({ pictureSide: "source", sourceLanguage: "", targetLanguage: "Polish" });
+  });
 });
