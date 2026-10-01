@@ -18,7 +18,7 @@ const remember = (key, hint) => {
   }
 };
 
-export const useMissedWordHint = ({ word, deck }) => {
+export const useMissedWordHint = ({ word, deck, direction = "" }) => {
   const ai = useAiAccess({ enabled: Boolean(word) });
   // By value: the deck object is rebuilt as Learn renders, and a new object
   // must not ask (and spend the allowance) a second time.
@@ -28,9 +28,14 @@ export const useMissedWordHint = ({ word, deck }) => {
   const request = useMemo(
     () =>
       word && ai.isReady
-        ? buildHintRequest({ word, deck: { sourceLanguage, targetLanguage, pictureSide }, explainIn: ai.language })
+        ? buildHintRequest({
+            word,
+            deck: { sourceLanguage, targetLanguage, pictureSide },
+            explainIn: ai.language,
+            direction,
+          })
         : null,
-    [ai.isReady, ai.language, pictureSide, sourceLanguage, targetLanguage, word],
+    [ai.isReady, ai.language, direction, pictureSide, sourceLanguage, targetLanguage, word],
   );
   const key = hintCacheKey(request);
   const [answer, setAnswer] = useState({ key: "", hint: "", isDone: false });

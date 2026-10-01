@@ -114,6 +114,29 @@ describe("suggest-word: a hint for a missed word", () => {
     expect(readTaskAnswer(request, reply({ hint: "x".repeat(241) }))).toBeNull();
   });
 
+  it("says which way it was asked, and builds the hook on the word learned", () => {
+    // English → Polish deck studied Polish → English: "wolny pokój" was on
+    // the front and "vacant room" would not come.
+    const base = {
+      task: "hint",
+      word: "vacant room",
+      translation: "wolny pokój",
+      wordLanguage: "English",
+      translationLanguage: "Polish",
+      explainIn: "Russian",
+    };
+    const word = validateTaskRequest({ ...base, recall: "word" })!;
+    const meaning = validateTaskRequest({ ...base, recall: "meaning" })!;
+
+    expect(word).toMatchObject({ recall: "word" });
+    expect(prompt(word)).toContain('saw the Polish "wolny pokój" and could not come up with the English for it: "vacant room"');
+    expect(prompt(meaning)).toContain('saw the English "vacant room" and could not recall what it means');
+    expect(prompt(word)).toContain('The hook is built on the English "vacant room" itself');
+    expect(prompt(word)).toContain('never build the hook on how that sounds');
+    expect(validateTaskRequest({ ...base, recall: "anything" })).toMatchObject({ recall: "" });
+    expect(prompt(validateTaskRequest(base)!)).toContain('did not recall the English "vacant room"');
+  });
+
   it("needs both the word and its meaning", () => {
     expect(validateTaskRequest({ task: "hint", word: "bilet", wordLanguage: "Polish", translationLanguage: "English" })).toBeNull();
     expect(validateTaskRequest({ task: "nothing" })).toBeNull();

@@ -7,9 +7,9 @@ import "./WordSuggest.css";
 
 // Under the card after "Again": the word just missed and one line on how
 // to remember it. It goes with the next grade.
-export const MissedWordHint = memo(({ word, deck, onDismiss }) => {
+export const MissedWordHint = memo(({ word, deck, direction, onDismiss }) => {
   const { t } = useI18n();
-  const { request, hint, isLoading } = useMissedWordHint({ word, deck });
+  const { request, hint, isLoading } = useMissedWordHint({ word, deck, direction });
 
   if (!request || (!isLoading && !hint)) {
     return null;

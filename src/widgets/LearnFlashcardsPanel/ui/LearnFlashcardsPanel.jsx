@@ -311,7 +311,12 @@ export const LearnFlashcardsPanel = memo(() => {
                 ) : null}
                 {/* Pinned to the foot of the card: the card keeps its size. */}
                 {panel.missedCard ? (
-                  <MissedWordHint word={panel.missedCard} deck={panel.currentDeck} onDismiss={panel.dismissMissedCard} />
+                  <MissedWordHint
+                    word={panel.missedCard}
+                    deck={panel.currentDeck}
+                    direction={panel.missedCardDirection}
+                    onDismiss={panel.dismissMissedCard}
+                  />
                 ) : null}
               </div>
 

@@ -56,6 +56,9 @@ export type HintRequest = {
   wordLanguage: string;
   translationLanguage: string;
   explainIn: string;
+  // What the learner was asked: the word itself (they saw its translation)
+  // or its meaning (they saw the word). Empty when the client does not say.
+  recall: "" | "word" | "meaning";
   examples: string[];
 };
 // A description and tags for a whole deck, from what it already has.
@@ -179,6 +182,7 @@ export const validateTaskRequest = (body: unknown): TaskRequest | null => {
       wordLanguage: cleanLanguage(value.wordLanguage),
       translationLanguage: cleanLanguage(value.translationLanguage),
       explainIn: cleanLanguage(value.explainIn),
+      recall: value.recall === "word" || value.recall === "meaning" ? value.recall : "",
       examples: (Array.isArray(value.examples) ? value.examples : []).map(field).filter(Boolean).slice(0, 2),
     };
 
@@ -316,10 +320,25 @@ const describeDeck = (request: DeckRequest): string[] => {
   return lines;
 };
 
+// What was missed, in the direction it was asked: the learner saw one side
+// and could not come up with the other.
+const describeMiss = (request: HintRequest): string => {
+  const word = `the ${request.wordLanguage} "${request.word}"`;
+  const translation = `the ${request.translationLanguage} "${request.translation}"`;
+
+  if (request.recall === "word") {
+    return `The learner saw ${translation} and could not come up with the ${request.wordLanguage} for it: "${request.word}".`;
+  }
+
+  if (request.recall === "meaning") {
+    return `The learner saw ${word} and could not recall what it means: ${translation}.`;
+  }
+
+  return `The learner did not recall ${word}, which means "${request.translation}" in ${request.translationLanguage}.`;
+};
+
 const describeHint = (request: HintRequest): string[] => {
-  const lines = [
-    `The learner did not recall the ${request.wordLanguage} "${request.word}", which means "${request.translation}" in ${request.translationLanguage}.`,
-  ];
+  const lines = [describeMiss(request)];
 
   if (request.examples.length) {
     lines.push(`It was used like this: ${request.examples.map((example) => JSON.stringify(example)).join(" ")}`);
@@ -327,7 +346,9 @@ const describeHint = (request: HintRequest): string[] => {
 
   lines.push(
     `hint: one or two short sentences in ${request.explainIn || "English"}, under 200 characters, that make it easier to remember next time.`,
-    "Prefer a concrete memory hook: a similar-sounding word the learner knows, a vivid image, the word's parts or origin, or a related word. If it is easy to confuse with a similar word, say how to tell them apart.",
+    `The hook is built on the ${request.wordLanguage} "${request.word}" itself: its sound, spelling, parts or origin, tied to its meaning.`,
+    `The learner already knows the ${request.translationLanguage} "${request.translation}": never build the hook on how that sounds or is spelled.`,
+    `Prefer a concrete memory hook: a word in ${request.explainIn || request.translationLanguage} that sounds like "${request.word}", a vivid image, the word's parts or origin, or a related word. If it is easy to confuse with a similar word, say how to tell them apart.`,
     "Do not just repeat the translation, and do not invent an etymology you are not sure of.",
   );
 

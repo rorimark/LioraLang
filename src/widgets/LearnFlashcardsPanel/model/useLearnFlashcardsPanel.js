@@ -32,7 +32,7 @@ import {
   writeLearnSessionSettingsToStorage,
 } from "./learnSessionSettings";
 import { resolveDeckSideLabels } from "./deckSideLabels";
-import { CONTENT_TYPES, resolveCardFaces, TEXT_ROLES } from "@shared/core/usecases/cardContent";
+import { CONTENT_TYPES, resolveCardDirection, resolveCardFaces, TEXT_ROLES } from "@shared/core/usecases/cardContent";
 import {
   LEARN_VIEW_MODE_BROWSE,
   LEARN_VIEW_MODE_SRS,
@@ -672,14 +672,27 @@ export const useLearnFlashcardsPanel = () => {
   const handleRateCard = useCallback(async (rating) => {
     if (isBrowseMode || !isBackVisible || isRatingPending) return;
     const ratedWord = currentWord;
+    // The direction it was shown in: the hint is about what was asked.
+    const ratedDirection = resolveCardDirection(sessionSettings.directionMode, ratedWord || {});
     if (!await rateSrsCard(rating)) return;
-    setMissedCard(rating === "again" && ratedWord ? { word: ratedWord, deckId: selectedDeckId } : null);
+    setMissedCard(
+      rating === "again" && ratedWord ? { word: ratedWord, deckId: selectedDeckId, direction: ratedDirection } : null,
+    );
     announceCardMove(rating);
     setGradesByDeckId((previous) => ({
       ...previous, [selectedDeckId]: [...(previous[selectedDeckId] || []), rating],
     }));
     setLearnProgress((previous) => ({ ...previous, isBackVisible: false }));
-  }, [announceCardMove, currentWord, isBackVisible, isBrowseMode, isRatingPending, rateSrsCard, selectedDeckId]);
+  }, [
+    announceCardMove,
+    currentWord,
+    isBackVisible,
+    isBrowseMode,
+    isRatingPending,
+    rateSrsCard,
+    selectedDeckId,
+    sessionSettings.directionMode,
+  ]);
 
   const handleBrowsePrev = useCallback(() => {
     if (!isBrowseMode || !selectedDeckId || deckWords.length === 0) {
@@ -996,6 +1009,7 @@ export const useLearnFlashcardsPanel = () => {
     currentWord,
     // Only for the deck it was missed in.
     missedCard: missedCard && missedCard.deckId === selectedDeckId && !isBrowseMode ? missedCard.word : null,
+    missedCardDirection: missedCard?.direction || "",
     dismissMissedCard,
     cardFrontLabel,
     cardBackLabel,
