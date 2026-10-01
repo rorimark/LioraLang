@@ -1502,11 +1502,14 @@ export default {
     "interfaceLanguageAuto": "Jak na urządzeniu",
     "wordSuggestions": "Podpowiadaj resztę karty",
     "wordSuggestionsHint": "Gdy wpisujesz słowo, ono i języki talii trafiają do Google Gemini, aby zaproponować tłumaczenie, przykłady, poziom i część mowy. Wymaga konta.",
-    "wordSuggestionsLeft": {
-      "one": "Na dziś została {remaining} podpowiedź z {allowance}; odnowią się o {time}.",
-      "few": "Na dziś zostały {remaining} podpowiedzi z {allowance}; odnowią się o {time}.",
-      "many": "Na dziś zostało {remaining} podpowiedzi z {allowance}; odnowią się o {time}.",
-      "other": "Na dziś zostało {remaining} podpowiedzi z {allowance}; odnowią się o {time}."
+    "aiAllowance": "Podpowiedzi AI na dziś",
+    "aiAllowanceHint": "Odnowią się o {time}. Jedna podpowiedź to jedno słowo, do 30 wierszy listy, talia na temat, opis talii albo podpowiedź po „Jeszcze raz”.",
+    "aiAllowanceOf": "z {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Została {remaining} z {allowance}",
+      "few": "Zostały {remaining} z {allowance}",
+      "many": "Zostało {remaining} z {allowance}",
+      "other": "Zostało {remaining} z {allowance}"
     }
   },
   "settingsPage": {
@@ -1522,6 +1525,10 @@ export default {
       "deck-defaults": {
         "title": "Nowe talie",
         "description": "Od czego zaczyna się nowa talia. Każdą można zmienić."
+      },
+      "assistant": {
+        "title": "Asystent AI",
+        "description": "Podpowiedzi przy dodawaniu słów i ile ich zostało na dziś."
       },
       "sync": {
         "title": "Synchronizacja",
@@ -1666,7 +1673,9 @@ export default {
     "analyticsOn": "Statystyki wł.",
     "analyticsOff": "Statystyki wył.",
     "crashReportsOn": "raporty o awariach wł.",
-    "crashReportsOff": "raporty o awariach wył."
+    "crashReportsOff": "raporty o awariach wył.",
+    "assistantOn": "Włączony",
+    "assistantOff": "Wyłączony"
   },
   "runtimeError": {
     "title": "Błąd aplikacji",

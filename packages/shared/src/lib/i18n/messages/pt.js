@@ -1423,10 +1423,13 @@ export default {
     "interfaceLanguageAuto": "O do dispositivo",
     "wordSuggestions": "Sugerir o resto do cartão",
     "wordSuggestionsHint": "Enquanto você digita uma palavra, ela e os idiomas do baralho são enviados ao Google Gemini para sugerir tradução, exemplos, nível e classe gramatical. Requer uma conta.",
-    "wordSuggestionsLeft": {
-      "one": "Hoje resta {remaining} sugestão de {allowance}; elas renovam às {time}.",
-      "many": "Hoje restam {remaining} sugestões de {allowance}; elas renovam às {time}.",
-      "other": "Hoje restam {remaining} sugestões de {allowance}; elas renovam às {time}."
+    "aiAllowance": "Sugestões de IA hoje",
+    "aiAllowanceHint": "Renovam às {time}. Conta como uma: uma palavra, até 30 linhas de uma lista, um baralho sobre um tema, uma descrição de baralho ou uma dica após “De novo”.",
+    "aiAllowanceOf": "de {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Resta {remaining} de {allowance}",
+      "many": "Restam {remaining} de {allowance}",
+      "other": "Restam {remaining} de {allowance}"
     }
   },
   "settingsPage": {
@@ -1442,6 +1445,10 @@ export default {
       "deck-defaults": {
         "title": "Baralhos novos",
         "description": "Como começa um baralho novo. Cada baralho pode mudar isso."
+      },
+      "assistant": {
+        "title": "Assistente de IA",
+        "description": "Sugestões ao adicionar palavras e quantas restam hoje."
       },
       "sync": {
         "title": "Sincronização",
@@ -1584,7 +1591,9 @@ export default {
     "analyticsOn": "Estatísticas ligadas",
     "analyticsOff": "Estatísticas desligadas",
     "crashReportsOn": "relatórios de falhas ligados",
-    "crashReportsOff": "relatórios de falhas desligados"
+    "crashReportsOff": "relatórios de falhas desligados",
+    "assistantOn": "Ativado",
+    "assistantOff": "Desativado"
   },
   "runtimeError": {
     "title": "Erro do app",

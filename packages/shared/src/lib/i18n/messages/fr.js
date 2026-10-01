@@ -1423,10 +1423,13 @@ export default {
     "interfaceLanguageAuto": "Celle de l'appareil",
     "wordSuggestions": "Suggérer le reste de la carte",
     "wordSuggestionsHint": "Pendant que vous tapez un mot, celui-ci et les langues du paquet sont envoyés à Google Gemini pour suggérer la traduction, des exemples, le niveau et la nature du mot. Nécessite un compte.",
-    "wordSuggestionsLeft": {
-      "one": "Il reste {remaining} suggestion sur {allowance} aujourd'hui ; elles se renouvellent à {time}.",
-      "many": "Il reste {remaining} suggestions sur {allowance} aujourd'hui ; elles se renouvellent à {time}.",
-      "other": "Il reste {remaining} suggestions sur {allowance} aujourd'hui ; elles se renouvellent à {time}."
+    "aiAllowance": "Suggestions IA du jour",
+    "aiAllowanceHint": "Elles se renouvellent à {time}. Compte pour une : un mot, jusqu'à 30 lignes d'une liste, un paquet sur un thème, une description de paquet ou une astuce après « À revoir ».",
+    "aiAllowanceOf": "sur {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Il en reste {remaining} sur {allowance}",
+      "many": "Il en reste {remaining} sur {allowance}",
+      "other": "Il en reste {remaining} sur {allowance}"
     }
   },
   "settingsPage": {
@@ -1442,6 +1445,10 @@ export default {
       "deck-defaults": {
         "title": "Nouveaux paquets",
         "description": "Le point de départ d'un nouveau paquet. Chacun peut le modifier."
+      },
+      "assistant": {
+        "title": "Assistant IA",
+        "description": "Suggestions pendant l'ajout de mots, et combien il en reste aujourd'hui."
       },
       "sync": {
         "title": "Synchronisation",
@@ -1584,7 +1591,9 @@ export default {
     "analyticsOn": "Statistiques activées",
     "analyticsOff": "Statistiques désactivées",
     "crashReportsOn": "rapports de plantage activés",
-    "crashReportsOff": "rapports de plantage désactivés"
+    "crashReportsOff": "rapports de plantage désactivés",
+    "assistantOn": "Activé",
+    "assistantOff": "Désactivé"
   },
   "runtimeError": {
     "title": "Erreur de l'application",

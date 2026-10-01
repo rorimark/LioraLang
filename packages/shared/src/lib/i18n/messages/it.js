@@ -1423,10 +1423,13 @@ export default {
     "interfaceLanguageAuto": "Come il dispositivo",
     "wordSuggestions": "Suggerisci il resto della carta",
     "wordSuggestionsHint": "Mentre scrivi una parola, la parola e le lingue del mazzo vengono inviate a Google Gemini per suggerire traduzione, esempi, livello e parte del discorso. Serve un account.",
-    "wordSuggestionsLeft": {
-      "one": "Oggi resta {remaining} suggerimento su {allowance}; si rinnovano alle {time}.",
-      "many": "Oggi restano {remaining} suggerimenti su {allowance}; si rinnovano alle {time}.",
-      "other": "Oggi restano {remaining} suggerimenti su {allowance}; si rinnovano alle {time}."
+    "aiAllowance": "Suggerimenti IA di oggi",
+    "aiAllowanceHint": "Si rinnovano alle {time}. Conta come uno: una parola, fino a 30 righe di un elenco, un mazzo su un tema, una descrizione del mazzo o un suggerimento dopo «Ancora».",
+    "aiAllowanceOf": "su {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Ne resta {remaining} su {allowance}",
+      "many": "Ne restano {remaining} su {allowance}",
+      "other": "Ne restano {remaining} su {allowance}"
     }
   },
   "settingsPage": {
@@ -1442,6 +1445,10 @@ export default {
       "deck-defaults": {
         "title": "Nuovi mazzi",
         "description": "Da cosa parte un nuovo mazzo. Ogni mazzo può cambiarlo."
+      },
+      "assistant": {
+        "title": "Assistente IA",
+        "description": "Suggerimenti mentre aggiungi parole e quanti ne restano oggi."
       },
       "sync": {
         "title": "Sincronizzazione",
@@ -1584,7 +1591,9 @@ export default {
     "analyticsOn": "Statistiche attive",
     "analyticsOff": "Statistiche disattivate",
     "crashReportsOn": "rapporti sugli arresti attivi",
-    "crashReportsOff": "rapporti sugli arresti disattivati"
+    "crashReportsOff": "rapporti sugli arresti disattivati",
+    "assistantOn": "Attivo",
+    "assistantOff": "Disattivato"
   },
   "runtimeError": {
     "title": "Errore dell'app",

@@ -15,3 +15,67 @@
   border-color: var(--color-primary);
   box-shadow: 0 0 0 4px var(--color-primary-soft);
 }
+
+/* Today's assistant allowance: the count, then a bar that empties. */
+.prefs-allowance {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.prefs-allowance__count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.prefs-allowance__count strong {
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.prefs-allowance__bar {
+  position: relative;
+  width: 140px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
+.prefs-allowance__bar > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--color-primary);
+  transition: width 240ms ease;
+}
+
+.prefs-allowance.is-low .prefs-allowance__bar > span {
+  background: var(--color-warning, #d97706);
+}
+
+.prefs-allowance.is-empty strong {
+  color: var(--color-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prefs-allowance__bar > span {
+    transition: none;
+  }
+}
+
+
+/* Under the text on a phone: the count reads from the left, over the bar. */
+@media (max-width: 640px) {
+  .prefs-allowance {
+    justify-items: start;
+  }
+}

@@ -1265,8 +1265,11 @@ export default {
     "interfaceLanguageAuto": "デバイスと同じ",
     "wordSuggestions": "カードの残りを提案する",
     "wordSuggestionsHint": "単語を入力すると、その単語とデッキの言語が Google Gemini に送信され、訳・例文・レベル・品詞を提案します。アカウントが必要です。",
-    "wordSuggestionsLeft": {
-      "other": "今日の残りは{allowance}件中{remaining}件です。{time}に戻ります。"
+    "aiAllowance": "今日のAI提案",
+    "aiAllowanceHint": "{time}に戻ります。次のそれぞれが1回分です：単語1つ、リスト最大30行、テーマ別デッキ、デッキの説明、「もう一度」の後のヒント。",
+    "aiAllowanceOf": "/ {allowance}",
+    "aiAllowanceLeft": {
+      "other": "{allowance}件中{remaining}件残り"
     }
   },
   "settingsPage": {
@@ -1282,6 +1285,10 @@ export default {
       "deck-defaults": {
         "title": "新しいデッキ",
         "description": "新しいデッキの初期設定。デッキごとに変更できます。"
+      },
+      "assistant": {
+        "title": "AIアシスタント",
+        "description": "単語を追加するときの提案と、今日の残り回数。"
       },
       "sync": {
         "title": "同期",
@@ -1420,7 +1427,9 @@ export default {
     "analyticsOn": "統計オン",
     "analyticsOff": "統計オフ",
     "crashReportsOn": "クラッシュレポートオン",
-    "crashReportsOff": "クラッシュレポートオフ"
+    "crashReportsOff": "クラッシュレポートオフ",
+    "assistantOn": "オン",
+    "assistantOff": "オフ"
   },
   "runtimeError": {
     "title": "アプリのエラー",

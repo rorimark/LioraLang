@@ -1502,11 +1502,14 @@ export default {
     "interfaceLanguageAuto": "Як на пристрої",
     "wordSuggestions": "Підказувати решту картки",
     "wordSuggestionsHint": "Коли ви вводите слово, воно та мови колоди надсилаються в Google Gemini, щоб запропонувати переклад, приклади, рівень і частину мови. Потрібен акаунт.",
-    "wordSuggestionsLeft": {
-      "one": "Сьогодні залишилася {remaining} підказка з {allowance}, оновляться о {time}.",
-      "few": "Сьогодні залишилося {remaining} підказки з {allowance}, оновляться о {time}.",
-      "many": "Сьогодні залишилося {remaining} підказок з {allowance}, оновляться о {time}.",
-      "other": "Сьогодні залишилося {remaining} підказки з {allowance}, оновляться о {time}."
+    "aiAllowance": "ШІ-підказки на сьогодні",
+    "aiAllowanceHint": "Оновляться о {time}. Одна підказка — це одне слово, до 30 рядків списку, колода за темою, опис колоди або підказка після «Знову».",
+    "aiAllowanceOf": "з {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Залишилася {remaining} з {allowance}",
+      "few": "Залишилося {remaining} з {allowance}",
+      "many": "Залишилося {remaining} з {allowance}",
+      "other": "Залишилося {remaining} з {allowance}"
     }
   },
   "settingsPage": {
@@ -1522,6 +1525,10 @@ export default {
       "deck-defaults": {
         "title": "Нові колоди",
         "description": "З чого починається нова колода. У кожній можна змінити."
+      },
+      "assistant": {
+        "title": "ШІ-помічник",
+        "description": "Підказки під час додавання слів і скільки їх залишилося на сьогодні."
       },
       "sync": {
         "title": "Синхронізація",
@@ -1666,7 +1673,9 @@ export default {
     "analyticsOn": "Статистика увімк.",
     "analyticsOff": "Статистика вимк.",
     "crashReportsOn": "звіти про збої увімк.",
-    "crashReportsOff": "звіти про збої вимк."
+    "crashReportsOff": "звіти про збої вимк.",
+    "assistantOn": "Увімкнено",
+    "assistantOff": "Вимкнено"
   },
   "runtimeError": {
     "title": "Помилка застосунку",

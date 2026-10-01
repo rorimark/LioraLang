@@ -1,4 +1,5 @@
 export {
+  AssistantPreferences,
   DeckDefaultPreferences,
   DisplayPreferences,
   ImportExportPreferences,

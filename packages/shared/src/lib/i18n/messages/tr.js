@@ -1344,9 +1344,12 @@ export default {
     "interfaceLanguageAuto": "Cihazla aynı",
     "wordSuggestions": "Kartın geri kalanını öner",
     "wordSuggestionsHint": "Bir kelime yazarken kelime ve destenin dilleri; çeviri, örnekler, seviye ve sözcük türü önermek için Google Gemini'ye gönderilir. Hesap gerekir.",
-    "wordSuggestionsLeft": {
-      "one": "Bugün {allowance} öneriden {remaining} tane kaldı; saat {time} yenilenir.",
-      "other": "Bugün {allowance} öneriden {remaining} tane kaldı; saat {time} yenilenir."
+    "aiAllowance": "Bugünkü yapay zekâ önerileri",
+    "aiAllowanceHint": "Saat {time} yenilenir. Her biri bir öneri sayılır: bir kelime, listenin en fazla 30 satırı, bir konuda deste, deste açıklaması ya da “Tekrar” sonrası ipucu.",
+    "aiAllowanceOf": "/ {allowance}",
+    "aiAllowanceLeft": {
+      "one": "{allowance} öneriden {remaining} kaldı",
+      "other": "{allowance} öneriden {remaining} kaldı"
     }
   },
   "settingsPage": {
@@ -1362,6 +1365,10 @@ export default {
       "deck-defaults": {
         "title": "Yeni desteler",
         "description": "Yeni bir destenin neyle başladığı. Her deste bunu değiştirebilir."
+      },
+      "assistant": {
+        "title": "Yapay zekâ asistanı",
+        "description": "Kelime eklerken öneriler ve bugün kaç tane kaldığı."
       },
       "sync": {
         "title": "Eşitleme",
@@ -1502,7 +1509,9 @@ export default {
     "analyticsOn": "İstatistikler açık",
     "analyticsOff": "İstatistikler kapalı",
     "crashReportsOn": "çökme raporları açık",
-    "crashReportsOff": "çökme raporları kapalı"
+    "crashReportsOff": "çökme raporları kapalı",
+    "assistantOn": "Açık",
+    "assistantOff": "Kapalı"
   },
   "runtimeError": {
     "title": "Uygulama hatası",

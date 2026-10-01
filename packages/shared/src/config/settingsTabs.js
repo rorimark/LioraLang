@@ -7,6 +7,7 @@ export const SETTINGS_TAB_KEYS = {
   storageIntegrity: "storage-integrity",
   learningCore: "learning-core",
   deckDefaults: "deck-defaults",
+  assistant: "assistant",
   workspaceSafety: "workspace-safety",
   advancedDesktop: "advanced-desktop",
 };
@@ -18,6 +19,7 @@ export const SETTINGS_SECTION_IDS = {
   [SETTINGS_TAB_KEYS.storageIntegrity]: "settings-storage-integrity",
   [SETTINGS_TAB_KEYS.learningCore]: "settings-learning-core",
   [SETTINGS_TAB_KEYS.deckDefaults]: "settings-deck-defaults",
+  [SETTINGS_TAB_KEYS.assistant]: "settings-assistant",
   [SETTINGS_TAB_KEYS.workspaceSafety]: "settings-workspace-safety",
   [SETTINGS_TAB_KEYS.advancedDesktop]: "settings-advanced-desktop",
 };

@@ -1430,11 +1430,14 @@ export default {
     "interfaceLanguageAuto": "Podle zařízení",
     "wordSuggestions": "Navrhovat zbytek karty",
     "wordSuggestionsHint": "Při psaní slova se ono a jazyky balíčku posílají do Google Gemini, aby navrhl překlad, příklady, úroveň a slovní druh. Vyžaduje účet.",
-    "wordSuggestionsLeft": {
-      "one": "Dnes zbývá {remaining} návrh z {allowance}; obnoví se v {time}.",
-      "few": "Dnes zbývají {remaining} návrhy z {allowance}; obnoví se v {time}.",
-      "many": "Dnes zbývají {remaining} návrhy z {allowance}; obnoví se v {time}.",
-      "other": "Dnes zbývá {remaining} návrhů z {allowance}; obnoví se v {time}."
+    "aiAllowance": "Návrhy AI na dnešek",
+    "aiAllowanceHint": "Obnoví se v {time}. Jeden návrh je jedno slovo, až 30 řádků seznamu, balíček k tématu, popis balíčku nebo nápověda po „Znovu“.",
+    "aiAllowanceOf": "z {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Zbývá {remaining} z {allowance}",
+      "few": "Zbývají {remaining} z {allowance}",
+      "many": "Zbývají {remaining} z {allowance}",
+      "other": "Zbývá {remaining} z {allowance}"
     }
   },
   "settingsPage": {
@@ -1450,6 +1453,10 @@ export default {
       "deck-defaults": {
         "title": "Nové balíčky",
         "description": "S čím nový balíček začíná. Každý balíček to může změnit."
+      },
+      "assistant": {
+        "title": "Asistent AI",
+        "description": "Návrhy při přidávání slov a kolik jich na dnešek zbývá."
       },
       "sync": {
         "title": "Synchronizace",
@@ -1592,7 +1599,9 @@ export default {
     "analyticsOn": "Statistiky zapnuté",
     "analyticsOff": "Statistiky vypnuté",
     "crashReportsOn": "hlášení o pádech zapnutá",
-    "crashReportsOff": "hlášení o pádech vypnutá"
+    "crashReportsOff": "hlášení o pádech vypnutá",
+    "assistantOn": "Zapnutý",
+    "assistantOff": "Vypnutý"
   },
   "runtimeError": {
     "title": "Chyba aplikace",

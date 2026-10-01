@@ -47,6 +47,8 @@ export const buildSettingsSummaries = ({ appPreferences, themeMode, isDesktopMod
             deckDefaults.level,
           )
         : "",
+    [SETTINGS_TAB_KEYS.assistant]:
+      deckDefaults.wordSuggestions === false ? t("summaries.assistantOff") : t("summaries.assistantOn"),
     [SETTINGS_TAB_KEYS.sync]: sync.autoSync === false ? t("summaries.syncManual") : t("summaries.syncAuto"),
     [SETTINGS_TAB_KEYS.importExport]: importExport.exportFormat
       ? t("summaries.exportsAs", { format: `.${importExport.exportFormat}` })

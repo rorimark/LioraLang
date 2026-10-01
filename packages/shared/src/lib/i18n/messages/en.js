@@ -1344,9 +1344,12 @@ export default {
     "interfaceLanguageAuto": "Same as the device",
     "wordSuggestions": "Suggest the rest of the card",
     "wordSuggestionsHint": "As you type a word, it and the deck's languages are sent to Google Gemini to suggest a translation, examples, the level and part of speech. Needs an account.",
-    "wordSuggestionsLeft": {
-      "one": "{remaining} of {allowance} suggestion left today; they renew at {time}.",
-      "other": "{remaining} of {allowance} suggestions left today; they renew at {time}."
+    "aiAllowance": "AI suggestions today",
+    "aiAllowanceHint": "They renew at {time}. Each of these is one: a word, up to 30 lines of a list, a deck on a topic, a deck description, a hint after Again.",
+    "aiAllowanceOf": "of {allowance}",
+    "aiAllowanceLeft": {
+      "one": "{remaining} of {allowance} left",
+      "other": "{remaining} of {allowance} left"
     }
   },
   "settingsPage": {
@@ -1362,6 +1365,10 @@ export default {
       "deck-defaults": {
         "title": "New decks",
         "description": "What a new deck starts with. Each deck can change it."
+      },
+      "assistant": {
+        "title": "AI assistant",
+        "description": "Suggestions while you add words, and how many are left today."
       },
       "sync": {
         "title": "Sync",
@@ -1502,7 +1509,9 @@ export default {
     "analyticsOn": "Analytics on",
     "analyticsOff": "Analytics off",
     "crashReportsOn": "crash reports on",
-    "crashReportsOff": "crash reports off"
+    "crashReportsOff": "crash reports off",
+    "assistantOn": "On",
+    "assistantOff": "Off"
   },
   "runtimeError": {
     "title": "Application error",

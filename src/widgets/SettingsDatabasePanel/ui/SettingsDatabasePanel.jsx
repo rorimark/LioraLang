@@ -14,8 +14,10 @@ import {
   FiSliders,
   FiUser,
   FiX,
+  FiZap,
 } from "react-icons/fi";
 import {
+  AssistantPreferences,
   DeckDefaultPreferences,
   DisplayPreferences,
   ImportExportPreferences,
@@ -65,6 +67,11 @@ const SETTINGS_SECTIONS = [
     key: SETTINGS_TAB_KEYS.deckDefaults,
     keywords: "deck defaults language level tags",
     icon: FiBookOpen,
+  },
+  {
+    key: SETTINGS_TAB_KEYS.assistant,
+    keywords: "ai assistant gemini suggestions limit allowance",
+    icon: FiZap,
   },
   {
     key: SETTINGS_TAB_KEYS.sync,
@@ -434,6 +441,8 @@ export const SettingsDatabasePanel = memo(() => {
         return <LearningPreferences />;
       case SETTINGS_TAB_KEYS.deckDefaults:
         return <DeckDefaultPreferences />;
+      case SETTINGS_TAB_KEYS.assistant:
+        return <AssistantPreferences />;
       case SETTINGS_TAB_KEYS.sync:
         return <SyncSettingsSection />;
       case SETTINGS_TAB_KEYS.importExport:

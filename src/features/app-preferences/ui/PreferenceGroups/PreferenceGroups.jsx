@@ -389,14 +389,13 @@ LearningPreferences.displayName = "LearningPreferences";
 export const DeckDefaultPreferences = memo(() => {
   const i18n = useI18n();
   const { t } = i18n;
-  const { appPreferences, handleSelectFieldChange, handleTextFieldChange, handleBooleanFieldChange } =
+  const { appPreferences, handleSelectFieldChange, handleTextFieldChange } =
     useAppPreferencesSection();
   const { deckDefaults } = appPreferences;
   const sourceId = useId();
   const targetId = useId();
   const partId = useId();
   const tagsId = useId();
-  const wordSuggestionsHint = useWordSuggestionsHint(deckDefaults.wordSuggestions);
 
   return (
     <SettingGroup keywords="new deck defaults create">
@@ -477,39 +476,83 @@ export const DeckDefaultPreferences = memo(() => {
           />
         }
       />
-      {/* Says plainly where a typed word goes before anyone turns it on. */}
-      <SwitchRow
-        label={t("prefs.wordSuggestions")}
-        hint={wordSuggestionsHint}
-        keywords="ai assistant gemini suggest autofill translation"
-        name="deckDefaults.wordSuggestions"
-        checked={deckDefaults.wordSuggestions}
-        onChange={handleBooleanFieldChange}
-      />
     </SettingGroup>
   );
 });
 
 DeckDefaultPreferences.displayName = "DeckDefaultPreferences";
 
-// Where a typed word goes, then how much of today's allowance is left
-// and when it starts again. Plain text, so Settings search can read it.
-const useWordSuggestionsHint = (enabled) => {
+// Today's assistant allowance in a row of its own: how many are left, a
+// bar that empties as they are used, when they come back and what counts
+// as one. Shown only while suggestions are on and someone is signed in.
+const AiAllowanceRow = memo(() => {
   const { t, formatDate, formatNumber } = useI18n();
   const allowance = useAiAllowance({ refresh: true });
-  const base = t("prefs.wordSuggestionsHint");
 
-  if (!enabled || !allowance) {
-    return base;
+  if (!allowance) {
+    return null;
   }
 
-  return `${base} ${t("prefs.wordSuggestionsLeft", {
-    count: allowance.remaining,
-    remaining: formatNumber(allowance.remaining),
-    allowance: formatNumber(allowance.allowance),
-    time: formatDate(allowance.resetsAt, { timeStyle: "short" }),
-  })}`;
-};
+  const share = allowance.allowance ? allowance.remaining / allowance.allowance : 0;
+  const tone = allowance.remaining === 0 ? "empty" : share <= 0.1 ? "low" : "";
+
+  return (
+    <SettingRow
+      label={t("prefs.aiAllowance")}
+      hint={t("prefs.aiAllowanceHint", { time: formatDate(allowance.resetsAt, { timeStyle: "short" }) })}
+      keywords="ai limit quota allowance gemini"
+      control={
+        <div
+          className={["prefs-allowance", tone ? `is-${tone}` : ""].filter(Boolean).join(" ")}
+          role="meter"
+          aria-valuemin={0}
+          aria-valuemax={allowance.allowance}
+          aria-valuenow={allowance.remaining}
+          aria-label={t("prefs.aiAllowanceLeft", {
+            count: allowance.remaining,
+            remaining: formatNumber(allowance.remaining),
+            allowance: formatNumber(allowance.allowance),
+          })}
+        >
+          <span className="prefs-allowance__count">
+            <strong>{formatNumber(allowance.remaining)}</strong>
+            <span>{t("prefs.aiAllowanceOf", { allowance: formatNumber(allowance.allowance) })}</span>
+          </span>
+          <span className="prefs-allowance__bar" aria-hidden="true">
+            <span style={{ width: `${Math.round(share * 100)}%` }} />
+          </span>
+        </div>
+      }
+    />
+  );
+});
+
+AiAllowanceRow.displayName = "AiAllowanceRow";
+
+// The assistant: whether it suggests at all, and how much of today's
+// allowance is left.
+export const AssistantPreferences = memo(() => {
+  const { t } = useI18n();
+  const { appPreferences, handleBooleanFieldChange } = useAppPreferencesSection();
+  const { deckDefaults } = appPreferences;
+
+  return (
+    <SettingGroup keywords="ai assistant gemini">
+      {/* Says plainly where a typed word goes before anyone turns it on. */}
+      <SwitchRow
+        label={t("prefs.wordSuggestions")}
+        hint={t("prefs.wordSuggestionsHint")}
+        keywords="ai assistant gemini suggest autofill translation"
+        name="deckDefaults.wordSuggestions"
+        checked={deckDefaults.wordSuggestions}
+        onChange={handleBooleanFieldChange}
+      />
+      {deckDefaults.wordSuggestions ? <AiAllowanceRow /> : null}
+    </SettingGroup>
+  );
+});
+
+AssistantPreferences.displayName = "AssistantPreferences";
 
 export const SafetyPreferences = memo(() => {
   const i18n = useI18n();

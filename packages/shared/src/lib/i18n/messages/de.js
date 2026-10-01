@@ -1344,9 +1344,12 @@ export default {
     "interfaceLanguageAuto": "Wie auf dem Gerät",
     "wordSuggestions": "Rest der Karte vorschlagen",
     "wordSuggestionsHint": "Während du ein Wort tippst, werden es und die Sprachen des Decks an Google Gemini gesendet, um Übersetzung, Beispiele, Niveau und Wortart vorzuschlagen. Erfordert ein Konto.",
-    "wordSuggestionsLeft": {
-      "one": "Heute noch {remaining} von {allowance} Vorschlag übrig; sie erneuern sich um {time}.",
-      "other": "Heute noch {remaining} von {allowance} Vorschlägen übrig; sie erneuern sich um {time}."
+    "aiAllowance": "KI-Vorschläge heute",
+    "aiAllowanceHint": "Sie erneuern sich um {time}. Einer davon ist: ein Wort, bis zu 30 Zeilen einer Liste, ein Deck zu einem Thema, eine Deckbeschreibung, ein Hinweis nach „Nochmal“.",
+    "aiAllowanceOf": "von {allowance}",
+    "aiAllowanceLeft": {
+      "one": "{remaining} von {allowance} übrig",
+      "other": "{remaining} von {allowance} übrig"
     }
   },
   "settingsPage": {
@@ -1362,6 +1365,10 @@ export default {
       "deck-defaults": {
         "title": "Neue Decks",
         "description": "Womit ein neues Deck startet. Jedes Deck kann es ändern."
+      },
+      "assistant": {
+        "title": "KI-Assistent",
+        "description": "Vorschläge beim Hinzufügen von Wörtern und wie viele heute noch übrig sind."
       },
       "sync": {
         "title": "Synchronisierung",
@@ -1502,7 +1509,9 @@ export default {
     "analyticsOn": "Statistik an",
     "analyticsOff": "Statistik aus",
     "crashReportsOn": "Absturzberichte an",
-    "crashReportsOff": "Absturzberichte aus"
+    "crashReportsOff": "Absturzberichte aus",
+    "assistantOn": "An",
+    "assistantOff": "Aus"
   },
   "runtimeError": {
     "title": "Anwendungsfehler",

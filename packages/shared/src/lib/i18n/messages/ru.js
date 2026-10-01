@@ -1502,11 +1502,14 @@ export default {
     "interfaceLanguageAuto": "Как на устройстве",
     "wordSuggestions": "Подсказывать остальное в карточке",
     "wordSuggestionsHint": "Когда вы вводите слово, оно и языки колоды отправляются в Google Gemini, чтобы предложить перевод, примеры, уровень и часть речи. Нужен аккаунт.",
-    "wordSuggestionsLeft": {
-      "one": "Сегодня осталась {remaining} подсказка из {allowance}, обновятся в {time}.",
-      "few": "Сегодня осталось {remaining} подсказки из {allowance}, обновятся в {time}.",
-      "many": "Сегодня осталось {remaining} подсказок из {allowance}, обновятся в {time}.",
-      "other": "Сегодня осталось {remaining} подсказки из {allowance}, обновятся в {time}."
+    "aiAllowance": "ИИ-подсказки на сегодня",
+    "aiAllowanceHint": "Обновятся в {time}. Одна подсказка — это одно слово, до 30 строк списка, колода по теме, описание колоды или подсказка после «Снова».",
+    "aiAllowanceOf": "из {allowance}",
+    "aiAllowanceLeft": {
+      "one": "Осталась {remaining} из {allowance}",
+      "few": "Осталось {remaining} из {allowance}",
+      "many": "Осталось {remaining} из {allowance}",
+      "other": "Осталось {remaining} из {allowance}"
     }
   },
   "settingsPage": {
@@ -1522,6 +1525,10 @@ export default {
       "deck-defaults": {
         "title": "Новые колоды",
         "description": "С чего начинается новая колода. В каждой можно изменить."
+      },
+      "assistant": {
+        "title": "ИИ-помощник",
+        "description": "Подсказки при добавлении слов и сколько их осталось на сегодня."
       },
       "sync": {
         "title": "Синхронизация",
@@ -1666,7 +1673,9 @@ export default {
     "analyticsOn": "Статистика вкл.",
     "analyticsOff": "Статистика выкл.",
     "crashReportsOn": "отчёты о сбоях вкл.",
-    "crashReportsOff": "отчёты о сбоях выкл."
+    "crashReportsOff": "отчёты о сбоях выкл.",
+    "assistantOn": "Включён",
+    "assistantOff": "Выключен"
   },
   "runtimeError": {
     "title": "Ошибка приложения",
