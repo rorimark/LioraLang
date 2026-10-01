@@ -31,6 +31,7 @@ export const AppLayout = () => {
   const pageTitle = t(`${pageMeta.key}.title`);
   const isDesktopMode = runtimeGateway.isDesktopMode();
   const isLearnPage = normalizedPathname === ROUTE_PATHS.learn;
+  const isSettingsPage = normalizedPathname === ROUTE_PATHS.settings;
 
   usePageMeta({
     title: `${pageTitle} - LioraLang`,
@@ -109,7 +110,11 @@ export const AppLayout = () => {
           {isLearnPage ? null : <PageHeader title={pageTitle} />}
           <main
             className={
-              isLearnPage ? "app-shell__content app-shell__content--learn" : "app-shell__content"
+              [
+                "app-shell__content",
+                isLearnPage ? "app-shell__content--learn" : "",
+                isSettingsPage ? "app-shell__content--settings" : "",
+              ].filter(Boolean).join(" ")
             }
           >
             <Outlet />

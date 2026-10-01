@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import {
   FiArchive,
@@ -330,6 +330,8 @@ export const SettingsDatabasePanel = memo(() => {
 
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState("");
+  const settingsRef = useRef(null);
+  const contentRef = useRef(null);
   const isSearching = query.trim().length > 0;
   const hasRequestedTab = searchParams.has(SETTINGS_TAB_QUERY_KEY);
   const activeSettingsTab = availableSettingsTabs.has(panel.selectedSettingsTab)
@@ -354,14 +356,11 @@ export const SettingsDatabasePanel = memo(() => {
   const view = isSearching ? "results" : hasRequestedTab ? "section" : "list";
 
   useEffect(() => {
-    // Opening a section, or going back to the list, starts at the top.
-    if (isSearching || typeof window === "undefined") {
-      return;
-    }
-
-    window.scrollTo?.({ top: 0 });
-    document.querySelector(".app-shell__content")?.scrollTo?.({ top: 0 });
-  }, [activeSettingsTab, hasRequestedTab, isSearching]);
+    // New sections and search results start at the top without moving the
+    // section list. On a phone, the outer container is the single scroll pane.
+    contentRef.current?.scrollTo({ top: 0 });
+    settingsRef.current?.scrollTo({ top: 0 });
+  }, [activeSettingsTab, hasRequestedTab, query]);
 
   const handleQueryChange = useCallback((event) => {
     setQuery(event.target.value);
@@ -531,7 +530,7 @@ export const SettingsDatabasePanel = memo(() => {
       <ActionModal dialog={updatePromptDialog} />
 
       <SettingsSearch query={query}>
-        <div className="settings" data-view={view}>
+        <div className="settings" data-view={view} ref={settingsRef}>
           <nav className="settings__nav" aria-label={t("settingsPage.sectionsLabel")}>
             {/* The account is who is using the app, not one setting among
                 many, so it sits apart, above everything else. */}
@@ -603,7 +602,13 @@ export const SettingsDatabasePanel = memo(() => {
             </ul>
           </nav>
 
-          <div className="settings__content">
+          <div
+            className="settings__content"
+            ref={contentRef}
+            role="region"
+            aria-label={isSearching ? t("settingsPage.search") : activeSection.title}
+            tabIndex={0}
+          >
             {isSearching ? (
               <div className="settings__results">
                 {settingsNavItems.map((section) => (

@@ -9,23 +9,46 @@
   /* The container is the panel, not .settings, so the queries below can
      reshape .settings itself. */
   container: settings / inline-size;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   gap: 16px;
 }
 
 .settings {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   display: grid;
   grid-template-columns: clamp(230px, 28cqi, 300px) minmax(0, 1fr);
-  align-items: start;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
   gap: clamp(20px, 3vw, 44px);
+}
+
+/* Keep focus rings and the active section marker inside each scroll pane. */
+.settings__nav,
+.settings__content {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  padding: 6px 8px 12px;
+  scroll-padding-block: 8px;
+}
+
+.settings__content:focus-visible {
+  outline: 2px solid var(--color-primary-border);
+  outline-offset: -2px;
+  border-radius: var(--radius-control);
 }
 
 /* ---------- section list ---------- */
 
 .settings__nav {
-  position: sticky;
-  top: 12px;
   display: grid;
+  align-content: start;
   gap: 12px;
   min-width: 0;
 }
@@ -394,11 +417,21 @@
 @container settings (max-width: 700px) {
   .settings {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    align-content: start;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+    padding: 6px 4px 12px;
     gap: 16px;
   }
 
-  .settings__nav {
-    position: static;
+  .settings__nav,
+  .settings__content {
+    min-height: auto;
+    overflow: visible;
+    scrollbar-gutter: auto;
+    padding: 0;
   }
 
   .settings__content {

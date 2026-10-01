@@ -72,6 +72,20 @@
   min-width: 0;
 }
 
+/* Settings owns its scroll panes; the shell only provides the available height. */
+.app-shell__content--settings {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-shell__content--settings > .page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .app-shell__mobile-nav {
   display: none;
 }
