@@ -90,7 +90,18 @@ export const createSupabaseWordSuggestApi = () => ({
   // A deck on a topic: a name and its cards.
   async suggestTopic(request, { signal } = {}) {
     const result = (await invoke({ ...request, task: "topic" }, { signal, timeout: LONG_TIMEOUT_MS }))?.result;
-    return { name: result?.name || "", cards: result?.cards || [] };
+    return {
+      name: result?.name || "",
+      description: result?.description || "",
+      deckTags: result?.deckTags || [],
+      cards: result?.cards || [],
+    };
+  },
+
+  // A description and tags for a deck that already has a name or words.
+  async suggestDeck(request, { signal } = {}) {
+    const result = (await invoke({ ...request, task: "deck" }, { signal, timeout: TIMEOUT_MS }))?.result;
+    return { description: result?.description || "", tags: result?.tags || [] };
   },
 
   // A short hint for a word missed in Learn.

@@ -44,7 +44,7 @@ describe("suggest-word: a pasted list", () => {
     expect(answer).toEqual({
       cards: [
         { index: 0, recognized: false, correction: "bread", source: "", target: "", tertiary: "", level: "", partOfSpeech: "", examples: [], tags: [] },
-        { index: 1, recognized: true, correction: "", source: "milk", target: "mleko", tertiary: "", level: "A1", partOfSpeech: "noun", examples: ["One.", "Two."], tags: ["food", "drink"] },
+        { index: 1, recognized: true, correction: "", source: "milk", target: "mleko", tertiary: "", level: "A1", partOfSpeech: "noun", examples: ["One.", "Two."], tags: ["food", "drink", "x"] },
       ],
     });
   });
@@ -73,6 +73,8 @@ describe("suggest-word: a deck on a topic", () => {
       request,
       reply({
         name: "Kitchen",
+        description: "Everyday things in a kitchen.",
+        deckTags: ["home", "kitchen", "Home"],
         cards: [
           { source: "knife", target: "nóż" },
           { source: "Knife", target: "nóż" },
@@ -83,6 +85,7 @@ describe("suggest-word: a deck on a topic", () => {
     ) as { name: string; cards: Array<{ index: number; source: string }> };
 
     expect(answer.name).toBe("Kitchen");
+    expect(answer).toMatchObject({ description: "Everyday things in a kitchen.", deckTags: ["home", "kitchen"] });
     expect(answer.cards.map((card) => [card.index, card.source])).toEqual([
       [0, "knife"],
       [1, "spoon"],
@@ -116,3 +119,34 @@ describe("suggest-word: a hint for a missed word", () => {
     expect(validateTaskRequest({ task: "nothing" })).toBeNull();
   });
 });
+
+describe("suggest-word: a deck's description and tags", () => {
+  it("describes a deck from its name, sides and words, in the person's language", () => {
+    const request = validateTaskRequest({
+      task: "deck",
+      name: "Kitchen",
+      sourceLanguage: "English",
+      targetLanguage: "Polish",
+      pictureSide: "source",
+      words: [{ source: "", target: "nóż" }, { source: "123" }],
+      tags: ["home"],
+      writeIn: "Russian",
+    })!;
+
+    expect(request).toMatchObject({ sourceLanguage: "", targetLanguage: "Polish", words: [{ source: "", target: "nóż" }] });
+    expect(prompt(request)).toContain("the front of each card is pictures, the back is Polish");
+    expect(prompt(request)).toContain("in Russian");
+    expect(prompt(request)).toContain('It already has: "home"');
+    expect(readTaskAnswer(request, reply({ description: " Kitchen things. ", tags: ["kitchen", "home", "a1"] }))).toEqual({
+      description: "Kitchen things.",
+      tags: ["kitchen", "home", "a1"],
+    });
+    expect(readTaskAnswer(request, reply({ description: "", tags: [] }))).toBeNull();
+  });
+
+  it("needs a name or a few words to go on", () => {
+    expect(validateTaskRequest({ task: "deck", name: "", words: [{ source: "a" }] })).toBeNull();
+    expect(validateTaskRequest({ task: "deck", name: "", words: [{ source: "ab" }, { source: "cd" }, { source: "ef" }] })).not.toBeNull();
+  });
+});
+

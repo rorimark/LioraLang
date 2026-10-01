@@ -147,15 +147,24 @@ const describeTask = (request: SuggestRequest): string[] => {
     ].join(" "),
   );
 
-  const tagLanguage = request.tagLanguage || "English";
-  lines.push(
-    request.tags.length
-      ? `tags: one or two short topic tags for the card (food, travel, work, feelings). The deck already uses: ${request.tags.map((tag) => JSON.stringify(tag)).join(", ")}. Reuse one of them, spelled the same, whenever it fits; a new tag is a lowercase word or two in ${tagLanguage}. A word with no clear topic gets none.`
-      : `tags: one or two short topic tags for the card (food, travel, work, feelings), each a lowercase word or two in ${tagLanguage}. A word with no clear topic gets none.`,
-  );
+  lines.push(describeWordTags(request.tags, request.tagLanguage));
 
   return lines;
 };
+
+// How a card's tags are asked for, the same for one word, a list and a
+// topic: what the word is about, as many as truly fit, in the deck's own
+// words where it has them.
+export const describeWordTags = (deckTags: string[], tagLanguage: string): string =>
+  [
+    "tags: one to three short tags for what the word is about: its topic (food, travel, work, health, feelings, home, nature) and, if it clearly belongs to a narrower one, that too (kitchen, airport, weather).",
+    "Add a second or third tag only when the word really belongs there; one good tag is better than three loose ones.",
+    "Never a part of speech, a level, a language, or a word like vocabulary, word, basic or common.",
+    deckTags.length
+      ? `The deck already uses: ${deckTags.map((tag) => JSON.stringify(tag)).join(", ")}. Reuse these, spelled exactly the same, whenever they fit; a new tag is a lowercase word or two in ${tagLanguage || "English"}.`
+      : `Each tag is a lowercase word or two in ${tagLanguage || "English"}.`,
+    "A word with no clear topic gets none.",
+  ].join(" ");
 
 const SYSTEM_INSTRUCTION = [
   "You fill in flashcards for someone learning a language, the way a careful teacher and a good learner's dictionary would.",

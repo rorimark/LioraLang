@@ -1975,5 +1975,13 @@ export default {
       "offline": "Brak połączenia. Spróbuj, gdy będziesz online.",
       "failed": "Zgłoszenie nie zostało wysłane. Spróbuj ponownie."
     }
+  },
+  "deckSuggest": {
+    "ask": "Zaproponuj opis i tagi",
+    "thinking": "Piszemy opis…",
+    "take": "Użyj",
+    "again": "Inna propozycja",
+    "empty": "Na razie nie ma czego zaproponować: dodaj nazwę albo kilka słów.",
+    "error": "Nie udało się napisać opisu. Spróbuj ponownie."
   }
 };

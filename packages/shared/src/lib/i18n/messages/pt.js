@@ -1885,5 +1885,13 @@ export default {
       "offline": "Você está offline. Tente de novo quando estiver conectado.",
       "failed": "A denúncia não foi enviada. Tente de novo."
     }
+  },
+  "deckSuggest": {
+    "ask": "Sugerir descrição e tags",
+    "thinking": "Escrevendo uma descrição…",
+    "take": "Usar",
+    "again": "Outra opção",
+    "empty": "Ainda não há o que sugerir: adicione um nome ou algumas palavras.",
+    "error": "Não foi possível escrever a descrição. Tente de novo."
   }
 };

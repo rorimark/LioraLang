@@ -1895,5 +1895,13 @@ export default {
       "offline": "Jste offline. Zkuste to po připojení.",
       "failed": "Nahlášení se neodeslalo. Zkuste to znovu."
     }
+  },
+  "deckSuggest": {
+    "ask": "Navrhnout popis a štítky",
+    "thinking": "Píšeme popis…",
+    "take": "Použít",
+    "again": "Jiný návrh",
+    "empty": "Zatím není co navrhnout: přidejte název nebo pár slov.",
+    "error": "Popis se nepodařilo napsat. Zkuste to znovu."
   }
 };

@@ -11,6 +11,7 @@ import {
   clean,
   cleanLanguage,
   cleanTags,
+  describeWordTags,
   field,
   LEVELS,
   MAX_TEXT,
@@ -24,7 +25,10 @@ export const MIN_TOPIC_WORDS = 5;
 export const MAX_TOPIC_WORDS = 30;
 const MAX_AVOID = 200;
 const MAX_EXAMPLES = 2;
-const MAX_TAGS = 2;
+const MAX_TAGS = 3;
+const MAX_DECK_TAGS = 6;
+const MAX_DESCRIPTION = 300;
+const MAX_DECK_WORDS = 40;
 const MAX_HINT = 240;
 
 export type DeckContext = {
@@ -54,7 +58,18 @@ export type HintRequest = {
   explainIn: string;
   examples: string[];
 };
-export type TaskRequest = ListRequest | TopicRequest | HintRequest;
+// A description and tags for a whole deck, from what it already has.
+export type DeckRequest = {
+  task: "deck";
+  name: string;
+  sourceLanguage: string;
+  targetLanguage: string;
+  pictureSide: "" | "source" | "target";
+  words: Array<{ source: string; target: string }>;
+  tags: string[];
+  writeIn: string;
+};
+export type TaskRequest = ListRequest | TopicRequest | HintRequest | DeckRequest;
 
 export type CardDraft = {
   index: number;
@@ -132,6 +147,30 @@ export const validateTaskRequest = (body: unknown): TaskRequest | null => {
     return { task: "topic", deck, topic, level, count, avoid };
   }
 
+  if (value.task === "deck") {
+    const pictureSide = value.pictureSide === "source" || value.pictureSide === "target" ? value.pictureSide : "";
+    const words = (Array.isArray(value.words) ? value.words : [])
+      .map((word) => ({
+        source: text((word as Record<string, unknown>)?.source),
+        target: text((word as Record<string, unknown>)?.target),
+      }))
+      .filter((word) => hasLetter(word.source) || hasLetter(word.target))
+      .slice(0, MAX_DECK_WORDS);
+    const request: DeckRequest = {
+      task: "deck",
+      name: clean(value.name).slice(0, 120),
+      sourceLanguage: pictureSide === "source" ? "" : cleanLanguage(value.sourceLanguage),
+      targetLanguage: pictureSide === "target" ? "" : cleanLanguage(value.targetLanguage),
+      pictureSide,
+      words,
+      tags: cleanTags(value.tags, 10),
+      writeIn: cleanLanguage(value.writeIn),
+    };
+
+    // Something to describe: a name or a few words.
+    return hasLetter(request.name) || words.length >= 3 ? request : null;
+  }
+
   if (value.task === "hint") {
     const request: HintRequest = {
       task: "hint",
@@ -189,12 +228,7 @@ const describeCardFields = (deck: DeckContext): string[] => {
     `examples: two sentences in ${deck.sourceLanguage} that a native speaker would really say, 5 to 10 words each, showing its usual collocations in an everyday situation; the two differ in situation and form. No textbook sentences like "This is a ...", no translations.`,
   );
 
-  const tagLanguage = deck.tagLanguage || "English";
-  lines.push(
-    deck.tags.length
-      ? `tags: one short topic tag (food, travel, work, feelings). The deck already uses: ${deck.tags.map((tag) => JSON.stringify(tag)).join(", ")}; reuse one of them, spelled the same, when it fits, otherwise a lowercase word in ${tagLanguage}.`
-      : `tags: one short topic tag (food, travel, work, feelings), a lowercase word in ${tagLanguage}.`,
-  );
+  lines.push(describeWordTags(deck.tags, deck.tagLanguage));
 
   return lines;
 };
@@ -241,11 +275,44 @@ const describeTopic = (request: TopicRequest): string[] => {
     lines.push(`The deck already has these words; do not repeat them: ${request.avoid.map((word) => JSON.stringify(word)).join(", ")}.`);
   }
 
+  const writeIn = request.deck.tagLanguage || "English";
   lines.push(
-    `name: a short deck name for the topic, two to four words, in ${request.deck.tagLanguage || "English"}.`,
+    `name: a short deck name for the topic, two to four words, in ${writeIn}.`,
+    describeDeckText(writeIn),
+    describeDeckTags(writeIn, request.deck.tags),
     ...describeCardFields(request.deck),
   );
 
+  return lines;
+};
+
+// What a deck's own description and tags are, for a topic and for a deck
+// that already exists.
+const describeDeckText = (writeIn: string) =>
+  `description: one or two plain sentences in ${writeIn}, under 200 characters, that say what the deck covers and who it suits (the level, if the words make it clear). No marketing, no emoji, no exclamation marks, and do not start with "This deck".`;
+
+const describeDeckTags = (writeIn: string, existing: string[] = []) =>
+  [
+    `deckTags: two to five short lowercase tags in ${writeIn} for finding the deck: its topics, from broad to narrow (travel, airport), and its level if it is clear (a2, b1).`,
+    "Never the languages, and never words like deck, vocabulary or words.",
+    existing.length ? `It already has: ${existing.map((tag) => JSON.stringify(tag)).join(", ")}; keep those that fit and add what is missing.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+const describeDeck = (request: DeckRequest): string[] => {
+  const front = request.pictureSide === "source" ? "pictures" : request.sourceLanguage || "unknown";
+  const back = request.pictureSide === "target" ? "pictures" : request.targetLanguage || "unknown";
+  const writeIn = request.writeIn || "English";
+  const lines = [
+    `A learner's flashcard deck${request.name ? ` called ${JSON.stringify(request.name)}` : ""}: the front of each card is ${front}, the back is ${back}.`,
+  ];
+
+  if (request.words.length) {
+    lines.push(`Some of its cards: ${JSON.stringify(request.words.map((word) => [word.source, word.target]))}.`);
+  }
+
+  lines.push(describeDeckText(writeIn), describeDeckTags(writeIn, request.tags).replace("deckTags:", "tags:"));
   return lines;
 };
 
@@ -287,6 +354,24 @@ export const buildTaskRequest = (request: TaskRequest, model: string, { withThin
     };
   }
 
+  if (request.task === "deck") {
+    return {
+      systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+      contents: [{ role: "user", parts: [{ text: describeDeck(request).join("\n") }] }],
+      generationConfig: {
+        temperature: 0.5,
+        maxOutputTokens: outputTokens(model, true),
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: "OBJECT",
+          properties: { description: { type: "STRING" }, tags: { type: "ARRAY", items: { type: "STRING" } } },
+          required: ["description", "tags"],
+        },
+        ...thinking,
+      },
+    };
+  }
+
   const isList = request.task === "list";
   const card = isList
     ? {
@@ -307,8 +392,14 @@ export const buildTaskRequest = (request: TaskRequest, model: string, { withThin
         ? { type: "OBJECT", properties: { cards: { type: "ARRAY", items: card } }, required: ["cards"] }
         : {
             type: "OBJECT",
-            properties: { name: { type: "STRING" }, cards: { type: "ARRAY", items: card } },
-            required: ["name", "cards"],
+            properties: {
+              name: { type: "STRING" },
+              description: { type: "STRING" },
+              deckTags: { type: "ARRAY", items: { type: "STRING" } },
+              cards: { type: "ARRAY", items: card },
+            },
+            required: ["name", "description", "deckTags", "cards"],
+            propertyOrdering: ["name", "description", "deckTags", "cards"],
           },
       ...thinking,
     },
@@ -333,6 +424,11 @@ const readCard = (raw: Record<string, unknown>, index: number): CardDraft => {
   };
 };
 
+const readDescription = (value: unknown): string => {
+  const description = clean(value);
+  return description.length <= MAX_DESCRIPTION ? description : "";
+};
+
 const rawCards = (raw: Record<string, unknown>) =>
   (Array.isArray(raw.cards) ? raw.cards : []).filter(
     (card): card is Record<string, unknown> => Boolean(card) && typeof card === "object",
@@ -350,6 +446,12 @@ export const readTaskAnswer = (request: TaskRequest, response: unknown): Record<
   if (request.task === "hint") {
     const hint = clean(raw.hint);
     return hint && hint.length <= MAX_HINT ? { hint } : null;
+  }
+
+  if (request.task === "deck") {
+    const description = readDescription(raw.description);
+    const tags = cleanTags(raw.tags, MAX_DECK_TAGS);
+    return description || tags.length ? { description, tags } : null;
   }
 
   if (request.task === "list") {
@@ -383,5 +485,12 @@ export const readTaskAnswer = (request: TaskRequest, response: unknown): Record<
     .slice(0, request.count)
     .map((card, index) => ({ ...card, index }));
 
-  return cards.length ? { name: field(raw.name).slice(0, 60), cards } : null;
+  return cards.length
+    ? {
+        name: field(raw.name).slice(0, 60),
+        description: readDescription(raw.description),
+        deckTags: cleanTags(raw.deckTags, MAX_DECK_TAGS),
+        cards,
+      }
+    : null;
 };

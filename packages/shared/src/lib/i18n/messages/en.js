@@ -1795,5 +1795,13 @@ export default {
       "offline": "You are offline. Try again when you are connected.",
       "failed": "The report did not go through. Try again."
     }
+  },
+  "deckSuggest": {
+    "ask": "Suggest a description and tags",
+    "thinking": "Writing a description…",
+    "take": "Use these",
+    "again": "Another one",
+    "empty": "Nothing to suggest yet: add a name or a few words.",
+    "error": "Could not write a description. Try again."
   }
 };

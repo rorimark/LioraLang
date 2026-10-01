@@ -1795,5 +1795,13 @@ export default {
       "offline": "Du bist offline. Versuche es, sobald du verbunden bist.",
       "failed": "Die Meldung ist nicht angekommen. Versuche es noch einmal."
     }
+  },
+  "deckSuggest": {
+    "ask": "Beschreibung und Tags vorschlagen",
+    "thinking": "Schreibe eine Beschreibung…",
+    "take": "Übernehmen",
+    "again": "Anderer Vorschlag",
+    "empty": "Noch nichts vorzuschlagen: Gib einen Namen oder ein paar Wörter ein.",
+    "error": "Die Beschreibung ließ sich nicht schreiben. Versuche es noch einmal."
   }
 };

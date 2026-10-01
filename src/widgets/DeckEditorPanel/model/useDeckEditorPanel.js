@@ -525,6 +525,8 @@ export const useDeckEditorPanel = () => {
 
     deckForm,
     suggestDeck,
+    // A patch to the deck's own fields, as an assistant's draft gives one.
+    applyDeckPatch: updateForm,
     pictureSide,
     hasTertiary,
     canChangeSides,

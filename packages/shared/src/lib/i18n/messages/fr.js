@@ -1885,5 +1885,13 @@ export default {
       "offline": "Vous êtes hors ligne. Réessayez une fois connecté.",
       "failed": "Le signalement n'est pas parti. Réessayez."
     }
+  },
+  "deckSuggest": {
+    "ask": "Proposer une description et des étiquettes",
+    "thinking": "Rédaction de la description…",
+    "take": "Utiliser",
+    "again": "Autre proposition",
+    "empty": "Rien à proposer pour l'instant : ajoutez un nom ou quelques mots.",
+    "error": "Impossible de rédiger la description. Réessayez."
   }
 };

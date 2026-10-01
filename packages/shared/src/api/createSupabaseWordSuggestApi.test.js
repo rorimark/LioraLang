@@ -71,7 +71,7 @@ describe("suggestWord", () => {
     expect(invoke.mock.calls[0][1]).toMatchObject({ body: { task: "list", rows: [{ source: "bread" }] }, timeout: 45000 });
 
     invoke.mockResolvedValueOnce({ data: { result: { name: "Kitchen", cards: [] } }, error: null });
-    await expect(api.suggestTopic({ topic: "kitchen" })).resolves.toEqual({ name: "Kitchen", cards: [] });
+    await expect(api.suggestTopic({ topic: "kitchen" })).resolves.toEqual({ name: "Kitchen", description: "", deckTags: [], cards: [] });
 
     invoke.mockResolvedValueOnce({ data: { result: { hint: "Sounds like a billet." } }, error: null });
     await expect(api.suggestHint({ word: "bilet" })).resolves.toBe("Sounds like a billet.");

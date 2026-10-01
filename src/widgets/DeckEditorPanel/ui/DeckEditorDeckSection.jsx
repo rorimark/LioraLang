@@ -1,6 +1,7 @@
 import { memo, useCallback, useId } from "react";
 import { FiLock, FiRepeat } from "react-icons/fi";
 import { Select, SettingSegmented, SettingSwitch } from "@shared/ui";
+import { DeckDescriptionSuggestion } from "@features/word-suggest";
 import { useI18n } from "@shared/lib/i18n";
 import { useDeckEditorPanelContext } from "../model";
 
@@ -59,6 +60,8 @@ export const DeckEditorDeckSection = memo(() => {
     handleDeckFormChange,
     handleSideTypeChange,
     swapSides,
+    words,
+    applyDeckPatch,
   } = useDeckEditorPanelContext();
   const { t, languageName } = useI18n();
   const levelsId = useId();
@@ -96,6 +99,8 @@ export const DeckEditorDeckSection = memo(() => {
           maxLength={500}
         />
       </label>
+
+      <DeckDescriptionSuggestion deck={deckForm} words={words} onApply={applyDeckPatch} />
 
       <div className="deck-editor__block">
         <h3 className="deck-editor__eyebrow">{t("editor.sides.title")}</h3>

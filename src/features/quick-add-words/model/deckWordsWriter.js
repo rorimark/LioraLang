@@ -146,14 +146,15 @@ export const removeWordsFromDeck = (deckRepository, deckId, wordIds) =>
     };
   });
 
-export const createDeckForWords = (deckRepository, { name, sourceLanguage, targetLanguage }) =>
+// A deck drafted on a topic arrives with its description and tags.
+export const createDeckForWords = (deckRepository, { name, sourceLanguage, targetLanguage, description = "", tags = [] }) =>
   deckRepository.saveDeck({
     name: String(name ?? "").trim(),
-    description: "",
+    description: String(description ?? "").trim(),
     sourceLanguage,
     targetLanguage,
     tertiaryLanguage: "",
-    tags: [],
+    tags: Array.isArray(tags) ? tags.slice(0, 10) : [],
     usesWordLevels: true,
     words: [],
   });

@@ -324,6 +324,104 @@
   }
 }
 
+/* A deck's description and tags, drafted on request: the draft sits under
+   the description in pencil until it is taken. */
+.deck-suggestion__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 0;
+}
+
+.deck-suggestion__ask,
+.deck-suggestion__again {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.deck-suggestion__ask:hover:not(:disabled),
+.deck-suggestion__again:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.deck-suggestion__ask:disabled {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.deck-suggestion__note {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.deck-suggestion {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px dashed color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface));
+  animation: suggest-bar-in 220ms ease-out both;
+}
+
+.deck-suggestion > .suggest-spark {
+  margin-top: 4px;
+  color: var(--color-primary);
+}
+
+.deck-suggestion__body {
+  display: grid;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.deck-suggestion__description {
+  margin: 0;
+  color: color-mix(in srgb, var(--color-primary) 72%, var(--color-text));
+  line-height: 1.45;
+}
+
+.deck-suggestion__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deck-suggestion__tags li {
+  padding: 2px 9px;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+  border-radius: 999px;
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.deck-suggestion__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.deck-suggestion__actions .suggest-bar__action {
+  padding-right: 12px;
+}
+
 /* After "Again" in Learn: the word just missed and how to remember it,
    in one quiet note under the card. */
 .missed-hint {
@@ -395,6 +493,7 @@
   .suggest-inked .ui-select__trigger,
   .suggest-chip,
   .suggest-bar,
+  .deck-suggestion,
   .missed-hint {
     animation: none;
   }

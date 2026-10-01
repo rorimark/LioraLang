@@ -11,6 +11,7 @@ import {
   cardsToRows,
   chunkRows,
   collectDeckTags,
+  normalizeDeckDescription,
   editRow,
   isTopicReady,
   rowsToDraft,
@@ -124,6 +125,9 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
   const [deckChoice, setDeckChoice] = useState(initialChoice);
   const [newDeck, setNewDeck] = useState(() => ({
     name: "",
+    // Filled when the assistant drafts a deck on a topic.
+    description: "",
+    tags: [],
     ...pickDefaultLanguages(appPreferences.deckDefaults),
   }));
   // A deck made in this dialog, used until the deck list catches up.
@@ -254,7 +258,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
 
     setCreatedDeck(created);
     setDeckChoice(String(created.id));
-    setNewDeck((current) => ({ ...current, name: "" }));
+    setNewDeck((current) => ({ ...current, name: "", description: "", tags: [] }));
     return created;
   }, [deckRepository, decks, newDeck, selectedDeck]);
 
@@ -688,7 +692,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
 
     try {
       const avoid = [...deckWords.map((word) => word.source), ...rowsRef.current.map((row) => row.source)];
-      const { name, cards } = await ai.repository.suggestTopic(
+      const { name, description, deckTags, cards } = await ai.repository.suggestTopic(
         buildTopicRequest({ deck: aiDeck, topic: topic.text, level: topic.level, count: topic.count, avoid }),
         { signal: controller.signal },
       );
@@ -700,7 +704,14 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
       }
 
       setRows((current) => markRows([...current, ...drafted], wordIndex));
-      setNewDeck((current) => (current.name.trim() ? current : { ...current, name: name || topic.text.trim() }));
+      // A new deck takes the drafted name, description and tags; the person
+      // sees the name in the deck picker and can change it before adding.
+      setNewDeck((current) => ({
+        ...current,
+        name: current.name.trim() ? current.name : name || topic.text.trim(),
+        description: current.description || description || "",
+        tags: current.tags?.length ? current.tags : normalizeDeckDescription({ tags: deckTags }).tags,
+      }));
       setAiState({ status: AI_STATUS.done, done: drafted.length, total: drafted.length });
     } catch (error) {
       if (error?.code !== "aborted") {

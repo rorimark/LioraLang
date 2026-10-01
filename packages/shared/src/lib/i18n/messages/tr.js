@@ -1795,5 +1795,13 @@ export default {
       "offline": "Çevrimdışısınız. Bağlandığınızda tekrar deneyin.",
       "failed": "Şikâyet gönderilemedi. Tekrar deneyin."
     }
+  },
+  "deckSuggest": {
+    "ask": "Açıklama ve etiket öner",
+    "thinking": "Açıklama yazılıyor…",
+    "take": "Kullan",
+    "again": "Başka bir öneri",
+    "empty": "Henüz önerecek bir şey yok: bir ad ya da birkaç kelime ekleyin.",
+    "error": "Açıklama yazılamadı. Tekrar deneyin."
   }
 };
