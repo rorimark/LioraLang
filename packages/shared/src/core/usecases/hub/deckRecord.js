@@ -157,6 +157,8 @@ const toHubDeck = (deck, latestVersion, normalizeTextArray) => {
     sourceLanguage: toCleanString(deck?.source_language),
     targetLanguages,
     pictureSide: normalizePictureSide(deck?.picture_side),
+    // Hidden after reports: only its owner still sees it.
+    isHidden: deck?.is_hidden === true,
     languages: uniqueLanguages,
     tags: normalizeTextArray(deck?.tags),
     wordsCount: Number.isFinite(Number(deck?.words_count)) ? Number(deck.words_count) : 0,

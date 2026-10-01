@@ -136,7 +136,7 @@ export const hubDecksApi = {
     let decksQuery = supabase
       .from("hub_decks")
       .select(
-        "id,slug,title,description,source_language,target_languages,picture_side,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,picture_side,is_hidden,tags,words_count,downloads_count,created_at",
         { count: "exact" },
       )
       .eq("is_published", true)
@@ -214,7 +214,7 @@ export const hubDecksApi = {
     const { data: deck, error: deckError } = await supabase
       .from("hub_decks")
       .select(
-        "id,slug,title,description,source_language,target_languages,picture_side,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,picture_side,is_hidden,tags,words_count,downloads_count,created_at",
       )
       .eq("slug", normalizedSlug)
       .eq("is_published", true)
@@ -247,7 +247,7 @@ export const hubDecksApi = {
     const { data: decks, error: decksError } = await supabase
       .from("hub_decks")
       .select(
-        "id,slug,title,description,source_language,target_languages,picture_side,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,picture_side,is_hidden,tags,words_count,downloads_count,created_at",
       )
       .eq("owner_id", user.id)
       .order("created_at", { ascending: false })
@@ -544,6 +544,37 @@ export const hubDecksApi = {
       wordsCount: normalizedWordsCount,
       title: publishableDeck.title,
     };
+  },
+
+  // A report on someone else's public deck: "reported", "hidden" (it was
+  // the report that hid it), "own" or "missing". Errors carry a code the
+  // interface can name: report_signin or report_verify.
+  async reportDeck({ deckId, reason, note = "" } = {}) {
+    const supabase = ensureSupabaseClient();
+    const { data: sessionData } = await supabase.auth.getSession();
+    const user = sessionData?.session?.user || null;
+
+    if (!user?.id || isAnonymousUser(user)) {
+      throw Object.assign(new Error("Sign in to report a deck"), { code: "report_signin" });
+    }
+
+    if (!isUserEmailVerified(user)) {
+      throw Object.assign(new Error("Confirm your email to report a deck"), { code: "report_verify" });
+    }
+
+    const { data, error } = await supabase.rpc("report_hub_deck", {
+      p_deck_id: toCleanString(String(deckId ?? "")),
+      p_reason: toCleanString(reason),
+      p_note: toCleanString(note).slice(0, 500),
+    });
+
+    if (error) {
+      throw Object.assign(new Error(error.message || "Failed to report the deck"), {
+        code: /confirm your email/i.test(error.message || "") ? "report_verify" : "report_failed",
+      });
+    }
+
+    return toCleanString(data) || "reported";
   },
 
   async deleteDeck({ deckId } = {}) {

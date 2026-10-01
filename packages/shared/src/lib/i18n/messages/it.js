@@ -1105,7 +1105,8 @@ export default {
       "copy": "Copia link",
       "openNamed": "Apri {name} nell'hub",
       "deleteNamed": "Elimina {name} dall'hub",
-      "confirmDelete": "Eliminare «{name}» dall'hub?"
+      "confirmDelete": "Eliminare «{name}» dall'hub?",
+      "hidden": "Nascosto dopo le segnalazioni"
     },
     "learner": "Studente",
     "sendAgain": "Invia di nuovo",
@@ -1315,6 +1316,19 @@ export default {
         "one": "{count} pubblicato",
         "many": "{count} pubblicati",
         "other": "{count} pubblicati"
+      }
+    },
+    "delete": {
+      "title": "Elimina account",
+      "hint": "Elimina l'account, i mazzi e i progressi sincronizzati e i mazzi pubblicati. I mazzi su questo dispositivo restano.",
+      "open": "Elimina account…",
+      "confirmLabel": "Scrivi {email} per confermare",
+      "confirm": "Elimina per sempre",
+      "cancel": "Annulla",
+      "done": "L'account è stato eliminato. I mazzi su questo dispositivo sono ancora qui.",
+      "errors": {
+        "confirm": "L'indirizzo non corrisponde a quello dell'account. Non è stato eliminato nulla.",
+        "failed": "Impossibile eliminare l'account. Non si è perso nulla; riprova."
       }
     }
   },
@@ -1844,5 +1858,32 @@ export default {
     "label": "Come ricordarla",
     "thinking": "Cerco un modo per ricordarla…",
     "dismiss": "Nascondi suggerimento"
+  },
+  "hubReport": {
+    "open": "Segnala questo mazzo",
+    "title": "Segnala «{name}»",
+    "description": "Dicci cosa non va. Un mazzo segnalato da più persone viene nascosto fino al controllo.",
+    "reasonLabel": "Cosa non va",
+    "reasons": {
+      "inappropriate": "Contenuti offensivi o per adulti",
+      "spam": "Spam o pubblicità",
+      "copyright": "Copiato senza permesso",
+      "wrong": "Traduzioni per lo più sbagliate",
+      "other": "Altro"
+    },
+    "noteLabel": "Dettagli (facoltativo)",
+    "notePlaceholder": "Cosa dovremmo guardare?",
+    "send": "Invia segnalazione",
+    "close": "Chiudi",
+    "outcome": {
+      "sent": "Grazie. La segnalazione è arrivata e il mazzo verrà controllato.",
+      "hidden": "Grazie. L'hanno segnalato anche altri, quindi il mazzo è nascosto fino al controllo.",
+      "own": "Questo è il tuo mazzo. Puoi modificarlo o rimuoverlo nella pagina dell'account.",
+      "missing": "Questo mazzo non è più nell'Hub.",
+      "signin": "Accedi per segnalare un mazzo.",
+      "verify": "Conferma il tuo indirizzo email per segnalare un mazzo.",
+      "offline": "Sei offline. Riprova quando sei connesso.",
+      "failed": "La segnalazione non è partita. Riprova."
+    }
   }
 };

@@ -172,6 +172,17 @@
   gap: 12px;
 }
 
+.account__delete {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.account__delete-open {
+  color: var(--color-danger);
+}
+
 .account__text-link {
   padding: 0;
   border: 0;

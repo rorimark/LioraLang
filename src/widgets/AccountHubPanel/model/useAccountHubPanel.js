@@ -632,6 +632,42 @@ export const useAccountHubPanel = () => {
     });
   }, [authRepository, flushPendingChanges, leaveAccount, reportStatus, runAction, t]);
 
+  // Deleting the account: the person types their email address to unlock
+  // the button, and nothing is sent until they press it.
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const toggleDelete = useCallback(() => {
+    setIsDeleteOpen((open) => !open);
+    setDeleteConfirm("");
+  }, []);
+  const canDelete =
+    Boolean(authState.email) && deleteConfirm.trim().toLowerCase() === String(authState.email).trim().toLowerCase();
+
+  const handleDeleteAccount = useCallback(async () => {
+    if (!canDelete) {
+      return;
+    }
+
+    setPendingAction("delete-account");
+    clearStatus();
+
+    try {
+      await authRepository.deleteAccount(deleteConfirm.trim());
+      setIsDeleteOpen(false);
+      setDeleteConfirm("");
+      leaveAccount();
+      reportStatus({ key: "account.delete.done" }, "success");
+    } catch (error) {
+      console.warn(error);
+      reportStatus(
+        { key: error?.code === "delete_confirm" ? "account.delete.errors.confirm" : "account.delete.errors.failed" },
+        "error",
+      );
+    } finally {
+      setPendingAction("");
+    }
+  }, [authRepository, canDelete, clearStatus, deleteConfirm, leaveAccount, reportStatus]);
+
   const handleSyncNow = useCallback(async () => {
     await runAction("sync-now", async () => {
       await syncRepository.clearError?.();
@@ -913,6 +949,12 @@ export const useAccountHubPanel = () => {
     signInMethodLabel,
     handleChangeEmail,
     handleSignOutEverywhere,
+    isDeleteOpen,
+    deleteConfirm,
+    setDeleteConfirm,
+    toggleDelete,
+    canDelete,
+    handleDeleteAccount,
     handleSyncNow,
     handleForgetDevice,
     loadDevices,

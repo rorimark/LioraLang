@@ -1,0 +1,71 @@
+/* The report form: the reasons as one list of rows, then the note. */
+.hub-report {
+  display: grid;
+  gap: 14px;
+}
+
+.hub-report__reasons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hub-report__reasons legend {
+  margin-bottom: 6px;
+  padding: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.hub-report__reason {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 6px 10px;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.hub-report__reason:hover {
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+
+.hub-report__reason input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.hub-report__note {
+  display: grid;
+  gap: 6px;
+}
+
+.hub-report__note > span {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.hub-report__note textarea {
+  width: 100%;
+  min-height: 72px;
+  padding: 10px 12px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  resize: vertical;
+}
+
+.hub-report__note textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+}

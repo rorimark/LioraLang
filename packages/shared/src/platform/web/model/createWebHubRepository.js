@@ -324,6 +324,16 @@ export const createWebHubRepository = () => {
         return resolveOptimisticDownloadsResult(currentDownloadsCount);
       }
     },
+    async reportDeck(payload = {}) {
+      if (!isBrowserOnline()) {
+        throw Object.assign(new Error("Reporting a deck requires an active internet connection."), {
+          code: "report_offline",
+        });
+      }
+
+      const hubDecksApi = await getHubDecksApi();
+      return hubDecksApi.reportDeck(payload);
+    },
     async deleteDeck(deckId) {
       if (!isBrowserOnline()) {
         throw new Error("Deleting a Hub deck requires an active internet connection.");

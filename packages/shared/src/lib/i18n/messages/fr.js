@@ -1105,7 +1105,8 @@ export default {
       "copy": "Copier le lien",
       "openNamed": "Ouvrir {name} dans le hub",
       "deleteNamed": "Supprimer {name} du hub",
-      "confirmDelete": "Supprimer « {name} » du hub ?"
+      "confirmDelete": "Supprimer « {name} » du hub ?",
+      "hidden": "Masqué après signalements"
     },
     "learner": "Apprenant",
     "sendAgain": "Renvoyer",
@@ -1315,6 +1316,19 @@ export default {
         "one": "{count} publié",
         "many": "{count} publiés",
         "other": "{count} publiés"
+      }
+    },
+    "delete": {
+      "title": "Supprimer le compte",
+      "hint": "Supprime votre compte, les paquets et la progression synchronisés et les paquets publiés. Les paquets de cet appareil restent.",
+      "open": "Supprimer le compte…",
+      "confirmLabel": "Saisissez {email} pour confirmer",
+      "confirm": "Supprimer définitivement",
+      "cancel": "Annuler",
+      "done": "Votre compte est supprimé. Les paquets de cet appareil sont toujours là.",
+      "errors": {
+        "confirm": "L'adresse ne correspond pas à votre compte. Rien n'a été supprimé.",
+        "failed": "Impossible de supprimer le compte. Rien n'est perdu ; réessayez."
       }
     }
   },
@@ -1844,5 +1858,32 @@ export default {
     "label": "Pour s'en souvenir",
     "thinking": "Recherche d'un moyen mnémotechnique…",
     "dismiss": "Masquer l'astuce"
+  },
+  "hubReport": {
+    "open": "Signaler ce paquet",
+    "title": "Signaler « {name} »",
+    "description": "Dites-nous ce qui ne va pas. Un paquet signalé par plusieurs personnes est masqué jusqu'à vérification.",
+    "reasonLabel": "Ce qui ne va pas",
+    "reasons": {
+      "inappropriate": "Contenu choquant ou pour adultes",
+      "spam": "Spam ou publicité",
+      "copyright": "Copié sans autorisation",
+      "wrong": "Traductions en grande partie fausses",
+      "other": "Autre chose"
+    },
+    "noteLabel": "Précisions (facultatif)",
+    "notePlaceholder": "Que devons-nous regarder ?",
+    "send": "Envoyer le signalement",
+    "close": "Fermer",
+    "outcome": {
+      "sent": "Merci. Le signalement est reçu, le paquet sera vérifié.",
+      "hidden": "Merci. D'autres personnes l'ont aussi signalé, le paquet est donc masqué jusqu'à vérification.",
+      "own": "C'est votre paquet. Vous pouvez le modifier ou le retirer sur la page du compte.",
+      "missing": "Ce paquet n'est plus dans le Hub.",
+      "signin": "Connectez-vous pour signaler un paquet.",
+      "verify": "Confirmez votre adresse e-mail pour signaler un paquet.",
+      "offline": "Vous êtes hors ligne. Réessayez une fois connecté.",
+      "failed": "Le signalement n'est pas parti. Réessayez."
+    }
   }
 };

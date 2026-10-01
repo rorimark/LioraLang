@@ -1035,7 +1035,8 @@ export default {
       "copy": "Bağlantıyı kopyala",
       "openNamed": "{name} destesini hub'da aç",
       "deleteNamed": "{name} destesini hub'dan sil",
-      "confirmDelete": "“{name}” hub'dan silinsin mi?"
+      "confirmDelete": "“{name}” hub'dan silinsin mi?",
+      "hidden": "Şikâyetler sonrası gizlendi"
     },
     "learner": "Öğrenci",
     "sendAgain": "Yeniden gönder",
@@ -1236,6 +1237,19 @@ export default {
       "hubCount": {
         "one": "{count} yayında",
         "other": "{count} yayında"
+      }
+    },
+    "delete": {
+      "title": "Hesabı sil",
+      "hint": "Hesabını, eşitlenen destelerini ve ilerlemeni, yayımladığın desteleri siler. Bu cihazdaki desteler kalır.",
+      "open": "Hesabı sil…",
+      "confirmLabel": "Onaylamak için {email} yazın",
+      "confirm": "Kalıcı olarak sil",
+      "cancel": "Vazgeç",
+      "done": "Hesabın silindi. Bu cihazdaki desteler duruyor.",
+      "errors": {
+        "confirm": "Adres hesabınla eşleşmiyor. Hiçbir şey silinmedi.",
+        "failed": "Hesap silinemedi. Hiçbir şey kaybolmadı, tekrar dene."
       }
     }
   },
@@ -1754,5 +1768,32 @@ export default {
     "label": "Nasıl hatırlanır",
     "thinking": "Hatırlamanın bir yolu aranıyor…",
     "dismiss": "İpucunu gizle"
+  },
+  "hubReport": {
+    "open": "Desteyi şikâyet et",
+    "title": "“{name}” destesini şikâyet et",
+    "description": "Neyin yanlış olduğunu yazın. Birkaç kişinin şikâyet ettiği deste incelenene kadar gizlenir.",
+    "reasonLabel": "Sorun ne",
+    "reasons": {
+      "inappropriate": "Saldırgan ya da yetişkin içerik",
+      "spam": "Spam ya da reklam",
+      "copyright": "İzinsiz kopyalanmış",
+      "wrong": "Çevirilerin çoğu yanlış",
+      "other": "Başka bir şey"
+    },
+    "noteLabel": "Ayrıntılar (isteğe bağlı)",
+    "notePlaceholder": "Neye bakmalıyız?",
+    "send": "Şikâyeti gönder",
+    "close": "Kapat",
+    "outcome": {
+      "sent": "Teşekkürler. Şikâyet ulaştı, deste incelenecek.",
+      "hidden": "Teşekkürler. Başkaları da şikâyet etti, bu yüzden deste incelenene kadar gizlendi.",
+      "own": "Bu senin destenin. Hesap sayfasından değiştirebilir ya da kaldırabilirsin.",
+      "missing": "Bu deste artık Hub'da değil.",
+      "signin": "Bir desteyi şikâyet etmek için giriş yapın.",
+      "verify": "Bir desteyi şikâyet etmek için e-posta adresinizi doğrulayın.",
+      "offline": "Çevrimdışısınız. Bağlandığınızda tekrar deneyin.",
+      "failed": "Şikâyet gönderilemedi. Tekrar deneyin."
+    }
   }
 };

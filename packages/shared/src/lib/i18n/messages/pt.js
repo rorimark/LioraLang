@@ -1105,7 +1105,8 @@ export default {
       "copy": "Copiar link",
       "openNamed": "Abrir {name} no hub",
       "deleteNamed": "Excluir {name} do hub",
-      "confirmDelete": "Excluir “{name}” do hub?"
+      "confirmDelete": "Excluir “{name}” do hub?",
+      "hidden": "Oculto após denúncias"
     },
     "learner": "Estudante",
     "sendAgain": "Enviar de novo",
@@ -1315,6 +1316,19 @@ export default {
         "one": "{count} publicado",
         "many": "{count} publicados",
         "other": "{count} publicados"
+      }
+    },
+    "delete": {
+      "title": "Excluir conta",
+      "hint": "Exclui sua conta, os baralhos e o progresso sincronizados e os baralhos que você publicou. Os baralhos deste dispositivo ficam.",
+      "open": "Excluir conta…",
+      "confirmLabel": "Digite {email} para confirmar",
+      "confirm": "Excluir para sempre",
+      "cancel": "Cancelar",
+      "done": "Sua conta foi excluída. Os baralhos deste dispositivo continuam aqui.",
+      "errors": {
+        "confirm": "O endereço não confere com o da sua conta. Nada foi excluído.",
+        "failed": "Não foi possível excluir a conta. Nada se perdeu; tente de novo."
       }
     }
   },
@@ -1844,5 +1858,32 @@ export default {
     "label": "Como lembrar",
     "thinking": "Procurando um jeito de lembrar…",
     "dismiss": "Ocultar dica"
+  },
+  "hubReport": {
+    "open": "Denunciar este baralho",
+    "title": "Denunciar “{name}”",
+    "description": "Conte o que está errado. Um baralho denunciado por várias pessoas fica oculto até ser verificado.",
+    "reasonLabel": "O que está errado",
+    "reasons": {
+      "inappropriate": "Conteúdo ofensivo ou adulto",
+      "spam": "Spam ou propaganda",
+      "copyright": "Copiado sem permissão",
+      "wrong": "Traduções em sua maioria erradas",
+      "other": "Outra coisa"
+    },
+    "noteLabel": "Detalhes (opcional)",
+    "notePlaceholder": "O que devemos verificar?",
+    "send": "Enviar denúncia",
+    "close": "Fechar",
+    "outcome": {
+      "sent": "Obrigado. A denúncia chegou e o baralho será verificado.",
+      "hidden": "Obrigado. Outras pessoas também denunciaram, então o baralho está oculto até ser verificado.",
+      "own": "Este é o seu baralho. Você pode alterá-lo ou removê-lo na página da conta.",
+      "missing": "Este baralho não está mais no Hub.",
+      "signin": "Entre para denunciar um baralho.",
+      "verify": "Confirme seu e-mail para denunciar um baralho.",
+      "offline": "Você está offline. Tente de novo quando estiver conectado.",
+      "failed": "A denúncia não foi enviada. Tente de novo."
+    }
   }
 };

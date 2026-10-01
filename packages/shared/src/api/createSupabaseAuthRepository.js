@@ -423,6 +423,35 @@ export const createSupabaseAuthRepository = () => {
 
       return resolveSessionWithUpdatedUser(client, data?.user || null);
     },
+    // The account and everything it keeps in the cloud, for good. The
+    // delete-account function checks who is asking and that they typed
+    // their email address; decks on this device stay where they are.
+    async deleteAccount(confirm) {
+      const client = ensureClient();
+      const { error } = await client.functions.invoke("delete-account", { body: { confirm } });
+
+      if (error) {
+        let reason = "";
+
+        try {
+          reason = String((await error.context?.json?.())?.error || "");
+        } catch {
+          reason = "";
+        }
+
+        throw authFailure({ code: reason === "confirm" ? "delete_confirm" : "delete_failed" }, "Failed to delete the account");
+      }
+
+      // The session belonged to a user who no longer exists; only this
+      // device has anything left to forget.
+      try {
+        await client.auth.signOut({ scope: "local" });
+      } catch {
+        // Nothing to sign out of.
+      }
+
+      return EMPTY_AUTH_SUMMARY;
+    },
     // Every session of this account ends, this one included.
     async signOutEverywhere() {
       const client = ensureClient();

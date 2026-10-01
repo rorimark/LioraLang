@@ -1112,7 +1112,8 @@ export default {
       "copy": "Kopírovat odkaz",
       "openNamed": "Otevřít {name} v hubu",
       "deleteNamed": "Smazat {name} z hubu",
-      "confirmDelete": "Smazat „{name}“ z hubu?"
+      "confirmDelete": "Smazat „{name}“ z hubu?",
+      "hidden": "Skrytý po nahlášení"
     },
     "learner": "Student",
     "sendAgain": "Poslat znovu",
@@ -1322,6 +1323,19 @@ export default {
         "one": "{count} zveřejněný",
         "few": "{count} zveřejněné",
         "other": "{count} zveřejněných"
+      }
+    },
+    "delete": {
+      "title": "Smazat účet",
+      "hint": "Smaže účet, synchronizované balíčky a pokrok i zveřejněné balíčky. Balíčky na tomto zařízení zůstanou.",
+      "open": "Smazat účet…",
+      "confirmLabel": "Pro potvrzení napište {email}",
+      "confirm": "Smazat natrvalo",
+      "cancel": "Zrušit",
+      "done": "Účet je smazaný. Balíčky na tomto zařízení zůstaly.",
+      "errors": {
+        "confirm": "Adresa neodpovídá adrese účtu. Nic nebylo smazáno.",
+        "failed": "Účet se nepodařilo smazat. Nic se neztratilo, zkuste to znovu."
       }
     }
   },
@@ -1854,5 +1868,32 @@ export default {
     "label": "Jak si to zapamatovat",
     "thinking": "Hledáme, jak si to zapamatovat…",
     "dismiss": "Skrýt nápovědu"
+  },
+  "hubReport": {
+    "open": "Nahlásit balíček",
+    "title": "Nahlášení „{name}“",
+    "description": "Napište, co je špatně. Balíček nahlášený několika lidmi se do kontroly skryje.",
+    "reasonLabel": "Co je špatně",
+    "reasons": {
+      "inappropriate": "Urážlivý obsah nebo obsah pro dospělé",
+      "spam": "Spam nebo reklama",
+      "copyright": "Zkopírováno bez svolení",
+      "wrong": "Většinou špatné překlady",
+      "other": "Něco jiného"
+    },
+    "noteLabel": "Podrobnosti (nepovinné)",
+    "notePlaceholder": "Na co se máme podívat?",
+    "send": "Odeslat nahlášení",
+    "close": "Zavřít",
+    "outcome": {
+      "sent": "Děkujeme. Nahlášení dorazilo, balíček zkontrolujeme.",
+      "hidden": "Děkujeme. Nahlásili ho i další, proto je do kontroly skrytý.",
+      "own": "Tohle je váš balíček. Změnit nebo odebrat ho můžete na stránce účtu.",
+      "missing": "Tento balíček už v Hubu není.",
+      "signin": "Přihlaste se, abyste mohli balíček nahlásit.",
+      "verify": "Potvrďte e-mailovou adresu, abyste mohli balíček nahlásit.",
+      "offline": "Jste offline. Zkuste to po připojení.",
+      "failed": "Nahlášení se neodeslalo. Zkuste to znovu."
+    }
   }
 };

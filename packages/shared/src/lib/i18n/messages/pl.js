@@ -1175,7 +1175,8 @@ export default {
       "copy": "Kopiuj link",
       "openNamed": "Otwórz „{name}” w hubie",
       "deleteNamed": "Usuń „{name}” z hubu",
-      "confirmDelete": "Usunąć „{name}” z hubu?"
+      "confirmDelete": "Usunąć „{name}” z hubu?",
+      "hidden": "Ukryta po zgłoszeniach"
     },
     "learner": "Uczeń",
     "sendAgain": "Wyślij ponownie",
@@ -1394,6 +1395,19 @@ export default {
         "few": "{count} opublikowane",
         "many": "{count} opublikowanych",
         "other": "{count} opublikowanej"
+      }
+    },
+    "delete": {
+      "title": "Usuń konto",
+      "hint": "Usuwa konto, synchronizowane talie i postępy oraz opublikowane talie. Talie na tym urządzeniu zostaną.",
+      "open": "Usuń konto…",
+      "confirmLabel": "Wpisz {email}, aby potwierdzić",
+      "confirm": "Usuń na zawsze",
+      "cancel": "Anuluj",
+      "done": "Konto zostało usunięte. Talie na tym urządzeniu zostały.",
+      "errors": {
+        "confirm": "Adres nie zgadza się z adresem konta. Nic nie usunięto.",
+        "failed": "Nie udało się usunąć konta. Nic nie przepadło, spróbuj ponownie."
       }
     }
   },
@@ -1934,5 +1948,32 @@ export default {
     "label": "Jak zapamiętać",
     "thinking": "Szukamy sposobu na zapamiętanie…",
     "dismiss": "Ukryj podpowiedź"
+  },
+  "hubReport": {
+    "open": "Zgłoś talię",
+    "title": "Zgłoszenie „{name}”",
+    "description": "Napisz, co jest nie tak. Talia zgłoszona przez kilka osób jest ukrywana do sprawdzenia.",
+    "reasonLabel": "Co jest nie tak",
+    "reasons": {
+      "inappropriate": "Treści obraźliwe lub dla dorosłych",
+      "spam": "Spam lub reklama",
+      "copyright": "Skopiowane bez zgody",
+      "wrong": "Głównie błędne tłumaczenia",
+      "other": "Coś innego"
+    },
+    "noteLabel": "Szczegóły (opcjonalnie)",
+    "notePlaceholder": "Na co mamy spojrzeć?",
+    "send": "Wyślij zgłoszenie",
+    "close": "Zamknij",
+    "outcome": {
+      "sent": "Dziękujemy. Zgłoszenie dotarło, talia zostanie sprawdzona.",
+      "hidden": "Dziękujemy. Inni też ją zgłosili, więc talia jest ukryta do sprawdzenia.",
+      "own": "To Twoja talia. Możesz ją zmienić lub usunąć na stronie konta.",
+      "missing": "Tej talii nie ma już w Hubie.",
+      "signin": "Zaloguj się, aby zgłosić talię.",
+      "verify": "Potwierdź adres e-mail, aby zgłosić talię.",
+      "offline": "Brak połączenia. Spróbuj, gdy będziesz online.",
+      "failed": "Zgłoszenie nie zostało wysłane. Spróbuj ponownie."
+    }
   }
 };

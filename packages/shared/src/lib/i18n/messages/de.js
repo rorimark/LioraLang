@@ -1035,7 +1035,8 @@ export default {
       "copy": "Link kopieren",
       "openNamed": "{name} im Hub öffnen",
       "deleteNamed": "{name} aus dem Hub löschen",
-      "confirmDelete": "„{name}“ aus dem Hub löschen?"
+      "confirmDelete": "„{name}“ aus dem Hub löschen?",
+      "hidden": "Nach Meldungen ausgeblendet"
     },
     "learner": "Lernende Person",
     "sendAgain": "Erneut senden",
@@ -1236,6 +1237,19 @@ export default {
       "hubCount": {
         "one": "{count} veröffentlicht",
         "other": "{count} veröffentlicht"
+      }
+    },
+    "delete": {
+      "title": "Konto löschen",
+      "hint": "Löscht dein Konto, synchronisierte Decks und Fortschritte sowie deine veröffentlichten Decks. Die Decks auf diesem Gerät bleiben.",
+      "open": "Konto löschen…",
+      "confirmLabel": "Gib {email} ein, um zu bestätigen",
+      "confirm": "Endgültig löschen",
+      "cancel": "Abbrechen",
+      "done": "Dein Konto ist gelöscht. Die Decks auf diesem Gerät sind noch da.",
+      "errors": {
+        "confirm": "Die Adresse passt nicht zu deinem Konto. Es wurde nichts gelöscht.",
+        "failed": "Das Konto konnte nicht gelöscht werden. Es ist nichts verloren, versuche es noch einmal."
       }
     }
   },
@@ -1754,5 +1768,32 @@ export default {
     "label": "So merkst du es dir",
     "thinking": "Suche eine Eselsbrücke…",
     "dismiss": "Hinweis ausblenden"
+  },
+  "hubReport": {
+    "open": "Deck melden",
+    "title": "„{name}“ melden",
+    "description": "Sag uns, was nicht stimmt. Ein Deck, das mehrere Leute melden, wird bis zur Prüfung ausgeblendet.",
+    "reasonLabel": "Was stimmt nicht",
+    "reasons": {
+      "inappropriate": "Anstößige Inhalte oder Inhalte für Erwachsene",
+      "spam": "Spam oder Werbung",
+      "copyright": "Ohne Erlaubnis kopiert",
+      "wrong": "Überwiegend falsche Übersetzungen",
+      "other": "Etwas anderes"
+    },
+    "noteLabel": "Details (optional)",
+    "notePlaceholder": "Worauf sollen wir schauen?",
+    "send": "Meldung senden",
+    "close": "Schließen",
+    "outcome": {
+      "sent": "Danke. Die Meldung ist angekommen, das Deck wird geprüft.",
+      "hidden": "Danke. Auch andere haben es gemeldet, deshalb ist das Deck bis zur Prüfung ausgeblendet.",
+      "own": "Das ist dein Deck. Ändern oder entfernen kannst du es auf der Kontoseite.",
+      "missing": "Dieses Deck ist nicht mehr im Hub.",
+      "signin": "Melde dich an, um ein Deck zu melden.",
+      "verify": "Bestätige deine E-Mail-Adresse, um ein Deck zu melden.",
+      "offline": "Du bist offline. Versuche es, sobald du verbunden bist.",
+      "failed": "Die Meldung ist nicht angekommen. Versuche es noch einmal."
+    }
   }
 };

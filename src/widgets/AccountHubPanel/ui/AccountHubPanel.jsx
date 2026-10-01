@@ -273,10 +273,13 @@ const HubDecksList = memo(({ panel }) => {
             key={deck.id}
             label={title}
             hint={[
+              deck.isHidden ? t("account.hub.hidden") : "",
               renderDeckVersion(deck, t),
               t("browse.wordsCount", { count: toCount(deck.wordsCount) }),
               t("account.hub.downloads", { count: toCount(deck.downloadsCount) }),
-            ].join(" · ")}
+            ]
+              .filter(Boolean)
+              .join(" · ")}
             control={
               <div className="account__row-actions">
                 <Button
@@ -514,9 +517,67 @@ const SecurityTab = memo(({ panel }) => {
           </Button>
         }
       />
+      <DeleteAccountRow panel={panel} />
     </SettingGroup>
   );
 });
+
+// The last row of Security: what goes and what stays, then the email
+// address typed in full before the button does anything.
+const DeleteAccountRow = memo(({ panel }) => {
+  const { t } = useI18n();
+  const confirmId = useId();
+
+  return (
+    <SettingRow
+      wide={panel.isDeleteOpen}
+      label={t("account.delete.title")}
+      hint={t("account.delete.hint")}
+      control={
+        panel.isDeleteOpen ? (
+          <form
+            className="account__delete"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void panel.handleDeleteAccount();
+            }}
+          >
+            <label className="account__field" htmlFor={confirmId}>
+              <span>{t("account.delete.confirmLabel", { email: panel.authState.email })}</span>
+              <TextInput
+                id={confirmId}
+                type="email"
+                value={panel.deleteConfirm}
+                onChange={(event) => panel.setDeleteConfirm(event.target.value)}
+                autoComplete="off"
+                spellCheck={false}
+              />
+            </label>
+            <div className="account__form-actions">
+              <Button
+                variant="danger"
+                type="submit"
+                disabled={!panel.canDelete}
+                isLoading={panel.pendingAction === "delete-account"}
+              >
+                {t("account.delete.confirm")}
+              </Button>
+              <button type="button" className="account__text-link" onClick={panel.toggleDelete}>
+                {t("account.delete.cancel")}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <Button variant="secondary" size="sm" type="button" className="account__delete-open" onClick={panel.toggleDelete}>
+            {t("account.delete.open")}
+          </Button>
+        )
+      }
+    />
+  );
+});
+
+DeleteAccountRow.displayName = "DeleteAccountRow";
 
 SecurityTab.displayName = "SecurityTab";
 

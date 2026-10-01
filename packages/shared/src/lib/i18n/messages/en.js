@@ -1035,7 +1035,8 @@ export default {
       "copy": "Copy link",
       "openNamed": "Open {name} in the Hub",
       "deleteNamed": "Delete {name} from the Hub",
-      "confirmDelete": "Delete “{name}” from the Hub?"
+      "confirmDelete": "Delete “{name}” from the Hub?",
+      "hidden": "Hidden after reports"
     },
     "learner": "Learner",
     "sendAgain": "Send again",
@@ -1236,6 +1237,19 @@ export default {
       "hubCount": {
         "one": "{count} published",
         "other": "{count} published"
+      }
+    },
+    "delete": {
+      "title": "Delete account",
+      "hint": "Removes your account, your synced decks and progress, and the decks you published. Decks on this device stay.",
+      "open": "Delete account…",
+      "confirmLabel": "Type {email} to confirm",
+      "confirm": "Delete for good",
+      "cancel": "Cancel",
+      "done": "Your account is deleted. Decks on this device are still here.",
+      "errors": {
+        "confirm": "The address does not match your account. Nothing was deleted.",
+        "failed": "Could not delete the account. Nothing was lost; try again."
       }
     }
   },
@@ -1754,5 +1768,32 @@ export default {
     "label": "How to remember",
     "thinking": "Finding a way to remember…",
     "dismiss": "Hide hint"
+  },
+  "hubReport": {
+    "open": "Report this deck",
+    "title": "Report “{name}”",
+    "description": "Tell us what is wrong. A deck reported by several people is hidden until it is checked.",
+    "reasonLabel": "What is wrong",
+    "reasons": {
+      "inappropriate": "Offensive or adult content",
+      "spam": "Spam or advertising",
+      "copyright": "Copied without permission",
+      "wrong": "Mostly wrong translations",
+      "other": "Something else"
+    },
+    "noteLabel": "Details (optional)",
+    "notePlaceholder": "What should we look at?",
+    "send": "Send report",
+    "close": "Close",
+    "outcome": {
+      "sent": "Thank you. The report is in, and the deck will be checked.",
+      "hidden": "Thank you. Other people reported it too, so the deck is hidden until it is checked.",
+      "own": "This is your deck. You can change or remove it on the Account page.",
+      "missing": "This deck is no longer in the Hub.",
+      "signin": "Sign in to report a deck.",
+      "verify": "Confirm your email address to report a deck.",
+      "offline": "You are offline. Try again when you are connected.",
+      "failed": "The report did not go through. Try again."
+    }
   }
 };

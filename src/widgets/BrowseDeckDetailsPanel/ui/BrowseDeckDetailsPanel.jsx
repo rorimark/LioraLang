@@ -2,6 +2,7 @@ import { memo, useMemo } from "react";
 import { FiArrowLeft, FiFilter, FiLink } from "react-icons/fi";
 import { DeckLanguagePair, HubDeckAction, normalizeHubTags, useHubLibraryIndex } from "@entities/deck";
 import { WordsTable } from "@entities/word";
+import { ReportDeckButton } from "@features/hub-report";
 import {
   CardCatalogFilters,
   CardCatalogPagination,
@@ -174,6 +175,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
               >
                 <FiLink aria-hidden="true" />
               </Button>
+              <ReportDeckButton deckId={panel.deck.id} deckTitle={panel.deck.title} />
               <HubDeckAction
                 deck={panel.deck}
                 localDeckId={library.get(String(panel.deck.id))}

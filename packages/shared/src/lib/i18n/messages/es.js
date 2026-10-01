@@ -1105,7 +1105,8 @@ export default {
       "copy": "Copiar enlace",
       "openNamed": "Abrir {name} en el hub",
       "deleteNamed": "Eliminar {name} del hub",
-      "confirmDelete": "¿Eliminar «{name}» del hub?"
+      "confirmDelete": "¿Eliminar «{name}» del hub?",
+      "hidden": "Oculto tras denuncias"
     },
     "learner": "Estudiante",
     "sendAgain": "Volver a enviar",
@@ -1315,6 +1316,19 @@ export default {
         "one": "{count} publicado",
         "many": "{count} publicados",
         "other": "{count} publicados"
+      }
+    },
+    "delete": {
+      "title": "Eliminar cuenta",
+      "hint": "Elimina tu cuenta, los mazos y el progreso sincronizados y los mazos que publicaste. Los mazos de este dispositivo se quedan.",
+      "open": "Eliminar cuenta…",
+      "confirmLabel": "Escribe {email} para confirmar",
+      "confirm": "Eliminar para siempre",
+      "cancel": "Cancelar",
+      "done": "Tu cuenta se ha eliminado. Los mazos de este dispositivo siguen aquí.",
+      "errors": {
+        "confirm": "La dirección no coincide con la de tu cuenta. No se eliminó nada.",
+        "failed": "No se pudo eliminar la cuenta. No se perdió nada; inténtalo de nuevo."
       }
     }
   },
@@ -1844,5 +1858,32 @@ export default {
     "label": "Cómo recordarla",
     "thinking": "Buscando cómo recordarla…",
     "dismiss": "Ocultar pista"
+  },
+  "hubReport": {
+    "open": "Denunciar este mazo",
+    "title": "Denunciar «{name}»",
+    "description": "Cuéntanos qué está mal. Un mazo denunciado por varias personas se oculta hasta que se revise.",
+    "reasonLabel": "Qué está mal",
+    "reasons": {
+      "inappropriate": "Contenido ofensivo o para adultos",
+      "spam": "Spam o publicidad",
+      "copyright": "Copiado sin permiso",
+      "wrong": "Traducciones mayormente erróneas",
+      "other": "Otra cosa"
+    },
+    "noteLabel": "Detalles (opcional)",
+    "notePlaceholder": "¿Qué deberíamos revisar?",
+    "send": "Enviar denuncia",
+    "close": "Cerrar",
+    "outcome": {
+      "sent": "Gracias. La denuncia ha llegado y el mazo se revisará.",
+      "hidden": "Gracias. Otras personas también lo denunciaron, así que el mazo está oculto hasta que se revise.",
+      "own": "Este es tu mazo. Puedes cambiarlo o quitarlo en la página de tu cuenta.",
+      "missing": "Este mazo ya no está en el Hub.",
+      "signin": "Inicia sesión para denunciar un mazo.",
+      "verify": "Confirma tu correo electrónico para denunciar un mazo.",
+      "offline": "No tienes conexión. Inténtalo cuando vuelvas a estar en línea.",
+      "failed": "La denuncia no se envió. Inténtalo de nuevo."
+    }
   }
 };
