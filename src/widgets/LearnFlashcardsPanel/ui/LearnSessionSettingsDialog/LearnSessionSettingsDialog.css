@@ -3,6 +3,9 @@
   inset: 0;
   z-index: 1250;
   display: grid;
+  /* One column no wider than the screen: with an auto column the sheet
+     sized itself to its widest line and ran off a phone's edge. */
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
 }
@@ -17,10 +20,13 @@
 
 .learn-session-dialog__content {
   position: relative;
+  box-sizing: border-box;
   width: min(900px, 100%);
+  max-width: 100%;
   max-height: 100%;
   min-height: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
   border: 2px solid var(--color-border);
