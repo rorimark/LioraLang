@@ -62,6 +62,12 @@ export const DeckEditorDeckSection = memo(() => {
   } = useDeckEditorPanelContext();
   const { t, languageName } = useI18n();
   const levelsId = useId();
+  const sideLanguages = new Set(
+    [
+      deckForm.pictureSide === "source" ? "" : deckForm.sourceLanguage,
+      deckForm.pictureSide === "target" ? "" : deckForm.targetLanguage,
+    ].filter(Boolean),
+  );
 
   return (
     <section className="deck-editor__deck" aria-label={t("editor.settings")}>
@@ -144,7 +150,8 @@ export const DeckEditorDeckSection = memo(() => {
           </span>
           <Select name="tertiaryLanguage" value={deckForm.tertiaryLanguage} onChange={handleDeckFormChange} label={t("editor.sides.extra")}>
             <option value="">{t("common.none")}</option>
-            {languageOptions.map((language) => (
+            {/* A language already on a side is not offered again. */}
+            {languageOptions.filter((language) => !sideLanguages.has(language)).map((language) => (
               <option key={language} value={language}>
                 {languageName(language)}
               </option>

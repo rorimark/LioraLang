@@ -42,12 +42,13 @@ export const WordSideFields = memo(({
   pictureSide,
   frontLabel,
   backLabel,
+  tertiaryLabel = "",
   autoFocus = false,
 }) => {
   const { t } = useI18n();
 
   return (
-    <div className="deck-word-fields__sides">
+    <div className={`deck-word-fields__sides${tertiaryLabel ? " deck-word-fields__sides--three" : ""}`}>
       <SideInput
         side="source"
         label={frontLabel}
@@ -70,6 +71,23 @@ export const WordSideFields = memo(({
         autoFocus={autoFocus && pictureSide === "source"}
         placeholder={t(pictureSide === "source" ? "editor.wordPlaceholder" : "editor.translationPlaceholder")}
       />
+      {/* The deck's extra language sits beside the two sides: it is part of
+          every word, shown on the back of the card with the translation. */}
+      {tertiaryLabel ? (
+        <label className="deck-word-fields__side">
+          <span className="deck-word-fields__label">{tertiaryLabel}</span>
+          <input
+            type="text"
+            name="tertiary"
+            value={draft.tertiary}
+            onChange={onChange}
+            placeholder={t("editor.optionalPlaceholder")}
+            autoComplete="off"
+            autoCapitalize="off"
+            spellCheck="false"
+          />
+        </label>
+      ) : null}
     </div>
   );
 });
@@ -79,8 +97,6 @@ WordSideFields.displayName = "WordSideFields";
 export const WordDetailFields = memo(({
   draft,
   onChange,
-  hasTertiary,
-  tertiaryLabel,
   usesWordLevels,
   levelOptions,
   partOfSpeechOptions,
@@ -89,19 +105,6 @@ export const WordDetailFields = memo(({
 
   return (
     <div className="deck-word-fields__details">
-      {hasTertiary ? (
-        <label className="deck-word-fields__field">
-          <span className="deck-word-fields__label">{tertiaryLabel}</span>
-          <input
-            type="text"
-            name="tertiary"
-            value={draft.tertiary}
-            onChange={onChange}
-            placeholder={t("editor.optionalPlaceholder")}
-            autoComplete="off"
-          />
-        </label>
-      ) : null}
 
       {usesWordLevels ? (
         <label className="deck-word-fields__field deck-word-fields__field--short">

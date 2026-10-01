@@ -613,6 +613,10 @@
   gap: 10px;
 }
 
+.deck-word-fields__sides--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .deck-word-fields__side,
 .deck-word-fields__field {
   display: grid;
@@ -641,8 +645,15 @@
   grid-column: 1 / -1;
 }
 
+@container (max-width: 640px) {
+  .deck-word-fields__sides--three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @container (max-width: 440px) {
   .deck-word-fields__sides,
+  .deck-word-fields__sides--three,
   .deck-word-fields__details {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -796,6 +807,14 @@
 
 .deck-word__side--back .deck-word__text {
   font-weight: 500;
+}
+
+.deck-word__tertiary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
 }
 
 .deck-word__meta {

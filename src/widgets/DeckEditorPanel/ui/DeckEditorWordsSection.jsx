@@ -71,6 +71,7 @@ const WordComposer = memo(({ labels }) => {
           pictureSide={pictureSide}
           frontLabel={labels.front}
           backLabel={labels.back}
+          tertiaryLabel={hasTertiary ? labels.tertiary : ""}
           autoFocus={autoFocus}
         />
         <button type="submit" className="deck-composer__add">
@@ -104,8 +105,6 @@ const WordComposer = memo(({ labels }) => {
           <WordDetailFields
             draft={addDraft}
             onChange={handleAddDraftChange}
-            hasTertiary={hasTertiary}
-            tertiaryLabel={labels.tertiary}
             usesWordLevels={deckForm.usesWordLevels}
             levelOptions={levelOptions}
             partOfSpeechOptions={partOfSpeechOptions}
@@ -169,12 +168,11 @@ const WordEditor = memo(({ word, labels }) => {
         pictureSide={pictureSide}
         frontLabel={labels.front}
         backLabel={labels.back}
+        tertiaryLabel={hasTertiary ? labels.tertiary : ""}
       />
       <WordDetailFields
         draft={editDraft}
         onChange={handleEditDraftChange}
-        hasTertiary={hasTertiary}
-        tertiaryLabel={labels.tertiary}
         usesWordLevels={deckForm.usesWordLevels}
         levelOptions={levelOptions}
         partOfSpeechOptions={partOfSpeechOptions}
@@ -218,7 +216,7 @@ const WordRow = memo(({ word, labels, pictureSide, isEditing, onEdit, onDelete }
     );
   }
 
-  const meta = [word.level, word.part_of_speech && partOfSpeechName(word.part_of_speech), word.tertiary]
+  const meta = [word.level, word.part_of_speech && partOfSpeechName(word.part_of_speech)]
     .filter(Boolean)
     .join(" · ");
 
@@ -243,6 +241,9 @@ const WordRow = memo(({ word, labels, pictureSide, isEditing, onEdit, onDelete }
           ) : (
             <span className="deck-word__text">{word.target}</span>
           )}
+          {labels.tertiary && word.tertiary ? (
+            <span className="deck-word__tertiary">{word.tertiary}</span>
+          ) : null}
           {meta ? <span className="deck-word__meta">{meta}</span> : null}
         </span>
       </button>
