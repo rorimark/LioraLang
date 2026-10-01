@@ -6,6 +6,7 @@ import { ROUTE_PATHS } from "@shared/config/routes";
 import { copyTextToClipboard } from "@shared/lib/clipboard";
 import { buildPublicDeckShareUrl } from "@shared/lib/share";
 import { useI18n } from "@shared/lib/i18n";
+import { hubDeckSides } from "@shared/core/usecases/hub";
 
 // Twelve fills two, three or four columns without a gap.
 const BROWSE_PAGE_SIZE = 12;
@@ -282,19 +283,12 @@ export const useBrowseDecksPanel = () => {
 
     try {
       const downloadUrl = await hubRepository.createDownloadUrl(filePath);
-      const targetLanguages = Array.isArray(deck.targetLanguages)
-        ? deck.targetLanguages
-        : [];
-      const targetLanguage = targetLanguages[0] || "";
-      const tertiaryLanguage = targetLanguages[1] || "";
       const fileName = filePath.split("/").pop() || filePath;
       const result = await deckRepository.importDeckFromUrl({
         downloadUrl,
         fileName,
         deckName: deck.title || "",
-        sourceLanguage: deck.sourceLanguage || "",
-        targetLanguage,
-        tertiaryLanguage,
+        ...hubDeckSides(deck),
         originKind: "hub",
         originRef: deck.id,
         settings: {

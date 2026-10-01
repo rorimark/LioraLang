@@ -13,6 +13,7 @@ import {
 } from "@shared/core/usecases/importExport";
 import { useCardCatalog } from "@features/card-catalog";
 import { useI18n } from "@shared/lib/i18n";
+import { hubDeckSides } from "@shared/core/usecases/hub";
 
 const FILTERS_BREAKPOINT = 1450;
 const EMPTY_IMAGE_SOURCES = new Map();
@@ -255,13 +256,7 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
         const importConfig = resolveImportConfig({
           payload: {
             deckName: deck.title || "",
-            sourceLanguage: deck.sourceLanguage || "",
-            targetLanguage: Array.isArray(deck.targetLanguages)
-              ? deck.targetLanguages[0]
-              : "",
-            tertiaryLanguage: Array.isArray(deck.targetLanguages)
-              ? deck.targetLanguages[1]
-              : "",
+            ...hubDeckSides(deck),
             settings: {
               includeTags: true,
               includeExamples: true,
@@ -400,19 +395,12 @@ export const useBrowseDeckDetailsPanel = (deckSlug) => {
 
     try {
       const downloadUrl = await hubRepository.createDownloadUrl(filePath);
-      const targetLanguages = Array.isArray(deck.targetLanguages)
-        ? deck.targetLanguages
-        : [];
-      const targetLanguage = targetLanguages[0] || "";
-      const tertiaryLanguage = targetLanguages[1] || "";
       const fileName = filePath.split("/").pop() || filePath;
       const result = await deckRepository.importDeckFromUrl({
         downloadUrl,
         fileName,
         deckName: deck.title || "",
-        sourceLanguage: deck.sourceLanguage || "",
-        targetLanguage,
-        tertiaryLanguage,
+        ...hubDeckSides(deck),
         originKind: "hub",
         originRef: deck.id,
         settings: {

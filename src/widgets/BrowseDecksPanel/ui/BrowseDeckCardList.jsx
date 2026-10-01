@@ -57,7 +57,7 @@ export const BrowseDeckCardList = memo(({ deckList = EMPTY_OBJECT }) => {
               <h3 className="hub-card__title">
                 {deckLink ? <Link to={deckLink}>{title}</Link> : title}
               </h3>
-              <DeckLanguagePair source={deck?.sourceLanguage} targets={deck?.targetLanguages} />
+              <DeckLanguagePair source={deck?.sourceLanguage} targets={deck?.targetLanguages} pictureSide={deck?.pictureSide} />
             </header>
 
             {description ? <p className="hub-card__description">{description}</p> : null}

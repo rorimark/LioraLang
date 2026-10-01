@@ -1,3 +1,5 @@
+import { normalizePictureSide, PICTURE_SIDES } from "../cardContent/index.js";
+
 const HUB_DOWNLOADS_RPC_NAME = "increment_hub_deck_downloads";
 
 const toCleanString = (value) => {
@@ -154,6 +156,7 @@ const toHubDeck = (deck, latestVersion, normalizeTextArray) => {
     description: toCleanString(deck?.description),
     sourceLanguage: toCleanString(deck?.source_language),
     targetLanguages,
+    pictureSide: normalizePictureSide(deck?.picture_side),
     languages: uniqueLanguages,
     tags: normalizeTextArray(deck?.tags),
     wordsCount: Number.isFinite(Number(deck?.words_count)) ? Number(deck.words_count) : 0,
@@ -187,4 +190,20 @@ export {
   toCleanString,
   toCountNumber,
   toHubDeck,
+};
+
+// The sides of a Hub deck as a deck in the library has them. The Hub keeps
+// only the languages of the sides that are words, so with pictures on the
+// back its first listed language is the extra one, not the back.
+export const hubDeckSides = (deck = {}) => {
+  const pictureSide = normalizePictureSide(deck?.pictureSide);
+  const languages = (Array.isArray(deck?.targetLanguages) ? deck.targetLanguages : []).map(toCleanString);
+
+  // Without pictures the package has the last word on its sides.
+  return {
+    ...(pictureSide ? { pictureSide } : {}),
+    sourceLanguage: pictureSide === PICTURE_SIDES.source ? "" : toCleanString(deck?.sourceLanguage),
+    targetLanguage: pictureSide === PICTURE_SIDES.target ? "" : languages[0] || "",
+    tertiaryLanguage: (pictureSide === PICTURE_SIDES.target ? languages[0] : languages[1]) || "",
+  };
 };

@@ -315,8 +315,7 @@ export default {
       "delete": "Could not delete the deck.",
       "notFound": "This deck no longer exists.",
       "load": "Could not load your decks.",
-      "loadWords": "Could not load the words of this deck.",
-      "publishPictures": "Decks with a picture side can’t go to the Hub yet. They stay on your devices and in sync."
+      "loadWords": "Could not load the words of this deck."
     },
     "table": {
       "label": "Decks",

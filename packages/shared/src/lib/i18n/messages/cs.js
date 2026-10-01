@@ -320,8 +320,7 @@ export default {
       "delete": "Balíček nešlo smazat.",
       "notFound": "Tento balíček už neexistuje.",
       "load": "Vaše balíčky nešlo načíst.",
-      "loadWords": "Slova tohoto balíčku nešlo načíst.",
-      "publishPictures": "Balíčky s obrázkovou stranou zatím nejde zveřejnit v Hubu. Zůstávají ve vašich zařízeních a v synchronizaci."
+      "loadWords": "Slova tohoto balíčku nešlo načíst."
     },
     "table": {
       "label": "Balíčky",

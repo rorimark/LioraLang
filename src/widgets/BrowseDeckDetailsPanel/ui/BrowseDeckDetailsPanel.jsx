@@ -158,7 +158,11 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
           <header className="hub-hero__head">
             <div className="hub-hero__titles">
               <h2>{panel.deck.title || t("browse.untitled")}</h2>
-              <DeckLanguagePair source={panel.deck.sourceLanguage} targets={panel.deck.targetLanguages} />
+              <DeckLanguagePair
+                source={panel.deck.sourceLanguage}
+                targets={panel.deck.targetLanguages}
+                pictureSide={panel.deck.pictureSide}
+              />
             </div>
             <div className="hub-hero__actions">
               <Button

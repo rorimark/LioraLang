@@ -320,8 +320,7 @@ export default {
       "delete": "Le paquet n'a pas pu être supprimé.",
       "notFound": "Ce paquet n'existe plus.",
       "load": "Vos paquets n'ont pas pu être chargés.",
-      "loadWords": "Les mots de ce paquet n'ont pas pu être chargés.",
-      "publishPictures": "Les paquets avec un côté en images ne peuvent pas encore aller sur le Hub. Ils restent sur vos appareils et dans la synchronisation."
+      "loadWords": "Les mots de ce paquet n'ont pas pu être chargés."
     },
     "table": {
       "label": "Paquets",

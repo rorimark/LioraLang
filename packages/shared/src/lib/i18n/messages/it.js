@@ -320,8 +320,7 @@ export default {
       "delete": "Non è stato possibile eliminare il mazzo.",
       "notFound": "Questo mazzo non esiste più.",
       "load": "Non è stato possibile caricare i tuoi mazzi.",
-      "loadWords": "Non è stato possibile caricare le parole di questo mazzo.",
-      "publishPictures": "I mazzi con un lato di immagini non possono ancora andare nell’Hub. Restano sui tuoi dispositivi e nella sincronizzazione."
+      "loadWords": "Non è stato possibile caricare le parole di questo mazzo."
     },
     "table": {
       "label": "Mazzi",

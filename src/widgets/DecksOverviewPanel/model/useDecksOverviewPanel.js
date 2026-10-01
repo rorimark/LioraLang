@@ -258,13 +258,6 @@ export const useDecksOverviewPanel = () => {
       return;
     }
 
-    // The Hub lists decks by their languages and cannot yet say that a
-    // side is pictures, so a picture deck stays on devices and in sync.
-    if (deck.pictureSide) {
-      reportMessage(t("decks.errors.publishPictures"), "warning");
-      return;
-    }
-
     setPublishingDeckId(normalizedDeckId);
 
     try {

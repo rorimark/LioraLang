@@ -136,7 +136,7 @@ export const hubDecksApi = {
     let decksQuery = supabase
       .from("hub_decks")
       .select(
-        "id,slug,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,picture_side,tags,words_count,downloads_count,created_at",
         { count: "exact" },
       )
       .eq("is_published", true)
@@ -214,7 +214,7 @@ export const hubDecksApi = {
     const { data: deck, error: deckError } = await supabase
       .from("hub_decks")
       .select(
-        "id,slug,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,picture_side,tags,words_count,downloads_count,created_at",
       )
       .eq("slug", normalizedSlug)
       .eq("is_published", true)
@@ -247,7 +247,7 @@ export const hubDecksApi = {
     const { data: decks, error: decksError } = await supabase
       .from("hub_decks")
       .select(
-        "id,slug,title,description,source_language,target_languages,tags,words_count,downloads_count,created_at",
+        "id,slug,title,description,source_language,target_languages,picture_side,tags,words_count,downloads_count,created_at",
       )
       .eq("owner_id", user.id)
       .order("created_at", { ascending: false })
@@ -421,6 +421,7 @@ export const hubDecksApi = {
           description: publishableDeck.description,
           source_language: publishableDeck.sourceLanguage,
           target_languages: publishableDeck.targetLanguages,
+          picture_side: publishableDeck.pictureSide,
           tags: publishableDeck.tags,
           words_count: normalizedWordsCount,
           is_published: true,
@@ -440,6 +441,7 @@ export const hubDecksApi = {
           description: publishableDeck.description,
           source_language: publishableDeck.sourceLanguage,
           target_languages: publishableDeck.targetLanguages,
+          picture_side: publishableDeck.pictureSide,
           tags: publishableDeck.tags,
           words_count: normalizedWordsCount,
           is_published: true,

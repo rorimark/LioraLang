@@ -320,8 +320,7 @@ export default {
       "delete": "Não foi possível excluir o baralho.",
       "notFound": "Este baralho não existe mais.",
       "load": "Não foi possível carregar seus baralhos.",
-      "loadWords": "Não foi possível carregar as palavras deste baralho.",
-      "publishPictures": "Baralhos com um lado de imagens ainda não podem ir para o Hub. Ficam nos seus dispositivos e na sincronização."
+      "loadWords": "Não foi possível carregar as palavras deste baralho."
     },
     "table": {
       "label": "Baralhos",

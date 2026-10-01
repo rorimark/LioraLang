@@ -1,3 +1,5 @@
+import { normalizePictureSide, PICTURE_SIDES } from "../cardContent/index.js";
+
 const MAX_DECK_TAGS = 10;
 const MAX_TARGET_LANGUAGES = 2;
 const MAX_TITLE_LENGTH = 120;
@@ -68,10 +70,15 @@ const normalizeTargetLanguages = (value, sourceLanguage = "") => {
     .slice(0, MAX_TARGET_LANGUAGES);
 };
 
+// A picture side has no language: the Hub records which side it is and
+// lists only the languages of the sides that are words.
 const toPublishableDeck = (value = {}) => {
   const title = toCleanString(value?.name || value?.title).slice(0, MAX_TITLE_LENGTH);
-  const sourceLanguage = toCleanString(value?.sourceLanguage).slice(0, 64);
-  const targetLanguage = toCleanString(value?.targetLanguage).slice(0, 64);
+  const pictureSide = normalizePictureSide(value?.pictureSide);
+  const sourceLanguage =
+    pictureSide === PICTURE_SIDES.source ? "" : toCleanString(value?.sourceLanguage).slice(0, 64);
+  const targetLanguage =
+    pictureSide === PICTURE_SIDES.target ? "" : toCleanString(value?.targetLanguage).slice(0, 64);
   const tertiaryLanguage = toCleanString(value?.tertiaryLanguage).slice(0, 64);
   const targetLanguages = normalizeTargetLanguages(
     [targetLanguage, tertiaryLanguage],
@@ -84,6 +91,7 @@ const toPublishableDeck = (value = {}) => {
     description: toCleanString(value?.description).slice(0, MAX_DESCRIPTION_LENGTH),
     sourceLanguage,
     targetLanguages,
+    pictureSide,
     targetLanguageKeys: targetLanguages.map(toLanguageKey),
     tags: parseTags(value?.tags ?? value?.tagsJson),
     wordsCount: Number.isFinite(Number(value?.wordsCount))
@@ -97,11 +105,15 @@ const validatePublishableDeck = (publishableDeck) => {
     throw new Error("Deck title is required for publish");
   }
 
-  if (!publishableDeck?.sourceLanguage) {
+  const pictureSide = publishableDeck?.pictureSide || "";
+
+  if (!publishableDeck?.sourceLanguage && pictureSide !== PICTURE_SIDES.source) {
     throw new Error("Deck source language is required for publish");
   }
 
-  if (!Array.isArray(publishableDeck?.targetLanguages) || publishableDeck.targetLanguages.length === 0) {
+  const hasTargets = Array.isArray(publishableDeck?.targetLanguages) && publishableDeck.targetLanguages.length > 0;
+
+  if (!hasTargets && pictureSide !== PICTURE_SIDES.target) {
     throw new Error("Deck target language is required for publish");
   }
 };

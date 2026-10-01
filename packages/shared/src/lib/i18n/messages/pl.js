@@ -325,8 +325,7 @@ export default {
       "delete": "Nie udało się usunąć talii.",
       "notFound": "Ta talia już nie istnieje.",
       "load": "Nie udało się wczytać twoich talii.",
-      "loadWords": "Nie udało się wczytać słów tej talii.",
-      "publishPictures": "Talii z obrazkami po jednej stronie nie można jeszcze opublikować w Hubie. Zostają na Twoich urządzeniach i w synchronizacji."
+      "loadWords": "Nie udało się wczytać słów tej talii."
     },
     "table": {
       "label": "Talie",

@@ -17,4 +17,5 @@ export {
   toCleanString,
   toCountNumber,
   toHubDeck,
+  hubDeckSides,
 } from "./deckRecord.js";

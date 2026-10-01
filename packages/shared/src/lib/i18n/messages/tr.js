@@ -315,8 +315,7 @@ export default {
       "delete": "Deste silinemedi.",
       "notFound": "Bu deste artık yok.",
       "load": "Destelerin yüklenemedi.",
-      "loadWords": "Bu destenin kelimeleri yüklenemedi.",
-      "publishPictures": "Bir tarafı resim olan desteler henüz Hub’a gönderilemez. Cihazlarınızda ve eşitlemede kalırlar."
+      "loadWords": "Bu destenin kelimeleri yüklenemedi."
     },
     "table": {
       "label": "Desteler",

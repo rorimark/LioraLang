@@ -320,8 +320,7 @@ export default {
       "delete": "No se ha podido eliminar el mazo.",
       "notFound": "Este mazo ya no existe.",
       "load": "No se han podido cargar tus mazos.",
-      "loadWords": "No se han podido cargar las palabras de este mazo.",
-      "publishPictures": "Los mazos con un lado de imágenes aún no pueden ir al Hub. Se quedan en tus dispositivos y en la sincronización."
+      "loadWords": "No se han podido cargar las palabras de este mazo."
     },
     "table": {
       "label": "Mazos",
