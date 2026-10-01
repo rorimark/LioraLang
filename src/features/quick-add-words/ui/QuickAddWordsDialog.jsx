@@ -129,10 +129,10 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
   const suggestDraft = useMemo(() => ({ ...model.draft, ...model.details }), [model.draft, model.details]);
   // The languages are rebuilt on every render; their values are what count.
   const { sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide } = languages;
-  const { usesWordLevels } = model;
+  const { usesWordLevels, deckTags } = model;
   const suggestDeck = useMemo(
-    () => ({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide, usesWordLevels }),
-    [pictureSide, sourceLanguage, targetLanguage, tertiaryLanguage, usesWordLevels],
+    () => ({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide, usesWordLevels, tags: deckTags }),
+    [deckTags, pictureSide, sourceLanguage, targetLanguage, tertiaryLanguage, usesWordLevels],
   );
   const suggest = useWordSuggestion({ draft: suggestDraft, deck: suggestDeck, onFill: model.applySuggestion });
   const summary = useSuggestionSummary(suggest);
@@ -292,13 +292,15 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
           ) : null}
           <label className="quick-add__field quick-add__field--wide">
             <span>{t("editor.wordTags")}</span>
-            <input
-              name="tagsInput"
-              value={model.details.tagsInput}
-              onChange={model.handleDetailsChange}
-              placeholder={t("editor.wordTagsPlaceholder")}
-              autoComplete="off"
-            />
+            <SuggestField field="tagsInput" suggest={suggest}>
+              <input
+                name="tagsInput"
+                value={model.details.tagsInput}
+                onChange={model.handleDetailsChange}
+                placeholder={t("editor.wordTagsPlaceholder")}
+                autoComplete="off"
+              />
+            </SuggestField>
           </label>
           <p className="quick-add__hint">{t("quickAdd.tagsKept")}</p>
         </div>

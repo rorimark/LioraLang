@@ -166,14 +166,16 @@ export const WordDetailFields = memo(({
 
       <label className="deck-word-fields__field deck-word-fields__field--wide">
         <span className="deck-word-fields__label">{t("editor.wordTags")}</span>
-        <input
-          type="text"
-          name="tagsInput"
-          value={draft.tagsInput}
-          onChange={onChange}
-          placeholder={t("editor.wordTagsPlaceholder")}
-          autoComplete="off"
-        />
+        <SuggestField field="tagsInput" suggest={suggest}>
+          <input
+            type="text"
+            name="tagsInput"
+            value={draft.tagsInput}
+            onChange={onChange}
+            placeholder={t("editor.wordTagsPlaceholder")}
+            autoComplete="off"
+          />
+        </SuggestField>
       </label>
     </div>
   );

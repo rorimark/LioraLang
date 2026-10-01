@@ -87,6 +87,23 @@ describe("useWordSuggestion", () => {
     expect(onFill).toHaveBeenCalledWith({ source: "receive" });
   });
 
+  it("confirms the default level and adds tags, once", async () => {
+    suggestWord.mockResolvedValue({ target: "chleb", level: "A1", partOfSpeech: "noun", tags: ["food"] });
+    const { result, onFill, rerender } = await render({ ...empty, source: `bread${word}`, tagsInput: "" });
+
+    await waitFor(() => expect(result.current.hasFills).toBe(true), { timeout: 2000 });
+    expect(result.current.fills).toEqual({ target: "chleb", level: "A1", part_of_speech: "noun", tagsInput: "food" });
+
+    act(() => {
+      result.current.acceptAll();
+    });
+    rerender({ draft: { ...empty, source: `bread${word}`, target: "chleb", level: "A1", part_of_speech: "noun", tagsInput: "food" } });
+
+    expect(onFill).toHaveBeenCalledTimes(1);
+    expect(result.current.hasFills).toBe(false);
+    expect([...result.current.suggestedFields].sort()).toEqual(["level", "part_of_speech", "tagsInput", "target"]);
+  });
+
   it("asks a busy service again for the same word", async () => {
     suggestWord
       .mockRejectedValueOnce(Object.assign(new Error("busy"), { code: "busy" }))

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { useI18n } from "@shared/lib/i18n";
 import {
   SUGGEST_FIELDS,
   buildSuggestionRequest,
@@ -53,21 +54,36 @@ const clean = (value) => (typeof value === "string" ? value.trim() : "");
 const EMPTY_SET = new Set();
 
 // Fields a suggestion could still add something to: the other side, the
-// extra language, the examples. With all of them written there is nothing
-// worth a request.
-const hasRoomForSuggestion = (draft, deck, anchor) => {
+// extra language, the examples, an unset level or part of speech, tags.
+// With all of them written there is nothing worth a request.
+const hasRoomForSuggestion = (draft, deck, anchor, defaults) => {
   if (!anchor) {
     return false;
   }
 
   const otherSide = anchor.side === "source" ? "target" : "source";
   const otherSideIsText = deck?.pictureSide !== otherSide;
+  const tags = clean(draft?.tagsInput);
 
   return (
     (otherSideIsText && !clean(draft?.[otherSide])) ||
     (Boolean(clean(deck?.tertiaryLanguage)) && !clean(draft?.tertiary)) ||
-    !clean(draft?.examplesInput)
+    !clean(draft?.examplesInput) ||
+    (deck?.usesWordLevels !== false && !clean(draft?.level)) ||
+    !clean(draft?.part_of_speech) ||
+    !tags ||
+    tags === clean(defaults?.tagsInput)
   );
+};
+
+// The interface language, by its English name, for tags the deck does not
+// have yet: a Russian interface gets "еда", not "food".
+const languageNameOf = (locale) => {
+  try {
+    return new Intl.DisplayNames(["en"], { type: "language" }).of(String(locale || "en").split("-")[0]) || "";
+  } catch {
+    return "";
+  }
 };
 
 // The fields the person changed since the word was started: anything that
@@ -95,6 +111,10 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
   const repository = usePlatformService("wordSuggestRepository");
   const authRepository = usePlatformService("authRepository");
   const { appPreferences } = useAppPreferences();
+  const { locale } = useI18n();
+  const tagLanguage = useMemo(() => languageNameOf(locale), [locale]);
+  // The deck's tags by value: a list rebuilt on every render asks nothing new.
+  const deckTagsKey = Array.isArray(deck?.tags) ? deck.tags.join("\u0000") : "";
   const isWanted =
     enabled &&
     appPreferences?.deckDefaults?.wordSuggestions !== false &&
@@ -152,14 +172,25 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
               tertiaryLanguage: deck?.tertiaryLanguage,
               pictureSide,
               usesWordLevels: deck?.usesWordLevels,
+              tags: deckTagsKey ? deckTagsKey.split("\u0000") : [],
+              tagLanguage,
             },
           })
         : null,
-    [anchor, deck?.sourceLanguage, deck?.targetLanguage, deck?.tertiaryLanguage, deck?.usesWordLevels, pictureSide],
+    [
+      anchor,
+      deck?.sourceLanguage,
+      deck?.targetLanguage,
+      deck?.tertiaryLanguage,
+      deck?.usesWordLevels,
+      deckTagsKey,
+      pictureSide,
+      tagLanguage,
+    ],
   );
   const key = request ? suggestionCacheKey(request) : "";
   const isActive = isWanted && isSignedIn === true;
-  const isAsking = isActive && Boolean(request) && hasRoomForSuggestion(draft, deck, anchor);
+  const isAsking = isActive && Boolean(request) && hasRoomForSuggestion(draft, deck, anchor, defaults);
   const cached = isAsking ? answers.get(key) : undefined;
   const retryCount = retry.key === key ? retry.count : 0;
 
@@ -221,8 +252,15 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
         : SUGGEST_STATUS.idle;
   const suggestion = isAsking && dismissedKey !== key ? cached || (result.key === key ? result.suggestion : null) : null;
   const fills = useMemo(
-    () => (suggestion ? resolveSuggestionFills(draft, suggestion, { defaults: defaults || {}, locked: tracked.locked }) : {}),
-    [defaults, draft, suggestion, tracked.locked],
+    () =>
+      suggestion
+        ? resolveSuggestionFills(draft, suggestion, {
+            defaults: defaults || {},
+            locked: tracked.locked,
+            filled: tracked.filled,
+          })
+        : {},
+    [defaults, draft, suggestion, tracked.filled, tracked.locked],
   );
   const hasFills = Object.keys(fills).length > 0;
   const correction = suggestion && !suggestion.recognized ? suggestion.correction : "";
@@ -313,6 +351,7 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
     status,
     pendingFields,
     fills,
+    tagsBefore: draft?.tagsInput || "",
     hasFills,
     hasContent: hasSuggestionContent(suggestion),
     correction,

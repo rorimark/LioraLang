@@ -5,6 +5,7 @@ import { useAppPreferences } from "@shared/lib/appPreferences";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { buildDeckDetailsRoute, buildDeckEditRoute, ROUTE_PATHS } from "@shared/config/routes";
 import { normalizePictureSide, PICTURE_SIDES } from "@shared/core/usecases/cardContent";
+import { collectDeckTags } from "@shared/core/usecases/wordSuggest";
 import { useI18n } from "@shared/lib/i18n";
 import {
   applySavedIds,
@@ -102,6 +103,10 @@ export const useDeckEditorPanel = () => {
 
   const pictureSide = normalizePictureSide(deckForm.pictureSide);
   const hasTertiary = Boolean(deckForm.tertiaryLanguage.trim());
+  // What a suggestion needs to know about the deck: its languages and the
+  // tags its words use most.
+  const deckTags = useMemo(() => collectDeckTags(words), [words]);
+  const suggestDeck = useMemo(() => ({ ...deckForm, tags: deckTags }), [deckForm, deckTags]);
 
   // ——— Loading ———
 
@@ -349,7 +354,7 @@ export const useDeckEditorPanel = () => {
       ...emptyDraft,
       level: keep("level", current),
       part_of_speech: keep("part_of_speech", current),
-      tagsInput: current.tagsInput,
+      tagsInput: keep("tagsInput", current),
     }));
     setAddError("");
     setLastDeleted(null);
@@ -519,6 +524,7 @@ export const useDeckEditorPanel = () => {
     deckId: numericDeckId,
 
     deckForm,
+    suggestDeck,
     pictureSide,
     hasTertiary,
     canChangeSides,

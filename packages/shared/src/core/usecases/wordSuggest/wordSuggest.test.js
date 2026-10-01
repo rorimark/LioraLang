@@ -6,6 +6,7 @@ import {
   normalizeSuggestion,
   resolveSuggestionAnchor,
   resolveSuggestionFills,
+  collectDeckTags,
   suggestionCacheKey,
 } from "./wordSuggest.js";
 
@@ -38,6 +39,8 @@ describe("wordSuggest", () => {
       tertiaryLanguage: "",
       pictureSide: "",
       usesWordLevels: true,
+      tags: [],
+      tagLanguage: "",
     });
     expect(suggestionCacheKey(request)).toBe(
       suggestionCacheKey(buildSuggestionRequest({ anchor: { side: "source", text: "ticket" }, deck })),
@@ -54,6 +57,7 @@ describe("wordSuggest", () => {
         level: "a2",
         partOfSpeech: "Noun",
         examples: ["I bought a ticket.", "i bought a ticket.", "Show your ticket.", "Third one."],
+        tags: ["travel", "Travel", "a, b", "transport", "money", "fourth"],
         correction: "ticket",
       },
       request,
@@ -68,6 +72,7 @@ describe("wordSuggest", () => {
       level: "A2",
       part_of_speech: "noun",
       examples: ["I bought a ticket.", "Show your ticket."],
+      tags: ["travel", "transport", "money"],
     });
     expect(hasSuggestionContent(suggestion)).toBe(true);
   });
@@ -123,5 +128,49 @@ describe("wordSuggest", () => {
       target: "biec",
       part_of_speech: "verb",
     });
+  });
+
+  it("confirms a default the suggestion agrees with, once", () => {
+    const suggestion = { recognized: true, target: "bilet", level: "A1", part_of_speech: "noun", examples: [] };
+    const defaults = { level: "A1", part_of_speech: "noun" };
+    const draft = { source: "ticket", target: "", level: "A1", part_of_speech: "noun" };
+
+    expect(resolveSuggestionFills(draft, suggestion, { defaults })).toEqual({
+      target: "bilet",
+      level: "A1",
+      part_of_speech: "noun",
+    });
+    expect(
+      resolveSuggestionFills({ ...draft, target: "bilet" }, suggestion, {
+        defaults,
+        filled: { target: "bilet", level: "A1", part_of_speech: "noun" },
+      }),
+    ).toEqual({});
+  });
+
+  it("adds suggested tags to the default ones and leaves chosen tags alone", () => {
+    const suggestion = { recognized: true, tags: ["travel", "transport"] };
+    const defaults = { tagsInput: "polish" };
+
+    expect(resolveSuggestionFills({ source: "ticket", tagsInput: "" }, suggestion)).toEqual({ tagsInput: "travel, transport" });
+    expect(resolveSuggestionFills({ source: "ticket", tagsInput: "polish" }, suggestion, { defaults })).toEqual({
+      tagsInput: "polish, travel, transport",
+    });
+    expect(resolveSuggestionFills({ source: "ticket", tagsInput: "Travel, transport" }, suggestion, { defaults: { tagsInput: "Travel, transport" } })).toEqual({});
+    expect(resolveSuggestionFills({ source: "ticket", tagsInput: "work" }, suggestion, { defaults })).toEqual({});
+  });
+
+  it("passes the deck's most used tags along with the request", () => {
+    const words = [{ tags: ["food", "home"] }, { tags: ["Food"] }, { tags: ["travel", "food"] }, { tags: "bad" }, {}];
+
+    expect(collectDeckTags(words)).toEqual(["food", "home", "travel"]);
+    expect(collectDeckTags(words, 1)).toEqual(["food"]);
+
+    const request = buildSuggestionRequest({
+      anchor: { side: "source", text: "bread" },
+      deck: { ...deck, tags: collectDeckTags(words), tagLanguage: "Russian" },
+    });
+    expect(request.tags).toEqual(["food", "home", "travel"]);
+    expect(suggestionCacheKey(request)).not.toBe(suggestionCacheKey({ ...request, tagLanguage: "German" }));
   });
 });

@@ -25,6 +25,9 @@ export const PARTS_OF_SPEECH = [
 const MAX_TEXT = 80;
 const MAX_FIELD = 200;
 const MAX_EXAMPLES = 3;
+const MAX_TAG = 30;
+const MAX_DECK_TAGS = 30;
+const MAX_TAGS = 3;
 
 export type SuggestRequest = {
   text: string;
@@ -34,6 +37,10 @@ export type SuggestRequest = {
   tertiaryLanguage: string;
   pictureSide: "" | "source" | "target";
   usesWordLevels: boolean;
+  // The tags the deck already uses, so a suggestion files the word with
+  // its neighbours, and the language new tags are written in.
+  tags: string[];
+  tagLanguage: string;
 };
 
 export type Suggestion = {
@@ -45,6 +52,7 @@ export type Suggestion = {
   level: string;
   partOfSpeech: string;
   examples: string[];
+  tags: string[];
 };
 
 const clean = (value: unknown): string =>
@@ -55,6 +63,21 @@ const clean = (value: unknown): string =>
 const cleanLanguage = (value: unknown): string => {
   const language = clean(value);
   return language.length <= 40 && /^[\p{L} ()'-]*$/u.test(language) ? language : "";
+};
+
+// A tag is a short label: letters, digits, spaces and a few joiners. Any
+// other tag is not passed into the prompt.
+const cleanTag = (value: unknown): string => {
+  const tag = clean(value);
+  return tag.length <= MAX_TAG && /^[\p{L}\p{N}][\p{L}\p{N} &'_-]*$/u.test(tag) ? tag : "";
+};
+
+const cleanTags = (value: unknown, limit: number): string[] => {
+  const seen = new Set<string>();
+  return (Array.isArray(value) ? value : [])
+    .map(cleanTag)
+    .filter((tag) => tag && !seen.has(tag.toLowerCase()) && seen.add(tag.toLowerCase()))
+    .slice(0, limit);
 };
 
 export const validateRequest = (body: unknown): SuggestRequest | null => {
@@ -74,6 +97,8 @@ export const validateRequest = (body: unknown): SuggestRequest | null => {
     tertiaryLanguage: cleanLanguage(value.tertiaryLanguage),
     pictureSide,
     usesWordLevels: value.usesWordLevels !== false,
+    tags: cleanTags(value.tags, MAX_DECK_TAGS),
+    tagLanguage: cleanLanguage(value.tagLanguage),
   };
 
   const typedLanguage = request.side === "source" ? request.sourceLanguage : request.targetLanguage;
@@ -85,7 +110,7 @@ const describeTask = (request: SuggestRequest): string[] => {
   const typedLanguage = request.side === "source" ? request.sourceLanguage : request.targetLanguage;
   const examplesLanguage = request.sourceLanguage || request.targetLanguage;
   const lines = [
-    `The learner typed "${request.text}" in ${typedLanguage}.`,
+    `The learner typed "${request.text}" in ${typedLanguage}. Fill in the rest of the card for its most common sense.`,
   ];
 
   if (request.side === "source" && request.targetLanguage) {
@@ -100,24 +125,44 @@ const describeTask = (request: SuggestRequest): string[] => {
     lines.push(`tertiary: its translation into ${request.tertiaryLanguage}.`);
   }
 
+  lines.push(
+    `partOfSpeech: what "${request.text}" is in that sense: ${PARTS_OF_SPEECH.join(", ")}. An expression of several words is "phrase"; "other" is for interjections, particles, numerals and articles.`,
+  );
+
   if (request.usesWordLevels) {
-    lines.push("level: the CEFR level at which learners usually meet it.");
+    lines.push(
+      "level: the CEFR level at which learners usually meet it in that sense, as in the English Vocabulary Profile and similar lists: A1 for the first everyday words (water, house, go), B1 for common words of work and opinion, C1-C2 for formal, rare or literary ones.",
+    );
   }
 
   lines.push(
-    `partOfSpeech: one of ${PARTS_OF_SPEECH.join(", ")}; an expression of several words is "phrase".`,
-    `examples: two short everyday sentences in ${examplesLanguage}, under 12 words each, that use it in exactly this sense.`,
+    [
+      `examples: two sentences in ${examplesLanguage} that a native speaker would really say, 5 to 12 words each.`,
+      "Show how it is typically used: its usual collocations and a natural, everyday situation, in exactly this sense.",
+      "Make the two differ in situation and in sentence form (for example a statement and a question).",
+      request.usesWordLevels
+        ? "Keep the other words at its level or simpler, so the sentence teaches the word and not the rest."
+        : "Keep the other words simple, so the sentence teaches the word and not the rest.",
+      "Inflect it as the grammar needs. No textbook sentences like \"This is a ...\", no translations, no quotation marks.",
+    ].join(" "),
+  );
+
+  const tagLanguage = request.tagLanguage || "English";
+  lines.push(
+    request.tags.length
+      ? `tags: one or two short topic tags for the card (food, travel, work, feelings). The deck already uses: ${request.tags.map((tag) => JSON.stringify(tag)).join(", ")}. Reuse one of them, spelled the same, whenever it fits; a new tag is a lowercase word or two in ${tagLanguage}. A word with no clear topic gets none.`
+      : `tags: one or two short topic tags for the card (food, travel, work, feelings), each a lowercase word or two in ${tagLanguage}. A word with no clear topic gets none.`,
   );
 
   return lines;
 };
 
 const SYSTEM_INSTRUCTION = [
-  "You fill in flashcards for someone learning a language.",
+  "You fill in flashcards for someone learning a language, the way a careful teacher and a good learner's dictionary would.",
   "Answer only with JSON that matches the schema.",
-  "Never invent a word. If the input is not a real word or common expression in its language, set recognized to false and leave every other field empty; if it looks like a misspelling, put the intended word in correction.",
+  "Never invent a word. If the input is not a real word or common expression in its language, set recognized to false and leave the text fields and lists empty; if it looks like a misspelling, put the intended word in correction.",
   "A translation is the one a good dictionary gives first for the most common sense: the same part of speech, no explanations, no lists of alternatives.",
-  "Leave a field empty rather than guess.",
+  "Every other field describes that same sense.",
 ].join(" ");
 
 // How much a model may think before it answers. A suggestion has to arrive
@@ -139,7 +184,9 @@ export const buildGeminiRequest = (request: SuggestRequest, model = DEFAULT_MODE
   systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
   contents: [{ role: "user", parts: [{ text: describeTask(request).join("\n") }] }],
   generationConfig: {
-    temperature: 0.2,
+    // Low enough for the dictionary fields, high enough that the examples
+    // do not all read the same.
+    temperature: 0.4,
     // Models that think first spend output tokens on it; leave them room
     // so the answer itself is not cut short.
     maxOutputTokens: model.startsWith("gemini-2.5-flash") ? 512 : 2048,
@@ -155,8 +202,21 @@ export const buildGeminiRequest = (request: SuggestRequest, model = DEFAULT_MODE
         level: { type: "STRING", enum: LEVELS },
         partOfSpeech: { type: "STRING", enum: PARTS_OF_SPEECH },
         examples: { type: "ARRAY", items: { type: "STRING" } },
+        tags: { type: "ARRAY", items: { type: "STRING" } },
       },
-      required: ["recognized"],
+      // Optional fields are often left out; these are asked for every time.
+      required: ["recognized", "partOfSpeech", ...(request.usesWordLevels ? ["level"] : []), "examples", "tags"],
+      propertyOrdering: [
+        "recognized",
+        "correction",
+        "source",
+        "target",
+        "tertiary",
+        "partOfSpeech",
+        "level",
+        "examples",
+        "tags",
+      ],
     },
     ...(withThinking ? thinkingFor(model) : {}),
   },
@@ -200,6 +260,7 @@ export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
     level: LEVELS.includes(level) ? level : "",
     partOfSpeech: PARTS_OF_SPEECH.includes(partOfSpeech) ? partOfSpeech : "",
     examples: (Array.isArray(raw.examples) ? raw.examples : []).map(field).filter(Boolean).slice(0, MAX_EXAMPLES),
+    tags: cleanTags(raw.tags, MAX_TAGS),
   };
 };
 

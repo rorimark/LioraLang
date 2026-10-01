@@ -37,6 +37,7 @@ const WordComposer = memo(({ labels }) => {
     pictureSide,
     hasTertiary,
     deckForm,
+    suggestDeck,
     levelOptions,
     partOfSpeechOptions,
     addDraft,
@@ -54,13 +55,13 @@ const WordComposer = memo(({ labels }) => {
   const [autoFocus] = useState(() => isEditMode && hasFinePointer());
   const suggest = useWordSuggestion({
     draft: addDraft,
-    deck: deckForm,
+    deck: suggestDeck,
     defaults: addDraftDefaults,
     onFill: applyAddDraftPatch,
   });
   const summary = useSuggestionSummary(suggest);
   // Details the suggestion filled while they were folded away.
-  const detailsInked = ["level", "part_of_speech", "examplesInput"].filter((field) => suggest.inked.has(field)).length;
+  const detailsInked = ["level", "part_of_speech", "examplesInput", "tagsInput"].filter((field) => suggest.inked.has(field)).length;
 
   const handleSubmit = useCallback(
     (event) => {
@@ -146,6 +147,8 @@ const WordEditor = memo(({ word, labels }) => {
     pictureSide,
     hasTertiary,
     deckForm,
+    suggestDeck,
+    addDraftDefaults,
     levelOptions,
     partOfSpeechOptions,
     editDraft,
@@ -159,7 +162,14 @@ const WordEditor = memo(({ word, labels }) => {
   } = useDeckEditorPanelContext();
   const { t } = useI18n();
   const formRef = useRef(null);
-  const suggest = useWordSuggestion({ draft: editDraft, deck: deckForm, onFill: applyEditDraftPatch });
+  // The deck's defaults count as untouched here too: a word saved with the
+  // default level A1 may still be offered the level it really has.
+  const suggest = useWordSuggestion({
+    draft: editDraft,
+    deck: suggestDeck,
+    defaults: addDraftDefaults,
+    onFill: applyEditDraftPatch,
+  });
   const summary = useSuggestionSummary(suggest);
 
   useEffect(() => {

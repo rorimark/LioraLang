@@ -10,6 +10,9 @@ export const SUGGEST_MAX_LENGTH = 80;
 export const SUGGEST_MAX_WORDS = 8;
 export const SUGGEST_MAX_EXAMPLES = 2;
 export const SUGGEST_MAX_FIELD_LENGTH = 160;
+export const SUGGEST_MAX_TAGS = 3;
+export const SUGGEST_MAX_DECK_TAGS = 30;
+export const SUGGEST_MAX_TAG_LENGTH = 30;
 
 export const SUGGEST_LEVELS = Object.freeze(["A1", "A2", "B1", "B2", "C1", "C2"]);
 export const SUGGEST_PARTS_OF_SPEECH = Object.freeze([
@@ -26,7 +29,15 @@ export const SUGGEST_PARTS_OF_SPEECH = Object.freeze([
 
 // The fields of a word draft a suggestion can fill, in the order they are
 // shown.
-export const SUGGEST_FIELDS = Object.freeze(["source", "target", "tertiary", "level", "part_of_speech", "examplesInput"]);
+export const SUGGEST_FIELDS = Object.freeze([
+  "source",
+  "target",
+  "tertiary",
+  "level",
+  "part_of_speech",
+  "examplesInput",
+  "tagsInput",
+]);
 
 const LEVELS = new Set(SUGGEST_LEVELS);
 const PARTS = new Set(SUGGEST_PARTS_OF_SPEECH);
@@ -36,6 +47,42 @@ const clean = (value) => (typeof value === "string" ? value.replace(/\s+/g, " ")
 const clip = (value, limit = SUGGEST_MAX_FIELD_LENGTH) => {
   const text = clean(value);
   return text.length > limit ? "" : text;
+};
+
+// A tag as the deck stores it: short, with no comma (commas separate tags
+// in the field).
+const cleanTag = (value) => {
+  const tag = clean(value);
+  return tag.length <= SUGGEST_MAX_TAG_LENGTH && /\p{L}|\p{N}/u.test(tag) && !tag.includes(",") ? tag : "";
+};
+
+const uniqueTags = (tags, limit) => {
+  const seen = new Set();
+  return tags
+    .map(cleanTag)
+    .filter((tag) => tag && !seen.has(tag.toLowerCase()) && seen.add(tag.toLowerCase()))
+    .slice(0, limit);
+};
+
+const splitTagsInput = (value) => String(value ?? "").split(",");
+
+// The tags a deck uses most, to keep a suggestion in step with them.
+export const collectDeckTags = (words = [], limit = SUGGEST_MAX_DECK_TAGS) => {
+  const counts = new Map();
+
+  for (const word of Array.isArray(words) ? words : []) {
+    for (const tag of uniqueTags(Array.isArray(word?.tags) ? word.tags : [], Infinity)) {
+      const key = tag.toLowerCase();
+      const entry = counts.get(key) || { tag, count: 0 };
+      entry.count += 1;
+      counts.set(key, entry);
+    }
+  }
+
+  return [...counts.values()]
+    .sort((first, second) => second.count - first.count)
+    .slice(0, limit)
+    .map((entry) => entry.tag);
 };
 
 // Something worth asking about: a word or a short phrase with letters in
@@ -84,6 +131,8 @@ export const buildSuggestionRequest = ({ anchor, deck = {} }) => {
     tertiaryLanguage: clean(deck?.tertiaryLanguage),
     pictureSide,
     usesWordLevels: deck?.usesWordLevels !== false,
+    tags: uniqueTags(Array.isArray(deck?.tags) ? deck.tags : [], SUGGEST_MAX_DECK_TAGS),
+    tagLanguage: clean(deck?.tagLanguage),
   };
 };
 
@@ -95,6 +144,7 @@ export const suggestionCacheKey = (request = {}) =>
     request.tertiaryLanguage,
     request.pictureSide,
     request.usesWordLevels ? "levels" : "",
+    request.tagLanguage,
     clean(request.text).toLowerCase(),
   ].join("\u0000");
 
@@ -113,6 +163,7 @@ export const normalizeSuggestion = (raw = {}, request = {}) => {
     level: "",
     part_of_speech: "",
     examples: [],
+    tags: [],
   };
 
   if (!result.recognized) {
@@ -146,6 +197,8 @@ export const normalizeSuggestion = (raw = {}, request = {}) => {
     .filter((example) => example && !seen.has(example.toLowerCase()) && seen.add(example.toLowerCase()))
     .slice(0, SUGGEST_MAX_EXAMPLES);
 
+  result.tags = uniqueTags(Array.isArray(raw?.tags) ? raw.tags : [], SUGGEST_MAX_TAGS);
+
   return result;
 };
 
@@ -157,7 +210,8 @@ export const hasSuggestionContent = (suggestion) =>
         suggestion.tertiary ||
         suggestion.level ||
         suggestion.part_of_speech ||
-        suggestion.examples?.length),
+        suggestion.examples?.length ||
+        suggestion.tags?.length),
   );
 
 // A field is open to a suggestion while it is empty, or still holds the
@@ -172,9 +226,23 @@ const isOpenField = (draft, field, defaults, locked) => {
   return !value || (Boolean(defaults?.[field]) && value === clean(defaults[field]));
 };
 
+// Tags are added to the ones a field starts with (a deck's default tags),
+// never put in their place.
+const offeredTags = (draft, tags) => {
+  const current = uniqueTags(splitTagsInput(draft?.tagsInput), Infinity);
+  const merged = uniqueTags([...current, ...(tags || [])], Infinity);
+  return merged.length > current.length ? merged.join(", ") : "";
+};
+
 // What a suggestion would put into this draft: only the fields still open
-// to it, under the draft's own field names.
-export const resolveSuggestionFills = (draft = {}, suggestion = null, { defaults = {}, locked = null } = {}) => {
+// to it, under the draft's own field names. A suggestion that agrees with
+// a default nobody chose is offered too, so it can be confirmed; what a
+// suggestion already filled is not offered again.
+export const resolveSuggestionFills = (
+  draft = {},
+  suggestion = null,
+  { defaults = {}, locked = null, filled = null } = {},
+) => {
   if (!suggestion?.recognized) {
     return {};
   }
@@ -186,14 +254,13 @@ export const resolveSuggestionFills = (draft = {}, suggestion = null, { defaults
     level: suggestion.level,
     part_of_speech: suggestion.part_of_speech,
     examplesInput: (suggestion.examples || []).join("\n"),
+    tagsInput: offeredTags(draft, suggestion.tags),
   };
+  const isFilled = (field) => filled?.[field] !== undefined && clean(filled[field]) === clean(draft?.[field]);
 
   return Object.fromEntries(
     SUGGEST_FIELDS.filter(
-      (field) => offered[field] && offered[field] !== clean(draft?.[field]) && isOpenField(draft, field, defaults, locked),
-    ).map((field) => [
-      field,
-      offered[field],
-    ]),
+      (field) => offered[field] && !isFilled(field) && isOpenField(draft, field, defaults, locked),
+    ).map((field) => [field, offered[field]]),
   );
 };

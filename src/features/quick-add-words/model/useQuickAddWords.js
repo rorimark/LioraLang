@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDecks } from "@entities/deck";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { collectDeckTags } from "@shared/core/usecases/wordSuggest";
 import { DEFAULT_SOURCE_LANGUAGE, DEFAULT_TARGET_LANGUAGE, LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { appendWordsToDeck, createDeckForWords, removeWordsFromDeck } from "./deckWordsWriter";
 import { ROW_STATUS, looksLikeWordList, parseWordList, resolveRowStatus } from "./parseWordList";
@@ -177,6 +178,8 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
   }, [isOpen, loadDeckWords]);
 
   const wordIndex = useMemo(() => buildDeckWordIndex(deckWords), [deckWords]);
+  // The tags the deck uses most, so suggested tags match them.
+  const deckTags = useMemo(() => collectDeckTags(deckWords), [deckWords]);
 
   useEffect(() => {
     setRows((current) => (current.length ? markRows(current, wordIndex) : current));
@@ -259,9 +262,17 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     setDetails((current) => ({ ...current, [name]: value }));
   }, []);
 
+  // The tags a suggestion put in: they belong to that word, so they are not
+  // kept for the next one the way chosen tags are.
+  const suggestedTagsRef = useRef("");
+
   // A suggestion fills the card's sides and its details; each goes back to
   // where the form keeps it.
   const applySuggestion = useCallback((patch) => {
+    if (typeof patch?.tagsInput === "string") {
+      suggestedTagsRef.current = patch.tagsInput;
+    }
+
     const { source, target, ...rest } = patch || {};
     const sides = Object.fromEntries(
       Object.entries({ source, target }).filter(([, value]) => typeof value === "string"),
@@ -326,7 +337,11 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
 
       setDraft({ source: "", target: "" });
       setDraftImage(null);
-      setDetails((current) => ({ ...EMPTY_DETAILS, tagsInput: current.tagsInput }));
+      setDetails((current) => ({
+        ...EMPTY_DETAILS,
+        tagsInput: current.tagsInput === suggestedTagsRef.current ? "" : current.tagsInput,
+      }));
+      suggestedTagsRef.current = "";
       setConfirmedPair("");
       setNotice(
         pictureSide
@@ -593,6 +608,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     handleDraftChange,
     handleDetailsChange,
     applySuggestion,
+    deckTags,
     handleSourceKeyDown,
     handleTargetKeyDown,
     handleSourcePaste,
