@@ -117,7 +117,7 @@ const DeckEditorPanelBody = memo(() => {
                 disabled={totalWords === 0}
               >
                 <FiPlay aria-hidden />
-                <span>{t("editor.study")}</span>
+                <span>{t("decks.row.learn")}</span>
               </button>
             </>
           ) : (

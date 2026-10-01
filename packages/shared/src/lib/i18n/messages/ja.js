@@ -571,7 +571,6 @@ export default {
     },
     "nameLabel": "デッキ名",
     "saved": "保存済み",
-    "study": "学習する",
     "create": "デッキを作成",
     "creating": "作成中…",
     "createHint": {

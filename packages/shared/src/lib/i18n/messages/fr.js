@@ -605,7 +605,6 @@ export default {
     },
     "nameLabel": "Nom du paquet",
     "saved": "Enregistré",
-    "study": "Réviser",
     "create": "Créer le paquet",
     "creating": "Création…",
     "createHint": {

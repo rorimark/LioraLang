@@ -605,7 +605,6 @@ export default {
     },
     "nameLabel": "Nome do baralho",
     "saved": "Salvo",
-    "study": "Estudar",
     "create": "Criar baralho",
     "creating": "Criando…",
     "createHint": {

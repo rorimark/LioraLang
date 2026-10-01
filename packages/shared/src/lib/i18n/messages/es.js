@@ -605,7 +605,6 @@ export default {
     },
     "nameLabel": "Nombre del mazo",
     "saved": "Guardado",
-    "study": "Estudiar",
     "create": "Crear mazo",
     "creating": "Creando…",
     "createHint": {

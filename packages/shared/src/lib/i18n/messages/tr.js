@@ -588,7 +588,6 @@ export default {
     },
     "nameLabel": "Deste adı",
     "saved": "Kaydedildi",
-    "study": "Çalış",
     "create": "Deste oluştur",
     "creating": "Oluşturuluyor…",
     "createHint": {

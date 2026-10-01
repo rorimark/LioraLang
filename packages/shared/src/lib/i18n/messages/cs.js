@@ -611,7 +611,6 @@ export default {
     },
     "nameLabel": "Název balíčku",
     "saved": "Uloženo",
-    "study": "Učit se",
     "create": "Vytvořit balíček",
     "creating": "Vytváří se…",
     "createHint": {

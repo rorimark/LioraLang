@@ -156,7 +156,7 @@ export default {
     "noCards": "This deck has no cards to study.",
     "nextLearningStep": "Next learning step: {when}. This updates by itself.",
     "nextReview": "Next review: {when}. This updates by itself.",
-    "studyRemaining": "Study the remaining due cards",
+    "studyRemaining": "Learn the remaining due cards",
     "left": "left",
     "studied": "studied",
     "previousCard": "Previous card",
@@ -588,7 +588,6 @@ export default {
     },
     "nameLabel": "Deck name",
     "saved": "Saved",
-    "study": "Study",
     "create": "Create deck",
     "creating": "Creating…",
     "createHint": {

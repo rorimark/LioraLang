@@ -605,7 +605,6 @@ export default {
     },
     "nameLabel": "Nome del mazzo",
     "saved": "Salvato",
-    "study": "Studia",
     "create": "Crea mazzo",
     "creating": "Creazione…",
     "createHint": {

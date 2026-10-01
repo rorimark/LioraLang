@@ -622,7 +622,6 @@ export default {
     },
     "nameLabel": "Название колоды",
     "saved": "Сохранено",
-    "study": "Учить",
     "create": "Создать колоду",
     "creating": "Создаём…",
     "createHint": {

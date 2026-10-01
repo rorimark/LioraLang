@@ -622,7 +622,6 @@ export default {
     },
     "nameLabel": "Nazwa talii",
     "saved": "Zapisano",
-    "study": "Ucz się",
     "create": "Utwórz talię",
     "creating": "Tworzenie…",
     "createHint": {

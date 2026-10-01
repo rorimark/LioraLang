@@ -588,7 +588,6 @@ export default {
     },
     "nameLabel": "Name des Decks",
     "saved": "Gespeichert",
-    "study": "Lernen",
     "create": "Deck erstellen",
     "creating": "Wird erstellt…",
     "createHint": {
