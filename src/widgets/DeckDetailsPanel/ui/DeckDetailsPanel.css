@@ -414,6 +414,16 @@
   gap: 14px;
 }
 
+/* With an extra language: its own column after the back. */
+.deck-words-view__columns.has-extra,
+.has-extra .deck-word-view__row {
+  grid-template-columns: 10px minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr) minmax(5.5rem, auto) 16px;
+}
+
+.deck-word-view__side--extra .deck-word-view__text {
+  color: var(--color-text-muted);
+}
+
 .deck-words-view__columns {
   padding: 0 16px;
   margin-bottom: -8px;
@@ -481,16 +491,6 @@
   line-height: 1.35;
 }
 
-.deck-word-view__tertiary {
-  display: block;
-  margin-top: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--color-text-muted);
-  font-size: 0.84rem;
-}
-
 .deck-word-view__text--front {
   font-weight: 700;
 }
@@ -541,13 +541,23 @@
     display: none;
   }
 
-  .deck-word-view__row {
+  .deck-word-view__row,
+  .has-extra .deck-word-view__row {
     grid-template-columns: 10px minmax(0, 1fr) 16px;
     grid-template-areas:
       "dot front chevron"
       "dot back chevron"
+      "dot extra chevron"
       "dot when chevron";
     row-gap: 2px;
+  }
+
+  .deck-word-view__side--extra {
+    grid-area: extra;
+  }
+
+  .deck-word-view__side--extra.is-empty {
+    display: none;
   }
 
   .deck-word-view__row > .deck-study__dot {

@@ -293,10 +293,13 @@ const WordRow = memo(({ word, wordStudy, isOpen, onToggle, labels, pictureSide, 
           ) : (
             <span className="deck-word-view__text">{word.target}</span>
           )}
-          {labels.tertiary && word.tertiary ? (
-            <span className="deck-word-view__tertiary">{word.tertiary}</span>
-          ) : null}
         </span>
+        {/* The extra language has a column of its own. */}
+        {labels.tertiary ? (
+          <span className={`deck-word-view__side deck-word-view__side--extra${word.tertiary ? "" : " is-empty"}`}>
+            <span className="deck-word-view__text">{word.tertiary || "—"}</span>
+          </span>
+        ) : null}
         <WordStatus wordStudy={wordStudy} />
         <FiChevronDown className="deck-word-view__chevron" aria-hidden />
       </button>
@@ -402,14 +405,15 @@ const DeckWords = memo(({ panel, labels }) => {
         </p>
       ) : (
         <>
-          <div className="deck-words-view__columns" aria-hidden="true">
+          <div className={`deck-words-view__columns${labels.tertiary ? " has-extra" : ""}`} aria-hidden="true">
             <span />
             <span>{labels.front}</span>
             <span>{labels.back}</span>
+            {labels.tertiary ? <span>{labels.tertiary}</span> : null}
             <span>{t("deck.word.nextColumn")}</span>
             <span />
           </div>
-          <ul className="deck-words-view__list">
+          <ul className={`deck-words-view__list${labels.tertiary ? " has-extra" : ""}`}>
             {panel.visibleWords.map((word) => (
               <WordRow
                 key={word.id}

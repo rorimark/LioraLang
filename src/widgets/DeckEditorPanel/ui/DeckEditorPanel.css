@@ -782,6 +782,44 @@
   cursor: pointer;
 }
 
+/* With an extra language: three columns, front, back and the extra one. */
+.deck-words__columns.has-extra {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 40px;
+}
+
+.deck-words.has-extra .deck-word__open {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.deck-word__side--extra .deck-word__text {
+  font-weight: 500;
+}
+
+/* Too narrow for three: the extra language goes under the translation. */
+@container (max-width: 560px) {
+  .deck-words__columns.has-extra {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px;
+  }
+
+  .deck-words__columns.has-extra span:nth-child(3) {
+    display: none;
+  }
+
+  .deck-words.has-extra .deck-word__open {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 2px;
+  }
+
+  .deck-words.has-extra .deck-word__side--extra {
+    grid-column: 2;
+    color: var(--color-text-muted);
+  }
+
+  .deck-words.has-extra .deck-word__side--extra.is-empty {
+    display: none;
+  }
+}
+
 .deck-word:hover {
   background: var(--color-surface-muted);
 }
@@ -807,14 +845,6 @@
 
 .deck-word__side--back .deck-word__text {
   font-weight: 500;
-}
-
-.deck-word__tertiary {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--color-text-muted);
-  font-size: 0.86rem;
 }
 
 .deck-word__meta {

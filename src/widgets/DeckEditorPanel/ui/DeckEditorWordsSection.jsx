@@ -241,11 +241,14 @@ const WordRow = memo(({ word, labels, pictureSide, isEditing, onEdit, onDelete }
           ) : (
             <span className="deck-word__text">{word.target}</span>
           )}
-          {labels.tertiary && word.tertiary ? (
-            <span className="deck-word__tertiary">{word.tertiary}</span>
-          ) : null}
           {meta ? <span className="deck-word__meta">{meta}</span> : null}
         </span>
+        {/* The extra language has a column of its own. */}
+        {labels.tertiary ? (
+          <span className={`deck-word__side deck-word__side--extra${word.tertiary ? "" : " is-empty"}`}>
+            <span className="deck-word__text">{word.tertiary || "—"}</span>
+          </span>
+        ) : null}
       </button>
       <button
         type="button"
@@ -338,11 +341,12 @@ export const DeckEditorWordsSection = memo(({ labels }) => {
         <p className="deck-editor__empty">{t("editor.noMatches", { query: wordsQuery.trim() })}</p>
       ) : (
         <>
-          <div className="deck-words__columns" aria-hidden>
+          <div className={`deck-words__columns${labels.tertiary ? " has-extra" : ""}`} aria-hidden>
             <span>{labels.front}</span>
             <span>{labels.back}</span>
+            {labels.tertiary ? <span>{labels.tertiary}</span> : null}
           </div>
-          <ul className="deck-words">
+          <ul className={`deck-words${labels.tertiary ? " has-extra" : ""}`}>
             {visibleWords.map((word) => (
               <WordRow
                 key={word.externalId}
