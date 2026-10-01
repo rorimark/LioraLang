@@ -1,5 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { buildGeminiRequest, pickFlashModel, pickFlashModels, readGeminiSuggestion, validateRequest } from "./gemini.ts";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  buildGeminiRequest,
+  pickFlashModel,
+  pickFlashModels,
+  raceModels,
+  readGeminiSuggestion,
+  validateRequest,
+} from "./gemini.ts";
 
 const reply = (value: unknown, extra: Record<string, unknown> = {}) => ({
   candidates: [{ content: { parts: [{ text: typeof value === "string" ? value : JSON.stringify(value) }] }, ...extra }],
@@ -132,7 +139,7 @@ describe("suggest-word: reply", () => {
 });
 
 describe("suggest-word: model", () => {
-  it("takes the newest stable Flash that can generate content", () => {
+  it("asks the newest stable Flash-Lite first, then the newest Flash", () => {
     const list = {
       models: [
         { name: "models/gemini-3.5-flash", supportedGenerationMethods: ["generateContent"] },
@@ -145,7 +152,7 @@ describe("suggest-word: model", () => {
     };
 
     expect(pickFlashModel(list)).toBe("gemini-3.8-flash");
-    expect(pickFlashModels(list)).toEqual(["gemini-3.8-flash", "gemini-3.8-flash-lite", "gemini-3.5-flash"]);
+    expect(pickFlashModels(list)).toEqual(["gemini-3.8-flash-lite", "gemini-3.8-flash", "gemini-3.5-flash"]);
     expect(pickFlashModel({})).toBe("");
   });
 
@@ -154,5 +161,83 @@ describe("suggest-word: model", () => {
 
     expect(buildGeminiRequest(request, "gemini-2.5-flash").generationConfig.maxOutputTokens).toBe(512);
     expect(buildGeminiRequest(request, "gemini-3.8-flash").generationConfig.maxOutputTokens).toBe(2048);
+  });
+});
+
+describe("suggest-word: asking the models", () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  const suggestion = (target: string) =>
+    ({ recognized: true, correction: "", source: "", target, tertiary: "", level: "", partOfSpeech: "", examples: [], tags: [] });
+  // A model that answers after ms milliseconds, unless it is stopped first.
+  const model = (ms: number, outcome: object) => (stop: AbortSignal) =>
+    new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(outcome), ms);
+      stop.addEventListener("abort", () => {
+        clearTimeout(timer);
+        resolve({});
+      });
+    });
+  const race = (behaviour: Record<string, (stop: AbortSignal) => Promise<unknown>>, deadline = 13_000) => {
+    const asked: string[] = [];
+    const result = raceModels(
+      Object.keys(behaviour),
+      (name, stop) => {
+        asked.push(`${name}@${Date.now()}`);
+        return behaviour[name](stop) as Promise<never>;
+      },
+      { hedgeMs: 2_500, attemptMs: 8_000, deadline: Date.now() + deadline },
+    );
+    return { asked, result };
+  };
+
+  it("takes a quick answer without asking anyone else", async () => {
+    const start = Date.now();
+    const { asked, result } = race({ lite: model(900, { suggestion: suggestion("a") }), flash: model(900, {}) });
+
+    await vi.advanceTimersByTimeAsync(1_000);
+    expect(await result).toEqual({ suggestion: suggestion("a") });
+    expect(asked).toEqual([`lite@${start}`]);
+  });
+
+  it("asks the next model too when the first is slow, and takes the first answer", async () => {
+    const start = Date.now();
+    const { asked, result } = race({ lite: model(8_000, { overloaded: true }), flash: model(1_000, { suggestion: suggestion("b") }) });
+
+    await vi.advanceTimersByTimeAsync(3_600);
+    expect(await result).toEqual({ suggestion: suggestion("b") });
+    expect(asked).toEqual([`lite@${start}`, `flash@${start + 2_500}`]);
+  });
+
+  it("moves on at once when a model fails", async () => {
+    const start = Date.now();
+    const { asked, result } = race({ lite: model(300, { overloaded: true }), flash: model(500, { suggestion: suggestion("c") }) });
+
+    await vi.advanceTimersByTimeAsync(900);
+    expect(await result).toEqual({ suggestion: suggestion("c") });
+    expect(asked).toEqual([`lite@${start}`, `flash@${start + 300}`]);
+  });
+
+  it("says busy when every model is overloaded, and unavailable when none answers properly", async () => {
+    const busy = race({ lite: model(100, { overloaded: true }), flash: model(100, { overloaded: true }) });
+    await vi.advanceTimersByTimeAsync(300);
+    expect(await busy.result).toEqual({ overloaded: true });
+
+    const broken = race({ lite: model(100, {}), flash: () => Promise.reject(new Error("x")) });
+    await vi.advanceTimersByTimeAsync(300);
+    expect(await broken.result).toEqual({ overloaded: true });
+
+    const empty = race({ lite: model(100, {}) });
+    await vi.advanceTimersByTimeAsync(300);
+    expect(await empty.result).toEqual({ overloaded: false });
+  });
+
+  it("starts nothing new once the time is nearly up", async () => {
+    const { asked, result } = race({ lite: model(5_000, {}), flash: model(100, { suggestion: suggestion("d") }) }, 3_000);
+
+    await vi.advanceTimersByTimeAsync(5_100);
+    expect(await result).toEqual({ overloaded: false });
+    expect(asked).toHaveLength(1);
   });
 });

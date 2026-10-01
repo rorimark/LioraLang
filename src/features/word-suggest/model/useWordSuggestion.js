@@ -19,7 +19,7 @@ import {
 // and offers only fields that are still open: empty, or holding a default
 // nobody chose. A field the person changed is theirs from then on.
 
-const PAUSE_MS = 450;
+const PAUSE_MS = 350;
 const INK_MS = 900;
 const CACHE_LIMIT = 150;
 // After this many failures in a row the service is taken to be down for

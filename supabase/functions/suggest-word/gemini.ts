@@ -5,8 +5,8 @@
 // side only keeps the reply to the shape and size of a suggestion.
 
 // The last resort, when Google's list of models cannot be read. Normally
-// the function takes the newest stable Flash from that list
-// (pickFlashModel), or the model named in the GEMINI_MODEL secret.
+// the function takes the newest stable Flash models from that list
+// (pickFlashModels), or the model named in the GEMINI_MODEL secret.
 export const DEFAULT_MODEL = "gemini-2.5-flash";
 
 export const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
@@ -264,10 +264,10 @@ export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
   };
 };
 
-// The models to ask, best first, from Google's list: the newest stable
-// Flash, then the newest Flash-Lite (it has capacity of its own when Flash
-// is overloaded), then the older ones, newest first. Previews and
-// experiments are passed over.
+// The models to ask, in order, from Google's list: the newest stable
+// Flash-Lite (a suggestion is a small task, and Lite answers in about a
+// second and is rarely overloaded), then the newest Flash, then the older
+// ones, newest first. Previews and experiments are passed over.
 export const pickFlashModels = (listResponse: unknown): string[] => {
   const models = (listResponse as { models?: Array<Record<string, unknown>> })?.models;
 
@@ -291,11 +291,79 @@ export const pickFlashModels = (listResponse: unknown): string[] => {
 
   const names = ranked.map((candidate) => candidate.name);
   const newestLite = names.find((name) => name.endsWith("-lite"));
-  const [first, ...rest] = names.filter((name) => name !== newestLite);
-
-  return [first, newestLite, ...rest].filter((name): name is string => Boolean(name));
+  return [newestLite, ...names.filter((name) => name !== newestLite)].filter((name): name is string => Boolean(name));
 };
 
-// The newest stable Flash, the first of the models to ask.
+// The newest stable Flash (not Lite).
 export const pickFlashModel = (listResponse: unknown): string =>
   pickFlashModels(listResponse).find((name) => !name.endsWith("-lite")) || "";
+
+export type Attempt = { suggestion?: Suggestion; overloaded?: boolean };
+
+// Ask the models in turn and take the first suggestion that comes back. A
+// model that fails hands over to the next one at once; a model that is
+// slow gets company after hedgeMs, and whichever answers first wins. The
+// others are stopped. With no suggestion, overloaded says whether asking
+// again later is worth it.
+export const raceModels = (
+  models: string[],
+  ask: (model: string, stop: AbortSignal, timeoutMs: number) => Promise<Attempt>,
+  { hedgeMs, attemptMs, deadline, minTimeLeftMs = 1_500, now = Date.now }: {
+    hedgeMs: number;
+    attemptMs: number;
+    deadline: number;
+    minTimeLeftMs?: number;
+    now?: () => number;
+  },
+): Promise<Attempt> =>
+  new Promise((resolve) => {
+    const stop = new AbortController();
+    let next = 0;
+    let running = 0;
+    let overloaded = false;
+    let isDone = false;
+    let hedgeTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const finish = (result: Attempt) => {
+      if (isDone) return;
+      isDone = true;
+      clearTimeout(hedgeTimer);
+      stop.abort();
+      resolve(result);
+    };
+
+    const launch = () => {
+      clearTimeout(hedgeTimer);
+
+      if (isDone) return;
+
+      const timeLeft = deadline - now();
+
+      if (next >= models.length || timeLeft < minTimeLeftMs) {
+        if (!running) finish({ overloaded });
+        return;
+      }
+
+      const model = models[next];
+      next += 1;
+      running += 1;
+
+      ask(model, stop.signal, Math.min(attemptMs, timeLeft))
+        .catch((): Attempt => ({ overloaded: true }))
+        .then((outcome) => {
+          running -= 1;
+
+          if (outcome.suggestion) {
+            finish(outcome);
+            return;
+          }
+
+          overloaded = overloaded || Boolean(outcome.overloaded);
+          launch();
+        });
+
+      hedgeTimer = setTimeout(launch, hedgeMs);
+    };
+
+    launch();
+  });
