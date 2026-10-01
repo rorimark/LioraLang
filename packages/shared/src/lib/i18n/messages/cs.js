@@ -271,10 +271,14 @@ export default {
     "frontAria": "Líc kartičky. Stisknutím zobrazíte odpověď.",
     "reveal": "Klepnutím zobrazíte odpověď",
     "examples": "Příklady",
-    "showFront": "Klepnutím zobrazíte líc"
+    "showFront": "Klepnutím zobrazíte líc",
+    "code": "Kód"
   },
   "hub": {
-    "notConfigured": "Hub v této verzi není dostupný."
+    "notConfigured": "Hub v této verzi není dostupný.",
+    "errors": {
+      "subjectNotPublishable": "Do Hubu lze zatím publikovat jen jazykové balíčky."
+    }
   },
   "decks": {
     "untitled": "Balíček",
@@ -1928,5 +1932,42 @@ export default {
     "again": "Jiný návrh",
     "empty": "Zatím není co navrhnout: přidejte název nebo pár slov.",
     "error": "Popis se nepodařilo napsat. Zkuste to znovu."
+  },
+  "subjects": {
+    "label": "Téma",
+    "hint": "O čem karty jsou. Volí se před první kartou.",
+    "names": {
+      "language": "Jazyky",
+      "programming": "Programování"
+    },
+    "sides": {
+      "question": "Otázka",
+      "answer": "Odpověď"
+    },
+    "fields": {
+      "question": "Pojem nebo otázka",
+      "questionPlaceholder": "Pojem, nebo otázka ke kódu",
+      "answer": "Odpověď",
+      "answerPlaceholder": "Co si máte vybavit",
+      "notes": "Poznámky",
+      "notesPlaceholder": "Jedna poznámka na řádek",
+      "technology": "Technologie",
+      "technologyHint": "Zobrazí se na každé kartě, například JavaScript nebo SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Kód",
+      "codePlaceholder": "Nepovinné: vložte nebo napište úryvek",
+      "difficulty": "Obtížnost"
+    },
+    "difficulty": {
+      "easy": "Snadné",
+      "medium": "Střední",
+      "hard": "Těžké"
+    },
+    "errors": {
+      "emptyQuestion": "Nejdřív napište otázku.",
+      "emptyAnswer": "Přidejte odpověď."
+    },
+    "addCard": "Přidat kartu",
+    "cards": "Karty"
   }
 };

@@ -53,8 +53,9 @@ describe("subjects", () => {
     });
 
     expect(presentation.layout).toBe("code");
+    expect(presentation.labels).toEqual({ front: "subjects.sides.question", back: "subjects.sides.answer" });
     expect(presentation.front).toEqual([
-      { type: "meta", items: [{ kind: "technology", value: "JavaScript" }, { kind: "difficulty", value: "medium" }] },
+      { type: "meta", items: [{ kind: "technology", value: "JavaScript" }, { kind: "difficulty", value: "medium", labelKey: "subjects.difficulty.medium", step: 2, steps: 3 }] },
       { type: "text", role: "prompt", text: "What does this return?" },
       { type: "code", emphasis: "primary", text: "users.map(user => user.name)" },
     ]);
@@ -67,7 +68,8 @@ describe("subjects", () => {
       deck: { subject: "programming" },
     });
 
-    expect(presentation.front).toEqual([{ type: "text", role: "prompt", text: "What is a closure?" }]);
+    // A term with no code is the headline.
+    expect(presentation.front).toEqual([{ type: "text", role: "prompt", text: "What is a closure?", emphasis: "lead" }]);
     expect(presentation.back).toEqual([{ type: "text", role: "answer", text: "A function with the scope it was made in." }]);
   });
 });

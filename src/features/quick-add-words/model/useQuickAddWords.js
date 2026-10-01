@@ -18,6 +18,7 @@ import {
   rowToWord,
 } from "@shared/core/usecases/wordSuggest";
 import { useAiAccess } from "@features/word-suggest";
+import { getSubjectProfile, normalizeEntrySubjectFields } from "@shared/core/usecases/subjects";
 import { DEFAULT_SOURCE_LANGUAGE, DEFAULT_TARGET_LANGUAGE, LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { appendWordsToDeck, createDeckForWords, removeWordsFromDeck } from "./deckWordsWriter";
 import { ROW_STATUS, looksLikeWordList, parseWordList, resolveRowStatus } from "./parseWordList";
@@ -211,8 +212,14 @@ export const useQuickAddWords = ({
         tertiaryLanguage: "",
         pictureSide: newDeck.pictureSide || "",
       };
-  const usesWordLevels = selectedDeck ? selectedDeck.usesWordLevels !== false : true;
+  // What the chosen deck is about decides the form: its fields, its labels,
+  // and whether the assistant and pasted lists are on offer. A deck made
+  // here is a language deck.
+  const subject = selectedDeck?.subject || "";
+  const subjectProfile = getSubjectProfile(subject);
+  const usesWordLevels = subjectProfile.usesLanguages && (selectedDeck ? selectedDeck.usesWordLevels !== false : true);
   const pictureSide = languages.pictureSide;
+  const activeTab = subjectProfile.usesLanguages ? tab : "single";
 
   const loadDeckWords = useCallback(async () => {
     if (!selectedDeck) {
@@ -355,9 +362,21 @@ export const useQuickAddWords = ({
     setNotice((current) => (current?.kind === "error" ? null : current));
   }, []);
 
+  const handleSubjectFieldChange = useCallback((name, value) => {
+    setDraft((current) => ({ ...current, subjectFields: { ...current.subjectFields, [name]: value } }));
+  }, []);
+
   const addDraft = useCallback(async () => {
     const source = draft.source.trim();
     const target = draft.target.trim();
+    const { entryText } = subjectProfile;
+
+    // A subject with its own sides names what is missing in its own words.
+    if (entryText && (!source || !target)) {
+      setNotice({ kind: "error", key: (source ? entryText.target : entryText.source).errorKey });
+      if (!source) focusSource();
+      return;
+    }
 
     if (pictureSide && !draftImage) {
       setNotice({ kind: "error", key: "quickAdd.errors.emptyPicture" });
@@ -393,10 +412,11 @@ export const useQuickAddWords = ({
           target,
           tertiary: details.tertiary,
           examples: splitLines(details.examplesInput),
-          part_of_speech: details.part_of_speech,
+          part_of_speech: subjectProfile.usesLanguages ? details.part_of_speech : "",
           level: usesWordLevels ? details.level : "",
           tags: splitTags(details.tagsInput),
           image: pictureSide ? draftImage : null,
+          subjectFields: normalizeEntrySubjectFields(subject, draft.subjectFields),
         },
       ]);
 
@@ -421,7 +441,19 @@ export const useQuickAddWords = ({
     } finally {
       setIsSaving(false);
     }
-  }, [confirmedPair, details, draft, draftDuplicate.kind, draftImage, focusSource, pictureSide, usesWordLevels, writeWords]);
+  }, [
+    confirmedPair,
+    details,
+    draft,
+    draftDuplicate.kind,
+    draftImage,
+    focusSource,
+    pictureSide,
+    subject,
+    subjectProfile,
+    usesWordLevels,
+    writeWords,
+  ]);
 
   const undo = useCallback(
     async (entryId) => {
@@ -642,7 +674,7 @@ export const useQuickAddWords = ({
       }),
     [ai.language, deckTags, languages.sourceLanguage, languages.targetLanguage, languages.tertiaryLanguage, usesWordLevels],
   );
-  const canUseAi = ai.isWanted && !pictureSide && canDraftCards(aiDeck);
+  const canUseAi = ai.isWanted && !pictureSide && subjectProfile.usesAssistant && canDraftCards(aiDeck);
   const [aiState, setAiState] = useState({ status: AI_STATUS.idle, done: 0, total: 0 });
   const [topic, setTopic] = useState({ text: "", level: "", count: 20 });
   const aiControllerRef = useRef(null);
@@ -817,7 +849,8 @@ export const useQuickAddWords = ({
     languages,
     languageOptions: LANGUAGE_OPTIONS,
     usesWordLevels,
-    tab,
+    subjectProfile,
+    tab: activeTab,
     setTab,
     draft,
     draftImage,
@@ -841,6 +874,7 @@ export const useQuickAddWords = ({
     isDeckNameMissing,
     handleNewDeckPictureChange,
     handleDraftChange,
+    handleSubjectFieldChange,
     handleDetailsChange,
     applySuggestion,
     deckTags,

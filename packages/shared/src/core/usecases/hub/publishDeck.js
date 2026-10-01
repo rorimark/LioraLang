@@ -1,4 +1,5 @@
 import { normalizePictureSide, PICTURE_SIDES } from "../cardContent/index.js";
+import { getSubjectProfile, storedSubject } from "../subjects/subjects.js";
 
 const MAX_DECK_TAGS = 10;
 const MAX_TARGET_LANGUAGES = 2;
@@ -92,6 +93,7 @@ const toPublishableDeck = (value = {}) => {
     sourceLanguage,
     targetLanguages,
     pictureSide,
+    subject: storedSubject(value?.subject),
     targetLanguageKeys: targetLanguages.map(toLanguageKey),
     tags: parseTags(value?.tags ?? value?.tagsJson),
     wordsCount: Number.isFinite(Number(value?.wordsCount))
@@ -103,6 +105,14 @@ const toPublishableDeck = (value = {}) => {
 const validatePublishableDeck = (publishableDeck) => {
   if (!publishableDeck?.title) {
     throw new Error("Deck title is required for publish");
+  }
+
+  // The Hub stores a deck by its languages; a deck about something else
+  // has none, and stays in the library until the Hub knows subjects.
+  if (!getSubjectProfile(publishableDeck?.subject).canPublishToHub) {
+    throw Object.assign(new Error("This kind of deck cannot be published to the Hub yet"), {
+      i18nKey: "hub.errors.subjectNotPublishable",
+    });
   }
 
   const pictureSide = publishableDeck?.pictureSide || "";

@@ -1,0 +1,197 @@
+// Acceptance for the Programming pilot, offline and without the assistant:
+// create a programming deck → save → close → reopen → learn → review, with
+// the network cut after the first visit. Also checks that nothing leaves
+// the machine while offline, that no assistant request is ever made, and
+// that a language deck beside it still studies as a language card.
+//
+// Usage: pnpm build:web && node scripts/acceptance/programming-offline.mjs
+// Needs Playwright with a Chromium (PLAYWRIGHT_CHROMIUM may point at one).
+
+import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
+import path from "node:path";
+import process from "node:process";
+import { setTimeout as sleep } from "node:timers/promises";
+
+const PORT = Number(process.env.ACCEPTANCE_PORT || 4176);
+const BASE = `http://127.0.0.1:${PORT}`;
+const CODE = 'const users = [{ name: "Ada" }, { name: "Linus" }];\n\nusers.map(user => user.name);';
+
+// Playwright is not a dependency of the app: it is found in the project
+// or in a folder named by NODE_PATH (a global install).
+const loadPlaywright = () => {
+  const require = createRequire(import.meta.url);
+  const places = [undefined, ...String(process.env.NODE_PATH || "").split(path.delimiter).filter(Boolean)];
+
+  for (const place of places) {
+    try {
+      return require(place ? require.resolve("playwright", { paths: [place] }) : "playwright");
+    } catch {
+      // Not here.
+    }
+  }
+
+  throw new Error("Playwright is not installed: npm i -g playwright, then run with NODE_PATH=$(npm root -g)");
+};
+
+const assert = (condition, message) => {
+  if (!condition) {
+    throw new Error(`Failed: ${message}`);
+  }
+
+  console.log(`  ok  ${message}`);
+};
+
+// The app's select is a button with a list of options.
+const choose = async (trigger, optionText) => {
+  await trigger.click();
+  await trigger.page().getByRole("option", { name: optionText }).first().click();
+};
+
+const startPreview = async () => {
+  const server = spawn("npx", ["vite", "preview", "--host", "127.0.0.1", "--port", String(PORT), "--strictPort"], {
+    stdio: "ignore",
+  });
+
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    try {
+      if ((await fetch(`${BASE}/app.html`)).ok) {
+        return server;
+      }
+    } catch {
+      // Not up yet.
+    }
+
+    await sleep(250);
+  }
+
+  server.kill();
+  throw new Error("The preview server did not start; run pnpm build:web first");
+};
+
+const main = async () => {
+  const { chromium } = loadPlaywright();
+  const server = await startPreview();
+  const browser = await chromium.launch(
+    process.env.PLAYWRIGHT_CHROMIUM ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM } : {},
+  );
+
+  try {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 860 } });
+    const outside = [];
+    const assistant = [];
+
+    context.on("request", (request) => {
+      const url = request.url();
+
+      if (/suggest-word|functions\/v1/.test(url)) {
+        assistant.push(url);
+      }
+
+      if (!url.startsWith(BASE) && !url.startsWith("data:") && !url.startsWith("blob:")) {
+        outside.push(url);
+      }
+    });
+
+    // First visit online: the service worker installs and keeps the app.
+    console.log("Online first visit");
+    const first = await context.newPage();
+    await first.goto(`${BASE}/app/decks`);
+    await first.evaluate(() => navigator.serviceWorker.ready.then(() => true));
+    await first.reload();
+    await first.waitForLoadState("networkidle");
+    await sleep(1500);
+    await first.close();
+
+    console.log("Offline from here on");
+    await context.setOffline(true);
+    outside.length = 0;
+
+    // Create and save.
+    const editor = await context.newPage();
+    await editor.goto(`${BASE}/app/decks/new`);
+    await editor.waitForSelector("input[name=name]");
+    await editor.getByText("Programming", { exact: true }).click();
+    await editor.fill("input[name=name]", "JavaScript offline");
+    await editor.fill("input[name=technology]", "JavaScript");
+    await editor.fill("input[name=source]", "What does this return?");
+    await editor.fill("input[name=target]", "A new array with every user's name.");
+    await editor.fill("textarea[name=code]", CODE);
+    await editor.getByRole("button", { name: /More details/ }).click();
+    await choose(editor.locator(".subject-field--choice [role=combobox]"), "Medium");
+    await editor.getByRole("button", { name: "Add card" }).click();
+    await editor.getByRole("button", { name: /Create deck/ }).first().click();
+    await editor.waitForURL(/\/app\/decks\/\d+\/edit/);
+    assert(true, "a programming deck is created offline");
+
+    // A language deck beside it, to see that it is untouched.
+    await editor.goto(`${BASE}/app/decks/new`);
+    await editor.waitForSelector("input[name=name]");
+    await editor.fill("input[name=name]", "Food offline");
+    await editor.fill("input[name=source]", "asparagus");
+    await editor.fill("input[name=target]", "szparag");
+    await editor.getByRole("button", { name: "Add word" }).click();
+    await editor.getByRole("button", { name: /Create deck/ }).first().click();
+    await editor.waitForURL(/\/app\/decks\/\d+\/edit/);
+
+    // Close, and open the app again.
+    await editor.close();
+    const page = await context.newPage();
+    await page.goto(`${BASE}/app/decks`);
+    await page.waitForSelector("text=JavaScript offline");
+    assert(await page.getByText("Programming · JavaScript").first().isVisible(), "the reopened library shows the deck by its subject");
+
+    // Learn: the card is laid out around its code.
+    await page.goto(`${BASE}/app/learn`);
+    await page.waitForSelector(".flashcard");
+    const deckSelect = page.locator("#learn-deck-select");
+    await choose(deckSelect, "JavaScript offline");
+    // Study with spaced repetition, so a grade is stored.
+    await page.locator("button[aria-label='Open session settings']").click();
+    await page.getByText("Spaced repetition", { exact: true }).click();
+    await page.getByRole("button", { name: /Back to cards/ }).click();
+
+    await page.waitForSelector(".flashcard--layout-code");
+    const front = page.locator(".flashcard__face--front");
+    assert((await front.locator(".flashcard__block-text--prompt").innerText()).includes("What does this return?"), "the question leads the front");
+    assert((await front.locator(".flashcard__code--primary code").innerText()) === CODE, "the code is shown as written");
+    assert((await front.locator(".flashcard__meta").innerText()).includes("JavaScript"), "the technology is on the card");
+    assert((await front.locator(".flashcard__meta").innerText()).includes("Medium"), "so is the difficulty");
+    await page.keyboard.press("Space");
+    await sleep(700);
+    const back = page.locator(".flashcard__face--back");
+    assert((await back.locator(".flashcard__block-text--answer").innerText()).includes("A new array"), "the answer leads the back");
+    await page.getByRole("button", { name: /Good/ }).first().click();
+    await sleep(800);
+    const reviewed = await page.evaluate(
+      () =>
+        new Promise((resolve, reject) => {
+          const request = indexedDB.open("lioralang-web");
+          request.onerror = () => reject(request.error);
+          request.onsuccess = () => {
+            const read = request.result.transaction("reviewCards").objectStore("reviewCards").getAll();
+            read.onsuccess = () => resolve(read.result);
+            read.onerror = () => reject(read.error);
+          };
+        }),
+    );
+    assert(reviewed.length === 1 && reviewed[0].reps >= 1, "the review is stored: one entry, one review unit");
+
+    // The language deck still studies as before.
+    await choose(deckSelect, "Food offline");
+    await page.waitForSelector(".flashcard:not(.flashcard--layout-code)");
+    assert((await page.locator(".flashcard__face--front .flashcard__text").innerText()).includes("asparagus"), "a language card is drawn as before");
+
+    assert(assistant.length === 0, "no assistant request was made");
+    assert(outside.length === 0, `nothing left the machine while offline${outside.length ? `: ${outside.join(", ")}` : ""}`);
+    console.log("Programming offline acceptance passed.");
+  } finally {
+    await browser.close();
+    server.kill();
+  }
+};
+
+main().catch((error) => {
+  console.error(error.message || error);
+  process.exitCode = 1;
+});

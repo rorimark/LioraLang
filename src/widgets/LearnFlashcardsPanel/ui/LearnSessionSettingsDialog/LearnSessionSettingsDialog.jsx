@@ -37,14 +37,22 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
   const id = useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-description`;
+  // What the deck is about decides which directions and card details
+  // there are to choose from.
+  const allowedDirections = dialog.subjectProfile?.directions;
+  const cardDetails = dialog.subjectProfile?.cardDetails;
   const directionOptions = useMemo(() => {
     const { source, target } = resolveDeckSideLabels(dialog.currentDeck, i18n);
     return [
       { value: LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET, label: `${source} → ${target}` },
       { value: LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE, label: `${target} → ${source}` },
       { value: LEARN_SESSION_DIRECTION_MIXED, label: `${source} ↔ ${target}` },
-    ];
-  }, [dialog.currentDeck, i18n]);
+    ].filter((option) => !allowedDirections || allowedDirections.includes(option.value));
+  }, [allowedDirections, dialog.currentDeck, i18n]);
+  const detailSettings = useMemo(
+    () => DETAIL_SETTINGS.filter(({ key }) => !cardDetails || cardDetails.includes(key)),
+    [cardDetails],
+  );
 
   const autoFlipOptions = useMemo(() => {
     const seconds = new Intl.NumberFormat(locale, {
@@ -130,19 +138,21 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                   />
                 }
               />
-              <SettingRow
-                label={t("session.direction.title")}
-                wide
-                control={
-                  <SettingSegmented
-                    name={`${id}-direction`}
-                    value={settings.directionMode}
-                    ariaLabel={t("session.direction.title")}
-                    options={directionOptions}
-                    onChange={(event) => dialog.onDirectionModeChange(event.target.value)}
-                  />
-                }
-              />
+              {directionOptions.length > 1 ? (
+                <SettingRow
+                  label={t("session.direction.title")}
+                  wide
+                  control={
+                    <SettingSegmented
+                      name={`${id}-direction`}
+                      value={settings.directionMode}
+                      ariaLabel={t("session.direction.title")}
+                      options={directionOptions}
+                      onChange={(event) => dialog.onDirectionModeChange(event.target.value)}
+                    />
+                  }
+                />
+              ) : null}
             </SettingGroup>
           </div>
 
@@ -198,8 +208,8 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
             </> : null}
           </SettingGroup>
 
-          <SettingGroup title={t("session.cardDetails")}>
-            {DETAIL_SETTINGS.map(({ key, message, handler }) => (
+          {detailSettings.length > 0 ? <SettingGroup title={t("session.cardDetails")}>
+            {detailSettings.map(({ key, message, handler }) => (
               <SettingRow
                 key={key}
                 label={t(`session.${message}.title`)}
@@ -208,7 +218,7 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                 control={<SettingSwitch id={`${id}-${key}`} checked={settings[key]} onChange={dialog[handler]} />}
               />
             ))}
-          </SettingGroup>
+          </SettingGroup> : null}
         </div>
 
         <footer className="learn-session-dialog__footer">

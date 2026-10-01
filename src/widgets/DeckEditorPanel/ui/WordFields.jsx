@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { WordImageField } from "@features/word-image-field";
 import { SuggestChip, SuggestField } from "@features/word-suggest";
+import { SubjectFieldInputs } from "@features/subject-fields";
 import { Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 
@@ -54,6 +55,8 @@ export const WordSideFields = memo(({
   frontLabel,
   backLabel,
   tertiaryLabel = "",
+  frontPlaceholder = "",
+  backPlaceholder = "",
   autoFocus = false,
   suggest = null,
 }) => {
@@ -70,7 +73,7 @@ export const WordSideFields = memo(({
         isPicture={pictureSide === "source"}
         otherText={draft.target}
         autoFocus={autoFocus}
-        placeholder={t("editor.wordPlaceholder")}
+        placeholder={frontPlaceholder || t("editor.wordPlaceholder")}
         suggest={suggest}
       />
       <SideInput
@@ -82,7 +85,7 @@ export const WordSideFields = memo(({
         isPicture={pictureSide === "target"}
         otherText={draft.source}
         autoFocus={autoFocus && pictureSide === "source"}
-        placeholder={t(pictureSide === "source" ? "editor.wordPlaceholder" : "editor.translationPlaceholder")}
+        placeholder={backPlaceholder || t(pictureSide === "source" ? "editor.wordPlaceholder" : "editor.translationPlaceholder")}
         suggest={suggest}
       />
       {/* The deck's extra language sits beside the two sides: it is part of
@@ -101,12 +104,31 @@ export const WordSideFields = memo(({
 
 WordSideFields.displayName = "WordSideFields";
 
+// The fields a deck's subject adds to an entry, of the given input types.
+export const WordSubjectFields = memo(({ fields, draft, onSubjectFieldChange, only = null }) => (
+  <SubjectFieldInputs
+    fields={fields}
+    values={draft.subjectFields}
+    onChange={onSubjectFieldChange}
+    only={only}
+    fieldClassName="deck-word-fields__field deck-word-fields__field--wide"
+    labelClassName="deck-word-fields__label"
+  />
+));
+
+WordSubjectFields.displayName = "WordSubjectFields";
+
 export const WordDetailFields = memo(({
   draft,
   onChange,
   usesWordLevels,
+  usesLanguages = true,
   levelOptions,
   partOfSpeechOptions,
+  examplesLabel = "",
+  examplesPlaceholder = "",
+  subjectFields = null,
+  onSubjectFieldChange,
   suggest = null,
 }) => {
   const { t, partOfSpeechName } = useI18n();
@@ -115,7 +137,11 @@ export const WordDetailFields = memo(({
 
   return (
     <div className="deck-word-fields__details">
-      {usesWordLevels ? (
+      {subjectFields ? (
+        <WordSubjectFields fields={subjectFields} draft={draft} onSubjectFieldChange={onSubjectFieldChange} only={["choice", "text"]} />
+      ) : null}
+
+      {usesLanguages && usesWordLevels ? (
         <label className="deck-word-fields__field deck-word-fields__field--short">
           <span className="deck-word-fields__label">
             {t("catalog.level")}
@@ -134,7 +160,7 @@ export const WordDetailFields = memo(({
         </label>
       ) : null}
 
-      <label className="deck-word-fields__field deck-word-fields__field--short">
+      {usesLanguages ? <label className="deck-word-fields__field deck-word-fields__field--short">
         <span className="deck-word-fields__label">
           {t("catalog.partOfSpeech")}
           <SuggestChip field="part_of_speech" suggest={suggest} label={partOfSpeechName} />
@@ -149,16 +175,16 @@ export const WordDetailFields = memo(({
             ))}
           </Select>
         </span>
-      </label>
+      </label> : null}
 
       <label className="deck-word-fields__field deck-word-fields__field--wide">
-        <span className="deck-word-fields__label">{t("flashcard.examples")}</span>
+        <span className="deck-word-fields__label">{examplesLabel || t("flashcard.examples")}</span>
         <SuggestField field="examplesInput" suggest={suggest} multiline>
           <textarea
             name="examplesInput"
             value={draft.examplesInput}
             onChange={onChange}
-            placeholder={t("editor.examplesPlaceholder")}
+            placeholder={examplesPlaceholder || t("editor.examplesPlaceholder")}
             rows={3}
           />
         </SuggestField>

@@ -10,6 +10,7 @@ import {
   FiRefreshCw,
 } from "react-icons/fi";
 import { DeckLanguagePair, DeckTagBadges } from "@entities/deck";
+import { getSubjectProfile } from "@shared/core/usecases/subjects";
 import { WordImage } from "@entities/word";
 import { InlineAlert, SearchField, Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -447,8 +448,15 @@ export const DeckDetailsPanel = memo(() => {
   const { t, languageName } = useI18n();
   const { deck } = panel;
 
-  // What each side is called in the list and on an open card.
+  // What each side is called in the list and on an open card: its
+  // language, "Picture", or what the deck's subject calls it.
   const labels = useMemo(() => {
+    const { entryText } = getSubjectProfile(deck?.subject);
+
+    if (entryText) {
+      return { front: t(entryText.source.labelKey), back: t(entryText.target.labelKey), tertiary: "" };
+    }
+
     const pictureSide = deck?.pictureSide || "";
     return {
       front: pictureSide === "source" ? t("media.label") : languageName(deck?.sourceLanguage || ""),
@@ -526,6 +534,8 @@ export const DeckDetailsPanel = memo(() => {
             source={deck.sourceLanguage}
             targets={[deck.targetLanguage, deck.tertiaryLanguage]}
             pictureSide={deck.pictureSide || ""}
+            subject={deck.subject}
+            subjectFields={deck.subjectFields}
           />
           <span>{t("deck.wordsCount", { count: panel.words.length })}</span>
           {tags.length > 0 ? <DeckTagBadges badges={tags} inline /> : null}

@@ -48,6 +48,9 @@ const toStoredWord = (word) => ({
   tags: Array.isArray(word.tags) ? word.tags : [],
   examples: Array.isArray(word.examples) ? word.examples : [],
   image: word.image || null,
+  // A subject's own fields (a programming card's code) go back as they
+  // came; dropping them here would erase them from every other card.
+  ...(word.subjectFields ? { subjectFields: word.subjectFields } : {}),
 });
 
 const buildSavePayload = (deck, words) => ({
@@ -91,6 +94,7 @@ export const toNewWord = (draft, index = 0) => ({
   tags: Array.isArray(draft?.tags) ? draft.tags : [],
   examples: Array.isArray(draft?.examples) ? draft.examples : [],
   image: draft?.image || null,
+  ...(draft?.subjectFields ? { subjectFields: draft.subjectFields } : {}),
 });
 
 // Nothing was stored: said as an error, never as "Added".

@@ -270,10 +270,14 @@ export default {
     "frontAria": "Kartın ön yüzü. Cevabı görmek için bas.",
     "reveal": "Cevabı görmek için dokun",
     "examples": "Örnekler",
-    "showFront": "Ön yüzü görmek için dokun"
+    "showFront": "Ön yüzü görmek için dokun",
+    "code": "Kod"
   },
   "hub": {
-    "notConfigured": "Hub bu sürümde kullanılamıyor."
+    "notConfigured": "Hub bu sürümde kullanılamıyor.",
+    "errors": {
+      "subjectNotPublishable": "Şimdilik Hub'da yalnızca dil desteleri yayımlanabilir."
+    }
   },
   "decks": {
     "untitled": "Deste",
@@ -1824,5 +1828,42 @@ export default {
     "again": "Başka bir öneri",
     "empty": "Henüz önerecek bir şey yok: bir ad ya da birkaç kelime ekleyin.",
     "error": "Açıklama yazılamadı. Tekrar deneyin."
+  },
+  "subjects": {
+    "label": "Konu",
+    "hint": "Kartların konusu. İlk karttan önce seçilir.",
+    "names": {
+      "language": "Diller",
+      "programming": "Programlama"
+    },
+    "sides": {
+      "question": "Soru",
+      "answer": "Cevap"
+    },
+    "fields": {
+      "question": "Terim veya soru",
+      "questionPlaceholder": "Bir terim ya da kodla ilgili bir soru",
+      "answer": "Cevap",
+      "answerPlaceholder": "Hatırlaman gereken",
+      "notes": "Notlar",
+      "notesPlaceholder": "Her satıra bir not",
+      "technology": "Teknoloji",
+      "technologyHint": "Her kartta görünür, örneğin JavaScript veya SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Kod",
+      "codePlaceholder": "İsteğe bağlı: bir kod parçası yapıştır veya yaz",
+      "difficulty": "Zorluk"
+    },
+    "difficulty": {
+      "easy": "Kolay",
+      "medium": "Orta",
+      "hard": "Zor"
+    },
+    "errors": {
+      "emptyQuestion": "Önce bir soru yaz.",
+      "emptyAnswer": "Cevabı ekle."
+    },
+    "addCard": "Kart ekle",
+    "cards": "Kartlar"
   }
 };

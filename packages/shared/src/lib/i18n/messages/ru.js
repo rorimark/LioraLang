@@ -272,10 +272,14 @@ export default {
     "frontAria": "Лицевая сторона карточки. Нажмите, чтобы увидеть ответ.",
     "reveal": "Нажмите, чтобы увидеть ответ",
     "examples": "Примеры",
-    "showFront": "Нажмите, чтобы вернуться к лицевой стороне"
+    "showFront": "Нажмите, чтобы вернуться к лицевой стороне",
+    "code": "Код"
   },
   "hub": {
-    "notConfigured": "Хаб недоступен в этой сборке."
+    "notConfigured": "Хаб недоступен в этой сборке.",
+    "errors": {
+      "subjectNotPublishable": "Пока в Hub можно публиковать только языковые колоды."
+    }
   },
   "decks": {
     "untitled": "Колода",
@@ -2008,5 +2012,42 @@ export default {
     "again": "Другой вариант",
     "empty": "Пока нечего предложить: добавьте название или несколько слов.",
     "error": "Не получилось написать описание. Попробуйте ещё раз."
+  },
+  "subjects": {
+    "label": "Тема",
+    "hint": "О чём карточки. Выбирается до первой карточки.",
+    "names": {
+      "language": "Языки",
+      "programming": "Программирование"
+    },
+    "sides": {
+      "question": "Вопрос",
+      "answer": "Ответ"
+    },
+    "fields": {
+      "question": "Термин или вопрос",
+      "questionPlaceholder": "Термин или вопрос по коду",
+      "answer": "Ответ",
+      "answerPlaceholder": "Что нужно вспомнить",
+      "notes": "Заметки",
+      "notesPlaceholder": "По одной заметке на строку",
+      "technology": "Технология",
+      "technologyHint": "Видна на каждой карточке, например JavaScript или SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Код",
+      "codePlaceholder": "Необязательно: вставьте или напишите фрагмент",
+      "difficulty": "Сложность"
+    },
+    "difficulty": {
+      "easy": "Легко",
+      "medium": "Средне",
+      "hard": "Сложно"
+    },
+    "errors": {
+      "emptyQuestion": "Сначала напишите вопрос.",
+      "emptyAnswer": "Добавьте ответ."
+    },
+    "addCard": "Добавить карточку",
+    "cards": "Карточки"
   }
 };

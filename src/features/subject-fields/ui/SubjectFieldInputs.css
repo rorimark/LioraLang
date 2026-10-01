@@ -1,0 +1,34 @@
+.subject-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* Two classes, so a host's own field styles (".x > span", ".x textarea")
+   do not restyle the select or the code. */
+.subject-field > .subject-field__select {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.subject-field__hint {
+  color: var(--color-text-subtle);
+  font-size: 0.78rem;
+}
+
+/* Code is typed as it will be read: monospace, its own lines and indents,
+   scrolling sideways instead of wrapping. */
+.subject-field .subject-field__code {
+  width: 100%;
+  min-height: 8.5em;
+  resize: vertical;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  tab-size: 2;
+  white-space: pre;
+  overflow-x: auto;
+}

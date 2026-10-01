@@ -1000,3 +1000,13 @@
     transition: none !important;
   }
 }
+
+/* A subject's code sits under the two sides, as part of the card. */
+.deck-composer__subject {
+  display: grid;
+  margin-top: 10px;
+}
+
+.deck-composer__subject:empty {
+  display: none;
+}

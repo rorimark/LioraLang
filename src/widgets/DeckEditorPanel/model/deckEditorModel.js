@@ -11,6 +11,12 @@ import {
   PICTURE_SIDES,
   storedLearnedSide,
 } from "@shared/core/usecases/cardContent";
+import {
+  getSubjectProfile,
+  normalizeDeckSubjectFields,
+  normalizeEntrySubjectFields,
+  storedSubject,
+} from "@shared/core/usecases/subjects";
 
 // The deck editor's data, without React: what the form holds, what a word
 // draft holds, and what goes to storage. Everything here is pure.
@@ -97,6 +103,8 @@ export const createDefaultDeckForm = (deckDefaults = {}) => {
     tertiaryLanguage: "",
     pictureSide: "",
     learnedSide: LEARNED_SIDES.source,
+    subject: "",
+    subjectFields: {},
     usesWordLevels: true,
     tagsInput: parseTags(deckDefaults?.tags).slice(0, MAX_DECK_TAGS).join(", "),
   };
@@ -110,6 +118,8 @@ export const toDeckForm = (deck = {}) => ({
   tertiaryLanguage: deck?.tertiaryLanguage || "",
   pictureSide: normalizePictureSide(deck?.pictureSide),
   learnedSide: normalizeLearnedSide(deck?.learnedSide),
+  subject: storedSubject(deck?.subject),
+  subjectFields: normalizeDeckSubjectFields(deck?.subject, deck?.subjectFields),
   usesWordLevels: deck?.usesWordLevels !== false,
   tagsInput: parseTags(deck?.tags ?? deck?.tagsJson).join(", "),
 });
@@ -125,6 +135,7 @@ export const createEmptyWordDraft = (deckDefaults = {}) => ({
   examplesInput: "",
   tagsInput: "",
   image: null,
+  subjectFields: {},
 });
 
 const toExamples = (word) =>
@@ -142,6 +153,7 @@ export const toEditableWord = (word = {}) => ({
   tags: parseTags(word?.tags),
   examples: toExamples(word),
   image: normalizeWordImage(word?.image),
+  subjectFields: word?.subjectFields || {},
 });
 
 export const toWordDraft = (word = {}) => ({
@@ -153,11 +165,23 @@ export const toWordDraft = (word = {}) => ({
   examplesInput: toExamples(word).join("\n"),
   tagsInput: parseTags(word?.tags).join(", "),
   image: normalizeWordImage(word?.image),
+  subjectFields: word?.subjectFields || {},
 });
 
 // What is missing before a draft can be a word, as a message key; "" when
-// nothing is. A picture side needs its picture, a language side its text.
-export const validateWordDraft = (draft, pictureSide = "") => {
+// nothing is. A picture side needs its picture, a language side its text;
+// a subject with its own sides says what each one is called.
+export const validateWordDraft = (draft, pictureSide = "", subject = "") => {
+  const { entryText } = getSubjectProfile(subject);
+
+  if (entryText) {
+    if (!clean(draft?.source)) {
+      return entryText.source.errorKey;
+    }
+
+    return clean(draft?.target) ? "" : entryText.target.errorKey;
+  }
+
   const side = normalizePictureSide(pictureSide);
 
   if (side && !normalizeWordImage(draft?.image)) {
@@ -176,8 +200,13 @@ export const validateWordDraft = (draft, pictureSide = "") => {
   return "";
 };
 
-export const draftToWord = (draft, { base = {}, pictureSide = "", usesWordLevels = true, hasTertiary = false } = {}) => {
+export const draftToWord = (
+  draft,
+  { base = {}, pictureSide = "", usesWordLevels = true, hasTertiary = false, subject = "" } = {},
+) => {
   const examples = parseExamplesInput(draft?.examplesInput);
+  // Levels and parts of speech belong to words of a language.
+  const { usesLanguages } = getSubjectProfile(subject);
 
   return {
     ...base,
@@ -185,11 +214,12 @@ export const draftToWord = (draft, { base = {}, pictureSide = "", usesWordLevels
     source: clean(draft?.source),
     target: clean(draft?.target),
     tertiary: hasTertiary ? clean(draft?.tertiary) : "",
-    level: usesWordLevels && LEVELS.has(draft?.level) ? draft.level : "",
-    part_of_speech: PARTS.has(draft?.part_of_speech) ? draft.part_of_speech : "",
+    level: usesLanguages && usesWordLevels && LEVELS.has(draft?.level) ? draft.level : "",
+    part_of_speech: usesLanguages && PARTS.has(draft?.part_of_speech) ? draft.part_of_speech : "",
     tags: parseTagsInput(draft?.tagsInput),
     examples,
     image: normalizePictureSide(pictureSide) ? normalizeWordImage(draft?.image) : null,
+    subjectFields: normalizeEntrySubjectFields(subject, draft?.subjectFields),
   };
 };
 
@@ -199,6 +229,11 @@ export const validateDeckForm = (form = {}) => {
 
   if (!clean(form.name)) {
     return "editor.errors.nameRequired";
+  }
+
+  // A deck about something other than a language has no languages.
+  if (!getSubjectProfile(form.subject).usesLanguages) {
+    return "";
   }
 
   const source = side === PICTURE_SIDES.source ? "" : clean(form.sourceLanguage);
@@ -219,31 +254,37 @@ export const validateDeckForm = (form = {}) => {
 };
 
 export const buildSavePayload = ({ deckId = null, form = {}, words = [] }) => {
-  const pictureSide = normalizePictureSide(form.pictureSide);
-  const tertiaryLanguage = clean(form.tertiaryLanguage);
+  const subject = storedSubject(form.subject);
+  const { usesLanguages } = getSubjectProfile(subject);
+  const pictureSide = usesLanguages ? normalizePictureSide(form.pictureSide) : "";
+  const tertiaryLanguage = usesLanguages ? clean(form.tertiaryLanguage) : "";
+  const usesWordLevels = usesLanguages && form.usesWordLevels !== false;
 
   return {
     ...(deckId ? { deckId } : {}),
     name: clean(form.name),
     description: clean(form.description),
-    sourceLanguage: pictureSide === PICTURE_SIDES.source ? "" : clean(form.sourceLanguage),
-    targetLanguage: pictureSide === PICTURE_SIDES.target ? "" : clean(form.targetLanguage),
+    sourceLanguage: !usesLanguages || pictureSide === PICTURE_SIDES.source ? "" : clean(form.sourceLanguage),
+    targetLanguage: !usesLanguages || pictureSide === PICTURE_SIDES.target ? "" : clean(form.targetLanguage),
     tertiaryLanguage,
     pictureSide,
-    learnedSide: storedLearnedSide(form.learnedSide),
+    learnedSide: usesLanguages ? storedLearnedSide(form.learnedSide) : "",
+    subject,
+    subjectFields: normalizeDeckSubjectFields(subject, form.subjectFields),
     tags: parseTagsInput(form.tagsInput, MAX_DECK_TAGS),
-    usesWordLevels: form.usesWordLevels !== false,
+    usesWordLevels,
     words: words.map((word) => ({
       id: Number.isInteger(Number(word.id)) && Number(word.id) > 0 ? Number(word.id) : null,
       externalId: word.externalId,
       source: word.source,
       target: word.target,
       tertiary: tertiaryLanguage ? word.tertiary : "",
-      level: form.usesWordLevels !== false ? word.level || null : null,
-      part_of_speech: word.part_of_speech,
+      level: usesWordLevels ? word.level || null : null,
+      part_of_speech: usesLanguages ? word.part_of_speech : "",
       tags: word.tags,
       examples: word.examples,
       image: pictureSide ? word.image : null,
+      subjectFields: normalizeEntrySubjectFields(subject, word.subjectFields),
     })),
   };
 };
@@ -276,7 +317,7 @@ export const matchesWordQuery = (word, query) => {
     return true;
   }
 
-  return [word.source, word.target, word.tertiary, word.image?.alt, ...(word.tags || [])]
+  return [word.source, word.target, word.tertiary, word.image?.alt, word.subjectFields?.code, ...(word.tags || [])]
     .filter(Boolean)
     .some((value) => String(value).toLowerCase().includes(needle));
 };

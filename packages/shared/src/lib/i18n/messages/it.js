@@ -271,10 +271,14 @@ export default {
     "frontAria": "Fronte della carta. Premi per vedere la risposta.",
     "reveal": "Tocca per vedere la risposta",
     "examples": "Esempi",
-    "showFront": "Tocca per rivedere il fronte"
+    "showFront": "Tocca per rivedere il fronte",
+    "code": "Codice"
   },
   "hub": {
-    "notConfigured": "L'hub non è disponibile in questa versione."
+    "notConfigured": "L'hub non è disponibile in questa versione.",
+    "errors": {
+      "subjectNotPublishable": "Per ora nell’Hub si possono pubblicare solo mazzi di lingue."
+    }
   },
   "decks": {
     "untitled": "Mazzo",
@@ -1916,5 +1920,42 @@ export default {
     "again": "Un'altra proposta",
     "empty": "Ancora niente da suggerire: aggiungi un nome o qualche parola.",
     "error": "Impossibile scrivere la descrizione. Riprova."
+  },
+  "subjects": {
+    "label": "Argomento",
+    "hint": "Di cosa parlano le carte. Si sceglie prima della prima carta.",
+    "names": {
+      "language": "Lingue",
+      "programming": "Programmazione"
+    },
+    "sides": {
+      "question": "Domanda",
+      "answer": "Risposta"
+    },
+    "fields": {
+      "question": "Termine o domanda",
+      "questionPlaceholder": "Un termine o una domanda sul codice",
+      "answer": "Risposta",
+      "answerPlaceholder": "Cosa devi ricordare",
+      "notes": "Note",
+      "notesPlaceholder": "Una nota per riga",
+      "technology": "Tecnologia",
+      "technologyHint": "Compare su ogni carta, ad esempio JavaScript o SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Codice",
+      "codePlaceholder": "Facoltativo: incolla o scrivi un frammento",
+      "difficulty": "Difficoltà"
+    },
+    "difficulty": {
+      "easy": "Facile",
+      "medium": "Media",
+      "hard": "Difficile"
+    },
+    "errors": {
+      "emptyQuestion": "Scrivi prima una domanda.",
+      "emptyAnswer": "Aggiungi la risposta."
+    },
+    "addCard": "Aggiungi carta",
+    "cards": "Carte"
   }
 };

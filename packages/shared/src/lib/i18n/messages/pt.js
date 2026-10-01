@@ -271,10 +271,14 @@ export default {
     "frontAria": "Frente do cartão. Pressione para ver a resposta.",
     "reveal": "Toque para ver a resposta",
     "examples": "Exemplos",
-    "showFront": "Toque para ver a frente"
+    "showFront": "Toque para ver a frente",
+    "code": "Código"
   },
   "hub": {
-    "notConfigured": "O hub não está disponível nesta versão."
+    "notConfigured": "O hub não está disponível nesta versão.",
+    "errors": {
+      "subjectNotPublishable": "Por enquanto só é possível publicar no Hub baralhos de idiomas."
+    }
   },
   "decks": {
     "untitled": "Baralho",
@@ -1916,5 +1920,42 @@ export default {
     "again": "Outra opção",
     "empty": "Ainda não há o que sugerir: adicione um nome ou algumas palavras.",
     "error": "Não foi possível escrever a descrição. Tente de novo."
+  },
+  "subjects": {
+    "label": "Assunto",
+    "hint": "Sobre o que são os cartões. Escolhido antes do primeiro cartão.",
+    "names": {
+      "language": "Idiomas",
+      "programming": "Programação"
+    },
+    "sides": {
+      "question": "Pergunta",
+      "answer": "Resposta"
+    },
+    "fields": {
+      "question": "Termo ou pergunta",
+      "questionPlaceholder": "Um termo ou uma pergunta sobre código",
+      "answer": "Resposta",
+      "answerPlaceholder": "O que você deve lembrar",
+      "notes": "Notas",
+      "notesPlaceholder": "Uma nota por linha",
+      "technology": "Tecnologia",
+      "technologyHint": "Aparece em cada cartão, por exemplo JavaScript ou SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Código",
+      "codePlaceholder": "Opcional: cole ou digite um trecho",
+      "difficulty": "Dificuldade"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Média",
+      "hard": "Difícil"
+    },
+    "errors": {
+      "emptyQuestion": "Escreva uma pergunta primeiro.",
+      "emptyAnswer": "Adicione a resposta."
+    },
+    "addCard": "Adicionar cartão",
+    "cards": "Cartões"
   }
 };

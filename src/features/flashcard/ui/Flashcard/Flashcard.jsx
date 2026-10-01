@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { WordImage } from "@entities/word";
 import { useI18n } from "@shared/lib/i18n";
+import { FlashcardBlockFace } from "./FlashcardBlocks";
 import "./Flashcard.css";
 
 const EMPTY_CARD = Object.freeze({});
@@ -34,10 +35,12 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
       onFlip,
       disabled = false,
       frontNote = "",
+      presentation = null,
     } = card;
     const className = [
       "flashcard",
       variant ? `flashcard--${variant}` : "",
+      presentation ? `flashcard--layout-${presentation.layout}` : "",
       isFlipped ? "flashcard--flipped" : "",
     ]
       .filter(Boolean)
@@ -56,6 +59,24 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
         }
         aria-pressed={isFlipped}
       >
+        {presentation ? (
+          <span className="flashcard__inner">
+            <FlashcardBlockFace
+              side="front"
+              label={presentation.labels?.front ? t(presentation.labels.front) : frontLabel}
+              blocks={presentation.front}
+              hint={t("flashcard.reveal")}
+              isHidden={isFlipped}
+            />
+            <FlashcardBlockFace
+              side="back"
+              label={presentation.labels?.back ? t(presentation.labels.back) : backLabel}
+              blocks={presentation.back}
+              hint={t("flashcard.showFront")}
+              isHidden={!isFlipped}
+            />
+          </span>
+        ) : (
         <span className="flashcard__inner">
           <span
             className="flashcard__face flashcard__face--front"
@@ -128,6 +149,7 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
             </span>
           </span>
         </span>
+        )}
       </button>
     );
   });

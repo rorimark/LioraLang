@@ -27,36 +27,77 @@ const DIRECTIONS = Object.freeze({
 
 export const DIFFICULTIES = Object.freeze(["easy", "medium", "hard"]);
 
+// Labels, placeholders and errors are message keys, so the interface
+// draws a subject's forms from its profile without knowing which it is.
 const LANGUAGE_PROFILE = Object.freeze({
   id: SUBJECTS.language,
+  nameKey: "subjects.names.language",
   usesLanguages: true,
+  canPublishToHub: true,
   usesAssistant: true,
   directions: [DIRECTIONS.sourceToTarget, DIRECTIONS.targetToSource, DIRECTIONS.mixed],
+  // Side names come from the deck's languages.
+  sideLabels: null,
+  // The Learn settings that show more of a card.
+  cardDetails: ["showExamples", "showLevel", "showPartOfSpeech"],
+  // The word form's own labels and errors are used.
+  entryText: null,
   deckFields: {},
   entryFields: {},
   presentation: null,
 });
 
-// Programming: a question about a piece of code, the code itself as the
-// thing to look at, and a short answer. The technology is the deck's
-// context; difficulty is not CEFR.
+// Programming: a term or a question, often about a piece of code, and a
+// short answer. With code, the code is the thing to look at; without it, a
+// term is the headline, the way a word is on a language card. The
+// technology is the deck's context; difficulty is not CEFR.
 const PROGRAMMING_PROFILE = Object.freeze({
   id: SUBJECTS.programming,
+  nameKey: "subjects.names.programming",
   usesLanguages: false,
+  // The Hub keeps languages in columns; until it knows subjects, these
+  // decks stay in the library.
+  canPublishToHub: false,
   usesAssistant: false,
   directions: [DIRECTIONS.sourceToTarget],
+  // Message keys: the sides are a question and its answer.
+  sideLabels: { source: "subjects.sides.question", target: "subjects.sides.answer" },
+  cardDetails: [],
+  entryText: {
+    addKey: "subjects.addCard",
+    listKey: "subjects.cards",
+    source: { labelKey: "subjects.fields.question", placeholderKey: "subjects.fields.questionPlaceholder", errorKey: "subjects.errors.emptyQuestion" },
+    target: { labelKey: "subjects.fields.answer", placeholderKey: "subjects.fields.answerPlaceholder", errorKey: "subjects.errors.emptyAnswer" },
+    examples: { labelKey: "subjects.fields.notes", placeholderKey: "subjects.fields.notesPlaceholder" },
+  },
   deckFields: {
-    technology: { type: "text", maxLength: 40 },
+    technology: {
+      type: "text",
+      maxLength: 40,
+      labelKey: "subjects.fields.technology",
+      hintKey: "subjects.fields.technologyHint",
+      placeholderKey: "subjects.fields.technologyPlaceholder",
+    },
   },
   entryFields: {
-    code: { type: "code", maxLength: 4000 },
-    difficulty: { type: "choice", values: DIFFICULTIES },
+    code: {
+      type: "code",
+      maxLength: 4000,
+      labelKey: "subjects.fields.code",
+      placeholderKey: "subjects.fields.codePlaceholder",
+    },
+    difficulty: {
+      type: "choice",
+      values: DIFFICULTIES,
+      labelKey: "subjects.fields.difficulty",
+      valueKey: "subjects.difficulty",
+    },
   },
   presentation: {
     layout: "code",
     front: [
-      { block: "meta", items: [{ kind: "technology", from: "deck.technology" }, { kind: "difficulty", from: "entry.difficulty" }] },
-      { block: "text", role: "prompt", from: "entry.source" },
+      { block: "meta", items: [{ kind: "technology", from: "deck.technology" }, { kind: "difficulty", from: "entry.difficulty", labelKey: "subjects.difficulty", scale: DIFFICULTIES }] },
+      { block: "text", role: "prompt", from: "entry.source", leadsWithout: "entry.code" },
       { block: "code", emphasis: "primary", from: "entry.code" },
     ],
     back: [
@@ -162,7 +203,14 @@ const cleanText = (value) => (typeof value === "string" ? value.trim() : "");
 const buildBlock = (spec, context) => {
   if (spec.block === "meta") {
     const items = spec.items
-      .map((item) => ({ kind: item.kind, value: cleanText(readSource(item.from, context)) }))
+      .map((item) => {
+        const value = cleanText(readSource(item.from, context));
+        // A value from a fixed list is shown by its message key.
+        const shown = item.labelKey && value ? { labelKey: `${item.labelKey}.${value}` } : {};
+        // A value on a scale also says where on it it sits (2 of 3).
+        const step = item.scale ? item.scale.indexOf(value) + 1 : 0;
+        return { kind: item.kind, value, ...shown, ...(step ? { step, steps: item.scale.length } : {}) };
+      })
       .filter((item) => item.value);
     return items.length ? { type: "meta", items } : null;
   }
@@ -174,6 +222,9 @@ const buildBlock = (spec, context) => {
   }
 
   const value = readSource(spec.from, context);
+  // A text that stands alone on its face, with nothing it introduces, is
+  // set as the headline.
+  const leads = Boolean(spec.leadsWithout) && !cleanText(readSource(spec.leadsWithout, context));
   const text = spec.block === "code" ? (typeof value === "string" ? value.replace(/\s+$/, "") : "") : cleanText(value);
 
   if (!text) {
@@ -182,7 +233,7 @@ const buildBlock = (spec, context) => {
 
   return spec.block === "code"
     ? { type: "code", emphasis: spec.emphasis, text }
-    : { type: "text", role: spec.role, text };
+    : { type: "text", role: spec.role, text, ...(leads ? { emphasis: "lead" } : {}) };
 };
 
 // How one entry is shown on a card, as blocks the renderer draws with the
@@ -207,6 +258,7 @@ export const buildCardPresentation = ({ entry = {}, deck = {} } = {}) => {
   return {
     subject,
     layout: profile.presentation.layout,
+    labels: { front: profile.sideLabels?.source || "", back: profile.sideLabels?.target || "" },
     front: build(profile.presentation.front),
     back: build(profile.presentation.back),
   };

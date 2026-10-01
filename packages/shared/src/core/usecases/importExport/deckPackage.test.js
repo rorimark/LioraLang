@@ -168,6 +168,7 @@ describe("deckPackage", () => {
         words: [{ source: "asparagus", target: "szparag", subjectFields: { code: "x" } }],
       });
 
+      expect(exported.version).toBe(1);
       expect(exported.deck).not.toHaveProperty("subject");
       expect(exported.deck).not.toHaveProperty("subjectFields");
       expect(exported.words[0]).not.toHaveProperty("subjectFields");
@@ -187,6 +188,8 @@ describe("deckPackage", () => {
       });
 
       expect(exported.deck.subject).toBe("programming");
+      // An app that knows only version 1 refuses it instead of losing the code.
+      expect(exported.version).toBe(2);
       expect(exported.deck.subjectFields).toEqual({ technology: "JavaScript" });
       expect(exported.words[0].subjectFields).toEqual({
         code: "users.map(user => user.name)",

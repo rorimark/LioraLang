@@ -269,10 +269,14 @@ export default {
     "frontAria": "カードの表面。押すと答えを表示します。",
     "reveal": "タップして答えを表示",
     "examples": "例文",
-    "showFront": "タップして表面を表示"
+    "showFront": "タップして表面を表示",
+    "code": "コード"
   },
   "hub": {
-    "notConfigured": "このビルドではハブを利用できません。"
+    "notConfigured": "このビルドではハブを利用できません。",
+    "errors": {
+      "subjectNotPublishable": "現在、Hub に公開できるのは言語のデッキだけです。"
+    }
   },
   "decks": {
     "untitled": "デッキ",
@@ -1732,5 +1736,42 @@ export default {
     "again": "別の案",
     "empty": "まだ提案できません。名前か単語をいくつか追加してください。",
     "error": "説明を書けませんでした。もう一度お試しください。"
+  },
+  "subjects": {
+    "label": "分野",
+    "hint": "カードの内容。最初のカードの前に選びます。",
+    "names": {
+      "language": "言語",
+      "programming": "プログラミング"
+    },
+    "sides": {
+      "question": "質問",
+      "answer": "答え"
+    },
+    "fields": {
+      "question": "用語または質問",
+      "questionPlaceholder": "用語、またはコードについての質問",
+      "answer": "答え",
+      "answerPlaceholder": "思い出すべきこと",
+      "notes": "メモ",
+      "notesPlaceholder": "1 行に 1 つのメモ",
+      "technology": "技術",
+      "technologyHint": "すべてのカードに表示されます。例: JavaScript、SQL。",
+      "technologyPlaceholder": "JavaScript",
+      "code": "コード",
+      "codePlaceholder": "任意: コードを貼り付けるか入力",
+      "difficulty": "難易度"
+    },
+    "difficulty": {
+      "easy": "やさしい",
+      "medium": "ふつう",
+      "hard": "むずかしい"
+    },
+    "errors": {
+      "emptyQuestion": "まず質問を入力してください。",
+      "emptyAnswer": "答えを追加してください。"
+    },
+    "addCard": "カードを追加",
+    "cards": "カード"
   }
 };

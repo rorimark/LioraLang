@@ -52,6 +52,13 @@
   /* The ruled lines and the red header line of a paper index card. */
   --flashcard-rule: rgba(37, 99, 235, 0.1);
   --flashcard-header-rule: rgba(255, 90, 95, 0.6);
+  /* A card about code: dotted engineering paper and an editor pane. */
+  --flashcard-grid-dot: rgba(37, 99, 235, 0.16);
+  --flashcard-code-bg: #172138;
+  --flashcard-code-edge: #0e1527;
+  --flashcard-code-text: #e7edfb;
+  --flashcard-code-gutter: rgba(231, 237, 251, 0.34);
+  --flashcard-code-accent: #7aa2ff;
 
   /* Charts on the progress page. One blue ramp, light to dark, for
      "more" (activity) and "further along" (a word's stage); the empty
@@ -141,6 +148,12 @@
   --flashcard-border: #33466a;
   --flashcard-rule: rgba(120, 160, 255, 0.08);
   --flashcard-header-rule: rgba(255, 110, 115, 0.5);
+  --flashcard-grid-dot: rgba(120, 160, 255, 0.14);
+  --flashcard-code-bg: #0b1425;
+  --flashcard-code-edge: #050b17;
+  --flashcard-code-text: #dfe7fb;
+  --flashcard-code-gutter: rgba(223, 231, 251, 0.32);
+  --flashcard-code-accent: #7aa2ff;
 
   --chart-track: #24334f;
   --chart-ramp-1: #3a5ea8;

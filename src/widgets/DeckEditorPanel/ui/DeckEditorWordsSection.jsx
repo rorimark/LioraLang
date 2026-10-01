@@ -6,7 +6,7 @@ import { WordImage } from "@entities/word";
 import { SearchField } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 import { useDeckEditorPanelContext } from "../model";
-import { WordDetailFields, WordSideFields } from "./WordFields";
+import { WordDetailFields, WordSideFields, WordSubjectFields } from "./WordFields";
 
 // A mouse and a keyboard mean the cursor can wait in the first field; on a
 // phone that would open the keyboard over the page.
@@ -45,8 +45,10 @@ const WordComposer = memo(({ labels }) => {
     addError,
     handleAddDraftChange,
     handleAddDraftImageChange,
+    handleAddDraftSubjectFieldChange,
     applyAddDraftPatch,
     submitAddDraft,
+    subjectProfile,
   } = useDeckEditorPanelContext();
   const { t } = useI18n();
   const formRef = useRef(null);
@@ -58,6 +60,8 @@ const WordComposer = memo(({ labels }) => {
     deck: suggestDeck,
     defaults: addDraftDefaults,
     onFill: applyAddDraftPatch,
+    // Suggestions are for subjects the assistant knows.
+    enabled: subjectProfile.usesAssistant,
   });
   const summary = useSuggestionSummary(suggest);
   // Details the suggestion filled while they were folded away.
@@ -86,12 +90,24 @@ const WordComposer = memo(({ labels }) => {
           frontLabel={labels.front}
           backLabel={labels.back}
           tertiaryLabel={hasTertiary ? labels.tertiary : ""}
+          frontPlaceholder={labels.frontPlaceholder}
+          backPlaceholder={labels.backPlaceholder}
           autoFocus={autoFocus}
         />
         <button type="submit" className="deck-composer__add">
           <FiPlus aria-hidden />
-          <span>{t("editor.addWord")}</span>
+          <span>{t(subjectProfile.entryText?.addKey || "editor.addWord")}</span>
         </button>
+      </div>
+      {/* A subject's code is part of the card itself, so it is never
+          folded away with the details. */}
+      <div className="deck-composer__subject">
+        <WordSubjectFields
+          fields={subjectProfile.entryFields}
+          draft={addDraft}
+          onSubjectFieldChange={handleAddDraftSubjectFieldChange}
+          only={["code"]}
+        />
       </div>
 
       <div className="deck-composer__foot">
@@ -129,8 +145,13 @@ const WordComposer = memo(({ labels }) => {
             draft={addDraft}
             onChange={handleAddDraftChange}
             usesWordLevels={deckForm.usesWordLevels}
+            usesLanguages={subjectProfile.usesLanguages}
             levelOptions={levelOptions}
             partOfSpeechOptions={partOfSpeechOptions}
+            examplesLabel={labels.examples}
+            examplesPlaceholder={labels.examplesPlaceholder}
+            subjectFields={subjectProfile.entryFields}
+            onSubjectFieldChange={handleAddDraftSubjectFieldChange}
           />
         ) : null}
       </div>
@@ -155,10 +176,12 @@ const WordEditor = memo(({ word, labels }) => {
     editError,
     handleEditDraftChange,
     handleEditDraftImageChange,
+    handleEditDraftSubjectFieldChange,
     applyEditDraftPatch,
     submitEditDraft,
     cancelEdit,
     deleteWord,
+    subjectProfile,
   } = useDeckEditorPanelContext();
   const { t } = useI18n();
   const formRef = useRef(null);
@@ -169,6 +192,7 @@ const WordEditor = memo(({ word, labels }) => {
     deck: suggestDeck,
     defaults: addDraftDefaults,
     onFill: applyEditDraftPatch,
+    enabled: subjectProfile.usesAssistant,
   });
   const summary = useSuggestionSummary(suggest);
 
@@ -207,14 +231,27 @@ const WordEditor = memo(({ word, labels }) => {
         frontLabel={labels.front}
         backLabel={labels.back}
         tertiaryLabel={hasTertiary ? labels.tertiary : ""}
+        frontPlaceholder={labels.frontPlaceholder}
+        backPlaceholder={labels.backPlaceholder}
+      />
+      <WordSubjectFields
+        fields={subjectProfile.entryFields}
+        draft={editDraft}
+        onSubjectFieldChange={handleEditDraftSubjectFieldChange}
+        only={["code"]}
       />
       <WordDetailFields
         suggest={suggest}
         draft={editDraft}
         onChange={handleEditDraftChange}
         usesWordLevels={deckForm.usesWordLevels}
+        usesLanguages={subjectProfile.usesLanguages}
         levelOptions={levelOptions}
         partOfSpeechOptions={partOfSpeechOptions}
+        examplesLabel={labels.examples}
+        examplesPlaceholder={labels.examplesPlaceholder}
+        subjectFields={subjectProfile.entryFields}
+        onSubjectFieldChange={handleEditDraftSubjectFieldChange}
       />
       {editError ? (
         <p className="deck-composer__error" role="alert">
@@ -245,7 +282,7 @@ WordEditor.displayName = "WordEditor";
 
 // ——— The list ———
 
-const WordRow = memo(({ word, labels, pictureSide, isEditing, onEdit, onDelete }) => {
+const WordRow = memo(({ word, labels, pictureSide, entryFields, isEditing, onEdit, onDelete }) => {
   const { t, partOfSpeechName } = useI18n();
   const name = word.source || word.image?.alt || word.target || "—";
 
@@ -257,7 +294,11 @@ const WordRow = memo(({ word, labels, pictureSide, isEditing, onEdit, onDelete }
     );
   }
 
-  const meta = [word.level, word.part_of_speech && partOfSpeechName(word.part_of_speech)]
+  // A subject's values from a fixed list (a difficulty) join the meta.
+  const subjectMeta = Object.entries(entryFields || {})
+    .filter(([key, spec]) => spec.type === "choice" && word.subjectFields?.[key])
+    .map(([key, spec]) => t(`${spec.valueKey}.${word.subjectFields[key]}`));
+  const meta = [word.level, word.part_of_speech && partOfSpeechName(word.part_of_speech), ...subjectMeta]
     .filter(Boolean)
     .join(" · ");
 
@@ -326,6 +367,7 @@ export const DeckEditorWordsSection = memo(({ labels }) => {
     isPasteOpen,
     openPaste,
     closePaste,
+    subjectProfile,
   } = useDeckEditorPanelContext();
   const { t } = useI18n();
   const headingId = useId();
@@ -333,8 +375,9 @@ export const DeckEditorWordsSection = memo(({ labels }) => {
     () => handleWordsQueryChange({ target: { value: "" } }),
     [handleWordsQueryChange],
   );
-  // A pasted list is text; a picture deck takes its words one by one.
-  const canPaste = isEditMode && !pictureSide;
+  // A pasted list is words of a language; a picture deck, or a deck about
+  // something else, takes its entries one by one.
+  const canPaste = isEditMode && !pictureSide && subjectProfile.usesLanguages;
   const deletedName = lastDeleted
     ? lastDeleted.word.source || lastDeleted.word.image?.alt || lastDeleted.word.target
     : "";
@@ -343,7 +386,7 @@ export const DeckEditorWordsSection = memo(({ labels }) => {
     <section className="deck-editor__words" aria-labelledby={headingId}>
       <header className="deck-editor__words-head">
         <h3 id={headingId}>
-          {t("editor.wordsTable")}
+          {t(subjectProfile.entryText?.listKey || "editor.wordsTable")}
           <span className="deck-editor__count">{totalWords}</span>
         </h3>
         {canPaste ? (
@@ -394,6 +437,7 @@ export const DeckEditorWordsSection = memo(({ labels }) => {
                 word={word}
                 labels={labels}
                 pictureSide={pictureSide}
+                entryFields={subjectProfile.entryFields}
                 isEditing={editingWordId === word.externalId}
                 onEdit={startEditWord}
                 onDelete={deleteWord}

@@ -30,6 +30,7 @@
     "check:persistence": "node electron/scripts/run-persistence-check.cjs",
     "check:media": "node electron/scripts/run-media-check.cjs",
     "check:subjects": "node electron/scripts/run-subjects-check.cjs",
+    "check:offline-programming": "node scripts/acceptance/programming-offline.mjs",
     "check:boundaries": "bash scripts/check-no-electron-imports.sh",
     "check:layers": "node scripts/check-layer-imports.mjs",
     "check:i18n": "node scripts/check-ui-strings.mjs",

@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo, useId, useRef, useState } from "react";
 import { FiAlertTriangle, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, FiX } from "react-icons/fi";
 import { WordImageField } from "@features/word-image-field";
+import { SubjectFieldInputs } from "@features/subject-fields";
 import {
   SparkIcon,
   SuggestChip,
@@ -56,10 +57,12 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
         </span>
         {model.selectedDeck ? (
           <span className="quick-add__languages">
-            {t("quickAdd.direction", {
-              from: model.languages.pictureSide === "source" ? t("media.label") : languageName(model.languages.sourceLanguage),
-              to: model.languages.pictureSide === "target" ? t("media.label") : languageName(model.languages.targetLanguage),
-            })}
+            {model.subjectProfile.usesLanguages
+              ? t("quickAdd.direction", {
+                  from: model.languages.pictureSide === "source" ? t("media.label") : languageName(model.languages.sourceLanguage),
+                  to: model.languages.pictureSide === "target" ? t("media.label") : languageName(model.languages.targetLanguage),
+                })
+              : t(model.subjectProfile.nameKey)}
           </span>
         ) : null}
       </div>
@@ -183,12 +186,19 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
   const suggestDraft = useMemo(() => ({ ...model.draft, ...model.details }), [model.draft, model.details]);
   // The languages are rebuilt on every render; their values are what count.
   const { sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide } = languages;
-  const { usesWordLevels, deckTags } = model;
+  const { usesWordLevels, deckTags, subjectProfile } = model;
+  const { entryText } = subjectProfile;
   const suggestDeck = useMemo(
     () => ({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide, usesWordLevels, tags: deckTags }),
     [deckTags, pictureSide, sourceLanguage, targetLanguage, tertiaryLanguage, usesWordLevels],
   );
-  const suggest = useWordSuggestion({ draft: suggestDraft, deck: suggestDeck, onFill: model.applySuggestion });
+  const suggest = useWordSuggestion({
+    draft: suggestDraft,
+    deck: suggestDeck,
+    onFill: model.applySuggestion,
+    // Suggestions are for subjects the assistant knows.
+    enabled: subjectProfile.usesAssistant,
+  });
   const summary = useSuggestionSummary(suggest);
 
   const handleDetailsKeyDown = useCallback(
@@ -223,7 +233,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
           />
         ) : (
           <label className="quick-add__field">
-            <span>{languageName(languages.sourceLanguage)}</span>
+            <span>{entryText ? t(entryText.source.labelKey) : languageName(languages.sourceLanguage)}</span>
             <SuggestField field="source" suggest={suggest}>
             <input
               ref={sourceInputRef}
@@ -232,7 +242,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
               onChange={model.handleDraftChange}
               onKeyDown={model.handleSourceKeyDown}
               onPaste={model.handleSourcePaste}
-              placeholder={t("quickAdd.wordPlaceholder")}
+              placeholder={entryText ? t(entryText.source.placeholderKey) : t("quickAdd.wordPlaceholder")}
               autoComplete="off"
               autoCapitalize="none"
               enterKeyHint="next"
@@ -252,14 +262,14 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
           />
         ) : (
           <label className="quick-add__field">
-            <span>{languageName(languages.targetLanguage)}</span>
+            <span>{entryText ? t(entryText.target.labelKey) : languageName(languages.targetLanguage)}</span>
             <SuggestField field="target" suggest={suggest}>
             <input
               name="target"
               value={model.draft.target}
               onChange={model.handleDraftChange}
               onKeyDown={model.handleTargetKeyDown}
-              placeholder={t("quickAdd.translationPlaceholder")}
+              placeholder={entryText ? t(entryText.target.placeholderKey) : t("quickAdd.translationPlaceholder")}
               autoComplete="off"
               autoCapitalize="none"
               enterKeyHint="done"
@@ -268,6 +278,15 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
           </label>
         )}
       </div>
+
+      {/* A subject's code is part of the card, so it is never folded away. */}
+      <SubjectFieldInputs
+        fields={subjectProfile.entryFields}
+        values={model.draft.subjectFields}
+        onChange={model.handleSubjectFieldChange}
+        only={["code"]}
+        fieldClassName="quick-add__field quick-add__field--code"
+      />
 
       <div aria-live="polite">
         <DuplicateHint duplicate={model.draftDuplicate} />
@@ -301,8 +320,15 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
               </SuggestField>
             </label>
           ) : null}
+          <SubjectFieldInputs
+            fields={subjectProfile.entryFields}
+            values={model.draft.subjectFields}
+            onChange={model.handleSubjectFieldChange}
+            only={["choice", "text"]}
+            fieldClassName="quick-add__field"
+          />
           <label className="quick-add__field quick-add__field--wide">
-            <span>{t("flashcard.examples")}</span>
+            <span>{entryText ? t(entryText.examples.labelKey) : t("flashcard.examples")}</span>
             <SuggestField field="examplesInput" suggest={suggest} multiline>
               <textarea
                 name="examplesInput"
@@ -310,11 +336,11 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
                 value={model.details.examplesInput}
                 onChange={model.handleDetailsChange}
                 onKeyDown={handleDetailsKeyDown}
-                placeholder={t("quickAdd.examplesPlaceholder")}
+                placeholder={entryText ? t(entryText.examples.placeholderKey) : t("quickAdd.examplesPlaceholder")}
               />
             </SuggestField>
           </label>
-          <label className="quick-add__field">
+          {subjectProfile.usesLanguages ? <label className="quick-add__field">
             <span>
               {t("catalog.partOfSpeech")}
               <SuggestChip field="part_of_speech" suggest={suggest} label={partOfSpeechName} />
@@ -327,7 +353,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
                 </option>
               ))}
             </Select>
-          </label>
+          </label> : null}
           {model.usesWordLevels ? (
             <label className="quick-add__field">
               <span>
@@ -730,7 +756,7 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
           <DeckPicker model={model} deckNameRef={deckNameRef} />
 
           {/* A pasted list is text; a picture deck takes its words one by one. */}
-          {model.languages.pictureSide ? null : (
+          {model.languages.pictureSide || !model.subjectProfile.usesLanguages ? null : (
             <div className="quick-add__tabs" role="tablist" aria-label={t("quickAdd.modeLabel")}>
               {["single", "list"].map((tab) => (
                 <button

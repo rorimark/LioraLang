@@ -270,10 +270,14 @@ export default {
     "frontAria": "Vorderseite der Karte. Drücken, um die Antwort zu sehen.",
     "reveal": "Tippen, um die Antwort zu sehen",
     "examples": "Beispiele",
-    "showFront": "Tippen, um die Vorderseite zu sehen"
+    "showFront": "Tippen, um die Vorderseite zu sehen",
+    "code": "Code"
   },
   "hub": {
-    "notConfigured": "Der Hub ist in diesem Build nicht verfügbar."
+    "notConfigured": "Der Hub ist in diesem Build nicht verfügbar.",
+    "errors": {
+      "subjectNotPublishable": "Im Hub lassen sich vorerst nur Sprachdecks veröffentlichen."
+    }
   },
   "decks": {
     "untitled": "Deck",
@@ -1824,5 +1828,42 @@ export default {
     "again": "Anderer Vorschlag",
     "empty": "Noch nichts vorzuschlagen: Gib einen Namen oder ein paar Wörter ein.",
     "error": "Die Beschreibung ließ sich nicht schreiben. Versuche es noch einmal."
+  },
+  "subjects": {
+    "label": "Thema",
+    "hint": "Worum es auf den Karten geht. Wird vor der ersten Karte gewählt.",
+    "names": {
+      "language": "Sprachen",
+      "programming": "Programmierung"
+    },
+    "sides": {
+      "question": "Frage",
+      "answer": "Antwort"
+    },
+    "fields": {
+      "question": "Begriff oder Frage",
+      "questionPlaceholder": "Ein Begriff oder eine Frage zum Code",
+      "answer": "Antwort",
+      "answerPlaceholder": "Woran du dich erinnern sollst",
+      "notes": "Notizen",
+      "notesPlaceholder": "Eine Notiz pro Zeile",
+      "technology": "Technologie",
+      "technologyHint": "Steht auf jeder Karte, zum Beispiel JavaScript oder SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Code",
+      "codePlaceholder": "Optional: Ausschnitt einfügen oder eingeben",
+      "difficulty": "Schwierigkeit"
+    },
+    "difficulty": {
+      "easy": "Leicht",
+      "medium": "Mittel",
+      "hard": "Schwer"
+    },
+    "errors": {
+      "emptyQuestion": "Schreib zuerst eine Frage.",
+      "emptyAnswer": "Füge die Antwort hinzu."
+    },
+    "addCard": "Karte hinzufügen",
+    "cards": "Karten"
   }
 };

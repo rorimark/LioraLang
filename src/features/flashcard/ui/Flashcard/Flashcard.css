@@ -444,3 +444,282 @@
 .flashcard__face--back .flashcard__picture .word-image {
   border-color: color-mix(in srgb, var(--flashcard-on-back) 30%, transparent);
 }
+
+/* ===== Blocks =====
+   A card whose subject has its own layout is drawn from blocks. The pieces
+   below are shared; how a layout composes them is set further down. */
+.flashcard {
+  --flashcard-font-code: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+}
+
+.flashcard__content--blocks {
+  align-content: start;
+}
+
+.flashcard__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9em;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.flashcard__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 0;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.flashcard__scale {
+  display: inline-flex;
+  gap: 0.18em;
+}
+
+.flashcard__scale i {
+  width: 0.42em;
+  height: 0.95em;
+  border-radius: 0.12em;
+  background: currentColor;
+  opacity: 0.22;
+}
+
+.flashcard__scale i.is-on {
+  opacity: 1;
+}
+
+.flashcard__block-text {
+  color: inherit;
+  font-weight: 800;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.flashcard__code {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-width: 0;
+  font-family: var(--flashcard-font-code);
+  line-height: 1.6;
+  text-align: left;
+  cursor: text;
+}
+
+.flashcard__code-gutter {
+  padding: 0.9em 0.9em 0.9em 1.1em;
+  white-space: pre;
+  text-align: right;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.flashcard__code-scroll {
+  display: block;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.flashcard__code code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  padding: 0.9em 1.2em 0.9em 0.2em;
+  font: inherit;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.flashcard__list {
+  display: grid;
+  gap: 0.35em;
+}
+
+.flashcard__list-item {
+  position: relative;
+  padding-left: 1.1em;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.flashcard__list-item::before {
+  content: "";
+  position: absolute;
+  left: 0.1em;
+  top: 0.62em;
+  width: 0.45em;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* ===== The code layout =====
+   A card about programming is a sheet of dotted engineering paper with an
+   editor pane on it, not a ruled index card. The head reads like the tab
+   bar of an editor: the technology is the open file, the difficulty sits
+   on the right as filled marks. The question is a line of text; the code
+   under it runs from edge to edge, numbered, as the thing to look at. A
+   term with no code is the headline instead. The back keeps the app's
+   blue: the answer first, the snippet repeated small under it. */
+.flashcard--layout-code .flashcard__face {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.flashcard--index.flashcard--layout-code .flashcard__face--front {
+  background:
+    radial-gradient(circle, var(--flashcard-grid-dot) 1.2px, transparent 1.6px) 0 0 / max(18px, 3.2cqi) max(18px, 3.2cqi),
+    var(--flashcard-front-bg);
+}
+
+.flashcard--index.flashcard--layout-code .flashcard__face--front::before {
+  display: none;
+}
+
+.flashcard--layout-code .flashcard__head {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+/* The front's head is a tab bar: a line across the sheet, with the
+   technology as the open tab standing on it. */
+.flashcard--index.flashcard--layout-code .flashcard__face--front .flashcard__head {
+  align-items: flex-end;
+  margin-inline: calc(-1 * var(--index-pad-x));
+  padding-inline: var(--index-pad-x);
+  border-bottom: 2px solid var(--flashcard-border);
+}
+
+.flashcard--index.flashcard--layout-code .flashcard__face--front .flashcard__label {
+  padding-bottom: 0.55em;
+}
+
+.flashcard--index.flashcard--layout-code .flashcard__face--front .flashcard__meta {
+  align-items: flex-end;
+}
+
+.flashcard--index.flashcard--layout-code .flashcard__face--front .flashcard__meta-item--difficulty {
+  padding-bottom: 0.55em;
+}
+
+.flashcard--index.flashcard--layout-code .flashcard__face--front .flashcard__meta-item--technology {
+  margin-bottom: -2px;
+}
+
+.flashcard--layout-code .flashcard__meta-item--technology {
+  gap: 0.55em;
+  min-width: 0;
+  padding: 0.35em 0.85em 0.35em 0.7em;
+  border-radius: 0.55em 0.55em 0 0;
+  border: 2px solid var(--flashcard-border);
+  border-bottom-color: transparent;
+  background: var(--flashcard-front-bg);
+  color: var(--color-text);
+  font-family: var(--flashcard-font-code);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flashcard--layout-code .flashcard__meta-item--technology::before {
+  content: "";
+  flex: none;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 0.15em;
+  background: var(--flashcard-code-accent);
+}
+
+.flashcard--layout-code .flashcard__meta-item--difficulty {
+  color: var(--color-text-muted);
+}
+
+/* The body spans the card's full width so the pane can run edge to edge,
+   and keeps the card's margins for everything else. */
+.flashcard--index.flashcard--layout-code .flashcard__content--blocks {
+  /* Read from the top, like a page. */
+  align-content: start;
+  margin-inline: calc(-1 * var(--index-pad-x));
+  padding: 1em var(--index-pad-x) 0.8em;
+  gap: 1em;
+}
+
+.flashcard--layout-code .flashcard__block-text--prompt {
+  font-size: clamp(1.1rem, 4.4cqi, 2.6rem);
+  letter-spacing: -0.012em;
+  max-width: 34ch;
+}
+
+.flashcard--layout-code .flashcard__block-text--lead {
+  font-size: clamp(2rem, 10cqi, 5.8rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: none;
+}
+
+/* A term alone stands in the middle of the sheet. */
+.flashcard--index.flashcard--layout-code .flashcard__content--blocks:has(> .flashcard__block-text--lead:only-child) {
+  align-content: safe center;
+  padding-bottom: 2.4em;
+}
+
+.flashcard--layout-code .flashcard__code--primary {
+  margin-inline: calc(-1 * var(--index-pad-x, 24px));
+  border-block: 2px solid var(--flashcard-code-edge);
+  background: var(--flashcard-code-bg);
+  color: var(--flashcard-code-text);
+  font-size: clamp(0.82rem, 2.75cqi, 1.45rem);
+}
+
+.flashcard--layout-code .flashcard__code--primary .flashcard__code-gutter {
+  padding-left: var(--index-pad-x, 1.1em);
+  color: var(--flashcard-code-gutter);
+  border-right: 1px solid color-mix(in srgb, var(--flashcard-code-gutter) 45%, transparent);
+}
+
+.flashcard--layout-code .flashcard__code--primary code {
+  padding-left: 1em;
+  padding-right: var(--index-pad-x, 1.2em);
+}
+
+/* The back. */
+.flashcard--layout-code .flashcard__block-text--answer {
+  font-size: clamp(1.15rem, 4.8cqi, 2.8rem);
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+}
+
+.flashcard--layout-code .flashcard__code--secondary {
+  max-height: 10.5em;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  border-radius: clamp(8px, 1.4cqi, 14px);
+  background: color-mix(in srgb, var(--flashcard-code-edge) 34%, transparent);
+  color: var(--flashcard-on-back);
+  font-size: clamp(0.74rem, 2.1cqi, 1.1rem);
+}
+
+.flashcard--layout-code .flashcard__code--secondary .flashcard__code-gutter {
+  color: color-mix(in srgb, var(--flashcard-on-back) 45%, transparent);
+}
+
+.flashcard--layout-code .flashcard__code--secondary code {
+  padding-left: 0.8em;
+  opacity: 0.92;
+}
+
+.flashcard--layout-code .flashcard__list--notes {
+  font-size: clamp(0.88rem, 2.3cqi, 1.3rem);
+  color: color-mix(in srgb, var(--flashcard-on-back) 88%, transparent);
+}
+
+/* Outside the index card (a plain variant) the pane keeps to the card. */
+.flashcard--layout-code:not(.flashcard--index) .flashcard__code {
+  margin-inline: 0;
+  border-radius: 12px;
+}

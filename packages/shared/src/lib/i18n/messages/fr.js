@@ -271,10 +271,14 @@ export default {
     "frontAria": "Recto de la carte. Appuyez pour voir la réponse.",
     "reveal": "Touchez pour voir la réponse",
     "examples": "Exemples",
-    "showFront": "Touchez pour revoir le recto"
+    "showFront": "Touchez pour revoir le recto",
+    "code": "Code"
   },
   "hub": {
-    "notConfigured": "Le hub n'est pas disponible dans cette version."
+    "notConfigured": "Le hub n'est pas disponible dans cette version.",
+    "errors": {
+      "subjectNotPublishable": "Pour l’instant, seuls les paquets de langues peuvent être publiés sur le Hub."
+    }
   },
   "decks": {
     "untitled": "Paquet",
@@ -1916,5 +1920,42 @@ export default {
     "again": "Autre proposition",
     "empty": "Rien à proposer pour l'instant : ajoutez un nom ou quelques mots.",
     "error": "Impossible de rédiger la description. Réessayez."
+  },
+  "subjects": {
+    "label": "Sujet",
+    "hint": "Le thème des cartes. Choisi avant la première carte.",
+    "names": {
+      "language": "Langues",
+      "programming": "Programmation"
+    },
+    "sides": {
+      "question": "Question",
+      "answer": "Réponse"
+    },
+    "fields": {
+      "question": "Terme ou question",
+      "questionPlaceholder": "Un terme ou une question sur du code",
+      "answer": "Réponse",
+      "answerPlaceholder": "Ce qu’il faut retenir",
+      "notes": "Notes",
+      "notesPlaceholder": "Une note par ligne",
+      "technology": "Technologie",
+      "technologyHint": "Affichée sur chaque carte, par exemple JavaScript ou SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Code",
+      "codePlaceholder": "Facultatif : collez ou saisissez un extrait",
+      "difficulty": "Difficulté"
+    },
+    "difficulty": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    },
+    "errors": {
+      "emptyQuestion": "Saisissez d’abord une question.",
+      "emptyAnswer": "Ajoutez la réponse."
+    },
+    "addCard": "Ajouter une carte",
+    "cards": "Cartes"
   }
 };

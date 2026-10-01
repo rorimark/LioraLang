@@ -8,6 +8,7 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import { Button } from "@shared/ui";
+import { getSubjectProfile } from "@shared/core/usecases/subjects";
 import { DeckTagBadges } from "../DeckTagBadges/DeckTagBadges";
 import { DeckLanguagePair } from "../DeckLanguagePair/DeckLanguagePair";
 import { useDeckTagsPopover } from "../../model/useDeckTagsPopover";
@@ -113,16 +114,18 @@ const DeckMenu = ({ deck, isOpen, pendingState, onToggle, onAction, stop }) => {
             <FiDownload aria-hidden />
             <span>{isExporting ? t("decks.table.exporting") : t("decks.table.export")}</span>
           </button>
-          <button
-            type="button"
-            role="menuitem"
-            className="decks-table__button--publish"
-            onClick={() => onAction("publish", deck)}
-            disabled={isPublishing}
-          >
-            <FiSend aria-hidden />
-            <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
-          </button>
+          {getSubjectProfile(deck.subject).canPublishToHub ? (
+            <button
+              type="button"
+              role="menuitem"
+              className="decks-table__button--publish"
+              onClick={() => onAction("publish", deck)}
+              disabled={isPublishing}
+            >
+              <FiSend aria-hidden />
+              <span>{isPublishing ? t("decks.table.publishing") : t("decks.table.publish")}</span>
+            </button>
+          ) : null}
           <button
             type="button"
             role="menuitem"
@@ -285,6 +288,8 @@ export const DecksTable = memo(({ table = EMPTY_OBJECT }) => {
                   source={deck.sourceLanguage}
                   targets={[deck.targetLanguage, deck.tertiaryLanguage]}
                   pictureSide={deck.pictureSide}
+                  subject={deck.subject}
+                  subjectFields={deck.subjectFields}
                 />
               </div>
 

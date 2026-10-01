@@ -6,6 +6,7 @@ import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { buildDeckDetailsRoute, buildDeckEditRoute, ROUTE_PATHS } from "@shared/config/routes";
 import { normalizePictureSide, PICTURE_SIDES } from "@shared/core/usecases/cardContent";
 import { collectDeckTags } from "@shared/core/usecases/wordSuggest";
+import { getSubjectProfile, SUBJECT_IDS, storedSubject } from "@shared/core/usecases/subjects";
 import { useI18n } from "@shared/lib/i18n";
 import {
   applySavedIds,
@@ -102,6 +103,10 @@ export const useDeckEditorPanel = () => {
   }, [words]);
 
   const pictureSide = normalizePictureSide(deckForm.pictureSide);
+  // What the deck is about: its profile says which fields and settings
+  // the forms show.
+  const subject = storedSubject(deckForm.subject);
+  const subjectProfile = getSubjectProfile(subject);
   const hasTertiary = Boolean(deckForm.tertiaryLanguage.trim());
   // What a suggestion needs to know about the deck: its languages and the
   // tags its words use most.
@@ -278,6 +283,25 @@ export const useDeckEditorPanel = () => {
     [canChangeSides, updateForm],
   );
 
+  // The subject is chosen while the deck is empty, like its sides.
+  const handleSubjectChange = useCallback(
+    (event) => {
+      if (!canChangeSides) {
+        return;
+      }
+
+      updateForm({ subject: storedSubject(event.target.value), subjectFields: {} });
+    },
+    [canChangeSides, updateForm],
+  );
+
+  const handleDeckSubjectFieldChange = useCallback(
+    (name, value) => {
+      updateForm({ subjectFields: { ...formRef.current.subjectFields, [name]: value } });
+    },
+    [updateForm],
+  );
+
   const swapSides = useCallback(() => {
     if (!canChangeSides) {
       return;
@@ -311,9 +335,19 @@ export const useDeckEditorPanel = () => {
   );
 
   const wordOptions = useMemo(
-    () => ({ pictureSide, usesWordLevels: deckForm.usesWordLevels, hasTertiary }),
-    [deckForm.usesWordLevels, hasTertiary, pictureSide],
+    () => ({ pictureSide, usesWordLevels: deckForm.usesWordLevels, hasTertiary, subject }),
+    [deckForm.usesWordLevels, hasTertiary, pictureSide, subject],
   );
+
+  const handleAddDraftSubjectFieldChange = useCallback((name, value) => {
+    setAddDraft((current) => ({ ...current, subjectFields: { ...current.subjectFields, [name]: value } }));
+    setAddError("");
+  }, []);
+
+  const handleEditDraftSubjectFieldChange = useCallback((name, value) => {
+    setEditDraft((current) => ({ ...current, subjectFields: { ...current.subjectFields, [name]: value } }));
+    setEditError("");
+  }, []);
 
   const handleAddDraftChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -342,7 +376,7 @@ export const useDeckEditorPanel = () => {
   // and part of speech for the next one: words come in runs. What a
   // suggestion filled in belonged to that word and is not kept.
   const submitAddDraft = useCallback((suggestedFields = null) => {
-    const errorKey = validateWordDraft(addDraft, pictureSide);
+    const errorKey = validateWordDraft(addDraft, pictureSide, subject);
 
     if (errorKey) {
       setAddError(errorKey);
@@ -361,7 +395,7 @@ export const useDeckEditorPanel = () => {
     setAddError("");
     setLastDeleted(null);
     return true;
-  }, [addDraft, commitWords, emptyDraft, pictureSide, wordOptions]);
+  }, [addDraft, commitWords, emptyDraft, pictureSide, subject, wordOptions]);
 
   const startEditWord = useCallback((word) => {
     setEditingWordId(word.externalId);
@@ -386,7 +420,7 @@ export const useDeckEditorPanel = () => {
   }, []);
 
   const submitEditDraft = useCallback(() => {
-    const errorKey = validateWordDraft(editDraft, pictureSide);
+    const errorKey = validateWordDraft(editDraft, pictureSide, subject);
 
     if (errorKey) {
       setEditError(errorKey);
@@ -400,7 +434,7 @@ export const useDeckEditorPanel = () => {
     );
     setEditingWordId(null);
     return true;
-  }, [commitWords, editDraft, editingWordId, pictureSide, wordOptions]);
+  }, [commitWords, editDraft, editingWordId, pictureSide, subject, wordOptions]);
 
   // A removed word can be brought back until the next change. It comes back
   // as the same word, though its study history does not.
@@ -538,6 +572,11 @@ export const useDeckEditorPanel = () => {
     handleDeckFormChange,
     handleSideTypeChange,
     swapSides,
+    subject,
+    subjectProfile,
+    subjectOptions: SUBJECT_IDS,
+    handleSubjectChange,
+    handleDeckSubjectFieldChange,
 
     words,
     totalWords: words.length,
@@ -554,6 +593,7 @@ export const useDeckEditorPanel = () => {
     handleAddDraftChange,
     applyAddDraftPatch,
     handleAddDraftImageChange,
+    handleAddDraftSubjectFieldChange,
     submitAddDraft,
 
     editingWordId,
@@ -563,6 +603,7 @@ export const useDeckEditorPanel = () => {
     cancelEdit,
     handleEditDraftChange,
     handleEditDraftImageChange,
+    handleEditDraftSubjectFieldChange,
     applyEditDraftPatch,
     submitEditDraft,
 

@@ -2,6 +2,8 @@ import { memo, useCallback, useId } from "react";
 import { FiLock, FiRepeat } from "react-icons/fi";
 import { Select, SettingSegmented, SettingSwitch } from "@shared/ui";
 import { DeckDescriptionSuggestion } from "@features/word-suggest";
+import { SubjectFieldInputs } from "@features/subject-fields";
+import { getSubjectProfile } from "@shared/core/usecases/subjects";
 import { useI18n } from "@shared/lib/i18n";
 import { useDeckEditorPanelContext } from "../model";
 
@@ -62,6 +64,11 @@ export const DeckEditorDeckSection = memo(() => {
     swapSides,
     words,
     applyDeckPatch,
+    subject,
+    subjectProfile,
+    subjectOptions,
+    handleSubjectChange,
+    handleDeckSubjectFieldChange,
   } = useDeckEditorPanelContext();
   const { t, languageName } = useI18n();
   const levelsId = useId();
@@ -100,8 +107,28 @@ export const DeckEditorDeckSection = memo(() => {
         />
       </label>
 
-      <DeckDescriptionSuggestion deck={deckForm} words={words} onApply={applyDeckPatch} />
+      {subjectProfile.usesAssistant ? (
+        <DeckDescriptionSuggestion deck={deckForm} words={words} onApply={applyDeckPatch} />
+      ) : null}
 
+      {/* What the deck is about, chosen while it is empty, like its sides. */}
+      {canChangeSides ? (
+        <div className="deck-editor__row deck-editor__row--wide">
+          <span className="deck-editor__row-text">
+            <span>{t("subjects.label")}</span>
+            <small>{t("subjects.hint")}</small>
+          </span>
+          <SettingSegmented
+            name="subject"
+            value={subject || subjectOptions[0]}
+            ariaLabel={t("subjects.label")}
+            onChange={handleSubjectChange}
+            options={subjectOptions.map((id) => ({ value: id, label: t(getSubjectProfile(id).nameKey) }))}
+          />
+        </div>
+      ) : null}
+
+      {subjectProfile.usesLanguages ? <>
       <div className="deck-editor__block">
         <h3 className="deck-editor__eyebrow">{t("editor.sides.title")}</h3>
         <div className="deck-sides">
@@ -146,8 +173,19 @@ export const DeckEditorDeckSection = memo(() => {
           </p>
         )}
       </div>
+      </> : null}
 
       <div className="deck-editor__rows">
+        {/* The fields the deck's subject adds (a technology). */}
+        <SubjectFieldInputs
+          fields={subjectProfile.deckFields}
+          values={deckForm.subjectFields}
+          onChange={handleDeckSubjectFieldChange}
+          fieldClassName="deck-editor__row deck-editor__row--stacked"
+          labelClassName="deck-editor__row-text"
+        />
+
+        {subjectProfile.usesLanguages ? <>
         <label className="deck-editor__row">
           <span className="deck-editor__row-text">
             <span>{t("editor.sides.extra")}</span>
@@ -198,6 +236,7 @@ export const DeckEditorDeckSection = memo(() => {
             onChange={handleDeckFormChange}
           />
         </div>
+        </> : null}
 
         <label className="deck-editor__row deck-editor__row--stacked">
           <span className="deck-editor__row-text">

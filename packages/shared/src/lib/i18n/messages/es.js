@@ -271,10 +271,14 @@ export default {
     "frontAria": "Anverso de la tarjeta. Pulsa para ver la respuesta.",
     "reveal": "Toca para ver la respuesta",
     "examples": "Ejemplos",
-    "showFront": "Toca para ver el anverso"
+    "showFront": "Toca para ver el anverso",
+    "code": "Código"
   },
   "hub": {
-    "notConfigured": "El hub no está disponible en esta versión."
+    "notConfigured": "El hub no está disponible en esta versión.",
+    "errors": {
+      "subjectNotPublishable": "Por ahora solo se pueden publicar en el Hub mazos de idiomas."
+    }
   },
   "decks": {
     "untitled": "Mazo",
@@ -1916,5 +1920,42 @@ export default {
     "again": "Otra opción",
     "empty": "Aún no hay nada que sugerir: añade un nombre o algunas palabras.",
     "error": "No se pudo escribir la descripción. Inténtalo de nuevo."
+  },
+  "subjects": {
+    "label": "Tema",
+    "hint": "De qué tratan las tarjetas. Se elige antes de la primera tarjeta.",
+    "names": {
+      "language": "Idiomas",
+      "programming": "Programación"
+    },
+    "sides": {
+      "question": "Pregunta",
+      "answer": "Respuesta"
+    },
+    "fields": {
+      "question": "Término o pregunta",
+      "questionPlaceholder": "Un término o una pregunta sobre código",
+      "answer": "Respuesta",
+      "answerPlaceholder": "Lo que debes recordar",
+      "notes": "Notas",
+      "notesPlaceholder": "Una nota por línea",
+      "technology": "Tecnología",
+      "technologyHint": "Aparece en cada tarjeta, por ejemplo JavaScript o SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Código",
+      "codePlaceholder": "Opcional: pega o escribe un fragmento",
+      "difficulty": "Dificultad"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Media",
+      "hard": "Difícil"
+    },
+    "errors": {
+      "emptyQuestion": "Escribe primero una pregunta.",
+      "emptyAnswer": "Añade la respuesta."
+    },
+    "addCard": "Añadir tarjeta",
+    "cards": "Tarjetas"
   }
 };

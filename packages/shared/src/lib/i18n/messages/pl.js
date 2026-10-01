@@ -272,10 +272,14 @@ export default {
     "frontAria": "Przód fiszki. Naciśnij, aby zobaczyć odpowiedź.",
     "reveal": "Dotknij, aby zobaczyć odpowiedź",
     "examples": "Przykłady",
-    "showFront": "Dotknij, aby wrócić do przodu"
+    "showFront": "Dotknij, aby wrócić do przodu",
+    "code": "Kod"
   },
   "hub": {
-    "notConfigured": "Hub nie jest dostępny w tej wersji."
+    "notConfigured": "Hub nie jest dostępny w tej wersji.",
+    "errors": {
+      "subjectNotPublishable": "Na razie do Hub można publikować tylko talie językowe."
+    }
   },
   "decks": {
     "untitled": "Talia",
@@ -2008,5 +2012,42 @@ export default {
     "again": "Inna propozycja",
     "empty": "Na razie nie ma czego zaproponować: dodaj nazwę albo kilka słów.",
     "error": "Nie udało się napisać opisu. Spróbuj ponownie."
+  },
+  "subjects": {
+    "label": "Temat",
+    "hint": "O czym są karty. Wybierany przed pierwszą kartą.",
+    "names": {
+      "language": "Języki",
+      "programming": "Programowanie"
+    },
+    "sides": {
+      "question": "Pytanie",
+      "answer": "Odpowiedź"
+    },
+    "fields": {
+      "question": "Termin lub pytanie",
+      "questionPlaceholder": "Termin albo pytanie o kod",
+      "answer": "Odpowiedź",
+      "answerPlaceholder": "Co trzeba sobie przypomnieć",
+      "notes": "Notatki",
+      "notesPlaceholder": "Jedna notatka w wierszu",
+      "technology": "Technologia",
+      "technologyHint": "Widoczna na każdej karcie, na przykład JavaScript lub SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Kod",
+      "codePlaceholder": "Opcjonalnie: wklej lub wpisz fragment",
+      "difficulty": "Trudność"
+    },
+    "difficulty": {
+      "easy": "Łatwe",
+      "medium": "Średnie",
+      "hard": "Trudne"
+    },
+    "errors": {
+      "emptyQuestion": "Najpierw wpisz pytanie.",
+      "emptyAnswer": "Dodaj odpowiedź."
+    },
+    "addCard": "Dodaj kartę",
+    "cards": "Karty"
   }
 };

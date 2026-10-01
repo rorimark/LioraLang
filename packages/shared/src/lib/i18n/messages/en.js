@@ -270,10 +270,14 @@ export default {
     "frontAria": "Flashcard front side. Press to reveal answer.",
     "reveal": "Tap to reveal answer",
     "examples": "Examples",
-    "showFront": "Tap to see front side"
+    "showFront": "Tap to see front side",
+    "code": "Code"
   },
   "hub": {
-    "notConfigured": "The hub is not available in this build."
+    "notConfigured": "The hub is not available in this build.",
+    "errors": {
+      "subjectNotPublishable": "Only language decks can be published to the Hub for now."
+    }
   },
   "decks": {
     "untitled": "Deck",
@@ -1824,5 +1828,42 @@ export default {
     "again": "Another one",
     "empty": "Nothing to suggest yet: add a name or a few words.",
     "error": "Could not write a description. Try again."
+  },
+  "subjects": {
+    "label": "Subject",
+    "hint": "What the cards are about. Chosen before the first card.",
+    "names": {
+      "language": "Languages",
+      "programming": "Programming"
+    },
+    "sides": {
+      "question": "Question",
+      "answer": "Answer"
+    },
+    "fields": {
+      "question": "Term or question",
+      "questionPlaceholder": "A term, or a question about code",
+      "answer": "Answer",
+      "answerPlaceholder": "What you should recall",
+      "notes": "Notes",
+      "notesPlaceholder": "One note per line",
+      "technology": "Technology",
+      "technologyHint": "Shown on every card, for example JavaScript or SQL.",
+      "technologyPlaceholder": "JavaScript",
+      "code": "Code",
+      "codePlaceholder": "Optional: paste or type a snippet",
+      "difficulty": "Difficulty"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "errors": {
+      "emptyQuestion": "Type a question first.",
+      "emptyAnswer": "Add the answer."
+    },
+    "addCard": "Add card",
+    "cards": "Cards"
   }
 };

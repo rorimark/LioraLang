@@ -28,6 +28,12 @@ import {
 
 const DECK_PACKAGE_FORMAT = "lioralang.deck";
 const DECK_PACKAGE_VERSION = 1;
+// A deck with a subject is written as version 2. An app that knows only
+// version 1 refuses it outright instead of reading it as a language deck
+// and dropping what it does not know (a programming card's code). Language
+// decks stay version 1, exactly as before.
+const SUBJECT_PACKAGE_VERSION = 2;
+const MAX_READABLE_PACKAGE_VERSION = SUBJECT_PACKAGE_VERSION;
 const MAX_DECK_TAGS = 10;
 const MAX_WORD_TAGS = 10;
 const MAX_WORD_EXAMPLES = 1000;
@@ -319,7 +325,7 @@ const parseDeckPackagePayload = (value) => {
   if (
     format === DECK_PACKAGE_FORMAT &&
     Number.isFinite(normalizedVersion) &&
-    normalizedVersion > DECK_PACKAGE_VERSION
+    normalizedVersion > MAX_READABLE_PACKAGE_VERSION
   ) {
     throw new Error(
       `Deck package version ${normalizedVersion} is not supported by this app version`,
@@ -862,7 +868,7 @@ export const buildExportDeckPackage = ({
 
   return {
     format: DECK_PACKAGE_FORMAT,
-    version: DECK_PACKAGE_VERSION,
+    version: subject ? SUBJECT_PACKAGE_VERSION : DECK_PACKAGE_VERSION,
     exportedAt: new Date().toISOString(),
     deck: {
       name: toSafeString(safeDeck.name),

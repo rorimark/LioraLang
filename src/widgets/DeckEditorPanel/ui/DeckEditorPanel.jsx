@@ -47,6 +47,7 @@ const DeckEditorPanelBody = memo(() => {
     reloadDeck,
     deckForm,
     pictureSide,
+    subjectProfile,
     totalWords,
     createDeck,
     isCreating,
@@ -57,14 +58,27 @@ const DeckEditorPanelBody = memo(() => {
   } = useDeckEditorPanelContext();
   const { t, languageName } = useI18n();
 
-  // What each side is called in the word forms and the list.
+  // What each side is called in the word forms and the list: its language
+  // or "Picture", or what the deck's subject calls it.
+  const { entryText } = subjectProfile;
   const labels = useMemo(
-    () => ({
-      front: pictureSide === "source" ? t("media.label") : languageName(deckForm.sourceLanguage),
-      back: pictureSide === "target" ? t("media.label") : languageName(deckForm.targetLanguage),
-      tertiary: deckForm.tertiaryLanguage ? languageName(deckForm.tertiaryLanguage) : "",
-    }),
-    [deckForm.sourceLanguage, deckForm.targetLanguage, deckForm.tertiaryLanguage, languageName, pictureSide, t],
+    () =>
+      entryText
+        ? {
+            front: t(entryText.source.labelKey),
+            back: t(entryText.target.labelKey),
+            tertiary: "",
+            frontPlaceholder: t(entryText.source.placeholderKey),
+            backPlaceholder: t(entryText.target.placeholderKey),
+            examples: t(entryText.examples.labelKey),
+            examplesPlaceholder: t(entryText.examples.placeholderKey),
+          }
+        : {
+            front: pictureSide === "source" ? t("media.label") : languageName(deckForm.sourceLanguage),
+            back: pictureSide === "target" ? t("media.label") : languageName(deckForm.targetLanguage),
+            tertiary: deckForm.tertiaryLanguage ? languageName(deckForm.tertiaryLanguage) : "",
+          },
+    [deckForm.sourceLanguage, deckForm.targetLanguage, deckForm.tertiaryLanguage, entryText, languageName, pictureSide, t],
   );
 
   if (isLoading) {

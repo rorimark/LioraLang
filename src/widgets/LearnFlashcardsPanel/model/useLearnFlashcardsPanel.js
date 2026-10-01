@@ -34,6 +34,11 @@ import {
 import { resolveDeckSideLabels } from "./deckSideLabels";
 import { CONTENT_TYPES, resolveCardDirection, resolveCardFaces, TEXT_ROLES } from "@shared/core/usecases/cardContent";
 import {
+  buildCardPresentation,
+  getSubjectProfile,
+  resolveSubjectDirection,
+} from "@shared/core/usecases/subjects";
+import {
   LEARN_VIEW_MODE_BROWSE,
   LEARN_VIEW_MODE_SRS,
   resolveLoopedBrowseIndex,
@@ -359,6 +364,7 @@ export const useLearnFlashcardsPanel = () => {
   const listedDeck = decks.find((deck) => String(deck?.id) === String(selectedDeckId));
   const listedPictureSide = listedDeck?.pictureSide || "";
   const listedLearnedSide = listedDeck?.learnedSide || "";
+  const listedSubject = listedDeck?.subject || "";
   const currentDeck = useMemo(
     () =>
       baseDeck
@@ -366,13 +372,18 @@ export const useLearnFlashcardsPanel = () => {
             ...baseDeck,
             pictureSide: baseDeck.pictureSide || listedPictureSide,
             learnedSide: baseDeck.learnedSide || listedLearnedSide,
+            subject: baseDeck.subject || listedSubject,
           }
         : null,
-    [baseDeck, listedLearnedSide, listedPictureSide],
+    [baseDeck, listedLearnedSide, listedPictureSide, listedSubject],
   );
+  // What the deck is about decides which directions it is studied in and
+  // whether a missed card gets a hint.
+  const subjectProfile = getSubjectProfile(currentDeck?.subject);
+  const studyDirection = resolveSubjectDirection(currentDeck?.subject, sessionSettings.directionMode);
   const directionSummary = useMemo(
-    () => buildDirectionSummary(sessionSettings.directionMode, currentDeck, i18n),
-    [currentDeck, i18n, sessionSettings.directionMode],
+    () => buildDirectionSummary(studyDirection, currentDeck, i18n),
+    [currentDeck, i18n, studyDirection],
   );
   const sessionSummary = useMemo(() => {
     const engineLabel = isBrowseMode ? t("learn.engine.review") : t("learn.engine.srs");
@@ -683,10 +694,12 @@ export const useLearnFlashcardsPanel = () => {
     if (isBrowseMode || !isBackVisible || isRatingPending) return;
     const ratedWord = currentWord;
     // The direction it was shown in: the hint is about what was asked.
-    const ratedDirection = resolveCardDirection(sessionSettings.directionMode, ratedWord || {});
+    const ratedDirection = resolveCardDirection(studyDirection, ratedWord || {});
     if (!await rateSrsCard(rating)) return;
     setMissedCard(
-      rating === "again" && ratedWord ? { word: ratedWord, deckId: selectedDeckId, direction: ratedDirection } : null,
+      rating === "again" && ratedWord && subjectProfile.usesAssistant
+        ? { word: ratedWord, deckId: selectedDeckId, direction: ratedDirection }
+        : null,
     );
     announceCardMove(rating);
     setGradesByDeckId((previous) => ({
@@ -701,7 +714,8 @@ export const useLearnFlashcardsPanel = () => {
     isRatingPending,
     rateSrsCard,
     selectedDeckId,
-    sessionSettings.directionMode,
+    studyDirection,
+    subjectProfile.usesAssistant,
   ]);
 
   const handleBrowsePrev = useCallback(() => {
@@ -892,8 +906,14 @@ export const useLearnFlashcardsPanel = () => {
     }));
   }, [currentWord, formatInterval, isBrowseMode, t]);
   const cardFaces = useMemo(
-    () => resolveCardFaces(currentWord || {}, sessionSettings.directionMode, currentDeck || {}),
-    [currentDeck, currentWord, sessionSettings.directionMode],
+    () => resolveCardFaces(currentWord || {}, studyDirection, currentDeck || {}),
+    [currentDeck, currentWord, studyDirection],
+  );
+  // A subject with its own layout draws the card from blocks; null keeps
+  // the card a language card has always been.
+  const cardPresentation = useMemo(
+    () => (currentWord ? buildCardPresentation({ entry: currentWord, deck: currentDeck || {} }) : null),
+    [currentDeck, currentWord],
   );
   // The side names on the card, in the interface's language: a language,
   // or "Picture" for a picture side.
@@ -1029,6 +1049,8 @@ export const useLearnFlashcardsPanel = () => {
     cardBackImage,
     cardMetaBadges,
     cardBackDetails,
+    cardPresentation,
+    subjectProfile,
     isBackVisible,
     sessionSummary,
     directionSummary,
