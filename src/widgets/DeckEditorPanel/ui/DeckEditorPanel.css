@@ -316,22 +316,19 @@
   height: 0.85rem;
 }
 
-/* The two sides, drawn as the two faces of a card: the front white with
-   its red header rule, the back in the card's blue, as in Learn. */
+/* The two sides, drawn as the two faces of a card, one above the other:
+   the front white with its red header rule, the back in the card's blue,
+   as in Learn. Each takes the column's full width, so a language's name
+   and the Language / Picture choice fit in any interface language. */
 .deck-sides {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
 }
 
 .deck-side {
   display: grid;
-  align-content: start;
-  gap: 10px;
   min-width: 0;
-  min-height: 100%;
-  padding: 0 10px 12px;
   border: 2px solid var(--flashcard-border);
   border-bottom-width: 5px;
   border-radius: 16px;
@@ -340,12 +337,11 @@
 }
 
 .deck-side__face {
-  margin: 0 -10px;
-  padding: 8px 12px 6px;
+  padding: 7px 12px 5px;
   border-bottom: 2px solid var(--flashcard-header-rule);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
@@ -360,66 +356,65 @@
   color: var(--flashcard-on-back);
 }
 
+.deck-side__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  min-width: 0;
+}
+
+/* Wide enough: the choice and the language on one line. */
+@container (min-width: 480px) {
+  .deck-side__body:has(.setting-segmented) {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
+
 .deck-side .setting-segmented {
   display: flex;
-  width: 100%;
+  max-width: none;
 }
 
 .deck-side .setting-segmented__option {
-  flex: 1 1 0;
-  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .deck-side .setting-segmented__option label {
   width: 100%;
-  padding-inline: 6px;
+  white-space: nowrap;
 }
 
 .deck-side__note {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   line-height: 1.4;
 }
 
 .deck-sides__swap {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
+  margin-block: -18px;
   border: 2px solid var(--color-border);
   border-radius: 999px;
   background: var(--color-surface);
   color: var(--color-text-muted);
   cursor: pointer;
+  transform: rotate(90deg);
   transition: transform 220ms ease, color 140ms ease;
 }
 
-.deck-sides__swap:hover:not(:disabled) {
+.deck-sides__swap:hover {
   color: var(--color-primary);
-  transform: rotate(180deg);
-}
-
-.deck-sides__swap:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-@container (max-width: 340px) {
-  .deck-sides {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: stretch;
-  }
-
-  .deck-sides__swap {
-    justify-self: center;
-    transform: rotate(90deg);
-  }
-
-  .deck-sides__swap:hover:not(:disabled) {
-    transform: rotate(270deg);
-  }
+  transform: rotate(270deg);
 }
 
 /* The deck's other settings, as rows. */
@@ -786,12 +781,17 @@
   min-width: 0;
 }
 
+/* Two lines before it is cut: decks of definitions have long backs. */
 .deck-word__text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   font-size: 0.96rem;
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .deck-word__side--back .deck-word__text {

@@ -17,17 +17,21 @@ const DeckSideCard = memo(({ side, face, languageField, value, isPicture, disabl
   return (
     <div className={`deck-side deck-side--${face}`}>
       <span className="deck-side__face">{faceLabel}</span>
-      <SettingSegmented
-        name={`${side}SideType`}
-        value={isPicture ? "picture" : "language"}
-        ariaLabel={faceLabel}
-        onChange={handleTypeChange}
-        disabled={disabled}
-        options={[
-          { value: "language", label: t("editor.side.language") },
-          { value: "picture", label: t("media.label") },
-        ]}
-      />
+      <div className="deck-side__body">
+      {/* Once the deck has words a side stays what it is, so the choice
+          is not offered at all rather than shown greyed out. */}
+      {disabled ? null : (
+        <SettingSegmented
+          name={`${side}SideType`}
+          value={isPicture ? "picture" : "language"}
+          ariaLabel={faceLabel}
+          onChange={handleTypeChange}
+          options={[
+            { value: "language", label: t("editor.side.language") },
+            { value: "picture", label: t("media.label") },
+          ]}
+        />
+      )}
       {isPicture ? (
         <p className="deck-side__note">{t("editor.side.pictureHint")}</p>
       ) : (
@@ -39,6 +43,7 @@ const DeckSideCard = memo(({ side, face, languageField, value, isPicture, disabl
           ))}
         </Select>
       )}
+      </div>
     </div>
   );
 });
@@ -100,16 +105,17 @@ export const DeckEditorDeckSection = memo(() => {
             onLanguageChange={handleDeckFormChange}
             onSideTypeChange={handleSideTypeChange}
           />
-          <button
-            type="button"
-            className="deck-sides__swap"
-            onClick={swapSides}
-            disabled={!canChangeSides}
-            aria-label={t("editor.sides.swap")}
-            title={t("editor.sides.swap")}
-          >
-            <FiRepeat aria-hidden />
-          </button>
+          {canChangeSides ? (
+            <button
+              type="button"
+              className="deck-sides__swap"
+              onClick={swapSides}
+              aria-label={t("editor.sides.swap")}
+              title={t("editor.sides.swap")}
+            >
+              <FiRepeat aria-hidden />
+            </button>
+          ) : null}
           <DeckSideCard
             side="target"
             face="back"
