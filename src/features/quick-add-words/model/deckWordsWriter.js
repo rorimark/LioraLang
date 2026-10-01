@@ -93,14 +93,20 @@ export const toNewWord = (draft, index = 0) => ({
   image: draft?.image || null,
 });
 
+// Nothing was stored: said as an error, never as "Added".
+const nothingAddedError = () =>
+  Object.assign(new Error("No card was added"), { i18nKey: "quickAdd.errors.save" });
+
 export const appendWordsToDeck = (deckRepository, deckId, drafts) =>
   enqueue(deckId, async () => {
+    // A word of a picture deck may have no text on its first side: the
+    // picture is that side.
     const newWords = (Array.isArray(drafts) ? drafts : [])
       .map((draft, index) => toNewWord(draft, index))
-      .filter((word) => word.source);
+      .filter((word) => word.source || word.image);
 
     if (newWords.length === 0) {
-      return { deck: null, added: [], words: [] };
+      throw nothingAddedError();
     }
 
     const { deck, words } = await loadDeck(deckRepository, deckId);
@@ -113,6 +119,10 @@ export const appendWordsToDeck = (deckRepository, deckId, drafts) =>
     const added = savedWords.filter(
       (word) => !knownIds.has(String(word.id)) && externalIds.has(word.externalId),
     );
+
+    if (added.length === 0) {
+      throw nothingAddedError();
+    }
 
     return { deck: result?.deck || deck, added, words: savedWords };
   });

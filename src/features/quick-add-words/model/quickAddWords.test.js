@@ -168,6 +168,34 @@ describe("deckWordsWriter on the web store", () => {
     expect(words.map((word) => [word.source, word.target])).toEqual([["apple", "jabłko"]]);
   });
 
+  it("adds a card whose first side is a picture", async () => {
+    const repository = createWebDeckRepository();
+    const { deck } = await repository.saveDeck({
+      name: "Food",
+      sourceLanguage: "",
+      targetLanguage: "Polish",
+      pictureSide: "source",
+      words: [{ source: "", target: "szparagi", image: { assetId: "a".repeat(64), alt: "" } }],
+    });
+
+    const { added } = await appendWordsToDeck(repository, deck.id, [
+      { source: "", target: "chleb", image: { assetId: "b".repeat(64), alt: "" } },
+    ]);
+
+    expect(added).toHaveLength(1);
+    expect(added[0]).toMatchObject({ source: "", target: "chleb", image: { assetId: "b".repeat(64) } });
+    expect((await repository.getDeckWords(deck.id)).map((word) => word.target).sort()).toEqual(["chleb", "szparagi"]);
+  });
+
+  it("says nothing was added instead of pretending", async () => {
+    const repository = createWebDeckRepository();
+    const deck = await seedDeck(repository);
+
+    await expect(appendWordsToDeck(repository, deck.id, [{ source: "", target: "gruszka" }])).rejects.toMatchObject({
+      i18nKey: "quickAdd.errors.save",
+    });
+  });
+
   it("creates an empty deck ready for words", async () => {
     const repository = createWebDeckRepository();
     const { deck } = await createDeckForWords(repository, {
