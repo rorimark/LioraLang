@@ -87,8 +87,8 @@ export default {
     "inLibrary": "Kitaplığınızda"
   },
   "anywhere": {
-    "title": "Nerede olursanız öğrenin.",
-    "text": "Tarayıcıda kullanın, macOS veya Windows için masaüstü uygulamasını kurun ya da telefonunuzun ana ekranına ekleyin. İnternetsiz de çalışır.",
+    "title": "Tek hesap, tüm cihazlar.",
+    "text": "Tarayıcıda, macOS veya Windows'ta ya da telefonda çalışın. Giriş yapın; desteleriniz, görselleriniz ve ilerlemeniz her cihazda sizinle olsun.",
     "web": {
       "title": "Web",
       "text": "Her tarayıcı, kurulum yok"
@@ -100,7 +100,8 @@ export default {
     "phone": {
       "title": "Telefon",
       "text": "Ana ekrana ekle"
-    }
+    },
+    "synced": "Senkronize"
   },
   "phone": {
     "title": "Telefonunuzda bir uygulama.",

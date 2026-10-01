@@ -99,8 +99,8 @@ export default {
     "inLibrary": "W twojej bibliotece"
   },
   "anywhere": {
-    "title": "Ucz się, gdziekolwiek jesteś.",
-    "text": "Korzystaj w przeglądarce, zainstaluj aplikację na macOS lub Windows albo dodaj ją do ekranu głównego telefonu. Działa też bez internetu.",
+    "title": "Jedno konto, każde urządzenie.",
+    "text": "Ucz się w przeglądarce, na macOS lub Windows albo w telefonie. Zaloguj się, a talie, obrazki i postępy będą z tobą na każdym z nich.",
     "web": {
       "title": "Przeglądarka",
       "text": "Dowolna przeglądarka, bez instalacji"
@@ -112,7 +112,8 @@ export default {
     "phone": {
       "title": "Telefon",
       "text": "Dodaj do ekranu głównego"
-    }
+    },
+    "synced": "Zsynchronizowano"
   },
   "phone": {
     "title": "W telefonie to aplikacja.",

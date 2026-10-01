@@ -93,8 +93,8 @@ export default {
     "inLibrary": "Nella tua libreria"
   },
   "anywhere": {
-    "title": "Impara ovunque tu sia.",
-    "text": "Usala nel browser, installa l'app per macOS o Windows o aggiungila alla schermata Home del telefono. Funziona anche offline.",
+    "title": "Un account, tutti i dispositivi.",
+    "text": "Studia nel browser, su macOS o Windows, o sul telefono. Accedi, e mazzi, immagini e progressi ti seguono da uno all'altro.",
     "web": {
       "title": "Web",
       "text": "Qualsiasi browser, niente da installare"
@@ -106,7 +106,8 @@ export default {
     "phone": {
       "title": "Telefono",
       "text": "Aggiungi alla schermata Home"
-    }
+    },
+    "synced": "Sincronizzato"
   },
   "phone": {
     "title": "Sul telefono è un'app.",

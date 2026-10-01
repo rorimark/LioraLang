@@ -89,8 +89,8 @@ export default {
     "inLibrary": "In your library"
   },
   "anywhere": {
-    "title": "Learn wherever you are.",
-    "text": "Use it in the browser, install the desktop app for macOS or Windows, or add it to your phone’s home screen. It keeps working offline.",
+    "title": "One account, every device.",
+    "text": "Study in the browser, on macOS or Windows, or on your phone. Sign in, and your decks, pictures and progress follow you from one to the next.",
     "web": {
       "title": "Web",
       "text": "Any browser, nothing to install"
@@ -102,7 +102,8 @@ export default {
     "phone": {
       "title": "Phone",
       "text": "Add to Home Screen"
-    }
+    },
+    "synced": "In sync"
   },
   "phone": {
     "title": "On your phone, it’s an app.",

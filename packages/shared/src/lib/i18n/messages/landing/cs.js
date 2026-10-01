@@ -93,8 +93,8 @@ export default {
     "inLibrary": "Ve vaší knihovně"
   },
   "anywhere": {
-    "title": "Učte se, ať jste kdekoli.",
-    "text": "Používejte ji v prohlížeči, nainstalujte aplikaci pro macOS nebo Windows, nebo si ji přidejte na plochu telefonu. Funguje i offline.",
+    "title": "Jeden účet, všechna zařízení.",
+    "text": "Učte se v prohlížeči, na macOS nebo Windows, nebo v telefonu. Přihlaste se a balíčky, obrázky i pokrok budete mít na každém z nich.",
     "web": {
       "title": "Web",
       "text": "Jakýkoli prohlížeč, nic se neinstaluje"
@@ -106,7 +106,8 @@ export default {
     "phone": {
       "title": "Telefon",
       "text": "Přidat na plochu"
-    }
+    },
+    "synced": "Synchronizováno"
   },
   "phone": {
     "title": "V telefonu je to aplikace.",

@@ -87,8 +87,8 @@ export default {
     "inLibrary": "In deiner Bibliothek"
   },
   "anywhere": {
-    "title": "Lerne, wo immer du bist.",
-    "text": "Nutze es im Browser, installiere die Desktop-App für macOS oder Windows oder leg es auf den Startbildschirm deines Handys. Es funktioniert auch offline.",
+    "title": "Ein Konto, jedes Gerät.",
+    "text": "Lerne im Browser, auf macOS oder Windows oder auf dem Handy. Melde dich an, und deine Stapel, Bilder und dein Fortschritt sind auf jedem Gerät dabei.",
     "web": {
       "title": "Web",
       "text": "Jeder Browser, nichts zu installieren"
@@ -100,7 +100,8 @@ export default {
     "phone": {
       "title": "Handy",
       "text": "Zum Startbildschirm hinzufügen"
-    }
+    },
+    "synced": "Synchronisiert"
   },
   "phone": {
     "title": "Auf dem Handy ist es eine App.",

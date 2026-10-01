@@ -1088,10 +1088,46 @@
   transform: rotate(2deg);
 }
 
-/* Platforms: three chunky tiles. */
+/* Platforms: three chunky tiles, joined by a rail through their icons. */
 .lp-platforms-art {
+  position: relative;
   display: grid;
-  gap: 12px;
+  gap: 22px;
+}
+
+.lp-platforms-rail {
+  position: absolute;
+  top: 40px;
+  bottom: 40px;
+  /* Through the middle of the icons: tile border, padding, half an icon. */
+  left: calc(2px + 18px + 26px - 2px);
+  width: 4px;
+  border-radius: 999px;
+  background: repeating-linear-gradient(var(--lp-line-strong) 0 6px, transparent 6px 12px);
+  animation: lp-rail 1.2s linear infinite;
+}
+
+@keyframes lp-rail {
+  to {
+    background-position: 0 12px;
+  }
+}
+
+.lp-platform {
+  position: relative;
+}
+
+.lp-platforms-synced {
+  top: -18px;
+  right: -8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transform: rotate(5deg);
+}
+
+.lp-platforms-synced svg {
+  font-size: 1.1em;
 }
 
 .lp-platform {
@@ -1937,6 +1973,7 @@
   [data-revealed] .lp-chart__bar,
   [data-revealed] :is(.lp-ai-ghost, .lp-ai-chips),
   [data-revealed] .lp-phone-icon,
+  .lp-platforms-rail,
   [data-revealed] .lp-phone__card,
   [data-revealed] .lp-phone__grade.is-pressed,
   [data-revealed] .lp-phone__next,

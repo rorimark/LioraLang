@@ -7,6 +7,7 @@ import {
   IoExpandOutline,
   IoGlobeOutline,
   IoPhonePortraitOutline,
+  IoSyncOutline,
 } from "react-icons/io5";
 import { AppIcon } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -120,8 +121,15 @@ const PLATFORM_ICONS = {
 export const PlatformsIllustration = memo(({ platforms }) => {
   const { t } = useI18n();
 
+  // The three are one account: a rail joins their icons, and a sticker says
+  // they are in step.
   return (
   <div className="lp-art lp-platforms-art">
+    <span className="lp-platforms-rail" aria-hidden />
+    <span className="lp-sticker lp-tone-green lp-platforms-synced" aria-hidden>
+      <IoSyncOutline />
+      {t("landing.anywhere.synced")}
+    </span>
     {platforms.map((platform, index) => {
       const Icon = PLATFORM_ICONS[platform.key];
       const className = `lp-platform lp-tone-${["blue", "green", "amber"][index % 3]}`;

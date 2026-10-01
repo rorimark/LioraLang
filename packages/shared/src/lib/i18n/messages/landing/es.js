@@ -93,8 +93,8 @@ export default {
     "inLibrary": "En tu biblioteca"
   },
   "anywhere": {
-    "title": "Aprende donde estés.",
-    "text": "Úsala en el navegador, instala la app de escritorio para macOS o Windows, o añádela a la pantalla de inicio del móvil. Sigue funcionando sin conexión.",
+    "title": "Una cuenta, todos tus dispositivos.",
+    "text": "Estudia en el navegador, en macOS o Windows, o en el móvil. Inicia sesión y tus mazos, imágenes y progreso te acompañan de uno a otro.",
     "web": {
       "title": "Web",
       "text": "Cualquier navegador, sin instalar nada"
@@ -106,7 +106,8 @@ export default {
     "phone": {
       "title": "Móvil",
       "text": "Añadir a la pantalla de inicio"
-    }
+    },
+    "synced": "Sincronizado"
   },
   "phone": {
     "title": "En el móvil, es una app.",

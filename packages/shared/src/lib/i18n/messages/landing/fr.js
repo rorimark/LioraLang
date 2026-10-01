@@ -93,8 +93,8 @@ export default {
     "inLibrary": "Dans votre bibliothèque"
   },
   "anywhere": {
-    "title": "Apprenez où que vous soyez.",
-    "text": "Utilisez-la dans le navigateur, installez l'app pour macOS ou Windows, ou ajoutez-la à l'écran d'accueil de votre téléphone. Elle fonctionne aussi hors ligne.",
+    "title": "Un compte, tous vos appareils.",
+    "text": "Révisez dans le navigateur, sur macOS ou Windows, ou sur votre téléphone. Connectez-vous, et vos paquets, images et progrès vous suivent de l'un à l'autre.",
     "web": {
       "title": "Web",
       "text": "N'importe quel navigateur, rien à installer"
@@ -106,7 +106,8 @@ export default {
     "phone": {
       "title": "Téléphone",
       "text": "Ajouter à l'écran d'accueil"
-    }
+    },
+    "synced": "Synchronisé"
   },
   "phone": {
     "title": "Sur votre téléphone, c'est une app.",

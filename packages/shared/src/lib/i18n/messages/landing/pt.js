@@ -93,8 +93,8 @@ export default {
     "inLibrary": "Na sua biblioteca"
   },
   "anywhere": {
-    "title": "Aprenda onde estiver.",
-    "text": "Use no navegador, instale o app para macOS ou Windows ou adicione à tela inicial do celular. Continua funcionando offline.",
+    "title": "Uma conta, todos os dispositivos.",
+    "text": "Estude no navegador, no macOS ou Windows, ou no celular. Entre na sua conta e seus baralhos, imagens e progresso vão com você de um para o outro.",
     "web": {
       "title": "Web",
       "text": "Qualquer navegador, nada para instalar"
@@ -106,7 +106,8 @@ export default {
     "phone": {
       "title": "Celular",
       "text": "Adicionar à tela inicial"
-    }
+    },
+    "synced": "Sincronizado"
   },
   "phone": {
     "title": "No celular, é um app.",
