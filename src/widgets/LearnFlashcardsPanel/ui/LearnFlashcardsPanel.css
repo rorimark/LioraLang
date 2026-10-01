@@ -300,6 +300,34 @@
   }
 }
 
+/* The hint after "Again" sits on the foot of the card, above it in the
+   stack, and never changes the card's size. */
+.learn-desk__table > .missed-hint {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: clamp(10px, 3cqh, 22px);
+  width: min(calc(100% - 24px), 520px);
+  margin: 0;
+  transform: translateX(-50%);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-text) 10%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface));
+  animation: learn-hint-in 220ms ease-out both;
+}
+
+@keyframes learn-hint-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-desk__table > .missed-hint {
+    animation: none;
+  }
+}
+
 .learn-desk__card,
 .learn-desk__leaving {
   position: absolute;

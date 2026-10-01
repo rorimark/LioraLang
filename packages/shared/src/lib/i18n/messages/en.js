@@ -340,7 +340,9 @@ export default {
       "file": "From a file",
       "fileHint": ".lioradeck, .lioralang or .json",
       "json": "From JSON",
-      "jsonHint": "Paste a deck or a list of words."
+      "jsonHint": "Paste a deck or a list of words.",
+      "ai": "Collect a deck with AI",
+      "aiHint": "Give a topic and a level, then look the words over"
     },
     "row": {
       "learned": "Learned",
@@ -1730,5 +1732,27 @@ export default {
       "one": "{count} detail filled in",
       "other": "{count} details filled in"
     }
+  },
+  "aiList": {
+    "topicTitle": "Or collect words on a topic",
+    "topic": "Topic",
+    "topicPlaceholder": "kitchen, airport, feelings",
+    "anyLevel": "Any level",
+    "count": "How many",
+    "words": {
+      "one": "{count} word",
+      "other": "{count} words"
+    },
+    "collect": "Collect words",
+    "fill": "Fill in the rest",
+    "filling": "Filling in {done} of {total}…",
+    "collecting": "Collecting words…",
+    "busy": "The assistant is busy. Try again in a moment.",
+    "error": "Could not fill these in. Try again."
+  },
+  "learnHint": {
+    "label": "How to remember",
+    "thinking": "Finding a way to remember…",
+    "dismiss": "Hide hint"
   }
 };

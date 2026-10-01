@@ -345,7 +345,9 @@ export default {
       "file": "Desde un archivo",
       "fileHint": ".lioradeck, .lioralang o .json",
       "json": "Desde JSON",
-      "jsonHint": "Pega un mazo o una lista de palabras."
+      "jsonHint": "Pega un mazo o una lista de palabras.",
+      "ai": "Crear un mazo con IA",
+      "aiHint": "Indica un tema y un nivel, luego revisa las palabras"
     },
     "row": {
       "learned": "Aprendidas",
@@ -1819,5 +1821,28 @@ export default {
       "many": "{count} detalles completados",
       "other": "{count} detalles completados"
     }
+  },
+  "aiList": {
+    "topicTitle": "O reúne palabras sobre un tema",
+    "topic": "Tema",
+    "topicPlaceholder": "cocina, aeropuerto, emociones",
+    "anyLevel": "Cualquier nivel",
+    "count": "Cuántas",
+    "words": {
+      "one": "{count} palabra",
+      "many": "{count} palabras",
+      "other": "{count} palabras"
+    },
+    "collect": "Reunir palabras",
+    "fill": "Completar el resto",
+    "filling": "Completando {done} de {total}…",
+    "collecting": "Reuniendo palabras…",
+    "busy": "El asistente está ocupado. Inténtalo en un momento.",
+    "error": "No se pudo completar. Inténtalo de nuevo."
+  },
+  "learnHint": {
+    "label": "Cómo recordarla",
+    "thinking": "Buscando cómo recordarla…",
+    "dismiss": "Ocultar pista"
   }
 };

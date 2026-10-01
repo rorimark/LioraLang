@@ -22,7 +22,7 @@ export const PARTS_OF_SPEECH = [
   "other",
 ];
 
-const MAX_TEXT = 80;
+export const MAX_TEXT = 80;
 const MAX_FIELD = 200;
 const MAX_EXAMPLES = 3;
 const MAX_TAG = 30;
@@ -55,12 +55,12 @@ export type Suggestion = {
   tags: string[];
 };
 
-const clean = (value: unknown): string =>
+export const clean = (value: unknown): string =>
   typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
 
 // A language is a name as the app stores it: "English", "Brazilian
 // Portuguese". Anything else is not passed into the prompt.
-const cleanLanguage = (value: unknown): string => {
+export const cleanLanguage = (value: unknown): string => {
   const language = clean(value);
   return language.length <= 40 && /^[\p{L} ()'-]*$/u.test(language) ? language : "";
 };
@@ -72,7 +72,7 @@ const cleanTag = (value: unknown): string => {
   return tag.length <= MAX_TAG && /^[\p{L}\p{N}][\p{L}\p{N} &'_-]*$/u.test(tag) ? tag : "";
 };
 
-const cleanTags = (value: unknown, limit: number): string[] => {
+export const cleanTags = (value: unknown, limit: number): string[] => {
   const seen = new Set<string>();
   return (Array.isArray(value) ? value : [])
     .map(cleanTag)
@@ -168,7 +168,7 @@ const SYSTEM_INSTRUCTION = [
 // How much a model may think before it answers. A suggestion has to arrive
 // while the person is still on the field: the 2.5 Flash models answer
 // without thinking, the Gemini 3 ones think as little as they can.
-const thinkingFor = (model: string) => {
+export const thinkingFor = (model: string) => {
   if (model.startsWith("gemini-2.5-flash")) {
     return { thinkingConfig: { thinkingBudget: 0 } };
   }
@@ -222,13 +222,14 @@ export const buildGeminiRequest = (request: SuggestRequest, model = DEFAULT_MODE
   },
 });
 
-const field = (value: unknown): string => {
+export const field = (value: unknown): string => {
   const text = clean(value);
   return text.length > MAX_FIELD ? "" : text;
 };
 
-// The model's reply as a suggestion, or null when there is none to give.
-export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
+// The JSON object a model answered with, or null for a blocked, cut-off
+// or broken answer.
+export const readGeminiJson = (response: unknown): Record<string, unknown> | null => {
   const candidate = (response as { candidates?: Array<Record<string, unknown>> })?.candidates?.[0];
   const parts = (candidate?.content as { parts?: Array<{ text?: unknown }> } | undefined)?.parts;
 
@@ -236,15 +237,19 @@ export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
     return null;
   }
 
-  let raw: Record<string, unknown>;
-
   try {
-    raw = JSON.parse(parts.map((part) => (typeof part?.text === "string" ? part.text : "")).join(""));
+    const raw = JSON.parse(parts.map((part) => (typeof part?.text === "string" ? part.text : "")).join(""));
+    return raw && typeof raw === "object" && !Array.isArray(raw) ? raw : null;
   } catch {
     return null;
   }
+};
 
-  if (!raw || typeof raw !== "object") {
+// The model's reply as a suggestion, or null when there is none to give.
+export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
+  const raw = readGeminiJson(response);
+
+  if (!raw) {
     return null;
   }
 
@@ -298,16 +303,17 @@ export const pickFlashModels = (listResponse: unknown): string[] => {
 export const pickFlashModel = (listResponse: unknown): string =>
   pickFlashModels(listResponse).find((name) => !name.endsWith("-lite")) || "";
 
-export type Attempt = { suggestion?: Suggestion; overloaded?: boolean };
+// One model's outcome: an answer, or why there is none.
+export type Attempt<T = unknown> = { value?: T; overloaded?: boolean };
 
 // Ask the models in turn and take the first suggestion that comes back. A
 // model that fails hands over to the next one at once; a model that is
 // slow gets company after hedgeMs, and whichever answers first wins. The
-// others are stopped. With no suggestion, overloaded says whether asking
-// again later is worth it.
-export const raceModels = (
+// others are stopped. With no answer, overloaded says whether asking again
+// later is worth it.
+export const raceModels = <T>(
   models: string[],
-  ask: (model: string, stop: AbortSignal, timeoutMs: number) => Promise<Attempt>,
+  ask: (model: string, stop: AbortSignal, timeoutMs: number) => Promise<Attempt<T>>,
   { hedgeMs, attemptMs, deadline, minTimeLeftMs = 1_500, now = Date.now }: {
     hedgeMs: number;
     attemptMs: number;
@@ -315,7 +321,7 @@ export const raceModels = (
     minTimeLeftMs?: number;
     now?: () => number;
   },
-): Promise<Attempt> =>
+): Promise<Attempt<T>> =>
   new Promise((resolve) => {
     const stop = new AbortController();
     let next = 0;
@@ -324,7 +330,7 @@ export const raceModels = (
     let isDone = false;
     let hedgeTimer: ReturnType<typeof setTimeout> | undefined;
 
-    const finish = (result: Attempt) => {
+    const finish = (result: Attempt<T>) => {
       if (isDone) return;
       isDone = true;
       clearTimeout(hedgeTimer);
@@ -349,11 +355,11 @@ export const raceModels = (
       running += 1;
 
       ask(model, stop.signal, Math.min(attemptMs, timeLeft))
-        .catch((): Attempt => ({ overloaded: true }))
+        .catch((): Attempt<T> => ({ overloaded: true }))
         .then((outcome) => {
           running -= 1;
 
-          if (outcome.suggestion) {
+          if (outcome.value !== undefined) {
             finish(outcome);
             return;
           }

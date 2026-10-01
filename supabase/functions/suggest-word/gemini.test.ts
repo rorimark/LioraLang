@@ -194,28 +194,28 @@ describe("suggest-word: asking the models", () => {
 
   it("takes a quick answer without asking anyone else", async () => {
     const start = Date.now();
-    const { asked, result } = race({ lite: model(900, { suggestion: suggestion("a") }), flash: model(900, {}) });
+    const { asked, result } = race({ lite: model(900, { value: suggestion("a") }), flash: model(900, {}) });
 
     await vi.advanceTimersByTimeAsync(1_000);
-    expect(await result).toEqual({ suggestion: suggestion("a") });
+    expect(await result).toEqual({ value: suggestion("a") });
     expect(asked).toEqual([`lite@${start}`]);
   });
 
   it("asks the next model too when the first is slow, and takes the first answer", async () => {
     const start = Date.now();
-    const { asked, result } = race({ lite: model(8_000, { overloaded: true }), flash: model(1_000, { suggestion: suggestion("b") }) });
+    const { asked, result } = race({ lite: model(8_000, { overloaded: true }), flash: model(1_000, { value: suggestion("b") }) });
 
     await vi.advanceTimersByTimeAsync(3_600);
-    expect(await result).toEqual({ suggestion: suggestion("b") });
+    expect(await result).toEqual({ value: suggestion("b") });
     expect(asked).toEqual([`lite@${start}`, `flash@${start + 2_500}`]);
   });
 
   it("moves on at once when a model fails", async () => {
     const start = Date.now();
-    const { asked, result } = race({ lite: model(300, { overloaded: true }), flash: model(500, { suggestion: suggestion("c") }) });
+    const { asked, result } = race({ lite: model(300, { overloaded: true }), flash: model(500, { value: suggestion("c") }) });
 
     await vi.advanceTimersByTimeAsync(900);
-    expect(await result).toEqual({ suggestion: suggestion("c") });
+    expect(await result).toEqual({ value: suggestion("c") });
     expect(asked).toEqual([`lite@${start}`, `flash@${start + 300}`]);
   });
 
@@ -234,7 +234,7 @@ describe("suggest-word: asking the models", () => {
   });
 
   it("starts nothing new once the time is nearly up", async () => {
-    const { asked, result } = race({ lite: model(5_000, {}), flash: model(100, { suggestion: suggestion("d") }) }, 3_000);
+    const { asked, result } = race({ lite: model(5_000, {}), flash: model(100, { value: suggestion("d") }) }, 3_000);
 
     await vi.advanceTimersByTimeAsync(5_100);
     expect(await result).toEqual({ overloaded: false });

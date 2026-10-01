@@ -345,7 +345,9 @@ export default {
       "file": "Ze souboru",
       "fileHint": ".lioradeck, .lioralang nebo .json",
       "json": "Z JSON",
-      "jsonHint": "Vložte balíček nebo seznam slov."
+      "jsonHint": "Vložte balíček nebo seznam slov.",
+      "ai": "Sestavit balíček s AI",
+      "aiHint": "Zadejte téma a úroveň, pak slova projděte"
     },
     "row": {
       "learned": "Naučeno",
@@ -1828,5 +1830,29 @@ export default {
       "many": "Doplněny {count} údaje",
       "other": "Doplněno {count} údajů"
     }
+  },
+  "aiList": {
+    "topicTitle": "Nebo posbírejte slova k tématu",
+    "topic": "Téma",
+    "topicPlaceholder": "kuchyně, letiště, emoce",
+    "anyLevel": "Jakákoli úroveň",
+    "count": "Kolik",
+    "words": {
+      "one": "{count} slovo",
+      "few": "{count} slova",
+      "many": "{count} slova",
+      "other": "{count} slov"
+    },
+    "collect": "Posbírat slova",
+    "fill": "Doplnit zbytek",
+    "filling": "Doplňujeme {done} z {total}…",
+    "collecting": "Sbíráme slova…",
+    "busy": "Asistent je teď zaneprázdněný. Zkuste to za chvíli.",
+    "error": "Doplnit se nepodařilo. Zkuste to znovu."
+  },
+  "learnHint": {
+    "label": "Jak si to zapamatovat",
+    "thinking": "Hledáme, jak si to zapamatovat…",
+    "dismiss": "Skrýt nápovědu"
   }
 };

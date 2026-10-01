@@ -350,7 +350,9 @@ export default {
       "file": "Z pliku",
       "fileHint": ".lioradeck, .lioralang lub .json",
       "json": "Z JSON",
-      "jsonHint": "Wklej talię lub listę słów."
+      "jsonHint": "Wklej talię lub listę słów.",
+      "ai": "Zbierz talię z AI",
+      "aiHint": "Podaj temat i poziom, potem przejrzyj słowa"
     },
     "row": {
       "learned": "Nauczone",
@@ -1908,5 +1910,29 @@ export default {
       "many": "Uzupełniono {count} szczegółów",
       "other": "Uzupełniono {count} szczegóły"
     }
+  },
+  "aiList": {
+    "topicTitle": "Albo zbierz słowa na temat",
+    "topic": "Temat",
+    "topicPlaceholder": "kuchnia, lotnisko, emocje",
+    "anyLevel": "Dowolny poziom",
+    "count": "Ile",
+    "words": {
+      "one": "{count} słowo",
+      "few": "{count} słowa",
+      "many": "{count} słów",
+      "other": "{count} słowa"
+    },
+    "collect": "Zbierz słowa",
+    "fill": "Uzupełnij resztę",
+    "filling": "Uzupełniamy {done} z {total}…",
+    "collecting": "Zbieramy słowa…",
+    "busy": "Asystent jest teraz zajęty. Spróbuj za chwilę.",
+    "error": "Nie udało się uzupełnić. Spróbuj ponownie."
+  },
+  "learnHint": {
+    "label": "Jak zapamiętać",
+    "thinking": "Szukamy sposobu na zapamiętanie…",
+    "dismiss": "Ukryj podpowiedź"
   }
 };

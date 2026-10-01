@@ -1,11 +1,20 @@
 import { memo, useCallback, useMemo, useId, useRef, useState } from "react";
 import { FiAlertTriangle, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, FiX } from "react-icons/fi";
 import { WordImageField } from "@features/word-image-field";
-import { SuggestChip, SuggestField, SuggestionBar, useSuggestionSummary, useWordSuggestion } from "@features/word-suggest";
+import {
+  SparkIcon,
+  SuggestChip,
+  SuggestField,
+  SuggestionBar,
+  useSuggestionSummary,
+  useWordSuggestion,
+} from "@features/word-suggest";
+import { AI_TOPIC_COUNTS } from "@shared/core/usecases/wordSuggest";
 import { Button, Select } from "@shared/ui";
 import { useDialogA11y } from "@shared/lib/a11y";
 import { useI18n } from "@shared/lib/i18n";
 import {
+  AI_STATUS,
   DUPLICATE_KIND,
   LEVEL_OPTIONS,
   NEW_DECK_VALUE,
@@ -331,8 +340,29 @@ const rowProblemKey = (row) => {
   return "";
 };
 
+// What a drafted card adds beside its line: "noun · A2 · 2 examples · food".
+const DraftedDetails = memo(({ details }) => {
+  const { t, partOfSpeechName } = useI18n();
+  const parts = [
+    details.part_of_speech ? partOfSpeechName(details.part_of_speech) : "",
+    details.level || "",
+    details.examples?.length ? t("suggest.examples", { count: details.examples.length }) : "",
+    details.tags?.length ? details.tags.join(", ") : "",
+  ].filter(Boolean);
+
+  return parts.length ? (
+    <p className="quick-add__row-ai">
+      <SparkIcon />
+      <span>{parts.join(" · ")}</span>
+    </p>
+  ) : null;
+});
+
+DraftedDetails.displayName = "DraftedDetails";
+
 const ListRow = memo(({ row, model, sourceLabel, targetLabel }) => {
   const { t } = useI18n();
+  const filled = row.ai?.filled || [];
   const problemKey = rowProblemKey(row);
   const needsFix = row.status !== ROW_STATUS.ready;
   const className = [
@@ -354,7 +384,7 @@ const ListRow = memo(({ row, model, sourceLabel, targetLabel }) => {
         aria-label={t("quickAdd.list.include", { word: row.source || row.raw })}
       />
       <input
-        className="quick-add__row-input"
+        className={`quick-add__row-input${filled.includes("source") ? " is-drafted" : ""}`}
         value={row.source}
         onChange={(event) => model.handleRowChange(row.key, "source", event.target.value)}
         aria-label={t("quickAdd.list.rowField", { field: sourceLabel, line: row.line })}
@@ -362,7 +392,7 @@ const ListRow = memo(({ row, model, sourceLabel, targetLabel }) => {
         autoComplete="off"
       />
       <input
-        className="quick-add__row-input"
+        className={`quick-add__row-input${filled.includes("target") ? " is-drafted" : ""}`}
         value={row.target}
         onChange={(event) => model.handleRowChange(row.key, "target", event.target.value)}
         aria-label={t("quickAdd.list.rowField", { field: targetLabel, line: row.line })}
@@ -377,6 +407,17 @@ const ListRow = memo(({ row, model, sourceLabel, targetLabel }) => {
       >
         <FiTrash2 aria-hidden="true" />
       </button>
+      {row.ai?.correction ? (
+        <p className="quick-add__row-ai quick-add__row-ai--correction">
+          <SparkIcon />
+          <span>{t("suggest.didYouMean", { word: row.ai.correction })}</span>
+          <button type="button" className="quick-add__row-fix" onClick={() => model.ai.applyCorrection(row.key)}>
+            {t("suggest.useCorrection")}
+          </button>
+        </p>
+      ) : row.ai?.details ? (
+        <DraftedDetails details={row.ai.details} />
+      ) : null}
       {problemKey ? (
         <p className="quick-add__row-note">
           {t(problemKey, {
@@ -390,6 +431,108 @@ const ListRow = memo(({ row, model, sourceLabel, targetLabel }) => {
 });
 
 ListRow.displayName = "ListRow";
+
+// What the assistant is doing for the list, in one quiet line.
+const AiStatus = memo(({ ai }) => {
+  const { t } = useI18n();
+  const key = {
+    [AI_STATUS.filling]: "aiList.filling",
+    [AI_STATUS.collecting]: "aiList.collecting",
+    [AI_STATUS.quota]: "suggest.quota",
+    [AI_STATUS.busy]: "aiList.busy",
+    [AI_STATUS.error]: "aiList.error",
+  }[ai.status];
+
+  if (!key) {
+    return null;
+  }
+
+  return (
+    <p className={`suggest-bar${ai.isBusy ? " suggest-bar--thinking" : " suggest-bar--quiet"}`} role="status">
+      <SparkIcon className={ai.isBusy ? "is-breathing" : ""} />
+      <span>{t(key, { done: ai.done, total: ai.total })}</span>
+    </p>
+  );
+});
+
+AiStatus.displayName = "AiStatus";
+
+// "Kitchen, B1, 20 words": the assistant drafts the words, they arrive in
+// the list below to look over before anything is added.
+const TopicForm = memo(({ model }) => {
+  const { t } = useI18n();
+  const { ai } = model;
+  const topicId = useId();
+
+  if (!ai.isAvailable) {
+    return null;
+  }
+
+  return (
+    <form
+      className="quick-add__topic"
+      onSubmit={(event) => {
+        event.preventDefault();
+        void ai.collectByTopic();
+      }}
+    >
+      <p className="quick-add__topic-title">
+        <SparkIcon />
+        <span>{t("aiList.topicTitle")}</span>
+      </p>
+      <div className="quick-add__topic-fields">
+        <label className="quick-add__field quick-add__topic-text" htmlFor={topicId}>
+          <span>{t("aiList.topic")}</span>
+          <input
+            id={topicId}
+            value={ai.topic.text}
+            onChange={(event) => ai.changeTopic({ text: event.target.value })}
+            placeholder={t("aiList.topicPlaceholder")}
+            maxLength={80}
+            autoComplete="off"
+            data-autofocus={model.isTopicFirst || undefined}
+          />
+        </label>
+        {model.usesWordLevels ? (
+          <label className="quick-add__field">
+            <span>{t("catalog.level")}</span>
+            <Select value={ai.topic.level} onChange={(event) => ai.changeTopic({ level: event.target.value })}>
+              <option value="">{t("aiList.anyLevel")}</option>
+              {LEVEL_OPTIONS.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </Select>
+          </label>
+        ) : null}
+        <label className="quick-add__field">
+          <span>{t("aiList.count")}</span>
+          <Select value={String(ai.topic.count)} onChange={(event) => ai.changeTopic({ count: Number(event.target.value) })}>
+            {AI_TOPIC_COUNTS.map((count) => (
+              <option key={count} value={count}>
+                {t("aiList.words", { count })}
+              </option>
+            ))}
+          </Select>
+        </label>
+      </div>
+      {ai.needsSignIn ? (
+        <p className="suggest-bar suggest-bar--quiet">{t("suggest.signIn")}</p>
+      ) : (
+        <div className="quick-add__topic-submit">
+          <Button type="submit" disabled={!ai.isReady || ai.isBusy || !ai.topic.text.trim()}>
+            <SparkIcon />
+            {t("aiList.collect")}
+          </Button>
+          <AiStatus ai={ai} />
+        </div>
+      )}
+    </form>
+  );
+});
+
+TopicForm.displayName = "TopicForm";
 
 const PasteList = memo(({ model }) => {
   const { t, languageName } = useI18n();
@@ -408,7 +551,7 @@ const PasteList = memo(({ model }) => {
             onChange={model.handlePasteTextChange}
             onPaste={model.handleListPaste}
             placeholder={t("quickAdd.list.placeholder")}
-            data-autofocus
+            data-autofocus={!model.isTopicFirst || undefined}
           />
         </label>
         <p className="quick-add__hint">{t("quickAdd.list.help")}</p>
@@ -417,6 +560,7 @@ const PasteList = memo(({ model }) => {
             {t("quickAdd.list.preview")}
           </Button>
         </div>
+        <TopicForm model={model} />
       </div>
     );
   }
@@ -434,7 +578,13 @@ const PasteList = memo(({ model }) => {
           ) : null}
         </p>
         <div className="quick-add__preview-tools">
-          <Button size="sm" onClick={model.swapColumns}>
+          {model.ai.isAvailable && model.ai.isReady && model.ai.pendingCount > 0 ? (
+            <Button size="sm" onClick={model.ai.fillWithAi} disabled={model.ai.isBusy}>
+              <SparkIcon />
+              {t("aiList.fill")}
+            </Button>
+          ) : null}
+          <Button size="sm" onClick={model.swapColumns} disabled={model.ai.isBusy}>
             <FiRepeat aria-hidden="true" />
             {t("quickAdd.list.swap")}
           </Button>
@@ -443,6 +593,8 @@ const PasteList = memo(({ model }) => {
           </Button>
         </div>
       </div>
+
+      <AiStatus ai={model.ai} />
 
       <div className="quick-add__columns" aria-hidden="true">
         <span />

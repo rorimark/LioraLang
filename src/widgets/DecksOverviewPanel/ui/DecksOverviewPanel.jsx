@@ -3,6 +3,8 @@ import { FiChevronDown, FiCode, FiFilePlus, FiPlus, FiUpload } from "react-icons
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
+import { QuickAddWordsDialog } from "@features/quick-add-words";
+import { SparkIcon } from "@features/word-suggest";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { Button, InlineAlert, SearchField } from "@shared/ui";
 import { DECK_PAGE_SIZE_OPTIONS, useDecksOverviewPanel } from "../model";
@@ -10,7 +12,7 @@ import "./DecksOverviewPanel.css";
 import { useI18n } from "@shared/lib/i18n";
 
 // One labelled way to add a deck; the three ways to do it are its menu.
-const NewDeckMenu = ({ onCreate, onImport, onJson, isImporting }) => {
+const NewDeckMenu = ({ onCreate, onCollect, onImport, onJson, isImporting }) => {
   const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const wrapRef = useRef(null);
@@ -62,6 +64,13 @@ const NewDeckMenu = ({ onCreate, onImport, onJson, isImporting }) => {
               <small>{t("decks.newMenu.emptyHint")}</small>
             </span>
           </button>
+          <button type="button" role="menuitem" onClick={() => choose(onCollect)}>
+            <SparkIcon className="decks-page-panel__new-spark" />
+            <span>
+              <strong>{t("decks.newMenu.ai")}</strong>
+              <small>{t("decks.newMenu.aiHint")}</small>
+            </span>
+          </button>
           <button type="button" role="menuitem" onClick={() => choose(onImport)} disabled={isImporting}>
             <FiUpload aria-hidden="true" />
             <span>
@@ -84,6 +93,14 @@ const NewDeckMenu = ({ onCreate, onImport, onJson, isImporting }) => {
 
 export const DecksOverviewPanel = memo(() => {
   const panel = useDecksOverviewPanel();
+  // A deck on a topic is drafted in the add-words dialog, on a new deck.
+  const [isCollectOpen, setIsCollectOpen] = useState(false);
+  const openCollect = useCallback(() => setIsCollectOpen(true), []);
+  const { refreshDecks } = panel;
+  const closeCollect = useCallback(() => {
+    setIsCollectOpen(false);
+    void refreshDecks?.();
+  }, [refreshDecks]);
   const { t } = useI18n();
   const listRef = useRef(null);
   const { handleDeckPageChange, handleDeckPageSizeChange } = panel;
@@ -236,6 +253,7 @@ export const DecksOverviewPanel = memo(() => {
           ) : null}
           <NewDeckMenu
             onCreate={panel.openCreateDeck}
+            onCollect={openCollect}
             onImport={panel.openImportConfirm}
             onJson={panel.openJsonImport}
             isImporting={panel.isImporting}
@@ -283,6 +301,8 @@ export const DecksOverviewPanel = memo(() => {
       <ImportDeckModal modal={importModal} />
 
       <CreateDeckFromJsonModal modal={jsonImportModal} />
+
+      {isCollectOpen ? <QuickAddWordsDialog initialTab="topic" onClose={closeCollect} /> : null}
     </article>
   );
 });

@@ -324,6 +324,67 @@
   }
 }
 
+/* After "Again" in Learn: the word just missed and how to remember it,
+   in one quiet note under the card. */
+.missed-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: min(100%, 520px);
+  margin: 12px auto 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--color-primary) 5%, var(--color-surface));
+  color: var(--color-text);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  animation: suggest-bar-in 220ms ease-out both;
+}
+
+.missed-hint > .suggest-spark {
+  margin-top: 4px;
+  color: var(--color-primary);
+}
+
+.missed-hint__text {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.missed-hint__word {
+  font-weight: 700;
+}
+
+.missed-hint.is-loading .missed-hint__body,
+.missed-hint__label {
+  color: var(--color-text-muted);
+}
+
+.missed-hint__dismiss {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin: -4px -6px -4px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.missed-hint__dismiss:hover,
+.missed-hint__dismiss:focus-visible {
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+  color: var(--color-text);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .suggest-spark.is-breathing,
   .suggest-field__ghost,
@@ -333,7 +394,8 @@
   .suggest-field.is-inked > textarea,
   .suggest-inked .ui-select__trigger,
   .suggest-chip,
-  .suggest-bar {
+  .suggest-bar,
+  .missed-hint {
     animation: none;
   }
 }

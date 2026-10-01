@@ -2,7 +2,21 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDecks } from "@entities/deck";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import { collectDeckTags } from "@shared/core/usecases/wordSuggest";
+import {
+  AI_LIST_CHUNK,
+  applyCardToRow,
+  buildAiDeck,
+  buildTopicRequest,
+  canDraftCards,
+  cardsToRows,
+  chunkRows,
+  collectDeckTags,
+  editRow,
+  isTopicReady,
+  rowsToDraft,
+  rowToWord,
+} from "@shared/core/usecases/wordSuggest";
+import { useAiAccess } from "@features/word-suggest";
 import { DEFAULT_SOURCE_LANGUAGE, DEFAULT_TARGET_LANGUAGE, LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { appendWordsToDeck, createDeckForWords, removeWordsFromDeck } from "./deckWordsWriter";
 import { ROW_STATUS, looksLikeWordList, parseWordList, resolveRowStatus } from "./parseWordList";
@@ -80,6 +94,20 @@ const markRows = (rows, index) =>
         row.duplicate.kind !== DUPLICATE_KIND.repeatedInList,
   }));
 
+// What the assistant is doing for the list, as the interface tells it.
+export const AI_STATUS = Object.freeze({
+  idle: "idle",
+  filling: "filling",
+  collecting: "collecting",
+  done: "done",
+  quota: "quota",
+  busy: "busy",
+  error: "error",
+});
+
+const aiErrorStatus = (error) =>
+  error?.code === "quota" ? AI_STATUS.quota : error?.code === "busy" ? AI_STATUS.busy : AI_STATUS.error;
+
 export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "single", onWordsAdded, sourceInputRef } = {}) => {
   const deckRepository = usePlatformService("deckRepository");
   const { decks, isLoading: isDecksLoading } = useDecks();
@@ -90,7 +118,10 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     onWordsAddedRef.current = onWordsAdded;
   }, [onWordsAdded]);
 
-  const [deckChoice, setDeckChoice] = useState(initialDeckId ? String(initialDeckId) : "");
+  // "topic" opens the list on a new deck, ready to collect words by topic.
+  const startsWithTopic = initialTab === "topic";
+  const initialChoice = startsWithTopic ? NEW_DECK_VALUE : initialDeckId ? String(initialDeckId) : "";
+  const [deckChoice, setDeckChoice] = useState(initialChoice);
   const [newDeck, setNewDeck] = useState(() => ({
     name: "",
     ...pickDefaultLanguages(appPreferences.deckDefaults),
@@ -98,7 +129,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
   // A deck made in this dialog, used until the deck list catches up.
   const [createdDeck, setCreatedDeck] = useState(null);
   const [deckWords, setDeckWords] = useState([]);
-  const [tab, setTab] = useState(initialTab === "list" ? "list" : "single");
+  const [tab, setTab] = useState(initialTab === "list" || startsWithTopic ? "list" : "single");
   const [draft, setDraft] = useState({ source: "", target: "" });
   const [details, setDetails] = useState(EMPTY_DETAILS);
   // The picture for the word being typed, already stored locally.
@@ -119,12 +150,12 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
       return;
     }
 
-    setDeckChoice(initialDeckId ? String(initialDeckId) : "");
+    setDeckChoice(initialChoice);
     setNotice(null);
     setRecent([]);
     setAddedTotal(0);
     setConfirmedPair("");
-  }, [initialDeckId, isOpen]);
+  }, [initialChoice, isOpen]);
 
   // With no deck given, the first deck; with no decks at all, a new one.
   useEffect(() => {
@@ -489,8 +520,15 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
   );
 
   const handleRowChange = useCallback(
-    (key, field, value) => updateRow(key, { [field]: value }),
-    [updateRow],
+    (key, field, value) => {
+      setRows((current) =>
+        markRows(
+          current.map((row) => (row.key === key ? editRow(row, field, value) : row)),
+          wordIndex,
+        ),
+      );
+    },
+    [wordIndex],
   );
 
   const toggleRow = useCallback(
@@ -508,15 +546,18 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
   const swapColumns = useCallback(() => {
     setRows((current) =>
       markRows(
-        current.map((row) => ({ ...row, source: row.target, target: row.source })),
+        // Swapped sides make a drafted card's details wrong.
+        current.map((row) => ({ ...row, source: row.target, target: row.source, ai: null })),
         wordIndex,
       ),
     );
   }, [wordIndex]);
 
   const clearList = useCallback(() => {
+    aiControllerRef.current?.abort();
     setRows([]);
     setPasteText("");
+    setAiState({ status: AI_STATUS.idle, done: 0, total: 0 });
   }, []);
 
   const rowsToAdd = useMemo(
@@ -536,9 +577,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     setIsSaving(true);
 
     try {
-      const { added } = await writeWords(
-        rowsToAdd.map((row) => ({ source: row.source.trim(), target: row.target.trim() })),
-      );
+      const { added } = await writeWords(rowsToAdd.map((row) => rowToWord(row, { usesWordLevels })));
       const addedKeys = new Set(rowsToAdd.map((row) => row.key));
       // What was added leaves the preview; what still needs fixing stays.
       const remaining = rows.filter((row) => !addedKeys.has(row.key));
@@ -552,7 +591,138 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     } finally {
       setIsSaving(false);
     }
-  }, [pasteText, rows, rowsToAdd, writeWords]);
+  }, [pasteText, rows, rowsToAdd, usesWordLevels, writeWords]);
+
+  // ——— The assistant ———
+
+  const ai = useAiAccess({ enabled: isOpen });
+  const aiDeck = useMemo(
+    () =>
+      buildAiDeck({
+        languages: { sourceLanguage: languages.sourceLanguage, targetLanguage: languages.targetLanguage, tertiaryLanguage: languages.tertiaryLanguage },
+        usesWordLevels,
+        tags: deckTags,
+        tagLanguage: ai.language,
+      }),
+    [ai.language, deckTags, languages.sourceLanguage, languages.targetLanguage, languages.tertiaryLanguage, usesWordLevels],
+  );
+  const canUseAi = ai.isWanted && !pictureSide && canDraftCards(aiDeck);
+  const [aiState, setAiState] = useState({ status: AI_STATUS.idle, done: 0, total: 0 });
+  const [topic, setTopic] = useState({ text: "", level: "", count: 20 });
+  const aiControllerRef = useRef(null);
+  const rowsRef = useRef(rows);
+
+  useEffect(() => {
+    rowsRef.current = rows;
+  }, [rows]);
+
+  useEffect(() => () => aiControllerRef.current?.abort(), []);
+
+  const startAi = useCallback(() => {
+    aiControllerRef.current?.abort();
+    const controller = new AbortController();
+    aiControllerRef.current = controller;
+    return controller;
+  }, []);
+
+  // Fills in every line not drafted yet: an empty side, and the rest of
+  // the card beside it. Long lists go in parts, each shown as it arrives.
+  const fillWithAi = useCallback(async () => {
+    const pending = rowsToDraft(rowsRef.current);
+
+    if (!canUseAi || !ai.isReady || pending.length === 0) {
+      return;
+    }
+
+    const controller = startAi();
+    let done = 0;
+    setAiState({ status: AI_STATUS.filling, done, total: pending.length });
+
+    try {
+      for (const part of chunkRows(pending, AI_LIST_CHUNK)) {
+        const asked = part.map((row) => ({ key: row.key, source: row.source.trim(), target: row.target.trim() }));
+        const cards = await ai.repository.suggestList(
+          { deck: aiDeck, rows: asked.map(({ source, target }) => ({ source, target })) },
+          { signal: controller.signal },
+        );
+        const byKey = new Map(
+          cards
+            .filter((card) => asked[card?.index])
+            .map((card) => [asked[card.index].key, { card, asked: asked[card.index] }]),
+        );
+
+        setRows((current) =>
+          markRows(
+            current.map((row) => {
+              const answer = byKey.get(row.key);
+              return answer
+                ? applyCardToRow(row, answer.card, aiDeck, { askedText: answer.asked.source || answer.asked.target })
+                : row;
+            }),
+            wordIndex,
+          ),
+        );
+        done += part.length;
+        setAiState({ status: AI_STATUS.filling, done, total: pending.length });
+      }
+
+      setAiState({ status: AI_STATUS.done, done, total: pending.length });
+    } catch (error) {
+      if (error?.code !== "aborted") {
+        setAiState({ status: aiErrorStatus(error), done, total: pending.length });
+      }
+    }
+  }, [ai.isReady, ai.repository, aiDeck, canUseAi, startAi, wordIndex]);
+
+  const changeTopic = useCallback((patch) => setTopic((current) => ({ ...current, ...patch })), []);
+
+  // A deck on a topic: the assistant drafts the words, the person looks
+  // them over in the list and adds them like any other.
+  const collectByTopic = useCallback(async () => {
+    if (!canUseAi || !ai.isReady || !isTopicReady(topic.text)) {
+      return;
+    }
+
+    const controller = startAi();
+    setAiState({ status: AI_STATUS.collecting, done: 0, total: topic.count });
+
+    try {
+      const avoid = [...deckWords.map((word) => word.source), ...rowsRef.current.map((row) => row.source)];
+      const { name, cards } = await ai.repository.suggestTopic(
+        buildTopicRequest({ deck: aiDeck, topic: topic.text, level: topic.level, count: topic.count, avoid }),
+        { signal: controller.signal },
+      );
+      const drafted = cardsToRows(cards, aiDeck, nextRowKey);
+
+      if (drafted.length === 0) {
+        setAiState({ status: AI_STATUS.error, done: 0, total: topic.count });
+        return;
+      }
+
+      setRows((current) => markRows([...current, ...drafted], wordIndex));
+      setNewDeck((current) => (current.name.trim() ? current : { ...current, name: name || topic.text.trim() }));
+      setAiState({ status: AI_STATUS.done, done: drafted.length, total: drafted.length });
+    } catch (error) {
+      if (error?.code !== "aborted") {
+        setAiState({ status: aiErrorStatus(error), done: 0, total: topic.count });
+      }
+    }
+  }, [ai.isReady, ai.repository, aiDeck, canUseAi, deckWords, startAi, topic, wordIndex]);
+
+  // A misspelt line takes the word the assistant meant, and is asked again.
+  const applyCorrection = useCallback(
+    (key) => {
+      setRows((current) =>
+        markRows(
+          current.map((row) =>
+            row.key === key && row.ai?.correction ? { ...row, [row.ai.side]: row.ai.correction, ai: null } : row,
+          ),
+          wordIndex,
+        ),
+      );
+    },
+    [wordIndex],
+  );
 
   const handleDeckChoiceChange = useCallback((event) => {
     setDeckChoice(event.target.value);
@@ -623,5 +793,19 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     addDraft,
     addRows,
     undo,
+    isTopicFirst: startsWithTopic,
+    ai: {
+      isAvailable: canUseAi,
+      isReady: ai.isReady,
+      needsSignIn: canUseAi && ai.needsSignIn,
+      ...aiState,
+      isBusy: aiState.status === AI_STATUS.filling || aiState.status === AI_STATUS.collecting,
+      pendingCount: rowsToDraft(rows).length,
+      topic,
+      changeTopic,
+      fillWithAi,
+      collectByTopic,
+      applyCorrection,
+    },
   };
 };

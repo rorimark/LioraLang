@@ -3,6 +3,7 @@ import { FiChevronLeft, FiChevronRight, FiPlus, FiSliders } from "react-icons/fi
 import { Flashcard } from "@features/flashcard";
 import { QuickAddWordsDialog } from "@features/quick-add-words";
 import { SrsRatingControls } from "@features/srs-rating-controls";
+import { MissedWordHint } from "@features/word-suggest";
 import { useLearnFlashcardsPanel, useLeavingCard } from "../model";
 import { LearnEmptyDeckState } from "./LearnEmptyDeckState";
 import { LearnSessionSettingsDialog } from "./LearnSessionSettingsDialog/LearnSessionSettingsDialog";
@@ -307,6 +308,10 @@ export const LearnFlashcardsPanel = memo(() => {
                   >
                     <Flashcard card={leavingCard.card} variant="index" />
                   </div>
+                ) : null}
+                {/* Pinned to the foot of the card: the card keeps its size. */}
+                {panel.missedCard ? (
+                  <MissedWordHint word={panel.missedCard} deck={panel.currentDeck} onDismiss={panel.dismissMissedCard} />
                 ) : null}
               </div>
 

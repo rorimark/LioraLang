@@ -340,7 +340,9 @@ export default {
       "file": "Aus einer Datei",
       "fileHint": ".lioradeck, .lioralang oder .json",
       "json": "Aus JSON",
-      "jsonHint": "Füge ein Deck oder eine Wortliste ein."
+      "jsonHint": "Füge ein Deck oder eine Wortliste ein.",
+      "ai": "Deck mit KI zusammenstellen",
+      "aiHint": "Thema und Niveau angeben, dann die Wörter durchsehen"
     },
     "row": {
       "learned": "Gelernt",
@@ -1730,5 +1732,27 @@ export default {
       "one": "{count} Detail ausgefüllt",
       "other": "{count} Details ausgefüllt"
     }
+  },
+  "aiList": {
+    "topicTitle": "Oder Wörter zu einem Thema sammeln",
+    "topic": "Thema",
+    "topicPlaceholder": "Küche, Flughafen, Gefühle",
+    "anyLevel": "Jedes Niveau",
+    "count": "Wie viele",
+    "words": {
+      "one": "{count} Wort",
+      "other": "{count} Wörter"
+    },
+    "collect": "Wörter sammeln",
+    "fill": "Rest ergänzen",
+    "filling": "Ergänze {done} von {total}…",
+    "collecting": "Sammle Wörter…",
+    "busy": "Der Assistent ist gerade ausgelastet. Versuche es gleich noch einmal.",
+    "error": "Das Ergänzen hat nicht geklappt. Versuche es noch einmal."
+  },
+  "learnHint": {
+    "label": "So merkst du es dir",
+    "thinking": "Suche eine Eselsbrücke…",
+    "dismiss": "Hinweis ausblenden"
   }
 };

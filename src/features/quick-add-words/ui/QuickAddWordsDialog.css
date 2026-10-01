@@ -446,6 +446,94 @@
   font-weight: 700;
 }
 
+/* What the assistant drafted for a line: the filled side in its ink, the
+   rest of the card in one quiet line under it. */
+.quick-add__row-input.is-drafted {
+  color: color-mix(in srgb, var(--color-primary) 78%, var(--color-text));
+}
+
+.quick-add__row-ai {
+  grid-column: 2 / 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.quick-add__row-ai .suggest-spark {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  fill: color-mix(in srgb, var(--color-primary) 70%, var(--color-text-muted));
+}
+
+.quick-add__row-fix {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quick-add__row-fix:hover {
+  text-decoration: underline;
+}
+
+/* A deck on a topic, under the paste box. */
+.quick-add__topic {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.quick-add__topic-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.quick-add__topic-title .suggest-spark {
+  width: 14px;
+  height: 14px;
+  fill: var(--color-primary);
+}
+
+.quick-add__topic-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px 140px;
+  gap: 10px;
+  align-items: end;
+}
+
+.quick-add__topic-submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.quick-add__topic-submit .ui-button,
+.quick-add__preview-tools .ui-button {
+  align-items: center;
+}
+
+.quick-add__topic-submit .suggest-spark,
+.quick-add__preview-tools .suggest-spark {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
 .quick-add__submit--sticky {
   position: sticky;
   bottom: -16px;
@@ -537,6 +625,14 @@
 /* ---------- phone ---------- */
 
 @media (max-width: 640px) {
+  .quick-add__topic-fields {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .quick-add__topic-text {
+    grid-column: 1 / -1;
+  }
+
   .quick-add {
     padding: 0;
     place-items: stretch;

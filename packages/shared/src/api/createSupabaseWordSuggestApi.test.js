@@ -63,4 +63,19 @@ describe("suggestWord", () => {
 
     await expect(api.suggestWord({ text: "ticket" }, { signal: controller.signal })).rejects.toMatchObject({ code: "aborted" });
   });
+
+  it("asks for a list, a topic and a hint as tasks, with room for the longer ones", async () => {
+    const api = await load();
+    invoke.mockResolvedValueOnce({ data: { result: { cards: [{ index: 0, target: "chleb" }] } }, error: null });
+    await expect(api.suggestList({ rows: [{ source: "bread" }] })).resolves.toEqual([{ index: 0, target: "chleb" }]);
+    expect(invoke.mock.calls[0][1]).toMatchObject({ body: { task: "list", rows: [{ source: "bread" }] }, timeout: 45000 });
+
+    invoke.mockResolvedValueOnce({ data: { result: { name: "Kitchen", cards: [] } }, error: null });
+    await expect(api.suggestTopic({ topic: "kitchen" })).resolves.toEqual({ name: "Kitchen", cards: [] });
+
+    invoke.mockResolvedValueOnce({ data: { result: { hint: "Sounds like a billet." } }, error: null });
+    await expect(api.suggestHint({ word: "bilet" })).resolves.toBe("Sounds like a billet.");
+    expect(invoke.mock.calls[2][1]).toMatchObject({ body: { task: "hint" }, timeout: 15000 });
+  });
 });
+

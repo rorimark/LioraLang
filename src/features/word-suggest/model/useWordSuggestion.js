@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { useI18n } from "@shared/lib/i18n";
+import { languageNameOf } from "./useAiAccess";
 import {
   SUGGEST_FIELDS,
   buildSuggestionRequest,
@@ -74,16 +75,6 @@ const hasRoomForSuggestion = (draft, deck, anchor, defaults) => {
     !tags ||
     tags === clean(defaults?.tagsInput)
   );
-};
-
-// The interface language, by its English name, for tags the deck does not
-// have yet: a Russian interface gets "еда", not "food".
-const languageNameOf = (locale) => {
-  try {
-    return new Intl.DisplayNames(["en"], { type: "language" }).of(String(locale || "en").split("-")[0]) || "";
-  } catch {
-    return "";
-  }
 };
 
 // The fields the person changed since the word was started: anything that

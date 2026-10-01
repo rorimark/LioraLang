@@ -345,7 +345,9 @@ export default {
       "file": "Depuis un fichier",
       "fileHint": ".lioradeck, .lioralang ou .json",
       "json": "Depuis du JSON",
-      "jsonHint": "Collez un deck ou une liste de mots."
+      "jsonHint": "Collez un deck ou une liste de mots.",
+      "ai": "Créer un paquet avec l'IA",
+      "aiHint": "Indiquez un thème et un niveau, puis relisez les mots"
     },
     "row": {
       "learned": "Appris",
@@ -1819,5 +1821,28 @@ export default {
       "many": "{count} détails remplis",
       "other": "{count} détails remplis"
     }
+  },
+  "aiList": {
+    "topicTitle": "Ou rassemblez des mots sur un thème",
+    "topic": "Thème",
+    "topicPlaceholder": "cuisine, aéroport, émotions",
+    "anyLevel": "Tous niveaux",
+    "count": "Combien",
+    "words": {
+      "one": "{count} mot",
+      "many": "{count} mots",
+      "other": "{count} mots"
+    },
+    "collect": "Rassembler les mots",
+    "fill": "Compléter le reste",
+    "filling": "Complétion de {done} sur {total}…",
+    "collecting": "Recherche des mots…",
+    "busy": "L'assistant est occupé. Réessayez dans un instant.",
+    "error": "Impossible de compléter. Réessayez."
+  },
+  "learnHint": {
+    "label": "Pour s'en souvenir",
+    "thinking": "Recherche d'un moyen mnémotechnique…",
+    "dismiss": "Masquer l'astuce"
   }
 };

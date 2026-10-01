@@ -6,6 +6,8 @@ import { getSupabaseClient, hasSupabaseConfig } from "./supabaseClient";
 
 const FUNCTION_NAME = "suggest-word";
 const TIMEOUT_MS = 15_000;
+// A list or a whole deck is a longer answer.
+const LONG_TIMEOUT_MS = 45_000;
 
 // Why there is no suggestion, for the interface to say (or not).
 export const WORD_SUGGEST_ERRORS = Object.freeze({
@@ -45,36 +47,54 @@ const readErrorCode = async (error) => {
   return WORD_SUGGEST_ERRORS.unavailable;
 };
 
+// Calls the function as the signed-in person and returns its answer.
+const invoke = async (body, { signal, timeout }) => {
+  const client = getSupabaseClient();
+
+  if (!client) {
+    throw suggestError(WORD_SUGGEST_ERRORS.unavailable);
+  }
+
+  const { data: sessionData } = await client.auth.getSession();
+
+  if (!sessionData?.session) {
+    throw suggestError(WORD_SUGGEST_ERRORS.signin);
+  }
+
+  const { data, error } = await client.functions.invoke(FUNCTION_NAME, { body, signal, timeout });
+
+  if (signal?.aborted) {
+    throw suggestError(WORD_SUGGEST_ERRORS.aborted);
+  }
+
+  if (error) {
+    throw suggestError(await readErrorCode(error));
+  }
+
+  return data || {};
+};
+
 export const createSupabaseWordSuggestApi = () => ({
   isConfigured: () => hasSupabaseConfig(),
 
+  // The rest of one card.
   async suggestWord(request, { signal } = {}) {
-    const client = getSupabaseClient();
+    return (await invoke(request, { signal, timeout: TIMEOUT_MS }))?.suggestion || null;
+  },
 
-    if (!client) {
-      throw suggestError(WORD_SUGGEST_ERRORS.unavailable);
-    }
+  // Cards for the lines of a pasted list, by index.
+  async suggestList(request, { signal } = {}) {
+    return (await invoke({ ...request, task: "list" }, { signal, timeout: LONG_TIMEOUT_MS }))?.result?.cards || [];
+  },
 
-    const { data: sessionData } = await client.auth.getSession();
+  // A deck on a topic: a name and its cards.
+  async suggestTopic(request, { signal } = {}) {
+    const result = (await invoke({ ...request, task: "topic" }, { signal, timeout: LONG_TIMEOUT_MS }))?.result;
+    return { name: result?.name || "", cards: result?.cards || [] };
+  },
 
-    if (!sessionData?.session) {
-      throw suggestError(WORD_SUGGEST_ERRORS.signin);
-    }
-
-    const { data, error } = await client.functions.invoke(FUNCTION_NAME, {
-      body: request,
-      signal,
-      timeout: TIMEOUT_MS,
-    });
-
-    if (signal?.aborted) {
-      throw suggestError(WORD_SUGGEST_ERRORS.aborted);
-    }
-
-    if (error) {
-      throw suggestError(await readErrorCode(error));
-    }
-
-    return data?.suggestion || null;
+  // A short hint for a word missed in Learn.
+  async suggestHint(request, { signal } = {}) {
+    return (await invoke({ ...request, task: "hint" }, { signal, timeout: TIMEOUT_MS }))?.result?.hint || "";
   },
 });

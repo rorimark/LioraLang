@@ -340,7 +340,9 @@ export default {
       "file": "Dosyadan",
       "fileHint": ".lioradeck, .lioralang veya .json",
       "json": "JSON'dan",
-      "jsonHint": "Bir deste ya da kelime listesi yapıştırın."
+      "jsonHint": "Bir deste ya da kelime listesi yapıştırın.",
+      "ai": "Yapay zekâyla deste oluştur",
+      "aiHint": "Bir konu ve seviye verin, sonra kelimeleri gözden geçirin"
     },
     "row": {
       "learned": "Öğrenilen",
@@ -1730,5 +1732,27 @@ export default {
       "one": "{count} ayrıntı dolduruldu",
       "other": "{count} ayrıntı dolduruldu"
     }
+  },
+  "aiList": {
+    "topicTitle": "Ya da bir konuda kelime toplayın",
+    "topic": "Konu",
+    "topicPlaceholder": "mutfak, havalimanı, duygular",
+    "anyLevel": "Her seviye",
+    "count": "Kaç tane",
+    "words": {
+      "one": "{count} kelime",
+      "other": "{count} kelime"
+    },
+    "collect": "Kelimeleri topla",
+    "fill": "Gerisini doldur",
+    "filling": "{total} satırın {done} tanesi dolduruluyor…",
+    "collecting": "Kelimeler toplanıyor…",
+    "busy": "Asistan şu an meşgul. Birazdan tekrar deneyin.",
+    "error": "Doldurulamadı. Tekrar deneyin."
+  },
+  "learnHint": {
+    "label": "Nasıl hatırlanır",
+    "thinking": "Hatırlamanın bir yolu aranıyor…",
+    "dismiss": "İpucunu gizle"
   }
 };

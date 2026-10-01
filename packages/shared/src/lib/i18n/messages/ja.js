@@ -335,7 +335,9 @@ export default {
       "file": "ファイルから",
       "fileHint": ".lioradeck、.lioralang、.json",
       "json": "JSONから",
-      "jsonHint": "デッキか単語リストを貼り付けます。"
+      "jsonHint": "デッキか単語リストを貼り付けます。",
+      "ai": "AIでデッキを作る",
+      "aiHint": "テーマとレベルを決めて、単語を確認します"
     },
     "row": {
       "learned": "習得",
@@ -1641,5 +1643,26 @@ export default {
     "detailsFilled": {
       "other": "{count}件の詳細を入力しました"
     }
+  },
+  "aiList": {
+    "topicTitle": "またはテーマで単語を集める",
+    "topic": "テーマ",
+    "topicPlaceholder": "台所、空港、気持ち",
+    "anyLevel": "すべてのレベル",
+    "count": "語数",
+    "words": {
+      "other": "{count}語"
+    },
+    "collect": "単語を集める",
+    "fill": "残りを補う",
+    "filling": "{total}件中{done}件を補っています…",
+    "collecting": "単語を集めています…",
+    "busy": "アシスタントが混み合っています。少ししてからもう一度お試しください。",
+    "error": "補えませんでした。もう一度お試しください。"
+  },
+  "learnHint": {
+    "label": "覚え方",
+    "thinking": "覚え方を探しています…",
+    "dismiss": "ヒントを隠す"
   }
 };

@@ -664,15 +664,22 @@ export const useLearnFlashcardsPanel = () => {
     }));
   }, [currentWord, isRatingPending, isBackVisible, srsIdentity]);
 
+  // The card just missed, for a hint on how to remember it. Any other grade
+  // moves on, and the hint with it.
+  const [missedCard, setMissedCard] = useState(null);
+  const dismissMissedCard = useCallback(() => setMissedCard(null), []);
+
   const handleRateCard = useCallback(async (rating) => {
     if (isBrowseMode || !isBackVisible || isRatingPending) return;
+    const ratedWord = currentWord;
     if (!await rateSrsCard(rating)) return;
+    setMissedCard(rating === "again" && ratedWord ? { word: ratedWord, deckId: selectedDeckId } : null);
     announceCardMove(rating);
     setGradesByDeckId((previous) => ({
       ...previous, [selectedDeckId]: [...(previous[selectedDeckId] || []), rating],
     }));
     setLearnProgress((previous) => ({ ...previous, isBackVisible: false }));
-  }, [announceCardMove, isBackVisible, isBrowseMode, isRatingPending, rateSrsCard, selectedDeckId]);
+  }, [announceCardMove, currentWord, isBackVisible, isBrowseMode, isRatingPending, rateSrsCard, selectedDeckId]);
 
   const handleBrowsePrev = useCallback(() => {
     if (!isBrowseMode || !selectedDeckId || deckWords.length === 0) {
@@ -987,6 +994,9 @@ export const useLearnFlashcardsPanel = () => {
     isBrowseMode,
     currentDeck,
     currentWord,
+    // Only for the deck it was missed in.
+    missedCard: missedCard && missedCard.deckId === selectedDeckId && !isBrowseMode ? missedCard.word : null,
+    dismissMissedCard,
     cardFrontLabel,
     cardBackLabel,
     cardFrontText,

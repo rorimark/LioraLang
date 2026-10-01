@@ -345,7 +345,9 @@ export default {
       "file": "Da un file",
       "fileHint": ".lioradeck, .lioralang o .json",
       "json": "Da JSON",
-      "jsonHint": "Incolla un mazzo o un elenco di parole."
+      "jsonHint": "Incolla un mazzo o un elenco di parole.",
+      "ai": "Crea un mazzo con l'IA",
+      "aiHint": "Indica un tema e un livello, poi controlla le parole"
     },
     "row": {
       "learned": "Imparate",
@@ -1819,5 +1821,28 @@ export default {
       "many": "{count} dettagli compilati",
       "other": "{count} dettagli compilati"
     }
+  },
+  "aiList": {
+    "topicTitle": "Oppure raccogli parole su un tema",
+    "topic": "Tema",
+    "topicPlaceholder": "cucina, aeroporto, emozioni",
+    "anyLevel": "Qualsiasi livello",
+    "count": "Quante",
+    "words": {
+      "one": "{count} parola",
+      "many": "{count} parole",
+      "other": "{count} parole"
+    },
+    "collect": "Raccogli parole",
+    "fill": "Completa il resto",
+    "filling": "Completamento {done} di {total}…",
+    "collecting": "Raccolta delle parole…",
+    "busy": "L'assistente è occupato. Riprova tra un momento.",
+    "error": "Impossibile completare. Riprova."
+  },
+  "learnHint": {
+    "label": "Come ricordarla",
+    "thinking": "Cerco un modo per ricordarla…",
+    "dismiss": "Nascondi suggerimento"
   }
 };
