@@ -592,6 +592,10 @@ export default {
       "locked": "デッキに単語があると、面は変更できません。",
       "extra": "追加の言語",
       "extraHint": "カードの裏に表示される3行目"
+    },
+    "learnedSide": {
+      "label": "学んでいる言語",
+      "hint": "AIのヒントはこの言語の単語を説明します。"
     }
   },
   "browse": {

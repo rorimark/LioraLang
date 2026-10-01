@@ -25,17 +25,18 @@ export const useMissedWordHint = ({ word, deck, direction = "" }) => {
   const sourceLanguage = deck?.sourceLanguage || "";
   const targetLanguage = deck?.targetLanguage || "";
   const pictureSide = deck?.pictureSide || "";
+  const learnedSide = deck?.learnedSide || "";
   const request = useMemo(
     () =>
       word && ai.isReady
         ? buildHintRequest({
             word,
-            deck: { sourceLanguage, targetLanguage, pictureSide },
+            deck: { sourceLanguage, targetLanguage, pictureSide, learnedSide },
             explainIn: ai.language,
             direction,
           })
         : null,
-    [ai.isReady, ai.language, direction, pictureSide, sourceLanguage, targetLanguage, word],
+    [ai.isReady, ai.language, direction, learnedSide, pictureSide, sourceLanguage, targetLanguage, word],
   );
   const key = hintCacheKey(request);
   const [answer, setAnswer] = useState({ key: "", hint: "", isDone: false });

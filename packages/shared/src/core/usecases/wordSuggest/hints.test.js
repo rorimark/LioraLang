@@ -39,6 +39,25 @@ describe("hints", () => {
     expect(buildHintRequest({ word: vacant, deck, explainIn: "English", direction: "mixed" })).toMatchObject({ recall: "" });
   });
 
+  it("explains the target word in a deck that says its target is learned", () => {
+    // A Polish → English deck for someone learning English: "wolny pokój"
+    // in the source, "vacant room" in the target.
+    const deck = { sourceLanguage: "Polish", targetLanguage: "English", learnedSide: "target" };
+    const vacant = { source: "wolny pokój", target: "vacant room" };
+
+    expect(buildHintRequest({ word: vacant, deck, explainIn: "English", direction: "source_to_target" })).toMatchObject({
+      word: "vacant room",
+      translation: "wolny pokój",
+      wordLanguage: "English",
+      translationLanguage: "Polish",
+      recall: "word",
+    });
+    expect(buildHintRequest({ word: vacant, deck, explainIn: "English", direction: "target_to_source" })).toMatchObject({
+      word: "vacant room",
+      recall: "meaning",
+    });
+  });
+
   it("asks again when the same word is missed in the other direction", () => {
     const vacant = { source: "vacant room", target: "wolny pokój" };
     const deck = { sourceLanguage: "English", targetLanguage: "Polish" };

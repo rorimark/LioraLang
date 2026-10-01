@@ -16,6 +16,7 @@ import {
   normalizeWordImage,
   PICTURE_SIDES,
   sniffImageMimeType,
+  storedLearnedSide,
 } from "../cardContent/index.js";
 
 const DECK_PACKAGE_FORMAT = "lioralang.deck";
@@ -266,6 +267,7 @@ const parseDeckPackagePayload = (value) => {
     rawDeck?.contentHash ?? rawDeck?.content_hash,
   );
   const deckPictureSide = normalizePictureSide(rawDeck?.pictureSide ?? rawDeck?.picture_side);
+  const deckLearnedSide = storedLearnedSide(rawDeck?.learnedSide ?? rawDeck?.learned_side);
   const hasDeckMetadata = Boolean(
     deckName ||
     deckDescription ||
@@ -276,7 +278,8 @@ const parseDeckPackagePayload = (value) => {
     deckSyncId ||
     deckOriginRef ||
     deckContentHash ||
-    deckPictureSide,
+    deckPictureSide ||
+    deckLearnedSide,
   );
   const deck = hasDeckMetadata
     ? {
@@ -291,6 +294,7 @@ const parseDeckPackagePayload = (value) => {
         originRef: deckOriginRef,
         contentHash: deckContentHash,
         pictureSide: deckPictureSide,
+        learnedSide: deckLearnedSide,
       }
     : null;
 
@@ -480,6 +484,7 @@ export const getDeckImportMetadata = ({
       originRef: "",
       contentHash: "",
       pictureSide: "",
+      learnedSide: "",
       format: "",
       version: null,
     };
@@ -500,6 +505,7 @@ export const getDeckImportMetadata = ({
     originRef: normalizeDeckOriginRef(parsedPackage?.deck?.originRef),
     contentHash: toSafeString(parsedPackage?.deck?.contentHash),
     pictureSide: normalizePictureSide(parsedPackage?.deck?.pictureSide),
+    learnedSide: storedLearnedSide(parsedPackage?.deck?.learnedSide),
     format: toCleanString(parsedPackage?.format),
     version: parsedPackage?.version ?? null,
   };
@@ -633,6 +639,7 @@ export const resolveImportConfig = ({
       toSafeString(payload?.contentHash) ||
       toSafeString(parsedPackage?.deck?.contentHash),
     pictureSide,
+    learnedSide: storedLearnedSide(payload?.learnedSide ?? parsedPackage?.deck?.learnedSide),
   };
 };
 
@@ -820,6 +827,7 @@ export const buildExportDeckPackage = ({
       ...(normalizePictureSide(safeDeck.pictureSide)
         ? { pictureSide: normalizePictureSide(safeDeck.pictureSide) }
         : {}),
+      ...(storedLearnedSide(safeDeck.learnedSide) ? { learnedSide: storedLearnedSide(safeDeck.learnedSide) } : {}),
       ...(includeTags
         ? {
             tags: normalizedDeckTags,

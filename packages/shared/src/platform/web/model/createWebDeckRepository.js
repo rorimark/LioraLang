@@ -15,6 +15,7 @@ import {
 import {
   hasWordContent,
   normalizePictureSide,
+  storedLearnedSide,
   normalizeWordImage,
   PICTURE_SIDES,
 } from "@shared/core/usecases/cardContent";
@@ -227,6 +228,7 @@ const toDeckListRow = (deck, wordsCountByDeckId = new Map(), imagesCountByDeckId
     originRef: normalizeDeckOriginRef(deck.originRef),
     contentHash: toCleanString(deck.contentHash),
     pictureSide: normalizePictureSide(deck.pictureSide),
+    learnedSide: storedLearnedSide(deck.learnedSide),
     tagsJson: JSON.stringify(tags),
     createdAt: deck.createdAt || null,
     wordsCount: Number(wordsCountByDeckId.get(deck.id) || 0),
@@ -308,6 +310,7 @@ const buildDeckContentHashFromState = ({
       usesWordLevels: normalizeDeckUsesWordLevels(deck?.usesWordLevels, true),
       tags: Array.isArray(deck?.tags) ? deck.tags : parseTagsFromDeck(deck),
       pictureSide: deck?.pictureSide,
+      learnedSide: deck?.learnedSide,
     },
     words: Array.isArray(words) ? words : [],
   });
@@ -735,6 +738,7 @@ export const createWebDeckRepository = () => {
             usesWordLevels,
             tags: normalizeTags(importConfig.tags),
             pictureSide: importConfig.pictureSide,
+            learnedSide: importConfig.learnedSide,
           },
           words: normalizedWordsResult.words,
         });
@@ -747,6 +751,7 @@ export const createWebDeckRepository = () => {
           targetLanguage: importConfig.targetLanguage,
           tertiaryLanguage: importConfig.tertiaryLanguage || "",
           pictureSide: normalizePictureSide(importConfig.pictureSide),
+          learnedSide: storedLearnedSide(importConfig.learnedSide),
           usesWordLevels,
           tags: normalizeTags(importConfig.tags),
           syncId: deckSyncId,
@@ -1135,6 +1140,9 @@ export const createWebDeckRepository = () => {
       const pictureSide = normalizePictureSide(
         payload?.pictureSide === undefined ? storedDeck?.pictureSide : payload.pictureSide,
       );
+      const learnedSide = storedLearnedSide(
+        payload?.learnedSide === undefined ? storedDeck?.learnedSide : payload.learnedSide,
+      );
       const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : requestedSourceLanguage;
       const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : requestedTargetLanguage;
 
@@ -1200,6 +1208,7 @@ export const createWebDeckRepository = () => {
               targetLanguage,
               tertiaryLanguage,
               pictureSide,
+              learnedSide,
               usesWordLevels,
               tags,
             },
@@ -1218,6 +1227,7 @@ export const createWebDeckRepository = () => {
               targetLanguage,
               tertiaryLanguage,
               pictureSide,
+              learnedSide,
               usesWordLevels,
               tags,
               syncId: deckSyncId,
@@ -1238,6 +1248,7 @@ export const createWebDeckRepository = () => {
                   targetLanguage,
                   tertiaryLanguage,
                   pictureSide,
+                  learnedSide,
                   usesWordLevels,
                   tags,
                   syncId: deckSyncId,

@@ -440,6 +440,12 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* A row whose control is wider than a field: two language names side by
+   side. */
+.deck-editor__row--wide {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
 .deck-editor__row-text {
   display: grid;
   gap: 2px;

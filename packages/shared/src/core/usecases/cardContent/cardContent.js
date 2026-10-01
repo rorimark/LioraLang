@@ -38,6 +38,23 @@ export const PICTURE_SIDES = Object.freeze({
 export const normalizePictureSide = (value) =>
   value === PICTURE_SIDES.source || value === PICTURE_SIDES.target ? value : PICTURE_SIDES.none;
 
+// Which side of a deck holds the language being learned. The source, unless
+// the deck says otherwise: examples are written in the source language and
+// the target is its translation, but some people fill a deck the other way
+// round. Only "target" is ever stored, so a deck that keeps the default
+// reads, exports and hashes exactly as before.
+export const LEARNED_SIDES = Object.freeze({
+  source: "source",
+  target: "target",
+});
+
+export const normalizeLearnedSide = (value) =>
+  value === LEARNED_SIDES.target ? LEARNED_SIDES.target : LEARNED_SIDES.source;
+
+// What a deck stores for its learned side: "target", or nothing.
+export const storedLearnedSide = (value) =>
+  normalizeLearnedSide(value) === LEARNED_SIDES.target ? LEARNED_SIDES.target : "";
+
 export const MAX_IMAGE_ALT_LENGTH = 200;
 
 // Assets are named by the SHA-256 of their bytes, so the same picture is

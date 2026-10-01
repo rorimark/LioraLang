@@ -628,6 +628,10 @@ export default {
       "locked": "Quando o baralho tem palavras, os lados ficam fixos.",
       "extra": "Idioma extra",
       "extraHint": "Uma terceira linha no verso do cartão"
+    },
+    "learnedSide": {
+      "label": "Idioma que estou aprendendo",
+      "hint": "As dicas de IA explicam as palavras deste idioma."
     }
   },
   "browse": {

@@ -4,9 +4,12 @@ import {
   LANGUAGE_OPTIONS,
 } from "@shared/config/languages";
 import {
+  LEARNED_SIDES,
+  normalizeLearnedSide,
   normalizePictureSide,
   normalizeWordImage,
   PICTURE_SIDES,
+  storedLearnedSide,
 } from "@shared/core/usecases/cardContent";
 
 // The deck editor's data, without React: what the form holds, what a word
@@ -93,6 +96,7 @@ export const createDefaultDeckForm = (deckDefaults = {}) => {
     targetLanguage,
     tertiaryLanguage: "",
     pictureSide: "",
+    learnedSide: LEARNED_SIDES.source,
     usesWordLevels: true,
     tagsInput: parseTags(deckDefaults?.tags).slice(0, MAX_DECK_TAGS).join(", "),
   };
@@ -105,6 +109,7 @@ export const toDeckForm = (deck = {}) => ({
   targetLanguage: deck?.targetLanguage || DEFAULT_TARGET_LANGUAGE,
   tertiaryLanguage: deck?.tertiaryLanguage || "",
   pictureSide: normalizePictureSide(deck?.pictureSide),
+  learnedSide: normalizeLearnedSide(deck?.learnedSide),
   usesWordLevels: deck?.usesWordLevels !== false,
   tagsInput: parseTags(deck?.tags ?? deck?.tagsJson).join(", "),
 });
@@ -225,6 +230,7 @@ export const buildSavePayload = ({ deckId = null, form = {}, words = [] }) => {
     targetLanguage: pictureSide === PICTURE_SIDES.target ? "" : clean(form.targetLanguage),
     tertiaryLanguage,
     pictureSide,
+    learnedSide: storedLearnedSide(form.learnedSide),
     tags: parseTagsInput(form.tagsInput, MAX_DECK_TAGS),
     usesWordLevels: form.usesWordLevels !== false,
     words: words.map((word) => ({

@@ -635,6 +635,10 @@ export default {
       "locked": "Jakmile má balíček slova, strany se už nemění.",
       "extra": "Další jazyk",
       "extraHint": "Třetí řádek na rubu karty"
+    },
+    "learnedSide": {
+      "label": "Jazyk, který se učím",
+      "hint": "Nápovědy AI vysvětlují slova v tomto jazyce."
     }
   },
   "browse": {

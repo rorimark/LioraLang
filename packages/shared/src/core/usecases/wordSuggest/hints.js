@@ -1,19 +1,21 @@
 // A hint for a word missed in Learn: which word to explain, in which
 // language, and the key it is remembered under. Pure.
 
+import { LEARNED_SIDES, normalizeLearnedSide } from "../cardContent/cardContent.js";
+
 const clean = (value) => (typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "");
 
-// The word being learned is the deck's source, as everywhere in the app:
-// examples are written in the source language, and the target is its
-// translation. The interface language says nothing about it: someone
-// learning English may well use the app in English.
+// The word being learned is on the deck's learned side: the source unless
+// the deck says its target is (deck.learnedSide). The interface language
+// says nothing about it: someone learning English may well use the app in
+// English.
 //
-// What was asked is the side the card hid. With the source on the front
-// the learner missed its meaning; with the target on the front they missed
-// the word itself. `direction` is the direction the card was shown in
-// ("source_to_target" or "target_to_source"); without it, `recall` is left
-// empty and the hint does not lean either way.
-const RECALL_BY_DIRECTION = { source_to_target: "meaning", target_to_source: "word" };
+// What was asked is the side the card hid. With the learned word on the
+// front the learner missed its meaning; with its translation on the front
+// they missed the word itself. `direction` is the direction the card was
+// shown in ("source_to_target" or "target_to_source"); without it,
+// `recall` is left empty and the hint does not lean either way.
+const FRONT_BY_DIRECTION = { source_to_target: "source", target_to_source: "target" };
 
 export const buildHintRequest = ({ word, deck, explainIn = "", direction = "" } = {}) => {
   const sourceLanguage = clean(deck?.sourceLanguage);
@@ -25,13 +27,17 @@ export const buildHintRequest = ({ word, deck, explainIn = "", direction = "" } 
     return null;
   }
 
+  const learnsTarget = normalizeLearnedSide(deck?.learnedSide) === LEARNED_SIDES.target;
+  const learnedSide = learnsTarget ? "target" : "source";
+  const front = FRONT_BY_DIRECTION[direction] || "";
+
   return {
-    word: source,
-    translation: target,
-    wordLanguage: sourceLanguage,
-    translationLanguage: targetLanguage,
+    word: learnsTarget ? target : source,
+    translation: learnsTarget ? source : target,
+    wordLanguage: learnsTarget ? targetLanguage : sourceLanguage,
+    translationLanguage: learnsTarget ? sourceLanguage : targetLanguage,
     explainIn: clean(explainIn),
-    recall: RECALL_BY_DIRECTION[direction] || "",
+    recall: front ? (front === learnedSide ? "meaning" : "word") : "",
     examples: (Array.isArray(word?.examples) ? word.examples : []).map(clean).filter(Boolean).slice(0, 2),
   };
 };

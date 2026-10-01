@@ -628,6 +628,10 @@ export default {
       "locked": "Cuando el mazo tiene palabras, los lados ya no cambian.",
       "extra": "Idioma extra",
       "extraHint": "Una tercera línea en el reverso"
+    },
+    "learnedSide": {
+      "label": "Idioma que aprendo",
+      "hint": "Las pistas de IA explican las palabras de este idioma."
     }
   },
   "browse": {

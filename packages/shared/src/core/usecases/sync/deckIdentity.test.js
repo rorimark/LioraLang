@@ -95,4 +95,21 @@ describe("deckIdentity", () => {
       );
     });
   });
+
+  describe("buildDeckContentHash with a learned side", () => {
+    const deck = { name: "Deck", sourceLanguage: "Polish", targetLanguage: "English", tags: [] };
+    const words = [{ source: "wolny pokój", target: "vacant room" }];
+
+    it("hashes the default exactly as a deck without the setting", () => {
+      expect(buildDeckContentHash({ deck: { ...deck, learnedSide: "source" }, words })).toBe(
+        buildDeckContentHash({ deck, words }),
+      );
+    });
+
+    it("tells a deck whose target is learned apart", () => {
+      expect(buildDeckContentHash({ deck: { ...deck, learnedSide: "target" }, words })).not.toBe(
+        buildDeckContentHash({ deck, words }),
+      );
+    });
+  });
 });

@@ -164,6 +164,28 @@ export const DeckEditorDeckSection = memo(() => {
           </Select>
         </label>
 
+        {/* Which language is being learned: hints explain its words. A
+            picture deck has one language only, so there is nothing to
+            choose. */}
+        {deckForm.pictureSide ? null : (
+          <div className="deck-editor__row deck-editor__row--wide">
+            <span className="deck-editor__row-text">
+              <span>{t("editor.learnedSide.label")}</span>
+              <small>{t("editor.learnedSide.hint")}</small>
+            </span>
+            <SettingSegmented
+              name="learnedSide"
+              value={deckForm.learnedSide}
+              ariaLabel={t("editor.learnedSide.label")}
+              onChange={handleDeckFormChange}
+              options={[
+                { value: "source", label: languageName(deckForm.sourceLanguage) },
+                { value: "target", label: languageName(deckForm.targetLanguage) },
+              ]}
+            />
+          </div>
+        )}
+
         <div className="deck-editor__row">
           <label className="deck-editor__row-text" htmlFor={levelsId}>
             <span>{t("editor.wordLevels")}</span>

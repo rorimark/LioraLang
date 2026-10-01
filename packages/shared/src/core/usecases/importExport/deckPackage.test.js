@@ -156,7 +156,28 @@ describe("deckPackage", () => {
         originRef: "",
         contentHash: "",
         pictureSide: "",
+        learnedSide: "",
       });
+    });
+
+    it("keeps a deck's learned side through export and import", () => {
+      const exported = buildExportDeckPackage({
+        deck: { name: "Vacant", sourceLanguage: "Polish", targetLanguage: "English", learnedSide: "target" },
+        words: [{ source: "wolny pokój", target: "vacant room" }],
+      });
+
+      expect(exported.deck.learnedSide).toBe("target");
+
+      const parsed = parseDeckPackageFileText(JSON.stringify(exported));
+      expect(parsed.deck.learnedSide).toBe("target");
+      expect(resolveImportConfig({ parsedPackage: parsed }).learnedSide).toBe("target");
+
+      // The default is not written at all, so older packages stay as they were.
+      const plain = buildExportDeckPackage({
+        deck: { name: "Plain", sourceLanguage: "English", targetLanguage: "Polish", learnedSide: "source" },
+        words: [{ source: "ticket", target: "bilet" }],
+      });
+      expect("learnedSide" in plain.deck).toBe(false);
     });
   });
 

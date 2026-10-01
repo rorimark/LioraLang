@@ -646,6 +646,10 @@ export default {
       "locked": "Gdy talia ma słowa, stron nie można już zmienić.",
       "extra": "Dodatkowy język",
       "extraHint": "Trzecia linia na tyle karty"
+    },
+    "learnedSide": {
+      "label": "Język, którego się uczę",
+      "hint": "Podpowiedzi AI wyjaśniają słowa w tym języku."
     }
   },
   "browse": {

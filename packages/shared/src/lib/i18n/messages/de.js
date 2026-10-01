@@ -610,6 +610,10 @@ export default {
       "locked": "Sobald das Deck Wörter hat, stehen die Seiten fest.",
       "extra": "Zusatzsprache",
       "extraHint": "Eine dritte Zeile auf der Rückseite"
+    },
+    "learnedSide": {
+      "label": "Sprache, die ich lerne",
+      "hint": "KI-Hinweise erklären Wörter in dieser Sprache."
     }
   },
   "browse": {

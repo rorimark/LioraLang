@@ -610,6 +610,10 @@ export default {
       "locked": "Destede kelime olduğunda yüzler artık değişmez.",
       "extra": "Ek dil",
       "extraHint": "Kartın arkasında üçüncü bir satır"
+    },
+    "learnedSide": {
+      "label": "Öğrendiğim dil",
+      "hint": "Yapay zekâ ipuçları bu dildeki kelimeleri açıklar."
     }
   },
   "browse": {

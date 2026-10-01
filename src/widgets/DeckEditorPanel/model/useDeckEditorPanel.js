@@ -290,10 +290,12 @@ export const useDeckEditorPanel = () => {
         : form.pictureSide === PICTURE_SIDES.target
           ? PICTURE_SIDES.source
           : "";
+    // The language learned stays the same language, now on the other side.
     updateForm({
       sourceLanguage: form.targetLanguage,
       targetLanguage: form.sourceLanguage,
       pictureSide: swappedSide,
+      learnedSide: form.learnedSide === "target" ? "source" : "target",
     });
   }, [canChangeSides, updateForm]);
 

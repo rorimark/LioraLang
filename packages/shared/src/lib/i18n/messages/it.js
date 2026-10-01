@@ -628,6 +628,10 @@ export default {
       "locked": "Quando il mazzo ha delle parole, i lati sono fissi.",
       "extra": "Lingua extra",
       "extraHint": "Una terza riga sul retro della carta"
+    },
+    "learnedSide": {
+      "label": "Lingua che sto imparando",
+      "hint": "I suggerimenti IA spiegano le parole di questa lingua."
     }
   },
   "browse": {

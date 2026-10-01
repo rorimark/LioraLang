@@ -353,12 +353,22 @@ export const useLearnFlashcardsPanel = () => {
     repository: srsRepository, authRepository, syncRepository });
   const isExtendedSession = session.sessionMode === "extended";
   const baseDeck = isBrowseMode ? deckDetails : session?.deck || deckDetails || null;
-  // Which side is pictures comes from the deck list; the study session's
-  // own copy of the deck carries only its languages.
-  const listedPictureSide = decks.find((deck) => String(deck?.id) === String(selectedDeckId))?.pictureSide || "";
+  // Which side is pictures, and which language is learned, come from the
+  // deck list; the study session's own copy of the deck carries only its
+  // languages.
+  const listedDeck = decks.find((deck) => String(deck?.id) === String(selectedDeckId));
+  const listedPictureSide = listedDeck?.pictureSide || "";
+  const listedLearnedSide = listedDeck?.learnedSide || "";
   const currentDeck = useMemo(
-    () => (baseDeck ? { ...baseDeck, pictureSide: baseDeck.pictureSide || listedPictureSide } : null),
-    [baseDeck, listedPictureSide],
+    () =>
+      baseDeck
+        ? {
+            ...baseDeck,
+            pictureSide: baseDeck.pictureSide || listedPictureSide,
+            learnedSide: baseDeck.learnedSide || listedLearnedSide,
+          }
+        : null,
+    [baseDeck, listedLearnedSide, listedPictureSide],
   );
   const directionSummary = useMemo(
     () => buildDirectionSummary(sessionSettings.directionMode, currentDeck, i18n),

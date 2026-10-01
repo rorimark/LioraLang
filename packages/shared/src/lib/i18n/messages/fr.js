@@ -628,6 +628,10 @@ export default {
       "locked": "Une fois que le paquet contient des mots, les faces sont fixées.",
       "extra": "Langue supplémentaire",
       "extraHint": "Une troisième ligne au verso"
+    },
+    "learnedSide": {
+      "label": "Langue que j'apprends",
+      "hint": "Les astuces IA expliquent les mots de cette langue."
     }
   },
   "browse": {

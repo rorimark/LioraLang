@@ -137,6 +137,8 @@ export const initDb = () => {
   ensureColumn(db, "decks", "content_hash", "TEXT");
   // Which side of the deck is pictures instead of a language, if any.
   ensureColumn(db, "decks", "picture_side", "TEXT");
+  // "target" when the deck's target is the language learned; else empty.
+  ensureColumn(db, "decks", "learned_side", "TEXT");
   ensureColumn(db, "decks", "created_at", "TEXT");
   ensureColumn(db, "decks", "updated_at", "TEXT");
   ensureColumn(db, "words", "external_id", "TEXT");
@@ -304,7 +306,8 @@ export const initDb = () => {
           origin_kind AS originKind,
           origin_ref AS originRef,
           content_hash AS contentHash,
-          picture_side AS pictureSide
+          picture_side AS pictureSide,
+          learned_side AS learnedSide
         FROM decks
         ORDER BY id ASC
       `,
@@ -384,6 +387,7 @@ export const initDb = () => {
         usesWordLevels: Boolean(Number(deck?.usesWordLevels)),
         tags: parseJsonArray(deck?.tagsJson),
         pictureSide: deck?.pictureSide,
+        learnedSide: deck?.learnedSide,
       },
       words: wordsByDeckId.get(Number(deck?.id)) || [],
     });

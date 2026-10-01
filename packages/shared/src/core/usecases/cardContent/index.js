@@ -5,12 +5,15 @@ export {
   hasWordContent,
   hasWordImage,
   isMediaAssetId,
+  LEARNED_SIDES,
   MAX_IMAGE_ALT_LENGTH,
+  normalizeLearnedSide,
   normalizePictureSide,
   normalizeWordImage,
   PICTURE_SIDES,
   resolveCardDirection,
   resolveCardFaces,
+  storedLearnedSide,
   TEXT_ROLES,
 } from "./cardContent.js";
 export {

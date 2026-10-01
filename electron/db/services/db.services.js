@@ -21,6 +21,7 @@ import {
 import {
   hasWordContent,
   normalizePictureSide,
+  storedLearnedSide,
   normalizeWordImage,
   PICTURE_SIDES,
 } from "../../../packages/shared/src/core/usecases/cardContent/index.js";
@@ -127,6 +128,7 @@ const buildDeckContentHashFromState = ({
       usesWordLevels: normalizeDeckUsesWordLevels(deck?.usesWordLevels, true),
       tags: Array.isArray(deck?.tags) ? deck.tags : parseArray(deck?.tagsJson),
       pictureSide: deck?.pictureSide,
+      learnedSide: deck?.learnedSide,
     },
     words: Array.isArray(words) ? words : [],
   });
@@ -341,6 +343,7 @@ const normalizeDeckRow = (row) => {
     ...row,
     usesWordLevels: normalizeDeckUsesWordLevels(row.usesWordLevels, true),
     pictureSide: normalizePictureSide(row.pictureSide),
+    learnedSide: storedLearnedSide(row.learnedSide),
   };
 };
 
@@ -433,7 +436,8 @@ export const renameDeck = (deckId, nextName) => {
           tertiary_language AS tertiaryLanguage,
           COALESCE(uses_word_levels, 1) AS usesWordLevels,
           tags_json AS tagsJson,
-          picture_side AS pictureSide
+          picture_side AS pictureSide,
+          learned_side AS learnedSide
         FROM decks
         WHERE id = ?
       `,
@@ -507,6 +511,7 @@ export const listDecks = () => {
           decks.origin_ref AS originRef,
           decks.content_hash AS contentHash,
           decks.picture_side AS pictureSide,
+          decks.learned_side AS learnedSide,
           decks.tags_json AS tagsJson,
           decks.created_at AS createdAt,
           COUNT(words.id) AS wordsCount,
@@ -541,6 +546,7 @@ export const getDeckById = (deckId) => {
             decks.origin_ref AS originRef,
             decks.content_hash AS contentHash,
           decks.picture_side AS pictureSide,
+          decks.learned_side AS learnedSide,
             decks.tags_json AS tagsJson,
             decks.created_at AS createdAt,
             COUNT(words.id) AS wordsCount
@@ -682,6 +688,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       usesWordLevels,
       tags: includeTags ? importedDeckTags : [],
       pictureSide: importConfig.pictureSide,
+      learnedSide: importConfig.learnedSide,
     },
     words: persistedWords.map((word) => ({
       externalId: word.externalId,
@@ -710,8 +717,9 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
         origin_kind,
         origin_ref,
         content_hash,
-        picture_side
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        picture_side,
+        learned_side
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const insertWord = buildInsertWordStatement(db, wordSchemaCompatibility);
@@ -730,6 +738,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       originPayload.originRef || null,
       deckContentHash,
       normalizePictureSide(importConfig.pictureSide) || null,
+      storedLearnedSide(importConfig.learnedSide) || null,
     );
 
     const deckId = Number(deckResult.lastInsertRowid);
@@ -851,6 +860,11 @@ export const saveDeck = (payload = {}) => {
   const pictureSide = normalizePictureSide(
     payload?.pictureSide === undefined ? storedPictureSide : payload.pictureSide,
   );
+  // The learned side is kept the same way.
+  const storedLearned = hasDeckId
+    ? db.prepare("SELECT learned_side AS learnedSide FROM decks WHERE id = ?").get(providedDeckId)?.learnedSide
+    : "";
+  const learnedSide = storedLearnedSide(payload?.learnedSide === undefined ? storedLearned : payload.learnedSide);
   const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : toCleanString(payload?.sourceLanguage);
   const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : toCleanString(payload?.targetLanguage);
   const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
@@ -941,6 +955,7 @@ export const saveDeck = (payload = {}) => {
       usesWordLevels,
       tags,
       pictureSide,
+      learnedSide,
     },
     words: normalizedWords.map((word) => ({
       externalId: word.externalId,
@@ -969,8 +984,9 @@ export const saveDeck = (payload = {}) => {
         origin_kind,
         origin_ref,
         content_hash,
-        picture_side
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        picture_side,
+        learned_side
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const updateDeck = db.prepare(
@@ -989,6 +1005,7 @@ export const saveDeck = (payload = {}) => {
         origin_ref = ?,
         content_hash = ?,
         picture_side = ?,
+        learned_side = ?,
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `,
@@ -1017,6 +1034,7 @@ export const saveDeck = (payload = {}) => {
         originPayload.originRef || null,
         contentHash,
         pictureSide || null,
+        learnedSide || null,
         providedDeckId,
       );
 
@@ -1037,6 +1055,7 @@ export const saveDeck = (payload = {}) => {
         originPayload.originRef || null,
         contentHash,
         pictureSide || null,
+        learnedSide || null,
       );
       resolvedDeckId = Number(insertResult.lastInsertRowid);
     }

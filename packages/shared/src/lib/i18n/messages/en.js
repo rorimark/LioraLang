@@ -610,6 +610,10 @@ export default {
       "locked": "The sides are fixed once the deck has words.",
       "extra": "Extra language",
       "extraHint": "A third line on the back of the card"
+    },
+    "learnedSide": {
+      "label": "Language I'm learning",
+      "hint": "AI hints explain words in this language."
     }
   },
   "browse": {
