@@ -20,9 +20,17 @@ const remember = (key, hint) => {
 
 export const useMissedWordHint = ({ word, deck }) => {
   const ai = useAiAccess({ enabled: Boolean(word) });
+  // By value: the deck object is rebuilt as Learn renders, and a new object
+  // must not ask (and spend the allowance) a second time.
+  const sourceLanguage = deck?.sourceLanguage || "";
+  const targetLanguage = deck?.targetLanguage || "";
+  const pictureSide = deck?.pictureSide || "";
   const request = useMemo(
-    () => (word && ai.isReady ? buildHintRequest({ word, deck, explainIn: ai.language }) : null),
-    [ai.isReady, ai.language, deck, word],
+    () =>
+      word && ai.isReady
+        ? buildHintRequest({ word, deck: { sourceLanguage, targetLanguage, pictureSide }, explainIn: ai.language })
+        : null,
+    [ai.isReady, ai.language, pictureSide, sourceLanguage, targetLanguage, word],
   );
   const key = hintCacheKey(request);
   const [answer, setAnswer] = useState({ key: "", hint: "", isDone: false });
