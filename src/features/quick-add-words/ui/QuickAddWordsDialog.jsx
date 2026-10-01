@@ -24,7 +24,7 @@ import {
 } from "../model";
 import "./QuickAddWordsDialog.css";
 
-const DeckPicker = memo(({ model }) => {
+const DeckPicker = memo(({ model, deckNameRef }) => {
   const { t, languageName } = useI18n();
   const pictureSide = model.newDeck.pictureSide || "";
   const wordsField = pictureSide === "source" ? "targetLanguage" : "sourceLanguage";
@@ -66,15 +66,25 @@ const DeckPicker = memo(({ model }) => {
 
       {model.isNewDeck ? (
         <div className="quick-add__new-deck">
-          <label className="quick-add__field quick-add__field--wide">
+          <label
+            className={`quick-add__field quick-add__field--wide${model.isDeckNameMissing ? " is-missing" : ""}`}
+          >
             <span>{t("quickAdd.deckName")}</span>
             <input
+              ref={deckNameRef}
               name="name"
               value={model.newDeck.name}
               onChange={model.handleNewDeckChange}
               placeholder={t("quickAdd.deckNamePlaceholder")}
               autoComplete="off"
+              aria-invalid={model.isDeckNameMissing || undefined}
+              aria-describedby={model.isDeckNameMissing ? "quick-add-deck-name-error" : undefined}
             />
+            {model.isDeckNameMissing ? (
+              <span id="quick-add-deck-name-error" className="quick-add__field-error" role="alert">
+                {t("quickAdd.errors.deckName")}
+              </span>
+            ) : null}
           </label>
           {/* A picture instead of a word on one side, front or back: the
               same choice as in the deck's settings. */}
@@ -683,7 +693,8 @@ Notice.displayName = "Notice";
 export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "single", onClose, onWordsAdded }) => {
   const { t } = useI18n();
   const sourceInputRef = useRef(null);
-  const model = useQuickAddWords({ isOpen: true, initialDeckId, initialTab, onWordsAdded, sourceInputRef });
+  const deckNameRef = useRef(null);
+  const model = useQuickAddWords({ isOpen: true, initialDeckId, initialTab, onWordsAdded, sourceInputRef, deckNameRef });
   const sheetRef = useRef(null);
   const titleId = useId();
   const [isConfirmingClose, setIsConfirmingClose] = useState(false);
@@ -716,7 +727,7 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
         </header>
 
         <div className="quick-add__body">
-          <DeckPicker model={model} />
+          <DeckPicker model={model} deckNameRef={deckNameRef} />
 
           {/* A pasted list is text; a picture deck takes its words one by one. */}
           {model.languages.pictureSide ? null : (

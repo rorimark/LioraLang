@@ -235,6 +235,31 @@
   line-height: 1.4;
 }
 
+/* A new deck tried without a name: the field says so, once, with a shake. */
+.quick-add__field.is-missing input {
+  border-color: var(--color-danger, #e5484d);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-danger, #e5484d) 22%, transparent);
+  animation: quick-add-shake 360ms ease;
+}
+
+.quick-add__field > .quick-add__field-error {
+  color: var(--color-danger, #e5484d);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+@keyframes quick-add-shake {
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-add__field.is-missing input {
+    animation: none;
+  }
+}
+
 /* The front of a new deck's cards: a label and a small switch on one line,
    like a settings row. */
 .quick-add__front {

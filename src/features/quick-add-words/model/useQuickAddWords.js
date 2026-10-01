@@ -109,7 +109,14 @@ export const AI_STATUS = Object.freeze({
 const aiErrorStatus = (error) =>
   error?.code === "quota" ? AI_STATUS.quota : error?.code === "busy" ? AI_STATUS.busy : AI_STATUS.error;
 
-export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "single", onWordsAdded, sourceInputRef } = {}) => {
+export const useQuickAddWords = ({
+  isOpen,
+  initialDeckId = "",
+  initialTab = "single",
+  onWordsAdded,
+  sourceInputRef,
+  deckNameRef,
+} = {}) => {
   const deckRepository = usePlatformService("deckRepository");
   const { decks, isLoading: isDecksLoading } = useDecks();
   const { appPreferences } = useAppPreferences();
@@ -133,6 +140,8 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     pictureSide: "",
     ...pickDefaultLanguages(appPreferences.deckDefaults),
   }));
+  // Whether adding was tried with the new deck's name left empty.
+  const [isDeckNameMissing, setIsDeckNameMissing] = useState(false);
   // A deck made in this dialog, used until the deck list catches up.
   const [createdDeck, setCreatedDeck] = useState(null);
   const [deckWords, setDeckWords] = useState([]);
@@ -171,7 +180,12 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     }
 
     setDeckChoice(decks[0] ? String(decks[0].id) : NEW_DECK_VALUE);
-  }, [deckChoice, decks, isDecksLoading, isOpen]);
+
+    // With no decks yet, the first thing to fill in is the new deck's name.
+    if (!decks[0]) {
+      window.requestAnimationFrame(() => deckNameRef?.current?.focus());
+    }
+  }, [deckChoice, deckNameRef, decks, isDecksLoading, isOpen]);
 
   const isNewDeck = deckChoice === NEW_DECK_VALUE;
   const selectedDeck = useMemo(
@@ -246,8 +260,15 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
 
     const name = newDeck.name.trim();
 
+    // A new deck needs a name, and the field says so where it is: marked,
+    // with the reason under it and the cursor in it.
     if (!name) {
-      throw Object.assign(new Error("name"), { i18nKey: "quickAdd.errors.deckName" });
+      setIsDeckNameMissing(true);
+      window.requestAnimationFrame(() => {
+        deckNameRef?.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+        deckNameRef?.current?.focus({ preventScroll: true });
+      });
+      throw Object.assign(new Error("name"), { i18nKey: "quickAdd.errors.deckName", isShownAtField: true });
     }
 
     if (decks.some((deck) => deck.name.trim().toLowerCase() === name.toLowerCase())) {
@@ -269,7 +290,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     setDeckChoice(String(created.id));
     setNewDeck((current) => ({ ...current, name: "", description: "", tags: [] }));
     return created;
-  }, [deckRepository, decks, newDeck, selectedDeck]);
+  }, [deckNameRef, deckRepository, decks, newDeck, selectedDeck]);
 
   const writeWords = useCallback(
     async (drafts) => {
@@ -396,7 +417,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     } catch (error) {
       console.warn("[quick-add] add failed", error);
       // What was typed stays in the fields, to try again.
-      setNotice({ kind: "error", key: error?.i18nKey || "quickAdd.errors.save" });
+      setNotice(error?.isShownAtField ? null : { kind: "error", key: error?.i18nKey || "quickAdd.errors.save" });
     } finally {
       setIsSaving(false);
     }
@@ -602,7 +623,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
       setNotice({ kind: "added", key: "quickAdd.added.list", params: { count: added.length } });
     } catch (error) {
       console.warn("[quick-add] list add failed", error);
-      setNotice({ kind: "error", key: error?.i18nKey || "quickAdd.errors.save" });
+      setNotice(error?.isShownAtField ? null : { kind: "error", key: error?.i18nKey || "quickAdd.errors.save" });
     } finally {
       setIsSaving(false);
     }
@@ -747,14 +768,26 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
   );
 
   const handleDeckChoiceChange = useCallback((event) => {
-    setDeckChoice(event.target.value);
+    const choice = event.target.value;
+
+    setDeckChoice(choice);
     setNotice(null);
     setConfirmedPair("");
-  }, []);
+    setIsDeckNameMissing(false);
+
+    // A new deck starts with its name: the cursor goes there first.
+    if (choice === NEW_DECK_VALUE) {
+      window.requestAnimationFrame(() => deckNameRef?.current?.focus());
+    }
+  }, [deckNameRef]);
 
   const handleNewDeckChange = useCallback((event) => {
     const { name, value } = event.target;
     setNewDeck((current) => ({ ...current, [name]: value }));
+
+    if (name === "name" && value.trim()) {
+      setIsDeckNameMissing(false);
+    }
   }, []);
 
   // Which side of the new deck's cards is a picture, if any.
@@ -805,6 +838,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     hasUnsavedInput,
     handleDeckChoiceChange,
     handleNewDeckChange,
+    isDeckNameMissing,
     handleNewDeckPictureChange,
     handleDraftChange,
     handleDetailsChange,
