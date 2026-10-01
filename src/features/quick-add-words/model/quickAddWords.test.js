@@ -234,4 +234,3 @@ describe("deckWordsWriter on the web store", () => {
     expect(stored).toMatchObject({ pictureSide: "target", sourceLanguage: "English", targetLanguage: "" });
   });
 });
-
