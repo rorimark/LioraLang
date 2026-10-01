@@ -9,34 +9,49 @@
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { buildGeminiRequest, DEFAULT_MODEL, pickFlashModel, readGeminiSuggestion, validateRequest } from "./gemini.ts";
+import { buildGeminiRequest, DEFAULT_MODEL, pickFlashModels, readGeminiSuggestion, validateRequest } from "./gemini.ts";
 
-const GEMINI_TIMEOUT_MS = 12_000;
 const GEMINI_API = "https://generativelanguage.googleapis.com/v1beta";
+// The app waits 15 seconds; everything here fits inside that.
+const TOTAL_BUDGET_MS = 13_000;
+const ATTEMPT_TIMEOUT_MS = 8_000;
+const MAX_ATTEMPTS = 3;
+// Overloaded, rate-limited or gone: worth asking the next model.
+const TRY_NEXT = new Set([404, 429, 500, 503, 504]);
 
-// The model in use, for as long as this instance runs. Google retires
-// models; when the one in use is gone (404), the newest stable Flash from
-// Google's own list takes its place.
-let activeModel = "";
+// The models to ask, best first, for as long as this instance runs: the
+// one named in the secrets, then the stable Flash models Google lists.
+let modelQueue: string[] = [];
 
-const findReplacementModel = async (apiKey: string): Promise<string> => {
+const listModels = async (apiKey: string): Promise<string[]> => {
   try {
     const response = await fetch(`${GEMINI_API}/models?pageSize=200`, {
       headers: { "x-goog-api-key": apiKey },
-      signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
+      signal: AbortSignal.timeout(4_000),
     });
-    return response.ok ? pickFlashModel(await response.json()) : "";
+    return response.ok ? pickFlashModels(await response.json()) : [];
   } catch {
-    return "";
+    return [];
   }
 };
 
-const askGemini = (apiKey: string, model: string, body: unknown) =>
+const resolveModels = async (apiKey: string): Promise<string[]> => {
+  if (!modelQueue.length) {
+    const named = Deno.env.get("GEMINI_MODEL");
+    const listed = await listModels(apiKey);
+    const queue = [named, ...listed].filter((name): name is string => Boolean(name));
+    modelQueue = queue.length ? [...new Set(queue)] : [DEFAULT_MODEL];
+  }
+
+  return modelQueue;
+};
+
+const askGemini = (apiKey: string, model: string, body: unknown, timeoutMs: number) =>
   fetch(`${GEMINI_API}/models/${model}:generateContent`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
   });
 
 // The app's own pages call this with a bearer token, from the web and from
@@ -68,6 +83,7 @@ Deno.serve(async (request) => {
     return reply(405, { error: "method" });
   }
 
+  const startedAt = Date.now();
   const apiKey = Deno.env.get("GEMINI_API_KEY");
 
   if (!apiKey) {
@@ -111,56 +127,58 @@ Deno.serve(async (request) => {
     return reply(429, { error: "quota" });
   }
 
-  // A model named in the secrets is used as it is; otherwise the newest
-  // stable Flash Google lists, looked up once per instance.
-  if (!activeModel) {
-    activeModel = Deno.env.get("GEMINI_MODEL") || (await findReplacementModel(apiKey)) || DEFAULT_MODEL;
-  }
+  // Ask the best model; when it is overloaded or gone, the next one. A
+  // model that does not take the thinking setting is asked again without.
+  const models = await resolveModels(apiKey);
+  let overloaded = false;
 
-  let model = activeModel;
-  let response: Response;
+  for (const model of models.slice(0, MAX_ATTEMPTS)) {
+    const timeLeft = TOTAL_BUDGET_MS - (Date.now() - startedAt);
 
-  try {
-    response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model));
+    if (timeLeft < 1_500) {
+      break;
+    }
 
-    if (response.status === 404) {
-      const replacement = await findReplacementModel(apiKey);
+    try {
+      const timeout = Math.min(ATTEMPT_TIMEOUT_MS, timeLeft);
+      let response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model), timeout);
 
-      if (replacement && replacement !== model) {
-        console.warn(`suggest-word: ${model} is gone, using ${replacement}`);
-        model = replacement;
-        activeModel = replacement;
-        response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model));
+      if (response.status === 400) {
+        console.warn("suggest-word: asking again without the thinking setting", model, (await response.text()).slice(0, 200));
+        response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model, { withThinking: false }), timeout);
       }
+
+      if (TRY_NEXT.has(response.status)) {
+        overloaded = overloaded || response.status !== 404;
+        console.warn("suggest-word: trying the next model after", model, response.status);
+
+        if (response.status === 404) {
+          modelQueue = modelQueue.filter((name) => name !== model);
+        }
+
+        continue;
+      }
+
+      if (!response.ok) {
+        console.error("suggest-word: Gemini answered", model, response.status, (await response.text()).slice(0, 300));
+        return reply(502, { error: "unavailable" });
+      }
+
+      const answer = await response.json();
+      const suggestion = readGeminiSuggestion(answer);
+
+      if (!suggestion) {
+        console.error("suggest-word: no suggestion in the answer", model, JSON.stringify(answer).slice(0, 300));
+        continue;
+      }
+
+      return reply(200, { suggestion });
+    } catch (error) {
+      overloaded = true;
+      console.warn("suggest-word: no answer in time from", model, String(error));
     }
-
-    // A model that does not take the thinking setting is asked again
-    // without it.
-    if (response.status === 400) {
-      console.warn("suggest-word: retrying without the thinking setting", model, (await response.text()).slice(0, 200));
-      response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model, { withThinking: false }));
-    }
-  } catch (error) {
-    console.error("suggest-word: Gemini unreachable", String(error));
-    return reply(504, { error: "unavailable" });
   }
 
-  if (response.status === 429) {
-    return reply(429, { error: "busy" });
-  }
-
-  if (!response.ok) {
-    console.error("suggest-word: Gemini answered", model, response.status, (await response.text()).slice(0, 300));
-    return reply(502, { error: "unavailable" });
-  }
-
-  const answer = await response.json();
-  const suggestion = readGeminiSuggestion(answer);
-
-  if (!suggestion) {
-    console.error("suggest-word: no suggestion in the answer", model, JSON.stringify(answer).slice(0, 300));
-    return reply(502, { error: "unavailable" });
-  }
-
-  return reply(200, { suggestion });
+  // Busy is passing: the app says nothing and asks again on the next word.
+  return overloaded ? reply(429, { error: "busy" }) : reply(502, { error: "unavailable" });
 });

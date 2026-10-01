@@ -203,25 +203,38 @@ export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
   };
 };
 
-// The newest stable Flash model that can answer generateContent, from
-// Google's list of models: "gemini-3.8-flash" over "gemini-3.5-flash";
-// previews, experiments and the smaller "lite" ones are passed over.
-export const pickFlashModel = (listResponse: unknown): string => {
+// The models to ask, best first, from Google's list: the newest stable
+// Flash, then the newest Flash-Lite (it has capacity of its own when Flash
+// is overloaded), then the older ones, newest first. Previews and
+// experiments are passed over.
+export const pickFlashModels = (listResponse: unknown): string[] => {
   const models = (listResponse as { models?: Array<Record<string, unknown>> })?.models;
 
   if (!Array.isArray(models)) {
-    return "";
+    return [];
   }
 
-  const candidates = models
+  const ranked = models
     .filter((model) => {
       const methods = model?.supportedGenerationMethods;
       return Array.isArray(methods) && methods.includes("generateContent");
     })
     .map((model) => String(model?.name || "").replace(/^models\//, ""))
-    .map((name) => ({ name, match: /^gemini-(\d+(?:\.\d+)?)-flash$/.exec(name) }))
+    .map((name) => ({ name, match: /^gemini-(\d+(?:\.\d+)?)-flash(-lite)?$/.exec(name) }))
     .filter((candidate) => candidate.match)
-    .sort((first, second) => Number(second.match![1]) - Number(first.match![1]));
+    .sort(
+      (first, second) =>
+        Number(Boolean(first.match![2])) - Number(Boolean(second.match![2])) ||
+        Number(second.match![1]) - Number(first.match![1]),
+    );
 
-  return candidates[0]?.name || "";
+  const names = ranked.map((candidate) => candidate.name);
+  const newestLite = names.find((name) => name.endsWith("-lite"));
+  const [first, ...rest] = names.filter((name) => name !== newestLite);
+
+  return [first, newestLite, ...rest].filter((name): name is string => Boolean(name));
 };
+
+// The newest stable Flash, the first of the models to ask.
+export const pickFlashModel = (listResponse: unknown): string =>
+  pickFlashModels(listResponse).find((name) => !name.endsWith("-lite")) || "";

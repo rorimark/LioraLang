@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGeminiRequest, pickFlashModel, readGeminiSuggestion, validateRequest } from "./gemini.ts";
+import { buildGeminiRequest, pickFlashModel, pickFlashModels, readGeminiSuggestion, validateRequest } from "./gemini.ts";
 
 const reply = (value: unknown, extra: Record<string, unknown> = {}) => ({
   candidates: [{ content: { parts: [{ text: typeof value === "string" ? value : JSON.stringify(value) }] }, ...extra }],
@@ -110,6 +110,7 @@ describe("suggest-word: model", () => {
     };
 
     expect(pickFlashModel(list)).toBe("gemini-3.8-flash");
+    expect(pickFlashModels(list)).toEqual(["gemini-3.8-flash", "gemini-3.8-flash-lite", "gemini-3.5-flash"]);
     expect(pickFlashModel({})).toBe("");
   });
 

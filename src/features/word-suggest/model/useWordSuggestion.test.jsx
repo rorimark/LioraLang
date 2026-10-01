@@ -86,4 +86,14 @@ describe("useWordSuggestion", () => {
 
     expect(onFill).toHaveBeenCalledWith({ source: "receive" });
   });
+
+  it("asks a busy service again for the same word", async () => {
+    suggestWord
+      .mockRejectedValueOnce(Object.assign(new Error("busy"), { code: "busy" }))
+      .mockResolvedValue({ target: "bramka" });
+    const { result } = await render({ ...empty, source: `gate${word}` });
+
+    await waitFor(() => expect(result.current.fills.target).toBe("bramka"), { timeout: 6000 });
+    expect(suggestWord).toHaveBeenCalledTimes(2);
+  }, 10000);
 });

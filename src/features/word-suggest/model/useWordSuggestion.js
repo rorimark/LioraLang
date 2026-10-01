@@ -24,6 +24,9 @@ const CACHE_LIMIT = 150;
 // After this many failures in a row the service is taken to be down for
 // the session, so typing does not keep knocking on a closed door.
 const FAILURES_BEFORE_PAUSE = 3;
+// A busy service is asked again, quietly, a couple of times.
+const BUSY_RETRIES = 2;
+const BUSY_RETRY_MS = 2_500;
 
 export const SUGGEST_STATUS = Object.freeze({
   idle: "idle",
@@ -101,6 +104,7 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
   const [isSignedIn, setIsSignedIn] = useState(null);
   const [result, setResult] = useState({ key: "", status: SUGGEST_STATUS.idle, suggestion: null });
   const [dismissedKey, setDismissedKey] = useState("");
+  const [retry, setRetry] = useState({ key: "", count: 0 });
   const [tracked, setTracked] = useState(() => ({ draft, locked: EMPTY_SET, filled: {} }));
   const [inked, setInked] = useState(EMPTY_SET);
   const inkTimerRef = useRef(null);
@@ -157,6 +161,7 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
   const isActive = isWanted && isSignedIn === true;
   const isAsking = isActive && Boolean(request) && hasRoomForSuggestion(draft, deck, anchor);
   const cached = isAsking ? answers.get(key) : undefined;
+  const retryCount = retry.key === key ? retry.count : 0;
 
   useEffect(() => {
     if (!isAsking || cached || failuresInARow >= FAILURES_BEFORE_PAUSE) {
@@ -164,6 +169,7 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
     }
 
     const controller = new AbortController();
+    let retryTimer = null;
     const timer = window.setTimeout(async () => {
       setResult({ key, status: SUGGEST_STATUS.loading, suggestion: null });
 
@@ -182,6 +188,13 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
           failuresInARow += 1;
         }
 
+        // Busy or briefly offline: the shimmer stays and the same word is
+        // asked again in a moment.
+        if ((error?.code === "busy" || error?.code === "offline") && retryCount < BUSY_RETRIES) {
+          retryTimer = window.setTimeout(() => setRetry({ key, count: retryCount + 1 }), BUSY_RETRY_MS);
+          return;
+        }
+
         const status =
           error?.code === "quota"
             ? SUGGEST_STATUS.quota
@@ -194,9 +207,10 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
 
     return () => {
       window.clearTimeout(timer);
+      window.clearTimeout(retryTimer);
       controller.abort();
     };
-  }, [cached, isAsking, key, repository, request]);
+  }, [cached, isAsking, key, repository, request, retryCount]);
 
   const status = !isAsking
     ? SUGGEST_STATUS.idle
