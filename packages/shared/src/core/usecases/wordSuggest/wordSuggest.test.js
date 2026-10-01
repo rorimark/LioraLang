@@ -173,4 +173,15 @@ describe("wordSuggest", () => {
     expect(request.tags).toEqual(["food", "home", "travel"]);
     expect(suggestionCacheKey(request)).not.toBe(suggestionCacheKey({ ...request, tagLanguage: "German" }));
   });
+
+  it("keeps asking about the side the person typed once the other was suggested", () => {
+    const draft = { source: "ticket", target: "bilet" };
+
+    expect(resolveSuggestionAnchor(draft)).toEqual({ side: "source", text: "ticket" });
+    expect(resolveSuggestionAnchor(draft, "", { filled: { source: "ticket" } })).toEqual({ side: "target", text: "bilet" });
+    expect(resolveSuggestionAnchor({ ...draft, source: "tickets" }, "", { filled: { source: "ticket" } })).toEqual({
+      side: "source",
+      text: "tickets",
+    });
+  });
 });

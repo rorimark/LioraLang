@@ -47,6 +47,15 @@ export const useDialogA11y = ({
   restoreFocus = true,
 }) => {
   const lastFocusedElementRef = useRef(null);
+  // The latest onClose, read when a key is pressed. A dialog whose close
+  // handler changes as the person types (a confirmation once something is
+  // typed) must not be set up again, and so must not move the focus back to
+  // its first field mid-word.
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   const handleDocumentKeyDown = useCallback(
     (event) => {
@@ -68,8 +77,8 @@ export const useDialogA11y = ({
       if (event.key === "Escape") {
         event.preventDefault();
 
-        if (typeof onClose === "function") {
-          onClose();
+        if (typeof onCloseRef.current === "function") {
+          onCloseRef.current();
         }
 
         return;
@@ -108,7 +117,7 @@ export const useDialogA11y = ({
         firstElement.focus();
       }
     },
-    [containerRef, isOpen, onClose],
+    [containerRef, isOpen],
   );
 
   useEffect(() => {

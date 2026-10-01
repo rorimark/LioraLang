@@ -103,11 +103,16 @@ export const isSuggestableText = (value) => {
 
 // Which side the person has written, so the assistant knows what to
 // translate from. The first side wins; the back is used when only the back
-// is written, and asks for the front.
-export const resolveSuggestionAnchor = (draft = {}, pictureSide = "") => {
+// is written, and asks for the front. A side a suggestion wrote is not the
+// person's word: the side they typed stays the one asked about.
+export const resolveSuggestionAnchor = (draft = {}, pictureSide = "", { filled = null } = {}) => {
   const side = PICTURE_SIDES.has(pictureSide) ? pictureSide : "";
-  const source = side === "source" ? "" : clean(draft?.source);
-  const target = side === "target" ? "" : clean(draft?.target);
+  const typed = (field) => {
+    const value = clean(draft?.[field]);
+    return value && filled?.[field] !== undefined && clean(filled[field]) === value ? "" : value;
+  };
+  const source = side === "source" ? "" : typed("source");
+  const target = side === "target" ? "" : typed("target");
 
   if (source) {
     return isSuggestableText(source) ? { side: "source", text: source } : null;

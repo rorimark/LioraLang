@@ -157,9 +157,14 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
   useEffect(() => () => window.clearTimeout(inkTimerRef.current), []);
 
   const pictureSide = deck?.pictureSide || "";
+  const filledSource = tracked.filled.source;
+  const filledTarget = tracked.filled.target;
   const anchor = useMemo(
-    () => resolveSuggestionAnchor({ source: draft?.source, target: draft?.target }, pictureSide),
-    [draft?.source, draft?.target, pictureSide],
+    () =>
+      resolveSuggestionAnchor({ source: draft?.source, target: draft?.target }, pictureSide, {
+        filled: { source: filledSource, target: filledTarget },
+      }),
+    [draft?.source, draft?.target, filledSource, filledTarget, pictureSide],
   );
   const request = useMemo(
     () =>
