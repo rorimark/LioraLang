@@ -1,11 +1,11 @@
-const CACHE_NAME = "lioralang-web-v3";
+const CACHE_NAME = "lioralang-web-v4";
 const BUILD_MANIFEST_FILE = "asset-manifest.json";
 // The app's shell; index.html is the English landing, written as static
 // HTML at build time (scripts/prerender-landing.mjs).
 const APP_SHELL_PATH = "app.html";
 const OFFLINE_PAGE_PATH = "offline.html";
 const PRECACHE_PATHS = [
-  "",
+  "app/",
   APP_SHELL_PATH,
   OFFLINE_PAGE_PATH,
   "manifest.webmanifest",
@@ -15,9 +15,12 @@ const PRECACHE_PATHS = [
   "icons/apple-touch-icon.png",
 ];
 
+// Built files live at the site's root (/assets/…, /app.html), not under
+// the worker's /app/ scope: resolved against the scope they would be
+// rewritten to the app's HTML, and nothing would be cached for offline.
 const resolveScopeAssetUrl = (path) => {
   const normalizedPath = String(path || "").replace(/^\/+/, "");
-  return new URL(normalizedPath, self.registration.scope).toString();
+  return new URL(`/${normalizedPath}`, self.location.origin).toString();
 };
 
 const addAllSettled = async (cache, urls = []) => {
