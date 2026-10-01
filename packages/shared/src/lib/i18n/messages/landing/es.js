@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang: tarjetas y repaso espaciado que de verdad se quedan",
-    "description": "Deja de olvidar palabras tras un solo repaso. Crea mazos con un asistente de IA, estudia con repaso espaciado y usa LioraLang en el navegador, en el ordenador o como app en el móvil."
+    "title": "LioraLang — app de tarjetas gratis para aprender vocabulario con repaso espaciado",
+    "description": "Aprende vocabulario con tarjetas: el repaso espaciado (FSRS) te pregunta cada palabra a tiempo, la IA rellena las tarjetas y funciona en navegador, ordenador y móvil. Gratis."
   },
   "topbar": {
     "open": "Abrir la app web",
@@ -123,6 +123,31 @@ export default {
     "open": "Abrir la app web",
     "offline": "Sin conexión",
     "fullscreen": "Pantalla completa"
+  },
+  "faq": {
+    "title": "Preguntas",
+    "items": {
+      "free": {
+        "q": "¿LioraLang es gratis?",
+        "a": "Sí. Los mazos, los repasos, la app de escritorio y la sincronización entre dispositivos son gratis. El asistente de IA es gratis con una cuenta, hasta {count} sugerencias al día."
+      },
+      "anki": {
+        "q": "¿En qué se diferencia de Anki?",
+        "a": "La idea es la misma, el repaso espaciado, pero no hay nada que configurar: los mazos conocen sus idiomas, niveles y ejemplos, el asistente de IA rellena las tarjetas y todo funciona en cualquier navegador y en el móvil sin instalar nada."
+      },
+      "srs": {
+        "q": "¿Qué es el repaso espaciado?",
+        "a": "Una forma de repasar una palabra justo antes de olvidarla. Cada respuesta aleja el siguiente repaso, así tu tiempo se va en las palabras que aún no sabes."
+      },
+      "offline": {
+        "q": "¿Funciona sin conexión?",
+        "a": "Sí. Una vez abierta, la app web sigue funcionando sin internet, y la app de escritorio es totalmente offline. Con una cuenta, los cambios se sincronizan al volver la conexión."
+      },
+      "languages": {
+        "q": "¿Qué idiomas puedo aprender?",
+        "a": "Cualquier par de estos: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Tu primer repaso lleva un minuto."

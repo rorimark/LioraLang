@@ -1,5 +1,5 @@
 import { Fragment, memo, useRef } from "react";
-import { IoCheckmark, IoGlobeOutline, IoLogoAndroid, IoLogoApple } from "react-icons/io5";
+import { IoCheckmark, IoChevronDown, IoGlobeOutline, IoLogoAndroid, IoLogoApple } from "react-icons/io5";
 import { Link } from "react-router";
 import { AppIcon, Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -9,6 +9,7 @@ import { useLandingMockPanel } from "../model/useLandingMockPanel";
 import { useLandingDemoSession } from "../model/useLandingDemoSession";
 import { useReviewTimeline } from "../model/useReviewTimeline";
 import { useRevealOnScroll } from "../model/useRevealOnScroll";
+import { buildFaqItems } from "../model/landingFaq";
 import {
   AiIllustration,
   DecksIllustration,
@@ -179,6 +180,31 @@ const FeatureRow = memo(({ title, children, art, isReversed = false, id }) => (
 
 FeatureRow.displayName = "FeatureRow";
 
+// Short answers to what people ask before they try it, as rows that open.
+const LandingFaq = memo(() => {
+  const { t, languageName } = useI18n();
+  const items = buildFaqItems({ t, languageName });
+
+  return (
+    <section className="lp-faq" aria-labelledby="lp-faq-title">
+      <h2 id="lp-faq-title">{t("landing.faq.title")}</h2>
+      <div className="lp-faq__list">
+        {items.map((item) => (
+          <details key={item.key} className="lp-faq__item">
+            <summary>
+              <span>{item.question}</span>
+              <IoChevronDown className="lp-faq__chevron" aria-hidden />
+            </summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+});
+
+LandingFaq.displayName = "LandingFaq";
+
 export const LandingMockPanel = memo(() => {
   const { t, languageName, formatInterval } = useI18n();
   const {
@@ -192,6 +218,7 @@ export const LandingMockPanel = memo(() => {
     hubExampleDeck,
     platforms,
     footerLinks,
+    languageLinks,
     openWebTo,
     browseTo,
     desktopReleaseUrl,
@@ -368,6 +395,8 @@ export const LandingMockPanel = memo(() => {
         </Link>
       </FeatureRow>
 
+      <LandingFaq />
+
       <section className="lp-cta" aria-labelledby="lp-cta-title">
         <span className="lp-sticker lp-tone-green lp-cta__sticker lp-cta__sticker--l" aria-hidden>
           {t("grades.easy.label")}
@@ -410,6 +439,21 @@ export const LandingMockPanel = memo(() => {
             </li>
           ))}
         </ul>
+        {/* The landing in every language, as plain links: one click for a
+            visitor, and the way search engines find each version. */}
+        <nav className="lp-footer__langs" aria-label={t("landing.topbar.language")}>
+          {languageLinks.map((item) => (
+            <Link
+              key={item.code}
+              to={item.to}
+              lang={item.code}
+              hrefLang={item.code}
+              aria-current={item.code === locale ? "page" : undefined}
+            >
+              {item.nativeName}
+            </Link>
+          ))}
+        </nav>
       </footer>
     </article>
   );

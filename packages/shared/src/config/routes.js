@@ -1,6 +1,8 @@
 export const ROUTE_PATHS = {
   root: "/",
   landing: "/",
+  // The landing in one language: /ru, /de… English is the root.
+  landingLocale: "/:locale",
   shareDeck: "/share/decks/:deckSlug",
   appRoot: "/app",
   learn: "/app/learn",
@@ -28,6 +30,9 @@ export const LEGACY_ROUTE_PATHS = {
   account: "/account",
   settings: "/settings",
 };
+
+// Where the landing lives in a language.
+export const buildLandingRoute = (locale) => (!locale || locale === "en" ? "/" : `/${locale}`);
 
 const toRouteParam = (value) => {
   const normalizedValue = String(value ?? "").trim();

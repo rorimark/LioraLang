@@ -12,6 +12,11 @@ export const routes = [
     lazy: loadRouteComponent(() => import("@pages/landing/ui/LandingPage")),
   },
   {
+    path: ROUTE_PATHS.landingLocale,
+    HydrateFallback: RouteHydrateFallback,
+    lazy: loadRouteComponent(() => import("@pages/landing/ui/LandingPage")),
+  },
+  {
     path: ROUTE_PATHS.shareDeck,
     HydrateFallback: RouteHydrateFallback,
     lazy: loadRouteComponent(() => import("@pages/share/ui/ShareDeckRedirectPage")),

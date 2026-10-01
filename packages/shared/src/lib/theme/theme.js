@@ -61,6 +61,8 @@ export const isDarkThemeActive = (themeMode) => {
   return resolveAppliedTheme(themeMode) === APP_THEMES.dark;
 };
 
+export const APPLIED_THEME_STORAGE_KEY = "lioralang.theme";
+
 export const applyThemeMode = (themeMode) => {
   const resolvedTheme = resolveAppliedTheme(themeMode);
   const runtimeGateway = getPlatformServices().runtimeGateway;
@@ -70,6 +72,14 @@ export const applyThemeMode = (themeMode) => {
   }
 
   const root = document.documentElement;
+
+  // Remembered for the static landing, which sets the theme before any
+  // script of the app has loaded (scripts/prerender-landing.mjs).
+  try {
+    window.localStorage.setItem(APPLIED_THEME_STORAGE_KEY, resolvedTheme);
+  } catch {
+    // The page still gets the theme; only the next static paint guesses.
+  }
 
   if (resolvedTheme === APP_THEMES.dark) {
     root.setAttribute("theme", APP_THEMES.dark);

@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang: gerçekten akılda kalan kartlar ve aralıklı tekrar",
-    "description": "Kelimeleri tek bir tekrardan sonra unutmayı bırakın. Yapay zekâ asistanıyla desteler oluşturun, aralıklı tekrarla çalışın ve LioraLang'i tarayıcıda, bilgisayarda ya da telefonda bir uygulama olarak kullanın."
+    "title": "LioraLang — aralıklı tekrarla kelime öğrenmek için ücretsiz kart uygulaması",
+    "description": "Kelime kartlarıyla kelime öğrenin: aralıklı tekrar (FSRS) her kelimeyi tam zamanında sorar, yapay zekâ kartları doldurur; tarayıcıda, bilgisayarda ve telefonda. Ücretsiz."
   },
   "topbar": {
     "open": "Uygulamayı aç",
@@ -117,6 +117,31 @@ export default {
     "open": "Web uygulamasını aç",
     "offline": "Çevrimdışı da",
     "fullscreen": "Tam ekran"
+  },
+  "faq": {
+    "title": "Sorular",
+    "items": {
+      "free": {
+        "q": "LioraLang ücretsiz mi?",
+        "a": "Evet. Desteler, tekrarlar, masaüstü uygulaması ve cihazlar arası senkronizasyon ücretsizdir. Yapay zekâ asistanı hesapla ücretsizdir, günde en fazla {count} öneri."
+      },
+      "anki": {
+        "q": "Anki'den farkı ne?",
+        "a": "Fikir aynı, aralıklı tekrar; ama ayarlanacak bir şey yok: desteler dillerini, seviyelerini ve örneklerini bilir, yapay zekâ asistanı kartları doldurur ve her şey kurulum olmadan her tarayıcıda ve telefonda çalışır."
+      },
+      "srs": {
+        "q": "Aralıklı tekrar nedir?",
+        "a": "Bir kelimeyi unutmanızdan hemen önce tekrar etmenin yolu. Her cevap bir sonraki tekrarı ileri iter, böylece zamanınız henüz bilmediğiniz kelimelere gider."
+      },
+      "offline": {
+        "q": "İnternetsiz çalışır mı?",
+        "a": "Evet. Açıldıktan sonra web uygulaması internetsiz çalışır, masaüstü uygulaması tamamen çevrimdışıdır. Hesapla, değişiklikler bağlantı gelince senkronize olur."
+      },
+      "languages": {
+        "q": "Hangi dilleri öğrenebilirim?",
+        "a": "Bunlardan herhangi bir çifti: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "İlk tekrarınız bir dakika sürer."

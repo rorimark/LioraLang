@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang — fiszki i powtórki w odstępach, które naprawdę zostają w głowie",
-    "description": "Przestań zapominać słowa po jednej powtórce. Twórz talie z asystentem AI, ucz się metodą powtórek w odstępach i korzystaj z LioraLang w przeglądarce, na komputerze lub jako aplikacji w telefonie."
+    "title": "LioraLang — darmowe fiszki do nauki słówek z powtórkami w odstępach",
+    "description": "Ucz się słówek z fiszkami: powtórki w odstępach (FSRS) przypominają słowo w porę, AI wypełnia fiszki, działa w przeglądarce, na komputerze i w telefonie. Za darmo."
   },
   "topbar": {
     "open": "Otwórz aplikację",
@@ -129,6 +129,31 @@ export default {
     "open": "Otwórz aplikację webową",
     "offline": "Działa offline",
     "fullscreen": "Pełny ekran"
+  },
+  "faq": {
+    "title": "Pytania",
+    "items": {
+      "free": {
+        "q": "Czy LioraLang jest darmowy?",
+        "a": "Tak. Talie, powtórki, aplikacja na komputer i synchronizacja między urządzeniami są za darmo. Asystent AI jest darmowy z kontem, do {count} podpowiedzi dziennie."
+      },
+      "anki": {
+        "q": "Czym różni się od Anki?",
+        "a": "Idea jest ta sama, powtórki w odstępach, ale nie trzeba nic ustawiać: talie znają swoje języki, poziomy i przykłady, asystent AI wypełnia fiszki, a całość działa w każdej przeglądarce i w telefonie bez instalacji."
+      },
+      "srs": {
+        "q": "Czym są powtórki w odstępach?",
+        "a": "Sposobem, by powtórzyć słowo tuż przed tym, zanim je zapomnisz. Każda odpowiedź odsuwa kolejną powtórkę, więc czas idzie na słowa, których jeszcze nie znasz."
+      },
+      "offline": {
+        "q": "Czy działa bez internetu?",
+        "a": "Tak. Otwarta aplikacja webowa działa bez internetu, a aplikacja na komputer całkowicie offline. Z kontem zmiany zsynchronizują się, gdy wróci połączenie."
+      },
+      "languages": {
+        "q": "Jakich języków mogę się uczyć?",
+        "a": "Dowolnej pary z tych: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Pierwsza powtórka zajmie minutę."

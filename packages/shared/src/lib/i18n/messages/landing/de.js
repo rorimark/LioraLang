@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang – Karteikarten und Wiederholung mit Abstand, die wirklich hängen bleiben",
-    "description": "Schluss damit, Wörter nach einer Wiederholung zu vergessen. Erstelle Stapel mit einem KI-Assistenten, lerne mit verteilter Wiederholung und nutze LioraLang im Browser, auf dem Computer oder als App auf dem Handy."
+    "title": "LioraLang — kostenlose Karteikarten-App zum Vokabeln lernen",
+    "description": "Vokabeln lernen mit Karteikarten: verteilte Wiederholung (FSRS) fragt jedes Wort zur richtigen Zeit ab, KI füllt Karten aus, im Browser, auf Computer und Handy. Kostenlos."
   },
   "topbar": {
     "open": "Web-App öffnen",
@@ -117,6 +117,31 @@ export default {
     "open": "Web-App öffnen",
     "offline": "Auch offline",
     "fullscreen": "Vollbild"
+  },
+  "faq": {
+    "title": "Fragen",
+    "items": {
+      "free": {
+        "q": "Ist LioraLang kostenlos?",
+        "a": "Ja. Stapel, Wiederholungen, die Desktop-App und die Synchronisierung zwischen Geräten sind kostenlos. Der KI-Assistent ist mit Konto kostenlos, bis zu {count} Vorschläge am Tag."
+      },
+      "anki": {
+        "q": "Was ist anders als bei Anki?",
+        "a": "Die Idee ist dieselbe, verteilte Wiederholung, aber es gibt nichts einzurichten: Stapel kennen ihre Sprachen, Niveaus und Beispiele, der KI-Assistent füllt Karten aus, und alles läuft in jedem Browser und auf dem Handy ohne Installation."
+      },
+      "srs": {
+        "q": "Was ist verteilte Wiederholung?",
+        "a": "Ein Wort wird kurz bevor du es vergessen würdest wiederholt. Jede Antwort schiebt die nächste Wiederholung weiter hinaus, so geht deine Zeit in die Wörter, die du noch nicht kannst."
+      },
+      "offline": {
+        "q": "Funktioniert es offline?",
+        "a": "Ja. Einmal geöffnet läuft die Web-App ohne Internet weiter, die Desktop-App ist komplett offline. Mit Konto werden Änderungen synchronisiert, sobald du wieder online bist."
+      },
+      "languages": {
+        "q": "Welche Sprachen kann ich lernen?",
+        "a": "Jedes Paar aus diesen: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Deine erste Wiederholung dauert eine Minute."

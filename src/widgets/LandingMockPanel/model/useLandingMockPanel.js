@@ -1,14 +1,15 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router";
 import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
-import { ROUTE_PATHS } from "@shared/config/routes";
+import { buildLandingRoute, ROUTE_PATHS } from "@shared/config/routes";
 import {
   APP_PREFERENCES_APP_KEY,
   mergeAppPreferences,
   normalizeAppPreferences,
 } from "@shared/lib/appPreferences";
 import { usePlatformService } from "@shared/providers";
-import { READY_LOCALES, useI18n } from "@shared/lib/i18n";
+import { READY_LOCALES, storeLocaleChoice, useI18n } from "@shared/lib/i18n";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
 // Every language a deck can use, straight from the app's own list, so the
@@ -46,6 +47,13 @@ const PHONE_SYSTEMS = [
   { key: "android", tone: "green" },
 ];
 
+// Every language of the landing, each at its own address.
+const LANGUAGE_LINKS = READY_LOCALES.map((item) => ({
+  code: item.code,
+  nativeName: item.nativeName,
+  to: buildLandingRoute(item.code),
+}));
+
 const FOOTER_LINKS = [
   { key: "github", href: EXTERNAL_LINKS.githubRepo, isExternal: true },
   { key: "issues", href: EXTERNAL_LINKS.githubIssues, isExternal: true },
@@ -54,6 +62,7 @@ const FOOTER_LINKS = [
 
 export const useLandingMockPanel = () => {
   const { locale } = useI18n();
+  const navigate = useNavigate();
   const settingsRepository = usePlatformService("settingsRepository");
 
   const prefetchApp = useCallback(() => {
@@ -68,6 +77,11 @@ export const useLandingMockPanel = () => {
     async (event) => {
       const interfaceLanguage = event.target.value;
 
+      // The page moves to that language's address at once; the choice is
+      // kept first, so / does not send the visitor back to the old one.
+      storeLocaleChoice(interfaceLanguage);
+      navigate(buildLandingRoute(interfaceLanguage));
+
       try {
         const settings = await settingsRepository.getAppSettings();
         const current = normalizeAppPreferences(settings?.[APP_PREFERENCES_APP_KEY]);
@@ -81,7 +95,7 @@ export const useLandingMockPanel = () => {
         console.warn("[landing] language change failed", error);
       }
     },
-    [settingsRepository],
+    [navigate, settingsRepository],
   );
 
   return {
@@ -95,6 +109,7 @@ export const useLandingMockPanel = () => {
     hubExampleDeck: HUB_EXAMPLE_DECK,
     platforms: PLATFORMS,
     footerLinks: FOOTER_LINKS,
+    languageLinks: LANGUAGE_LINKS,
     openWebTo: ROUTE_PATHS.learn,
     browseTo: ROUTE_PATHS.browse,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,

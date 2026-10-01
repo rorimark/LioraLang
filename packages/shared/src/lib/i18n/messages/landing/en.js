@@ -2,8 +2,8 @@
 // app never carries it.
 export default {
   "meta": {
-    "title": "LioraLang - Flashcards and spaced repetition that actually stick",
-    "description": "Stop forgetting words after one review. Build decks with an AI assistant, study with spaced repetition, and use LioraLang on the web, on desktop, or as an app on your phone."
+    "title": "LioraLang: Free Flashcard App with Spaced Repetition and AI",
+    "description": "Learn vocabulary with smart flashcards. Spaced repetition (FSRS) brings each word back just in time, AI fills in your cards, and it runs on the web, desktop and phone. Free."
   },
   "topbar": {
     "open": "Open web app",
@@ -119,6 +119,31 @@ export default {
     "open": "Open the web app",
     "offline": "Works offline",
     "fullscreen": "Full screen"
+  },
+  "faq": {
+    "title": "Questions",
+    "items": {
+      "free": {
+        "q": "Is LioraLang free?",
+        "a": "Yes. Decks, reviews, the desktop app and sync between devices are free. The AI assistant is free with an account, up to {count} suggestions a day."
+      },
+      "anki": {
+        "q": "How is it different from Anki?",
+        "a": "The idea is the same, spaced repetition, but there is nothing to set up: decks know their languages, levels and examples, the AI assistant fills in cards, and it runs in any browser and on your phone without installing anything."
+      },
+      "srs": {
+        "q": "What is spaced repetition?",
+        "a": "A way to review a word right before you would forget it. Every answer moves the next review further away, so your time goes to the words you do not know yet."
+      },
+      "offline": {
+        "q": "Does it work offline?",
+        "a": "Yes. Once opened, the web app keeps working without internet, and the desktop app is fully offline. With an account, your changes sync when you are back online."
+      },
+      "languages": {
+        "q": "Which languages can I learn?",
+        "a": "Any pair of these: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Your first review takes a minute."

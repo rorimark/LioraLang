@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang : des cartes et une répétition espacée qui restent vraiment",
-    "description": "Arrêtez d'oublier les mots après une seule révision. Créez des paquets avec un assistant IA, apprenez avec la répétition espacée et utilisez LioraLang dans le navigateur, sur ordinateur ou comme une app sur votre téléphone."
+    "title": "LioraLang — application de flashcards gratuite pour apprendre du vocabulaire",
+    "description": "Apprenez du vocabulaire avec des flashcards : la répétition espacée (FSRS) révise chaque mot au bon moment, l'IA remplit les cartes, sur navigateur, ordinateur et téléphone. Gratuit."
   },
   "topbar": {
     "open": "Ouvrir l'app web",
@@ -123,6 +123,31 @@ export default {
     "open": "Ouvrir l'app web",
     "offline": "Hors ligne",
     "fullscreen": "Plein écran"
+  },
+  "faq": {
+    "title": "Questions",
+    "items": {
+      "free": {
+        "q": "LioraLang est-il gratuit ?",
+        "a": "Oui. Les paquets, les révisions, l'application de bureau et la synchronisation entre appareils sont gratuits. L'assistant IA est gratuit avec un compte, jusqu'à {count} suggestions par jour."
+      },
+      "anki": {
+        "q": "Quelle différence avec Anki ?",
+        "a": "L'idée est la même, la répétition espacée, mais il n'y a rien à configurer : les paquets connaissent leurs langues, niveaux et exemples, l'assistant IA remplit les cartes, et tout fonctionne dans n'importe quel navigateur et sur téléphone sans installation."
+      },
+      "srs": {
+        "q": "Qu'est-ce que la répétition espacée ?",
+        "a": "Une façon de revoir un mot juste avant de l'oublier. Chaque réponse éloigne la révision suivante, votre temps va donc aux mots que vous ne connaissez pas encore."
+      },
+      "offline": {
+        "q": "Est-ce que ça marche hors ligne ?",
+        "a": "Oui. Une fois ouverte, l'application web fonctionne sans internet, et l'application de bureau est entièrement hors ligne. Avec un compte, vos modifications se synchronisent au retour de la connexion."
+      },
+      "languages": {
+        "q": "Quelles langues puis-je apprendre ?",
+        "a": "N'importe quelle paire parmi : {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Votre première révision prend une minute."

@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang: flashcard e ripetizione dilazionata che restano davvero",
-    "description": "Smetti di dimenticare le parole dopo un solo ripasso. Crea mazzi con un assistente IA, studia con la ripetizione dilazionata e usa LioraLang nel browser, sul computer o come app sul telefono."
+    "title": "LioraLang — flashcard gratis per imparare vocaboli con la ripetizione dilazionata",
+    "description": "Impara vocaboli con le flashcard: la ripetizione dilazionata (FSRS) ripassa ogni parola al momento giusto, l'IA compila le carte, nel browser, su computer e telefono. Gratis."
   },
   "topbar": {
     "open": "Apri l'app web",
@@ -123,6 +123,31 @@ export default {
     "open": "Apri l'app web",
     "offline": "Anche offline",
     "fullscreen": "Schermo intero"
+  },
+  "faq": {
+    "title": "Domande",
+    "items": {
+      "free": {
+        "q": "LioraLang è gratis?",
+        "a": "Sì. Mazzi, ripassi, l'app desktop e la sincronizzazione tra dispositivi sono gratis. L'assistente IA è gratis con un account, fino a {count} suggerimenti al giorno."
+      },
+      "anki": {
+        "q": "In cosa è diverso da Anki?",
+        "a": "L'idea è la stessa, la ripetizione dilazionata, ma non c'è nulla da configurare: i mazzi conoscono lingue, livelli ed esempi, l'assistente IA compila le carte e tutto funziona in qualsiasi browser e sul telefono senza installare nulla."
+      },
+      "srs": {
+        "q": "Cos'è la ripetizione dilazionata?",
+        "a": "Un modo per ripassare una parola poco prima di dimenticarla. Ogni risposta allontana il ripasso successivo, così il tempo va alle parole che non conosci ancora."
+      },
+      "offline": {
+        "q": "Funziona offline?",
+        "a": "Sì. Una volta aperta, l'app web funziona senza internet e l'app desktop è completamente offline. Con un account, le modifiche si sincronizzano quando torni online."
+      },
+      "languages": {
+        "q": "Quali lingue posso imparare?",
+        "a": "Qualsiasi coppia tra queste: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Il tuo primo ripasso richiede un minuto."

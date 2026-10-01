@@ -569,6 +569,7 @@
 
 .lp-try h2,
 .lp-feature h2,
+.lp-faq h2,
 .lp-cta h2 {
   /* Narrower than the gap between the two stickers, so a longer language
      wraps instead of running under them. */
@@ -586,7 +587,8 @@
 }
 
 .lp-try h2,
-.lp-feature h2 {
+.lp-feature h2,
+.lp-faq h2 {
   color: var(--lp-blue);
 }
 
@@ -1680,6 +1682,73 @@
   }
 }
 
+/* FAQ: plain rows that open, like the app's settings. */
+.lp-faq {
+  display: grid;
+  gap: 20px;
+  width: 100%;
+  max-width: calc(760px + 2 * var(--lp-gutter));
+  margin-inline: auto;
+  padding: clamp(48px, 7vw, 80px) var(--lp-gutter);
+  border-top: 2px solid var(--lp-line);
+}
+
+.lp-faq h2 {
+  justify-self: center;
+  text-align: center;
+}
+
+.lp-faq__list {
+  display: grid;
+  border-top: 2px solid var(--lp-line);
+}
+
+.lp-faq__item {
+  border-bottom: 2px solid var(--lp-line);
+}
+
+.lp-faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 2px;
+  font-size: 1.08rem;
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+}
+
+.lp-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.lp-faq__item summary:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--lp-blue) 55%, transparent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.lp-faq__chevron {
+  flex: none;
+  color: var(--lp-ink-soft);
+  font-size: 1.2rem;
+  transition: transform 220ms var(--lp-spring);
+}
+
+.lp-faq__item[open] .lp-faq__chevron {
+  transform: rotate(180deg);
+}
+
+.lp-faq__item p {
+  max-width: 62ch;
+  padding: 0 2px 20px;
+  color: var(--lp-ink-soft);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
 /* === Motion: reveal on scroll, lift on hover === */
 
 [data-reveal] {
@@ -1833,6 +1902,28 @@
   max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
   margin-inline: auto;
   padding: 28px var(--lp-gutter) calc(28px + env(safe-area-inset-bottom));
+}
+
+/* Every language of the landing, a quiet line across the footer. */
+.lp-footer__langs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  width: 100%;
+  padding-top: 14px;
+  border-top: 2px solid var(--lp-line);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.lp-footer__langs a {
+  color: var(--lp-ink-soft);
+  text-decoration: none;
+}
+
+.lp-footer__langs a[aria-current="page"] {
+  color: var(--lp-ink);
 }
 
 .lp-footer__credit {

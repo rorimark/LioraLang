@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang: flashcards e repetição espaçada que ficam de verdade",
-    "description": "Pare de esquecer palavras depois de uma revisão. Crie baralhos com um assistente de IA, estude com repetição espaçada e use o LioraLang no navegador, no computador ou como app no celular."
+    "title": "LioraLang — app de flashcards grátis para aprender vocabulário com repetição espaçada",
+    "description": "Aprenda vocabulário com flashcards: a repetição espaçada (FSRS) revisa cada palavra na hora certa, a IA preenche os cartões, no navegador, computador e celular. Grátis."
   },
   "topbar": {
     "open": "Abrir o app web",
@@ -123,6 +123,31 @@ export default {
     "open": "Abrir o app web",
     "offline": "Funciona offline",
     "fullscreen": "Tela cheia"
+  },
+  "faq": {
+    "title": "Perguntas",
+    "items": {
+      "free": {
+        "q": "O LioraLang é grátis?",
+        "a": "Sim. Baralhos, revisões, o app para computador e a sincronização entre dispositivos são grátis. O assistente de IA é grátis com uma conta, até {count} sugestões por dia."
+      },
+      "anki": {
+        "q": "Qual a diferença para o Anki?",
+        "a": "A ideia é a mesma, repetição espaçada, mas não há nada para configurar: os baralhos conhecem seus idiomas, níveis e exemplos, o assistente de IA preenche os cartões e tudo funciona em qualquer navegador e no celular sem instalar nada."
+      },
+      "srs": {
+        "q": "O que é repetição espaçada?",
+        "a": "Um jeito de revisar uma palavra logo antes de esquecê-la. Cada resposta afasta a próxima revisão, então seu tempo vai para as palavras que você ainda não sabe."
+      },
+      "offline": {
+        "q": "Funciona offline?",
+        "a": "Sim. Depois de aberto, o app web continua funcionando sem internet, e o app para computador é totalmente offline. Com uma conta, as mudanças sincronizam quando a conexão voltar."
+      },
+      "languages": {
+        "q": "Quais idiomas posso aprender?",
+        "a": "Qualquer par entre estes: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "Sua primeira revisão leva um minuto."

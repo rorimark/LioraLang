@@ -1,7 +1,7 @@
 export default {
   "meta": {
-    "title": "LioraLang – kartičky a opakování v rozestupech, které opravdu drží",
-    "description": "Přestaňte zapomínat slova po jednom opakování. Vytvářejte balíčky s asistentem AI, učte se metodou opakování v rozestupech a používejte LioraLang v prohlížeči, na počítači nebo jako aplikaci v telefonu."
+    "title": "LioraLang — kartičky zdarma na učení slovíček s opakováním v rozestupech",
+    "description": "Učte se slovíčka s kartičkami: opakování v rozestupech (FSRS) připomene slovo včas, AI vyplní kartičky, v prohlížeči, na počítači i v telefonu. Zdarma."
   },
   "topbar": {
     "open": "Otevřít aplikaci",
@@ -123,6 +123,31 @@ export default {
     "open": "Otevřít webovou aplikaci",
     "offline": "Funguje offline",
     "fullscreen": "Celá obrazovka"
+  },
+  "faq": {
+    "title": "Otázky",
+    "items": {
+      "free": {
+        "q": "Je LioraLang zdarma?",
+        "a": "Ano. Balíčky, opakování, aplikace pro počítač i synchronizace mezi zařízeními jsou zdarma. Asistent AI je zdarma s účtem, až {count} návrhů denně."
+      },
+      "anki": {
+        "q": "Čím se liší od Anki?",
+        "a": "Myšlenka je stejná, opakování v rozestupech, ale nic se nenastavuje: balíčky znají své jazyky, úrovně a příklady, asistent AI vyplní kartičky a vše běží v libovolném prohlížeči i v telefonu bez instalace."
+      },
+      "srs": {
+        "q": "Co je opakování v rozestupech?",
+        "a": "Způsob, jak si slovo zopakovat těsně předtím, než byste ho zapomněli. Každá odpověď posune další opakování dál, takže čas jde do slov, která ještě neumíte."
+      },
+      "offline": {
+        "q": "Funguje offline?",
+        "a": "Ano. Otevřená webová aplikace funguje bez internetu a aplikace pro počítač je zcela offline. S účtem se změny synchronizují, až budete znovu online."
+      },
+      "languages": {
+        "q": "Jaké jazyky se můžu učit?",
+        "a": "Libovolnou dvojici z těchto: {languages}."
+      }
+    }
   },
   "cta": {
     "title": "První opakování zabere minutu."

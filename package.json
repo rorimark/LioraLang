@@ -17,7 +17,7 @@
     "rebuild:native": "npm_config_runtime=electron npm_config_target=$(node -e \"const fs=require('node:fs'); const pkg=JSON.parse(fs.readFileSync('package.json','utf8')); process.stdout.write(pkg.devDependencies.electron);\") npm_config_disturl=https://electronjs.org/headers npm_config_build_from_source=true pnpm rebuild better-sqlite3",
     "build": "pnpm build:desktop",
     "build:desktop": "vite build --mode desktop",
-    "build:web": "vite build --mode web",
+    "build:web": "vite build --mode web && vite build --mode web --ssr src/app/prerender/landingPrerender.jsx --outDir dist-ssr --emptyOutDir && node scripts/prerender-landing.mjs",
     "icons:all": "node electron/scripts/build-icons.mjs --target all",
     "icons:mac": "node electron/scripts/build-icons.mjs --target mac",
     "icons:win": "node electron/scripts/build-icons.mjs --target win",

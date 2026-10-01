@@ -1,6 +1,8 @@
-const CACHE_NAME = "lioralang-web-v2";
+const CACHE_NAME = "lioralang-web-v3";
 const BUILD_MANIFEST_FILE = "asset-manifest.json";
-const APP_SHELL_PATH = "index.html";
+// The app's shell; index.html is the English landing, written as static
+// HTML at build time (scripts/prerender-landing.mjs).
+const APP_SHELL_PATH = "app.html";
 const OFFLINE_PAGE_PATH = "offline.html";
 const PRECACHE_PATHS = [
   "",
