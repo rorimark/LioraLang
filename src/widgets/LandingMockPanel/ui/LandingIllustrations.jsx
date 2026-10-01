@@ -192,35 +192,53 @@ export const AiIllustration = memo(() => {
 
 AiIllustration.displayName = "AiIllustration";
 
-// A home screen with LioraLang on it among the other apps.
-const HOME_TONES = ["red", "amber", "green", "blue", "amber", "green", "red", null, "blue", "green", "red", "amber"];
+// The web app as it runs from the home screen: a phone of real
+// proportions with a card and the four grades, no browser bar, and the
+// app's own icon beside it.
+const PHONE_GRADES = [
+  { key: "again", tone: "red" },
+  { key: "hard", tone: "amber" },
+  { key: "good", tone: "blue" },
+  { key: "easy", tone: "green" },
+];
 
-export const PhoneIllustration = memo(() => (
-  <div className="lp-art lp-phone-art" aria-hidden="true">
-    <span className="lp-phone">
-      <span className="lp-phone__notch" />
-      <span className="lp-phone__grid">
-        {HOME_TONES.map((tone, index) =>
-          tone ? (
-            <span key={index} className={`lp-phone__app lp-tone-${tone}`}>
-              <span className="lp-phone__icon" />
-              <span className="lp-phone__name" />
+export const PhoneIllustration = memo(() => {
+  const { t, locale, languageName } = useI18n();
+  const deck = buildLandingDemoDeck(locale);
+  const word = deck.words[deck.words.length - 1];
+
+  return (
+    <div className="lp-art lp-phone-art" aria-hidden="true">
+      <span className="lp-phone">
+        <span className="lp-phone__status">
+          <span>9:41</span>
+          <span className="lp-phone__island" />
+          <span className="lp-phone__battery" />
+        </span>
+        <span className="lp-phone__head">
+          <span>{t("landing.demo.deckName")}</span>
+          <span className="lp-phone__progress" />
+        </span>
+        <span className="lp-phone__card">
+          <span className="lp-card__label">{languageName(deck.sourceLanguage)}</span>
+          <span className="lp-phone__word">{word.source}</span>
+          <span className="lp-phone__answer">{word.target}</span>
+        </span>
+        <span className="lp-phone__grades">
+          {PHONE_GRADES.map((grade) => (
+            <span key={grade.key} className={`lp-phone__grade lp-tone-${grade.tone}`}>
+              {t(`grades.${grade.key}.label`)}
             </span>
-          ) : (
-            <span key={index} className="lp-phone__app lp-phone__app--ours">
-              <AppIcon size={52} />
-              <span className="lp-phone__title">LioraLang</span>
-            </span>
-          ),
-        )}
+          ))}
+        </span>
+        <span className="lp-phone__home" />
       </span>
-      <span className="lp-phone__dock">
-        {["blue", "green", "amber", "red"].map((tone) => (
-          <span key={tone} className={`lp-phone__icon lp-tone-${tone}`} />
-        ))}
+      <span className="lp-phone-icon">
+        <AppIcon size={64} />
+        <span>LioraLang</span>
       </span>
-    </span>
-  </div>
-));
+    </div>
+  );
+});
 
 PhoneIllustration.displayName = "PhoneIllustration";
