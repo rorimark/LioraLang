@@ -427,6 +427,7 @@
   border: 3px solid;
   border-bottom-width: 9px;
   border-radius: 24px;
+  container-type: inline-size;
 }
 
 .lp-card--back {
@@ -435,6 +436,9 @@
   justify-items: end;
   text-align: right;
   transform: rotate(12deg);
+  /* The front card covers this one's left side: the word keeps to the
+     part that shows. */
+  --fit: 68cqi;
   background: var(--lp-surface);
   border-color: var(--lp-line-strong);
   color: var(--lp-ink);
@@ -461,7 +465,15 @@
 }
 
 .lp-card__word {
-  font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+  /* A long word ("путешествие") gets smaller rather than run past the
+     card: a heavy letter is at most about 0.7em wide, so the word fits the
+     card's inner width. */
+  max-width: var(--fit, 100cqi);
+  line-height: 1.1;
+  font-size: max(1rem, min(clamp(1.4rem, 3.2vw, 2.1rem), calc(var(--fit, 100cqi) / (0.7 * var(--len, 6)))));
+  /* Below a readable size it breaks by syllable instead. */
+  hyphens: auto;
+  overflow-wrap: anywhere;
   font-weight: 900;
   letter-spacing: -0.02em;
 }

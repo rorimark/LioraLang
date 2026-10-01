@@ -32,11 +32,15 @@ export const HeroIllustration = memo(() => {
       <span className="lp-hero-art__disc" />
       <span className="lp-card lp-card--back">
         <span className="lp-card__label">{languageName(deck.targetLanguage)}</span>
-        <span className="lp-card__word">{word.target}</span>
+        <span className="lp-card__word" style={{ "--len": [...word.target].length }}>
+          {word.target}
+        </span>
       </span>
       <span className="lp-card lp-card--front">
         <span className="lp-card__label">{languageName(deck.sourceLanguage)}</span>
-        <span className="lp-card__word">{word.source}</span>
+        <span className="lp-card__word" style={{ "--len": [...word.source].length }}>
+          {word.source}
+        </span>
       </span>
       {STICKERS.map((sticker) => (
         <span

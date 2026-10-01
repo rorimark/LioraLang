@@ -4,7 +4,7 @@
 const TRANSLATIONS = {
   en: { language: "Polish", words: ["podróż", "rezerwować", "rezerwacja", "anulować", "potwierdzenie", "bilet"] },
   pl: { language: "Polish", words: ["podróż", "rezerwować", "rezerwacja", "anulować", "potwierdzenie", "bilet"] },
-  ru: { language: "Russian", words: ["путешествие", "бронировать", "бронь", "отменить", "подтверждение", "билет"] },
+  ru: { language: "Russian", words: ["поездка", "бронировать", "бронь", "отменить", "подтверждение", "билет"] },
   uk: { language: "Ukrainian", words: ["подорож", "бронювати", "бронювання", "скасувати", "підтвердження", "квиток"] },
   de: { language: "German", words: ["die Reise", "buchen", "die Reservierung", "stornieren", "die Bestätigung", "das Ticket"] },
   es: { language: "Spanish", words: ["el viaje", "reservar", "la reserva", "cancelar", "la confirmación", "el billete"] },
