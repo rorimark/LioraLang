@@ -408,7 +408,11 @@ export const createSupabaseSyncApi = () => {
       const client = ensureClient();
       const user = await ensureAuthenticatedUser(client);
       const filePath = `${user.id}/media/${toCleanString(assetId)}`;
-      const { error } = await client.storage.from(USER_LIBRARY_BUCKET).upload(filePath, blob, {
+      // Bytes, not the Blob itself: given a Blob the storage client sends
+      // the Blob's own type (image/webp), which the bucket refuses, and
+      // ignores the content type asked for here.
+      const body = typeof blob?.arrayBuffer === "function" ? await blob.arrayBuffer() : blob;
+      const { error } = await client.storage.from(USER_LIBRARY_BUCKET).upload(filePath, body, {
         upsert: false,
         contentType: "application/octet-stream",
       });
