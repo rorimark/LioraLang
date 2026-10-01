@@ -1422,7 +1422,12 @@ export default {
     "interfaceLanguageHint": "O idioma de menus, botões e mensagens. Seus baralhos continuam como estão.",
     "interfaceLanguageAuto": "O do dispositivo",
     "wordSuggestions": "Sugerir o resto do cartão",
-    "wordSuggestionsHint": "Enquanto você digita uma palavra, ela e os idiomas do baralho são enviados ao Google Gemini para sugerir tradução, exemplos, nível e classe gramatical. Requer uma conta."
+    "wordSuggestionsHint": "Enquanto você digita uma palavra, ela e os idiomas do baralho são enviados ao Google Gemini para sugerir tradução, exemplos, nível e classe gramatical. Requer uma conta.",
+    "wordSuggestionsLeft": {
+      "one": "Hoje resta {remaining} sugestão de {allowance}; elas renovam às {time}.",
+      "many": "Hoje restam {remaining} sugestões de {allowance}; elas renovam às {time}.",
+      "other": "Hoje restam {remaining} sugestões de {allowance}; elas renovam às {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1834,6 +1839,11 @@ export default {
       "one": "{count} detalhe preenchido",
       "many": "{count} detalhes preenchidos",
       "other": "{count} detalhes preenchidos"
+    },
+    "left": {
+      "one": "resta {count} hoje",
+      "many": "restam {count} hoje",
+      "other": "restam {count} hoje"
     }
   },
   "aiList": {

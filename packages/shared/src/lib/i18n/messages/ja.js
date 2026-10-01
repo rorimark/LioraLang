@@ -1264,7 +1264,10 @@ export default {
     "interfaceLanguageHint": "メニュー、ボタン、メッセージの言語です。デッキはそのままです。",
     "interfaceLanguageAuto": "デバイスと同じ",
     "wordSuggestions": "カードの残りを提案する",
-    "wordSuggestionsHint": "単語を入力すると、その単語とデッキの言語が Google Gemini に送信され、訳・例文・レベル・品詞を提案します。アカウントが必要です。"
+    "wordSuggestionsHint": "単語を入力すると、その単語とデッキの言語が Google Gemini に送信され、訳・例文・レベル・品詞を提案します。アカウントが必要です。",
+    "wordSuggestionsLeft": {
+      "other": "今日の残りは{allowance}件中{remaining}件です。{time}に戻ります。"
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1656,6 +1659,9 @@ export default {
     "signIn": "ログインすると、入力中にカードの残りを提案します。",
     "detailsFilled": {
       "other": "{count}件の詳細を入力しました"
+    },
+    "left": {
+      "other": "今日の残り{count}件"
     }
   },
   "aiList": {

@@ -1501,7 +1501,13 @@ export default {
     "interfaceLanguageHint": "Язык меню, кнопок и сообщений. Ваши колоды не меняются.",
     "interfaceLanguageAuto": "Как на устройстве",
     "wordSuggestions": "Подсказывать остальное в карточке",
-    "wordSuggestionsHint": "Когда вы вводите слово, оно и языки колоды отправляются в Google Gemini, чтобы предложить перевод, примеры, уровень и часть речи. Нужен аккаунт."
+    "wordSuggestionsHint": "Когда вы вводите слово, оно и языки колоды отправляются в Google Gemini, чтобы предложить перевод, примеры, уровень и часть речи. Нужен аккаунт.",
+    "wordSuggestionsLeft": {
+      "one": "Сегодня осталась {remaining} подсказка из {allowance}, обновятся в {time}.",
+      "few": "Сегодня осталось {remaining} подсказки из {allowance}, обновятся в {time}.",
+      "many": "Сегодня осталось {remaining} подсказок из {allowance}, обновятся в {time}.",
+      "other": "Сегодня осталось {remaining} подсказки из {allowance}, обновятся в {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1923,6 +1929,12 @@ export default {
       "few": "Заполнены {count} детали",
       "many": "Заполнено {count} деталей",
       "other": "Заполнены {count} детали"
+    },
+    "left": {
+      "one": "осталась {count} на сегодня",
+      "few": "осталось {count} на сегодня",
+      "many": "осталось {count} на сегодня",
+      "other": "осталось {count} на сегодня"
     }
   },
   "aiList": {

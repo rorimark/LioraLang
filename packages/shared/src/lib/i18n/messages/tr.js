@@ -1343,7 +1343,11 @@ export default {
     "interfaceLanguageHint": "Menülerin, düğmelerin ve mesajların dili. Destelerin değişmez.",
     "interfaceLanguageAuto": "Cihazla aynı",
     "wordSuggestions": "Kartın geri kalanını öner",
-    "wordSuggestionsHint": "Bir kelime yazarken kelime ve destenin dilleri; çeviri, örnekler, seviye ve sözcük türü önermek için Google Gemini'ye gönderilir. Hesap gerekir."
+    "wordSuggestionsHint": "Bir kelime yazarken kelime ve destenin dilleri; çeviri, örnekler, seviye ve sözcük türü önermek için Google Gemini'ye gönderilir. Hesap gerekir.",
+    "wordSuggestionsLeft": {
+      "one": "Bugün {allowance} öneriden {remaining} tane kaldı; saat {time} yenilenir.",
+      "other": "Bugün {allowance} öneriden {remaining} tane kaldı; saat {time} yenilenir."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1745,6 +1749,10 @@ export default {
     "detailsFilled": {
       "one": "{count} ayrıntı dolduruldu",
       "other": "{count} ayrıntı dolduruldu"
+    },
+    "left": {
+      "one": "bugün {count} kaldı",
+      "other": "bugün {count} kaldı"
     }
   },
   "aiList": {

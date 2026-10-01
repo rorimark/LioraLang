@@ -1422,7 +1422,12 @@ export default {
     "interfaceLanguageHint": "El idioma de menús, botones y mensajes. Tus mazos no cambian.",
     "interfaceLanguageAuto": "El del dispositivo",
     "wordSuggestions": "Sugerir el resto de la tarjeta",
-    "wordSuggestionsHint": "Mientras escribes una palabra, esta y los idiomas del mazo se envían a Google Gemini para sugerir la traducción, ejemplos, el nivel y la categoría gramatical. Requiere una cuenta."
+    "wordSuggestionsHint": "Mientras escribes una palabra, esta y los idiomas del mazo se envían a Google Gemini para sugerir la traducción, ejemplos, el nivel y la categoría gramatical. Requiere una cuenta.",
+    "wordSuggestionsLeft": {
+      "one": "Hoy te queda {remaining} sugerencia de {allowance}; se renuevan a las {time}.",
+      "many": "Hoy te quedan {remaining} sugerencias de {allowance}; se renuevan a las {time}.",
+      "other": "Hoy te quedan {remaining} sugerencias de {allowance}; se renuevan a las {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1834,6 +1839,11 @@ export default {
       "one": "{count} detalle completado",
       "many": "{count} detalles completados",
       "other": "{count} detalles completados"
+    },
+    "left": {
+      "one": "queda {count} hoy",
+      "many": "quedan {count} hoy",
+      "other": "quedan {count} hoy"
     }
   },
   "aiList": {

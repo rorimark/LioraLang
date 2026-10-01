@@ -1422,7 +1422,12 @@ export default {
     "interfaceLanguageHint": "La langue des menus, boutons et messages. Vos paquets ne changent pas.",
     "interfaceLanguageAuto": "Celle de l'appareil",
     "wordSuggestions": "Suggérer le reste de la carte",
-    "wordSuggestionsHint": "Pendant que vous tapez un mot, celui-ci et les langues du paquet sont envoyés à Google Gemini pour suggérer la traduction, des exemples, le niveau et la nature du mot. Nécessite un compte."
+    "wordSuggestionsHint": "Pendant que vous tapez un mot, celui-ci et les langues du paquet sont envoyés à Google Gemini pour suggérer la traduction, des exemples, le niveau et la nature du mot. Nécessite un compte.",
+    "wordSuggestionsLeft": {
+      "one": "Il reste {remaining} suggestion sur {allowance} aujourd'hui ; elles se renouvellent à {time}.",
+      "many": "Il reste {remaining} suggestions sur {allowance} aujourd'hui ; elles se renouvellent à {time}.",
+      "other": "Il reste {remaining} suggestions sur {allowance} aujourd'hui ; elles se renouvellent à {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1834,6 +1839,11 @@ export default {
       "one": "{count} détail rempli",
       "many": "{count} détails remplis",
       "other": "{count} détails remplis"
+    },
+    "left": {
+      "one": "il en reste {count} aujourd'hui",
+      "many": "il en reste {count} aujourd'hui",
+      "other": "il en reste {count} aujourd'hui"
     }
   },
   "aiList": {

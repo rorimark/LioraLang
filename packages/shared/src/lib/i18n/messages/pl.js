@@ -1501,7 +1501,13 @@ export default {
     "interfaceLanguageHint": "Język menu, przycisków i komunikatów. Twoje talie się nie zmieniają.",
     "interfaceLanguageAuto": "Jak na urządzeniu",
     "wordSuggestions": "Podpowiadaj resztę karty",
-    "wordSuggestionsHint": "Gdy wpisujesz słowo, ono i języki talii trafiają do Google Gemini, aby zaproponować tłumaczenie, przykłady, poziom i część mowy. Wymaga konta."
+    "wordSuggestionsHint": "Gdy wpisujesz słowo, ono i języki talii trafiają do Google Gemini, aby zaproponować tłumaczenie, przykłady, poziom i część mowy. Wymaga konta.",
+    "wordSuggestionsLeft": {
+      "one": "Na dziś została {remaining} podpowiedź z {allowance}; odnowią się o {time}.",
+      "few": "Na dziś zostały {remaining} podpowiedzi z {allowance}; odnowią się o {time}.",
+      "many": "Na dziś zostało {remaining} podpowiedzi z {allowance}; odnowią się o {time}.",
+      "other": "Na dziś zostało {remaining} podpowiedzi z {allowance}; odnowią się o {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1923,6 +1929,12 @@ export default {
       "few": "Uzupełniono {count} szczegóły",
       "many": "Uzupełniono {count} szczegółów",
       "other": "Uzupełniono {count} szczegóły"
+    },
+    "left": {
+      "one": "na dziś została {count}",
+      "few": "na dziś zostały {count}",
+      "many": "na dziś zostało {count}",
+      "other": "na dziś zostało {count}"
     }
   },
   "aiList": {

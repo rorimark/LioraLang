@@ -47,6 +47,23 @@ const readErrorCode = async (error) => {
   return WORD_SUGGEST_ERRORS.unavailable;
 };
 
+// Today's allowance as last read from the server, kept in step with every
+// call made from this app so the count moves without asking again.
+// null until it has been read.
+let allowance = null;
+const allowanceListeners = new Set();
+
+const setAllowance = (next) => {
+  allowance = next;
+  allowanceListeners.forEach((listener) => listener(allowance));
+};
+
+const spendOne = () => {
+  if (allowance) {
+    setAllowance({ ...allowance, used: allowance.used + 1, remaining: Math.max(0, allowance.remaining - 1) });
+  }
+};
+
 // Calls the function as the signed-in person and returns its answer.
 const invoke = async (body, { signal, timeout }) => {
   const client = getSupabaseClient();
@@ -68,11 +85,20 @@ const invoke = async (body, { signal, timeout }) => {
   }
 
   if (error) {
-    throw suggestError(await readErrorCode(error));
+    const code = await readErrorCode(error);
+
+    if (code === WORD_SUGGEST_ERRORS.quota && allowance) {
+      setAllowance({ ...allowance, used: allowance.allowance, remaining: 0 });
+    }
+
+    throw suggestError(code);
   }
 
+  spendOne();
   return data || {};
 };
+
+const toCount = (value) => (Number.isFinite(Number(value)) ? Math.max(0, Math.trunc(Number(value))) : 0);
 
 export const createSupabaseWordSuggestApi = () => ({
   isConfigured: () => hasSupabaseConfig(),
@@ -102,6 +128,40 @@ export const createSupabaseWordSuggestApi = () => ({
   async suggestDeck(request, { signal } = {}) {
     const result = (await invoke({ ...request, task: "deck" }, { signal, timeout: TIMEOUT_MS }))?.result;
     return { description: result?.description || "", tags: result?.tags || [] };
+  },
+
+  // Today's allowance: { allowance, used, remaining, resetsAt }, or null
+  // when no one is signed in or it cannot be read.
+  async getAllowance() {
+    const client = getSupabaseClient();
+    const { data: sessionData } = client ? await client.auth.getSession() : { data: null };
+
+    if (!sessionData?.session) {
+      setAllowance(null);
+      return null;
+    }
+
+    const { data, error } = await client.rpc("word_suggestion_allowance");
+    const row = Array.isArray(data) ? data[0] : data;
+
+    if (error || !row) {
+      return allowance;
+    }
+
+    setAllowance({
+      allowance: toCount(row.allowance),
+      used: toCount(row.used),
+      remaining: toCount(row.remaining),
+      resetsAt: String(row.resets_at || ""),
+    });
+    return allowance;
+  },
+
+  peekAllowance: () => allowance,
+
+  subscribeAllowance(listener) {
+    allowanceListeners.add(listener);
+    return () => allowanceListeners.delete(listener);
   },
 
   // A short hint for a word missed in Learn.

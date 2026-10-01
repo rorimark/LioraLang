@@ -1429,7 +1429,13 @@ export default {
     "interfaceLanguageHint": "Jazyk nabídek, tlačítek a zpráv. Vaše balíčky zůstanou, jak jsou.",
     "interfaceLanguageAuto": "Podle zařízení",
     "wordSuggestions": "Navrhovat zbytek karty",
-    "wordSuggestionsHint": "Při psaní slova se ono a jazyky balíčku posílají do Google Gemini, aby navrhl překlad, příklady, úroveň a slovní druh. Vyžaduje účet."
+    "wordSuggestionsHint": "Při psaní slova se ono a jazyky balíčku posílají do Google Gemini, aby navrhl překlad, příklady, úroveň a slovní druh. Vyžaduje účet.",
+    "wordSuggestionsLeft": {
+      "one": "Dnes zbývá {remaining} návrh z {allowance}; obnoví se v {time}.",
+      "few": "Dnes zbývají {remaining} návrhy z {allowance}; obnoví se v {time}.",
+      "many": "Dnes zbývají {remaining} návrhy z {allowance}; obnoví se v {time}.",
+      "other": "Dnes zbývá {remaining} návrhů z {allowance}; obnoví se v {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1843,6 +1849,12 @@ export default {
       "few": "Doplněny {count} údaje",
       "many": "Doplněny {count} údaje",
       "other": "Doplněno {count} údajů"
+    },
+    "left": {
+      "one": "dnes zbývá {count}",
+      "few": "dnes zbývají {count}",
+      "many": "dnes zbývají {count}",
+      "other": "dnes zbývá {count}"
     }
   },
   "aiList": {

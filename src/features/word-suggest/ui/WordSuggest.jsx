@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { FiX } from "react-icons/fi";
 import { useI18n } from "@shared/lib/i18n";
+import { LOW_ALLOWANCE, useAiAllowance } from "../model/useAiAllowance";
 import "./WordSuggest.css";
 
 // The assistant's mark: a four-pointed spark, drawn rather than borrowed
@@ -85,6 +86,20 @@ SuggestChip.displayName = "SuggestChip";
 
 // One quiet line under the fields: what the assistant has, and how to take
 // it. With nothing to say it shows what it was given instead.
+// When today's allowance is nearly spent, the line says how much is left.
+const AllowanceLeft = memo(() => {
+  const { t } = useI18n();
+  const allowance = useAiAllowance();
+
+  if (!allowance || allowance.remaining > LOW_ALLOWANCE) {
+    return null;
+  }
+
+  return <span className="suggest-bar__left">{t("suggest.left", { count: allowance.remaining })}</span>;
+});
+
+AllowanceLeft.displayName = "AllowanceLeft";
+
 export const SuggestionBar = memo(({ suggest, summary = [], children = null }) => {
   const { t } = useI18n();
 
@@ -112,6 +127,7 @@ export const SuggestionBar = memo(({ suggest, summary = [], children = null }) =
       <p className="suggest-bar" role="status">
         <SparkIcon />
         <span className="suggest-bar__summary">{summary.length ? summary.join(" · ") : t("suggest.ready")}</span>
+        <AllowanceLeft />
         <button type="button" className="suggest-bar__action" onClick={suggest.acceptAll}>
           <span>{t("suggest.fill")}</span>
           <kbd className="suggest-bar__key">{t("suggest.tabKey")}</kbd>

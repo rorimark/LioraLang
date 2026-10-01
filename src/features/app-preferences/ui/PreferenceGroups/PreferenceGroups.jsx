@@ -9,6 +9,7 @@ import {
   SettingStepper,
   SettingSwitch,
 } from "@shared/ui";
+import { useAiAllowance } from "@features/word-suggest";
 import { useAppPreferencesSection } from "../../model";
 import "./PreferenceGroups.css";
 import { AUTO_LOCALE, READY_LOCALES, useI18n } from "@shared/lib/i18n";
@@ -395,6 +396,7 @@ export const DeckDefaultPreferences = memo(() => {
   const targetId = useId();
   const partId = useId();
   const tagsId = useId();
+  const wordSuggestionsHint = useWordSuggestionsHint(deckDefaults.wordSuggestions);
 
   return (
     <SettingGroup keywords="new deck defaults create">
@@ -478,7 +480,7 @@ export const DeckDefaultPreferences = memo(() => {
       {/* Says plainly where a typed word goes before anyone turns it on. */}
       <SwitchRow
         label={t("prefs.wordSuggestions")}
-        hint={t("prefs.wordSuggestionsHint")}
+        hint={wordSuggestionsHint}
         keywords="ai assistant gemini suggest autofill translation"
         name="deckDefaults.wordSuggestions"
         checked={deckDefaults.wordSuggestions}
@@ -489,6 +491,25 @@ export const DeckDefaultPreferences = memo(() => {
 });
 
 DeckDefaultPreferences.displayName = "DeckDefaultPreferences";
+
+// Where a typed word goes, then how much of today's allowance is left
+// and when it starts again. Plain text, so Settings search can read it.
+const useWordSuggestionsHint = (enabled) => {
+  const { t, formatDate, formatNumber } = useI18n();
+  const allowance = useAiAllowance({ refresh: true });
+  const base = t("prefs.wordSuggestionsHint");
+
+  if (!enabled || !allowance) {
+    return base;
+  }
+
+  return `${base} ${t("prefs.wordSuggestionsLeft", {
+    count: allowance.remaining,
+    remaining: formatNumber(allowance.remaining),
+    allowance: formatNumber(allowance.allowance),
+    time: formatDate(allowance.resetsAt, { timeStyle: "short" }),
+  })}`;
+};
 
 export const SafetyPreferences = memo(() => {
   const i18n = useI18n();

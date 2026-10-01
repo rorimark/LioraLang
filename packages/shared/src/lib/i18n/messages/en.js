@@ -1343,7 +1343,11 @@ export default {
     "interfaceLanguageHint": "The language of menus, buttons and messages. Your decks stay as they are.",
     "interfaceLanguageAuto": "Same as the device",
     "wordSuggestions": "Suggest the rest of the card",
-    "wordSuggestionsHint": "As you type a word, it and the deck's languages are sent to Google Gemini to suggest a translation, examples, the level and part of speech. Needs an account."
+    "wordSuggestionsHint": "As you type a word, it and the deck's languages are sent to Google Gemini to suggest a translation, examples, the level and part of speech. Needs an account.",
+    "wordSuggestionsLeft": {
+      "one": "{remaining} of {allowance} suggestion left today; they renew at {time}.",
+      "other": "{remaining} of {allowance} suggestions left today; they renew at {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1745,6 +1749,10 @@ export default {
     "detailsFilled": {
       "one": "{count} detail filled in",
       "other": "{count} details filled in"
+    },
+    "left": {
+      "one": "{count} left today",
+      "other": "{count} left today"
     }
   },
   "aiList": {

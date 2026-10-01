@@ -1343,7 +1343,11 @@ export default {
     "interfaceLanguageHint": "Die Sprache von Menüs, Schaltflächen und Meldungen. Deine Decks bleiben, wie sie sind.",
     "interfaceLanguageAuto": "Wie auf dem Gerät",
     "wordSuggestions": "Rest der Karte vorschlagen",
-    "wordSuggestionsHint": "Während du ein Wort tippst, werden es und die Sprachen des Decks an Google Gemini gesendet, um Übersetzung, Beispiele, Niveau und Wortart vorzuschlagen. Erfordert ein Konto."
+    "wordSuggestionsHint": "Während du ein Wort tippst, werden es und die Sprachen des Decks an Google Gemini gesendet, um Übersetzung, Beispiele, Niveau und Wortart vorzuschlagen. Erfordert ein Konto.",
+    "wordSuggestionsLeft": {
+      "one": "Heute noch {remaining} von {allowance} Vorschlag übrig; sie erneuern sich um {time}.",
+      "other": "Heute noch {remaining} von {allowance} Vorschlägen übrig; sie erneuern sich um {time}."
+    }
   },
   "settingsPage": {
     "sections": {
@@ -1745,6 +1749,10 @@ export default {
     "detailsFilled": {
       "one": "{count} Detail ausgefüllt",
       "other": "{count} Details ausgefüllt"
+    },
+    "left": {
+      "one": "heute noch {count}",
+      "other": "heute noch {count}"
     }
   },
   "aiList": {

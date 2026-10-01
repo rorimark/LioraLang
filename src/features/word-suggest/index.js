@@ -4,3 +4,4 @@ export { SparkIcon, SuggestChip, SuggestField, SuggestionBar } from "./ui/WordSu
 export { languageNameOf, useAiAccess } from "./model/useAiAccess";
 export { MissedWordHint } from "./ui/MissedWordHint";
 export { DeckDescriptionSuggestion } from "./ui/DeckDescriptionSuggestion";
+export { LOW_ALLOWANCE, useAiAllowance } from "./model/useAiAllowance";

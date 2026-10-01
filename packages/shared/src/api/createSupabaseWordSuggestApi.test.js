@@ -77,5 +77,29 @@ describe("suggestWord", () => {
     await expect(api.suggestHint({ word: "bilet" })).resolves.toBe("Sounds like a billet.");
     expect(invoke.mock.calls[2][1]).toMatchObject({ body: { task: "hint" }, timeout: 15000 });
   });
+
+  it("reads today's allowance and counts down with each call", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: [{ allowance: 300, used: 10, remaining: 290, resets_at: "2026-10-02T00:00:00+00:00" }],
+      error: null,
+    });
+    client.rpc = rpc;
+    const api = await load();
+    const seen = [];
+    const stop = api.subscribeAllowance((value) => seen.push(value?.remaining));
+
+    await expect(api.getAllowance()).resolves.toMatchObject({ allowance: 300, used: 10, remaining: 290 });
+    expect(rpc).toHaveBeenCalledWith("word_suggestion_allowance");
+
+    invoke.mockResolvedValueOnce({ data: { suggestion: { target: "bilet" } }, error: null });
+    await api.suggestWord({ text: "ticket" });
+    expect(api.peekAllowance().remaining).toBe(289);
+
+    invoke.mockResolvedValueOnce({ data: null, error: httpError(429, { error: "quota" }) });
+    await expect(api.suggestWord({ text: "gate" })).rejects.toMatchObject({ code: "quota" });
+    expect(api.peekAllowance().remaining).toBe(0);
+    expect(seen).toEqual([290, 289, 0]);
+    stop();
+  });
 });
 
