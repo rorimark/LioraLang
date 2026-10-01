@@ -9,6 +9,12 @@ import {
   getCardRevision,
 } from "./srsScheduler.js";
 import { normalizeWordImage } from "../cardContent/cardContent.js";
+import {
+  hasSubjectFields,
+  normalizeDeckSubjectFields,
+  normalizeEntrySubjectFields,
+  storedSubject,
+} from "../subjects/subjects.js";
 
 export const EMPTY_SRS_SESSION = Object.freeze({
   deck: null,
@@ -41,12 +47,25 @@ export const EMPTY_SRS_SESSION = Object.freeze({
 const clean = (value) => (typeof value === "string" ? value.trim() : "");
 const cleanList = (value) =>
   Array.isArray(value) ? value.map(clean).filter(Boolean).slice(0, 10) : [];
+// A subject's own fields ride along only when the deck has a subject and
+// the entry has some, so a language card is exactly what it always was.
+const subjectFieldsPart = (subject, value) => {
+  const fields = subject ? normalizeEntrySubjectFields(subject, value) : {};
+  return hasSubjectFields(fields) ? { subjectFields: fields } : {};
+};
+const deckSubjectPart = (deck) => {
+  const subject = storedSubject(deck?.subject);
+  if (!subject) return {};
+  const fields = normalizeDeckSubjectFields(subject, deck?.subjectFields);
+  return { subject, ...(hasSubjectFields(fields) ? { subjectFields: fields } : {}) };
+};
 export const toSessionCard = ({
   word,
   card,
   srsSettings,
   studySettings,
   nowMs,
+  subject = "",
 }) => ({
   wordId: Number(word.id),
   source: clean(word.source),
@@ -57,6 +76,7 @@ export const toSessionCard = ({
   tags: cleanList(word.tags),
   examples: cleanList(word.examples),
   image: normalizeWordImage(word.image),
+  ...subjectFieldsPart(subject, word.subjectFields),
   ...card,
   queueType: getQueueTypeByState(card.state),
   revision: getCardRevision(card),
@@ -157,11 +177,13 @@ export const buildSrsSessionSnapshot = ({
       sourceLanguage: clean(deck.sourceLanguage),
       targetLanguage: clean(deck.targetLanguage),
       tertiaryLanguage: clean(deck.tertiaryLanguage),
+      ...deckSubjectPart(deck),
     },
     sessionMode: forceAllCards ? "extended" : "default",
     card: candidate
       ? toSessionCard({
           ...candidate,
+          subject: storedSubject(deck.subject),
           srsSettings: srs,
           studySettings: study,
           nowMs,

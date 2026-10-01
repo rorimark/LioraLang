@@ -112,4 +112,33 @@ describe("deckIdentity", () => {
       );
     });
   });
+
+  describe("subject", () => {
+    const deck = { name: "Food", sourceLanguage: "English", targetLanguage: "Polish" };
+    const words = [{ source: "asparagus", target: "szparag" }];
+
+    it("hashes a language deck exactly as before subjects existed", () => {
+      const before = buildDeckContentHash({ deck, words });
+
+      expect(buildDeckContentHash({ deck: { ...deck, subject: "language" }, words })).toBe(before);
+      expect(buildDeckContentHash({ deck: { ...deck, subject: "unknown" }, words })).toBe(before);
+      expect(
+        buildDeckContentHash({ deck, words: [{ ...words[0], subjectFields: { code: "x" } }] }),
+      ).toBe(before);
+    });
+
+    it("tells programming decks and their code apart", () => {
+      const programming = { name: "JS", subject: "programming" };
+      const card = { source: "What does this return?", target: "Names" };
+      const plain = buildDeckContentHash({ deck: programming, words: [card] });
+
+      expect(plain).not.toBe(buildDeckContentHash({ deck: { name: "JS" }, words: [card] }));
+      expect(
+        buildDeckContentHash({ deck: programming, words: [{ ...card, subjectFields: { code: "a.map(f)" } }] }),
+      ).not.toBe(plain);
+      expect(
+        buildDeckContentHash({ deck: { ...programming, subjectFields: { technology: "JavaScript" } }, words: [card] }),
+      ).not.toBe(plain);
+    });
+  });
 });

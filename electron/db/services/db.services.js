@@ -26,6 +26,13 @@ import {
   PICTURE_SIDES,
 } from "../../../packages/shared/src/core/usecases/cardContent/index.js";
 import {
+  getSubjectProfile,
+  hasSubjectFields,
+  normalizeDeckSubjectFields,
+  normalizeEntrySubjectFields,
+  storedSubject,
+} from "../../../packages/shared/src/core/usecases/subjects/index.js";
+import {
   collectUnusedMedia,
   readMediaForExport,
   storeImportedMedia,
@@ -33,6 +40,19 @@ import {
 } from "./media.services.js";
 
 const ALLOWED_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
+
+// A subject's own fields as stored: JSON when there are any, else NULL, so
+// a language deck's rows stay exactly as they were.
+const toSubjectFieldsJson = (fields) => (hasSubjectFields(fields) ? JSON.stringify(fields) : null);
+
+const parseSubjectFields = (value) => {
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+};
 const MAX_DECK_TAGS = 10;
 
 const parseArray = (value) => {
@@ -129,6 +149,8 @@ const buildDeckContentHashFromState = ({
       tags: Array.isArray(deck?.tags) ? deck.tags : parseArray(deck?.tagsJson),
       pictureSide: deck?.pictureSide,
       learnedSide: deck?.learnedSide,
+      subject: deck?.subject,
+      subjectFields: deck?.subjectFields,
     },
     words: Array.isArray(words) ? words : [],
   });
@@ -156,6 +178,7 @@ const buildInsertWordStatement = (db, schemaCompatibility) => {
     "tags_json",
     "examples_json",
     "image_json",
+    "subject_fields_json",
   ];
 
   if (schemaCompatibility.hasLegacySource) {
@@ -190,6 +213,7 @@ const buildUpdateWordStatement = (db, schemaCompatibility) => {
     "tags_json = ?",
     "examples_json = ?",
     "image_json = ?",
+    "subject_fields_json = ?",
   ];
 
   if (schemaCompatibility.hasLegacySource) {
@@ -224,6 +248,7 @@ const buildWordMutationParams = (
     tagsJson,
     examplesJson,
     imageJson,
+    subjectFieldsJson,
   },
 ) => {
   const params = [
@@ -236,6 +261,7 @@ const buildWordMutationParams = (
     tagsJson,
     examplesJson,
     imageJson || null,
+    subjectFieldsJson || null,
   ];
 
   if (schemaCompatibility.hasLegacySource) {
@@ -266,6 +292,7 @@ const buildInsertWordRunParams = (
     tagsJson,
     examplesJson,
     imageJson,
+    subjectFieldsJson,
   },
 ) => {
   return [
@@ -279,6 +306,7 @@ const buildInsertWordRunParams = (
     tagsJson,
     examplesJson,
     imageJson || null,
+    subjectFieldsJson || null,
     ...(schemaCompatibility.hasLegacySource ? [source] : []),
     ...(schemaCompatibility.hasLegacyTarget ? [target || null] : []),
     ...(schemaCompatibility.hasLegacyTertiary ? [tertiary || null] : []),
@@ -299,6 +327,7 @@ const buildUpdateWordRunParams = (
     tagsJson,
     examplesJson,
     imageJson,
+    subjectFieldsJson,
   },
 ) => {
   return [
@@ -312,6 +341,7 @@ const buildUpdateWordRunParams = (
       tagsJson,
       examplesJson,
       imageJson,
+      subjectFieldsJson,
     }),
     wordId,
     deckId,
@@ -334,16 +364,32 @@ const buildDeckDescription = ({
   return tertiary ? `${source} -> ${target} -> ${tertiary}` : `${source} -> ${target}`;
 };
 
+// A deck's subject and its fields, only for a deck that has a subject, so
+// a language deck comes back exactly as before.
+const subjectPartFromRow = (row) => {
+  const subject = storedSubject(row?.subject);
+
+  if (!subject) {
+    return {};
+  }
+
+  const fields = normalizeDeckSubjectFields(subject, row?.subjectFields);
+  return { subject, ...(hasSubjectFields(fields) ? { subjectFields: fields } : {}) };
+};
+
 const normalizeDeckRow = (row) => {
   if (!row) {
     return null;
   }
 
+  const { subject: _subject, subjectFields: _subjectFields, ...rest } = row;
+
   return {
-    ...row,
+    ...rest,
     usesWordLevels: normalizeDeckUsesWordLevels(row.usesWordLevels, true),
     pictureSide: normalizePictureSide(row.pictureSide),
     learnedSide: storedLearnedSide(row.learnedSide),
+    ...subjectPartFromRow(row),
   };
 };
 
@@ -382,6 +428,7 @@ const normalizeEditableWord = (word, index) => {
     tags: toCleanArray(word?.tags),
     examples,
     image: normalizeWordImage(word?.image),
+    subjectFields: word?.subjectFields,
   };
 };
 
@@ -437,7 +484,9 @@ export const renameDeck = (deckId, nextName) => {
           COALESCE(uses_word_levels, 1) AS usesWordLevels,
           tags_json AS tagsJson,
           picture_side AS pictureSide,
-          learned_side AS learnedSide
+          learned_side AS learnedSide,
+          subject,
+          subject_fields_json AS subjectFields
         FROM decks
         WHERE id = ?
       `,
@@ -512,6 +561,8 @@ export const listDecks = () => {
           decks.content_hash AS contentHash,
           decks.picture_side AS pictureSide,
           decks.learned_side AS learnedSide,
+          decks.subject AS subject,
+          decks.subject_fields_json AS subjectFields,
           decks.tags_json AS tagsJson,
           decks.created_at AS createdAt,
           COUNT(words.id) AS wordsCount,
@@ -547,6 +598,8 @@ export const getDeckById = (deckId) => {
             decks.content_hash AS contentHash,
           decks.picture_side AS pictureSide,
           decks.learned_side AS learnedSide,
+            decks.subject AS subject,
+            decks.subject_fields_json AS subjectFields,
             decks.tags_json AS tagsJson,
             decks.created_at AS createdAt,
             COUNT(words.id) AS wordsCount
@@ -576,7 +629,8 @@ export const getDeckWords = (deckId) => {
           part_of_speech,
           tags_json AS tagsJson,
           examples_json AS examplesJson,
-          image_json AS imageJson
+          image_json AS imageJson,
+          subject_fields_json AS subjectFieldsJson
         FROM words
         WHERE deck_id = ?
         ORDER BY source_text COLLATE NOCASE ASC
@@ -595,6 +649,7 @@ export const getDeckWords = (deckId) => {
     tags: parseArray(row.tagsJson),
     examples: parseArray(row.examplesJson),
     image: normalizeWordImage(row.imageJson),
+    ...(row.subjectFieldsJson ? { subjectFields: parseSubjectFields(row.subjectFieldsJson) } : {}),
   }));
 };
 
@@ -645,6 +700,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
     duplicateStrategy: importConfig.duplicateStrategy,
     includeTags: importConfig.includeTags,
     includeExamples: importConfig.includeExamples,
+    subject: importConfig.subject,
   });
   // Pictures first, so every word that keeps its picture points at bytes
   // that are already stored.
@@ -659,6 +715,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
     tags: toCleanArray(word?.tags),
     examples: toCleanArray(word?.examples),
     image: normalizeWordImage(word?.image),
+    subjectFields: normalizeEntrySubjectFields(importConfig.subject, word?.subjectFields),
   }));
   const skippedCount = Number(normalizedWordsResult.skippedCount) || 0;
   const importedDeckDescription = toCleanString(importConfig.description);
@@ -689,6 +746,8 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       tags: includeTags ? importedDeckTags : [],
       pictureSide: importConfig.pictureSide,
       learnedSide: importConfig.learnedSide,
+      subject: importConfig.subject,
+      subjectFields: importConfig.subjectFields,
     },
     words: persistedWords.map((word) => ({
       externalId: word.externalId,
@@ -700,6 +759,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       tags: word.tags,
       examples: word.examples,
       image: word.image,
+      subjectFields: word.subjectFields,
     })),
   });
 
@@ -718,8 +778,10 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
         origin_ref,
         content_hash,
         picture_side,
-        learned_side
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        learned_side,
+        subject,
+        subject_fields_json
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const insertWord = buildInsertWordStatement(db, wordSchemaCompatibility);
@@ -739,6 +801,8 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
       deckContentHash,
       normalizePictureSide(importConfig.pictureSide) || null,
       storedLearnedSide(importConfig.learnedSide) || null,
+      storedSubject(importConfig.subject) || null,
+      toSubjectFieldsJson(normalizeDeckSubjectFields(importConfig.subject, importConfig.subjectFields)),
     );
 
     const deckId = Number(deckResult.lastInsertRowid);
@@ -756,6 +820,7 @@ export const importDeckFromJsonFile = (filePath, importOptions = {}) => {
           tagsJson: JSON.stringify(word.tags),
           examplesJson: JSON.stringify(word.examples),
           imageJson: toImageJson(word.image),
+          subjectFieldsJson: toSubjectFieldsJson(word.subjectFields),
         }),
       );
     });
@@ -865,9 +930,28 @@ export const saveDeck = (payload = {}) => {
     ? db.prepare("SELECT learned_side AS learnedSide FROM decks WHERE id = ?").get(providedDeckId)?.learnedSide
     : "";
   const learnedSide = storedLearnedSide(payload?.learnedSide === undefined ? storedLearned : payload.learnedSide);
-  const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : toCleanString(payload?.sourceLanguage);
-  const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : toCleanString(payload?.targetLanguage);
-  const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
+  // A deck's subject is chosen before it has words; once it has some, it
+  // keeps the one it has.
+  const storedSubjectRow = hasDeckId
+    ? db
+        .prepare(
+          `SELECT subject, subject_fields_json AS subjectFields,
+            (SELECT COUNT(*) FROM words WHERE deck_id = decks.id) AS wordsCount
+          FROM decks WHERE id = ?`,
+        )
+        .get(providedDeckId)
+    : null;
+  const subject = storedSubject(
+    payload?.subject === undefined || storedSubjectRow?.wordsCount > 0 ? storedSubjectRow?.subject : payload.subject,
+  );
+  const subjectFields = normalizeDeckSubjectFields(
+    subject,
+    payload?.subjectFields === undefined ? storedSubjectRow?.subjectFields : payload.subjectFields,
+  );
+  const { usesLanguages } = getSubjectProfile(subject);
+  const sourceLanguage = !usesLanguages || pictureSide === PICTURE_SIDES.source ? "" : toCleanString(payload?.sourceLanguage);
+  const targetLanguage = !usesLanguages || pictureSide === PICTURE_SIDES.target ? "" : toCleanString(payload?.targetLanguage);
+  const tertiaryLanguage = usesLanguages ? toCleanString(payload?.tertiaryLanguage) : "";
   const tags = toCleanArray(payload?.tags);
   const usesWordLevels = normalizeDeckUsesWordLevels(
     payload?.usesWordLevels,
@@ -884,6 +968,7 @@ export const saveDeck = (payload = {}) => {
     ? payload.words
         .map((word, index) => normalizeEditableWord(word, index))
         .filter(Boolean)
+        .map((word) => ({ ...word, subjectFields: normalizeEntrySubjectFields(subject, word.subjectFields) }))
     : [];
   const existingDeckRow = hasDeckId
     ? db
@@ -905,7 +990,7 @@ export const saveDeck = (payload = {}) => {
     throw new Error("Deck name cannot be empty");
   }
 
-  validateImportLanguages({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide });
+  validateImportLanguages({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide, subject });
 
   const duplicateDeck = hasDeckId
     ? db
@@ -956,6 +1041,8 @@ export const saveDeck = (payload = {}) => {
       tags,
       pictureSide,
       learnedSide,
+      subject,
+      subjectFields,
     },
     words: normalizedWords.map((word) => ({
       externalId: word.externalId,
@@ -967,6 +1054,7 @@ export const saveDeck = (payload = {}) => {
       tags: word.tags,
       examples: word.examples,
       image: word.image,
+      subjectFields: word.subjectFields,
     })),
   });
 
@@ -985,8 +1073,10 @@ export const saveDeck = (payload = {}) => {
         origin_ref,
         content_hash,
         picture_side,
-        learned_side
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        learned_side,
+        subject,
+        subject_fields_json
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
   );
   const updateDeck = db.prepare(
@@ -1006,6 +1096,8 @@ export const saveDeck = (payload = {}) => {
         content_hash = ?,
         picture_side = ?,
         learned_side = ?,
+        subject = ?,
+        subject_fields_json = ?,
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `,
@@ -1035,6 +1127,8 @@ export const saveDeck = (payload = {}) => {
         contentHash,
         pictureSide || null,
         learnedSide || null,
+        subject || null,
+        toSubjectFieldsJson(subjectFields),
         providedDeckId,
       );
 
@@ -1056,6 +1150,8 @@ export const saveDeck = (payload = {}) => {
         contentHash,
         pictureSide || null,
         learnedSide || null,
+        subject || null,
+        toSubjectFieldsJson(subjectFields),
       );
       resolvedDeckId = Number(insertResult.lastInsertRowid);
     }
@@ -1069,6 +1165,7 @@ export const saveDeck = (payload = {}) => {
       const tagsJson = JSON.stringify(word.tags);
       const examplesJson = JSON.stringify(word.examples);
       const imageJson = toImageJson(word.image);
+      const subjectFieldsJson = toSubjectFieldsJson(word.subjectFields);
 
       if (word.id && existingWordIds.has(word.id)) {
         updateWord.run(
@@ -1084,6 +1181,7 @@ export const saveDeck = (payload = {}) => {
             tagsJson,
             examplesJson,
             imageJson,
+            subjectFieldsJson,
           }),
         );
         persistedWordIds.push(word.id);
@@ -1102,6 +1200,7 @@ export const saveDeck = (payload = {}) => {
           tagsJson,
           examplesJson,
           imageJson,
+          subjectFieldsJson,
         }),
       );
       persistedWordIds.push(Number(insertResult.lastInsertRowid));

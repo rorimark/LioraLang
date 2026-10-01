@@ -1,4 +1,10 @@
 import { normalizePictureSide, normalizeWordImage, storedLearnedSide } from "../cardContent/cardContent.js";
+import {
+  hasSubjectFields,
+  normalizeDeckSubjectFields,
+  normalizeEntrySubjectFields,
+  storedSubject,
+} from "../subjects/subjects.js";
 
 const DECK_ORIGIN_KIND_VALUES = ["local", "hub", "account"];
 const UUID_PATTERN =
@@ -169,6 +175,12 @@ export const buildDeckContentHash = ({
   deck = {},
   words = [],
 } = {}) => {
+  const subject = storedSubject(deck?.subject);
+  const deckSubjectFields = normalizeDeckSubjectFields(subject, deck?.subjectFields);
+  const subjectFieldsPart = (value) => {
+    const fields = normalizeEntrySubjectFields(subject, value);
+    return hasSubjectFields(fields) ? { subjectFields: fields } : {};
+  };
   const normalizedWords = sortWordsForHash(Array.isArray(words) ? words : []).map((word) => ({
     externalId: toCleanString(word?.externalId),
     source: toCleanString(word?.source),
@@ -181,6 +193,8 @@ export const buildDeckContentHash = ({
     // Only a word with a picture carries the key, so a deck without
     // pictures hashes exactly as it did before pictures existed.
     ...imageHashPart(word?.image),
+    // Likewise for a subject's own fields (a programming card's code).
+    ...subjectFieldsPart(word?.subjectFields),
   }));
 
   const payload = {
@@ -195,6 +209,9 @@ export const buildDeckContentHash = ({
     ...(normalizePictureSide(deck?.pictureSide) ? { pictureSide: normalizePictureSide(deck.pictureSide) } : {}),
     // The same for a deck whose target is the language learned.
     ...(storedLearnedSide(deck?.learnedSide) ? { learnedSide: storedLearnedSide(deck.learnedSide) } : {}),
+    // And for a deck about something other than a language.
+    ...(subject ? { subject } : {}),
+    ...(hasSubjectFields(deckSubjectFields) ? { subjectFields: deckSubjectFields } : {}),
     tags: toUniqueCleanArray(deck?.tags),
     words: normalizedWords,
   };

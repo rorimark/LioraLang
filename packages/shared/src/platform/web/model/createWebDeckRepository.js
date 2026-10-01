@@ -20,6 +20,13 @@ import {
   PICTURE_SIDES,
 } from "@shared/core/usecases/cardContent";
 import {
+  getSubjectProfile,
+  hasSubjectFields,
+  normalizeDeckSubjectFields,
+  normalizeEntrySubjectFields,
+  storedSubject,
+} from "@shared/core/usecases/subjects";
+import {
   buildExportDeckPackage,
   collectWordImageAssetIds,
   getDeckImportMetadata,
@@ -209,7 +216,20 @@ const normalizeEditableWord = (word, index) => {
     tags: normalizeTags(word?.tags),
     examples,
     image: normalizeWordImage(word?.image),
+    subjectFields: word?.subjectFields,
   };
+};
+
+// A subject's own fields on a stored word or deck, only when there are any,
+// so a language deck's records look exactly as they always did.
+const subjectFieldsPart = (fields) => (hasSubjectFields(fields) ? { subjectFields: fields } : {});
+
+const deckSubjectPart = (deck) => {
+  const subject = storedSubject(deck?.subject);
+
+  return subject
+    ? { subject, ...subjectFieldsPart(normalizeDeckSubjectFields(subject, deck?.subjectFields)) }
+    : {};
 };
 
 const toDeckListRow = (deck, wordsCountByDeckId = new Map(), imagesCountByDeckId = new Map()) => {
@@ -229,6 +249,7 @@ const toDeckListRow = (deck, wordsCountByDeckId = new Map(), imagesCountByDeckId
     contentHash: toCleanString(deck.contentHash),
     pictureSide: normalizePictureSide(deck.pictureSide),
     learnedSide: storedLearnedSide(deck.learnedSide),
+    ...deckSubjectPart(deck),
     tagsJson: JSON.stringify(tags),
     createdAt: deck.createdAt || null,
     wordsCount: Number(wordsCountByDeckId.get(deck.id) || 0),
@@ -247,6 +268,7 @@ const toDeckWordRow = (word) => ({
   tags: Array.isArray(word.tags) ? word.tags : [],
   examples: Array.isArray(word.examples) ? word.examples : [],
   image: normalizeWordImage(word.image),
+  ...subjectFieldsPart(word.subjectFields),
 });
 
 const buildWordsCountByDeckId = (words = [], countsWord = () => true) => {
@@ -270,6 +292,7 @@ const createWordRecord = ({
   existingWord,
   nextWord,
   nowMs,
+  subject = "",
 }) => {
   const normalizedTarget = toCleanString(nextWord.target);
   const normalizedTertiary = toCleanString(nextWord.tertiary);
@@ -286,6 +309,7 @@ const createWordRecord = ({
     tags: normalizeTags(nextWord.tags),
     examples: toCleanArray(nextWord.examples),
     image: normalizeWordImage(nextWord.image),
+    ...subjectFieldsPart(normalizeEntrySubjectFields(subject, nextWord.subjectFields)),
     sourceKey: toLanguageKey(nextWord.source),
     createdAt: existingWord?.createdAt || toIsoTimestamp(nowMs),
     createdAtMs: Number.isFinite(existingWord?.createdAtMs)
@@ -311,6 +335,8 @@ const buildDeckContentHashFromState = ({
       tags: Array.isArray(deck?.tags) ? deck.tags : parseTagsFromDeck(deck),
       pictureSide: deck?.pictureSide,
       learnedSide: deck?.learnedSide,
+      subject: deck?.subject,
+      subjectFields: deck?.subjectFields,
     },
     words: Array.isArray(words) ? words : [],
   });
@@ -703,6 +729,7 @@ export const createWebDeckRepository = () => {
       duplicateStrategy: importConfig.duplicateStrategy,
       includeTags: importConfig.includeTags,
       includeExamples: importConfig.includeExamples,
+      subject: importConfig.subject,
     });
     // Pictures first, so every word that keeps its picture points at bytes
     // that are already stored.
@@ -739,6 +766,8 @@ export const createWebDeckRepository = () => {
             tags: normalizeTags(importConfig.tags),
             pictureSide: importConfig.pictureSide,
             learnedSide: importConfig.learnedSide,
+            subject: importConfig.subject,
+            subjectFields: importConfig.subjectFields,
           },
           words: normalizedWordsResult.words,
         });
@@ -752,6 +781,7 @@ export const createWebDeckRepository = () => {
           tertiaryLanguage: importConfig.tertiaryLanguage || "",
           pictureSide: normalizePictureSide(importConfig.pictureSide),
           learnedSide: storedLearnedSide(importConfig.learnedSide),
+          ...deckSubjectPart(importConfig),
           usesWordLevels,
           tags: normalizeTags(importConfig.tags),
           syncId: deckSyncId,
@@ -772,6 +802,7 @@ export const createWebDeckRepository = () => {
             existingWord: null,
             nextWord: word,
             nowMs,
+            subject: importConfig.subject,
           });
 
           wordsStore.add(nextWordRecord);
@@ -1123,7 +1154,7 @@ export const createWebDeckRepository = () => {
       const deckName = toCleanString(payload?.name);
       const requestedSourceLanguage = toCleanString(payload?.sourceLanguage);
       const requestedTargetLanguage = toCleanString(payload?.targetLanguage);
-      const tertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
+      const requestedTertiaryLanguage = toCleanString(payload?.tertiaryLanguage);
       const description = toCleanString(payload?.description);
       const tags = normalizeTags(payload?.tags);
       const usesWordLevels = normalizeDeckUsesWordLevels(
@@ -1143,14 +1174,26 @@ export const createWebDeckRepository = () => {
       const learnedSide = storedLearnedSide(
         payload?.learnedSide === undefined ? storedDeck?.learnedSide : payload.learnedSide,
       );
-      const sourceLanguage = pictureSide === PICTURE_SIDES.source ? "" : requestedSourceLanguage;
-      const targetLanguage = pictureSide === PICTURE_SIDES.target ? "" : requestedTargetLanguage;
+      // A deck's subject is chosen before it has words; once it has some,
+      // it keeps the one it has.
+      const subject = storedSubject(
+        payload?.subject === undefined || storedDeck?.wordsCount > 0 ? storedDeck?.subject : payload.subject,
+      );
+      const subjectFields = normalizeDeckSubjectFields(
+        subject,
+        payload?.subjectFields === undefined ? storedDeck?.subjectFields : payload.subjectFields,
+      );
+      const { usesLanguages } = getSubjectProfile(subject);
+      const sourceLanguage = !usesLanguages || pictureSide === PICTURE_SIDES.source ? "" : requestedSourceLanguage;
+      const targetLanguage = !usesLanguages || pictureSide === PICTURE_SIDES.target ? "" : requestedTargetLanguage;
+      const tertiaryLanguage = usesLanguages ? requestedTertiaryLanguage : "";
 
       validateImportLanguages({
         sourceLanguage,
         targetLanguage,
         tertiaryLanguage,
         pictureSide,
+        subject,
       });
 
       const normalizedWords = Array.isArray(payload?.words)
@@ -1209,6 +1252,8 @@ export const createWebDeckRepository = () => {
               tertiaryLanguage,
               pictureSide,
               learnedSide,
+              subject,
+              subjectFields,
               usesWordLevels,
               tags,
             },
@@ -1228,6 +1273,8 @@ export const createWebDeckRepository = () => {
               tertiaryLanguage,
               pictureSide,
               learnedSide,
+              subject,
+              subjectFields,
               usesWordLevels,
               tags,
               syncId: deckSyncId,
@@ -1249,6 +1296,7 @@ export const createWebDeckRepository = () => {
                   tertiaryLanguage,
                   pictureSide,
                   learnedSide,
+                  ...deckSubjectPart({ subject, subjectFields }),
                   usesWordLevels,
                   tags,
                   syncId: deckSyncId,
@@ -1281,6 +1329,7 @@ export const createWebDeckRepository = () => {
               existingWord,
               nextWord,
               nowMs,
+              subject,
             });
 
             if (existingWord) {

@@ -227,6 +227,7 @@ const toSaveDeckPayloadFromPackage = ({
     duplicateStrategy: importConfig.duplicateStrategy,
     includeExamples: importConfig.includeExamples,
     includeTags: importConfig.includeTags,
+    subject: importConfig.subject,
   });
 
   return {
@@ -242,6 +243,8 @@ const toSaveDeckPayloadFromPackage = ({
     tertiaryLanguage: importConfig.tertiaryLanguage,
     pictureSide: importConfig.pictureSide,
     learnedSide: importConfig.learnedSide,
+    subject: importConfig.subject,
+    subjectFields: importConfig.subjectFields,
     usesWordLevels: Boolean(parsedPackage?.deck?.usesWordLevels ?? true),
     tags: importConfig.tags,
     syncId: importConfig.syncId,
@@ -409,6 +412,8 @@ export const createSyncRepository = ({
       tertiaryLanguage: deckDetails?.tertiaryLanguage,
       pictureSide: deckDetails?.pictureSide || "",
       learnedSide: deckDetails?.learnedSide || "",
+      subject: deckDetails?.subject || "",
+      subjectFields: deckDetails?.subjectFields || {},
       usesWordLevels: Boolean(deckDetails?.usesWordLevels),
       tags: Array.isArray(deckDetails?.tags) ? deckDetails.tags : JSON.parse(deckDetails?.tagsJson || "[]"),
       syncId: createDeckSyncId(),

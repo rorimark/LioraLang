@@ -157,7 +157,54 @@ describe("deckPackage", () => {
         contentHash: "",
         pictureSide: "",
         learnedSide: "",
+        subject: "",
+        subjectFields: {},
       });
+    });
+
+    it("leaves a language deck's package exactly as it was", () => {
+      const exported = buildExportDeckPackage({
+        deck: { name: "Food", sourceLanguage: "English", targetLanguage: "Polish", subject: "language" },
+        words: [{ source: "asparagus", target: "szparag", subjectFields: { code: "x" } }],
+      });
+
+      expect(exported.deck).not.toHaveProperty("subject");
+      expect(exported.deck).not.toHaveProperty("subjectFields");
+      expect(exported.words[0]).not.toHaveProperty("subjectFields");
+    });
+
+    it("carries a programming deck through export and import without languages", () => {
+      const exported = buildExportDeckPackage({
+        deck: { name: "JavaScript", subject: "programming", subjectFields: { technology: "JavaScript" } },
+        words: [
+          {
+            externalId: "w1",
+            source: "What does this return?",
+            target: "A new array of names.",
+            subjectFields: { code: "users.map(user => user.name)", difficulty: "medium", stray: "x" },
+          },
+        ],
+      });
+
+      expect(exported.deck.subject).toBe("programming");
+      expect(exported.deck.subjectFields).toEqual({ technology: "JavaScript" });
+      expect(exported.words[0].subjectFields).toEqual({
+        code: "users.map(user => user.name)",
+        difficulty: "medium",
+      });
+
+      const parsedPackage = parseDeckPackageFileText(JSON.stringify(exported));
+      const config = resolveImportConfig({ parsedPackage });
+
+      expect(config.subject).toBe("programming");
+      expect(config.subjectFields).toEqual({ technology: "JavaScript" });
+      expect(config.sourceLanguage).toBe("");
+      expect(config.targetLanguage).toBe("");
+      expect(() => validateImportLanguages(config)).not.toThrow();
+
+      const { words } = normalizeWordsForImport({ parsedPackage, ...config });
+      expect(words[0].subjectFields).toEqual({ code: "users.map(user => user.name)", difficulty: "medium" });
+      expect(words[0].level).toBeNull();
     });
 
     it("keeps a deck's learned side through export and import", () => {

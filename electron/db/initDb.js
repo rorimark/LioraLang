@@ -139,6 +139,10 @@ export const initDb = () => {
   ensureColumn(db, "decks", "picture_side", "TEXT");
   // "target" when the deck's target is the language learned; else empty.
   ensureColumn(db, "decks", "learned_side", "TEXT");
+  // What the deck is about when it is not a language ("programming"), and
+  // that subject's deck fields as JSON. Empty for a language deck.
+  ensureColumn(db, "decks", "subject", "TEXT");
+  ensureColumn(db, "decks", "subject_fields_json", "TEXT");
   ensureColumn(db, "decks", "created_at", "TEXT");
   ensureColumn(db, "decks", "updated_at", "TEXT");
   ensureColumn(db, "words", "external_id", "TEXT");
@@ -148,6 +152,8 @@ export const initDb = () => {
   ensureColumn(db, "words", "level", "TEXT");
   ensureColumn(db, "words", "part_of_speech", "TEXT");
   ensureColumn(db, "words", "tags_json", "TEXT DEFAULT '[]'");
+  // A subject's own fields on an entry (a programming card's code), as JSON.
+  ensureColumn(db, "words", "subject_fields_json", "TEXT");
   ensureColumn(db, "words", "examples_json", "TEXT DEFAULT '[]'");
   // The word's picture as {"assetId","alt"}; empty for a word without one.
   ensureColumn(db, "words", "image_json", "TEXT");
@@ -307,7 +313,9 @@ export const initDb = () => {
           origin_ref AS originRef,
           content_hash AS contentHash,
           picture_side AS pictureSide,
-          learned_side AS learnedSide
+          learned_side AS learnedSide,
+          subject,
+          subject_fields_json AS subjectFields
         FROM decks
         ORDER BY id ASC
       `,
@@ -327,7 +335,8 @@ export const initDb = () => {
           part_of_speech,
           tags_json AS tagsJson,
           examples_json AS examplesJson,
-          image_json AS imageJson
+          image_json AS imageJson,
+          subject_fields_json AS subjectFields
         FROM words
         ORDER BY deck_id ASC, id ASC
       `,
@@ -353,6 +362,7 @@ export const initDb = () => {
       tags: parseJsonArray(word?.tagsJson),
       examples: parseJsonArray(word?.examplesJson),
       image: word?.imageJson || null,
+      subjectFields: word?.subjectFields || "",
     });
     wordsByDeckId.set(deckId, currentWords);
   });
@@ -388,6 +398,8 @@ export const initDb = () => {
         tags: parseJsonArray(deck?.tagsJson),
         pictureSide: deck?.pictureSide,
         learnedSide: deck?.learnedSide,
+        subject: deck?.subject,
+        subjectFields: deck?.subjectFields,
       },
       words: wordsByDeckId.get(Number(deck?.id)) || [],
     });

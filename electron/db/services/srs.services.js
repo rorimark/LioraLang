@@ -46,7 +46,8 @@ export const getSrsSessionSnapshot = ({
   const deck = db
     .prepare(
       `SELECT id, name, source_language AS sourceLanguage,
-    target_language AS targetLanguage, tertiary_language AS tertiaryLanguage FROM decks WHERE id = ?`,
+    target_language AS targetLanguage, tertiary_language AS tertiaryLanguage,
+    subject, subject_fields_json AS subjectFields FROM decks WHERE id = ?`,
     )
     .get(id);
   if (!deck) throw new Error("Deck not found");
@@ -54,7 +55,8 @@ export const getSrsSessionSnapshot = ({
     .prepare(
       `SELECT id, source_text AS source, target_text AS target, tertiary_text AS tertiary,
     level, part_of_speech, tags_json AS tagsJson, examples_json AS examplesJson,
-    image_json AS image, created_at AS createdAt FROM words WHERE deck_id = ?`,
+    image_json AS image, subject_fields_json AS subjectFields, created_at AS createdAt
+    FROM words WHERE deck_id = ?`,
     )
     .all(id)
     .map((word) => ({

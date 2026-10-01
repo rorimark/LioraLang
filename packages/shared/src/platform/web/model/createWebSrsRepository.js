@@ -152,6 +152,8 @@ const getSrsSessionSnapshotInternal = async ({
         sourceLanguage: data.deck.sourceLanguage,
         targetLanguage: data.deck.targetLanguage,
         tertiaryLanguage: data.deck.tertiaryLanguage,
+        subject: data.deck.subject,
+        subjectFields: data.deck.subjectFields,
       },
       words: data.words,
       cardsByWordId: data.cardsByWordId,

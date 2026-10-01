@@ -18,6 +18,13 @@ import {
   sniffImageMimeType,
   storedLearnedSide,
 } from "../cardContent/index.js";
+import {
+  getSubjectProfile,
+  hasSubjectFields,
+  normalizeDeckSubjectFields,
+  normalizeEntrySubjectFields,
+  storedSubject,
+} from "../subjects/subjects.js";
 
 const DECK_PACKAGE_FORMAT = "lioralang.deck";
 const DECK_PACKAGE_VERSION = 1;
@@ -268,6 +275,11 @@ const parseDeckPackagePayload = (value) => {
   );
   const deckPictureSide = normalizePictureSide(rawDeck?.pictureSide ?? rawDeck?.picture_side);
   const deckLearnedSide = storedLearnedSide(rawDeck?.learnedSide ?? rawDeck?.learned_side);
+  const deckSubject = storedSubject(rawDeck?.subject);
+  const deckSubjectFields = normalizeDeckSubjectFields(
+    deckSubject,
+    rawDeck?.subjectFields ?? rawDeck?.subject_fields,
+  );
   const hasDeckMetadata = Boolean(
     deckName ||
     deckDescription ||
@@ -279,7 +291,8 @@ const parseDeckPackagePayload = (value) => {
     deckOriginRef ||
     deckContentHash ||
     deckPictureSide ||
-    deckLearnedSide,
+    deckLearnedSide ||
+    deckSubject,
   );
   const deck = hasDeckMetadata
     ? {
@@ -295,6 +308,8 @@ const parseDeckPackagePayload = (value) => {
         contentHash: deckContentHash,
         pictureSide: deckPictureSide,
         learnedSide: deckLearnedSide,
+        subject: deckSubject,
+        subjectFields: deckSubjectFields,
       }
     : null;
 
@@ -360,6 +375,7 @@ const normalizeImportedWord = (
     sourceLanguage,
     targetLanguage,
     tertiaryLanguage,
+    subject = "",
   },
 ) => {
   const normalizedTags = toCleanArrayLimited(
@@ -433,6 +449,7 @@ const normalizeImportedWord = (
     tags: normalizedTags,
     examples: normalizedExamples,
     image,
+    subjectFields: normalizeEntrySubjectFields(subject, word?.subjectFields ?? word?.subject_fields),
   };
 };
 
@@ -485,6 +502,8 @@ export const getDeckImportMetadata = ({
       contentHash: "",
       pictureSide: "",
       learnedSide: "",
+      subject: "",
+      subjectFields: {},
       format: "",
       version: null,
     };
@@ -506,6 +525,11 @@ export const getDeckImportMetadata = ({
     contentHash: toSafeString(parsedPackage?.deck?.contentHash),
     pictureSide: normalizePictureSide(parsedPackage?.deck?.pictureSide),
     learnedSide: storedLearnedSide(parsedPackage?.deck?.learnedSide),
+    subject: storedSubject(parsedPackage?.deck?.subject),
+    subjectFields: normalizeDeckSubjectFields(
+      parsedPackage?.deck?.subject,
+      parsedPackage?.deck?.subjectFields,
+    ),
     format: toCleanString(parsedPackage?.format),
     version: parsedPackage?.version ?? null,
   };
@@ -519,6 +543,7 @@ export const normalizeWordsForImport = ({
   duplicateStrategy,
   includeTags,
   includeExamples,
+  subject = "",
 } = {}) => {
   const words = Array.isArray(parsedPackage?.words) ? parsedPackage.words : [];
 
@@ -528,6 +553,7 @@ export const normalizeWordsForImport = ({
         sourceLanguage,
         targetLanguage,
         tertiaryLanguage,
+        subject,
       }),
     )
     .filter(Boolean)
@@ -556,6 +582,8 @@ export const normalizeWordsForImport = ({
       toLanguageKey(word.tertiary),
       // Two pictures with the same translation are two words.
       ...(word.image ? [word.image.assetId] : []),
+      // The same question about two snippets is two cards.
+      ...(hasSubjectFields(word.subjectFields) ? [JSON.stringify(word.subjectFields)] : []),
     ].join("\u0000");
 
     if (!dedupeKey.replaceAll("\u0000", "")) {
@@ -591,25 +619,29 @@ export const resolveImportConfig = ({
   parsedPackage = {},
   fallbackDeckName = "Imported Deck",
 } = {}) => {
-  // A picture side has no language; the other side keeps its own.
+  // A picture side has no language; the other side keeps its own. A deck
+  // whose subject is not a language has none at all.
+  const subject = storedSubject(payload?.subject ?? parsedPackage?.deck?.subject);
+  const { usesLanguages } = getSubjectProfile(subject);
   const pictureSide = normalizePictureSide(payload?.pictureSide ?? parsedPackage?.deck?.pictureSide);
   const settings = resolveImportLanguageConfig(payload?.settings || {}, pictureSide);
-  const sourceLanguage = pictureSide === PICTURE_SIDES.source
+  const sourceLanguage = !usesLanguages || pictureSide === PICTURE_SIDES.source
     ? ""
     : toSafeString(payload?.sourceLanguage) ||
       toSafeString(parsedPackage?.deck?.sourceLanguage) ||
       settings.sourceLanguage ||
       DEFAULT_SOURCE_LANGUAGE;
-  const targetLanguage = pictureSide === PICTURE_SIDES.target
+  const targetLanguage = !usesLanguages || pictureSide === PICTURE_SIDES.target
     ? ""
     : toSafeString(payload?.targetLanguage) ||
       toSafeString(parsedPackage?.deck?.targetLanguage) ||
       settings.targetLanguage ||
       DEFAULT_TARGET_LANGUAGE;
-  const tertiaryLanguage =
-    toSafeString(payload?.tertiaryLanguage) ||
-    toSafeString(parsedPackage?.deck?.tertiaryLanguage) ||
-    settings.tertiaryLanguage;
+  const tertiaryLanguage = usesLanguages
+    ? toSafeString(payload?.tertiaryLanguage) ||
+      toSafeString(parsedPackage?.deck?.tertiaryLanguage) ||
+      settings.tertiaryLanguage
+    : "";
   const deckName =
     toSafeString(payload?.deckName) ||
     toSafeString(parsedPackage?.deck?.name) ||
@@ -640,17 +672,27 @@ export const resolveImportConfig = ({
       toSafeString(parsedPackage?.deck?.contentHash),
     pictureSide,
     learnedSide: storedLearnedSide(payload?.learnedSide ?? parsedPackage?.deck?.learnedSide),
+    subject,
+    subjectFields: normalizeDeckSubjectFields(
+      subject,
+      payload?.subjectFields ?? parsedPackage?.deck?.subjectFields,
+    ),
   };
 };
 
 // Each text side needs a language, and no two sides share one. A picture
-// side has none.
+// side has none, and neither does a deck whose subject is not a language.
 export const validateImportLanguages = ({
   sourceLanguage,
   targetLanguage,
   tertiaryLanguage,
   pictureSide = "",
+  subject = "",
 } = {}) => {
+  if (!getSubjectProfile(subject).usesLanguages) {
+    return;
+  }
+
   const side = normalizePictureSide(pictureSide);
   const sourceKey = toLanguageKey(sourceLanguage);
   const targetKey = toLanguageKey(targetLanguage);
@@ -767,6 +809,8 @@ export const buildExportDeckPackage = ({
 } = {}) => {
   const safeDeck = deck || {};
   const safeWords = Array.isArray(words) ? words : [];
+  const subject = storedSubject(safeDeck.subject);
+  const deckSubjectFields = normalizeDeckSubjectFields(subject, safeDeck.subjectFields);
   const hasTertiaryLanguage = Boolean(toCleanString(safeDeck.tertiaryLanguage));
   const normalizedDeckTags = parseTagsValue(
     Array.isArray(safeDeck.tags) ? safeDeck.tags : safeDeck.tagsJson,
@@ -803,6 +847,12 @@ export const buildExportDeckPackage = ({
       payload.image = image;
     }
 
+    const subjectFields = normalizeEntrySubjectFields(subject, word?.subjectFields);
+
+    if (hasSubjectFields(subjectFields)) {
+      payload.subjectFields = subjectFields;
+    }
+
     return payload;
   });
   const referencedAssetIds = collectWordImageAssetIds(safeWords);
@@ -828,6 +878,8 @@ export const buildExportDeckPackage = ({
         ? { pictureSide: normalizePictureSide(safeDeck.pictureSide) }
         : {}),
       ...(storedLearnedSide(safeDeck.learnedSide) ? { learnedSide: storedLearnedSide(safeDeck.learnedSide) } : {}),
+      ...(subject ? { subject } : {}),
+      ...(hasSubjectFields(deckSubjectFields) ? { subjectFields: deckSubjectFields } : {}),
       ...(includeTags
         ? {
             tags: normalizedDeckTags,
