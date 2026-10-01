@@ -129,23 +129,23 @@ export default {
     "items": {
       "free": {
         "q": "LioraLang è gratis?",
-        "a": "Sì. Mazzi, ripassi, l'app desktop e la sincronizzazione tra dispositivi sono gratis. L'assistente IA è gratis con un account, fino a {count} suggerimenti al giorno."
+        "a": "Sì, del tutto. Mazzi, ripassi, sincronizzazione e app desktop non costano nulla. Anche l'assistente IA è gratis con un account, fino a {count} suggerimenti al giorno."
       },
       "different": {
         "q": "Cosa rende LioraLang migliore di altre app di flashcard?",
-        "a": "La maggior parte delle app di flashcard è fatta per qualsiasi materia. LioraLang è fatto per le lingue: i mazzi conoscono la coppia di lingue, i livelli e gli esempi, l'assistente IA compila le carte per te e tutto si apre in qualsiasi browser o sul telefono senza installare nulla."
+        "a": "È fatto per le lingue, non per qualsiasi materia. Scrivi una parola e la carta si compila da sola: traduzione, esempio, livello. Si apre nel browser o sul telefono, senza installare nulla."
       },
       "srs": {
         "q": "Cos'è la ripetizione dilazionata?",
-        "a": "Un modo per ripassare una parola poco prima di dimenticarla. Ogni risposta allontana il ripasso successivo, così il tempo va alle parole che non conosci ancora."
+        "a": "Vedi una parola poco prima di dimenticarla. Se la sai bene, torna molto più tardi. Se sbagli, torna presto."
       },
       "offline": {
         "q": "Funziona offline?",
-        "a": "Sì. Una volta aperta, l'app web funziona senza internet e l'app desktop è completamente offline. Con un account, le modifiche si sincronizzano quando torni online."
+        "a": "Sì. Funziona senza internet e si sincronizza appena torni online."
       },
       "languages": {
         "q": "Quali lingue posso imparare?",
-        "a": "Qualsiasi coppia tra queste: {languages}."
+        "a": "Due qualsiasi tra queste: {languages}."
       }
     }
   },

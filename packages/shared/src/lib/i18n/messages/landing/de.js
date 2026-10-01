@@ -123,23 +123,23 @@ export default {
     "items": {
       "free": {
         "q": "Ist LioraLang kostenlos?",
-        "a": "Ja. Stapel, Wiederholungen, die Desktop-App und die Synchronisierung zwischen Geräten sind kostenlos. Der KI-Assistent ist mit Konto kostenlos, bis zu {count} Vorschläge am Tag."
+        "a": "Ja, komplett. Stapel, Wiederholungen, Synchronisierung und die Desktop-App kosten nichts. Der KI-Assistent ist mit Konto auch kostenlos, bis zu {count} Vorschläge am Tag."
       },
       "different": {
         "q": "Was macht LioraLang besser als andere Karteikarten-Apps?",
-        "a": "Die meisten Karteikarten-Apps sind für jedes Fach gedacht. LioraLang ist für Sprachen gebaut: Stapel kennen ihr Sprachpaar, Niveaus und Beispiele, der KI-Assistent füllt Karten für dich aus, und alles öffnet sich in jedem Browser oder auf dem Handy ohne Installation."
+        "a": "Es ist für Sprachen gemacht, nicht für jedes Fach. Du tippst ein Wort und die Karte füllt sich selbst: Übersetzung, Beispiel, Niveau. Es öffnet sich im Browser oder auf dem Handy, ohne Installation."
       },
       "srs": {
         "q": "Was ist verteilte Wiederholung?",
-        "a": "Ein Wort wird kurz bevor du es vergessen würdest wiederholt. Jede Antwort schiebt die nächste Wiederholung weiter hinaus, so geht deine Zeit in die Wörter, die du noch nicht kannst."
+        "a": "Du siehst ein Wort kurz bevor du es vergessen würdest. Kannst du es gut, kommt es viel später wieder. Liegst du daneben, kommt es bald wieder."
       },
       "offline": {
         "q": "Funktioniert es offline?",
-        "a": "Ja. Einmal geöffnet läuft die Web-App ohne Internet weiter, die Desktop-App ist komplett offline. Mit Konto werden Änderungen synchronisiert, sobald du wieder online bist."
+        "a": "Ja. Es läuft ohne Internet weiter und synchronisiert sich, sobald du wieder online bist."
       },
       "languages": {
         "q": "Welche Sprachen kann ich lernen?",
-        "a": "Jedes Paar aus diesen: {languages}."
+        "a": "Zwei beliebige aus diesen: {languages}."
       }
     }
   },

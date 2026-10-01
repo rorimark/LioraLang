@@ -129,23 +129,23 @@ export default {
     "items": {
       "free": {
         "q": "O LioraLang é grátis?",
-        "a": "Sim. Baralhos, revisões, o app para computador e a sincronização entre dispositivos são grátis. O assistente de IA é grátis com uma conta, até {count} sugestões por dia."
+        "a": "Sim, totalmente. Baralhos, revisões, sincronização e o app para computador não custam nada. O assistente de IA também é grátis com uma conta, até {count} sugestões por dia."
       },
       "different": {
         "q": "O que torna o LioraLang melhor que outros apps de flashcards?",
-        "a": "A maioria dos apps de flashcards serve para qualquer assunto. O LioraLang foi feito para idiomas: os baralhos conhecem o par de idiomas, os níveis e os exemplos, o assistente de IA preenche os cartões por você e tudo abre em qualquer navegador ou no celular sem instalar nada."
+        "a": "Ele foi feito para idiomas, não para qualquer assunto. Você digita uma palavra e o cartão se preenche sozinho: tradução, exemplo, nível. Abre no navegador ou no celular, sem instalar nada."
       },
       "srs": {
         "q": "O que é repetição espaçada?",
-        "a": "Um jeito de revisar uma palavra logo antes de esquecê-la. Cada resposta afasta a próxima revisão, então seu tempo vai para as palavras que você ainda não sabe."
+        "a": "Você vê uma palavra logo antes de esquecê-la. Se sabe bem, ela volta bem depois. Se erra, ela volta logo."
       },
       "offline": {
         "q": "Funciona offline?",
-        "a": "Sim. Depois de aberto, o app web continua funcionando sem internet, e o app para computador é totalmente offline. Com uma conta, as mudanças sincronizam quando a conexão voltar."
+        "a": "Sim. Funciona sem internet e sincroniza assim que você volta a ficar online."
       },
       "languages": {
         "q": "Quais idiomas posso aprender?",
-        "a": "Qualquer par entre estes: {languages}."
+        "a": "Quaisquer dois destes: {languages}."
       }
     }
   },

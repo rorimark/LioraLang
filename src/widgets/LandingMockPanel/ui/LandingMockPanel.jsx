@@ -1,4 +1,4 @@
-import { Fragment, memo, useRef } from "react";
+import { Fragment, memo, useCallback, useRef, useState } from "react";
 import { IoCheckmark, IoChevronDown, IoGlobeOutline, IoLogoAndroid, IoLogoApple } from "react-icons/io5";
 import { Link } from "react-router";
 import { AppIcon, Select } from "@shared/ui";
@@ -180,24 +180,69 @@ const FeatureRow = memo(({ title, children, art, isReversed = false, id }) => (
 
 FeatureRow.displayName = "FeatureRow";
 
-// Short answers to what people ask before they try it, as rows that open.
+// Short answers to what people ask before they try it, as rows that open
+// smoothly. The answers are always in the page (search engines read them);
+// a closed one is only folded away.
 const LandingFaq = memo(() => {
   const { t, languageName } = useI18n();
   const items = buildFaqItems({ t, languageName });
+  const [openKeys, setOpenKeys] = useState(() => new Set());
+  const toggle = useCallback((key) => {
+    setOpenKeys((current) => {
+      const next = new Set(current);
+
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+
+      return next;
+    });
+  }, []);
 
   return (
-    <section className="lp-faq" aria-labelledby="lp-faq-title">
+    <section className="lp-faq" aria-labelledby="lp-faq-title" data-reveal>
       <h2 id="lp-faq-title">{t("landing.faq.title")}</h2>
       <div className="lp-faq__list">
-        {items.map((item) => (
-          <details key={item.key} className="lp-faq__item">
-            <summary>
-              <span>{item.question}</span>
-              <IoChevronDown className="lp-faq__chevron" aria-hidden />
-            </summary>
-            <p>{item.answer}</p>
-          </details>
-        ))}
+        {items.map((item, index) => {
+          const isOpen = openKeys.has(item.key);
+
+          return (
+            <div
+              key={item.key}
+              className={`lp-faq__item${isOpen ? " is-open" : ""}`}
+              style={{ "--i": index }}
+            >
+              <h3>
+                <button
+                  type="button"
+                  id={`lp-faq-${item.key}`}
+                  className="lp-faq__question"
+                  aria-expanded={isOpen}
+                  aria-controls={`lp-faq-${item.key}-answer`}
+                  onClick={() => toggle(item.key)}
+                >
+                  <span>{item.question}</span>
+                  <span className="lp-faq__toggle" aria-hidden>
+                    <IoChevronDown />
+                  </span>
+                </button>
+              </h3>
+              <div
+                id={`lp-faq-${item.key}-answer`}
+                className="lp-faq__answer"
+                role="region"
+                aria-labelledby={`lp-faq-${item.key}`}
+                inert={!isOpen}
+              >
+                <div className="lp-faq__answer-inner">
+                  <p>{item.answer}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

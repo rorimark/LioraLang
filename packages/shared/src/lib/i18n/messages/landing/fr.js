@@ -129,23 +129,23 @@ export default {
     "items": {
       "free": {
         "q": "LioraLang est-il gratuit ?",
-        "a": "Oui. Les paquets, les révisions, l'application de bureau et la synchronisation entre appareils sont gratuits. L'assistant IA est gratuit avec un compte, jusqu'à {count} suggestions par jour."
+        "a": "Oui, entièrement. Paquets, révisions, synchronisation et application de bureau ne coûtent rien. L'assistant IA est gratuit lui aussi avec un compte, jusqu'à {count} suggestions par jour."
       },
       "different": {
         "q": "Qu'est-ce qui rend LioraLang meilleur que les autres applis de flashcards ?",
-        "a": "La plupart des applis de flashcards servent à tout. LioraLang est pensé pour les langues : les paquets connaissent leur paire de langues, leurs niveaux et leurs exemples, l'assistant IA remplit les cartes pour vous, et tout s'ouvre dans n'importe quel navigateur ou sur téléphone sans installation."
+        "a": "Il est fait pour les langues, pas pour n'importe quelle matière. Vous tapez un mot et la carte se remplit toute seule : traduction, exemple, niveau. Il s'ouvre dans le navigateur ou sur le téléphone, sans rien installer."
       },
       "srs": {
         "q": "Qu'est-ce que la répétition espacée ?",
-        "a": "Une façon de revoir un mot juste avant de l'oublier. Chaque réponse éloigne la révision suivante, votre temps va donc aux mots que vous ne connaissez pas encore."
+        "a": "Vous revoyez un mot juste avant de l'oublier. Bien su, il revient beaucoup plus tard. Raté, il revient vite."
       },
       "offline": {
         "q": "Est-ce que ça marche hors ligne ?",
-        "a": "Oui. Une fois ouverte, l'application web fonctionne sans internet, et l'application de bureau est entièrement hors ligne. Avec un compte, vos modifications se synchronisent au retour de la connexion."
+        "a": "Oui. Tout marche sans internet et se synchronise dès que vous êtes de nouveau en ligne."
       },
       "languages": {
         "q": "Quelles langues puis-je apprendre ?",
-        "a": "N'importe quelle paire parmi : {languages}."
+        "a": "Deux au choix parmi : {languages}."
       }
     }
   },

@@ -129,23 +129,23 @@ export default {
     "items": {
       "free": {
         "q": "¿LioraLang es gratis?",
-        "a": "Sí. Los mazos, los repasos, la app de escritorio y la sincronización entre dispositivos son gratis. El asistente de IA es gratis con una cuenta, hasta {count} sugerencias al día."
+        "a": "Sí, del todo. Mazos, repasos, sincronización y la app de escritorio no cuestan nada. El asistente de IA también es gratis con una cuenta, hasta {count} sugerencias al día."
       },
       "different": {
         "q": "¿Qué hace a LioraLang mejor que otras apps de tarjetas?",
-        "a": "La mayoría de las apps de tarjetas sirven para cualquier tema. LioraLang está hecho para idiomas: los mazos conocen su par de idiomas, niveles y ejemplos, el asistente de IA rellena las tarjetas por ti y todo se abre en cualquier navegador o en el móvil sin instalar nada."
+        "a": "Está hecho para idiomas, no para cualquier materia. Escribes una palabra y la tarjeta se rellena sola: traducción, ejemplo, nivel. Se abre en el navegador o en el móvil, sin instalar nada."
       },
       "srs": {
         "q": "¿Qué es el repaso espaciado?",
-        "a": "Una forma de repasar una palabra justo antes de olvidarla. Cada respuesta aleja el siguiente repaso, así tu tiempo se va en las palabras que aún no sabes."
+        "a": "Ves una palabra justo antes de olvidarla. Si la sabes bien, vuelve mucho después. Si fallas, vuelve pronto."
       },
       "offline": {
         "q": "¿Funciona sin conexión?",
-        "a": "Sí. Una vez abierta, la app web sigue funcionando sin internet, y la app de escritorio es totalmente offline. Con una cuenta, los cambios se sincronizan al volver la conexión."
+        "a": "Sí. Sigue funcionando sin internet y se sincroniza en cuanto vuelves a tener conexión."
       },
       "languages": {
         "q": "¿Qué idiomas puedo aprender?",
-        "a": "Cualquier par de estos: {languages}."
+        "a": "Dos cualesquiera de estos: {languages}."
       }
     }
   },

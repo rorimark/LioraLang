@@ -125,23 +125,23 @@ export default {
     "items": {
       "free": {
         "q": "Is LioraLang free?",
-        "a": "Yes. Decks, reviews, the desktop app and sync between devices are free. The AI assistant is free with an account, up to {count} suggestions a day."
+        "a": "Yes, completely. Decks, reviews, sync and the desktop app cost nothing. The AI assistant is free too with an account, up to {count} suggestions a day."
       },
       "different": {
         "q": "What makes LioraLang better than other flashcard apps?",
-        "a": "Most flashcard apps are made for any subject. LioraLang is made for languages: decks know their language pair, levels and examples, the AI assistant fills in cards for you, and it opens in any browser or on your phone with no install."
+        "a": "It's made for languages, not for any subject. Type a word and the card fills itself in: translation, example, level. It opens in your browser or on your phone, with nothing to install."
       },
       "srs": {
         "q": "What is spaced repetition?",
-        "a": "A way to review a word right before you would forget it. Every answer moves the next review further away, so your time goes to the words you do not know yet."
+        "a": "You see a word right before you'd forget it. Know it well and it comes back much later. Miss it and it comes back soon."
       },
       "offline": {
         "q": "Does it work offline?",
-        "a": "Yes. Once opened, the web app keeps working without internet, and the desktop app is fully offline. With an account, your changes sync when you are back online."
+        "a": "Yes. It keeps working without internet and syncs as soon as you're back online."
       },
       "languages": {
         "q": "Which languages can I learn?",
-        "a": "Any pair of these: {languages}."
+        "a": "Any two of these: {languages}."
       }
     }
   },

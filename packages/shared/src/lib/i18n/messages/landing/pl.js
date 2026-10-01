@@ -135,23 +135,23 @@ export default {
     "items": {
       "free": {
         "q": "Czy LioraLang jest darmowy?",
-        "a": "Tak. Talie, powtórki, aplikacja na komputer i synchronizacja między urządzeniami są za darmo. Asystent AI jest darmowy z kontem, do {count} podpowiedzi dziennie."
+        "a": "Tak, całkowicie. Talie, powtórki, synchronizacja i aplikacja na komputer nic nie kosztują. Asystent AI z kontem też jest darmowy, do {count} podpowiedzi dziennie."
       },
       "different": {
         "q": "Czym LioraLang wyróżnia się na tle innych aplikacji z fiszkami?",
-        "a": "Większość aplikacji z fiszkami jest do wszystkiego. LioraLang powstał dla języków: talie znają parę języków, poziomy i przykłady, asystent AI sam wypełnia fiszki, a całość otwiera się w każdej przeglądarce i w telefonie bez instalacji."
+        "a": "Powstał dla języków, a nie do wszystkiego. Wpisujesz słowo, a fiszka wypełnia się sama: tłumaczenie, przykład, poziom. Otwiera się w przeglądarce lub w telefonie, nic nie trzeba instalować."
       },
       "srs": {
         "q": "Czym są powtórki w odstępach?",
-        "a": "Sposobem, by powtórzyć słowo tuż przed tym, zanim je zapomnisz. Każda odpowiedź odsuwa kolejną powtórkę, więc czas idzie na słowa, których jeszcze nie znasz."
+        "a": "Słowo wraca tuż przed tym, zanim je zapomnisz. Znasz je dobrze, to wróci za długo. Pomylisz się, to wróci szybko."
       },
       "offline": {
         "q": "Czy działa bez internetu?",
-        "a": "Tak. Otwarta aplikacja webowa działa bez internetu, a aplikacja na komputer całkowicie offline. Z kontem zmiany zsynchronizują się, gdy wróci połączenie."
+        "a": "Tak. Działa bez internetu i synchronizuje się, gdy tylko wróci połączenie."
       },
       "languages": {
         "q": "Jakich języków mogę się uczyć?",
-        "a": "Dowolnej pary z tych: {languages}."
+        "a": "Dowolne dwa z tych: {languages}."
       }
     }
   },

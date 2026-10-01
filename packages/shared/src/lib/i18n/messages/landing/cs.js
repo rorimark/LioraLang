@@ -129,23 +129,23 @@ export default {
     "items": {
       "free": {
         "q": "Je LioraLang zdarma?",
-        "a": "Ano. Balíčky, opakování, aplikace pro počítač i synchronizace mezi zařízeními jsou zdarma. Asistent AI je zdarma s účtem, až {count} návrhů denně."
+        "a": "Ano, úplně. Balíčky, opakování, synchronizace i aplikace pro počítač nestojí nic. Asistent AI je s účtem taky zdarma, až {count} návrhů denně."
       },
       "different": {
         "q": "Čím je LioraLang lepší než jiné aplikace s kartičkami?",
-        "a": "Většina aplikací s kartičkami je na cokoli. LioraLang je stavěný pro jazyky: balíčky znají svou dvojici jazyků, úrovně i příklady, asistent AI za vás vyplní kartičky a vše se otevře v libovolném prohlížeči nebo v telefonu bez instalace."
+        "a": "Je stavěný pro jazyky, ne na cokoli. Napíšete slovo a kartička se vyplní sama: překlad, příklad, úroveň. Otevře se v prohlížeči nebo v telefonu, nic se neinstaluje."
       },
       "srs": {
         "q": "Co je opakování v rozestupech?",
-        "a": "Způsob, jak si slovo zopakovat těsně předtím, než byste ho zapomněli. Každá odpověď posune další opakování dál, takže čas jde do slov, která ještě neumíte."
+        "a": "Slovo uvidíte těsně předtím, než byste ho zapomněli. Umíte ho dobře, vrátí se za dlouho. Spletete se, vrátí se brzy."
       },
       "offline": {
         "q": "Funguje offline?",
-        "a": "Ano. Otevřená webová aplikace funguje bez internetu a aplikace pro počítač je zcela offline. S účtem se změny synchronizují, až budete znovu online."
+        "a": "Ano. Funguje bez internetu a synchronizuje se, jakmile jste zase online."
       },
       "languages": {
         "q": "Jaké jazyky se můžu učit?",
-        "a": "Libovolnou dvojici z těchto: {languages}."
+        "a": "Libovolné dva z těchto: {languages}."
       }
     }
   },

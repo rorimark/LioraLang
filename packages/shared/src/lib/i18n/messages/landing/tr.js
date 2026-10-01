@@ -123,23 +123,23 @@ export default {
     "items": {
       "free": {
         "q": "LioraLang ücretsiz mi?",
-        "a": "Evet. Desteler, tekrarlar, masaüstü uygulaması ve cihazlar arası senkronizasyon ücretsizdir. Yapay zekâ asistanı hesapla ücretsizdir, günde en fazla {count} öneri."
+        "a": "Evet, tamamen. Desteler, tekrarlar, senkronizasyon ve masaüstü uygulaması ücretsiz. Yapay zekâ asistanı da hesapla ücretsiz, günde en fazla {count} öneri."
       },
       "different": {
         "q": "LioraLang'i diğer kart uygulamalarından daha iyi yapan ne?",
-        "a": "Kart uygulamalarının çoğu her konu için yapılmıştır. LioraLang diller için yapıldı: desteler dil çiftini, seviyeleri ve örnekleri bilir, yapay zekâ asistanı kartları sizin için doldurur ve her şey kurulum olmadan her tarayıcıda ya da telefonda açılır."
+        "a": "Her konu için değil, diller için yapıldı. Bir kelime yazarsınız, kart kendiliğinden dolar: çeviri, örnek, seviye. Tarayıcıda ya da telefonda açılır, kurulum gerekmez."
       },
       "srs": {
         "q": "Aralıklı tekrar nedir?",
-        "a": "Bir kelimeyi unutmanızdan hemen önce tekrar etmenin yolu. Her cevap bir sonraki tekrarı ileri iter, böylece zamanınız henüz bilmediğiniz kelimelere gider."
+        "a": "Bir kelimeyi unutmanızdan hemen önce görürsünüz. İyi biliyorsanız çok sonra döner. Yanılırsanız yakında döner."
       },
       "offline": {
         "q": "İnternetsiz çalışır mı?",
-        "a": "Evet. Açıldıktan sonra web uygulaması internetsiz çalışır, masaüstü uygulaması tamamen çevrimdışıdır. Hesapla, değişiklikler bağlantı gelince senkronize olur."
+        "a": "Evet. İnternetsiz çalışmaya devam eder ve bağlantı gelir gelmez senkronize olur."
       },
       "languages": {
         "q": "Hangi dilleri öğrenebilirim?",
-        "a": "Bunlardan herhangi bir çifti: {languages}."
+        "a": "Bunlardan herhangi ikisi: {languages}."
       }
     }
   },
