@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — flashcard gratis per imparare vocaboli con la ripetizione dilazionata",
+    "title": "LioraLang: flashcard gratis per imparare vocaboli con la ripetizione dilazionata",
     "description": "Impara vocaboli con le flashcard: la ripetizione dilazionata (FSRS) ripassa ogni parola al momento giusto, l'IA compila le carte, nel browser, su computer e telefono. Gratis."
   },
   "topbar": {
@@ -131,9 +131,9 @@ export default {
         "q": "LioraLang è gratis?",
         "a": "Sì. Mazzi, ripassi, l'app desktop e la sincronizzazione tra dispositivi sono gratis. L'assistente IA è gratis con un account, fino a {count} suggerimenti al giorno."
       },
-      "anki": {
-        "q": "In cosa è diverso da Anki?",
-        "a": "Entrambi usano la ripetizione dilazionata. LioraLang è pensato per le lingue fin dall'inizio: i mazzi conoscono la coppia di lingue, i livelli e gli esempi, l'assistente IA compila le carte per te e tutto si apre in qualsiasi browser o sul telefono senza installare nulla."
+      "different": {
+        "q": "Cosa rende LioraLang migliore di altre app di flashcard?",
+        "a": "La maggior parte delle app di flashcard è fatta per qualsiasi materia. LioraLang è fatto per le lingue: i mazzi conoscono la coppia di lingue, i livelli e gli esempi, l'assistente IA compila le carte per te e tutto si apre in qualsiasi browser o sul telefono senza installare nulla."
       },
       "srs": {
         "q": "Cos'è la ripetizione dilazionata?",

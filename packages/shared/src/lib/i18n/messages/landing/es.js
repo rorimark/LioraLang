@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — app de tarjetas gratis para aprender vocabulario con repaso espaciado",
+    "title": "LioraLang: app de tarjetas gratis para aprender vocabulario con repaso espaciado",
     "description": "Aprende vocabulario con tarjetas: el repaso espaciado (FSRS) te pregunta cada palabra a tiempo, la IA rellena las tarjetas y funciona en navegador, ordenador y móvil. Gratis."
   },
   "topbar": {
@@ -131,9 +131,9 @@ export default {
         "q": "¿LioraLang es gratis?",
         "a": "Sí. Los mazos, los repasos, la app de escritorio y la sincronización entre dispositivos son gratis. El asistente de IA es gratis con una cuenta, hasta {count} sugerencias al día."
       },
-      "anki": {
-        "q": "¿En qué se diferencia de Anki?",
-        "a": "Ambos usan repaso espaciado. LioraLang está hecho para idiomas desde el principio: los mazos conocen su par de idiomas, niveles y ejemplos, el asistente de IA rellena las tarjetas por ti y todo se abre en cualquier navegador o en el móvil sin instalar nada."
+      "different": {
+        "q": "¿Qué hace a LioraLang mejor que otras apps de tarjetas?",
+        "a": "La mayoría de las apps de tarjetas sirven para cualquier tema. LioraLang está hecho para idiomas: los mazos conocen su par de idiomas, niveles y ejemplos, el asistente de IA rellena las tarjetas por ti y todo se abre en cualquier navegador o en el móvil sin instalar nada."
       },
       "srs": {
         "q": "¿Qué es el repaso espaciado?",

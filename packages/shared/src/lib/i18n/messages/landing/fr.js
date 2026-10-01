@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — application de flashcards gratuite pour apprendre du vocabulaire",
+    "title": "LioraLang: application de flashcards gratuite pour apprendre du vocabulaire",
     "description": "Apprenez du vocabulaire avec des flashcards : la répétition espacée (FSRS) révise chaque mot au bon moment, l'IA remplit les cartes, sur navigateur, ordinateur et téléphone. Gratuit."
   },
   "topbar": {
@@ -131,9 +131,9 @@ export default {
         "q": "LioraLang est-il gratuit ?",
         "a": "Oui. Les paquets, les révisions, l'application de bureau et la synchronisation entre appareils sont gratuits. L'assistant IA est gratuit avec un compte, jusqu'à {count} suggestions par jour."
       },
-      "anki": {
-        "q": "Quelle différence avec Anki ?",
-        "a": "Les deux reposent sur la répétition espacée. LioraLang est pensé pour les langues dès le départ : les paquets connaissent leur paire de langues, leurs niveaux et leurs exemples, l'assistant IA remplit les cartes pour vous, et tout s'ouvre dans n'importe quel navigateur ou sur téléphone sans installation."
+      "different": {
+        "q": "Qu'est-ce qui rend LioraLang meilleur que les autres applis de flashcards ?",
+        "a": "La plupart des applis de flashcards servent à tout. LioraLang est pensé pour les langues : les paquets connaissent leur paire de langues, leurs niveaux et leurs exemples, l'assistant IA remplit les cartes pour vous, et tout s'ouvre dans n'importe quel navigateur ou sur téléphone sans installation."
       },
       "srs": {
         "q": "Qu'est-ce que la répétition espacée ?",

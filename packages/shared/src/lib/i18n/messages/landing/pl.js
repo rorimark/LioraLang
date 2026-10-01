@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — darmowe fiszki do nauki słówek z powtórkami w odstępach",
+    "title": "LioraLang: darmowe fiszki do nauki słówek z powtórkami w odstępach",
     "description": "Ucz się słówek z fiszkami: powtórki w odstępach (FSRS) przypominają słowo w porę, AI wypełnia fiszki, działa w przeglądarce, na komputerze i w telefonie. Za darmo."
   },
   "topbar": {
@@ -35,8 +35,8 @@ export default {
     "reveal": "Pokaż odpowiedź",
     "hintGrade": "Jak dobrze to pamiętałeś? Czas to moment, kiedy słowo wróci.",
     "hintThink": "Przypomnij sobie tłumaczenie, a potem sprawdź się.",
-    "keysGrade": "{keys} — ocena",
-    "keysReveal": "{key} — pokaż odpowiedź",
+    "keysGrade": "{keys}: ocena",
+    "keysReveal": "{key}: pokaż odpowiedź",
     "spaceKey": "Spacja"
   },
   "ai": {
@@ -137,9 +137,9 @@ export default {
         "q": "Czy LioraLang jest darmowy?",
         "a": "Tak. Talie, powtórki, aplikacja na komputer i synchronizacja między urządzeniami są za darmo. Asystent AI jest darmowy z kontem, do {count} podpowiedzi dziennie."
       },
-      "anki": {
-        "q": "Czym różni się od Anki?",
-        "a": "Oba opierają się na powtórkach w odstępach. LioraLang od początku powstał z myślą o językach: talie znają parę języków, poziomy i przykłady, asystent AI sam wypełnia fiszki, a całość otwiera się w każdej przeglądarce i w telefonie bez instalacji."
+      "different": {
+        "q": "Czym LioraLang wyróżnia się na tle innych aplikacji z fiszkami?",
+        "a": "Większość aplikacji z fiszkami jest do wszystkiego. LioraLang powstał dla języków: talie znają parę języków, poziomy i przykłady, asystent AI sam wypełnia fiszki, a całość otwiera się w każdej przeglądarce i w telefonie bez instalacji."
       },
       "srs": {
         "q": "Czym są powtórki w odstępach?",

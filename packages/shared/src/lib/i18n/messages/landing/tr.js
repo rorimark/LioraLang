@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — aralıklı tekrarla kelime öğrenmek için ücretsiz kart uygulaması",
+    "title": "LioraLang: aralıklı tekrarla kelime öğrenmek için ücretsiz kart uygulaması",
     "description": "Kelime kartlarıyla kelime öğrenin: aralıklı tekrar (FSRS) her kelimeyi tam zamanında sorar, yapay zekâ kartları doldurur; tarayıcıda, bilgisayarda ve telefonda. Ücretsiz."
   },
   "topbar": {
@@ -125,9 +125,9 @@ export default {
         "q": "LioraLang ücretsiz mi?",
         "a": "Evet. Desteler, tekrarlar, masaüstü uygulaması ve cihazlar arası senkronizasyon ücretsizdir. Yapay zekâ asistanı hesapla ücretsizdir, günde en fazla {count} öneri."
       },
-      "anki": {
-        "q": "Anki'den farkı ne?",
-        "a": "İkisi de aralıklı tekrar kullanır. LioraLang baştan diller için tasarlandı: desteler dil çiftini, seviyeleri ve örnekleri bilir, yapay zekâ asistanı kartları sizin için doldurur ve her şey kurulum olmadan her tarayıcıda ya da telefonda açılır."
+      "different": {
+        "q": "LioraLang'i diğer kart uygulamalarından daha iyi yapan ne?",
+        "a": "Kart uygulamalarının çoğu her konu için yapılmıştır. LioraLang diller için yapıldı: desteler dil çiftini, seviyeleri ve örnekleri bilir, yapay zekâ asistanı kartları sizin için doldurur ve her şey kurulum olmadan her tarayıcıda ya da telefonda açılır."
       },
       "srs": {
         "q": "Aralıklı tekrar nedir?",

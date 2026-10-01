@@ -127,9 +127,9 @@ export default {
         "q": "Is LioraLang free?",
         "a": "Yes. Decks, reviews, the desktop app and sync between devices are free. The AI assistant is free with an account, up to {count} suggestions a day."
       },
-      "anki": {
-        "q": "How is it different from Anki?",
-        "a": "Both use spaced repetition. LioraLang is built for languages from the start: decks know their language pair, levels and examples, the AI assistant fills in cards for you, and it opens in any browser or on your phone with no install."
+      "different": {
+        "q": "What makes LioraLang better than other flashcard apps?",
+        "a": "Most flashcard apps are made for any subject. LioraLang is made for languages: decks know their language pair, levels and examples, the AI assistant fills in cards for you, and it opens in any browser or on your phone with no install."
       },
       "srs": {
         "q": "What is spaced repetition?",

@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — kostenlose Karteikarten-App zum Vokabeln lernen",
+    "title": "LioraLang: kostenlose Karteikarten-App zum Vokabeln lernen",
     "description": "Vokabeln lernen mit Karteikarten: verteilte Wiederholung (FSRS) fragt jedes Wort zur richtigen Zeit ab, KI füllt Karten aus, im Browser, auf Computer und Handy. Kostenlos."
   },
   "topbar": {
@@ -125,9 +125,9 @@ export default {
         "q": "Ist LioraLang kostenlos?",
         "a": "Ja. Stapel, Wiederholungen, die Desktop-App und die Synchronisierung zwischen Geräten sind kostenlos. Der KI-Assistent ist mit Konto kostenlos, bis zu {count} Vorschläge am Tag."
       },
-      "anki": {
-        "q": "Was ist anders als bei Anki?",
-        "a": "Beide nutzen verteilte Wiederholung. LioraLang ist von Grund auf für Sprachen gebaut: Stapel kennen ihr Sprachpaar, Niveaus und Beispiele, der KI-Assistent füllt Karten für dich aus, und alles öffnet sich in jedem Browser oder auf dem Handy ohne Installation."
+      "different": {
+        "q": "Was macht LioraLang besser als andere Karteikarten-Apps?",
+        "a": "Die meisten Karteikarten-Apps sind für jedes Fach gedacht. LioraLang ist für Sprachen gebaut: Stapel kennen ihr Sprachpaar, Niveaus und Beispiele, der KI-Assistent füllt Karten für dich aus, und alles öffnet sich in jedem Browser oder auf dem Handy ohne Installation."
       },
       "srs": {
         "q": "Was ist verteilte Wiederholung?",

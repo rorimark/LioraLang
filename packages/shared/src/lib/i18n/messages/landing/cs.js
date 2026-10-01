@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — kartičky zdarma na učení slovíček s opakováním v rozestupech",
+    "title": "LioraLang: kartičky zdarma na učení slovíček s opakováním v rozestupech",
     "description": "Učte se slovíčka s kartičkami: opakování v rozestupech (FSRS) připomene slovo včas, AI vyplní kartičky, v prohlížeči, na počítači i v telefonu. Zdarma."
   },
   "topbar": {
@@ -131,9 +131,9 @@ export default {
         "q": "Je LioraLang zdarma?",
         "a": "Ano. Balíčky, opakování, aplikace pro počítač i synchronizace mezi zařízeními jsou zdarma. Asistent AI je zdarma s účtem, až {count} návrhů denně."
       },
-      "anki": {
-        "q": "Čím se liší od Anki?",
-        "a": "Oba stojí na opakování v rozestupech. LioraLang je od začátku stavěný pro jazyky: balíčky znají svou dvojici jazyků, úrovně i příklady, asistent AI za vás vyplní kartičky a vše se otevře v libovolném prohlížeči nebo v telefonu bez instalace."
+      "different": {
+        "q": "Čím je LioraLang lepší než jiné aplikace s kartičkami?",
+        "a": "Většina aplikací s kartičkami je na cokoli. LioraLang je stavěný pro jazyky: balíčky znají svou dvojici jazyků, úrovně i příklady, asistent AI za vás vyplní kartičky a vše se otevře v libovolném prohlížeči nebo v telefonu bez instalace."
       },
       "srs": {
         "q": "Co je opakování v rozestupech?",

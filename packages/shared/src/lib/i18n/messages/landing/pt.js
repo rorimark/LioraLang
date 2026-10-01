@@ -1,6 +1,6 @@
 export default {
   "meta": {
-    "title": "LioraLang — app de flashcards grátis para aprender vocabulário com repetição espaçada",
+    "title": "LioraLang: app de flashcards grátis para aprender vocabulário com repetição espaçada",
     "description": "Aprenda vocabulário com flashcards: a repetição espaçada (FSRS) revisa cada palavra na hora certa, a IA preenche os cartões, no navegador, computador e celular. Grátis."
   },
   "topbar": {
@@ -131,9 +131,9 @@ export default {
         "q": "O LioraLang é grátis?",
         "a": "Sim. Baralhos, revisões, o app para computador e a sincronização entre dispositivos são grátis. O assistente de IA é grátis com uma conta, até {count} sugestões por dia."
       },
-      "anki": {
-        "q": "Qual a diferença para o Anki?",
-        "a": "Os dois usam repetição espaçada. O LioraLang foi feito para idiomas desde o início: os baralhos conhecem o par de idiomas, os níveis e os exemplos, o assistente de IA preenche os cartões por você e tudo abre em qualquer navegador ou no celular sem instalar nada."
+      "different": {
+        "q": "O que torna o LioraLang melhor que outros apps de flashcards?",
+        "a": "A maioria dos apps de flashcards serve para qualquer assunto. O LioraLang foi feito para idiomas: os baralhos conhecem o par de idiomas, os níveis e os exemplos, o assistente de IA preenche os cartões por você e tudo abre em qualquer navegador ou no celular sem instalar nada."
       },
       "srs": {
         "q": "O que é repetição espaçada?",
