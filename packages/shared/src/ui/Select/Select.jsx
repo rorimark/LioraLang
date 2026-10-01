@@ -85,6 +85,9 @@ export const Select = memo(
     label = "",
     searchable,
     placeholder,
+    // What the closed field shows for the chosen option, when its label
+    // is too long for the place (a language picker shows its code).
+    renderValue,
     "aria-label": ariaLabel,
   }) => {
     const { t } = useI18n();
@@ -439,7 +442,11 @@ export const Select = memo(
           onKeyDown={handleTriggerKeyDown}
         >
           <span className={selectedOption ? "ui-select__value" : "ui-select__value is-placeholder"}>
-            {selectedOption ? selectedOption.label : placeholder ?? t("select.placeholder")}
+            {selectedOption
+              ? renderValue
+                ? renderValue(selectedOption)
+                : selectedOption.label
+              : placeholder ?? t("select.placeholder")}
           </span>
           <FiChevronDown className="ui-select__chevron" aria-hidden="true" />
         </button>

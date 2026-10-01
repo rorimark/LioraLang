@@ -1,7 +1,7 @@
 import { Fragment, memo, useRef } from "react";
 import { IoCheckmark, IoGlobeOutline } from "react-icons/io5";
 import { Link } from "react-router";
-import { AppIcon } from "@shared/ui";
+import { AppIcon, Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 import { Flashcard } from "@features/flashcard";
 import { SrsRatingControls } from "@features/srs-rating-controls";
@@ -215,19 +215,28 @@ export const LandingMockPanel = memo(() => {
             <span>lioralang</span>
           </Link>
           <div className="lp-topbar__actions">
-            {/* A native select over a small key: the phone's own picker,
-                and the code of the current language always in view. */}
-            <label className="lp-lang">
-              <IoGlobeOutline aria-hidden />
-              <span aria-hidden>{locale.toUpperCase()}</span>
-              <select value={locale} onChange={handleLanguageChange} aria-label={t("landing.topbar.language")}>
-                {locales.map((item) => (
-                  <option key={item.code} value={item.code} lang={item.code}>
-                    {item.nativeName}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {/* The app's own picker: a list on a computer, a sheet on a
+                phone. Closed, it shows only the code of the language, so a
+                long name never pushes the button off a small screen. */}
+            <Select
+              className="lp-lang"
+              value={locale}
+              onChange={handleLanguageChange}
+              label={t("landing.topbar.language")}
+              searchable={false}
+              renderValue={(option) => (
+                <>
+                  <IoGlobeOutline aria-hidden />
+                  {option.value.toUpperCase()}
+                </>
+              )}
+            >
+              {locales.map((item) => (
+                <option key={item.code} value={item.code} lang={item.code}>
+                  {item.nativeName}
+                </option>
+              ))}
+            </Select>
             <Link to={openWebTo} className="lp-btn lp-btn--primary lp-btn--sm" {...prefetchProps}>
               {t("landing.topbar.open")}
             </Link>
