@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang: tarjetas y repaso espaciado que de verdad se quedan",
-    "description": "Deja de olvidar palabras tras un solo repaso. Crea mazos, estudia con repaso espaciado y usa LioraLang en el navegador, en el ordenador o en la pantalla de inicio del móvil."
+    "description": "Deja de olvidar palabras tras un solo repaso. Crea mazos con un asistente de IA, estudia con repaso espaciado y usa LioraLang en el navegador, en el ordenador o como app en el móvil."
   },
   "topbar": {
     "open": "Abrir la app web",
@@ -37,6 +37,23 @@ export default {
     "keysGrade": "{keys} califica",
     "keysReveal": "{key} muestra la respuesta",
     "spaceKey": "Espacio"
+  },
+  "ai": {
+    "title": "Escribe una palabra. Recibe la tarjeta entera.",
+    "text": "Mientras escribes, el asistente de IA sugiere la traducción, el nivel, la categoría gramatical, una frase de ejemplo y etiquetas. Pulsa Tab para aceptarlo todo o quédate solo con lo que quieras. Nunca reemplaza lo que escribiste.",
+    "more": {
+      "list": "Pega una lista de palabras y cada línea vuelve completa.",
+      "topic": "Indica un tema y un nivel y recibe un mazo entero.",
+      "hint": "¿Fallaste una tarjeta? Recibe una forma breve de recordarla."
+    },
+    "note": {
+      "one": "Gratis con una cuenta, hasta {count} sugerencia al día.",
+      "many": "Gratis con una cuenta, hasta {count} sugerencias al día.",
+      "other": "Gratis con una cuenta, hasta {count} sugerencias al día."
+    },
+    "try": "Probar el asistente",
+    "tag": "viajes",
+    "take": "aceptar todo"
   },
   "memory": {
     "title": "Apréndelo una vez. Recuérdalo durante meses.",
@@ -100,6 +117,19 @@ export default {
       "title": "Móvil",
       "text": "Añadir a la pantalla de inicio"
     }
+  },
+  "phone": {
+    "title": "En el móvil, es una app.",
+    "text": "Añade LioraLang a la pantalla de inicio y se abrirá como cualquier otra app: con su propio icono, a pantalla completa sin la barra del navegador y también sin conexión. Sin tienda de apps y sin nada que descargar.",
+    "ios": {
+      "title": "iPhone y iPad",
+      "text": "Abre la app web en Safari, toca «Compartir» y luego «Añadir a pantalla de inicio»."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Abre la app web en Chrome, toca ⋮ y luego «Instalar aplicación» o «Añadir a pantalla de inicio»."
+    },
+    "open": "Abrir la app web"
   },
   "cta": {
     "title": "Tu primer repaso lleva un minuto."

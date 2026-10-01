@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang — fiszki i powtórki w odstępach, które naprawdę zostają w głowie",
-    "description": "Przestań zapominać słowa po jednej powtórce. Twórz talie, ucz się metodą powtórek w odstępach i korzystaj z LioraLang w przeglądarce, na komputerze lub na ekranie telefonu."
+    "description": "Przestań zapominać słowa po jednej powtórce. Twórz talie z asystentem AI, ucz się metodą powtórek w odstępach i korzystaj z LioraLang w przeglądarce, na komputerze lub jako aplikacji w telefonie."
   },
   "topbar": {
     "open": "Otwórz aplikację",
@@ -38,6 +38,24 @@ export default {
     "keysGrade": "{keys} — ocena",
     "keysReveal": "{key} — pokaż odpowiedź",
     "spaceKey": "Spacja"
+  },
+  "ai": {
+    "title": "Wpisz słowo. Dostań całą fiszkę.",
+    "text": "Gdy piszesz, asystent AI podpowiada tłumaczenie, poziom, część mowy, przykładowe zdanie i tagi. Naciśnij Tab, żeby wziąć wszystko, albo zostaw tylko to, co chcesz. Nigdy nie zastępuje tego, co napisałeś.",
+    "more": {
+      "list": "Wklej listę słów, a każdy wiersz wróci uzupełniony.",
+      "topic": "Podaj temat i poziom, a dostaniesz gotową talię.",
+      "hint": "Pomyłka przy fiszce? Dostaniesz krótki sposób, jak ją zapamiętać."
+    },
+    "note": {
+      "one": "Za darmo z kontem, do {count} podpowiedzi dziennie.",
+      "few": "Za darmo z kontem, do {count} podpowiedzi dziennie.",
+      "many": "Za darmo z kontem, do {count} podpowiedzi dziennie.",
+      "other": "Za darmo z kontem, do {count} podpowiedzi dziennie."
+    },
+    "try": "Wypróbuj asystenta",
+    "tag": "podróże",
+    "take": "weź wszystko"
   },
   "memory": {
     "title": "Naucz się raz. Pamiętaj miesiącami.",
@@ -106,6 +124,19 @@ export default {
       "title": "Telefon",
       "text": "Dodaj do ekranu głównego"
     }
+  },
+  "phone": {
+    "title": "W telefonie to aplikacja.",
+    "text": "Dodaj LioraLang do ekranu głównego, a otworzy się jak każda inna aplikacja: własna ikona, pełny ekran bez paska przeglądarki i działanie offline. Bez sklepu i bez pobierania.",
+    "ios": {
+      "title": "iPhone i iPad",
+      "text": "Otwórz aplikację webową w Safari, stuknij „Udostępnij”, a potem „Do ekranu początkowego”."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Otwórz aplikację webową w Chrome, stuknij ⋮, a potem „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”."
+    },
+    "open": "Otwórz aplikację webową"
   },
   "cta": {
     "title": "Pierwsza powtórka zajmie minutę."

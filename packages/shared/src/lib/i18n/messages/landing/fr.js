@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang : des cartes et une répétition espacée qui restent vraiment",
-    "description": "Arrêtez d'oublier les mots après une seule révision. Créez des paquets, apprenez avec la répétition espacée et utilisez LioraLang dans le navigateur, sur ordinateur ou sur l'écran d'accueil du téléphone."
+    "description": "Arrêtez d'oublier les mots après une seule révision. Créez des paquets avec un assistant IA, apprenez avec la répétition espacée et utilisez LioraLang dans le navigateur, sur ordinateur ou comme une app sur votre téléphone."
   },
   "topbar": {
     "open": "Ouvrir l'app web",
@@ -37,6 +37,23 @@ export default {
     "keysGrade": "{keys} pour noter",
     "keysReveal": "{key} affiche la réponse",
     "spaceKey": "Espace"
+  },
+  "ai": {
+    "title": "Tapez un mot. Obtenez toute la carte.",
+    "text": "Pendant que vous tapez, l'assistant IA propose la traduction, le niveau, la nature du mot, une phrase d'exemple et des étiquettes. Appuyez sur Tab pour tout prendre, ou gardez seulement ce qui vous plaît. Il ne remplace jamais ce que vous avez écrit.",
+    "more": {
+      "list": "Collez une liste de mots, et chaque ligne revient remplie.",
+      "topic": "Indiquez un thème et un niveau, et recevez un paquet entier.",
+      "hint": "Une carte ratée ? Recevez une astuce courte pour la retenir."
+    },
+    "note": {
+      "one": "Gratuit avec un compte, jusqu'à {count} suggestion par jour.",
+      "many": "Gratuit avec un compte, jusqu'à {count} suggestions par jour.",
+      "other": "Gratuit avec un compte, jusqu'à {count} suggestions par jour."
+    },
+    "try": "Essayer l'assistant",
+    "tag": "voyage",
+    "take": "tout prendre"
   },
   "memory": {
     "title": "Apprenez une fois. Retenez pendant des mois.",
@@ -100,6 +117,19 @@ export default {
       "title": "Téléphone",
       "text": "Ajouter à l'écran d'accueil"
     }
+  },
+  "phone": {
+    "title": "Sur votre téléphone, c'est une app.",
+    "text": "Ajoutez LioraLang à l'écran d'accueil et il s'ouvre comme n'importe quelle app : sa propre icône, plein écran sans barre de navigateur, et il fonctionne hors ligne. Pas de boutique, rien à télécharger.",
+    "ios": {
+      "title": "iPhone et iPad",
+      "text": "Ouvrez l'app web dans Safari, touchez « Partager », puis « Sur l'écran d'accueil »."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Ouvrez l'app web dans Chrome, touchez ⋮, puis « Installer l'application » ou « Ajouter à l'écran d'accueil »."
+    },
+    "open": "Ouvrir l'app web"
   },
   "cta": {
     "title": "Votre première révision prend une minute."

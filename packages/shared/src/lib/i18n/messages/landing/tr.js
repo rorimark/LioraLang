@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang: gerçekten akılda kalan kartlar ve aralıklı tekrar",
-    "description": "Kelimeleri tek bir tekrardan sonra unutmayı bırakın. Desteler oluşturun, aralıklı tekrarla çalışın ve LioraLang'i tarayıcıda, bilgisayarda ya da telefonun ana ekranında kullanın."
+    "description": "Kelimeleri tek bir tekrardan sonra unutmayı bırakın. Yapay zekâ asistanıyla desteler oluşturun, aralıklı tekrarla çalışın ve LioraLang'i tarayıcıda, bilgisayarda ya da telefonda bir uygulama olarak kullanın."
   },
   "topbar": {
     "open": "Uygulamayı aç",
@@ -36,6 +36,22 @@ export default {
     "keysGrade": "{keys} ile değerlendir",
     "keysReveal": "{key} cevabı gösterir",
     "spaceKey": "Boşluk"
+  },
+  "ai": {
+    "title": "Bir kelime yazın. Kartın tamamını alın.",
+    "text": "Siz yazarken yapay zekâ asistanı çeviriyi, seviyeyi, sözcük türünü, bir örnek cümleyi ve etiketleri önerir. Hepsini almak için Tab'a basın ya da yalnızca istediklerinizi tutun. Sizin yazdığınızı asla değiştirmez.",
+    "more": {
+      "list": "Bir kelime listesi yapıştırın, her satır doldurulmuş olarak gelsin.",
+      "topic": "Bir konu ve seviye söyleyin, koca bir deste alın.",
+      "hint": "Bir kartı mı bilemediniz? Onu hatırlamanın kısa bir yolunu alın."
+    },
+    "note": {
+      "one": "Hesapla ücretsiz, günde en fazla {count} öneri.",
+      "other": "Hesapla ücretsiz, günde en fazla {count} öneri."
+    },
+    "try": "Asistanı deneyin",
+    "tag": "seyahat",
+    "take": "hepsini al"
   },
   "memory": {
     "title": "Bir kez öğrenin. Aylarca hatırlayın.",
@@ -94,6 +110,19 @@ export default {
       "title": "Telefon",
       "text": "Ana ekrana ekle"
     }
+  },
+  "phone": {
+    "title": "Telefonunuzda bir uygulama.",
+    "text": "LioraLang'i ana ekranınıza ekleyin, diğer uygulamalar gibi açılsın: kendi simgesi, tarayıcı çubuğu olmadan tam ekran ve çevrimdışı da çalışır. Mağaza yok, indirilecek bir şey yok.",
+    "ios": {
+      "title": "iPhone ve iPad",
+      "text": "Web uygulamasını Safari'de açın, “Paylaş”a, ardından “Ana Ekrana Ekle”ye dokunun."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Web uygulamasını Chrome'da açın, ⋮ simgesine, ardından “Uygulamayı yükle” ya da “Ana ekrana ekle”ye dokunun."
+    },
+    "open": "Web uygulamasını aç"
   },
   "cta": {
     "title": "İlk tekrarınız bir dakika sürer."

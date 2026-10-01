@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang: flashcard e ripetizione dilazionata che restano davvero",
-    "description": "Smetti di dimenticare le parole dopo un solo ripasso. Crea mazzi, studia con la ripetizione dilazionata e usa LioraLang nel browser, sul computer o sulla schermata Home del telefono."
+    "description": "Smetti di dimenticare le parole dopo un solo ripasso. Crea mazzi con un assistente IA, studia con la ripetizione dilazionata e usa LioraLang nel browser, sul computer o come app sul telefono."
   },
   "topbar": {
     "open": "Apri l'app web",
@@ -37,6 +37,23 @@ export default {
     "keysGrade": "{keys} per valutare",
     "keysReveal": "{key} mostra la risposta",
     "spaceKey": "Spazio"
+  },
+  "ai": {
+    "title": "Scrivi una parola. Ottieni tutta la carta.",
+    "text": "Mentre scrivi, l'assistente IA suggerisce traduzione, livello, parte del discorso, una frase d'esempio e tag. Premi Tab per prendere tutto, o tieni solo quello che ti serve. Non sostituisce mai quello che hai scritto tu.",
+    "more": {
+      "list": "Incolla un elenco di parole e ogni riga torna compilata.",
+      "topic": "Indica un tema e un livello e ricevi un mazzo intero.",
+      "hint": "Hai sbagliato una carta? Ricevi un modo breve per ricordarla."
+    },
+    "note": {
+      "one": "Gratis con un account, fino a {count} suggerimento al giorno.",
+      "many": "Gratis con un account, fino a {count} suggerimenti al giorno.",
+      "other": "Gratis con un account, fino a {count} suggerimenti al giorno."
+    },
+    "try": "Prova l'assistente",
+    "tag": "viaggi",
+    "take": "prendi tutto"
   },
   "memory": {
     "title": "Impara una volta. Ricorda per mesi.",
@@ -100,6 +117,19 @@ export default {
       "title": "Telefono",
       "text": "Aggiungi alla schermata Home"
     }
+  },
+  "phone": {
+    "title": "Sul telefono è un'app.",
+    "text": "Aggiungi LioraLang alla schermata Home e si apre come qualsiasi altra app: con la sua icona, a schermo intero senza la barra del browser, e funziona anche offline. Niente store, niente da scaricare.",
+    "ios": {
+      "title": "iPhone e iPad",
+      "text": "Apri l'app web in Safari, tocca «Condividi», poi «Aggiungi alla schermata Home»."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Apri l'app web in Chrome, tocca ⋮, poi «Installa app» o «Aggiungi a schermata Home»."
+    },
+    "open": "Apri l'app web"
   },
   "cta": {
     "title": "Il tuo primo ripasso richiede un minuto."

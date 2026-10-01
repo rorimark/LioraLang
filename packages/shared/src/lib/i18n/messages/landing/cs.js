@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang – kartičky a opakování v rozestupech, které opravdu drží",
-    "description": "Přestaňte zapomínat slova po jednom opakování. Vytvářejte balíčky, učte se metodou opakování v rozestupech a používejte LioraLang v prohlížeči, na počítači nebo na ploše telefonu."
+    "description": "Přestaňte zapomínat slova po jednom opakování. Vytvářejte balíčky s asistentem AI, učte se metodou opakování v rozestupech a používejte LioraLang v prohlížeči, na počítači nebo jako aplikaci v telefonu."
   },
   "topbar": {
     "open": "Otevřít aplikaci",
@@ -37,6 +37,24 @@ export default {
     "keysGrade": "{keys} hodnocení",
     "keysReveal": "{key} ukáže odpověď",
     "spaceKey": "Mezerník"
+  },
+  "ai": {
+    "title": "Napište slovo. Dostanete celou kartičku.",
+    "text": "Zatímco píšete, asistent AI navrhne překlad, úroveň, slovní druh, příkladovou větu a štítky. Stiskněte Tab a vezměte vše, nebo si nechte jen to, co chcete. Nikdy nepřepíše, co jste napsali.",
+    "more": {
+      "list": "Vložte seznam slov a každý řádek se vrátí vyplněný.",
+      "topic": "Zadejte téma a úroveň a dostanete celý balíček.",
+      "hint": "Spletli jste si kartičku? Dostanete krátký tip, jak si ji zapamatovat."
+    },
+    "note": {
+      "one": "Zdarma s účtem, až {count} návrh denně.",
+      "few": "Zdarma s účtem, až {count} návrhy denně.",
+      "many": "Zdarma s účtem, až {count} návrhu denně.",
+      "other": "Zdarma s účtem, až {count} návrhů denně."
+    },
+    "try": "Vyzkoušet asistenta",
+    "tag": "cestování",
+    "take": "vzít vše"
   },
   "memory": {
     "title": "Naučte se jednou. Pamatujte si měsíce.",
@@ -100,6 +118,19 @@ export default {
       "title": "Telefon",
       "text": "Přidat na plochu"
     }
+  },
+  "phone": {
+    "title": "V telefonu je to aplikace.",
+    "text": "Přidejte si LioraLang na plochu a otevře se jako každá jiná aplikace: vlastní ikona, celá obrazovka bez lišty prohlížeče a funguje i offline. Žádný obchod, nic ke stažení.",
+    "ios": {
+      "title": "iPhone a iPad",
+      "text": "Otevřete webovou aplikaci v Safari, klepněte na „Sdílet“ a pak na „Přidat na plochu“."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Otevřete webovou aplikaci v Chrome, klepněte na ⋮ a pak na „Nainstalovat aplikaci“ nebo „Přidat na plochu“."
+    },
+    "open": "Otevřít webovou aplikaci"
   },
   "cta": {
     "title": "První opakování zabere minutu."

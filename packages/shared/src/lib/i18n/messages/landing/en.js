@@ -3,7 +3,7 @@
 export default {
   "meta": {
     "title": "LioraLang - Flashcards and spaced repetition that actually stick",
-    "description": "Stop forgetting words after one review. Build decks, study with spaced repetition, and use LioraLang on web, desktop, or your phone home screen."
+    "description": "Stop forgetting words after one review. Build decks with an AI assistant, study with spaced repetition, and use LioraLang on the web, on desktop, or as an app on your phone."
   },
   "topbar": {
     "open": "Open web app",
@@ -38,6 +38,22 @@ export default {
     "keysGrade": "{keys} grade",
     "keysReveal": "{key} shows the answer",
     "spaceKey": "Space"
+  },
+  "ai": {
+    "title": "Type a word. Get the whole card.",
+    "text": "As you type, the AI assistant suggests the translation, level, part of speech, an example sentence and tags. Press Tab to take it all, or keep only what you like. It never replaces what you wrote.",
+    "more": {
+      "list": "Paste a list of words and every line comes back filled in.",
+      "topic": "Name a topic and a level, and get a whole deck to review.",
+      "hint": "Missed a card? Get a short way to remember it."
+    },
+    "note": {
+      "one": "Free with an account, up to {count} suggestion a day.",
+      "other": "Free with an account, up to {count} suggestions a day."
+    },
+    "try": "Try the assistant",
+    "tag": "travel",
+    "take": "take all"
   },
   "memory": {
     "title": "Learn it once. Remember it for months.",
@@ -96,6 +112,19 @@ export default {
       "title": "Phone",
       "text": "Add to Home Screen"
     }
+  },
+  "phone": {
+    "title": "On your phone, it’s an app.",
+    "text": "Add LioraLang to your home screen and it opens like any other app: its own icon, full screen, no browser bar, and it keeps working offline. No app store, nothing to download.",
+    "ios": {
+      "title": "iPhone and iPad",
+      "text": "Open the web app in Safari, tap Share, then “Add to Home Screen”."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Open the web app in Chrome, tap ⋮, then “Install app” or “Add to Home screen”."
+    },
+    "open": "Open the web app"
   },
   "cta": {
     "title": "Your first review takes a minute."

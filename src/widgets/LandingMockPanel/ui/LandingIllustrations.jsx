@@ -6,6 +6,7 @@ import {
   IoGlobeOutline,
   IoPhonePortraitOutline,
 } from "react-icons/io5";
+import { AppIcon } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 import { buildLandingDemoDeck } from "../model/landingDemoDeck";
 
@@ -152,3 +153,76 @@ export const PlatformsIllustration = memo(({ platforms }) => {
 });
 
 PlatformsIllustration.displayName = "PlatformsIllustration";
+
+// The assistant at work on the last demo word: the word as typed, and the
+// rest of the card arriving underneath it, ready to take with Tab.
+export const AiIllustration = memo(() => {
+  const { t, locale, languageName, partOfSpeechName } = useI18n();
+  const deck = buildLandingDemoDeck(locale);
+  const word = deck.words[deck.words.length - 1];
+
+  return (
+    <div className="lp-art lp-ai-art" aria-hidden="true">
+      <span className="lp-ai-card">
+        <span className="lp-ai-card__label">{languageName(deck.sourceLanguage)}</span>
+        <span className="lp-ai-card__word">
+          {word.source}
+          <span className="lp-ai-card__caret" />
+        </span>
+        <span className="lp-ai-ghost" style={{ "--g": 0 }}>
+          <span className="lp-ai-ghost__label">{languageName(deck.targetLanguage)}</span>
+          <strong>{word.target}</strong>
+        </span>
+        <span className="lp-ai-ghost lp-ai-ghost--row" style={{ "--g": 1 }}>
+          <span>{partOfSpeechName("noun")}</span>
+          <span className="lp-ai-level">{word.level}</span>
+        </span>
+        <span className="lp-ai-ghost lp-ai-ghost--example" style={{ "--g": 2 }}>
+          {word.example}
+        </span>
+        <span className="lp-ai-ghost lp-ai-ghost--row" style={{ "--g": 3 }}>
+          <span className="lp-ai-tag">{t("landing.ai.tag")}</span>
+        </span>
+      </span>
+      <span className="lp-ai-take lp-tone-blue">
+        <kbd>{t("suggest.tabKey")}</kbd>
+        {t("landing.ai.take")}
+      </span>
+    </div>
+  );
+});
+
+AiIllustration.displayName = "AiIllustration";
+
+// A home screen with LioraLang on it among the other apps.
+const HOME_TONES = ["red", "amber", "green", "blue", "amber", "green", "red", null, "blue", "green", "red", "amber"];
+
+export const PhoneIllustration = memo(() => (
+  <div className="lp-art lp-phone-art" aria-hidden="true">
+    <span className="lp-phone">
+      <span className="lp-phone__notch" />
+      <span className="lp-phone__grid">
+        {HOME_TONES.map((tone, index) =>
+          tone ? (
+            <span key={index} className={`lp-phone__app lp-tone-${tone}`}>
+              <span className="lp-phone__icon" />
+              <span className="lp-phone__name" />
+            </span>
+          ) : (
+            <span key={index} className="lp-phone__app lp-phone__app--ours">
+              <AppIcon size={52} />
+              <span className="lp-phone__title">LioraLang</span>
+            </span>
+          ),
+        )}
+      </span>
+      <span className="lp-phone__dock">
+        {["blue", "green", "amber", "red"].map((tone) => (
+          <span key={tone} className={`lp-phone__icon lp-tone-${tone}`} />
+        ))}
+      </span>
+    </span>
+  </div>
+));
+
+PhoneIllustration.displayName = "PhoneIllustration";

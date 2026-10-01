@@ -40,6 +40,19 @@ const PLATFORMS = [
   { key: "phone", to: ROUTE_PATHS.learn },
 ];
 
+// What the AI assistant does besides filling in a word, and how many
+// suggestions a day it gives for free: the server's own daily allowance
+// (word_suggestion_daily_allowance in supabase/migrations).
+const AI_ABILITIES = [
+  { key: "list", tone: "blue" },
+  { key: "topic", tone: "green" },
+  { key: "hint", tone: "amber" },
+];
+const AI_DAILY_SUGGESTIONS = 300;
+
+// The two ways a phone puts the web app on its home screen.
+const PHONE_SYSTEMS = ["ios", "android"];
+
 const FOOTER_LINKS = [
   { key: "github", href: EXTERNAL_LINKS.githubRepo, isExternal: true },
   { key: "issues", href: EXTERNAL_LINKS.githubIssues, isExternal: true },
@@ -92,6 +105,9 @@ export const useLandingMockPanel = () => {
     openWebTo: ROUTE_PATHS.learn,
     browseTo: ROUTE_PATHS.browse,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,
+    aiAbilities: AI_ABILITIES,
+    aiDailySuggestions: AI_DAILY_SUGGESTIONS,
+    phoneSystems: PHONE_SYSTEMS,
     handlePrefetchApp: prefetchApp,
   };
 };

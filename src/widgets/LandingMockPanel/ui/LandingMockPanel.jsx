@@ -10,9 +10,11 @@ import { useLandingDemoSession } from "../model/useLandingDemoSession";
 import { useReviewTimeline } from "../model/useReviewTimeline";
 import { useRevealOnScroll } from "../model/useRevealOnScroll";
 import {
+  AiIllustration,
   DecksIllustration,
   HeroIllustration,
   HubIllustration,
+  PhoneIllustration,
   PlatformsIllustration,
 } from "./LandingIllustrations";
 import "./LandingMockPanel.css";
@@ -191,6 +193,9 @@ export const LandingMockPanel = memo(() => {
     openWebTo,
     browseTo,
     desktopReleaseUrl,
+    aiAbilities,
+    aiDailySuggestions,
+    phoneSystems,
     handlePrefetchApp,
   } = useLandingMockPanel();
   const { reviews, firstGaps, span } = useReviewTimeline();
@@ -275,10 +280,28 @@ export const LandingMockPanel = memo(() => {
       </section>
 
 
+      <FeatureRow id="lp-ai" title={t("landing.ai.title")} art={<AiIllustration />}>
+        <p>{t("landing.ai.text")}</p>
+        <ul className="lp-list">
+          {aiAbilities.map((ability) => (
+            <li key={ability.key} className={`lp-tone-${ability.tone}`}>
+              {t(`landing.ai.more.${ability.key}`)}
+            </li>
+          ))}
+        </ul>
+        <p className="lp-feature__note">
+          {t("landing.ai.note", { count: aiDailySuggestions })}
+        </p>
+        <Link to={openWebTo} className="lp-link" {...prefetchProps}>
+          {t("landing.ai.try")}
+        </Link>
+      </FeatureRow>
+
       <FeatureRow
         id="lp-memory"
         title={t("landing.memory.title")}
         art={<TimelineChart />}
+        isReversed
       >
         <p>
           {t("landing.memory.text", {
@@ -295,12 +318,16 @@ export const LandingMockPanel = memo(() => {
         id="lp-decks"
         title={t("landing.decks.title")}
         art={<DecksIllustration decks={exampleDecks} />}
-        isReversed
       >
         <p>{t("landing.decks.text")}</p>
       </FeatureRow>
 
-      <FeatureRow id="lp-hub" title={t("landing.hub.title")} art={<HubIllustration to={browseTo} deckName={hubExampleDeck} />}>
+      <FeatureRow
+        id="lp-hub"
+        title={t("landing.hub.title")}
+        art={<HubIllustration to={browseTo} deckName={hubExampleDeck} />}
+        isReversed
+      >
         <p>{t("landing.hub.text")}</p>
         <Link to={browseTo} className="lp-link" {...prefetchProps}>
           {t("landing.hub.browse")}
@@ -311,9 +338,28 @@ export const LandingMockPanel = memo(() => {
         id="lp-anywhere"
         title={t("landing.anywhere.title")}
         art={<PlatformsIllustration platforms={platforms} />}
-        isReversed
       >
         <p>{t("landing.anywhere.text")}</p>
+      </FeatureRow>
+
+      <FeatureRow
+        id="lp-phone"
+        title={t("landing.phone.title")}
+        art={<PhoneIllustration />}
+        isReversed
+      >
+        <p>{t("landing.phone.text")}</p>
+        <dl className="lp-steps">
+          {phoneSystems.map((system) => (
+            <div key={system}>
+              <dt>{t(`landing.phone.${system}.title`)}</dt>
+              <dd>{t(`landing.phone.${system}.text`)}</dd>
+            </div>
+          ))}
+        </dl>
+        <Link to={openWebTo} className="lp-link" {...prefetchProps}>
+          {t("landing.phone.open")}
+        </Link>
       </FeatureRow>
 
       <section className="lp-cta" aria-labelledby="lp-cta-title">

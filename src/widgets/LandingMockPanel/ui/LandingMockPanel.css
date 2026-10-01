@@ -26,6 +26,8 @@
   --lp-line: #e3e6ee;
   --lp-line-strong: #cfd4df;
   --lp-on-color: #ffffff;
+  /* The black of a phone's camera cut-out, in both themes. */
+  --lp-device: #1b2230;
 
   --lp-font: "Nunito Variable", "Sora", system-ui, sans-serif;
   --lp-width: 1080px;
@@ -52,6 +54,7 @@
   --lp-green-soft: #16392a;
   --lp-amber-soft: #3a2f12;
   --lp-red-soft: #3d1f24;
+  --lp-device: #060b15;
 }
 
 .lp :where(h1, h2, h3, p, ul, ol) {
@@ -1146,6 +1149,300 @@
   font-weight: 700;
 }
 
+/* AI assistant: the word as typed, and the rest of the card suggested
+   under it in the app's pencil blue, dashed until it is taken. */
+.lp-ai-art {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.lp-ai-card {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 22px;
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 6px;
+  border-radius: 22px;
+  background: var(--lp-surface);
+  transform: rotate(-1.5deg);
+}
+
+.lp-ai-card__label,
+.lp-ai-ghost__label {
+  color: var(--lp-ink-soft);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lp-ai-card__word {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--lp-line);
+  font-size: 1.7rem;
+  font-weight: 900;
+}
+
+.lp-ai-card__caret {
+  width: 3px;
+  height: 1.1em;
+  border-radius: 2px;
+  background: var(--lp-blue);
+  animation: lp-caret 1s steps(1) infinite;
+}
+
+@keyframes lp-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.lp-ai-ghost {
+  display: grid;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 2px dashed color-mix(in srgb, var(--lp-blue) 45%, transparent);
+  border-radius: 12px;
+  background: var(--lp-blue-soft);
+  color: var(--lp-ink);
+  font-weight: 700;
+}
+
+.lp-ai-ghost strong {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.lp-ai-ghost--row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-ai-ghost--example {
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.lp-ai-level,
+.lp-ai-tag {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.lp-ai-level {
+  background: var(--lp-amber-soft);
+  color: var(--lp-amber-edge);
+}
+
+.lp-ai-tag {
+  background: var(--lp-green-soft);
+  color: var(--lp-green-edge);
+}
+
+.lp-ai-tag::before {
+  content: "#";
+}
+
+.lp-ai-take {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border: 2px solid var(--tone-edge);
+  border-bottom-width: 5px;
+  border-radius: 14px;
+  background: var(--tone);
+  color: var(--lp-on-color);
+  font-weight: 900;
+  transform: rotate(2deg);
+}
+
+.lp-ai-take kbd {
+  padding: 2px 10px;
+  border-radius: 8px;
+  background: var(--lp-surface);
+  color: var(--lp-blue);
+  font-family: inherit;
+  font-weight: 900;
+}
+
+/* The suggestions arrive one after another when the section appears. */
+[data-revealed] .lp-ai-ghost {
+  animation: lp-ghost-in 420ms ease both;
+  animation-delay: calc(var(--g, 0) * 160ms + 350ms);
+}
+
+@keyframes lp-ghost-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* A short list in a feature's copy: a dot in a grade colour per line. */
+.lp-list {
+  display: grid;
+  gap: 10px;
+  max-width: 44ch;
+  padding: 0;
+  list-style: none;
+  color: var(--lp-ink);
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: start;
+}
+
+.lp-list li {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.lp-list li::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  margin-top: 0.3em;
+  border-radius: 4px;
+  background: var(--tone);
+}
+
+.lp-feature__copy .lp-feature__note {
+  font-size: 0.95rem;
+}
+
+/* Phone: the steps for each system, as plain rows. */
+.lp-steps {
+  display: grid;
+  max-width: 44ch;
+  margin: 0;
+  border-top: 2px solid var(--lp-line);
+  text-align: start;
+}
+
+.lp-steps > div {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 2px solid var(--lp-line);
+}
+
+.lp-steps dt {
+  font-weight: 900;
+}
+
+.lp-steps dd {
+  margin: 0;
+  color: var(--lp-ink-soft);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* A home screen, LioraLang among the other apps. */
+.lp-phone-art {
+  display: grid;
+  justify-items: center;
+}
+
+.lp-phone {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  width: min(100%, 290px);
+  padding: 14px 18px 18px;
+  border: 2px solid var(--lp-line-strong);
+  border-bottom-width: 7px;
+  border-radius: 40px;
+  background: var(--lp-bg);
+  box-shadow: inset 0 0 0 6px var(--lp-surface);
+  transform: rotate(2deg);
+}
+
+.lp-phone__notch {
+  justify-self: center;
+  width: 84px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--lp-device);
+}
+
+.lp-phone__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px 12px;
+}
+
+.lp-phone__app {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.lp-phone__icon {
+  width: 100%;
+  max-width: 52px;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: var(--tone-soft);
+}
+
+.lp-phone__name {
+  width: 70%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--lp-line);
+}
+
+.lp-phone__app--ours svg,
+.lp-phone__app--ours img {
+  width: 100%;
+  max-width: 52px;
+  height: auto;
+  border-radius: 14px;
+}
+
+.lp-phone__title {
+  font-size: 0.66rem;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.lp-phone__dock {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  justify-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 22px;
+  background: var(--lp-line);
+}
+
+.lp-phone__dock .lp-phone__icon {
+  background: var(--tone);
+}
+
+[data-revealed] .lp-phone__app--ours > :first-child {
+  animation: lp-pop 520ms var(--lp-spring) both;
+  animation-delay: 400ms;
+}
+
+@keyframes lp-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
 /* === Motion: reveal on scroll, lift on hover === */
 
 [data-reveal] {
@@ -1356,6 +1653,11 @@
     text-align: center;
   }
 
+  .lp-list,
+  .lp-steps {
+    width: 100%;
+  }
+
   .lp-demo__ratings {
     height: 104px;
   }
@@ -1417,7 +1719,10 @@
   .lp-demo__badge,
   .lp-demo__card,
   .lp-demo .srs-rating-controls__button,
-  [data-revealed] .lp-chart__bar {
+  [data-revealed] .lp-chart__bar,
+  [data-revealed] .lp-ai-ghost,
+  [data-revealed] .lp-phone__app--ours > :first-child,
+  .lp-ai-card__caret {
     animation: none;
   }
 

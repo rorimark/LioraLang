@@ -1,7 +1,7 @@
 export default {
   "meta": {
     "title": "LioraLang: flashcards e repetição espaçada que ficam de verdade",
-    "description": "Pare de esquecer palavras depois de uma revisão. Crie baralhos, estude com repetição espaçada e use o LioraLang no navegador, no computador ou na tela inicial do celular."
+    "description": "Pare de esquecer palavras depois de uma revisão. Crie baralhos com um assistente de IA, estude com repetição espaçada e use o LioraLang no navegador, no computador ou como app no celular."
   },
   "topbar": {
     "open": "Abrir o app web",
@@ -37,6 +37,23 @@ export default {
     "keysGrade": "{keys} avalia",
     "keysReveal": "{key} mostra a resposta",
     "spaceKey": "Espaço"
+  },
+  "ai": {
+    "title": "Digite uma palavra. Receba o cartão inteiro.",
+    "text": "Enquanto você digita, o assistente de IA sugere a tradução, o nível, a classe gramatical, uma frase de exemplo e tags. Aperte Tab para aceitar tudo ou fique só com o que quiser. Ele nunca substitui o que você escreveu.",
+    "more": {
+      "list": "Cole uma lista de palavras e cada linha volta preenchida.",
+      "topic": "Diga um tema e um nível e receba um baralho inteiro.",
+      "hint": "Errou um cartão? Receba um jeito curto de lembrar dele."
+    },
+    "note": {
+      "one": "Grátis com uma conta, até {count} sugestão por dia.",
+      "many": "Grátis com uma conta, até {count} sugestões por dia.",
+      "other": "Grátis com uma conta, até {count} sugestões por dia."
+    },
+    "try": "Experimentar o assistente",
+    "tag": "viagem",
+    "take": "aceitar tudo"
   },
   "memory": {
     "title": "Aprenda uma vez. Lembre por meses.",
@@ -100,6 +117,19 @@ export default {
       "title": "Celular",
       "text": "Adicionar à tela inicial"
     }
+  },
+  "phone": {
+    "title": "No celular, é um app.",
+    "text": "Adicione o LioraLang à tela inicial e ele abre como qualquer outro app: ícone próprio, tela cheia sem a barra do navegador, e funciona offline. Sem loja de apps, nada para baixar.",
+    "ios": {
+      "title": "iPhone e iPad",
+      "text": "Abra o app web no Safari, toque em “Compartilhar” e depois em “Adicionar à Tela de Início”."
+    },
+    "android": {
+      "title": "Android",
+      "text": "Abra o app web no Chrome, toque em ⋮ e depois em “Instalar app” ou “Adicionar à tela inicial”."
+    },
+    "open": "Abrir o app web"
   },
   "cta": {
     "title": "Sua primeira revisão leva um minuto."
