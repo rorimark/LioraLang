@@ -133,7 +133,7 @@ export default {
       },
       "different": {
         "q": "Qu'est-ce qui rend LioraLang meilleur que les autres applis de flashcards ?",
-        "a": "Il est fait pour les langues, pas pour n'importe quelle matière. Vous tapez un mot et la carte se remplit toute seule : traduction, exemple, niveau. Il s'ouvre dans le navigateur ou sur le téléphone, sans rien installer."
+        "a": "Il est fait pour apprendre les langues. Vous tapez un mot et la carte se remplit toute seule : traduction, exemple, niveau. Chaque révision arrive au bon moment, et tout s'ouvre dans le navigateur ou sur le téléphone sans installation."
       },
       "srs": {
         "q": "Qu'est-ce que la répétition espacée ?",

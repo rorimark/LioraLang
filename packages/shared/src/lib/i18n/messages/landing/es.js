@@ -133,7 +133,7 @@ export default {
       },
       "different": {
         "q": "¿Qué hace a LioraLang mejor que otras apps de tarjetas?",
-        "a": "Está hecho para idiomas, no para cualquier materia. Escribes una palabra y la tarjeta se rellena sola: traducción, ejemplo, nivel. Se abre en el navegador o en el móvil, sin instalar nada."
+        "a": "Está hecho para aprender idiomas. Escribes una palabra y la tarjeta se rellena sola: traducción, ejemplo, nivel. Cada repaso llega en el momento justo y todo se abre en el navegador o en el móvil sin instalar nada."
       },
       "srs": {
         "q": "¿Qué es el repaso espaciado?",

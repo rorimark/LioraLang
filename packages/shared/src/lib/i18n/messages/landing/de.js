@@ -127,7 +127,7 @@ export default {
       },
       "different": {
         "q": "Was macht LioraLang besser als andere Karteikarten-Apps?",
-        "a": "Es ist für Sprachen gemacht, nicht für jedes Fach. Du tippst ein Wort und die Karte füllt sich selbst: Übersetzung, Beispiel, Niveau. Es öffnet sich im Browser oder auf dem Handy, ohne Installation."
+        "a": "Es ist zum Sprachenlernen gemacht. Du tippst ein Wort und die Karte füllt sich selbst: Übersetzung, Beispiel, Niveau. Jede Wiederholung kommt zur richtigen Zeit, und alles öffnet sich im Browser oder auf dem Handy ohne Installation."
       },
       "srs": {
         "q": "Was ist verteilte Wiederholung?",

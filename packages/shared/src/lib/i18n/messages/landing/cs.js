@@ -133,7 +133,7 @@ export default {
       },
       "different": {
         "q": "Čím je LioraLang lepší než jiné aplikace s kartičkami?",
-        "a": "Je stavěný pro jazyky, ne na cokoli. Napíšete slovo a kartička se vyplní sama: překlad, příklad, úroveň. Otevře se v prohlížeči nebo v telefonu, nic se neinstaluje."
+        "a": "Je stavěný na učení jazyků. Napíšete slovo a kartička se vyplní sama: překlad, příklad, úroveň. Každé opakování přijde včas a vše se otevře v prohlížeči nebo v telefonu bez instalace."
       },
       "srs": {
         "q": "Co je opakování v rozestupech?",

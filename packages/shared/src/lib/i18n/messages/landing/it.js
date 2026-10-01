@@ -133,7 +133,7 @@ export default {
       },
       "different": {
         "q": "Cosa rende LioraLang migliore di altre app di flashcard?",
-        "a": "È fatto per le lingue, non per qualsiasi materia. Scrivi una parola e la carta si compila da sola: traduzione, esempio, livello. Si apre nel browser o sul telefono, senza installare nulla."
+        "a": "È fatto per imparare le lingue. Scrivi una parola e la carta si compila da sola: traduzione, esempio, livello. Ogni ripasso arriva al momento giusto e tutto si apre nel browser o sul telefono senza installare nulla."
       },
       "srs": {
         "q": "Cos'è la ripetizione dilazionata?",

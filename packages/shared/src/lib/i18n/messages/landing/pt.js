@@ -133,7 +133,7 @@ export default {
       },
       "different": {
         "q": "O que torna o LioraLang melhor que outros apps de flashcards?",
-        "a": "Ele foi feito para idiomas, não para qualquer assunto. Você digita uma palavra e o cartão se preenche sozinho: tradução, exemplo, nível. Abre no navegador ou no celular, sem instalar nada."
+        "a": "Ele foi feito para aprender idiomas. Você digita uma palavra e o cartão se preenche sozinho: tradução, exemplo, nível. Cada revisão chega na hora certa e tudo abre no navegador ou no celular sem instalar nada."
       },
       "srs": {
         "q": "O que é repetição espaçada?",

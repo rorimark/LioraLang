@@ -129,7 +129,7 @@ export default {
       },
       "different": {
         "q": "What makes LioraLang better than other flashcard apps?",
-        "a": "It's made for languages, not for any subject. Type a word and the card fills itself in: translation, example, level. It opens in your browser or on your phone, with nothing to install."
+        "a": "It's made for learning languages. Type a word and the card fills itself in: translation, example, level. Every review comes at the right moment, and it opens in your browser or on your phone with nothing to install."
       },
       "srs": {
         "q": "What is spaced repetition?",

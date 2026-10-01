@@ -139,7 +139,7 @@ export default {
       },
       "different": {
         "q": "Czym LioraLang wyróżnia się na tle innych aplikacji z fiszkami?",
-        "a": "Powstał dla języków, a nie do wszystkiego. Wpisujesz słowo, a fiszka wypełnia się sama: tłumaczenie, przykład, poziom. Otwiera się w przeglądarce lub w telefonie, nic nie trzeba instalować."
+        "a": "Powstał do nauki języków. Wpisujesz słowo, a fiszka wypełnia się sama: tłumaczenie, przykład, poziom. Każda powtórka przychodzi w porę, a całość otwiera się w przeglądarce lub w telefonie bez instalacji."
       },
       "srs": {
         "q": "Czym są powtórki w odstępach?",

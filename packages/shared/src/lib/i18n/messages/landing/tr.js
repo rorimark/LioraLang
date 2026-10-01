@@ -127,7 +127,7 @@ export default {
       },
       "different": {
         "q": "LioraLang'i diğer kart uygulamalarından daha iyi yapan ne?",
-        "a": "Her konu için değil, diller için yapıldı. Bir kelime yazarsınız, kart kendiliğinden dolar: çeviri, örnek, seviye. Tarayıcıda ya da telefonda açılır, kurulum gerekmez."
+        "a": "Dil öğrenmek için yapıldı. Bir kelime yazarsınız, kart kendiliğinden dolar: çeviri, örnek, seviye. Her tekrar tam zamanında gelir ve her şey kurulum olmadan tarayıcıda ya da telefonda açılır."
       },
       "srs": {
         "q": "Aralıklı tekrar nedir?",
