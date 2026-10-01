@@ -41,18 +41,7 @@ export default {
   },
   "ai": {
     "title": "Wpisz słowo. Dostań całą fiszkę.",
-    "text": "Gdy piszesz, asystent AI podpowiada tłumaczenie, poziom, część mowy, przykładowe zdanie i tagi. Naciśnij Tab, żeby wziąć wszystko, albo zostaw tylko to, co chcesz. Nigdy nie zastępuje tego, co napisałeś.",
-    "more": {
-      "list": "Wklej listę słów, a każdy wiersz wróci uzupełniony.",
-      "topic": "Podaj temat i poziom, a dostaniesz gotową talię.",
-      "hint": "Pomyłka przy fiszce? Dostaniesz krótki sposób, jak ją zapamiętać."
-    },
-    "note": {
-      "one": "Za darmo z kontem, do {count} podpowiedzi dziennie.",
-      "few": "Za darmo z kontem, do {count} podpowiedzi dziennie.",
-      "many": "Za darmo z kontem, do {count} podpowiedzi dziennie.",
-      "other": "Za darmo z kontem, do {count} podpowiedzi dziennie."
-    },
+    "text": "Tłumaczenie, przykład, poziom i tagi pojawiają się, gdy piszesz. Tab bierze wszystko.",
     "try": "Wypróbuj asystenta",
     "tag": "podróże",
     "take": "weź wszystko"
@@ -127,14 +116,14 @@ export default {
   },
   "phone": {
     "title": "W telefonie to aplikacja.",
-    "text": "Dodaj LioraLang do ekranu głównego, a otworzy się jak każda inna aplikacja: własna ikona, pełny ekran bez paska przeglądarki i działanie offline. Bez sklepu i bez pobierania.",
+    "text": "Dodaj do ekranu głównego: własna ikona, pełny ekran, działa offline.",
     "ios": {
       "title": "iPhone i iPad",
-      "text": "Otwórz aplikację webową w Safari, stuknij „Udostępnij”, a potem „Do ekranu początkowego”."
+      "text": "Safari → Udostępnij → Do ekranu początkowego"
     },
     "android": {
       "title": "Android",
-      "text": "Otwórz aplikację webową w Chrome, stuknij ⋮, a potem „Zainstaluj aplikację” lub „Dodaj do ekranu głównego”."
+      "text": "Chrome → ⋮ → Zainstaluj aplikację"
     },
     "open": "Otwórz aplikację webową"
   },

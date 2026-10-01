@@ -41,16 +41,7 @@ export default {
   },
   "ai": {
     "title": "Type a word. Get the whole card.",
-    "text": "As you type, the AI assistant suggests the translation, level, part of speech, an example sentence and tags. Press Tab to take it all, or keep only what you like. It never replaces what you wrote.",
-    "more": {
-      "list": "Paste a list of words and every line comes back filled in.",
-      "topic": "Name a topic and a level, and get a whole deck to review.",
-      "hint": "Missed a card? Get a short way to remember it."
-    },
-    "note": {
-      "one": "Free with an account, up to {count} suggestion a day.",
-      "other": "Free with an account, up to {count} suggestions a day."
-    },
+    "text": "Translation, example, level and tags fill in as you type. Tab takes it all.",
     "try": "Try the assistant",
     "tag": "travel",
     "take": "take all"
@@ -115,14 +106,14 @@ export default {
   },
   "phone": {
     "title": "On your phone, it’s an app.",
-    "text": "Add LioraLang to your home screen and it opens like any other app: its own icon, full screen, no browser bar, and it keeps working offline. No app store, nothing to download.",
+    "text": "Add it to your home screen: its own icon, full screen, works offline.",
     "ios": {
       "title": "iPhone and iPad",
-      "text": "Open the web app in Safari, tap Share, then “Add to Home Screen”."
+      "text": "Safari → Share → Add to Home Screen"
     },
     "android": {
       "title": "Android",
-      "text": "Open the web app in Chrome, tap ⋮, then “Install app” or “Add to Home screen”."
+      "text": "Chrome → ⋮ → Install app"
     },
     "open": "Open the web app"
   },

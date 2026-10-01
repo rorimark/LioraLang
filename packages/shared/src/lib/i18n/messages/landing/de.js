@@ -39,16 +39,7 @@ export default {
   },
   "ai": {
     "title": "Ein Wort tippen. Die ganze Karte bekommen.",
-    "text": "Während du tippst, schlägt der KI-Assistent Übersetzung, Niveau, Wortart, einen Beispielsatz und Tags vor. Mit Tab übernimmst du alles, oder du behältst nur, was du willst. Was du selbst geschrieben hast, ersetzt er nie.",
-    "more": {
-      "list": "Füge eine Wortliste ein, und jede Zeile kommt ausgefüllt zurück.",
-      "topic": "Nenne ein Thema und ein Niveau und bekomme einen ganzen Stapel.",
-      "hint": "Karte nicht gewusst? Du bekommst eine kurze Merkhilfe."
-    },
-    "note": {
-      "one": "Kostenlos mit Konto, bis zu {count} Vorschlag am Tag.",
-      "other": "Kostenlos mit Konto, bis zu {count} Vorschläge am Tag."
-    },
+    "text": "Übersetzung, Beispiel, Niveau und Tags erscheinen, während du tippst. Tab übernimmt alles.",
     "try": "Assistenten ausprobieren",
     "tag": "Reisen",
     "take": "alles übernehmen"
@@ -113,14 +104,14 @@ export default {
   },
   "phone": {
     "title": "Auf dem Handy ist es eine App.",
-    "text": "Füge LioraLang zum Home-Bildschirm hinzu, und es öffnet sich wie jede andere App: eigenes Symbol, ganzer Bildschirm ohne Browserleiste, und es funktioniert offline. Kein App Store, nichts herunterzuladen.",
+    "text": "Leg es auf den Home-Bildschirm: eigenes Symbol, Vollbild, funktioniert offline.",
     "ios": {
       "title": "iPhone und iPad",
-      "text": "Öffne die Web-App in Safari, tippe auf „Teilen“ und dann auf „Zum Home-Bildschirm“."
+      "text": "Safari → Teilen → Zum Home-Bildschirm"
     },
     "android": {
       "title": "Android",
-      "text": "Öffne die Web-App in Chrome, tippe auf ⋮ und dann auf „App installieren“ oder „Zum Startbildschirm hinzufügen“."
+      "text": "Chrome → ⋮ → App installieren"
     },
     "open": "Web-App öffnen"
   },

@@ -40,18 +40,7 @@ export default {
   },
   "ai": {
     "title": "Napište slovo. Dostanete celou kartičku.",
-    "text": "Zatímco píšete, asistent AI navrhne překlad, úroveň, slovní druh, příkladovou větu a štítky. Stiskněte Tab a vezměte vše, nebo si nechte jen to, co chcete. Nikdy nepřepíše, co jste napsali.",
-    "more": {
-      "list": "Vložte seznam slov a každý řádek se vrátí vyplněný.",
-      "topic": "Zadejte téma a úroveň a dostanete celý balíček.",
-      "hint": "Spletli jste si kartičku? Dostanete krátký tip, jak si ji zapamatovat."
-    },
-    "note": {
-      "one": "Zdarma s účtem, až {count} návrh denně.",
-      "few": "Zdarma s účtem, až {count} návrhy denně.",
-      "many": "Zdarma s účtem, až {count} návrhu denně.",
-      "other": "Zdarma s účtem, až {count} návrhů denně."
-    },
+    "text": "Překlad, příklad, úroveň a štítky se doplní, zatímco píšete. Tab vezme vše.",
     "try": "Vyzkoušet asistenta",
     "tag": "cestování",
     "take": "vzít vše"
@@ -121,14 +110,14 @@ export default {
   },
   "phone": {
     "title": "V telefonu je to aplikace.",
-    "text": "Přidejte si LioraLang na plochu a otevře se jako každá jiná aplikace: vlastní ikona, celá obrazovka bez lišty prohlížeče a funguje i offline. Žádný obchod, nic ke stažení.",
+    "text": "Přidejte si ji na plochu: vlastní ikona, celá obrazovka, funguje offline.",
     "ios": {
       "title": "iPhone a iPad",
-      "text": "Otevřete webovou aplikaci v Safari, klepněte na „Sdílet“ a pak na „Přidat na plochu“."
+      "text": "Safari → Sdílet → Přidat na plochu"
     },
     "android": {
       "title": "Android",
-      "text": "Otevřete webovou aplikaci v Chrome, klepněte na ⋮ a pak na „Nainstalovat aplikaci“ nebo „Přidat na plochu“."
+      "text": "Chrome → ⋮ → Nainstalovat aplikaci"
     },
     "open": "Otevřít webovou aplikaci"
   },

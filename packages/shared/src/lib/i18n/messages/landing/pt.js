@@ -40,17 +40,7 @@ export default {
   },
   "ai": {
     "title": "Digite uma palavra. Receba o cartão inteiro.",
-    "text": "Enquanto você digita, o assistente de IA sugere a tradução, o nível, a classe gramatical, uma frase de exemplo e tags. Aperte Tab para aceitar tudo ou fique só com o que quiser. Ele nunca substitui o que você escreveu.",
-    "more": {
-      "list": "Cole uma lista de palavras e cada linha volta preenchida.",
-      "topic": "Diga um tema e um nível e receba um baralho inteiro.",
-      "hint": "Errou um cartão? Receba um jeito curto de lembrar dele."
-    },
-    "note": {
-      "one": "Grátis com uma conta, até {count} sugestão por dia.",
-      "many": "Grátis com uma conta, até {count} sugestões por dia.",
-      "other": "Grátis com uma conta, até {count} sugestões por dia."
-    },
+    "text": "Tradução, exemplo, nível e tags aparecem enquanto você digita. Tab aceita tudo.",
     "try": "Experimentar o assistente",
     "tag": "viagem",
     "take": "aceitar tudo"
@@ -120,14 +110,14 @@ export default {
   },
   "phone": {
     "title": "No celular, é um app.",
-    "text": "Adicione o LioraLang à tela inicial e ele abre como qualquer outro app: ícone próprio, tela cheia sem a barra do navegador, e funciona offline. Sem loja de apps, nada para baixar.",
+    "text": "Adicione à tela inicial: ícone próprio, tela cheia, funciona offline.",
     "ios": {
       "title": "iPhone e iPad",
-      "text": "Abra o app web no Safari, toque em “Compartilhar” e depois em “Adicionar à Tela de Início”."
+      "text": "Safari → Compartilhar → Adicionar à Tela de Início"
     },
     "android": {
       "title": "Android",
-      "text": "Abra o app web no Chrome, toque em ⋮ e depois em “Instalar app” ou “Adicionar à tela inicial”."
+      "text": "Chrome → ⋮ → Instalar app"
     },
     "open": "Abrir o app web"
   },

@@ -40,17 +40,7 @@ export default {
   },
   "ai": {
     "title": "Scrivi una parola. Ottieni tutta la carta.",
-    "text": "Mentre scrivi, l'assistente IA suggerisce traduzione, livello, parte del discorso, una frase d'esempio e tag. Premi Tab per prendere tutto, o tieni solo quello che ti serve. Non sostituisce mai quello che hai scritto tu.",
-    "more": {
-      "list": "Incolla un elenco di parole e ogni riga torna compilata.",
-      "topic": "Indica un tema e un livello e ricevi un mazzo intero.",
-      "hint": "Hai sbagliato una carta? Ricevi un modo breve per ricordarla."
-    },
-    "note": {
-      "one": "Gratis con un account, fino a {count} suggerimento al giorno.",
-      "many": "Gratis con un account, fino a {count} suggerimenti al giorno.",
-      "other": "Gratis con un account, fino a {count} suggerimenti al giorno."
-    },
+    "text": "Traduzione, esempio, livello e tag compaiono mentre scrivi. Tab prende tutto.",
     "try": "Prova l'assistente",
     "tag": "viaggi",
     "take": "prendi tutto"
@@ -120,14 +110,14 @@ export default {
   },
   "phone": {
     "title": "Sul telefono è un'app.",
-    "text": "Aggiungi LioraLang alla schermata Home e si apre come qualsiasi altra app: con la sua icona, a schermo intero senza la barra del browser, e funziona anche offline. Niente store, niente da scaricare.",
+    "text": "Aggiungila alla schermata Home: icona propria, schermo intero, funziona offline.",
     "ios": {
       "title": "iPhone e iPad",
-      "text": "Apri l'app web in Safari, tocca «Condividi», poi «Aggiungi alla schermata Home»."
+      "text": "Safari → Condividi → Aggiungi alla schermata Home"
     },
     "android": {
       "title": "Android",
-      "text": "Apri l'app web in Chrome, tocca ⋮, poi «Installa app» o «Aggiungi a schermata Home»."
+      "text": "Chrome → ⋮ → Installa app"
     },
     "open": "Apri l'app web"
   },

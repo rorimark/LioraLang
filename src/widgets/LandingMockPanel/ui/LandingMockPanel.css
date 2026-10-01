@@ -1206,28 +1206,39 @@
   display: grid;
   gap: 2px;
   padding: 8px 12px;
-  border: 2px dashed color-mix(in srgb, var(--lp-blue) 45%, transparent);
+  border: 2px dashed var(--lp-line-strong);
   border-radius: 12px;
-  background: var(--lp-blue-soft);
-  color: var(--lp-ink);
+  color: var(--lp-ink-soft);
   font-weight: 700;
 }
 
-.lp-ai-ghost strong {
-  font-size: 1.15rem;
-  font-weight: 900;
+/* The translation is what the eye should land on. */
+.lp-ai-ghost--main {
+  padding: 12px 14px;
+  border-color: color-mix(in srgb, var(--lp-blue) 55%, transparent);
+  background: var(--lp-blue-soft);
+  color: var(--lp-ink);
 }
 
-.lp-ai-ghost--row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+.lp-ai-ghost--main strong {
+  color: var(--lp-blue);
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
 .lp-ai-ghost--example {
   font-style: italic;
   line-height: 1.4;
+}
+
+.lp-ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--lp-ink-soft);
+  font-weight: 700;
 }
 
 .lp-ai-level,
@@ -1276,7 +1287,7 @@
 }
 
 /* The suggestions arrive one after another when the section appears. */
-[data-revealed] .lp-ai-ghost {
+[data-revealed] :is(.lp-ai-ghost, .lp-ai-chips) {
   animation: lp-ghost-in 420ms ease both;
   animation-delay: calc(var(--g, 0) * 160ms + 350ms);
 }
@@ -1288,63 +1299,31 @@
   }
 }
 
-/* A short list in a feature's copy: a dot in a grade colour per line. */
-.lp-list {
-  display: grid;
-  gap: 10px;
-  max-width: 44ch;
-  padding: 0;
-  list-style: none;
-  color: var(--lp-ink);
-  font-weight: 700;
-  line-height: 1.45;
-  text-align: start;
-}
-
-.lp-list li {
-  display: grid;
-  grid-template-columns: 12px minmax(0, 1fr);
-  gap: 12px;
-}
-
-.lp-list li::before {
-  content: "";
-  width: 12px;
-  height: 12px;
-  margin-top: 0.3em;
-  border-radius: 4px;
-  background: var(--tone);
-}
-
-.lp-feature__copy .lp-feature__note {
-  font-size: 0.95rem;
-}
-
-/* Phone: the steps for each system, as plain rows. */
+/* Phone: where to tap on each system, one short line each. */
 .lp-steps {
   display: grid;
+  gap: 8px;
   max-width: 44ch;
   margin: 0;
-  border-top: 2px solid var(--lp-line);
   text-align: start;
 }
 
 .lp-steps > div {
-  display: grid;
-  gap: 2px;
-  padding: 12px 0;
-  border-bottom: 2px solid var(--lp-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
 }
 
 .lp-steps dt {
+  min-width: 7.5em;
   font-weight: 900;
 }
 
 .lp-steps dd {
   margin: 0;
   color: var(--lp-ink-soft);
-  font-weight: 600;
-  line-height: 1.5;
+  font-weight: 700;
 }
 
 /* A home screen, LioraLang among the other apps. */
@@ -1653,9 +1632,12 @@
     text-align: center;
   }
 
-  .lp-list,
-  .lp-steps {
-    width: 100%;
+  .lp-steps > div {
+    justify-content: center;
+  }
+
+  .lp-steps dt {
+    min-width: 0;
   }
 
   .lp-demo__ratings {
@@ -1720,7 +1702,7 @@
   .lp-demo__card,
   .lp-demo .srs-rating-controls__button,
   [data-revealed] .lp-chart__bar,
-  [data-revealed] .lp-ai-ghost,
+  [data-revealed] :is(.lp-ai-ghost, .lp-ai-chips),
   [data-revealed] .lp-phone__app--ours > :first-child,
   .lp-ai-card__caret {
     animation: none;

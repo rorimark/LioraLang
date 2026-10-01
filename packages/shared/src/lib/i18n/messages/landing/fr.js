@@ -40,17 +40,7 @@ export default {
   },
   "ai": {
     "title": "Tapez un mot. Obtenez toute la carte.",
-    "text": "Pendant que vous tapez, l'assistant IA propose la traduction, le niveau, la nature du mot, une phrase d'exemple et des étiquettes. Appuyez sur Tab pour tout prendre, ou gardez seulement ce qui vous plaît. Il ne remplace jamais ce que vous avez écrit.",
-    "more": {
-      "list": "Collez une liste de mots, et chaque ligne revient remplie.",
-      "topic": "Indiquez un thème et un niveau, et recevez un paquet entier.",
-      "hint": "Une carte ratée ? Recevez une astuce courte pour la retenir."
-    },
-    "note": {
-      "one": "Gratuit avec un compte, jusqu'à {count} suggestion par jour.",
-      "many": "Gratuit avec un compte, jusqu'à {count} suggestions par jour.",
-      "other": "Gratuit avec un compte, jusqu'à {count} suggestions par jour."
-    },
+    "text": "Traduction, exemple, niveau et étiquettes arrivent pendant que vous tapez. Tab prend tout.",
     "try": "Essayer l'assistant",
     "tag": "voyage",
     "take": "tout prendre"
@@ -120,14 +110,14 @@ export default {
   },
   "phone": {
     "title": "Sur votre téléphone, c'est une app.",
-    "text": "Ajoutez LioraLang à l'écran d'accueil et il s'ouvre comme n'importe quelle app : sa propre icône, plein écran sans barre de navigateur, et il fonctionne hors ligne. Pas de boutique, rien à télécharger.",
+    "text": "Ajoutez-la à l'écran d'accueil : sa propre icône, plein écran, fonctionne hors ligne.",
     "ios": {
       "title": "iPhone et iPad",
-      "text": "Ouvrez l'app web dans Safari, touchez « Partager », puis « Sur l'écran d'accueil »."
+      "text": "Safari → Partager → Sur l'écran d'accueil"
     },
     "android": {
       "title": "Android",
-      "text": "Ouvrez l'app web dans Chrome, touchez ⋮, puis « Installer l'application » ou « Ajouter à l'écran d'accueil »."
+      "text": "Chrome → ⋮ → Installer l'application"
     },
     "open": "Ouvrir l'app web"
   },

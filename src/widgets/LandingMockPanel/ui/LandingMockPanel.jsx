@@ -193,8 +193,6 @@ export const LandingMockPanel = memo(() => {
     openWebTo,
     browseTo,
     desktopReleaseUrl,
-    aiAbilities,
-    aiDailySuggestions,
     phoneSystems,
     handlePrefetchApp,
   } = useLandingMockPanel();
@@ -282,16 +280,6 @@ export const LandingMockPanel = memo(() => {
 
       <FeatureRow id="lp-ai" title={t("landing.ai.title")} art={<AiIllustration />}>
         <p>{t("landing.ai.text")}</p>
-        <ul className="lp-list">
-          {aiAbilities.map((ability) => (
-            <li key={ability.key} className={`lp-tone-${ability.tone}`}>
-              {t(`landing.ai.more.${ability.key}`)}
-            </li>
-          ))}
-        </ul>
-        <p className="lp-feature__note">
-          {t("landing.ai.note", { count: aiDailySuggestions })}
-        </p>
         <Link to={openWebTo} className="lp-link" {...prefetchProps}>
           {t("landing.ai.try")}
         </Link>

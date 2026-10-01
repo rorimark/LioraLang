@@ -39,16 +39,7 @@ export default {
   },
   "ai": {
     "title": "Bir kelime yazın. Kartın tamamını alın.",
-    "text": "Siz yazarken yapay zekâ asistanı çeviriyi, seviyeyi, sözcük türünü, bir örnek cümleyi ve etiketleri önerir. Hepsini almak için Tab'a basın ya da yalnızca istediklerinizi tutun. Sizin yazdığınızı asla değiştirmez.",
-    "more": {
-      "list": "Bir kelime listesi yapıştırın, her satır doldurulmuş olarak gelsin.",
-      "topic": "Bir konu ve seviye söyleyin, koca bir deste alın.",
-      "hint": "Bir kartı mı bilemediniz? Onu hatırlamanın kısa bir yolunu alın."
-    },
-    "note": {
-      "one": "Hesapla ücretsiz, günde en fazla {count} öneri.",
-      "other": "Hesapla ücretsiz, günde en fazla {count} öneri."
-    },
+    "text": "Siz yazarken çeviri, örnek, seviye ve etiketler gelir. Tab hepsini alır.",
     "try": "Asistanı deneyin",
     "tag": "seyahat",
     "take": "hepsini al"
@@ -113,14 +104,14 @@ export default {
   },
   "phone": {
     "title": "Telefonunuzda bir uygulama.",
-    "text": "LioraLang'i ana ekranınıza ekleyin, diğer uygulamalar gibi açılsın: kendi simgesi, tarayıcı çubuğu olmadan tam ekran ve çevrimdışı da çalışır. Mağaza yok, indirilecek bir şey yok.",
+    "text": "Ana ekranınıza ekleyin: kendi simgesi, tam ekran, çevrimdışı çalışır.",
     "ios": {
       "title": "iPhone ve iPad",
-      "text": "Web uygulamasını Safari'de açın, “Paylaş”a, ardından “Ana Ekrana Ekle”ye dokunun."
+      "text": "Safari → Paylaş → Ana Ekrana Ekle"
     },
     "android": {
       "title": "Android",
-      "text": "Web uygulamasını Chrome'da açın, ⋮ simgesine, ardından “Uygulamayı yükle” ya da “Ana ekrana ekle”ye dokunun."
+      "text": "Chrome → ⋮ → Uygulamayı yükle"
     },
     "open": "Web uygulamasını aç"
   },

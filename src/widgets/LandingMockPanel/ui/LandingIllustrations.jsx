@@ -169,18 +169,16 @@ export const AiIllustration = memo(() => {
           {word.source}
           <span className="lp-ai-card__caret" />
         </span>
-        <span className="lp-ai-ghost" style={{ "--g": 0 }}>
+        <span className="lp-ai-ghost lp-ai-ghost--main" style={{ "--g": 0 }}>
           <span className="lp-ai-ghost__label">{languageName(deck.targetLanguage)}</span>
           <strong>{word.target}</strong>
         </span>
-        <span className="lp-ai-ghost lp-ai-ghost--row" style={{ "--g": 1 }}>
-          <span>{partOfSpeechName("noun")}</span>
-          <span className="lp-ai-level">{word.level}</span>
-        </span>
-        <span className="lp-ai-ghost lp-ai-ghost--example" style={{ "--g": 2 }}>
+        <span className="lp-ai-ghost lp-ai-ghost--example" style={{ "--g": 1 }}>
           {word.example}
         </span>
-        <span className="lp-ai-ghost lp-ai-ghost--row" style={{ "--g": 3 }}>
+        <span className="lp-ai-chips" style={{ "--g": 2 }}>
+          <span>{partOfSpeechName("noun")}</span>
+          <span className="lp-ai-level">{word.level}</span>
           <span className="lp-ai-tag">{t("landing.ai.tag")}</span>
         </span>
       </span>
