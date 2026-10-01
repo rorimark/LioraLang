@@ -127,7 +127,7 @@ export default {
       },
       "anki": {
         "q": "Anki'den farkı ne?",
-        "a": "Fikir aynı, aralıklı tekrar; ama ayarlanacak bir şey yok: desteler dillerini, seviyelerini ve örneklerini bilir, yapay zekâ asistanı kartları doldurur ve her şey kurulum olmadan her tarayıcıda ve telefonda çalışır."
+        "a": "İkisi de aralıklı tekrar kullanır. LioraLang baştan diller için tasarlandı: desteler dil çiftini, seviyeleri ve örnekleri bilir, yapay zekâ asistanı kartları sizin için doldurur ve her şey kurulum olmadan her tarayıcıda ya da telefonda açılır."
       },
       "srs": {
         "q": "Aralıklı tekrar nedir?",

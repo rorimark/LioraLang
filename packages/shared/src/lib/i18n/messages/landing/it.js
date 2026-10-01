@@ -133,7 +133,7 @@ export default {
       },
       "anki": {
         "q": "In cosa è diverso da Anki?",
-        "a": "L'idea è la stessa, la ripetizione dilazionata, ma non c'è nulla da configurare: i mazzi conoscono lingue, livelli ed esempi, l'assistente IA compila le carte e tutto funziona in qualsiasi browser e sul telefono senza installare nulla."
+        "a": "Entrambi usano la ripetizione dilazionata. LioraLang è pensato per le lingue fin dall'inizio: i mazzi conoscono la coppia di lingue, i livelli e gli esempi, l'assistente IA compila le carte per te e tutto si apre in qualsiasi browser o sul telefono senza installare nulla."
       },
       "srs": {
         "q": "Cos'è la ripetizione dilazionata?",

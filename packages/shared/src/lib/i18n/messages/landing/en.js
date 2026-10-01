@@ -129,7 +129,7 @@ export default {
       },
       "anki": {
         "q": "How is it different from Anki?",
-        "a": "The idea is the same, spaced repetition, but there is nothing to set up: decks know their languages, levels and examples, the AI assistant fills in cards, and it runs in any browser and on your phone without installing anything."
+        "a": "Both use spaced repetition. LioraLang is built for languages from the start: decks know their language pair, levels and examples, the AI assistant fills in cards for you, and it opens in any browser or on your phone with no install."
       },
       "srs": {
         "q": "What is spaced repetition?",

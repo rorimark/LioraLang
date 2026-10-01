@@ -133,7 +133,7 @@ export default {
       },
       "anki": {
         "q": "Čím se liší od Anki?",
-        "a": "Myšlenka je stejná, opakování v rozestupech, ale nic se nenastavuje: balíčky znají své jazyky, úrovně a příklady, asistent AI vyplní kartičky a vše běží v libovolném prohlížeči i v telefonu bez instalace."
+        "a": "Oba stojí na opakování v rozestupech. LioraLang je od začátku stavěný pro jazyky: balíčky znají svou dvojici jazyků, úrovně i příklady, asistent AI za vás vyplní kartičky a vše se otevře v libovolném prohlížeči nebo v telefonu bez instalace."
       },
       "srs": {
         "q": "Co je opakování v rozestupech?",

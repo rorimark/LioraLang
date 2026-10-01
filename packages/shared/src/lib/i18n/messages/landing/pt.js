@@ -133,7 +133,7 @@ export default {
       },
       "anki": {
         "q": "Qual a diferença para o Anki?",
-        "a": "A ideia é a mesma, repetição espaçada, mas não há nada para configurar: os baralhos conhecem seus idiomas, níveis e exemplos, o assistente de IA preenche os cartões e tudo funciona em qualquer navegador e no celular sem instalar nada."
+        "a": "Os dois usam repetição espaçada. O LioraLang foi feito para idiomas desde o início: os baralhos conhecem o par de idiomas, os níveis e os exemplos, o assistente de IA preenche os cartões por você e tudo abre em qualquer navegador ou no celular sem instalar nada."
       },
       "srs": {
         "q": "O que é repetição espaçada?",

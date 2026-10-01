@@ -133,7 +133,7 @@ export default {
       },
       "anki": {
         "q": "¿En qué se diferencia de Anki?",
-        "a": "La idea es la misma, el repaso espaciado, pero no hay nada que configurar: los mazos conocen sus idiomas, niveles y ejemplos, el asistente de IA rellena las tarjetas y todo funciona en cualquier navegador y en el móvil sin instalar nada."
+        "a": "Ambos usan repaso espaciado. LioraLang está hecho para idiomas desde el principio: los mazos conocen su par de idiomas, niveles y ejemplos, el asistente de IA rellena las tarjetas por ti y todo se abre en cualquier navegador o en el móvil sin instalar nada."
       },
       "srs": {
         "q": "¿Qué es el repaso espaciado?",

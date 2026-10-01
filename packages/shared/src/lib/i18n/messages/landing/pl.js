@@ -139,7 +139,7 @@ export default {
       },
       "anki": {
         "q": "Czym różni się od Anki?",
-        "a": "Idea jest ta sama, powtórki w odstępach, ale nie trzeba nic ustawiać: talie znają swoje języki, poziomy i przykłady, asystent AI wypełnia fiszki, a całość działa w każdej przeglądarce i w telefonie bez instalacji."
+        "a": "Oba opierają się na powtórkach w odstępach. LioraLang od początku powstał z myślą o językach: talie znają parę języków, poziomy i przykłady, asystent AI sam wypełnia fiszki, a całość otwiera się w każdej przeglądarce i w telefonie bez instalacji."
       },
       "srs": {
         "q": "Czym są powtórki w odstępach?",

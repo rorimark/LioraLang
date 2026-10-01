@@ -127,7 +127,7 @@ export default {
       },
       "anki": {
         "q": "Was ist anders als bei Anki?",
-        "a": "Die Idee ist dieselbe, verteilte Wiederholung, aber es gibt nichts einzurichten: Stapel kennen ihre Sprachen, Niveaus und Beispiele, der KI-Assistent füllt Karten aus, und alles läuft in jedem Browser und auf dem Handy ohne Installation."
+        "a": "Beide nutzen verteilte Wiederholung. LioraLang ist von Grund auf für Sprachen gebaut: Stapel kennen ihr Sprachpaar, Niveaus und Beispiele, der KI-Assistent füllt Karten für dich aus, und alles öffnet sich in jedem Browser oder auf dem Handy ohne Installation."
       },
       "srs": {
         "q": "Was ist verteilte Wiederholung?",

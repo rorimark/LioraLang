@@ -133,7 +133,7 @@ export default {
       },
       "anki": {
         "q": "Quelle différence avec Anki ?",
-        "a": "L'idée est la même, la répétition espacée, mais il n'y a rien à configurer : les paquets connaissent leurs langues, niveaux et exemples, l'assistant IA remplit les cartes, et tout fonctionne dans n'importe quel navigateur et sur téléphone sans installation."
+        "a": "Les deux reposent sur la répétition espacée. LioraLang est pensé pour les langues dès le départ : les paquets connaissent leur paire de langues, leurs niveaux et leurs exemples, l'assistant IA remplit les cartes pour vous, et tout s'ouvre dans n'importe quel navigateur ou sur téléphone sans installation."
       },
       "srs": {
         "q": "Qu'est-ce que la répétition espacée ?",
