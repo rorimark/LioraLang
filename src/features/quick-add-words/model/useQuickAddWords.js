@@ -128,8 +128,8 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     // Filled when the assistant drafts a deck on a topic.
     description: "",
     tags: [],
-    // "source" makes the new deck a picture deck: a picture on the front,
-    // a word in the target language on the back.
+    // A side of the new deck that is pictures: "source" (the front) or
+    // "target" (the back); the other side keeps its language.
     pictureSide: "",
     ...pickDefaultLanguages(appPreferences.deckDefaults),
   }));
@@ -193,6 +193,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     : {
         ...newDeck,
         sourceLanguage: newDeck.pictureSide === "source" ? "" : newDeck.sourceLanguage,
+        targetLanguage: newDeck.pictureSide === "target" ? "" : newDeck.targetLanguage,
         tertiaryLanguage: "",
         pictureSide: newDeck.pictureSide || "",
       };
@@ -446,14 +447,16 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
 
       event.preventDefault();
 
-      if (draft.source.trim() && !draft.target.trim()) {
+      // On to the translation, unless the back is a picture: then there is
+      // no translation to type and Enter adds the card.
+      if (pictureSide !== "target" && draft.source.trim() && !draft.target.trim()) {
         event.currentTarget.form?.elements?.namedItem("target")?.focus();
         return;
       }
 
       void addDraft();
     },
-    [addDraft, draft],
+    [addDraft, draft, pictureSide],
   );
 
   const handleTargetKeyDown = useCallback(
@@ -754,9 +757,10 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     setNewDeck((current) => ({ ...current, [name]: value }));
   }, []);
 
-  // The front of the new deck's cards: a word, or a picture.
-  const handleNewDeckFrontChange = useCallback((event) => {
-    const pictureSide = event.target.value === "picture" ? "source" : "";
+  // Which side of the new deck's cards is a picture, if any.
+  const handleNewDeckPictureChange = useCallback((event) => {
+    const { value } = event.target;
+    const pictureSide = value === "source" || value === "target" ? value : "";
     setNewDeck((current) => ({ ...current, pictureSide }));
     setNotice(null);
   }, []);
@@ -801,7 +805,7 @@ export const useQuickAddWords = ({ isOpen, initialDeckId = "", initialTab = "sin
     hasUnsavedInput,
     handleDeckChoiceChange,
     handleNewDeckChange,
-    handleNewDeckFrontChange,
+    handleNewDeckPictureChange,
     handleDraftChange,
     handleDetailsChange,
     applySuggestion,

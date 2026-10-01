@@ -220,4 +220,17 @@ describe("deckWordsWriter on the web store", () => {
 
     expect(stored).toMatchObject({ pictureSide: "source", sourceLanguage: "", targetLanguage: "Polish" });
   });
+
+  it("creates a deck with pictures on the back", async () => {
+    const repository = createWebDeckRepository();
+    const { deck } = await createDeckForWords(repository, {
+      name: "Show me",
+      sourceLanguage: "English",
+      targetLanguage: "Polish",
+      pictureSide: "target",
+    });
+    const stored = await repository.getDeckById(deck.id);
+
+    expect(stored).toMatchObject({ pictureSide: "target", sourceLanguage: "English", targetLanguage: "" });
+  });
 });
