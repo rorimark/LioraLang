@@ -4,6 +4,9 @@
 // The app checks the answer again before anything reaches a card: this
 // side only keeps the reply to the shape and size of a suggestion.
 
+// The last resort, when Google's list of models cannot be read. Normally
+// the function takes the newest stable Flash from that list
+// (pickFlashModel), or the model named in the GEMINI_MODEL secret.
 export const DEFAULT_MODEL = "gemini-2.5-flash";
 
 export const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
@@ -117,12 +120,29 @@ const SYSTEM_INSTRUCTION = [
   "Leave a field empty rather than guess.",
 ].join(" ");
 
-export const buildGeminiRequest = (request: SuggestRequest, model = DEFAULT_MODEL) => ({
+// How much a model may think before it answers. A suggestion has to arrive
+// while the person is still on the field: the 2.5 Flash models answer
+// without thinking, the Gemini 3 ones think as little as they can.
+const thinkingFor = (model: string) => {
+  if (model.startsWith("gemini-2.5-flash")) {
+    return { thinkingConfig: { thinkingBudget: 0 } };
+  }
+
+  if (/^gemini-\d/.test(model) && !model.startsWith("gemini-2")) {
+    return { thinkingConfig: { thinkingLevel: "low" } };
+  }
+
+  return {};
+};
+
+export const buildGeminiRequest = (request: SuggestRequest, model = DEFAULT_MODEL, { withThinking = true } = {}) => ({
   systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
   contents: [{ role: "user", parts: [{ text: describeTask(request).join("\n") }] }],
   generationConfig: {
     temperature: 0.2,
-    maxOutputTokens: 512,
+    // Models that think first spend output tokens on it; leave them room
+    // so the answer itself is not cut short.
+    maxOutputTokens: model.startsWith("gemini-2.5-flash") ? 512 : 2048,
     responseMimeType: "application/json",
     responseSchema: {
       type: "OBJECT",
@@ -138,9 +158,7 @@ export const buildGeminiRequest = (request: SuggestRequest, model = DEFAULT_MODE
       },
       required: ["recognized"],
     },
-    // A suggestion has to arrive while the person is still on the field:
-    // the 2.5 Flash models answer without thinking first.
-    ...(model.startsWith("gemini-2.5-flash") ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+    ...(withThinking ? thinkingFor(model) : {}),
   },
 });
 
@@ -183,4 +201,27 @@ export const readGeminiSuggestion = (response: unknown): Suggestion | null => {
     partOfSpeech: PARTS_OF_SPEECH.includes(partOfSpeech) ? partOfSpeech : "",
     examples: (Array.isArray(raw.examples) ? raw.examples : []).map(field).filter(Boolean).slice(0, MAX_EXAMPLES),
   };
+};
+
+// The newest stable Flash model that can answer generateContent, from
+// Google's list of models: "gemini-3.8-flash" over "gemini-3.5-flash";
+// previews, experiments and the smaller "lite" ones are passed over.
+export const pickFlashModel = (listResponse: unknown): string => {
+  const models = (listResponse as { models?: Array<Record<string, unknown>> })?.models;
+
+  if (!Array.isArray(models)) {
+    return "";
+  }
+
+  const candidates = models
+    .filter((model) => {
+      const methods = model?.supportedGenerationMethods;
+      return Array.isArray(methods) && methods.includes("generateContent");
+    })
+    .map((model) => String(model?.name || "").replace(/^models\//, ""))
+    .map((name) => ({ name, match: /^gemini-(\d+(?:\.\d+)?)-flash$/.exec(name) }))
+    .filter((candidate) => candidate.match)
+    .sort((first, second) => Number(second.match![1]) - Number(first.match![1]));
+
+  return candidates[0]?.name || "";
 };

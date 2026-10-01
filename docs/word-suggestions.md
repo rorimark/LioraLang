@@ -41,7 +41,7 @@ useWordSuggestion ──functions.invoke──▶  suggest-word (Edge Function) 
 ## Как включить
 
 1. Создать ключ в Google AI Studio.
-2. Supabase → Edge Functions → Secrets: `GEMINI_API_KEY` (обязательно), `GEMINI_MODEL` (по желанию, по умолчанию `gemini-2.5-flash`).
+2. Supabase → Edge Functions → Secrets: `GEMINI_API_KEY` (обязательно), `GEMINI_MODEL` (по желанию). Без `GEMINI_MODEL` функция сама берёт новейшую стабильную Flash-модель из списка моделей Google, а если используемая модель пропала (404) — переключается на новую.
 3. Применить миграцию `supabase/migrations/20261001_0004_word_suggestion_allowance.sql`.
 4. Развернуть функцию `supabase/functions/suggest-word` с проверкой JWT.
 

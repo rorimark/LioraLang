@@ -9,9 +9,35 @@
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { buildGeminiRequest, DEFAULT_MODEL, readGeminiSuggestion, validateRequest } from "./gemini.ts";
+import { buildGeminiRequest, DEFAULT_MODEL, pickFlashModel, readGeminiSuggestion, validateRequest } from "./gemini.ts";
 
 const GEMINI_TIMEOUT_MS = 12_000;
+const GEMINI_API = "https://generativelanguage.googleapis.com/v1beta";
+
+// The model in use, for as long as this instance runs. Google retires
+// models; when the one in use is gone (404), the newest stable Flash from
+// Google's own list takes its place.
+let activeModel = "";
+
+const findReplacementModel = async (apiKey: string): Promise<string> => {
+  try {
+    const response = await fetch(`${GEMINI_API}/models?pageSize=200`, {
+      headers: { "x-goog-api-key": apiKey },
+      signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
+    });
+    return response.ok ? pickFlashModel(await response.json()) : "";
+  } catch {
+    return "";
+  }
+};
+
+const askGemini = (apiKey: string, model: string, body: unknown) =>
+  fetch(`${GEMINI_API}/models/${model}:generateContent`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
+  });
 
 // The app's own pages call this with a bearer token, from the web and from
 // the desktop app, so any origin may ask; the token decides who gets an
@@ -85,16 +111,35 @@ Deno.serve(async (request) => {
     return reply(429, { error: "quota" });
   }
 
-  const model = Deno.env.get("GEMINI_MODEL") || DEFAULT_MODEL;
+  // A model named in the secrets is used as it is; otherwise the newest
+  // stable Flash Google lists, looked up once per instance.
+  if (!activeModel) {
+    activeModel = Deno.env.get("GEMINI_MODEL") || (await findReplacementModel(apiKey)) || DEFAULT_MODEL;
+  }
+
+  let model = activeModel;
   let response: Response;
 
   try {
-    response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-      body: JSON.stringify(buildGeminiRequest(suggestRequest, model)),
-      signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
-    });
+    response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model));
+
+    if (response.status === 404) {
+      const replacement = await findReplacementModel(apiKey);
+
+      if (replacement && replacement !== model) {
+        console.warn(`suggest-word: ${model} is gone, using ${replacement}`);
+        model = replacement;
+        activeModel = replacement;
+        response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model));
+      }
+    }
+
+    // A model that does not take the thinking setting is asked again
+    // without it.
+    if (response.status === 400) {
+      console.warn("suggest-word: retrying without the thinking setting", model, (await response.text()).slice(0, 200));
+      response = await askGemini(apiKey, model, buildGeminiRequest(suggestRequest, model, { withThinking: false }));
+    }
   } catch (error) {
     console.error("suggest-word: Gemini unreachable", String(error));
     return reply(504, { error: "unavailable" });
@@ -105,13 +150,15 @@ Deno.serve(async (request) => {
   }
 
   if (!response.ok) {
-    console.error("suggest-word: Gemini answered", response.status, (await response.text()).slice(0, 300));
+    console.error("suggest-word: Gemini answered", model, response.status, (await response.text()).slice(0, 300));
     return reply(502, { error: "unavailable" });
   }
 
-  const suggestion = readGeminiSuggestion(await response.json());
+  const answer = await response.json();
+  const suggestion = readGeminiSuggestion(answer);
 
   if (!suggestion) {
+    console.error("suggest-word: no suggestion in the answer", model, JSON.stringify(answer).slice(0, 300));
     return reply(502, { error: "unavailable" });
   }
 

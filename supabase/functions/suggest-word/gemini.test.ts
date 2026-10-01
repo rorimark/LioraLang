@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGeminiRequest, readGeminiSuggestion, validateRequest } from "./gemini.ts";
+import { buildGeminiRequest, pickFlashModel, readGeminiSuggestion, validateRequest } from "./gemini.ts";
 
 const reply = (value: unknown, extra: Record<string, unknown> = {}) => ({
   candidates: [{ content: { parts: [{ text: typeof value === "string" ? value : JSON.stringify(value) }] }, ...extra }],
@@ -54,11 +54,13 @@ describe("suggest-word: request", () => {
     expect(prompt).toContain("sentences in Polish");
   });
 
-  it("turns thinking off only on the models that take it", () => {
+  it("keeps thinking short on the models that take it", () => {
     const request = validateRequest({ text: "ticket", sourceLanguage: "English", targetLanguage: "Polish" })!;
 
     expect(buildGeminiRequest(request, "gemini-2.5-flash").generationConfig.thinkingConfig).toEqual({ thinkingBudget: 0 });
+    expect(buildGeminiRequest(request, "gemini-3.8-flash").generationConfig.thinkingConfig).toEqual({ thinkingLevel: "low" });
     expect("thinkingConfig" in buildGeminiRequest(request, "gemini-2.0-flash").generationConfig).toBe(false);
+    expect("thinkingConfig" in buildGeminiRequest(request, "gemini-3.8-flash", { withThinking: false }).generationConfig).toBe(false);
   });
 });
 
@@ -91,5 +93,30 @@ describe("suggest-word: reply", () => {
     expect(readGeminiSuggestion(reply({ recognized: true }, { finishReason: "SAFETY" }))).toBeNull();
     expect(readGeminiSuggestion({ candidates: [] })).toBeNull();
     expect(readGeminiSuggestion(reply("{not json"))).toBeNull();
+  });
+});
+
+describe("suggest-word: model", () => {
+  it("takes the newest stable Flash that can generate content", () => {
+    const list = {
+      models: [
+        { name: "models/gemini-3.5-flash", supportedGenerationMethods: ["generateContent"] },
+        { name: "models/gemini-3.8-flash", supportedGenerationMethods: ["generateContent", "countTokens"] },
+        { name: "models/gemini-3.9-flash-preview", supportedGenerationMethods: ["generateContent"] },
+        { name: "models/gemini-3.8-flash-lite", supportedGenerationMethods: ["generateContent"] },
+        { name: "models/gemini-4.0-pro", supportedGenerationMethods: ["generateContent"] },
+        { name: "models/gemini-4-flash", supportedGenerationMethods: ["embedContent"] },
+      ],
+    };
+
+    expect(pickFlashModel(list)).toBe("gemini-3.8-flash");
+    expect(pickFlashModel({})).toBe("");
+  });
+
+  it("gives thinking models room to answer", () => {
+    const request = validateRequest({ text: "ticket", sourceLanguage: "English", targetLanguage: "Polish" })!;
+
+    expect(buildGeminiRequest(request, "gemini-2.5-flash").generationConfig.maxOutputTokens).toBe(512);
+    expect(buildGeminiRequest(request, "gemini-3.8-flash").generationConfig.maxOutputTokens).toBe(2048);
   });
 });
