@@ -482,10 +482,73 @@ export default {
   },
   "deck": {
     "loading": "Cargando mazo…",
-    "noDescription": "El mazo y sus palabras",
     "edit": "Editar mazo",
     "export": "Exportar mazo como JSON",
-    "refreshWords": "Actualizar palabras"
+    "exportShort": "Exportar",
+    "addWords": "Añadir palabras",
+    "wordsCount": {
+      "one": "{count} palabra",
+      "many": "{count} palabras",
+      "other": "{count} palabras"
+    },
+    "emptyDeck": "Este mazo aún no tiene palabras.",
+    "emptyFilter": "No hay palabras aquí.",
+    "study": {
+      "title": "Tu progreso",
+      "notStarted": "Todavía no has estudiado este mazo",
+      "newWaiting": {
+        "one": "{count} palabra nueva para empezar",
+        "many": "{count} palabras nuevas para empezar",
+        "other": "{count} palabras nuevas para empezar"
+      },
+      "due": {
+        "one": "{count} palabra para repasar ahora",
+        "many": "{count} palabras para repasar ahora",
+        "other": "{count} palabras para repasar ahora"
+      },
+      "caughtUp": "Ahora no hay nada que repasar",
+      "nextReview": "Próximo repaso {when}",
+      "lastSession": "Última sesión {when}",
+      "week": {
+        "one": "{count} respuesta esta semana",
+        "many": "{count} respuestas esta semana",
+        "other": "{count} respuestas esta semana"
+      },
+      "recall": "{percent} recordado en los últimos 30 días"
+    },
+    "filter": {
+      "label": "Mostrar palabras",
+      "all": "Todas",
+      "due": "Para repasar",
+      "known": "Recordadas"
+    },
+    "sort": {
+      "label": "Orden",
+      "deck": "Orden del mazo",
+      "az": "De la A a la Z",
+      "due": "Próximo repaso primero",
+      "hard": "Las más difíciles primero"
+    },
+    "word": {
+      "notStudied": "Aún sin estudiar",
+      "dueNow": "Repasar ahora",
+      "next": "Próximo repaso {when}",
+      "last": "Último repaso: {date}",
+      "reviews": {
+        "one": "{count} repaso",
+        "many": "{count} repasos",
+        "other": "{count} repasos"
+      },
+      "lapses": {
+        "one": "olvidada {count} vez",
+        "many": "olvidada {count} veces",
+        "other": "olvidada {count} veces"
+      },
+      "about": "Nivel y categoría gramatical",
+      "tags": "Etiquetas",
+      "progress": "Progreso",
+      "nextColumn": "Repaso"
+    }
   },
   "partOfSpeech": {
     "noun": "sustantivo",

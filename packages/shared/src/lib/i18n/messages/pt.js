@@ -482,10 +482,73 @@ export default {
   },
   "deck": {
     "loading": "Carregando baralho…",
-    "noDescription": "O baralho e suas palavras",
     "edit": "Editar baralho",
     "export": "Exportar baralho como JSON",
-    "refreshWords": "Atualizar palavras"
+    "exportShort": "Exportar",
+    "addWords": "Adicionar palavras",
+    "wordsCount": {
+      "one": "{count} palavra",
+      "many": "{count} palavras",
+      "other": "{count} palavras"
+    },
+    "emptyDeck": "Este baralho ainda não tem palavras.",
+    "emptyFilter": "Nenhuma palavra aqui.",
+    "study": {
+      "title": "Seu progresso",
+      "notStarted": "Você ainda não estudou este baralho",
+      "newWaiting": {
+        "one": "{count} palavra nova para começar",
+        "many": "{count} palavras novas para começar",
+        "other": "{count} palavras novas para começar"
+      },
+      "due": {
+        "one": "{count} palavra para revisar agora",
+        "many": "{count} palavras para revisar agora",
+        "other": "{count} palavras para revisar agora"
+      },
+      "caughtUp": "Nada para revisar agora",
+      "nextReview": "Próxima revisão {when}",
+      "lastSession": "Última sessão {when}",
+      "week": {
+        "one": "{count} resposta nesta semana",
+        "many": "{count} respostas nesta semana",
+        "other": "{count} respostas nesta semana"
+      },
+      "recall": "{percent} lembrado nos últimos 30 dias"
+    },
+    "filter": {
+      "label": "Mostrar palavras",
+      "all": "Todas",
+      "due": "Para revisar",
+      "known": "Lembradas"
+    },
+    "sort": {
+      "label": "Ordem",
+      "deck": "Ordem do baralho",
+      "az": "De A a Z",
+      "due": "Próxima revisão primeiro",
+      "hard": "Mais difíceis primeiro"
+    },
+    "word": {
+      "notStudied": "Ainda não estudada",
+      "dueNow": "Revisar agora",
+      "next": "Próxima revisão {when}",
+      "last": "Última revisão em {date}",
+      "reviews": {
+        "one": "{count} revisão",
+        "many": "{count} revisões",
+        "other": "{count} revisões"
+      },
+      "lapses": {
+        "one": "esquecida {count} vez",
+        "many": "esquecida {count} vezes",
+        "other": "esquecida {count} vezes"
+      },
+      "about": "Nível e classe gramatical",
+      "tags": "Tags",
+      "progress": "Progresso",
+      "nextColumn": "Revisão"
+    }
   },
   "partOfSpeech": {
     "noun": "substantivo",

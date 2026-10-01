@@ -1,354 +1,765 @@
-.cards-panel {
+/* ===== Deck page =====
+   What the deck is, where the learner stands with it, and its words, each
+   with where it stands. A word opens into its card: the front and the back
+   as Learn shows them, with its examples and how it has gone so far. */
+
+.deck-page {
+  container-type: inline-size;
   display: grid;
-  gap: 16px;
-}
-
-.cards-panel__header {
-  display: grid;
-  gap: 6px;
-}
-
-.cards-panel__header h2 {
-  margin: 0;
-  font-size: var(--font-size-section-title);
+  gap: 22px;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
   color: var(--color-text);
 }
 
-.cards-panel__header p {
-  margin: 0;
+.deck-page--message {
+  justify-items: start;
+  padding: 24px 0;
   color: var(--color-text-muted);
-  font-size: 0.88rem;
 }
 
-.cards-panel__count {
-  display: inline-flex;
-  width: fit-content;
-  border-radius: 999px;
-  border: 2px solid var(--color-border);
-  background: var(--color-surface-muted);
-  color: var(--color-text);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 4px 10px;
-}
-
-.cards-panel__status {
-  color: var(--color-text-muted);
-  font-size: 0.92rem;
-}
-
-.cards-panel__status--error {
-  color: var(--color-danger);
-}
-
-.cards-panel__retry {
-  width: fit-content;
-  border-radius: var(--radius-control);
-  border: 2px solid var(--color-border);
-  background: var(--color-surface-muted);
-  color: var(--color-text);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 8px 12px;
-}
-
-.cards-panel__actions {
+.deck-page--message p {
   display: flex;
+  align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  margin: 0;
 }
 
-.cards-panel__actions button {
+/* ----- buttons ----- */
+
+.deck-page__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-control);
   background: var(--color-surface);
   color: var(--color-text);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.8rem;
-  padding: 7px 10px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
   white-space: nowrap;
+  cursor: pointer;
 }
 
-.cards-panel__actions button svg {
-  flex: 0 0 auto;
-  width: 0.92rem;
-  height: 0.92rem;
-}
-
-.cards-panel__actions button span {
-  min-width: 0;
-}
-
-.cards-panel__button--secondary {
-  background: var(--color-transparent);
-}
-
-.cards-panel__actions button:hover:not(:disabled) {
+.deck-page__button:hover:not(:disabled) {
   background: var(--color-surface-muted);
 }
 
-.cards-panel__actions button:disabled {
+.deck-page__button:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
-  opacity: 0.6;
 }
 
-.cards-panel__filters-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border-color: var(--color-primary) !important;
-  background: var(--color-primary-soft) !important;
-  color: var(--color-primary-strong) !important;
-  font-weight: 600;
+.deck-page__button svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
 }
 
-.cards-panel__filters-button:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-primary-soft) 70%, var(--color-surface)) !important;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .cards-panel__actions button:hover:not(:disabled) {
-    background: var(--color-surface);
-  }
-
-  .cards-panel__actions button:active:not(:disabled) {
-    background: var(--color-surface-muted);
-  }
-
-  .cards-panel__filters-button:hover:not(:disabled) {
-    background: var(--color-primary-soft) !important;
-  }
-
-  .cards-panel__filters-button:active:not(:disabled) {
-    background: color-mix(in srgb, var(--color-primary-soft) 75%, var(--color-surface)) !important;
-  }
-}
-
-.dictionary-workspace {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 14px;
-  min-width: 0;
-  align-items: start;
-}
-
-.dictionary-table-area {
-  display: grid;
-  gap: 10px;
-  min-width: 0;
-}
-
-.dictionary-table-scroll {
-  min-width: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  border-radius: 14px;
-}
-
-.dictionary-filters-aside {
-  position: sticky;
-  top: 84px;
-  display: grid;
-  gap: 8px;
-}
-
-.dictionary-filters-modal .card-catalog-filters {
-  border: 0;
-  box-shadow: none;
-  padding: 0;
-  background: var(--color-transparent);
-}
-
-.dictionary-filters-modal .card-catalog-filters__title {
-  display: none;
-}
-
-.dictionary-filters-modal .card-catalog-filters__header {
-  justify-content: flex-end;
-}
-
-.dictionary-filters-modal .card-catalog-filters__results {
-  font-size: 0.78rem;
-}
-
-@media (max-width: 1450px) {
-  .dictionary-workspace {
-    grid-template-columns: 1fr;
-  }
-
-  .dictionary-filters-aside {
-    position: static;
-    order: 2;
-  }
-}
-
-@media (max-width: 1080px) {
-  .dictionary-filters-toggle {
-    width: fit-content;
-  }
-}
-
-@media (max-width: 640px) {
-  .cards-panel {
-    gap: 12px;
-  }
-
-  .cards-panel__header h2 {
-    font-size: 1rem;
-  }
-
-  .cards-panel__actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    width: 100%;
-  }
-
-  .cards-panel__actions button {
-    width: 100%;
-    min-height: 34px;
-    font-size: 0.76rem;
-    padding: 6px 8px;
-    white-space: normal;
-  }
-
-  .dictionary-filters-toggle {
-    min-height: 34px;
-    font-size: 0.78rem;
-    padding: 7px 10px;
-  }
-}
-
-@media (max-width: 420px) {
-  .cards-panel__actions {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* === Keys ===
-   The toolbar speaks the same language as the app's buttons: a 2px border
-   with a thicker bottom edge that lifts on hover and presses down on click. */
-.cards-panel__actions button {
-  border-color: var(--color-border-strong);
-  border-bottom: var(--edge-width) solid var(--color-border-strong);
-  background: var(--color-surface);
-  font-weight: 800;
-  transition:
-    transform 160ms var(--motion-spring),
-    border-bottom-width 160ms var(--motion-spring),
-    background-color 140ms ease;
-}
-
-.cards-panel__actions .cards-panel__button--secondary {
-  color: var(--color-text-muted);
-}
-
-/* Adding words is what a deck page is for: the one filled key. */
-.cards-panel__actions .cards-panel__button--primary {
+.deck-page__button--primary {
   border-color: var(--color-primary-strong);
+  border-bottom-width: 4px;
   background: var(--color-primary);
   color: var(--color-on-primary);
 }
 
-.cards-panel__actions .cards-panel__button--primary:is(:hover, :active):not(:disabled) {
-  background: var(--color-primary);
+.deck-page__button--primary:hover:not(:disabled) {
+  background: var(--color-primary-strong);
 }
 
-.cards-panel__actions .cards-panel__filters-button {
-  border-color: var(--color-primary-border) !important;
-  border-bottom-color: var(--color-primary) !important;
+.deck-page__button--quiet {
+  border-color: var(--color-transparent);
+  background: var(--color-transparent);
+  color: var(--color-text-muted);
+}
+
+.deck-page__button--quiet:hover:not(:disabled) {
+  background: var(--color-transparent);
+  color: var(--color-text);
+}
+
+/* ----- top ----- */
+
+.deck-page__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.deck-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deck-page__back:hover {
+  color: var(--color-text);
+}
+
+.deck-page__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.deck-page__title {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.deck-page__title h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4cqi, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.deck-page__description {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.deck-page__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px 14px;
+  flex-wrap: wrap;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* ----- where the learner stands ----- */
+
+.deck-study {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 2px solid var(--color-border);
+  border-bottom-width: 5px;
+  border-radius: 18px;
+  background: var(--color-surface);
+}
+
+.deck-study__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+}
+
+.deck-study__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.deck-study__headline {
+  margin: 0;
+  font-size: 1.2rem;
   font-weight: 800;
 }
 
-@media (hover: hover) {
-  .cards-panel__actions button:hover:not(:disabled) {
-    transform: translateY(-1px);
-    border-bottom-width: calc(var(--edge-width) + 1px);
+.deck-study__detail {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.deck-study__head .deck-page__button {
+  min-height: 44px;
+  padding: 0 20px;
+}
+
+/* The same four stages, in the same colours, as the Progress page. */
+.deck-study__bar {
+  display: flex;
+  gap: 2px;
+  height: 14px;
+  overflow: hidden;
+  border-radius: 7px;
+  background: var(--chart-track);
+}
+
+.deck-study__part {
+  flex: 1 1 0;
+  min-width: 4px;
+  transform-origin: left center;
+  animation: deck-study-grow 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.deck-study__part.is-new,
+.deck-study__dot.is-new {
+  background: var(--chart-track);
+}
+
+.deck-study__part.is-learning,
+.deck-study__dot.is-learning {
+  background: var(--chart-ramp-1);
+}
+
+.deck-study__part.is-young,
+.deck-study__dot.is-young {
+  background: var(--chart-ramp-3);
+}
+
+.deck-study__part.is-mature,
+.deck-study__dot.is-mature {
+  background: var(--chart-ramp-4);
+}
+
+@keyframes deck-study-grow {
+  from {
+    transform: scaleX(0);
   }
 }
 
-.cards-panel__actions button:active:not(:disabled) {
-  transform: translateY(2px);
-  border-bottom-width: 2px;
-  transition-duration: 60ms;
+.deck-study__legend {
+  display: flex;
+  gap: 8px 22px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
 }
 
-.cards-panel__actions button:focus-visible {
-  outline: 3px solid var(--color-primary-border);
-  outline-offset: 2px;
+.deck-study__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.deck-study__label {
+  color: var(--color-text-muted);
+}
+
+.deck-study__legend strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-study__dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* A new word's dot is the track colour; an outline keeps it visible. */
+.deck-study__dot.is-new {
+  box-shadow: inset 0 0 0 2px var(--color-border-strong);
+}
+
+.deck-study__facts {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: 0.84rem;
+}
+
+/* ----- the words ----- */
+
+.deck-words-view {
+  container-type: inline-size;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.deck-words-view__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.deck-words-view__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.deck-words-view__count {
+  min-width: 1.8rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-words-view__tools {
+  display: grid;
+  gap: 10px;
+}
+
+.deck-words-view__filters {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.deck-words-view__filters::-webkit-scrollbar {
+  display: none;
+}
+
+.deck-words-view__chip {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deck-words-view__chip:hover {
+  color: var(--color-text);
+}
+
+.deck-words-view__chip.is-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-text);
+}
+
+.deck-words-view__chip-count {
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-words-view__chip.is-due .deck-words-view__chip-count {
+  color: var(--color-primary);
+}
+
+.deck-words-view__search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 13rem);
+  gap: 10px;
+}
+
+.deck-words-view__search .ui-select {
+  width: 100%;
+}
+
+@container (max-width: 520px) {
+  .deck-words-view__search {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.deck-words-view__empty,
+.deck-words-view__none {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 32px 16px;
+  border: 2px dashed var(--color-border);
+  border-radius: 16px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.deck-words-view__empty p {
+  margin: 0;
+}
+
+/* Rows: stage, front, back, when it is due. */
+.deck-words-view__columns,
+.deck-word-view__row {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) minmax(0, 1.3fr) minmax(5.5rem, auto) 16px;
+  align-items: center;
+  gap: 14px;
+}
+
+.deck-words-view__columns {
+  padding: 0 16px;
+  margin-bottom: -8px;
+  color: var(--color-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.deck-words-view__columns span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deck-words-view__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.deck-word-view {
+  border-top: 1px solid var(--color-border);
+}
+
+.deck-word-view:first-child {
+  border-top: 0;
+}
+
+.deck-word-view__row {
+  width: 100%;
+  min-height: 54px;
+  padding: 9px 16px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.deck-word-view__row:hover,
+.deck-word-view.is-open .deck-word-view__row {
+  background: var(--color-surface-muted);
+}
+
+.deck-word-view__side {
+  min-width: 0;
+}
+
+.deck-word-view__text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.deck-word-view__tertiary {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.deck-word-view__text--front {
+  font-weight: 700;
+}
+
+.deck-word-view__picture {
+  display: block;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-muted);
+}
+
+.deck-word-view__picture--thumb {
+  width: 44px;
+  height: 44px;
+}
+
+.deck-word-view__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.deck-word-view__when {
+  color: var(--color-text-subtle);
+  font-size: 0.8rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.deck-word-view__when.is-due {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.deck-word-view__chevron {
+  color: var(--color-text-subtle);
+  transition: transform 160ms ease;
+}
+
+.deck-word-view.is-open .deck-word-view__chevron {
+  transform: rotate(180deg);
+}
+
+@container (max-width: 560px) {
+  .deck-words-view__columns {
+    display: none;
+  }
+
+  .deck-word-view__row {
+    grid-template-columns: 10px minmax(0, 1fr) 16px;
+    grid-template-areas:
+      "dot front chevron"
+      "dot back chevron"
+      "dot when chevron";
+    row-gap: 2px;
+  }
+
+  .deck-word-view__row > .deck-study__dot {
+    grid-area: dot;
+    align-self: start;
+    margin-top: 6px;
+  }
+
+  .deck-word-view__side--front {
+    grid-area: front;
+  }
+
+  .deck-word-view__side--back {
+    grid-area: back;
+    color: var(--color-text-muted);
+  }
+
+  .deck-word-view__when {
+    grid-area: when;
+    text-align: left;
+  }
+
+  .deck-word-view__chevron {
+    grid-area: chevron;
+  }
+}
+
+/* An open word: its card, front and back, as in Learn. */
+.deck-word-card {
+  display: grid;
+  gap: 16px;
+  padding: 6px 16px 18px;
+  background: var(--color-surface-muted);
+  animation: deck-word-open 180ms ease-out;
+}
+
+@keyframes deck-word-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.deck-word-card__faces {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@container (max-width: 560px) {
+  .deck-word-card__faces {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.deck-word-card__face {
+  --card-head: 34px;
+  --card-rule-gap: 26px;
+  position: relative;
+  display: grid;
+  grid-template-rows: var(--card-head) minmax(0, 1fr);
+  min-height: 150px;
+  border: 2px solid var(--flashcard-border);
+  border-bottom-width: 5px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.deck-word-card__face--front {
+  background:
+    linear-gradient(var(--flashcard-front-bg), var(--flashcard-front-bg)) 0 0 / 100% var(--card-head) no-repeat,
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(var(--card-rule-gap) - 1px),
+      var(--flashcard-rule) calc(var(--card-rule-gap) - 1px) var(--card-rule-gap)
+    ) 0 var(--card-head) / 100% 100% no-repeat,
+    var(--flashcard-front-bg);
+}
+
+.deck-word-card__face--front::before {
+  content: "";
+  position: absolute;
+  top: var(--card-head);
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--flashcard-header-rule);
+}
+
+.deck-word-card__face--back {
+  border-color: var(--flashcard-back-edge);
+  background: var(--flashcard-back-bg);
+  color: var(--flashcard-on-back);
+}
+
+.deck-word-card__label {
+  align-self: center;
+  padding: 0 14px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.deck-word-card__face--back .deck-word-card__label {
+  color: color-mix(in srgb, var(--flashcard-on-back) 75%, var(--color-transparent));
+}
+
+.deck-word-card__content {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 14px 16px 18px;
+  text-align: center;
+}
+
+.deck-word-card__word {
+  margin: 0;
+  font-size: clamp(1.1rem, 3.4cqi, 1.5rem);
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.deck-word-card__extra {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.deck-word-card__extra span {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.deck-word-view__picture--full {
+  width: min(100%, 220px);
+  aspect-ratio: 4 / 3;
+  border-color: var(--flashcard-border);
+}
+
+.deck-word-card__details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+  margin: 0;
+}
+
+.deck-word-card__row {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.deck-word-card__row--wide {
+  grid-column: 1 / -1;
+}
+
+.deck-word-card__row dt {
+  color: var(--color-text-subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.deck-word-card__row dd {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.deck-word-card__examples {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+@container (max-width: 560px) {
+  .deck-word-card__details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.deck-words-view__more {
+  justify-self: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deck-words-view__more:hover {
+  color: var(--color-text);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cards-panel__actions button {
-    transition: none;
-  }
-}
-
-/* On a phone Add words is a full-width key on its own row, so its label
-   fits in every language; under it back, edit, export, refresh and the
-   filters are square icon keys, named for screen readers by their text. */
-@media (max-width: 640px) {
-  .cards-panel__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .cards-panel__actions button {
-    flex: none;
-    width: 46px;
-    min-height: 46px;
-    padding: 0;
-    font-size: 0.9rem;
-  }
-
-  .cards-panel__actions button svg {
-    width: 19px;
-    height: 19px;
-  }
-
-  .cards-panel__actions button:not(.cards-panel__button--primary) span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .cards-panel__actions .cards-panel__button--primary {
-    order: -1;
-    flex: 1 0 100%;
-    width: 100%;
-    min-width: 0;
-    padding: 0 14px;
-    border-color: var(--color-primary-strong);
-    background: var(--color-primary);
-    color: var(--color-on-primary);
-  }
-
-  /* Touch keeps a sticky :hover; the filled key stays filled. */
-  .cards-panel__actions .cards-panel__button--primary:is(:hover, :active):not(:disabled) {
-    background: var(--color-primary);
-  }
-}
-
-@media (max-width: 380px) {
-  .cards-panel__actions {
-    gap: 6px;
-  }
-
-  .cards-panel__actions button {
-    width: 42px;
-    min-height: 44px;
+  .deck-page *,
+  .deck-page *::before,
+  .deck-page *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

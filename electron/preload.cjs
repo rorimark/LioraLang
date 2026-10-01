@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getSrsSession: (payload) => ipcRenderer.invoke("srs:get-session", payload),
   gradeSrsCard: (payload) => ipcRenderer.invoke("srs:grade-card", payload),
   getProgressOverview: (payload) => ipcRenderer.invoke("progress:get-overview", payload),
+  getDeckStudy: (payload) => ipcRenderer.invoke("progress:get-deck-study", payload),
   syncGetRuntimeState: () => ipcRenderer.invoke("sync:get-runtime-state"),
   syncUpdateRuntimeState: (payload) => ipcRenderer.invoke("sync:update-runtime-state", payload),
   syncGetProfileState: (payload) => ipcRenderer.invoke("sync:get-profile-state", payload),

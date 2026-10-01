@@ -49,7 +49,7 @@ import {
 } from "./db/services/db.services.js";
 import { getAppSettings, updateAppSettings } from "./db/services/settings.services.js";
 import { getSrsSessionSnapshot, gradeSrsCard } from "./db/services/srs.services.js";
-import { getProgressOverview } from "./db/services/progress.services.js";
+import { getDeckStudy, getProgressOverview } from "./db/services/progress.services.js";
 import * as mediaServices from "./db/services/media.services.js";
 import {
   activateProgressProfile,
@@ -391,6 +391,7 @@ const setupIpcHandlers = () => {
     getSrsSessionSnapshot,
     gradeSrsCard,
     getProgressOverview,
+    getDeckStudy,
     getSyncRuntimeState,
     updateSyncRuntimeState,
     getSyncProfileState,

@@ -471,10 +471,67 @@ export default {
   },
   "deck": {
     "loading": "Deck wird geladen…",
-    "noDescription": "Das Deck und seine Wörter",
     "edit": "Deck bearbeiten",
     "export": "Deck als JSON exportieren",
-    "refreshWords": "Wörter aktualisieren"
+    "exportShort": "Exportieren",
+    "addWords": "Wörter hinzufügen",
+    "wordsCount": {
+      "one": "{count} Wort",
+      "other": "{count} Wörter"
+    },
+    "emptyDeck": "Dieses Deck hat noch keine Wörter.",
+    "emptyFilter": "Hier gibt es keine Wörter.",
+    "study": {
+      "title": "Dein Fortschritt",
+      "notStarted": "Du hast dieses Deck noch nicht gelernt",
+      "newWaiting": {
+        "one": "{count} neues Wort wartet",
+        "other": "{count} neue Wörter warten"
+      },
+      "due": {
+        "one": "{count} Wort ist zur Wiederholung fällig",
+        "other": "{count} Wörter sind zur Wiederholung fällig"
+      },
+      "caughtUp": "Gerade gibt es nichts zu wiederholen",
+      "nextReview": "Nächste Wiederholung {when}",
+      "lastSession": "Letzte Lerneinheit {when}",
+      "week": {
+        "one": "{count} Antwort diese Woche",
+        "other": "{count} Antworten diese Woche"
+      },
+      "recall": "{percent} in den letzten 30 Tagen gewusst"
+    },
+    "filter": {
+      "label": "Wörter anzeigen",
+      "all": "Alle",
+      "due": "Fällig",
+      "known": "Gemerkt"
+    },
+    "sort": {
+      "label": "Reihenfolge",
+      "deck": "Wie im Deck",
+      "az": "A bis Z",
+      "due": "Nächste Wiederholung zuerst",
+      "hard": "Schwierigste zuerst"
+    },
+    "word": {
+      "notStudied": "Noch nicht gelernt",
+      "dueNow": "Jetzt wiederholen",
+      "next": "Nächste Wiederholung {when}",
+      "last": "Zuletzt wiederholt am {date}",
+      "reviews": {
+        "one": "{count} Wiederholung",
+        "other": "{count} Wiederholungen"
+      },
+      "lapses": {
+        "one": "{count}-mal vergessen",
+        "other": "{count}-mal vergessen"
+      },
+      "about": "Niveau und Wortart",
+      "tags": "Tags",
+      "progress": "Fortschritt",
+      "nextColumn": "Wiederholung"
+    }
   },
   "partOfSpeech": {
     "noun": "Substantiv",

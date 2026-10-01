@@ -1,4 +1,4 @@
-import { buildProgressOverview } from "@shared/core/usecases/progress";
+import { buildDeckStudy, buildProgressOverview } from "@shared/core/usecases/progress";
 import { getCurrentSupabaseAuthUser } from "@shared/api";
 import { buildUserProfileScope, GUEST_PROFILE_SCOPE, normalizeProfileScope } from "@shared/core/usecases/sync";
 import {
@@ -76,6 +76,35 @@ export const createWebProgressRepository = () => {
         reviewLogs,
         profileScope,
       });
+    },
+
+    // One deck, word by word: read through the deck indexes, so a large
+    // library is not read for one page.
+    async getDeckStudy(deckId, { profileScope: requestedProfileScope = "" } = {}) {
+      const numericDeckId = Number(deckId);
+      const profileScope = normalizeProfileScope(
+        requestedProfileScope || (await resolveCurrentProfileScope()),
+      );
+      await getWebSyncLocalRepository().activateProfile(profileScope);
+      const { words, reviewCards, reviewLogs } = await runReadonlyTransaction(
+        [WEB_DB_STORES.words, WEB_DB_STORES.reviewCards, WEB_DB_STORES.reviewLogs],
+        async ({ getStore }) => {
+          const [wordRows, cardRows, logRows] = await Promise.all([
+            idbRequest(getStore(WEB_DB_STORES.words).index("deckId").getAll(numericDeckId)),
+            idbRequest(getStore(WEB_DB_STORES.reviewCards).index("deckId").getAll(numericDeckId)),
+            idbRequest(getStore(WEB_DB_STORES.reviewLogs).index("deckId").getAll(numericDeckId)),
+          ]);
+          const isOwn = (row) => normalizeProfileScope(row?.profileScope) === profileScope;
+
+          return {
+            words: Array.isArray(wordRows) ? wordRows : [],
+            reviewCards: (Array.isArray(cardRows) ? cardRows : []).filter(isOwn),
+            reviewLogs: (Array.isArray(logRows) ? logRows : []).filter(isOwn),
+          };
+        },
+      );
+
+      return buildDeckStudy({ words, reviewCards, reviewLogs });
     },
   };
 };

@@ -482,10 +482,79 @@ export default {
   },
   "deck": {
     "loading": "Načítání balíčku…",
-    "noDescription": "Balíček a jeho slova",
     "edit": "Upravit balíček",
     "export": "Exportovat balíček do JSON",
-    "refreshWords": "Obnovit slova"
+    "exportShort": "Exportovat",
+    "addWords": "Přidat slova",
+    "wordsCount": {
+      "one": "{count} slovo",
+      "few": "{count} slova",
+      "many": "{count} slova",
+      "other": "{count} slov"
+    },
+    "emptyDeck": "Tento balíček zatím nemá žádná slova.",
+    "emptyFilter": "Tady nejsou žádná slova.",
+    "study": {
+      "title": "Váš pokrok",
+      "notStarted": "Tento balíček jste se ještě neučili",
+      "newWaiting": {
+        "one": "Čeká {count} nové slovo",
+        "few": "Čekají {count} nová slova",
+        "many": "Čekají {count} nová slova",
+        "other": "Čeká {count} nových slov"
+      },
+      "due": {
+        "one": "{count} slovo k opakování",
+        "few": "{count} slova k opakování",
+        "many": "{count} slova k opakování",
+        "other": "{count} slov k opakování"
+      },
+      "caughtUp": "Teď není co opakovat",
+      "nextReview": "Další opakování {when}",
+      "lastSession": "Poslední lekce {when}",
+      "week": {
+        "one": "{count} odpověď tento týden",
+        "few": "{count} odpovědi tento týden",
+        "many": "{count} odpovědi tento týden",
+        "other": "{count} odpovědí tento týden"
+      },
+      "recall": "{percent} zapamatováno za 30 dní"
+    },
+    "filter": {
+      "label": "Zobrazit slova",
+      "all": "Vše",
+      "due": "K opakování",
+      "known": "Zapamatovaná"
+    },
+    "sort": {
+      "label": "Pořadí",
+      "deck": "Jako v balíčku",
+      "az": "Od A do Z",
+      "due": "Nejbližší opakování",
+      "hard": "Nejdřív těžká"
+    },
+    "word": {
+      "notStudied": "Zatím neučeno",
+      "dueNow": "Zopakovat teď",
+      "next": "Další opakování {when}",
+      "last": "Naposledy opakováno {date}",
+      "reviews": {
+        "one": "{count} opakování",
+        "few": "{count} opakování",
+        "many": "{count} opakování",
+        "other": "{count} opakování"
+      },
+      "lapses": {
+        "one": "zapomenuto {count}×",
+        "few": "zapomenuto {count}×",
+        "many": "zapomenuto {count}×",
+        "other": "zapomenuto {count}×"
+      },
+      "about": "Úroveň a slovní druh",
+      "tags": "Štítky",
+      "progress": "Pokrok",
+      "nextColumn": "Opakování"
+    }
   },
   "partOfSpeech": {
     "noun": "podstatné jméno",

@@ -3,6 +3,7 @@ export const registerStudyIpcHandlers = ({
   getSrsSessionSnapshot,
   gradeSrsCard,
   getProgressOverview,
+  getDeckStudy,
 }) => {
   ipcMain.handle("srs:get-session", (_, payload) => {
     return getSrsSessionSnapshot({
@@ -28,6 +29,13 @@ export const registerStudyIpcHandlers = ({
 
   ipcMain.handle("progress:get-overview", (_, payload) => {
     return getProgressOverview({
+      profileScope: payload?.profileScope,
+    });
+  });
+
+  ipcMain.handle("progress:get-deck-study", (_, payload) => {
+    return getDeckStudy({
+      deckId: payload?.deckId,
       profileScope: payload?.profileScope,
     });
   });

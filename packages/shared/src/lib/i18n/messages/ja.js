@@ -460,10 +460,61 @@ export default {
   },
   "deck": {
     "loading": "デッキを読み込み中…",
-    "noDescription": "デッキとその単語",
     "edit": "デッキを編集",
     "export": "デッキをJSONで書き出す",
-    "refreshWords": "単語を更新"
+    "exportShort": "エクスポート",
+    "addWords": "単語を追加",
+    "wordsCount": {
+      "other": "{count}語"
+    },
+    "emptyDeck": "このデッキにはまだ単語がありません。",
+    "emptyFilter": "ここには単語がありません。",
+    "study": {
+      "title": "学習状況",
+      "notStarted": "このデッキはまだ学習していません",
+      "newWaiting": {
+        "other": "新しい単語が{count}語あります"
+      },
+      "due": {
+        "other": "いま復習する単語が{count}語あります"
+      },
+      "caughtUp": "いま復習するものはありません",
+      "nextReview": "次の復習は{when}",
+      "lastSession": "最後の学習は{when}",
+      "week": {
+        "other": "今週の回答 {count}回"
+      },
+      "recall": "過去30日間の想起率 {percent}"
+    },
+    "filter": {
+      "label": "表示する単語",
+      "all": "すべて",
+      "due": "復習",
+      "known": "定着"
+    },
+    "sort": {
+      "label": "並び順",
+      "deck": "デッキの順",
+      "az": "あいうえお順・ABC順",
+      "due": "次の復習が近い順",
+      "hard": "難しい順"
+    },
+    "word": {
+      "notStudied": "未学習",
+      "dueNow": "いま復習",
+      "next": "次の復習は{when}",
+      "last": "最後の復習 {date}",
+      "reviews": {
+        "other": "復習 {count}回"
+      },
+      "lapses": {
+        "other": "忘れた回数 {count}回"
+      },
+      "about": "レベルと品詞",
+      "tags": "タグ",
+      "progress": "学習状況",
+      "nextColumn": "次の復習"
+    }
   },
   "partOfSpeech": {
     "noun": "名詞",

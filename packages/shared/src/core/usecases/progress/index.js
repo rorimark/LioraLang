@@ -11,3 +11,4 @@ export {
   MASTERED_DECK_MIN_WORDS,
   buildAchievements,
 } from "./buildAchievements.js";
+export { buildDeckStudy } from "./buildDeckStudy.js";

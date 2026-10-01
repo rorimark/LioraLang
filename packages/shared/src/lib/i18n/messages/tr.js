@@ -471,10 +471,67 @@ export default {
   },
   "deck": {
     "loading": "Deste yükleniyor…",
-    "noDescription": "Deste ve kelimeleri",
     "edit": "Desteyi düzenle",
     "export": "Desteyi JSON olarak dışa aktar",
-    "refreshWords": "Kelimeleri yenile"
+    "exportShort": "Dışa aktar",
+    "addWords": "Kelime ekle",
+    "wordsCount": {
+      "one": "{count} kelime",
+      "other": "{count} kelime"
+    },
+    "emptyDeck": "Bu destede henüz kelime yok.",
+    "emptyFilter": "Burada kelime yok.",
+    "study": {
+      "title": "İlerlemeniz",
+      "notStarted": "Bu desteyi henüz çalışmadınız",
+      "newWaiting": {
+        "one": "Başlamak için {count} yeni kelime",
+        "other": "Başlamak için {count} yeni kelime"
+      },
+      "due": {
+        "one": "Şimdi tekrar edilecek {count} kelime",
+        "other": "Şimdi tekrar edilecek {count} kelime"
+      },
+      "caughtUp": "Şu an tekrar edilecek bir şey yok",
+      "nextReview": "Sonraki tekrar {when}",
+      "lastSession": "Son çalışma {when}",
+      "week": {
+        "one": "Bu hafta {count} cevap",
+        "other": "Bu hafta {count} cevap"
+      },
+      "recall": "Son 30 günde {percent} hatırlandı"
+    },
+    "filter": {
+      "label": "Kelimeleri göster",
+      "all": "Tümü",
+      "due": "Tekrar edilecek",
+      "known": "Hatırlanan"
+    },
+    "sort": {
+      "label": "Sıralama",
+      "deck": "Deste sırası",
+      "az": "A'dan Z'ye",
+      "due": "Önce yakın tekrar",
+      "hard": "Önce zor olanlar"
+    },
+    "word": {
+      "notStudied": "Henüz çalışılmadı",
+      "dueNow": "Şimdi tekrar et",
+      "next": "Sonraki tekrar {when}",
+      "last": "Son tekrar: {date}",
+      "reviews": {
+        "one": "{count} tekrar",
+        "other": "{count} tekrar"
+      },
+      "lapses": {
+        "one": "{count} kez unutuldu",
+        "other": "{count} kez unutuldu"
+      },
+      "about": "Seviye ve sözcük türü",
+      "tags": "Etiketler",
+      "progress": "İlerleme",
+      "nextColumn": "Tekrar"
+    }
   },
   "partOfSpeech": {
     "noun": "isim",

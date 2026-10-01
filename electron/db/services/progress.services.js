@@ -1,6 +1,7 @@
 import { getDatabase } from "../db.js";
 import { GUEST_PROFILE_SCOPE, normalizeProfileScope } from "../../../packages/shared/src/core/usecases/sync/index.js";
 import { buildProgressOverview } from "../../../packages/shared/src/core/usecases/progress/buildProgressOverview.js";
+import { buildDeckStudy } from "../../../packages/shared/src/core/usecases/progress/buildDeckStudy.js";
 import { activateProgressProfile } from "./sync.services.js";
 
 export const getProgressOverview = ({
@@ -51,4 +52,47 @@ export const getProgressOverview = ({
     reviewLogs,
     profileScope: normalizedProfileScope,
   });
+};
+
+// One deck, word by word, for the deck page.
+export const getDeckStudy = ({ deckId, profileScope = GUEST_PROFILE_SCOPE } = {}) => {
+  const numericDeckId = Number(deckId);
+
+  if (!Number.isInteger(numericDeckId) || numericDeckId <= 0) {
+    return buildDeckStudy();
+  }
+
+  const db = getDatabase();
+  const normalizedProfileScope = normalizeProfileScope(profileScope);
+  activateProgressProfile(normalizedProfileScope);
+
+  const words = db.prepare("SELECT id FROM words WHERE deck_id = ?").all(numericDeckId);
+  const reviewCards = db
+    .prepare(
+      `
+        SELECT
+          review_cards.word_id AS wordId,
+          review_cards.state,
+          review_cards.interval_days AS intervalDays,
+          review_cards.due_at AS dueAt,
+          review_cards.reps,
+          review_cards.lapses,
+          review_cards.last_reviewed_at AS lastReviewedAt
+        FROM review_cards
+        JOIN words ON words.id = review_cards.word_id
+        WHERE words.deck_id = ? AND review_cards.profile_scope = ?
+      `,
+    )
+    .all(numericDeckId, normalizedProfileScope);
+  const reviewLogs = db
+    .prepare(
+      `
+        SELECT reviewed_at AS reviewedAt, rating
+        FROM review_logs
+        WHERE deck_id = ? AND profile_scope = ?
+      `,
+    )
+    .all(numericDeckId, normalizedProfileScope);
+
+  return buildDeckStudy({ words, reviewCards, reviewLogs });
 };

@@ -482,10 +482,73 @@ export default {
   },
   "deck": {
     "loading": "Caricamento del mazzo…",
-    "noDescription": "Il mazzo e le sue parole",
     "edit": "Modifica mazzo",
     "export": "Esporta il mazzo in JSON",
-    "refreshWords": "Aggiorna parole"
+    "exportShort": "Esporta",
+    "addWords": "Aggiungi parole",
+    "wordsCount": {
+      "one": "{count} parola",
+      "many": "{count} parole",
+      "other": "{count} parole"
+    },
+    "emptyDeck": "Questo mazzo non ha ancora parole.",
+    "emptyFilter": "Nessuna parola qui.",
+    "study": {
+      "title": "I tuoi progressi",
+      "notStarted": "Non hai ancora studiato questo mazzo",
+      "newWaiting": {
+        "one": "{count} parola nuova per iniziare",
+        "many": "{count} parole nuove per iniziare",
+        "other": "{count} parole nuove per iniziare"
+      },
+      "due": {
+        "one": "{count} parola da ripassare ora",
+        "many": "{count} parole da ripassare ora",
+        "other": "{count} parole da ripassare ora"
+      },
+      "caughtUp": "Ora non c’è niente da ripassare",
+      "nextReview": "Prossimo ripasso {when}",
+      "lastSession": "Ultima sessione {when}",
+      "week": {
+        "one": "{count} risposta questa settimana",
+        "many": "{count} risposte questa settimana",
+        "other": "{count} risposte questa settimana"
+      },
+      "recall": "{percent} ricordato negli ultimi 30 giorni"
+    },
+    "filter": {
+      "label": "Mostra parole",
+      "all": "Tutte",
+      "due": "Da ripassare",
+      "known": "Ricordate"
+    },
+    "sort": {
+      "label": "Ordine",
+      "deck": "Ordine del mazzo",
+      "az": "Dalla A alla Z",
+      "due": "Prossimo ripasso prima",
+      "hard": "Prima le più difficili"
+    },
+    "word": {
+      "notStudied": "Non ancora studiata",
+      "dueNow": "Da ripassare ora",
+      "next": "Prossimo ripasso {when}",
+      "last": "Ultimo ripasso il {date}",
+      "reviews": {
+        "one": "{count} ripasso",
+        "many": "{count} ripassi",
+        "other": "{count} ripassi"
+      },
+      "lapses": {
+        "one": "dimenticata {count} volta",
+        "many": "dimenticata {count} volte",
+        "other": "dimenticata {count} volte"
+      },
+      "about": "Livello e parte del discorso",
+      "tags": "Tag",
+      "progress": "Progressi",
+      "nextColumn": "Ripasso"
+    }
   },
   "partOfSpeech": {
     "noun": "sostantivo",

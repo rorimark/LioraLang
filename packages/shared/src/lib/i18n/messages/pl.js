@@ -493,10 +493,79 @@ export default {
   },
   "deck": {
     "loading": "Ładujemy talię…",
-    "noDescription": "Talia i jej słowa",
     "edit": "Edytuj talię",
     "export": "Eksportuj talię do JSON",
-    "refreshWords": "Odśwież słowa"
+    "exportShort": "Eksportuj",
+    "addWords": "Dodaj słowa",
+    "wordsCount": {
+      "one": "{count} słowo",
+      "few": "{count} słowa",
+      "many": "{count} słów",
+      "other": "{count} słowa"
+    },
+    "emptyDeck": "Ta talia nie ma jeszcze słów.",
+    "emptyFilter": "Brak słów.",
+    "study": {
+      "title": "Twoje postępy",
+      "notStarted": "Nie uczyłeś się jeszcze tej talii",
+      "newWaiting": {
+        "one": "{count} nowe słowo czeka",
+        "few": "{count} nowe słowa czekają",
+        "many": "{count} nowych słów czeka",
+        "other": "{count} nowe słowa czekają"
+      },
+      "due": {
+        "one": "{count} słowo do powtórki",
+        "few": "{count} słowa do powtórki",
+        "many": "{count} słów do powtórki",
+        "other": "{count} słowa do powtórki"
+      },
+      "caughtUp": "Teraz nie ma nic do powtórki",
+      "nextReview": "Następna powtórka {when}",
+      "lastSession": "Ostatnia sesja {when}",
+      "week": {
+        "one": "{count} odpowiedź w tym tygodniu",
+        "few": "{count} odpowiedzi w tym tygodniu",
+        "many": "{count} odpowiedzi w tym tygodniu",
+        "other": "{count} odpowiedzi w tym tygodniu"
+      },
+      "recall": "{percent} zapamiętanych w ciągu 30 dni"
+    },
+    "filter": {
+      "label": "Pokaż słowa",
+      "all": "Wszystkie",
+      "due": "Do powtórki",
+      "known": "Zapamiętane"
+    },
+    "sort": {
+      "label": "Kolejność",
+      "deck": "Jak w talii",
+      "az": "Od A do Z",
+      "due": "Najbliższa powtórka",
+      "hard": "Najpierw trudne"
+    },
+    "word": {
+      "notStudied": "Jeszcze nie uczone",
+      "dueNow": "Do powtórki teraz",
+      "next": "Następna powtórka {when}",
+      "last": "Ostatnia powtórka {date}",
+      "reviews": {
+        "one": "{count} powtórka",
+        "few": "{count} powtórki",
+        "many": "{count} powtórek",
+        "other": "{count} powtórki"
+      },
+      "lapses": {
+        "one": "zapomniane {count} raz",
+        "few": "zapomniane {count} razy",
+        "many": "zapomniane {count} razy",
+        "other": "zapomniane {count} razy"
+      },
+      "about": "Poziom i część mowy",
+      "tags": "Tagi",
+      "progress": "Postęp",
+      "nextColumn": "Powtórka"
+    }
   },
   "partOfSpeech": {
     "noun": "rzeczownik",

@@ -52,6 +52,10 @@ const createLazyProgressRepository = () => {
       const repository = await getRepository();
       return repository.getProgressOverview(options);
     },
+    async getDeckStudy(deckId, options) {
+      const repository = await getRepository();
+      return repository.getDeckStudy(deckId, options);
+    },
   };
 };
 

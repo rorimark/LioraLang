@@ -482,10 +482,73 @@ export default {
   },
   "deck": {
     "loading": "Chargement du paquet…",
-    "noDescription": "Le paquet et ses mots",
     "edit": "Modifier le paquet",
     "export": "Exporter le paquet en JSON",
-    "refreshWords": "Actualiser les mots"
+    "exportShort": "Exporter",
+    "addWords": "Ajouter des mots",
+    "wordsCount": {
+      "one": "{count} mot",
+      "many": "{count} mots",
+      "other": "{count} mots"
+    },
+    "emptyDeck": "Ce paquet n’a pas encore de mots.",
+    "emptyFilter": "Aucun mot ici.",
+    "study": {
+      "title": "Votre progression",
+      "notStarted": "Vous n’avez pas encore étudié ce paquet",
+      "newWaiting": {
+        "one": "{count} nouveau mot pour commencer",
+        "many": "{count} nouveaux mots pour commencer",
+        "other": "{count} nouveaux mots pour commencer"
+      },
+      "due": {
+        "one": "{count} mot à réviser maintenant",
+        "many": "{count} mots à réviser maintenant",
+        "other": "{count} mots à réviser maintenant"
+      },
+      "caughtUp": "Rien à réviser pour l’instant",
+      "nextReview": "Prochaine révision {when}",
+      "lastSession": "Dernière séance {when}",
+      "week": {
+        "one": "{count} réponse cette semaine",
+        "many": "{count} réponses cette semaine",
+        "other": "{count} réponses cette semaine"
+      },
+      "recall": "{percent} retenus ces 30 derniers jours"
+    },
+    "filter": {
+      "label": "Afficher les mots",
+      "all": "Tous",
+      "due": "À réviser",
+      "known": "Retenus"
+    },
+    "sort": {
+      "label": "Ordre",
+      "deck": "Ordre du paquet",
+      "az": "De A à Z",
+      "due": "Prochaine révision d’abord",
+      "hard": "Les plus difficiles d’abord"
+    },
+    "word": {
+      "notStudied": "Pas encore étudié",
+      "dueNow": "À réviser maintenant",
+      "next": "Prochaine révision {when}",
+      "last": "Dernière révision le {date}",
+      "reviews": {
+        "one": "{count} révision",
+        "many": "{count} révisions",
+        "other": "{count} révisions"
+      },
+      "lapses": {
+        "one": "oublié {count} fois",
+        "many": "oublié {count} fois",
+        "other": "oublié {count} fois"
+      },
+      "about": "Niveau et nature",
+      "tags": "Étiquettes",
+      "progress": "Progression",
+      "nextColumn": "Révision"
+    }
   },
   "partOfSpeech": {
     "noun": "nom",

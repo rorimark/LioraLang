@@ -471,10 +471,67 @@ export default {
   },
   "deck": {
     "loading": "Loading deck…",
-    "noDescription": "The deck and its words",
     "edit": "Edit deck",
     "export": "Export deck as JSON",
-    "refreshWords": "Refresh words"
+    "exportShort": "Export",
+    "addWords": "Add words",
+    "wordsCount": {
+      "one": "{count} word",
+      "other": "{count} words"
+    },
+    "emptyDeck": "This deck has no words yet.",
+    "emptyFilter": "No words here.",
+    "study": {
+      "title": "Your progress",
+      "notStarted": "You have not studied this deck yet",
+      "newWaiting": {
+        "one": "{count} new word to start with",
+        "other": "{count} new words to start with"
+      },
+      "due": {
+        "one": "{count} word to review now",
+        "other": "{count} words to review now"
+      },
+      "caughtUp": "Nothing to review right now",
+      "nextReview": "Next review {when}",
+      "lastSession": "Last session {when}",
+      "week": {
+        "one": "{count} answer this week",
+        "other": "{count} answers this week"
+      },
+      "recall": "{percent} remembered in the last 30 days"
+    },
+    "filter": {
+      "label": "Show words",
+      "all": "All",
+      "due": "To review",
+      "known": "Remembered"
+    },
+    "sort": {
+      "label": "Order",
+      "deck": "Deck order",
+      "az": "A to Z",
+      "due": "Next review first",
+      "hard": "Hardest first"
+    },
+    "word": {
+      "notStudied": "Not studied yet",
+      "dueNow": "Review now",
+      "next": "Next review {when}",
+      "last": "Last reviewed {date}",
+      "reviews": {
+        "one": "{count} review",
+        "other": "{count} reviews"
+      },
+      "lapses": {
+        "one": "forgotten {count} time",
+        "other": "forgotten {count} times"
+      },
+      "about": "Level and part of speech",
+      "tags": "Tags",
+      "progress": "Progress",
+      "nextColumn": "Next review"
+    }
   },
   "partOfSpeech": {
     "noun": "noun",

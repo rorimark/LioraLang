@@ -483,6 +483,11 @@ const createProgressRepository = () => {
       ensureElectronApi().getProgressOverview({
         profileScope: options?.profileScope || (await resolveCurrentProfileScope()),
       }),
+    getDeckStudy: async (deckId, options = {}) =>
+      ensureElectronApi().getDeckStudy({
+        deckId,
+        profileScope: options?.profileScope || (await resolveCurrentProfileScope()),
+      }),
   };
 };
 
