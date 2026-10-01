@@ -119,7 +119,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → Installa app"
     },
-    "open": "Apri l'app web"
+    "open": "Apri l'app web",
+    "offline": "Anche offline",
+    "fullscreen": "Schermo intero"
   },
   "cta": {
     "title": "Il tuo primo ripasso richiede un minuto."

@@ -115,7 +115,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → Install app"
     },
-    "open": "Open the web app"
+    "open": "Open the web app",
+    "offline": "Works offline",
+    "fullscreen": "Full screen"
   },
   "cta": {
     "title": "Your first review takes a minute."

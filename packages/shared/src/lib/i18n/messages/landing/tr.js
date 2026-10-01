@@ -113,7 +113,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → Uygulamayı yükle"
     },
-    "open": "Web uygulamasını aç"
+    "open": "Web uygulamasını aç",
+    "offline": "Çevrimdışı da",
+    "fullscreen": "Tam ekran"
   },
   "cta": {
     "title": "İlk tekrarınız bir dakika sürer."

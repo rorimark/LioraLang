@@ -2,7 +2,9 @@ import { memo } from "react";
 import { Link } from "react-router";
 import {
   IoArrowForward,
+  IoCloudOfflineOutline,
   IoDesktopOutline,
+  IoExpandOutline,
   IoGlobeOutline,
   IoPhonePortraitOutline,
 } from "react-icons/io5";
@@ -207,12 +209,13 @@ const PHONE_GRADES = [
 ];
 
 export const PhoneIllustration = memo(() => {
-  const { t, locale, languageName } = useI18n();
+  const { t, locale, languageName, formatInterval } = useI18n();
   const deck = buildLandingDemoDeck(locale);
   const word = deck.words[deck.words.length - 1];
 
   return (
     <div className="lp-art lp-phone-art" aria-hidden="true">
+      <span className="lp-phone-art__disc" />
       <span className="lp-phone">
         <span className="lp-phone__status">
           <span>9:41</span>
@@ -226,20 +229,33 @@ export const PhoneIllustration = memo(() => {
         <span className="lp-phone__card">
           <span className="lp-card__label">{languageName(deck.sourceLanguage)}</span>
           <span className="lp-phone__word">{word.source}</span>
+          <span className="lp-phone__example">{word.example}</span>
           <span className="lp-phone__answer">{word.target}</span>
         </span>
         <span className="lp-phone__grades">
           {PHONE_GRADES.map((grade) => (
-            <span key={grade.key} className={`lp-phone__grade lp-tone-${grade.tone}`}>
+            <span
+              key={grade.key}
+              className={`lp-phone__grade lp-tone-${grade.tone}${grade.key === "good" ? " is-pressed" : ""}`}
+            >
               {t(`grades.${grade.key}.label`)}
             </span>
           ))}
+          <span className="lp-phone__next">{formatInterval("24h")}</span>
         </span>
         <span className="lp-phone__home" />
       </span>
       <span className="lp-phone-icon">
         <AppIcon size={64} />
         <span>LioraLang</span>
+      </span>
+      <span className="lp-sticker lp-tone-green lp-phone-sticker lp-phone-sticker--offline">
+        <IoCloudOfflineOutline />
+        {t("landing.phone.offline")}
+      </span>
+      <span className="lp-sticker lp-tone-amber lp-phone-sticker lp-phone-sticker--full">
+        <IoExpandOutline />
+        {t("landing.phone.fullscreen")}
       </span>
     </div>
   );

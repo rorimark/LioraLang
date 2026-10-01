@@ -119,7 +119,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → Nainstalovat aplikaci"
     },
-    "open": "Otevřít webovou aplikaci"
+    "open": "Otevřít webovou aplikaci",
+    "offline": "Funguje offline",
+    "fullscreen": "Celá obrazovka"
   },
   "cta": {
     "title": "První opakování zabere minutu."

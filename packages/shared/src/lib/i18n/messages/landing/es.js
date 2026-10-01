@@ -119,7 +119,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → Instalar aplicación"
     },
-    "open": "Abrir la app web"
+    "open": "Abrir la app web",
+    "offline": "Sin conexión",
+    "fullscreen": "Pantalla completa"
   },
   "cta": {
     "title": "Tu primer repaso lleva un minuto."

@@ -1314,26 +1314,44 @@
   }
 }
 
-/* Phone: where to tap on each system, one short line each. */
+/* Phone: where to tap on each system, behind the system's own mark. */
 .lp-steps {
   display: grid;
-  gap: 8px;
-  max-width: 44ch;
+  gap: 14px;
   margin: 0;
+  padding: 0;
+  list-style: none;
   text-align: start;
 }
 
-.lp-steps > div {
+.lp-steps li {
   display: grid;
-  gap: 2px;
+  grid-template-columns: 46px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: center;
 }
 
-.lp-steps dt {
+.lp-steps__icon {
+  display: grid;
+  grid-row: span 2;
+  place-content: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--tone-edge);
+  border-bottom-width: 5px;
+  border-radius: 14px;
+  background: var(--tone);
+  color: var(--lp-on-color);
+  font-size: 1.35rem;
+}
+
+.lp-steps strong {
+  align-self: end;
   font-weight: 900;
 }
 
-.lp-steps dd {
-  margin: 0;
+.lp-steps li > span:last-child {
+  align-self: start;
   color: var(--lp-ink-soft);
   font-weight: 700;
 }
@@ -1344,7 +1362,49 @@
   position: relative;
   display: grid;
   justify-items: center;
-  padding-inline: 48px;
+  padding: 16px 48px;
+}
+
+.lp-phone-art__disc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100%, 400px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--lp-blue-soft);
+  transform: translate(-50%, -50%);
+}
+
+.lp-phone {
+  position: relative;
+  z-index: 1;
+}
+
+.lp-phone-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.lp-phone-sticker svg {
+  flex: none;
+  font-size: 1.1em;
+}
+
+.lp-phone-sticker--offline {
+  top: 9%;
+  left: 0;
+  transform: rotate(-8deg);
+  animation-delay: -1.4s;
+}
+
+.lp-phone-sticker--full {
+  top: 38%;
+  right: 0;
+  transform: rotate(7deg);
+  animation-delay: -3s;
 }
 
 .lp-phone {
@@ -1397,9 +1457,20 @@
 }
 
 .lp-phone__progress {
+  display: block;
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--lp-green) 62%, var(--lp-line) 62%);
+  background: var(--lp-line);
+  overflow: hidden;
+}
+
+.lp-phone__progress::before {
+  content: "";
+  display: block;
+  width: 66%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lp-green);
 }
 
 .lp-phone__card {
@@ -1421,6 +1492,14 @@
   letter-spacing: -0.02em;
 }
 
+.lp-phone__example {
+  font-size: 0.78rem;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.35;
+  opacity: 0.85;
+}
+
 .lp-phone__answer {
   width: 100%;
   padding-top: 10px;
@@ -1431,6 +1510,7 @@
 }
 
 .lp-phone__grades {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 5px;
@@ -1454,6 +1534,71 @@
   white-space: nowrap;
 }
 
+/* The answer is graded Good: the key goes down and the next review
+   pops up above it. */
+.lp-phone__next {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 62.5%;
+  padding: 4px 10px;
+  border: 2px solid var(--lp-blue-edge);
+  border-bottom-width: 4px;
+  border-radius: 10px;
+  background: var(--lp-surface);
+  color: var(--lp-blue);
+  font-size: 0.72rem;
+  font-weight: 900;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+[data-revealed] .lp-phone__card {
+  animation: lp-phone-card 520ms var(--lp-spring) both;
+  animation-delay: 200ms;
+}
+
+@keyframes lp-phone-card {
+  from {
+    opacity: 0;
+    transform: translateX(24px) rotate(2deg);
+  }
+}
+
+[data-revealed] .lp-phone__grade.is-pressed {
+  animation: lp-phone-press 360ms ease both;
+  animation-delay: 900ms;
+}
+
+@keyframes lp-phone-press {
+  50% {
+    border-bottom-width: 2px;
+    transform: translateY(2px) scale(0.95);
+  }
+}
+
+[data-revealed] .lp-phone__next {
+  animation: lp-phone-next 480ms var(--lp-spring) both;
+  animation-delay: 1150ms;
+}
+
+@keyframes lp-phone-next {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.6);
+  }
+}
+
+[data-revealed] .lp-phone__progress::before {
+  animation: lp-phone-progress 700ms ease both;
+  animation-delay: 1150ms;
+}
+
+@keyframes lp-phone-progress {
+  from {
+    width: 50%;
+  }
+}
+
 .lp-phone__home {
   align-self: center;
   width: 38%;
@@ -1466,6 +1611,7 @@
 /* The home-screen icon, set against the phone's side. */
 .lp-phone-icon {
   position: absolute;
+  z-index: 2;
   /* Over the phone's edge, by the empty middle of the card. */
   top: 58%;
   left: max(0px, calc(50% - 125px - 72px));
@@ -1709,7 +1855,7 @@
   }
 
   .lp-steps {
-    text-align: center;
+    justify-self: center;
   }
 
   .lp-demo__ratings {
@@ -1767,9 +1913,14 @@
     font-size: 0.82rem;
   }
 
-  /* A narrower phone, so the icon beside it covers only its edge. */
+  /* A narrower phone, so the icon and stickers beside it cover only its
+     edges. */
   .lp-phone-art {
     padding-inline: 64px;
+  }
+
+  .lp-phone-sticker {
+    font-size: 0.74rem;
   }
 
   .lp-phone-icon {
@@ -1786,6 +1937,10 @@
   [data-revealed] .lp-chart__bar,
   [data-revealed] :is(.lp-ai-ghost, .lp-ai-chips),
   [data-revealed] .lp-phone-icon,
+  [data-revealed] .lp-phone__card,
+  [data-revealed] .lp-phone__grade.is-pressed,
+  [data-revealed] .lp-phone__next,
+  [data-revealed] .lp-phone__progress::before,
   .lp-ai-card__caret {
     animation: none;
   }

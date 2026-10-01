@@ -1,5 +1,5 @@
 import { Fragment, memo, useRef } from "react";
-import { IoCheckmark, IoGlobeOutline } from "react-icons/io5";
+import { IoCheckmark, IoGlobeOutline, IoLogoAndroid, IoLogoApple } from "react-icons/io5";
 import { Link } from "react-router";
 import { AppIcon, Select } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -20,6 +20,8 @@ import {
 import "./LandingMockPanel.css";
 
 const EXTERNAL_LINK_REL = "noopener noreferrer";
+
+const PHONE_SYSTEM_ICONS = { ios: IoLogoApple, android: IoLogoAndroid };
 
 // A message with elements inside it ("{keys} grade", "Made by {name}"):
 // each {slot} is replaced by the element given for it, wherever the
@@ -346,14 +348,21 @@ export const LandingMockPanel = memo(() => {
         isReversed
       >
         <p>{t("landing.phone.text")}</p>
-        <dl className="lp-steps">
-          {phoneSystems.map((system) => (
-            <div key={system}>
-              <dt>{t(`landing.phone.${system}.title`)}</dt>
-              <dd>{t(`landing.phone.${system}.text`)}</dd>
-            </div>
-          ))}
-        </dl>
+        <ul className="lp-steps">
+          {phoneSystems.map((system) => {
+            const Icon = PHONE_SYSTEM_ICONS[system.key];
+
+            return (
+              <li key={system.key} className={`lp-tone-${system.tone}`}>
+                <span className="lp-steps__icon" aria-hidden>
+                  <Icon />
+                </span>
+                <strong>{t(`landing.phone.${system.key}.title`)}</strong>
+                <span>{t(`landing.phone.${system.key}.text`)}</span>
+              </li>
+            );
+          })}
+        </ul>
         <Link to={openWebTo} className="lp-link" {...prefetchProps}>
           {t("landing.phone.open")}
         </Link>

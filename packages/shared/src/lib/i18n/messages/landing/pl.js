@@ -125,7 +125,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → Zainstaluj aplikację"
     },
-    "open": "Otwórz aplikację webową"
+    "open": "Otwórz aplikację webową",
+    "offline": "Działa offline",
+    "fullscreen": "Pełny ekran"
   },
   "cta": {
     "title": "Pierwsza powtórka zajmie minutę."

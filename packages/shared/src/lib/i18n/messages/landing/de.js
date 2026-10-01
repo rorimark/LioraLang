@@ -113,7 +113,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ → App installieren"
     },
-    "open": "Web-App öffnen"
+    "open": "Web-App öffnen",
+    "offline": "Auch offline",
+    "fullscreen": "Vollbild"
   },
   "cta": {
     "title": "Deine erste Wiederholung dauert eine Minute."

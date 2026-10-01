@@ -41,7 +41,10 @@ const PLATFORMS = [
 ];
 
 // The two ways a phone puts the web app on its home screen.
-const PHONE_SYSTEMS = ["ios", "android"];
+const PHONE_SYSTEMS = [
+  { key: "ios", tone: "blue" },
+  { key: "android", tone: "green" },
+];
 
 const FOOTER_LINKS = [
   { key: "github", href: EXTERNAL_LINKS.githubRepo, isExternal: true },

@@ -107,7 +107,9 @@ export default {
       "title": "Android",
       "text": "Chrome → ⋮ →「アプリをインストール」"
     },
-    "open": "Webアプリを開く"
+    "open": "Webアプリを開く",
+    "offline": "オフラインでも",
+    "fullscreen": "全画面"
   },
   "cta": {
     "title": "最初の復習は1分で終わります。"
