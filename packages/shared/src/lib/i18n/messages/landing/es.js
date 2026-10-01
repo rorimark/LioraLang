@@ -131,9 +131,9 @@ export default {
         "q": "¿LioraLang es gratis?",
         "a": "Sí, del todo. Mazos, repasos, sincronización y la app de escritorio no cuestan nada. El asistente de IA también es gratis con una cuenta, hasta {count} sugerencias al día."
       },
-      "different": {
-        "q": "¿Qué hace a LioraLang mejor que otras apps de tarjetas?",
-        "a": "Está hecho para aprender idiomas. Escribes una palabra y la tarjeta se rellena sola: traducción, ejemplo, nivel. Cada repaso llega en el momento justo y todo se abre en el navegador o en el móvil sin instalar nada."
+      "why": {
+        "q": "¿Por qué LioraLang?",
+        "a": "Escribe una palabra y Liora crea la tarjeta por ti. Tú eliges lo que te importa; Liora se encarga de la traducción, el nivel, los ejemplos, las etiquetas y el calendario de repasos."
       },
       "srs": {
         "q": "¿Qué es el repaso espaciado?",

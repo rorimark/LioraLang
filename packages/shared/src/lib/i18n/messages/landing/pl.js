@@ -137,9 +137,9 @@ export default {
         "q": "Czy LioraLang jest darmowy?",
         "a": "Tak, całkowicie. Talie, powtórki, synchronizacja i aplikacja na komputer nic nie kosztują. Asystent AI z kontem też jest darmowy, do {count} podpowiedzi dziennie."
       },
-      "different": {
-        "q": "Czym LioraLang wyróżnia się na tle innych aplikacji z fiszkami?",
-        "a": "Powstał do nauki języków. Wpisujesz słowo, a fiszka wypełnia się sama: tłumaczenie, przykład, poziom. Każda powtórka przychodzi w porę, a całość otwiera się w przeglądarce lub w telefonie bez instalacji."
+      "why": {
+        "q": "Dlaczego LioraLang?",
+        "a": "Wpisz słowo, a Liora zrobi z niego fiszkę. Ty wybierasz, co jest dla ciebie ważne, a Liora zajmie się tłumaczeniem, poziomem, przykładami, tagami i harmonogramem powtórek."
       },
       "srs": {
         "q": "Czym są powtórki w odstępach?",

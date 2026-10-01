@@ -125,9 +125,9 @@ export default {
         "q": "Ist LioraLang kostenlos?",
         "a": "Ja, komplett. Stapel, Wiederholungen, Synchronisierung und die Desktop-App kosten nichts. Der KI-Assistent ist mit Konto auch kostenlos, bis zu {count} Vorschläge am Tag."
       },
-      "different": {
-        "q": "Was macht LioraLang besser als andere Karteikarten-Apps?",
-        "a": "Es ist zum Sprachenlernen gemacht. Du tippst ein Wort und die Karte füllt sich selbst: Übersetzung, Beispiel, Niveau. Jede Wiederholung kommt zur richtigen Zeit, und alles öffnet sich im Browser oder auf dem Handy ohne Installation."
+      "why": {
+        "q": "Warum LioraLang?",
+        "a": "Tippe ein Wort und Liora baut die Karte für dich. Du entscheidest, was dir wichtig ist; Liora kümmert sich um Übersetzung, Niveau, Beispiele, Tags und den Wiederholungsplan."
       },
       "srs": {
         "q": "Was ist verteilte Wiederholung?",

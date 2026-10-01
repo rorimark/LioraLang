@@ -127,9 +127,9 @@ export default {
         "q": "Is LioraLang free?",
         "a": "Yes, completely. Decks, reviews, sync and the desktop app cost nothing. The AI assistant is free too with an account, up to {count} suggestions a day."
       },
-      "different": {
-        "q": "What makes LioraLang better than other flashcard apps?",
-        "a": "It's made for learning languages. Type a word and the card fills itself in: translation, example, level. Every review comes at the right moment, and it opens in your browser or on your phone with nothing to install."
+      "why": {
+        "q": "Why LioraLang?",
+        "a": "Type a word and Liora builds the card for you. You choose what matters to you; Liora handles the translation, level, examples, tags and review schedule."
       },
       "srs": {
         "q": "What is spaced repetition?",

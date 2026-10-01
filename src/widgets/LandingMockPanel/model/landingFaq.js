@@ -8,7 +8,7 @@ import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 // (word_suggestion_daily_allowance in supabase/migrations).
 export const AI_DAILY_SUGGESTIONS = 300;
 
-const FAQ_KEYS = ["free", "different", "srs", "offline", "languages"];
+const FAQ_KEYS = ["why", "free", "srs", "offline", "languages"];
 
 export const buildFaqItems = ({ t, languageName }) => {
   const languages = LANGUAGE_OPTIONS.map((name) => languageName(name)).join(", ");

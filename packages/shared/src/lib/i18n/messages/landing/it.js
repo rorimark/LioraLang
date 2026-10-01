@@ -131,9 +131,9 @@ export default {
         "q": "LioraLang è gratis?",
         "a": "Sì, del tutto. Mazzi, ripassi, sincronizzazione e app desktop non costano nulla. Anche l'assistente IA è gratis con un account, fino a {count} suggerimenti al giorno."
       },
-      "different": {
-        "q": "Cosa rende LioraLang migliore di altre app di flashcard?",
-        "a": "È fatto per imparare le lingue. Scrivi una parola e la carta si compila da sola: traduzione, esempio, livello. Ogni ripasso arriva al momento giusto e tutto si apre nel browser o sul telefono senza installare nulla."
+      "why": {
+        "q": "Perché LioraLang?",
+        "a": "Scrivi una parola e Liora crea la carta per te. Tu scegli cosa conta per te; Liora pensa a traduzione, livello, esempi, tag e calendario dei ripassi."
       },
       "srs": {
         "q": "Cos'è la ripetizione dilazionata?",

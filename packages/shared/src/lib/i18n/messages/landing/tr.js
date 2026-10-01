@@ -125,9 +125,9 @@ export default {
         "q": "LioraLang ücretsiz mi?",
         "a": "Evet, tamamen. Desteler, tekrarlar, senkronizasyon ve masaüstü uygulaması ücretsiz. Yapay zekâ asistanı da hesapla ücretsiz, günde en fazla {count} öneri."
       },
-      "different": {
-        "q": "LioraLang'i diğer kart uygulamalarından daha iyi yapan ne?",
-        "a": "Dil öğrenmek için yapıldı. Bir kelime yazarsınız, kart kendiliğinden dolar: çeviri, örnek, seviye. Her tekrar tam zamanında gelir ve her şey kurulum olmadan tarayıcıda ya da telefonda açılır."
+      "why": {
+        "q": "Neden LioraLang?",
+        "a": "Bir kelime yazın, Liora kartı sizin için hazırlasın. Neyin önemli olduğuna siz karar verirsiniz; çeviri, seviye, örnekler, etiketler ve tekrar takvimi Liora'da."
       },
       "srs": {
         "q": "Aralıklı tekrar nedir?",

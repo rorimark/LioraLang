@@ -131,9 +131,9 @@ export default {
         "q": "O LioraLang é grátis?",
         "a": "Sim, totalmente. Baralhos, revisões, sincronização e o app para computador não custam nada. O assistente de IA também é grátis com uma conta, até {count} sugestões por dia."
       },
-      "different": {
-        "q": "O que torna o LioraLang melhor que outros apps de flashcards?",
-        "a": "Ele foi feito para aprender idiomas. Você digita uma palavra e o cartão se preenche sozinho: tradução, exemplo, nível. Cada revisão chega na hora certa e tudo abre no navegador ou no celular sem instalar nada."
+      "why": {
+        "q": "Por que o LioraLang?",
+        "a": "Digite uma palavra e a Liora monta o cartão para você. Você escolhe o que importa; a Liora cuida da tradução, do nível, dos exemplos, das tags e do calendário de revisões."
       },
       "srs": {
         "q": "O que é repetição espaçada?",

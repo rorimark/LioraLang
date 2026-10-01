@@ -131,9 +131,9 @@ export default {
         "q": "Je LioraLang zdarma?",
         "a": "Ano, úplně. Balíčky, opakování, synchronizace i aplikace pro počítač nestojí nic. Asistent AI je s účtem taky zdarma, až {count} návrhů denně."
       },
-      "different": {
-        "q": "Čím je LioraLang lepší než jiné aplikace s kartičkami?",
-        "a": "Je stavěný na učení jazyků. Napíšete slovo a kartička se vyplní sama: překlad, příklad, úroveň. Každé opakování přijde včas a vše se otevře v prohlížeči nebo v telefonu bez instalace."
+      "why": {
+        "q": "Proč LioraLang?",
+        "a": "Napište slovo a Liora z něj udělá kartičku. Vy vybíráte, co je pro vás důležité, a o překlad, úroveň, příklady, štítky a plán opakování se postará Liora."
       },
       "srs": {
         "q": "Co je opakování v rozestupech?",
