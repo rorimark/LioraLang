@@ -215,6 +215,9 @@ const main = async () => {
     assert(await page.locator(".flashcard__face--front .flashcard__code").count() === 0, "answer code is never visible on the question");
     await page.keyboard.press("Space");
     await page.locator(".flashcard__face--back[aria-hidden=false]").waitFor();
+    await page.locator(".flashcard").evaluate(async (card) => {
+      await Promise.all(card.getAnimations({ subtree: true }).filter((animation) => animation.effect?.getTiming().iterations !== Infinity).map((animation) => animation.finished.catch(() => {})));
+    });
     assert((await page.locator(".flashcard__face--back .flashcard__code-text").allTextContents()).join("") === CODE, "answer code reappears after revealing the card");
     assert((await page.locator(".flashcard__block-text--answer").innerText()).includes("\n"), "multiline answers keep their line breaks");
 
