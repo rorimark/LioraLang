@@ -180,12 +180,12 @@ export const LearnFlashcardsPanel = memo(() => {
           type="button"
           className="learn-desk__session learn-desk__add"
           onClick={panel.openQuickAdd}
-          aria-label={t("quickAdd.open")}
-          title={t("quickAdd.open")}
+          aria-label={t(panel.subjectProfile.entryText?.addKey || "quickAdd.open")}
+          title={t(panel.subjectProfile.entryText?.addKey || "quickAdd.open")}
           aria-haspopup="dialog"
         >
           <FiPlus aria-hidden="true" />
-          <span className="learn-desk__add-label">{t("quickAdd.open")}</span>
+          <span className="learn-desk__add-label">{t(panel.subjectProfile.entryText?.addKey || "quickAdd.open")}</span>
         </button>
 
         <button
@@ -262,7 +262,7 @@ export const LearnFlashcardsPanel = memo(() => {
                 onClick={panel.openQuickAdd}
               >
                 <FiPlus aria-hidden="true" />
-                {t("quickAdd.open")}
+                {t(panel.subjectProfile.entryText?.addKey || "quickAdd.open")}
               </button>
             </div>
           </div>

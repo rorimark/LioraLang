@@ -59,7 +59,18 @@ describe("subjects", () => {
       { type: "text", role: "prompt", text: "What does this return?" },
       { type: "code", emphasis: "primary", text: "users.map(user => user.name)" },
     ]);
-    expect(presentation.back.map((block) => block.type)).toEqual(["text", "code", "list"]);
+    expect(presentation.back.map((block) => block.type)).toEqual(["text", "list"]);
+  });
+
+  it("keeps answer-side code off the question, even for a long answer", () => {
+    const fields = { code: "const answer = 42;", codeSide: "back" };
+    expect(normalizeEntrySubjectFields("programming", fields)).toEqual(fields);
+    expect(normalizeEntrySubjectFields("programming", { ...fields, codeSide: "front" })).toEqual({ code: fields.code });
+    expect(normalizeEntrySubjectFields("programming", { ...fields, codeSide: "invalid" })).toEqual({ code: fields.code });
+    const card = buildCardPresentation({ deck: { subject: "programming" }, entry: { source: "Declare a constant", target: "A constant binding.\nIts value cannot be reassigned.", subjectFields: fields } });
+    expect(card.front).toEqual([{ type: "text", role: "prompt", text: "Declare a constant", emphasis: "lead" }]);
+    expect(card.back).toContainEqual({ type: "code", emphasis: "secondary", text: fields.code });
+    expect(card.back[0].text).toContain("\n");
   });
 
   it("leaves out what a card does not have", () => {

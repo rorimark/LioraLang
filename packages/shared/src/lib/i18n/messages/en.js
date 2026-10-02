@@ -1852,7 +1852,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Code",
       "codePlaceholder": "Optional: paste or type a snippet",
-      "difficulty": "Difficulty"
+      "difficulty": "Difficulty",
+      "codeSide": "Code placement"
     },
     "difficulty": {
       "easy": "Easy",
@@ -1864,6 +1865,14 @@ export default {
       "emptyAnswer": "Add the answer."
     },
     "addCard": "Add card",
-    "cards": "Cards"
+    "cards": "Cards",
+    "codeSide": {
+      "front": "With question",
+      "back": "With answer"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter adds the card",
+    "tags": "Card tags, separated by commas",
+    "empty": "Add a term or question, an answer and optional code.",
+    "newDeckHint": "Terms, questions and code"
   }
 };

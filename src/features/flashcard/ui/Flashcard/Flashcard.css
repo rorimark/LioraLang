@@ -491,6 +491,7 @@
 }
 
 .flashcard__block-text {
+  white-space: pre-line;
   color: inherit;
   font-weight: 800;
   line-height: 1.25;
@@ -498,40 +499,22 @@
 }
 
 .flashcard__code {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  display: block;
   min-width: 0;
   font-family: var(--flashcard-font-code);
   line-height: 1.6;
   text-align: left;
   cursor: text;
 }
-
+.flashcard__code code { display: block; padding-block: 0.9em; font: inherit; tab-size: 2; }
+.flashcard__code-line { display: grid; grid-template-columns: 3.5em minmax(0, 1fr); min-height: 1.6em; }
 .flashcard__code-gutter {
-  padding: 0.9em 0.9em 0.9em 1.1em;
-  white-space: pre;
+  padding-inline: 0.5em 0.8em;
   text-align: right;
   user-select: none;
   font-variant-numeric: tabular-nums;
 }
-
-.flashcard__code-scroll {
-  display: block;
-  min-width: 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-}
-
-.flashcard__code code {
-  display: block;
-  width: max-content;
-  min-width: 100%;
-  padding: 0.9em 1.2em 0.9em 0.2em;
-  font: inherit;
-  white-space: pre;
-  tab-size: 2;
-}
+.flashcard__code-text { padding-inline: 0.8em 1.2em; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 .flashcard__list {
   display: grid;
@@ -676,14 +659,12 @@
 }
 
 .flashcard--layout-code .flashcard__code--primary .flashcard__code-gutter {
-  padding-left: var(--index-pad-x, 1.1em);
   color: var(--flashcard-code-gutter);
   border-right: 1px solid color-mix(in srgb, var(--flashcard-code-gutter) 45%, transparent);
 }
 
 .flashcard--layout-code .flashcard__code--primary code {
-  padding-left: 1em;
-  padding-right: var(--index-pad-x, 1.2em);
+  padding-inline: 0;
 }
 
 /* The back. */
@@ -695,9 +676,6 @@
 }
 
 .flashcard--layout-code .flashcard__code--secondary {
-  max-height: 10.5em;
-  overflow-y: auto;
-  scrollbar-width: thin;
   border-radius: clamp(8px, 1.4cqi, 14px);
   background: color-mix(in srgb, var(--flashcard-code-edge) 34%, transparent);
   color: var(--flashcard-on-back);
@@ -709,7 +687,6 @@
 }
 
 .flashcard--layout-code .flashcard__code--secondary code {
-  padding-left: 0.8em;
   opacity: 0.92;
 }
 

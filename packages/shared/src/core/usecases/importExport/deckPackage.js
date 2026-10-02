@@ -33,7 +33,8 @@ const DECK_PACKAGE_VERSION = 1;
 // and dropping what it does not know (a programming card's code). Language
 // decks stay version 1, exactly as before.
 const SUBJECT_PACKAGE_VERSION = 2;
-const MAX_READABLE_PACKAGE_VERSION = SUBJECT_PACKAGE_VERSION;
+// Version 3 preserves answer-side code; older readers must not expose it as a question.
+const MAX_READABLE_PACKAGE_VERSION = 3;
 const MAX_DECK_TAGS = 10;
 const MAX_WORD_TAGS = 10;
 const MAX_WORD_EXAMPLES = 1000;
@@ -868,7 +869,9 @@ export const buildExportDeckPackage = ({
 
   return {
     format: DECK_PACKAGE_FORMAT,
-    version: subject ? SUBJECT_PACKAGE_VERSION : DECK_PACKAGE_VERSION,
+    version: subject ? wordsPayload.reduce((version, word) =>
+      Object.keys(word.subjectFields || {}).reduce((required, key) => Math.max(required, getSubjectProfile(subject).entryFields[key]?.minPackageVersion || SUBJECT_PACKAGE_VERSION), version),
+    SUBJECT_PACKAGE_VERSION) : DECK_PACKAGE_VERSION,
     exportedAt: new Date().toISOString(),
     deck: {
       name: toSafeString(safeDeck.name),

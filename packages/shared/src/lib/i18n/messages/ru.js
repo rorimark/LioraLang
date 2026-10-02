@@ -2036,7 +2036,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Код",
       "codePlaceholder": "Необязательно: вставьте или напишите фрагмент",
-      "difficulty": "Сложность"
+      "difficulty": "Сложность",
+      "codeSide": "Сторона кода"
     },
     "difficulty": {
       "easy": "Легко",
@@ -2048,6 +2049,14 @@ export default {
       "emptyAnswer": "Добавьте ответ."
     },
     "addCard": "Добавить карточку",
-    "cards": "Карточки"
+    "cards": "Карточки",
+    "codeSide": {
+      "front": "С вопросом",
+      "back": "С ответом"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter добавляет карточку",
+    "tags": "Теги карточки через запятую",
+    "empty": "Добавьте термин или вопрос, ответ и при необходимости код.",
+    "newDeckHint": "Термины, вопросы и код"
   }
 };

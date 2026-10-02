@@ -78,8 +78,21 @@ const WordComposer = memo(({ labels }) => {
     [submitAddDraft, suggest.suggestedFields],
   );
 
+  const handleKeyDown = (event) => {
+    suggest.handleKeyDown(event);
+    if (!event.defaultPrevented && !event.nativeEvent.isComposing && event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+      handleSubmit(event);
+    }
+  };
+
   return (
-    <form ref={formRef} className="deck-composer" onSubmit={handleSubmit} onKeyDown={suggest.handleKeyDown} noValidate>
+    <form
+      ref={formRef}
+      className={`deck-composer${subjectProfile.entryText?.target.multiline ? " deck-composer--structured" : ""}`}
+      onSubmit={handleSubmit}
+      onKeyDown={handleKeyDown}
+      noValidate
+    >
       <div className="deck-composer__main">
         <WordSideFields
           suggest={suggest}
@@ -93,23 +106,15 @@ const WordComposer = memo(({ labels }) => {
           frontPlaceholder={labels.frontPlaceholder}
           backPlaceholder={labels.backPlaceholder}
           autoFocus={autoFocus}
-        />
+          multilineAnswer={subjectProfile.entryText?.target.multiline}
+        >
+          <WordSubjectFields fields={subjectProfile.entryFields} draft={addDraft} onSubjectFieldChange={handleAddDraftSubjectFieldChange} only={["code"]} />
+        </WordSideFields>
         <button type="submit" className="deck-composer__add">
           <FiPlus aria-hidden />
           <span>{t(subjectProfile.entryText?.addKey || "editor.addWord")}</span>
         </button>
       </div>
-      {/* A subject's code is part of the card itself, so it is never
-          folded away with the details. */}
-      <div className="deck-composer__subject">
-        <WordSubjectFields
-          fields={subjectProfile.entryFields}
-          draft={addDraft}
-          onSubjectFieldChange={handleAddDraftSubjectFieldChange}
-          only={["code"]}
-        />
-      </div>
-
       <div className="deck-composer__foot">
         <button
           type="button"
@@ -133,7 +138,7 @@ const WordComposer = memo(({ labels }) => {
           </p>
         ) : (
           <SuggestionBar suggest={suggest} summary={summary}>
-            <p className="deck-composer__hint">{t("editor.enterHint")}</p>
+            <p className="deck-composer__hint">{t(subjectProfile.entryText?.enterHintKey || "editor.enterHint")}</p>
           </SuggestionBar>
         )}
       </div>
@@ -146,6 +151,7 @@ const WordComposer = memo(({ labels }) => {
             onChange={handleAddDraftChange}
             usesWordLevels={deckForm.usesWordLevels}
             usesLanguages={subjectProfile.usesLanguages}
+            tagsLabelKey={subjectProfile.entryText?.tagsKey || "editor.wordTags"}
             levelOptions={levelOptions}
             partOfSpeechOptions={partOfSpeechOptions}
             examplesLabel={labels.examples}
@@ -212,12 +218,16 @@ const WordEditor = memo(({ word, labels }) => {
     (event) => {
       suggest.handleKeyDown(event);
 
+      if (!event.defaultPrevented && !event.nativeEvent.isComposing && event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        handleSubmit(event);
+      }
+
       if (event.key === "Escape" && !event.defaultPrevented) {
         event.stopPropagation();
         cancelEdit();
       }
     },
-    [cancelEdit, suggest],
+    [cancelEdit, handleSubmit, suggest],
   );
 
   return (
@@ -233,19 +243,22 @@ const WordEditor = memo(({ word, labels }) => {
         tertiaryLabel={hasTertiary ? labels.tertiary : ""}
         frontPlaceholder={labels.frontPlaceholder}
         backPlaceholder={labels.backPlaceholder}
-      />
-      <WordSubjectFields
-        fields={subjectProfile.entryFields}
-        draft={editDraft}
-        onSubjectFieldChange={handleEditDraftSubjectFieldChange}
-        only={["code"]}
-      />
+        multilineAnswer={subjectProfile.entryText?.target.multiline}
+      >
+        <WordSubjectFields
+          fields={subjectProfile.entryFields}
+          draft={editDraft}
+          onSubjectFieldChange={handleEditDraftSubjectFieldChange}
+          only={["code"]}
+        />
+      </WordSideFields>
       <WordDetailFields
         suggest={suggest}
         draft={editDraft}
         onChange={handleEditDraftChange}
         usesWordLevels={deckForm.usesWordLevels}
         usesLanguages={subjectProfile.usesLanguages}
+        tagsLabelKey={subjectProfile.entryText?.tagsKey || "editor.wordTags"}
         levelOptions={levelOptions}
         partOfSpeechOptions={partOfSpeechOptions}
         examplesLabel={labels.examples}
@@ -296,7 +309,7 @@ const WordRow = memo(({ word, labels, pictureSide, entryFields, isEditing, onEdi
 
   // A subject's values from a fixed list (a difficulty) join the meta.
   const subjectMeta = Object.entries(entryFields || {})
-    .filter(([key, spec]) => spec.type === "choice" && word.subjectFields?.[key])
+    .filter(([key, spec]) => spec.type === "choice" && !spec.attachedTo && word.subjectFields?.[key])
     .map(([key, spec]) => t(`${spec.valueKey}.${word.subjectFields[key]}`));
   const meta = [word.level, word.part_of_speech && partOfSpeechName(word.part_of_speech), ...subjectMeta]
     .filter(Boolean)
@@ -420,7 +433,7 @@ export const DeckEditorWordsSection = memo(({ labels }) => {
       ) : null}
 
       {totalWords === 0 ? (
-        <p className="deck-editor__empty">{t(isEditMode ? "editor.empty" : "editor.emptyNew")}</p>
+        <p className="deck-editor__empty">{t(subjectProfile.entryText?.emptyKey || (isEditMode ? "editor.empty" : "editor.emptyNew"))}</p>
       ) : filteredCount === 0 ? (
         <p className="deck-editor__empty">{t("editor.noMatches", { query: wordsQuery.trim() })}</p>
       ) : (

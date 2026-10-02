@@ -127,6 +127,14 @@ describe("deckIdentity", () => {
       ).toBe(before);
     });
 
+    it("includes code placement in the hash, leaving the default unchanged", () => {
+      const deck = { name: "JS", subject: "programming" };
+      const word = { source: "Question", target: "Answer", subjectFields: { code: "x = 1" } };
+      const hash = buildDeckContentHash({ deck, words: [word] });
+      expect(buildDeckContentHash({ deck, words: [{ ...word, subjectFields: { ...word.subjectFields, codeSide: "front" } }] })).toBe(hash);
+      expect(buildDeckContentHash({ deck, words: [{ ...word, subjectFields: { ...word.subjectFields, codeSide: "back" } }] })).not.toBe(hash);
+    });
+
     it("tells programming decks and their code apart", () => {
       const programming = { name: "JS", subject: "programming" };
       const card = { source: "What does this return?", target: "Names" };

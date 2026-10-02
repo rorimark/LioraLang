@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { Select } from "@shared/ui";
+import { memo, useId } from "react";
+import { Select, SettingSegmented } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 import "./SubjectFieldInputs.css";
 
@@ -8,16 +8,17 @@ import "./SubjectFieldInputs.css";
 // Labels and placeholders are the profile's message keys; nothing here
 // knows which subject it is.
 
-const CodeInput = ({ name, value, onChange, placeholder, maxLength }) => (
+const CodeInput = ({ id, name, value, onChange, placeholder, maxLength }) => (
   <textarea
     className="subject-field__code"
+    id={id}
     name={name}
     value={value}
     onChange={onChange}
     placeholder={placeholder}
     maxLength={maxLength}
     rows={6}
-    wrap="off"
+    wrap="soft"
     spellCheck="false"
     autoCapitalize="off"
     autoComplete="off"
@@ -26,12 +27,12 @@ const CodeInput = ({ name, value, onChange, placeholder, maxLength }) => (
   />
 );
 
-const ChoiceInput = ({ name, value, onChange, spec, label }) => {
+const ChoiceInput = ({ id, name, value, onChange, spec, label }) => {
   const { t } = useI18n();
 
   return (
     <span className="subject-field__select">
-      <Select name={name} value={value} onChange={onChange} label={label}>
+      <Select id={id} name={name} value={value} onChange={onChange} label={label}>
         <option value="">{t("quickAdd.notSet")}</option>
         {spec.values.map((option) => (
           <option key={option} value={option}>
@@ -43,9 +44,10 @@ const ChoiceInput = ({ name, value, onChange, spec, label }) => {
   );
 };
 
-const TextInput = ({ name, value, onChange, placeholder, maxLength }) => (
+const TextInput = ({ id, name, value, onChange, placeholder, maxLength }) => (
   <input
     type="text"
+    id={id}
     name={name}
     value={value}
     onChange={onChange}
@@ -66,20 +68,33 @@ export const SubjectFieldInputs = memo(({
   only = null,
 }) => {
   const { t } = useI18n();
-  const entries = Object.entries(fields).filter(([, spec]) => !only || only.includes(spec.type));
+  const id = useId();
+  const entries = Object.entries(fields).filter(([, spec]) => !spec.attachedTo && (!only || only.includes(spec.type)));
 
   return entries.map(([name, spec]) => {
     const Input = INPUTS[spec.type] || TextInput;
     const label = t(spec.labelKey);
+    const placement = fields[spec.placementField];
+    const inputId = `${id}-${name}`;
     const handleChange = (event) => onChange?.(name, event.target.value);
 
     return (
-      <label
+      <div
         key={name}
         className={`subject-field subject-field--${spec.type} ${fieldClassName}`.trim()}
       >
-        <span className={`subject-field__label ${labelClassName}`.trim()}>{label}</span>
+        <label htmlFor={inputId} className={`subject-field__label ${labelClassName}`.trim()}>{label}</label>
+        {placement ? (
+          <SettingSegmented
+            name={spec.placementField}
+            value={values?.[spec.placementField] || placement.defaultValue}
+            ariaLabel={t(placement.labelKey)}
+            onChange={(event) => onChange?.(spec.placementField, event.target.value)}
+            options={placement.values.map((value) => ({ value, label: t(`${placement.valueKey}.${value}`) }))}
+          />
+        ) : null}
         <Input
+          id={inputId}
           name={name}
           value={values?.[name] ?? ""}
           onChange={handleChange}
@@ -89,7 +104,7 @@ export const SubjectFieldInputs = memo(({
           label={label}
         />
         {spec.hintKey ? <small className="subject-field__hint">{t(spec.hintKey)}</small> : null}
-      </label>
+      </div>
     );
   });
 });

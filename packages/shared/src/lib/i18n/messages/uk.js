@@ -2036,7 +2036,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Код",
       "codePlaceholder": "Необов’язково: вставте або напишіть фрагмент",
-      "difficulty": "Складність"
+      "difficulty": "Складність",
+      "codeSide": "Сторона коду"
     },
     "difficulty": {
       "easy": "Легко",
@@ -2048,6 +2049,14 @@ export default {
       "emptyAnswer": "Додайте відповідь."
     },
     "addCard": "Додати картку",
-    "cards": "Картки"
+    "cards": "Картки",
+    "codeSide": {
+      "front": "Із запитанням",
+      "back": "Із відповіддю"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter додає картку",
+    "tags": "Теги картки через кому",
+    "empty": "Додайте термін або запитання, відповідь і за потреби код.",
+    "newDeckHint": "Терміни, запитання й код"
   }
 };

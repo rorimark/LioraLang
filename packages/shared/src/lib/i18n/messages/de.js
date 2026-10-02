@@ -1852,7 +1852,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Code",
       "codePlaceholder": "Optional: Ausschnitt einfügen oder eingeben",
-      "difficulty": "Schwierigkeit"
+      "difficulty": "Schwierigkeit",
+      "codeSide": "Position des Codes"
     },
     "difficulty": {
       "easy": "Leicht",
@@ -1864,6 +1865,14 @@ export default {
       "emptyAnswer": "Füge die Antwort hinzu."
     },
     "addCard": "Karte hinzufügen",
-    "cards": "Karten"
+    "cards": "Karten",
+    "codeSide": {
+      "front": "Bei der Frage",
+      "back": "Bei der Antwort"
+    },
+    "enterHint": "Strg / ⌘ + Enter fügt die Karte hinzu",
+    "tags": "Karten-Tags, durch Kommas getrennt",
+    "empty": "Füge einen Begriff oder eine Frage, eine Antwort und optional Code hinzu.",
+    "newDeckHint": "Begriffe, Fragen und Code"
   }
 };

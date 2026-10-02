@@ -1944,7 +1944,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Código",
       "codePlaceholder": "Opcional: pega o escribe un fragmento",
-      "difficulty": "Dificultad"
+      "difficulty": "Dificultad",
+      "codeSide": "Ubicación del código"
     },
     "difficulty": {
       "easy": "Fácil",
@@ -1956,6 +1957,14 @@ export default {
       "emptyAnswer": "Añade la respuesta."
     },
     "addCard": "Añadir tarjeta",
-    "cards": "Tarjetas"
+    "cards": "Tarjetas",
+    "codeSide": {
+      "front": "Con la pregunta",
+      "back": "Con la respuesta"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter añade la tarjeta",
+    "tags": "Etiquetas de la tarjeta, separadas por comas",
+    "empty": "Añade un término o una pregunta, una respuesta y código opcional.",
+    "newDeckHint": "Términos, preguntas y código"
   }
 };

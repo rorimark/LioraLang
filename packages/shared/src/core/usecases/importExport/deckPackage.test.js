@@ -210,6 +210,19 @@ describe("deckPackage", () => {
       expect(words[0].level).toBeNull();
     });
 
+    it("requires a new reader for answer-side code and preserves it on import", () => {
+      const exported = buildExportDeckPackage({
+        deck: { name: "Code answers", subject: "programming" },
+        words: [{ source: "Declare a constant", target: "An immutable binding.\nUse const.", subjectFields: { code: "const x = 1;", codeSide: "back" } }],
+      });
+      expect(exported.version).toBe(3);
+      const parsedPackage = parseDeckPackageFileText(JSON.stringify(exported));
+      const config = resolveImportConfig({ parsedPackage });
+      const { words } = normalizeWordsForImport({ parsedPackage, ...config });
+      expect(words[0].subjectFields).toEqual({ code: "const x = 1;", codeSide: "back" });
+      expect(words[0].target).toContain("\n");
+    });
+
     it("keeps a deck's learned side through export and import", () => {
       const exported = buildExportDeckPackage({
         deck: { name: "Vacant", sourceLanguage: "Polish", targetLanguage: "English", learnedSide: "target" },

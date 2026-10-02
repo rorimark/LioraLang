@@ -214,7 +214,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 720px), (orientation: landscape) and (max-height: 540px) {
   .learn-desk__add {
     padding: 0;
     justify-content: center;

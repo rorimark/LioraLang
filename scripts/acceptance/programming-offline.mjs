@@ -15,7 +15,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 const PORT = Number(process.env.ACCEPTANCE_PORT || 4176);
 const BASE = `http://127.0.0.1:${PORT}`;
-const CODE = 'const users = [{ name: "Ada" }, { name: "Linus" }];\n\nusers.map(user => user.name);';
+const CODE = 'const users = [{ name: "Ada Lovelace" }, { name: "Linus Torvalds" }, { name: "Grace Hopper" }];\n\nusers.map(user => user.name);';
 
 // Playwright is not a dependency of the app: it is found in the project
 // or in a folder named by NODE_PATH (a global install).
@@ -49,7 +49,7 @@ const choose = async (trigger, optionText) => {
 };
 
 const startPreview = async () => {
-  const server = spawn("npx", ["vite", "preview", "--host", "127.0.0.1", "--port", String(PORT), "--strictPort"], {
+  const server = spawn(process.execPath, ["node_modules/vite/bin/vite.js", "preview", "--host", "127.0.0.1", "--port", String(PORT), "--strictPort"], {
     stdio: "ignore",
   });
 
@@ -72,12 +72,17 @@ const startPreview = async () => {
 const main = async () => {
   const { chromium } = loadPlaywright();
   const server = await startPreview();
-  const browser = await chromium.launch(
-    process.env.PLAYWRIGHT_CHROMIUM ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM } : {},
-  );
-
+  let browser;
   try {
+    browser = await chromium.launch(
+      process.env.PLAYWRIGHT_CHROMIUM ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM } : {},
+    );
     const context = await browser.newContext({ viewport: { width: 1280, height: 860 } });
+    context.setDefaultTimeout(10000);
+    const errors = [];
+    context.on("page", (page) => page.on("pageerror", (error) => {
+      errors.push(error.stack || error.message);
+    }));
     const outside = [];
     const assistant = [];
 
@@ -109,13 +114,15 @@ const main = async () => {
 
     // Create and save.
     const editor = await context.newPage();
-    await editor.goto(`${BASE}/app/decks/new`);
+    await editor.goto(`${BASE}/app/decks`);
+    await editor.getByRole("button", { name: "New deck" }).click();
+    await editor.getByRole("menuitem", { name: /Programming/ }).click();
     await editor.waitForSelector("input[name=name]");
-    await editor.getByText("Programming", { exact: true }).click();
+    assert(await editor.locator("input[name=subject][value=programming]").isChecked(), "the menu opens a programming deck directly");
     await editor.fill("input[name=name]", "JavaScript offline");
     await editor.fill("input[name=technology]", "JavaScript");
     await editor.fill("input[name=source]", "What does this return?");
-    await editor.fill("input[name=target]", "A new array with every user's name.");
+    await editor.fill("textarea[name=target]", "A new array with every user's name.\nThe original array stays unchanged.");
     await editor.fill("textarea[name=code]", CODE);
     await editor.getByRole("button", { name: /More details/ }).click();
     await choose(editor.locator(".subject-field--choice [role=combobox]"), "Medium");
@@ -154,9 +161,20 @@ const main = async () => {
     await page.waitForSelector(".flashcard--layout-code");
     const front = page.locator(".flashcard__face--front");
     assert((await front.locator(".flashcard__block-text--prompt").innerText()).includes("What does this return?"), "the question leads the front");
-    assert((await front.locator(".flashcard__code--primary code").innerText()) === CODE, "the code is shown as written");
+    assert((await front.locator(".flashcard__code-text").allTextContents()).join("") === CODE, "the code is shown as written");
     assert((await front.locator(".flashcard__meta").innerText()).includes("JavaScript"), "the technology is on the card");
     assert((await front.locator(".flashcard__meta").innerText()).includes("Medium"), "so is the difficulty");
+    for (const [width, height] of [[1280, 860], [390, 844], [844, 390]]) {
+      await page.setViewportSize({ width, height });
+      for (const theme of ["light", "dark"]) {
+        await page.evaluate((value) => document.documentElement.setAttribute("theme", value), theme);
+        assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `no page overflow at ${width}px in ${theme}`);
+        const linesFit = await page.locator(".flashcard__face--front .flashcard__code-text").evaluateAll((lines) => lines.every((line) => line.scrollWidth <= line.clientWidth + 1));
+        assert(linesFit, `code wraps inside the card at ${width}px in ${theme}`);
+        if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({ path: path.join(process.env.ACCEPTANCE_SCREENSHOTS, `programming-${width}-${theme}.png`), fullPage: true });
+      }
+    }
+    await page.setViewportSize({ width: 1280, height: 860 });
     await page.keyboard.press("Space");
     await sleep(700);
     const back = page.locator(".flashcard__face--back");
@@ -177,16 +195,83 @@ const main = async () => {
     );
     assert(reviewed.length === 1 && reviewed[0].reps >= 1, "the review is stored: one entry, one review unit");
 
+    // Edit a saved card to move its code to the answer. Reopen to verify persistence.
+    await page.goto(`${BASE}/app/decks`);
+    await page.getByText("JavaScript offline", { exact: true }).first().click();
+    await page.getByRole("button", { name: /Edit deck/ }).click();
+    await page.locator(".deck-word__open").filter({ hasText: "What does this return?" }).click();
+    await page.locator(".deck-word-editor").getByText("With answer", { exact: true }).click();
+    await page.locator(".deck-word-editor").getByRole("button", { name: "Save changes" }).click();
+    await page.getByText("Saved", { exact: true }).waitFor();
+    await page.reload();
+    await page.locator(".deck-word__open").filter({ hasText: "What does this return?" }).click();
+    assert(await page.locator(".deck-word-editor input[name=codeSide][value=back]").isChecked(), "editing and reopening keeps the chosen code side");
+    await page.goto(`${BASE}/app/learn`);
+    await choose(page.locator("#learn-deck-select"), "JavaScript offline");
+    await page.locator("button[aria-label='Open session settings']").click();
+    await page.getByText("Review", { exact: true }).click();
+    await page.getByRole("button", { name: /Back to cards/ }).click();
+    await page.waitForSelector(".flashcard--layout-code");
+    assert(await page.locator(".flashcard__face--front .flashcard__code").count() === 0, "answer code is never visible on the question");
+    await page.keyboard.press("Space");
+    await page.locator(".flashcard__face--back[aria-hidden=false]").waitFor();
+    assert((await page.locator(".flashcard__face--back .flashcard__code-text").allTextContents()).join("") === CODE, "answer code reappears after revealing the card");
+    assert((await page.locator(".flashcard__block-text--answer").innerText()).includes("\n"), "multiline answers keep their line breaks");
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    assert(await page.locator(".flashcard__face--back .flashcard__code-text").evaluateAll((lines) => lines.every((line) => line.scrollWidth <= line.clientWidth + 1)), "answer-side code also fits a phone");
+    if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({ path: path.join(process.env.ACCEPTANCE_SCREENSHOTS, "programming-answer-mobile.png"), fullPage: true });
+    await page.setViewportSize({ width: 1280, height: 860 });
+
+    // Quick add must keep existing code and support multiline answers.
+    await page.getByRole("button", { name: "Add card", exact: true }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.locator("input[name=source]").fill("Closure");
+    await dialog.locator("textarea[name=target]").fill("A function with its lexical environment.");
+    await dialog.locator("textarea[name=target]").press("Enter");
+    await dialog.locator("textarea[name=target]").pressSequentially("It retains access to outer variables.");
+    assert((await dialog.locator("textarea[name=target]").inputValue()).includes("\n"), "Enter inserts an answer line without submitting");
+    await dialog.getByRole("button", { name: "Add card", exact: true }).click();
+    await dialog.locator("input[name=source]").waitFor();
+    await page.waitForFunction(() => document.querySelector('[role=dialog] input[name=source]')?.value === "");
+    await dialog.getByRole("button", { name: "Close dialog", exact: true }).click();
+    await page.goto(`${BASE}/app/decks`);
+    await page.getByText("JavaScript offline", { exact: true }).first().click();
+    await page.getByRole("button", { name: /Edit deck/ }).click();
+    await page.waitForFunction(() => document.querySelectorAll(".deck-word__open").length === 2);
+    assert(await page.locator(".deck-word__open").count() === 2, "quick add saves a second card offline");
+    await page.locator(".deck-word__open").filter({ hasText: "What does this return?" }).click();
+    assert((await page.locator(".deck-word-editor textarea[name=code]").inputValue()) === CODE, "quick add preserves the existing card's code");
+    assert(await page.locator(".deck-word-editor input[name=codeSide][value=back]").isChecked(), "quick add preserves the existing card's code side");
+    await page.goto(`${BASE}/app/learn`);
+
+    await choose(deckSelect, "JavaScript offline");
+    await page.waitForSelector(".flashcard--layout-code");
+    if (!(await page.locator(".flashcard__block-text--prompt").innerText()).includes("Closure")) {
+      await page.getByRole("button", { name: "Next card", exact: true }).click();
+    }
+    await page.locator(".flashcard__block-text--lead").filter({ hasText: "Closure" }).waitFor();
+    assert(await page.locator(".flashcard__face--front .flashcard__code").count() === 0, "a term without code uses the large heading, without an empty code pane");
+
     // The language deck still studies as before.
     await choose(deckSelect, "Food offline");
     await page.waitForSelector(".flashcard:not(.flashcard--layout-code)");
     assert((await page.locator(".flashcard__face--front .flashcard__text").innerText()).includes("asparagus"), "a language card is drawn as before");
 
+    assert(errors.length === 0, `no application errors${errors.length ? `: ${errors.join("\n")}` : ""}`);
     assert(assistant.length === 0, "no assistant request was made");
     assert(outside.length === 0, `nothing left the machine while offline${outside.length ? `: ${outside.join(", ")}` : ""}`);
     console.log("Programming offline acceptance passed.");
+  } catch (error) {
+    for (const context of browser?.contexts() || []) {
+      for (const page of context.pages()) {
+        console.error("Failed page:", page.url(), (await page.locator("body").innerText()).slice(-1800));
+        await page.screenshot({ path: "/tmp/liora-offline-failure.png", fullPage: true });
+      }
+    }
+    throw error;
   } finally {
-    await browser.close();
+    await browser?.close();
     server.kill();
   }
 };

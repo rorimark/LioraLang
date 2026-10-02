@@ -63,7 +63,7 @@ const main = () => {
       {
         source: "What does this return?",
         target: "A new array of the users' names.",
-        subjectFields: { code: CODE, difficulty: "medium", unknown: "dropped" },
+        subjectFields: { code: CODE, codeSide: "back", difficulty: "medium", unknown: "dropped" },
         examples: ["map never changes the original array."],
       },
     ],
@@ -82,6 +82,7 @@ const main = () => {
 
   // Through a file and back.
   const filePackage = exportDeckToJsonPackage(programming.deck.id, {}).package;
+  assert(filePackage.version === 3 && filePackage.words[0].subjectFields.codeSide === "back", "answer-side code requires a compatible reader");
   assert(filePackage.deck.subject === "programming", "the file says what the deck is about");
   assert(filePackage.words[0].subjectFields.code === CODE, "the file carries the code");
   const filePath = path.join(sandbox, "javascript.lioradeck");
@@ -95,6 +96,9 @@ const main = () => {
   assert(session.deck.subject === "programming", "the session knows the subject");
   assert(session.deck.subjectFields?.technology === "JavaScript", "and the technology");
   assert(session.card?.subjectFields?.code === CODE, "the card carries its code");
+  assert(session.card?.subjectFields?.codeSide === "back", "the session keeps answer-side code hidden until reveal");
+  const importedSession = getSrsSessionSnapshot({ deckId: imported.deckId, settings: {} });
+  assert(importedSession.card?.subjectFields?.codeSide === "back", "file import keeps the code placement");
   assert(session.stats.totalCards === 1, "one entry is one card");
 
   closeDatabaseConnection();

@@ -326,6 +326,7 @@ WordRow.displayName = "WordRow";
 const DeckWords = memo(({ panel, labels }) => {
   const { t, formatNumber } = useI18n();
   const headingId = useId();
+  const { entryText } = getSubjectProfile(panel.deck.subject);
   const pictureSide = panel.deck.pictureSide || "";
   const usesWordLevels = panel.deck.usesWordLevels !== false;
   const total = panel.words.length;
@@ -333,12 +334,12 @@ const DeckWords = memo(({ panel, labels }) => {
   if (total === 0) {
     return (
       <section className="deck-words-view" aria-labelledby={headingId}>
-        <h3 id={headingId} className="deck-words-view__title">{t("editor.wordsTable")}</h3>
+        <h3 id={headingId} className="deck-words-view__title">{t(entryText?.listKey || "editor.wordsTable")}</h3>
         <div className="deck-words-view__empty">
-          <p>{t("deck.emptyDeck")}</p>
+          <p>{t(entryText?.emptyKey || "deck.emptyDeck")}</p>
           <button type="button" className="deck-page__button deck-page__button--primary" onClick={panel.openEditDeck}>
             <FiPlus aria-hidden />
-            <span>{t("deck.addWords")}</span>
+            <span>{t(entryText?.addKey || "deck.addWords")}</span>
           </button>
         </div>
       </section>
@@ -349,12 +350,12 @@ const DeckWords = memo(({ panel, labels }) => {
     <section className="deck-words-view" aria-labelledby={headingId}>
       <header className="deck-words-view__head">
         <h3 id={headingId} className="deck-words-view__title">
-          {t("editor.wordsTable")}
+          {t(entryText?.listKey || "editor.wordsTable")}
           <span className="deck-words-view__count">{formatNumber(total)}</span>
         </h3>
         <button type="button" className="deck-page__button deck-page__button--quiet" onClick={panel.openEditDeck}>
           <FiPlus aria-hidden />
-          <span>{t("deck.addWords")}</span>
+          <span>{t(entryText?.addKey || "deck.addWords")}</span>
         </button>
       </header>
 
@@ -537,7 +538,7 @@ export const DeckDetailsPanel = memo(() => {
             subject={deck.subject}
             subjectFields={deck.subjectFields}
           />
-          <span>{t("deck.wordsCount", { count: panel.words.length })}</span>
+          <span>{getSubjectProfile(deck.subject).entryText ? `${t(getSubjectProfile(deck.subject).entryText.listKey)}: ${panel.words.length}` : t("deck.wordsCount", { count: panel.words.length })}</span>
           {tags.length > 0 ? <DeckTagBadges badges={tags} inline /> : null}
         </div>
       </header>

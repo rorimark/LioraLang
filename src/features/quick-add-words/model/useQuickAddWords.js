@@ -514,14 +514,14 @@ export const useQuickAddWords = ({
 
   const handleTargetKeyDown = useCallback(
     (event) => {
-      if (event.key !== "Enter" || event.isComposing) {
+      if (event.key !== "Enter" || event.isComposing || event.nativeEvent?.isComposing || (subjectProfile.entryText?.target.multiline && !event.ctrlKey && !event.metaKey)) {
         return;
       }
 
       event.preventDefault();
       void addDraft();
     },
-    [addDraft],
+    [addDraft, subjectProfile],
   );
 
   const loadList = useCallback(
@@ -540,6 +540,7 @@ export const useQuickAddWords = ({
   // A list pasted into the word field opens as a list.
   const handleSourcePaste = useCallback(
     (event) => {
+      if (!subjectProfile.usesLanguages || pictureSide) return;
       const text = event.clipboardData?.getData("text") || "";
 
       if (!looksLikeWordList(text)) {
@@ -550,7 +551,7 @@ export const useQuickAddWords = ({
       setTab("list");
       loadList(text);
     },
-    [loadList],
+    [loadList, pictureSide, subjectProfile.usesLanguages],
   );
 
   const handlePasteTextChange = useCallback((event) => {

@@ -63,11 +63,15 @@ const PROGRAMMING_PROFILE = Object.freeze({
   // Message keys: the sides are a question and its answer.
   sideLabels: { source: "subjects.sides.question", target: "subjects.sides.answer" },
   cardDetails: [],
+  deckText: { namePlaceholderKey: "subjects.fields.technologyPlaceholder" },
   entryText: {
     addKey: "subjects.addCard",
     listKey: "subjects.cards",
+    enterHintKey: "subjects.enterHint",
+    tagsKey: "subjects.tags",
+    emptyKey: "subjects.empty",
     source: { labelKey: "subjects.fields.question", placeholderKey: "subjects.fields.questionPlaceholder", errorKey: "subjects.errors.emptyQuestion" },
-    target: { labelKey: "subjects.fields.answer", placeholderKey: "subjects.fields.answerPlaceholder", errorKey: "subjects.errors.emptyAnswer" },
+    target: { multiline: true, labelKey: "subjects.fields.answer", placeholderKey: "subjects.fields.answerPlaceholder", errorKey: "subjects.errors.emptyAnswer" },
     examples: { labelKey: "subjects.fields.notes", placeholderKey: "subjects.fields.notesPlaceholder" },
   },
   deckFields: {
@@ -85,6 +89,16 @@ const PROGRAMMING_PROFILE = Object.freeze({
       maxLength: 4000,
       labelKey: "subjects.fields.code",
       placeholderKey: "subjects.fields.codePlaceholder",
+      placementField: "codeSide",
+    },
+    codeSide: {
+      type: "choice",
+      values: ["front", "back"],
+      defaultValue: "front",
+      attachedTo: "code",
+      minPackageVersion: 3,
+      labelKey: "subjects.fields.codeSide",
+      valueKey: "subjects.codeSide",
     },
     difficulty: {
       type: "choice",
@@ -97,12 +111,12 @@ const PROGRAMMING_PROFILE = Object.freeze({
     layout: "code",
     front: [
       { block: "meta", items: [{ kind: "technology", from: "deck.technology" }, { kind: "difficulty", from: "entry.difficulty", labelKey: "subjects.difficulty", scale: DIFFICULTIES }] },
-      { block: "text", role: "prompt", from: "entry.source", leadsWithout: "entry.code" },
-      { block: "code", emphasis: "primary", from: "entry.code" },
+      { block: "text", role: "prompt", from: "entry.source", leadsWithout: "entry.code", leadsWhen: { from: "entry.codeSide", value: "back" } },
+      { block: "code", emphasis: "primary", from: "entry.code", unless: { from: "entry.codeSide", value: "back" } },
     ],
     back: [
       { block: "text", role: "answer", from: "entry.target" },
-      { block: "code", emphasis: "secondary", from: "entry.code" },
+      { block: "code", emphasis: "secondary", from: "entry.code", when: { from: "entry.codeSide", value: "back" } },
       { block: "list", role: "notes", from: "entry.examples" },
     ],
   },
@@ -165,7 +179,7 @@ const normalizeFields = (specs, value) => {
   Object.entries(specs).forEach(([key, spec]) => {
     const normalized = normalizeFieldValue(spec, raw[key]);
 
-    if (normalized) {
+    if (normalized && normalized !== spec.defaultValue) {
       result[key] = normalized;
     }
   });
@@ -200,7 +214,10 @@ const readSource = (from, { entry, deck, entryFields, deckFields }) => {
 
 const cleanText = (value) => (typeof value === "string" ? value.trim() : "");
 
+const matchesCondition = (condition, context) => Boolean(condition) && readSource(condition.from, context) === condition.value;
+
 const buildBlock = (spec, context) => {
+  if ((spec.when && !matchesCondition(spec.when, context)) || matchesCondition(spec.unless, context)) return null;
   if (spec.block === "meta") {
     const items = spec.items
       .map((item) => {
@@ -224,7 +241,7 @@ const buildBlock = (spec, context) => {
   const value = readSource(spec.from, context);
   // A text that stands alone on its face, with nothing it introduces, is
   // set as the headline.
-  const leads = Boolean(spec.leadsWithout) && !cleanText(readSource(spec.leadsWithout, context));
+  const leads = (Boolean(spec.leadsWithout) && !cleanText(readSource(spec.leadsWithout, context))) || matchesCondition(spec.leadsWhen, context);
   const text = spec.block === "code" ? (typeof value === "string" ? value.replace(/\s+$/, "") : "") : cleanText(value);
 
   if (!text) {

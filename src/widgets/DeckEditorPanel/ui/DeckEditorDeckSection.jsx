@@ -81,6 +81,23 @@ export const DeckEditorDeckSection = memo(() => {
 
   return (
     <section className="deck-editor__deck" aria-label={t("editor.settings")}>
+      {/* What the deck is about, chosen while it is empty, like its sides. */}
+      {canChangeSides ? (
+        <div className="deck-editor__row deck-editor__row--wide">
+          <span className="deck-editor__row-text">
+            <span>{t("subjects.label")}</span>
+            <small>{t("subjects.hint")}</small>
+          </span>
+          <SettingSegmented
+            name="subject"
+            value={subject || subjectOptions[0]}
+            ariaLabel={t("subjects.label")}
+            onChange={handleSubjectChange}
+            options={subjectOptions.map((id) => ({ value: id, label: t(getSubjectProfile(id).nameKey) }))}
+          />
+        </div>
+      ) : null}
+
       <label className="deck-editor__name">
         <span className="deck-editor__eyebrow">{t("editor.nameLabel")}</span>
         <input
@@ -88,7 +105,7 @@ export const DeckEditorDeckSection = memo(() => {
           name="name"
           value={deckForm.name}
           onChange={handleDeckFormChange}
-          placeholder={t("editor.namePlaceholder")}
+          placeholder={t(subjectProfile.deckText?.namePlaceholderKey || "editor.namePlaceholder")}
           autoComplete="off"
           autoFocus={!isEditMode}
           maxLength={120}
@@ -109,23 +126,6 @@ export const DeckEditorDeckSection = memo(() => {
 
       {subjectProfile.usesAssistant ? (
         <DeckDescriptionSuggestion deck={deckForm} words={words} onApply={applyDeckPatch} />
-      ) : null}
-
-      {/* What the deck is about, chosen while it is empty, like its sides. */}
-      {canChangeSides ? (
-        <div className="deck-editor__row deck-editor__row--wide">
-          <span className="deck-editor__row-text">
-            <span>{t("subjects.label")}</span>
-            <small>{t("subjects.hint")}</small>
-          </span>
-          <SettingSegmented
-            name="subject"
-            value={subject || subjectOptions[0]}
-            ariaLabel={t("subjects.label")}
-            onChange={handleSubjectChange}
-            options={subjectOptions.map((id) => ({ value: id, label: t(getSubjectProfile(id).nameKey) }))}
-          />
-        </div>
       ) : null}
 
       {subjectProfile.usesLanguages ? <>

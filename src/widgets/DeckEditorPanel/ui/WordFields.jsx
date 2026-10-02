@@ -26,7 +26,7 @@ const TextInput = memo(({ name, value, onChange, placeholder, autoFocus = false 
 
 TextInput.displayName = "TextInput";
 
-const SideInput = memo(({ side, label, draft, onChange, onImageChange, isPicture, otherText, autoFocus, placeholder, suggest }) => {
+const SideInput = memo(({ side, label, draft, onChange, onImageChange, isPicture, otherText, autoFocus, placeholder, suggest, multiline }) => {
   if (isPicture) {
     return (
       <div className="deck-word-fields__side deck-word-fields__side--picture">
@@ -38,8 +38,12 @@ const SideInput = memo(({ side, label, draft, onChange, onImageChange, isPicture
   return (
     <label className="deck-word-fields__side">
       <span className="deck-word-fields__label">{label}</span>
-      <SuggestField field={side} suggest={suggest}>
-        <TextInput name={side} value={draft[side]} onChange={onChange} placeholder={placeholder} autoFocus={autoFocus} />
+      <SuggestField field={side} suggest={suggest} multiline={multiline}>
+        {multiline ? (
+          <textarea name={side} value={draft[side]} onChange={onChange} placeholder={placeholder} rows={3} className="deck-word-fields__answer" />
+        ) : (
+          <TextInput name={side} value={draft[side]} onChange={onChange} placeholder={placeholder} autoFocus={autoFocus} />
+        )}
       </SuggestField>
     </label>
   );
@@ -57,13 +61,15 @@ export const WordSideFields = memo(({
   tertiaryLabel = "",
   frontPlaceholder = "",
   backPlaceholder = "",
+  multilineAnswer = false,
+  children,
   autoFocus = false,
   suggest = null,
 }) => {
   const { t } = useI18n();
 
   return (
-    <div className={`deck-word-fields__sides${tertiaryLabel ? " deck-word-fields__sides--three" : ""}`}>
+    <div className={`deck-word-fields__sides${multilineAnswer ? " deck-word-fields__sides--stacked" : tertiaryLabel ? " deck-word-fields__sides--three" : ""}`}>
       <SideInput
         side="source"
         label={frontLabel}
@@ -76,7 +82,9 @@ export const WordSideFields = memo(({
         placeholder={frontPlaceholder || t("editor.wordPlaceholder")}
         suggest={suggest}
       />
+      {children}
       <SideInput
+        multiline={multilineAnswer}
         side="target"
         label={backLabel}
         draft={draft}
@@ -125,6 +133,7 @@ export const WordDetailFields = memo(({
   usesLanguages = true,
   levelOptions,
   partOfSpeechOptions,
+  tagsLabelKey = "editor.wordTags",
   examplesLabel = "",
   examplesPlaceholder = "",
   subjectFields = null,
@@ -191,7 +200,7 @@ export const WordDetailFields = memo(({
       </label>
 
       <label className="deck-word-fields__field deck-word-fields__field--wide">
-        <span className="deck-word-fields__label">{t("editor.wordTags")}</span>
+        <span className="deck-word-fields__label">{t(tagsLabelKey)}</span>
         <SuggestField field="tagsInput" suggest={suggest}>
           <input
             type="text"

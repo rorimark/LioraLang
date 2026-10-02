@@ -1852,7 +1852,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Kod",
       "codePlaceholder": "İsteğe bağlı: bir kod parçası yapıştır veya yaz",
-      "difficulty": "Zorluk"
+      "difficulty": "Zorluk",
+      "codeSide": "Kodun tarafı"
     },
     "difficulty": {
       "easy": "Kolay",
@@ -1864,6 +1865,14 @@ export default {
       "emptyAnswer": "Cevabı ekle."
     },
     "addCard": "Kart ekle",
-    "cards": "Kartlar"
+    "cards": "Kartlar",
+    "codeSide": {
+      "front": "Soruyla birlikte",
+      "back": "Yanıtla birlikte"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter kartı ekler",
+    "tags": "Virgülle ayrılmış kart etiketleri",
+    "empty": "Bir terim veya soru, yanıt ve isteğe bağlı kod ekleyin.",
+    "newDeckHint": "Terimler, sorular ve kod"
   }
 };

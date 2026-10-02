@@ -7,7 +7,10 @@ import { isSupportedLocale, prepareInitialLocale } from "@shared/lib/i18n";
 import { discardPrerenderedLanding } from "@shared/lib/seo";
 
 const isWebTarget = __APP_TARGET__ === "web";
-const shouldRenderAnalytics = isWebTarget && !import.meta.env.DEV;
+// The local preview has no Vercel analytics endpoint. Its SPA fallback
+// would serve HTML as a script, including on a cached offline visit.
+const isLocalPreview = ["localhost", "127.0.0.1", "[::1]"].includes(window.location.hostname);
+const shouldRenderAnalytics = isWebTarget && !import.meta.env.DEV && !isLocalPreview;
 const Analytics = shouldRenderAnalytics
   ? lazy(() =>
       import("@vercel/analytics/react").then((module) => ({

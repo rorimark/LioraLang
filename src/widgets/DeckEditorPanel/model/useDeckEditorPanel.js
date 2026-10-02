@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
@@ -61,6 +61,7 @@ const toSaveErrorKey = (error) => {
 
 export const useDeckEditorPanel = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const deckRepository = usePlatformService("deckRepository");
   const { deckId } = useParams();
   const { appPreferences } = useAppPreferences();
@@ -72,7 +73,7 @@ export const useDeckEditorPanel = () => {
 
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [loadError, setLoadError] = useState("");
-  const [deckForm, setDeckForm] = useState(() => createDefaultDeckForm(deckDefaults));
+  const [deckForm, setDeckForm] = useState(() => ({ ...createDefaultDeckForm(deckDefaults), subject: isEditMode ? "" : storedSubject(searchParams.get("subject")) }));
   const [words, setWords] = useState([]);
   const [addDraft, setAddDraft] = useState(emptyDraft);
   const [addError, setAddError] = useState("");
@@ -102,12 +103,12 @@ export const useDeckEditorPanel = () => {
     wordsRef.current = words;
   }, [words]);
 
-  const pictureSide = normalizePictureSide(deckForm.pictureSide);
   // What the deck is about: its profile says which fields and settings
   // the forms show.
   const subject = storedSubject(deckForm.subject);
   const subjectProfile = getSubjectProfile(subject);
-  const hasTertiary = Boolean(deckForm.tertiaryLanguage.trim());
+  const pictureSide = subjectProfile.usesLanguages ? normalizePictureSide(deckForm.pictureSide) : "";
+  const hasTertiary = subjectProfile.usesLanguages && Boolean(deckForm.tertiaryLanguage.trim());
   // What a suggestion needs to know about the deck: its languages and the
   // tags its words use most.
   const deckTags = useMemo(() => collectDeckTags(words), [words]);

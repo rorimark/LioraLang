@@ -162,7 +162,7 @@ const DeckEditorPanelBody = memo(() => {
 
       {isEditMode ? null : (
         <footer className="deck-editor__create">
-          {totalWords > 0 ? <p>{t("editor.createHint", { count: totalWords })}</p> : null}
+          {totalWords > 0 ? <p>{entryText ? `${t(entryText.listKey)}: ${totalWords}` : t("editor.createHint", { count: totalWords })}</p> : null}
           <button
             type="button"
             className="deck-editor__button deck-editor__button--primary"

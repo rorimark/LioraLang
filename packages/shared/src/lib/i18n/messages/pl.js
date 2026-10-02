@@ -2036,7 +2036,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Kod",
       "codePlaceholder": "Opcjonalnie: wklej lub wpisz fragment",
-      "difficulty": "Trudność"
+      "difficulty": "Trudność",
+      "codeSide": "Strona kodu"
     },
     "difficulty": {
       "easy": "Łatwe",
@@ -2048,6 +2049,14 @@ export default {
       "emptyAnswer": "Dodaj odpowiedź."
     },
     "addCard": "Dodaj kartę",
-    "cards": "Karty"
+    "cards": "Karty",
+    "codeSide": {
+      "front": "Z pytaniem",
+      "back": "Z odpowiedzią"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter dodaje kartę",
+    "tags": "Tagi karty oddzielone przecinkami",
+    "empty": "Dodaj termin lub pytanie, odpowiedź i opcjonalnie kod.",
+    "newDeckHint": "Terminy, pytania i kod"
   }
 };

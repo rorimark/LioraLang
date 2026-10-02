@@ -166,8 +166,8 @@ export const useDecksOverviewPanel = () => {
     [navigate],
   );
 
-  const openCreateDeck = useCallback(() => {
-    navigate(ROUTE_PATHS.deckCreate);
+  const openCreateDeck = useCallback((subject = "") => {
+    navigate(`${ROUTE_PATHS.deckCreate}${subject ? `?subject=${encodeURIComponent(subject)}` : ""}`);
   }, [navigate]);
 
   const openEditDeck = useCallback(

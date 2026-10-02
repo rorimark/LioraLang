@@ -1956,7 +1956,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Kód",
       "codePlaceholder": "Nepovinné: vložte nebo napište úryvek",
-      "difficulty": "Obtížnost"
+      "difficulty": "Obtížnost",
+      "codeSide": "Strana s kódem"
     },
     "difficulty": {
       "easy": "Snadné",
@@ -1968,6 +1969,14 @@ export default {
       "emptyAnswer": "Přidejte odpověď."
     },
     "addCard": "Přidat kartu",
-    "cards": "Karty"
+    "cards": "Karty",
+    "codeSide": {
+      "front": "S otázkou",
+      "back": "S odpovědí"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter přidá kartu",
+    "tags": "Štítky karty oddělené čárkami",
+    "empty": "Přidejte pojem nebo otázku, odpověď a případně kód.",
+    "newDeckHint": "Pojmy, otázky a kód"
   }
 };

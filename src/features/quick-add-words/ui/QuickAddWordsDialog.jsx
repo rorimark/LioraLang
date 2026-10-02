@@ -188,6 +188,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
   const { sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide } = languages;
   const { usesWordLevels, deckTags, subjectProfile } = model;
   const { entryText } = subjectProfile;
+  const TargetInput = entryText?.target.multiline ? "textarea" : "input";
   const suggestDeck = useMemo(
     () => ({ sourceLanguage, targetLanguage, tertiaryLanguage, pictureSide, usesWordLevels, tags: deckTags }),
     [deckTags, pictureSide, sourceLanguage, targetLanguage, tertiaryLanguage, usesWordLevels],
@@ -214,13 +215,16 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
   return (
     <form
       className="quick-add__form"
-      onKeyDown={suggest.handleKeyDown}
+      onKeyDown={(event) => {
+        suggest.handleKeyDown(event);
+        if (!event.defaultPrevented && !event.nativeEvent.isComposing) handleDetailsKeyDown(event);
+      }}
       onSubmit={(event) => {
         event.preventDefault();
         void model.addDraft();
       }}
     >
-      <div className={`quick-add__pair${languages.pictureSide ? " quick-add__pair--picture" : ""}`}>
+      <div className={`quick-add__pair${entryText?.target.multiline ? " quick-add__pair--structured" : languages.pictureSide ? " quick-add__pair--picture" : ""}`}>
         {/* A picture side takes a picture where a language side takes a word. */}
         {languages.pictureSide === "source" ? (
           <WordImageField
@@ -251,6 +255,15 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
             </SuggestField>
           </label>
         )}
+      {/* A subject's code is part of the card, so it is never folded away. */}
+      <SubjectFieldInputs
+        fields={subjectProfile.entryFields}
+        values={model.draft.subjectFields}
+        onChange={model.handleSubjectFieldChange}
+        only={["code"]}
+        fieldClassName="quick-add__field quick-add__field--code"
+      />
+
         {languages.pictureSide === "target" ? (
           <WordImageField
             value={model.draftImage}
@@ -263,8 +276,9 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         ) : (
           <label className="quick-add__field">
             <span>{entryText ? t(entryText.target.labelKey) : languageName(languages.targetLanguage)}</span>
-            <SuggestField field="target" suggest={suggest}>
-            <input
+            <SuggestField field="target" suggest={suggest} multiline={entryText?.target.multiline}>
+            <TargetInput
+              rows={entryText?.target.multiline ? 3 : undefined}
               name="target"
               value={model.draft.target}
               onChange={model.handleDraftChange}
@@ -272,21 +286,12 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
               placeholder={entryText ? t(entryText.target.placeholderKey) : t("quickAdd.translationPlaceholder")}
               autoComplete="off"
               autoCapitalize="none"
-              enterKeyHint="done"
+              enterKeyHint={entryText?.target.multiline ? "enter" : "done"}
             />
             </SuggestField>
           </label>
         )}
       </div>
-
-      {/* A subject's code is part of the card, so it is never folded away. */}
-      <SubjectFieldInputs
-        fields={subjectProfile.entryFields}
-        values={model.draft.subjectFields}
-        onChange={model.handleSubjectFieldChange}
-        only={["code"]}
-        fieldClassName="quick-add__field quick-add__field--code"
-      />
 
       <div aria-live="polite">
         <DuplicateHint duplicate={model.draftDuplicate} />
@@ -335,7 +340,6 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
                 rows={3}
                 value={model.details.examplesInput}
                 onChange={model.handleDetailsChange}
-                onKeyDown={handleDetailsKeyDown}
                 placeholder={entryText ? t(entryText.examples.placeholderKey) : t("quickAdd.examplesPlaceholder")}
               />
             </SuggestField>
@@ -371,7 +375,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
             </label>
           ) : null}
           <label className="quick-add__field quick-add__field--wide">
-            <span>{t("editor.wordTags")}</span>
+            <span>{t(entryText?.tagsKey || "editor.wordTags")}</span>
             <SuggestField field="tagsInput" suggest={suggest}>
               <input
                 name="tagsInput"
@@ -392,7 +396,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         </Button>
         <SuggestionBar suggest={suggest} summary={summary}>
           <span className="quick-add__key-hint" aria-hidden="true">
-            <FiCornerDownLeft /> {t("quickAdd.enterHint")}
+            <FiCornerDownLeft /> {t(entryText?.enterHintKey || "quickAdd.enterHint")}
           </span>
         </SuggestionBar>
       </div>
@@ -746,7 +750,7 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
       <button type="button" className="quick-add__overlay" onClick={requestClose} aria-hidden="true" tabIndex={-1} />
       <div className="quick-add__sheet" ref={sheetRef} tabIndex={-1}>
         <header className="quick-add__header">
-          <h2 id={titleId}>{t("quickAdd.title")}</h2>
+          <h2 id={titleId}>{t(model.subjectProfile.entryText?.addKey || "quickAdd.title")}</h2>
           <button type="button" className="quick-add__close" onClick={requestClose} aria-label={t("common.closeDialog")}>
             <FiX aria-hidden="true" />
           </button>
@@ -773,7 +777,7 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
             </div>
           )}
 
-          {model.tab === "single" || model.languages.pictureSide ? <SingleWordForm model={model} sourceInputRef={sourceInputRef} /> : <PasteList model={model} />}
+          {model.tab === "single" || model.languages.pictureSide || !model.subjectProfile.usesLanguages ? <SingleWordForm model={model} sourceInputRef={sourceInputRef} /> : <PasteList model={model} />}
 
           {/* Right under the fields, so a phone keyboard never hides it. */}
           <Notice model={model} />

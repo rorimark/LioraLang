@@ -1,4 +1,4 @@
-const CACHE_NAME = "lioralang-web-v4";
+const CACHE_NAME = "lioralang-web-v5";
 const BUILD_MANIFEST_FILE = "asset-manifest.json";
 // The app's shell; index.html is the English landing, written as static
 // HTML at build time (scripts/prerender-landing.mjs).
@@ -163,7 +163,13 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    caches.match(request, { ignoreVary: requestUrl.pathname.startsWith("/assets/") }).then((cachedResponse) => {
+      // Build files are public and content-addressed. CORS/non-CORS requests
+      // can have different Origin headers, but must share the precached file.
+      // Build assets have content hashes. A cached copy is final; do not
+      // start an offline network request for a file we already have.
+      if (cachedResponse && requestUrl.pathname.startsWith("/assets/")) return cachedResponse;
+
       const networkRequest = fetch(request)
         .then((response) => {
           if (isCacheableResponse(response)) {

@@ -28,7 +28,7 @@ const saveProgrammingDeck = () =>
       {
         source: "What does this return?",
         target: "A new array of the users' names.",
-        subjectFields: { code: CODE, difficulty: "medium", unknown: "dropped" },
+        subjectFields: { code: CODE, codeSide: "back", difficulty: "medium", unknown: "dropped" },
       },
     ],
   });
@@ -55,7 +55,7 @@ describe("web subjects", () => {
     ]);
 
     expect(deck.subject).toBe("programming");
-    expect(words[0].subjectFields).toEqual({ code: CODE, difficulty: "medium" });
+    expect(words[0].subjectFields).toEqual({ code: CODE, codeSide: "back", difficulty: "medium" });
   });
 
   it("keeps the subject once the deck has words", async () => {
@@ -76,6 +76,8 @@ describe("web subjects", () => {
     const exported = await repository.exportDeckPackage(saved.deck.id);
 
     expect(exported.package.deck.subject).toBe("programming");
+    expect(exported.package.version).toBe(3);
+    expect(exported.package.words[0].subjectFields.codeSide).toBe("back");
     expect(exported.package.words[0].subjectFields.code).toBe(CODE);
 
     const imported = await repository.importDeckFromJson({
@@ -92,7 +94,7 @@ describe("web subjects", () => {
     const session = await createWebSrsRepository().getSrsSession(saved.deck.id, {});
 
     expect(session.deck).toMatchObject({ subject: "programming", subjectFields: { technology: "JavaScript" } });
-    expect(session.card.subjectFields).toEqual({ code: CODE, difficulty: "medium" });
+    expect(session.card.subjectFields).toEqual({ code: CODE, codeSide: "back", difficulty: "medium" });
     expect(session.stats.totalCards).toBe(1);
   });
 

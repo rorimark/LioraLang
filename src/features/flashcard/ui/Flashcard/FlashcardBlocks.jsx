@@ -45,7 +45,7 @@ const TextBlock = ({ block }) => (
 // so the pane is made of spans set like <pre>.
 const CodeBlock = ({ block }) => {
   const { t } = useI18n();
-  const lineNumbers = block.text.split("\n").map((_, index) => index + 1).join("\n");
+  const lines = block.text.split("\n");
 
   return (
     <span
@@ -53,10 +53,14 @@ const CodeBlock = ({ block }) => {
       role="group"
       aria-label={t("flashcard.code")}
     >
-      <span className="flashcard__code-gutter" aria-hidden="true">{lineNumbers}</span>
-      <span className="flashcard__code-scroll">
-        <code translate="no">{block.text}</code>
-      </span>
+      <code translate="no">
+        {lines.map((line, index) => (
+          <span className="flashcard__code-line" key={index}>
+            <span className="flashcard__code-gutter" aria-hidden="true">{index + 1}</span>
+            <span className="flashcard__code-text">{line}{index < lines.length - 1 ? "\n" : ""}</span>
+          </span>
+        ))}
+      </code>
     </span>
   );
 };

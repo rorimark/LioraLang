@@ -1944,7 +1944,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "Codice",
       "codePlaceholder": "Facoltativo: incolla o scrivi un frammento",
-      "difficulty": "Difficoltà"
+      "difficulty": "Difficoltà",
+      "codeSide": "Posizione del codice"
     },
     "difficulty": {
       "easy": "Facile",
@@ -1956,6 +1957,14 @@ export default {
       "emptyAnswer": "Aggiungi la risposta."
     },
     "addCard": "Aggiungi carta",
-    "cards": "Carte"
+    "cards": "Carte",
+    "codeSide": {
+      "front": "Con la domanda",
+      "back": "Con la risposta"
+    },
+    "enterHint": "Ctrl / ⌘ + Invio aggiunge la scheda",
+    "tags": "Tag della scheda, separati da virgole",
+    "empty": "Aggiungi un termine o una domanda, una risposta e del codice facoltativo.",
+    "newDeckHint": "Termini, domande e codice"
   }
 };

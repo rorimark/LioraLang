@@ -775,3 +775,6 @@
 .quick-add__submit .suggest-bar {
   flex: 1 1 auto;
 }
+
+.quick-add__pair.quick-add__pair--structured { grid-template-columns: minmax(0, 1fr); }
+.quick-add__pair--structured textarea[name="target"] { min-height: 6.5em; padding: 12px; line-height: 1.5; resize: vertical; }

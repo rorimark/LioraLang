@@ -1010,3 +1010,12 @@
 .deck-composer__subject:empty {
   display: none;
 }
+
+/* Structured entries follow the order of the card: prompt, code, answer. */
+.deck-composer--structured .deck-composer__main,
+.deck-word-fields__sides.deck-word-fields__sides--stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+.deck-composer--structured .deck-composer__add { justify-self: end; }
+.deck-word-fields__answer { min-height: 6.5em; resize: vertical; line-height: 1.5; }
+.deck-editor__deck > .deck-editor__row { margin-bottom: 20px; }

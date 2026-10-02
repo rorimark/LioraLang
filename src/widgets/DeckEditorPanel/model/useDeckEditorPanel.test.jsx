@@ -10,6 +10,7 @@ const useAppPreferencesMock = vi.fn();
 vi.mock("react-router", () => ({
   useNavigate: () => navigateMock,
   useParams: () => useParamsMock(),
+  useSearchParams: () => [new URLSearchParams()],
 }));
 
 vi.mock("@shared/providers", () => ({

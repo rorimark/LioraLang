@@ -1760,7 +1760,8 @@ export default {
       "technologyPlaceholder": "JavaScript",
       "code": "コード",
       "codePlaceholder": "任意: コードを貼り付けるか入力",
-      "difficulty": "難易度"
+      "difficulty": "難易度",
+      "codeSide": "コードの表示面"
     },
     "difficulty": {
       "easy": "やさしい",
@@ -1772,6 +1773,14 @@ export default {
       "emptyAnswer": "答えを追加してください。"
     },
     "addCard": "カードを追加",
-    "cards": "カード"
+    "cards": "カード",
+    "codeSide": {
+      "front": "質問側",
+      "back": "回答側"
+    },
+    "enterHint": "Ctrl / ⌘ + Enter でカードを追加",
+    "tags": "カードのタグ（カンマ区切り）",
+    "empty": "用語または質問、回答、必要に応じてコードを追加してください。",
+    "newDeckHint": "用語、質問、コード"
   }
 };
