@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Imagem opcional",
+    "label": "Vista do cartão",
+    "text": "Texto → tradução",
+    "image": "Imagem → palavra",
+    "shared": "As duas vistas partilham o calendário de revisão. Cartões sem imagem mostram texto."
+},
+  "conceptSuggest": {
+    "title": "Sugestões de cartões",
+    "ask": "Sugerir cartão",
+    "again": "Outras opções",
+    "thinking": "A pensar…",
+    "hint": "Introduza um termo, uma pergunta ou conteúdo para receber até três sugestões.",
+    "suggested": "Sugestões prontas",
+    "review": "Verifique a resposta e os exemplos. Só os campos vazios serão preenchidos; o cartão é guardado separadamente.",
+    "take": "Preencher campos vazios",
+    "empty": "Sem sugestão fiável. Acrescente contexto e tente novamente.",
+    "quota": "Limite diário de IA atingido. Pode continuar a criar cartões manualmente.",
+    "offline": "Sem ligação. Pode escrever e guardar cartões.",
+    "busy": "O assistente está ocupado. Tente daqui a pouco.",
+    "signin": "Inicie sessão para usar sugestões.",
+    "error": "Não foi possível obter uma sugestão. Tente novamente."
+},
   "common": {
     "language": "Idioma",
     "confirm": "Confirmar",

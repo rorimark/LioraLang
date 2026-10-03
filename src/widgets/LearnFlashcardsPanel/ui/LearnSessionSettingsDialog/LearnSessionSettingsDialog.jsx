@@ -5,6 +5,7 @@ import { useDialogA11y } from "@shared/lib/a11y";
 import { useI18n } from "@shared/lib/i18n";
 import {
   Button,
+  Select,
   SettingGroup,
   SettingRow,
   SettingSegmented,
@@ -138,7 +139,13 @@ export const LearnSessionSettingsDialog = memo(({ sessionControl }) => {
                   />
                 }
               />
-              {directionOptions.length > 1 ? (
+              {dialog.presentationOptions?.length > 1 ? <SettingRow
+                label={t("studyPresentation.label")} hint={t("studyPresentation.shared")}
+                control={<Select aria-label={t("studyPresentation.label")} label={t("studyPresentation.label")} value={dialog.presentationMode} onChange={(event) => dialog.onPresentationModeChange(event.target.value)}>
+                  {dialog.presentationOptions.map((option) => <option key={option.id} value={option.id}>{t(option.labelKey)}</option>)}
+                </Select>}
+              /> : null}
+              {directionOptions.length > 1 && (!dialog.presentationMode || dialog.presentationMode === "text") ? (
                 <SettingRow
                   label={t("session.direction.title")}
                   wide

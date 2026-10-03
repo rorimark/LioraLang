@@ -20,6 +20,8 @@ import {
   thinkingFor,
 } from "./gemini.ts";
 
+import { validateConceptRequest, buildConceptPrompt, readConceptCards } from "../../../packages/shared/src/core/usecases/wordSuggest/conceptDrafts.js";
+
 export const MAX_LIST_ROWS = 30;
 export const MIN_TOPIC_WORDS = 5;
 export const MAX_TOPIC_WORDS = 30;
@@ -72,7 +74,8 @@ export type DeckRequest = {
   tags: string[];
   writeIn: string;
 };
-export type TaskRequest = ListRequest | TopicRequest | HintRequest | DeckRequest;
+export type ConceptRequest = { task: "concept"; subject: string; source: string; target: string; subjectFields: Record<string, string>; deckFields: Record<string, string>; writeIn: string; tags: string[] };
+export type TaskRequest = ListRequest | TopicRequest | HintRequest | DeckRequest | ConceptRequest;
 
 export type CardDraft = {
   index: number;
@@ -112,6 +115,8 @@ const readDeck = (value: unknown): DeckContext | null => {
 
 export const validateTaskRequest = (body: unknown): TaskRequest | null => {
   const value = (body ?? {}) as Record<string, unknown>;
+
+  if (value.task === "concept") return validateConceptRequest(value) as ConceptRequest | null;
 
   if (value.task === "list") {
     const deck = readDeck(value.deck);
@@ -360,6 +365,15 @@ const outputTokens = (model: string, small: boolean) =>
 
 export const buildTaskRequest = (request: TaskRequest, model: string, { withThinking = true } = {}) => {
   const thinking = withThinking ? thinkingFor(model) : {};
+  if (request.task === "concept") {
+    const prompt = buildConceptPrompt(request);
+    return {
+      systemInstruction: { parts: [{ text: prompt.instruction }] },
+      contents: [{ role: "user", parts: [{ text: prompt.input }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: outputTokens(model, false),
+        responseMimeType: "application/json", responseSchema: prompt.schema, ...thinking },
+    };
+  }
 
   if (request.task === "hint") {
     return {
@@ -463,6 +477,8 @@ export const readTaskAnswer = (request: TaskRequest, response: unknown): Record<
   if (!raw) {
     return null;
   }
+
+  if (request.task === "concept") return { cards: readConceptCards(raw.cards, request.subject) };
 
   if (request.task === "hint") {
     const hint = clean(raw.hint);

@@ -173,3 +173,17 @@ describe("suggest-word: a deck's description and tags", () => {
   });
 });
 
+
+
+describe("suggest-word: subject concepts", () => {
+  it("uses profile fields and validates the model output on the server", () => {
+    const request = validateTaskRequest({ task: "concept", subject: "programming", source: "Closure?", deckFields: { technology: "JavaScript" }, writeIn: "Polish" })!;
+    expect(request).toBeTruthy();
+    const body = buildTaskRequest(request, "gemini-3.8-flash-lite");
+    expect(JSON.stringify(body.generationConfig.responseSchema)).toContain("codeSide");
+    expect(prompt(request)).toContain("JavaScript");
+    expect(readTaskAnswer(request, reply({ cards: [{ source: "Closure?", target: "A function retaining lexical scope.", subjectFields: { difficulty: "easy" } }] }))).toMatchObject({ cards: [{ subjectFields: { difficulty: "easy" } }] });
+    expect(readTaskAnswer(request, reply({ cards: [{ source: "Closure?", target: "Answer", subjectFields: { difficulty: "expert" } }] }))).toEqual({ cards: [] });
+    expect(validateTaskRequest({ task: "concept", subject: "unknown", source: "x" })).toBeNull();
+  });
+});

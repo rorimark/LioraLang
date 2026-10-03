@@ -113,12 +113,13 @@ export const WordSideFields = memo(({
 WordSideFields.displayName = "WordSideFields";
 
 // The fields a deck's subject adds to an entry, of the given input types.
-export const WordSubjectFields = memo(({ fields, draft, onSubjectFieldChange, only = null }) => (
+export const WordSubjectFields = memo(({ fields, draft, onSubjectFieldChange, only = null, section = null }) => (
   <SubjectFieldInputs
     fields={fields}
     values={draft.subjectFields}
     onChange={onSubjectFieldChange}
     only={only}
+    section={section}
     fieldClassName="deck-word-fields__field deck-word-fields__field--wide"
     labelClassName="deck-word-fields__label"
   />
@@ -147,7 +148,7 @@ export const WordDetailFields = memo(({
   return (
     <div className="deck-word-fields__details">
       {subjectFields ? (
-        <WordSubjectFields fields={subjectFields} draft={draft} onSubjectFieldChange={onSubjectFieldChange} only={["choice", "text"]} />
+        <WordSubjectFields fields={subjectFields} draft={draft} onSubjectFieldChange={onSubjectFieldChange} section="details" />
       ) : null}
 
       {usesLanguages && usesWordLevels ? (

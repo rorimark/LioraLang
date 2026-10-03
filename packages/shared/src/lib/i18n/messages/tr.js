@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "İsteğe bağlı resim",
+    "label": "Kart görünümü",
+    "text": "Metin → çeviri",
+    "image": "Resim → kelime",
+    "shared": "Her iki görünüm aynı tekrar programını kullanır. Resimsiz kartlar metin gösterir."
+},
+  "conceptSuggest": {
+    "title": "Kart önerileri",
+    "ask": "Kart öner",
+    "again": "Diğer seçenekler",
+    "thinking": "Düşünüyor…",
+    "hint": "En fazla üç öneri için bir terim, soru veya içerik girin.",
+    "suggested": "Öneriler hazır",
+    "review": "Yanıtı ve örnekleri kontrol edin. Yalnızca boş alanlar doldurulur; kart ayrıca kaydedilir.",
+    "take": "Boş alanları doldur",
+    "empty": "Güvenilir öneri yok. Bağlam ekleyip tekrar deneyin.",
+    "quota": "Günlük yapay zekâ sınırına ulaşıldı. Kartları elle oluşturmaya devam edebilirsiniz.",
+    "offline": "Bağlantı yok. Kart yazabilir ve kaydedebilirsiniz.",
+    "busy": "Asistan meşgul. Biraz sonra tekrar deneyin.",
+    "signin": "Önerileri kullanmak için giriş yapın.",
+    "error": "Öneri alınamadı. Tekrar deneyin."
+},
   "common": {
     "language": "Dil",
     "confirm": "Onayla",

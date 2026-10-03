@@ -345,11 +345,12 @@ export const useQuickAddWords = ({
       suggestedTagsRef.current = patch.tagsInput;
     }
 
-    const { source, target, ...rest } = patch || {};
+    const { source, target, subjectFields, ...rest } = patch || {};
     const sides = Object.fromEntries(
       Object.entries({ source, target }).filter(([, value]) => typeof value === "string"),
     );
 
+    if (subjectFields) sides.subjectFields = subjectFields;
     if (Object.keys(sides).length) {
       setDraft((current) => ({ ...current, ...sides }));
       setConfirmedPair("");
@@ -415,7 +416,7 @@ export const useQuickAddWords = ({
           part_of_speech: subjectProfile.usesLanguages ? details.part_of_speech : "",
           level: usesWordLevels ? details.level : "",
           tags: splitTags(details.tagsInput),
-          image: pictureSide ? draftImage : null,
+          image: pictureSide || subjectProfile.media?.optionalImage ? draftImage : null,
           subjectFields: normalizeEntrySubjectFields(subject, draft.subjectFields),
         },
       ]);
@@ -675,7 +676,7 @@ export const useQuickAddWords = ({
       }),
     [ai.language, deckTags, languages.sourceLanguage, languages.targetLanguage, languages.tertiaryLanguage, usesWordLevels],
   );
-  const canUseAi = ai.isWanted && !pictureSide && subjectProfile.usesAssistant && canDraftCards(aiDeck);
+  const canUseAi = ai.isWanted && !pictureSide && subjectProfile.assistant?.batch && canDraftCards(aiDeck);
   const [aiState, setAiState] = useState({ status: AI_STATUS.idle, done: 0, total: 0 });
   const [topic, setTopic] = useState({ text: "", level: "", count: 20 });
   const aiControllerRef = useRef(null);

@@ -1,7 +1,12 @@
 export {
+  createSubjectRegistry,
+  subjectRegistry,
+  isSupportedSubject,
+  normalizeProfileFields,
   buildCardPresentation,
   DIFFICULTIES,
   getSubjectProfile,
+  getStudyPresentations,
   hasSubjectFields,
   normalizeDeckSubjectFields,
   normalizeEntrySubjectFields,

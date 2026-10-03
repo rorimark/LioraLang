@@ -218,7 +218,7 @@ export const draftToWord = (
     part_of_speech: usesLanguages && PARTS.has(draft?.part_of_speech) ? draft.part_of_speech : "",
     tags: parseTagsInput(draft?.tagsInput),
     examples,
-    image: normalizePictureSide(pictureSide) ? normalizeWordImage(draft?.image) : null,
+    image: normalizePictureSide(pictureSide) || getSubjectProfile(subject).media?.optionalImage ? normalizeWordImage(draft?.image) : null,
     subjectFields: normalizeEntrySubjectFields(subject, draft?.subjectFields),
   };
 };
@@ -283,7 +283,7 @@ export const buildSavePayload = ({ deckId = null, form = {}, words = [] }) => {
       part_of_speech: usesLanguages ? word.part_of_speech : "",
       tags: word.tags,
       examples: word.examples,
-      image: pictureSide ? word.image : null,
+      image: pictureSide || getSubjectProfile(subject).media?.optionalImage ? normalizeWordImage(word.image) : null,
       subjectFields: normalizeEntrySubjectFields(subject, word.subjectFields),
     })),
   };

@@ -91,7 +91,7 @@ const main = () => {
   const filePath = path.join(sandbox, "food.lioradeck");
   exportDeckToJsonFile(deck.id, filePath, {});
   const exported = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  assert(exported.version === 1, "the package format version is unchanged");
+  assert(exported.version === 4, "optional images require an editor that preserves them");
   assert(exported.media?.length === 1 && exported.media[0].id === PNG_ID, "a file carries its picture once");
 
   // Import into a fresh database, with a declared id that is wrong: the

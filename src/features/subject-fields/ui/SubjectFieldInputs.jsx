@@ -66,10 +66,11 @@ export const SubjectFieldInputs = memo(({
   fieldClassName = "",
   labelClassName = "",
   only = null,
+  section = null,
 }) => {
   const { t } = useI18n();
   const id = useId();
-  const entries = Object.entries(fields).filter(([, spec]) => !spec.attachedTo && (!only || only.includes(spec.type)));
+  const entries = Object.entries(fields).filter(([, spec]) => !spec.attachedTo && (!only || only.includes(spec.type)) && (!section || (spec.section || "details") === section));
 
   return entries.map(([name, spec]) => {
     const Input = INPUTS[spec.type] || TextInput;

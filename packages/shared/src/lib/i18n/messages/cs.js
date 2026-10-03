@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Volitelný obrázek",
+    "label": "Zobrazení kartičky",
+    "text": "Text → překlad",
+    "image": "Obrázek → slovo",
+    "shared": "Obě zobrazení sdílejí plán opakování. Kartičky bez obrázku zobrazují text."
+},
+  "conceptSuggest": {
+    "title": "Návrhy kartiček",
+    "ask": "Navrhnout kartičku",
+    "again": "Další varianty",
+    "thinking": "Přemýšlím…",
+    "hint": "Zadejte pojem, otázku nebo podklady a získejte až tři návrhy.",
+    "suggested": "Návrhy jsou připravené",
+    "review": "Zkontrolujte odpověď a příklady. Vyplní se jen prázdná pole; kartičku uložíte zvlášť.",
+    "take": "Vyplnit prázdná pole",
+    "empty": "Žádný spolehlivý návrh. Doplňte kontext a zkuste to znovu.",
+    "quota": "Denní limit AI vyčerpán. Kartičky můžete dál vytvářet ručně.",
+    "offline": "Bez připojení. Můžete psát a ukládat kartičky.",
+    "busy": "Asistent je zaneprázdněný. Zkuste to za chvíli.",
+    "signin": "Pro návrhy se přihlaste.",
+    "error": "Návrh se nepodařilo získat. Zkuste to znovu."
+},
   "common": {
     "language": "Jazyk",
     "confirm": "Potvrdit",

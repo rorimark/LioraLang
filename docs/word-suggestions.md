@@ -78,3 +78,12 @@ useWordSuggestion ──functions.invoke──▶  suggest-word (Edge Function) 
 - `packages/shared/src/core/usecases/wordSuggest/cardDrafts.test.js`, `hints.test.js`
 - `packages/shared/src/api/createSupabaseWordSuggestApi.test.js`
 - Типы функции: `deno check supabase/functions/suggest-word/index.ts`
+
+
+## Предметные карточки
+
+Для предметов с `assistant.entry: concept` в профиле доступна кнопка «Предложить карточку». Запрос уходит только после нажатия, по прежней функции и дневной квоте. До трёх вариантов показываются до применения; человек проверяет ответ и заполняет только пустые поля. Сохранение отдельно. Код, сторона кода и прочие поля определяются профилем, а не жёсткой схемой Programming.
+
+Общий клиентский/серверный контракт: `core/usecases/wordSuggest/conceptDrafts.js`. Чрезмерно длинные ответы и код, неизвестные поля и значения отклоняются. Поздние ответы не применяются после изменения черновика или смены колоды. Для Programming не включены языковые автоподсказки, генерация списка, описание колоды и подсказки Learn.
+
+При деплое `suggest-word` нужно включать относительные зависимости из `packages/shared/src/core/usecases/{subjects,wordSuggest}`; один каталог профилей используется на обеих сторонах. Проверка JWT остаётся включена.

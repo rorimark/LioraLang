@@ -3,6 +3,7 @@ import { FiAlertTriangle, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, F
 import { WordImageField } from "@features/word-image-field";
 import { SubjectFieldInputs } from "@features/subject-fields";
 import {
+  ConceptSuggestion,
   SparkIcon,
   SuggestChip,
   SuggestField,
@@ -198,7 +199,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
     deck: suggestDeck,
     onFill: model.applySuggestion,
     // Suggestions are for subjects the assistant knows.
-    enabled: subjectProfile.usesAssistant,
+    enabled: subjectProfile.assistant?.entry === "word",
   });
   const summary = useSuggestionSummary(suggest);
 
@@ -260,7 +261,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         fields={subjectProfile.entryFields}
         values={model.draft.subjectFields}
         onChange={model.handleSubjectFieldChange}
-        only={["code"]}
+        section="main"
         fieldClassName="quick-add__field quick-add__field--code"
       />
 
@@ -329,7 +330,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
             fields={subjectProfile.entryFields}
             values={model.draft.subjectFields}
             onChange={model.handleSubjectFieldChange}
-            only={["choice", "text"]}
+            section="details"
             fieldClassName="quick-add__field"
           />
           <label className="quick-add__field quick-add__field--wide">
@@ -390,6 +391,11 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         </div>
       ) : null}
 
+      {!pictureSide && subjectProfile.media?.optionalImage ? <details className="deck-composer__image" open={model.draftImage ? true : undefined}>
+        <summary>{t("studyPresentation.addImage")}</summary>
+        <WordImageField value={model.draftImage} onChange={model.setDraftImage} word={model.draft.source} isCompact isDisabled={model.isSaving} />
+      </details> : null}
+      <ConceptSuggestion deck={model.selectedDeck || {}} draft={suggestDraft} onApply={model.applySuggestion} />
       <div className="quick-add__submit">
         <Button type="submit" variant="primary" disabled={model.isSaving}>
           {t("quickAdd.addCard")}

@@ -108,6 +108,10 @@ export const createSupabaseWordSuggestApi = () => ({
     return (await invoke(request, { signal, timeout: TIMEOUT_MS }))?.suggestion || null;
   },
 
+  async suggestConcept(request, { signal } = {}) {
+    return (await invoke({ ...request, task: "concept" }, { signal, timeout: LONG_TIMEOUT_MS }))?.result?.cards || [];
+  },
+
   // Cards for the lines of a pasted list, by index.
   async suggestList(request, { signal } = {}) {
     return (await invoke({ ...request, task: "list" }, { signal, timeout: LONG_TIMEOUT_MS }))?.result?.cards || [];

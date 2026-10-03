@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Optional picture",
+    "label": "Study presentation",
+    "text": "Text → translation",
+    "image": "Picture → word",
+    "shared": "Both presentations share one review schedule. Cards without a picture use text."
+},
+  "conceptSuggest": {
+    "title": "Card suggestions",
+    "ask": "Suggest a card",
+    "again": "Other options",
+    "thinking": "Thinking…",
+    "hint": "Enter a term, question or material to get up to three suggestions.",
+    "suggested": "Suggestions ready",
+    "review": "Review the answer and examples. Applying fills only empty fields; the card is saved separately.",
+    "take": "Fill empty fields",
+    "empty": "No reliable suggestion. Add more context and try again.",
+    "quota": "Daily AI limit reached. You can still write cards yourself.",
+    "offline": "No connection. You can still write and save cards.",
+    "busy": "The assistant is busy. Try again shortly.",
+    "signin": "Sign in to use suggestions.",
+    "error": "Could not get a suggestion. Try again."
+},
   "common": {
     "language": "Language",
     "confirm": "Confirm",

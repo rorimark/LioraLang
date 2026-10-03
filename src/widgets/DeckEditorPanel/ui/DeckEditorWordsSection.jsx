@@ -1,7 +1,8 @@
 import { memo, useCallback, useEffect, useId, useRef, useState } from "react";
 import { FiCheck, FiChevronDown, FiClipboard, FiPlus, FiRotateCcw, FiTrash2, FiX } from "react-icons/fi";
+import { WordImageField } from "@features/word-image-field";
 import { QuickAddWordsDialog } from "@features/quick-add-words";
-import { SparkIcon, SuggestionBar, useSuggestionSummary, useWordSuggestion } from "@features/word-suggest";
+import { ConceptSuggestion, SparkIcon, SuggestionBar, useSuggestionSummary, useWordSuggestion } from "@features/word-suggest";
 import { WordImage } from "@entities/word";
 import { SearchField } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
@@ -61,7 +62,7 @@ const WordComposer = memo(({ labels }) => {
     defaults: addDraftDefaults,
     onFill: applyAddDraftPatch,
     // Suggestions are for subjects the assistant knows.
-    enabled: subjectProfile.usesAssistant,
+    enabled: subjectProfile.assistant?.entry === "word",
   });
   const summary = useSuggestionSummary(suggest);
   // Details the suggestion filled while they were folded away.
@@ -108,7 +109,7 @@ const WordComposer = memo(({ labels }) => {
           autoFocus={autoFocus}
           multilineAnswer={subjectProfile.entryText?.target.multiline}
         >
-          <WordSubjectFields fields={subjectProfile.entryFields} draft={addDraft} onSubjectFieldChange={handleAddDraftSubjectFieldChange} only={["code"]} />
+          <WordSubjectFields fields={subjectProfile.entryFields} draft={addDraft} onSubjectFieldChange={handleAddDraftSubjectFieldChange} section="main" />
         </WordSideFields>
         <button type="submit" className="deck-composer__add">
           <FiPlus aria-hidden />
@@ -142,6 +143,12 @@ const WordComposer = memo(({ labels }) => {
           </SuggestionBar>
         )}
       </div>
+
+      {!pictureSide && subjectProfile.media?.optionalImage ? <details className="deck-composer__image" open={addDraft.image ? true : undefined}>
+        <summary>{t("studyPresentation.addImage")}</summary>
+        <WordImageField value={addDraft.image} onChange={handleAddDraftImageChange} word={addDraft.source} isCompact />
+      </details> : null}
+      <ConceptSuggestion deck={suggestDeck} draft={addDraft} onApply={applyAddDraftPatch} />
 
       <div id={detailsId} hidden={!isDetailsOpen}>
         {isDetailsOpen ? (
@@ -198,7 +205,7 @@ const WordEditor = memo(({ word, labels }) => {
     deck: suggestDeck,
     defaults: addDraftDefaults,
     onFill: applyEditDraftPatch,
-    enabled: subjectProfile.usesAssistant,
+    enabled: subjectProfile.assistant?.entry === "word",
   });
   const summary = useSuggestionSummary(suggest);
 
@@ -249,7 +256,7 @@ const WordEditor = memo(({ word, labels }) => {
           fields={subjectProfile.entryFields}
           draft={editDraft}
           onSubjectFieldChange={handleEditDraftSubjectFieldChange}
-          only={["code"]}
+          section="main"
         />
       </WordSideFields>
       <WordDetailFields
@@ -266,6 +273,11 @@ const WordEditor = memo(({ word, labels }) => {
         subjectFields={subjectProfile.entryFields}
         onSubjectFieldChange={handleEditDraftSubjectFieldChange}
       />
+      {!pictureSide && subjectProfile.media?.optionalImage ? <details className="deck-composer__image" open={editDraft.image ? true : undefined}>
+        <summary>{t("studyPresentation.addImage")}</summary>
+        <WordImageField value={editDraft.image} onChange={handleEditDraftImageChange} word={editDraft.source} isCompact />
+      </details> : null}
+      <ConceptSuggestion deck={suggestDeck} draft={editDraft} onApply={applyEditDraftPatch} />
       {editError ? (
         <p className="deck-composer__error" role="alert">
           {editError}

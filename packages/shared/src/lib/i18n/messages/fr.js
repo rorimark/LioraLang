@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Image facultative",
+    "label": "Présentation de la carte",
+    "text": "Texte → traduction",
+    "image": "Image → mot",
+    "shared": "Les deux présentations partagent le même calendrier de révision. Les cartes sans image affichent le texte."
+},
+  "conceptSuggest": {
+    "title": "Suggestions de cartes",
+    "ask": "Proposer une carte",
+    "again": "Autres variantes",
+    "thinking": "Réflexion…",
+    "hint": "Saisissez un terme, une question ou du contenu pour obtenir jusqu’à trois propositions.",
+    "suggested": "Propositions prêtes",
+    "review": "Vérifiez la réponse et les exemples. Seuls les champs vides seront remplis ; enregistrez la carte séparément.",
+    "take": "Remplir les champs vides",
+    "empty": "Aucune proposition fiable. Ajoutez du contexte et réessayez.",
+    "quota": "Limite quotidienne d’IA atteinte. Vous pouvez toujours créer des cartes manuellement.",
+    "offline": "Hors ligne. Vous pouvez écrire et enregistrer des cartes.",
+    "busy": "L’assistant est occupé. Réessayez dans un instant.",
+    "signin": "Connectez-vous pour utiliser les suggestions.",
+    "error": "Impossible d’obtenir une proposition. Réessayez."
+},
   "common": {
     "language": "Langue",
     "confirm": "Confirmer",

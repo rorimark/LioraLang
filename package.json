@@ -4,7 +4,7 @@
   "author": "Mark Storchovyi markstorchovyi@gmail.com",
   "homepage": "https://github.com/rorimark/LioraLang",
   "private": true,
-  "version": "0.7.1",
+  "version": "0.8.0",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -45,7 +45,8 @@
     "test:coverage:verbose": "node scripts/run-test-suite.mjs --coverage --verbose",
     "test:coverage:report": "node scripts/run-test-suite.mjs --coverage --report",
     "preview": "pnpm preview:web",
-    "preview:web": "pnpm build:web && vite preview --host --port 4175 --strictPort"
+    "preview:web": "pnpm build:web && vite preview --host --port 4175 --strictPort",
+    "check:subject-assistant": "node scripts/acceptance/subject-assistant.mjs"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.3.0",

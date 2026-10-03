@@ -25,6 +25,9 @@ const buildParsedPackage = (overrides = {}) => ({
 });
 
 describe("deckPackage", () => {
+  it("rejects an unknown future subject instead of stripping its fields", () => {
+    expect(() => parseDeckPackageFileText(JSON.stringify(buildParsedPackage({ deck: { subject: "future", subjectFields: { formula: "x" } } })))).toThrow("Unsupported deck subject");
+  });
   describe("parseDeckPackageFileText", () => {
     it("accepts a BOM-prefixed file and keeps the deck metadata intact", () => {
       const parsed = parseDeckPackageFileText(

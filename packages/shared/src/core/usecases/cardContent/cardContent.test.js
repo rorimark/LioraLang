@@ -113,3 +113,24 @@ describe("media bytes", () => {
     expect(base64ToBytes("not base64!")).toBeNull();
   });
 });
+
+
+describe("optional image presentation", () => {
+  const image = { assetId: "a".repeat(64), alt: "A green vegetable" };
+  const word = { source: "asparagus", target: "szparag", image };
+  it("asks for the learned word from the picture, with the same entry", () => {
+    const faces = resolveCardFaces(word, "mixed", {}, "image_to_word");
+    expect(faces.front).toEqual({ type: "image", ...image });
+    expect(faces.back.text).toBe("asparagus");
+    expect(resolveCardFaces(word, "source_to_target", { learnedSide: "target" }, "image_to_word").back.text).toBe("szparag");
+    expect(word).toEqual({ source: "asparagus", target: "szparag", image });
+  });
+  it("keeps text, picture-only and unsupported subjects on their existing path", () => {
+    expect(resolveCardFaces(word, "source_to_target").front.text).toBe("asparagus");
+    const plain = { source: "bread", target: "chleb" };
+    expect(resolveCardFaces(plain, "mixed", {}, "image_to_word")).toEqual(resolveCardFaces(plain, "mixed"));
+    const deck = { pictureSide: "source" };
+    expect(resolveCardFaces(word, "target_to_source", deck, "image_to_word")).toEqual(resolveCardFaces(word, "target_to_source", deck));
+    expect(resolveCardFaces(word, "source_to_target", { subject: "programming" }, "image_to_word").front.type).toBe("text");
+  });
+});

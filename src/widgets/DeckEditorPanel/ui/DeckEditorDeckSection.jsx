@@ -88,13 +88,9 @@ export const DeckEditorDeckSection = memo(() => {
             <span>{t("subjects.label")}</span>
             <small>{t("subjects.hint")}</small>
           </span>
-          <SettingSegmented
-            name="subject"
-            value={subject || subjectOptions[0]}
-            ariaLabel={t("subjects.label")}
-            onChange={handleSubjectChange}
-            options={subjectOptions.map((id) => ({ value: id, label: t(getSubjectProfile(id).nameKey) }))}
-          />
+          <Select name="subject" value={subject || subjectOptions[0]} label={t("subjects.label")} aria-label={t("subjects.label")} onChange={handleSubjectChange}>
+            {subjectOptions.map((id) => <option key={id} value={id}>{t(getSubjectProfile(id).nameKey)}</option>)}
+          </Select>
         </div>
       ) : null}
 
@@ -124,7 +120,7 @@ export const DeckEditorDeckSection = memo(() => {
         />
       </label>
 
-      {subjectProfile.usesAssistant ? (
+      {subjectProfile.assistant?.description ? (
         <DeckDescriptionSuggestion deck={deckForm} words={words} onApply={applyDeckPatch} />
       ) : null}
 

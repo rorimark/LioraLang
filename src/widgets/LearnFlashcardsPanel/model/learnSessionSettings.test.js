@@ -67,6 +67,7 @@ describe("learnSessionSettings", () => {
         },
       ),
     ).toEqual({
+      presentationMode: "text",
       directionMode: LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
       exerciseMode: LEARN_EXERCISE_MODE_FLASHCARDS,
       dailyGoal: 1,
@@ -81,6 +82,7 @@ describe("learnSessionSettings", () => {
 
   it("writes only local session overrides to storage and restores shared study settings from app preferences", () => {
     const settings = {
+      presentationMode: "image_to_word",
       directionMode: LEARN_SESSION_DIRECTION_TARGET_TO_SOURCE,
       exerciseMode: LEARN_EXERCISE_MODE_FLASHCARDS,
       dailyGoal: 45,

@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Immagine facoltativa",
+    "label": "Visualizzazione della carta",
+    "text": "Testo → traduzione",
+    "image": "Immagine → parola",
+    "shared": "Le due viste condividono il calendario di ripasso. Le carte senza immagine mostrano il testo."
+},
+  "conceptSuggest": {
+    "title": "Suggerimenti per le carte",
+    "ask": "Suggerisci una carta",
+    "again": "Altre opzioni",
+    "thinking": "Sto pensando…",
+    "hint": "Inserisci un termine, una domanda o del materiale per ricevere fino a tre proposte.",
+    "suggested": "Proposte pronte",
+    "review": "Controlla la risposta e gli esempi. Verranno compilati solo i campi vuoti; la carta si salva separatamente.",
+    "take": "Compila i campi vuoti",
+    "empty": "Nessuna proposta affidabile. Aggiungi contesto e riprova.",
+    "quota": "Limite giornaliero IA raggiunto. Puoi ancora creare carte manualmente.",
+    "offline": "Nessuna connessione. Puoi scrivere e salvare carte.",
+    "busy": "L’assistente è occupato. Riprova tra poco.",
+    "signin": "Accedi per usare i suggerimenti.",
+    "error": "Impossibile ottenere una proposta. Riprova."
+},
   "common": {
     "language": "Lingua",
     "confirm": "Conferma",

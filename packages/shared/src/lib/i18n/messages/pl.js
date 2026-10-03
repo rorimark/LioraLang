@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Opcjonalny obrazek",
+    "label": "Widok fiszki",
+    "text": "Tekst → tłumaczenie",
+    "image": "Obrazek → słowo",
+    "shared": "Oba widoki mają wspólny harmonogram powtórek. Fiszki bez obrazka pokazują tekst."
+},
+  "conceptSuggest": {
+    "title": "Propozycje fiszek",
+    "ask": "Zaproponuj fiszkę",
+    "again": "Inne warianty",
+    "thinking": "Myślę…",
+    "hint": "Wpisz termin, pytanie lub materiał, aby otrzymać do trzech propozycji.",
+    "suggested": "Propozycje gotowe",
+    "review": "Sprawdź odpowiedź i przykłady. Uzupełnione zostaną tylko puste pola; fiszkę zapisujesz osobno.",
+    "take": "Uzupełnij puste pola",
+    "empty": "Brak wiarygodnej propozycji. Dodaj kontekst i spróbuj ponownie.",
+    "quota": "Dzienny limit AI wyczerpany. Nadal możesz tworzyć fiszki ręcznie.",
+    "offline": "Brak połączenia. Możesz pisać i zapisywać fiszki.",
+    "busy": "Asystent jest zajęty. Spróbuj za chwilę.",
+    "signin": "Zaloguj się, aby korzystać z propozycji.",
+    "error": "Nie udało się uzyskać propozycji. Spróbuj ponownie."
+},
   "common": {
     "language": "Język",
     "confirm": "Potwierdź",

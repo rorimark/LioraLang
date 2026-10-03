@@ -22,6 +22,14 @@ const form = {
 };
 
 describe("deckEditorModel", () => {
+  it("keeps an optional picture through adding and saving a text deck", () => {
+    const image = { assetId: "a".repeat(64), alt: "Cat" };
+    const word = draftToWord({ source: "cat", target: "kot", image });
+    expect(word.image).toEqual(image);
+    expect(buildSavePayload({ form, words: [word] }).words[0].image).toEqual(image);
+    expect(buildSavePayload({ form, words: [{ ...word, image: null }] }).words[0].image).toBeNull();
+    expect(validateWordDraft({ source: "cat", target: "kot" })).toBe("");
+  });
   it("keeps tags unique regardless of case", () => {
     expect(parseTagsInput("zoo, Zoo, farm,  ")).toEqual(["zoo", "farm"]);
   });

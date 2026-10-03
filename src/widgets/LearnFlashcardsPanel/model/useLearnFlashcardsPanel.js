@@ -36,6 +36,7 @@ import { CONTENT_TYPES, resolveCardDirection, resolveCardFaces, TEXT_ROLES } fro
 import {
   buildCardPresentation,
   getSubjectProfile,
+  getStudyPresentations,
   resolveSubjectDirection,
 } from "@shared/core/usecases/subjects";
 import {
@@ -380,10 +381,12 @@ export const useLearnFlashcardsPanel = () => {
   // What the deck is about decides which directions it is studied in and
   // whether a missed card gets a hint.
   const subjectProfile = getSubjectProfile(currentDeck?.subject);
+  const presentationOptions = useMemo(() => getStudyPresentations(currentDeck || {}, deckWords), [currentDeck, deckWords]);
+  const presentationMode = presentationOptions.some((option) => option.id === sessionSettings.presentationMode) ? sessionSettings.presentationMode : "text";
   const studyDirection = resolveSubjectDirection(currentDeck?.subject, sessionSettings.directionMode);
   const directionSummary = useMemo(
-    () => buildDirectionSummary(studyDirection, currentDeck, i18n),
-    [currentDeck, i18n, studyDirection],
+    () => presentationMode !== "text" ? t(presentationOptions.find((option) => option.id === presentationMode).labelKey) : buildDirectionSummary(studyDirection, currentDeck, i18n),
+    [currentDeck, i18n, studyDirection, presentationMode, presentationOptions, t],
   );
   const sessionSummary = useMemo(() => {
     const engineLabel = isBrowseMode ? t("learn.engine.review") : t("learn.engine.srs");
@@ -609,6 +612,11 @@ export const useLearnFlashcardsPanel = () => {
     [updateSessionSettings],
   );
 
+  const handlePresentationModeChange = useCallback((presentationMode) => {
+    updateSessionSettings({ presentationMode });
+    setLearnProgress((previous) => ({ ...previous, isBackVisible: false }));
+  }, [updateSessionSettings]);
+
   const handleExerciseModeChange = useCallback(
     (exerciseMode) => {
       if (exerciseMode !== LEARN_EXERCISE_MODE_FLASHCARDS) {
@@ -697,7 +705,7 @@ export const useLearnFlashcardsPanel = () => {
     const ratedDirection = resolveCardDirection(studyDirection, ratedWord || {});
     if (!await rateSrsCard(rating)) return;
     setMissedCard(
-      rating === "again" && ratedWord && subjectProfile.usesAssistant
+      rating === "again" && ratedWord && presentationMode === "text" && subjectProfile.assistant?.reviewHint
         ? { word: ratedWord, deckId: selectedDeckId, direction: ratedDirection }
         : null,
     );
@@ -715,7 +723,8 @@ export const useLearnFlashcardsPanel = () => {
     rateSrsCard,
     selectedDeckId,
     studyDirection,
-    subjectProfile.usesAssistant,
+    subjectProfile.assistant?.reviewHint,
+    presentationMode,
   ]);
 
   const handleBrowsePrev = useCallback(() => {
@@ -906,8 +915,8 @@ export const useLearnFlashcardsPanel = () => {
     }));
   }, [currentWord, formatInterval, isBrowseMode, t]);
   const cardFaces = useMemo(
-    () => resolveCardFaces(currentWord || {}, studyDirection, currentDeck || {}),
-    [currentDeck, currentWord, studyDirection],
+    () => resolveCardFaces(currentWord || {}, studyDirection, currentDeck || {}, presentationMode),
+    [currentDeck, currentWord, studyDirection, presentationMode],
   );
   // A subject with its own layout draws the card from blocks; null keeps
   // the card a language card has always been.
@@ -922,7 +931,7 @@ export const useLearnFlashcardsPanel = () => {
     content?.role === TEXT_ROLES.source || (content?.type === CONTENT_TYPES.image && currentDeck?.pictureSide === "source")
       ? sideLabels.source
       : sideLabels.target;
-  const cardFrontLabel = labelForContent(cardFaces.front);
+  const cardFrontLabel = cardFaces.presentation ? t("media.label") : labelForContent(cardFaces.front);
   const cardBackLabel = labelForContent(cardFaces.back);
   const cardFrontText = toFaceText(cardFaces.front, t);
   const cardBackText = toFaceText(cardFaces.back, t);
@@ -1051,6 +1060,9 @@ export const useLearnFlashcardsPanel = () => {
     cardBackDetails,
     cardPresentation,
     subjectProfile,
+    presentationOptions,
+    presentationMode,
+    handlePresentationModeChange,
     isBackVisible,
     sessionSummary,
     directionSummary,

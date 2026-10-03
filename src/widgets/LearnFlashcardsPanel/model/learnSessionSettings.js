@@ -1,4 +1,5 @@
 import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
+import { SUBJECT_IDS, getSubjectProfile } from "@shared/core/usecases/subjects";
 import { resolveCardDirection } from "@shared/core/usecases/cardContent";
 
 export const LEARN_SESSION_SETTINGS_SESSION_KEY = "learnSessionSettingsSession";
@@ -13,6 +14,8 @@ export const LEARN_EXERCISE_MODE_FLASHCARDS = "flashcards";
 export const LEARN_EXERCISE_MODE_TYPE_TRANSLATION = "type_translation";
 export const LEARN_EXERCISE_MODE_FILL_GAP = "fill_gap";
 export const LEARN_EXERCISE_MODE_MULTIPLE_CHOICE = "multiple_choice";
+
+const PRESENTATION_OPTIONS = new Set(["text", ...SUBJECT_IDS.flatMap((id) => (getSubjectProfile(id).studyPresentations || []).map((item) => item.id))]);
 
 const DIRECTION_MODE_OPTIONS = new Set([
   LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
@@ -31,6 +34,7 @@ const AUTO_FLIP_OPTIONS = new Set(["off", "1s", "2s", "3s"]);
 const SHUFFLE_MODE_OPTIONS = new Set(["off", "per_session", "always"]);
 const LOCAL_ONLY_SESSION_KEYS = Object.freeze([
   "directionMode",
+  "presentationMode",
   "exerciseMode",
   "showExamples",
   "showLevel",
@@ -41,6 +45,7 @@ export const createLearnSessionSettingsDefaults = (appPreferences = {}) => {
   const studySession = appPreferences?.studySession || {};
 
   return {
+    presentationMode: "text",
     directionMode: LEARN_SESSION_DIRECTION_SOURCE_TO_TARGET,
     exerciseMode: LEARN_EXERCISE_MODE_FLASHCARDS,
     dailyGoal: Number(studySession?.dailyGoal) || DEFAULT_APP_PREFERENCES.studySession.dailyGoal,
@@ -111,6 +116,7 @@ export const normalizeLearnSessionSettings = (
   const defaults = createLearnSessionSettingsDefaults(appPreferences);
 
   return {
+    presentationMode: toOneOf(value?.presentationMode, PRESENTATION_OPTIONS, defaults.presentationMode),
     directionMode: toOneOf(
       value?.directionMode,
       DIRECTION_MODE_OPTIONS,

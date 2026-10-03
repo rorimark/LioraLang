@@ -118,7 +118,7 @@ const main = async () => {
     await editor.getByRole("button", { name: "New deck" }).click();
     await editor.getByRole("menuitem", { name: /Programming/ }).click();
     await editor.waitForSelector("input[name=name]");
-    assert(await editor.locator("input[name=subject][value=programming]").isChecked(), "the menu opens a programming deck directly");
+    assert(await editor.locator("input[name=subject]").inputValue() === "programming", "the menu opens a programming deck directly");
     await editor.fill("input[name=name]", "JavaScript offline");
     await editor.fill("input[name=technology]", "JavaScript");
     await editor.fill("input[name=source]", "What does this return?");
@@ -260,6 +260,44 @@ const main = async () => {
     await choose(deckSelect, "Food offline");
     await page.waitForSelector(".flashcard:not(.flashcard--layout-code)");
     assert((await page.locator(".flashcard__face--front .flashcard__text").innerText()).includes("asparagus"), "a language card is drawn as before");
+
+
+    // Extend the existing language card with a picture; both texts remain.
+    await page.goto(`${BASE}/app/decks`);
+    await page.getByText("Food offline", { exact: true }).first().click();
+    await page.getByRole("button", { name: /Edit deck/ }).click();
+    await page.locator(".deck-word__open").first().click();
+    const imageEditor = page.locator(".deck-word-editor");
+    await imageEditor.locator("summary").filter({ hasText: "Optional picture" }).click();
+    const png = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 120; canvas.height = 160;
+      const ctx = canvas.getContext("2d"); ctx.fillStyle = "#eff9e8"; ctx.fillRect(0, 0, 120, 160);
+      ctx.fillStyle = "#3b8e39"; ctx.fillRect(35, 25, 12, 115); ctx.fillRect(58, 15, 12, 125); ctx.fillRect(80, 30, 12, 110);
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    await imageEditor.locator("input[type=file]").setInputFiles({ name: "vegetable.png", mimeType: "image/png", buffer: Buffer.from(png, "base64") });
+    await imageEditor.getByRole("button", { name: "Remove", exact: true }).waitFor();
+    await imageEditor.getByRole("button", { name: "Save changes", exact: true }).click();
+    await page.getByText("Saved", { exact: true }).first().waitFor();
+    await page.reload();
+    await page.locator(".deck-word__open").first().click();
+    assert(await page.locator(".deck-word-editor .word-image-field__preview img").count() === 1, "optional image survives editing and reopening offline");
+    assert(await page.locator(".deck-word-editor input[name=source]").inputValue() === "asparagus", "adding a picture preserves the word");
+    await page.goto(`${BASE}/app/learn`);
+    await choose(page.locator("#learn-deck-select"), "Food offline");
+    await page.locator("button[aria-label='Open session settings']").click();
+    await choose(page.getByRole("combobox", { name: "Study presentation" }), "Picture → word");
+    await page.getByRole("button", { name: /Back to cards/ }).click();
+    await page.locator(".flashcard__face--front img").waitFor();
+    assert(await page.locator(".flashcard__face--front img").evaluate((img) => img.complete && img.naturalWidth > 0), "picture loads from local storage without a network");
+    await page.keyboard.press("Space");
+    await page.locator(".flashcard__face--back[aria-hidden=false]").waitFor();
+    assert((await page.locator(".flashcard__face--back .flashcard__text").innerText()).includes("asparagus"), "image recall asks for the learned word");
+    await page.locator("button[aria-label='Open session settings']").click();
+    await choose(page.getByRole("combobox", { name: "Study presentation" }), "Text → translation");
+    await page.getByRole("button", { name: /Back to cards/ }).click();
+    assert((await page.locator(".flashcard__face--front .flashcard__text").innerText()).includes("asparagus"), "switching back restores the original text presentation");
+    assert((await page.locator(".flashcard__face--back .flashcard__text").innerText()).includes("szparag"), "the translation is still there");
 
     assert(errors.length === 0, `no application errors${errors.length ? `: ${errors.join("\n")}` : ""}`);
     assert(assistant.length === 0, "no assistant request was made");

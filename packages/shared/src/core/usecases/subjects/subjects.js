@@ -14,130 +14,25 @@
 // subjects are stored, so a language deck reads, exports and hashes as it
 // did before subjects existed.
 
-export const SUBJECTS = Object.freeze({
-  language: "language",
-  programming: "programming",
-});
-
-const DIRECTIONS = Object.freeze({
-  sourceToTarget: "source_to_target",
-  targetToSource: "target_to_source",
-  mixed: "mixed",
-});
-
-export const DIFFICULTIES = Object.freeze(["easy", "medium", "hard"]);
-
-// Labels, placeholders and errors are message keys, so the interface
-// draws a subject's forms from its profile without knowing which it is.
-const LANGUAGE_PROFILE = Object.freeze({
-  id: SUBJECTS.language,
-  nameKey: "subjects.names.language",
-  usesLanguages: true,
-  canPublishToHub: true,
-  usesAssistant: true,
-  directions: [DIRECTIONS.sourceToTarget, DIRECTIONS.targetToSource, DIRECTIONS.mixed],
-  // Side names come from the deck's languages.
-  sideLabels: null,
-  // The Learn settings that show more of a card.
-  cardDetails: ["showExamples", "showLevel", "showPartOfSpeech"],
-  // The word form's own labels and errors are used.
-  entryText: null,
-  deckFields: {},
-  entryFields: {},
-  presentation: null,
-});
-
-// Programming: a term or a question, often about a piece of code, and a
-// short answer. With code, the code is the thing to look at; without it, a
-// term is the headline, the way a word is on a language card. The
-// technology is the deck's context; difficulty is not CEFR.
-const PROGRAMMING_PROFILE = Object.freeze({
-  id: SUBJECTS.programming,
-  nameKey: "subjects.names.programming",
-  usesLanguages: false,
-  // The Hub keeps languages in columns; until it knows subjects, these
-  // decks stay in the library.
-  canPublishToHub: false,
-  usesAssistant: false,
-  directions: [DIRECTIONS.sourceToTarget],
-  // Message keys: the sides are a question and its answer.
-  sideLabels: { source: "subjects.sides.question", target: "subjects.sides.answer" },
-  cardDetails: [],
-  deckText: { namePlaceholderKey: "subjects.fields.technologyPlaceholder" },
-  entryText: {
-    addKey: "subjects.addCard",
-    listKey: "subjects.cards",
-    enterHintKey: "subjects.enterHint",
-    tagsKey: "subjects.tags",
-    emptyKey: "subjects.empty",
-    source: { labelKey: "subjects.fields.question", placeholderKey: "subjects.fields.questionPlaceholder", errorKey: "subjects.errors.emptyQuestion" },
-    target: { multiline: true, labelKey: "subjects.fields.answer", placeholderKey: "subjects.fields.answerPlaceholder", errorKey: "subjects.errors.emptyAnswer" },
-    examples: { labelKey: "subjects.fields.notes", placeholderKey: "subjects.fields.notesPlaceholder" },
-  },
-  deckFields: {
-    technology: {
-      type: "text",
-      maxLength: 40,
-      labelKey: "subjects.fields.technology",
-      hintKey: "subjects.fields.technologyHint",
-      placeholderKey: "subjects.fields.technologyPlaceholder",
-    },
-  },
-  entryFields: {
-    code: {
-      type: "code",
-      maxLength: 4000,
-      labelKey: "subjects.fields.code",
-      placeholderKey: "subjects.fields.codePlaceholder",
-      placementField: "codeSide",
-    },
-    codeSide: {
-      type: "choice",
-      values: ["front", "back"],
-      defaultValue: "front",
-      attachedTo: "code",
-      minPackageVersion: 3,
-      labelKey: "subjects.fields.codeSide",
-      valueKey: "subjects.codeSide",
-    },
-    difficulty: {
-      type: "choice",
-      values: DIFFICULTIES,
-      labelKey: "subjects.fields.difficulty",
-      valueKey: "subjects.difficulty",
-    },
-  },
-  presentation: {
-    layout: "code",
-    front: [
-      { block: "meta", items: [{ kind: "technology", from: "deck.technology" }, { kind: "difficulty", from: "entry.difficulty", labelKey: "subjects.difficulty", scale: DIFFICULTIES }] },
-      { block: "text", role: "prompt", from: "entry.source", leadsWithout: "entry.code", leadsWhen: { from: "entry.codeSide", value: "back" } },
-      { block: "code", emphasis: "primary", from: "entry.code", unless: { from: "entry.codeSide", value: "back" } },
-    ],
-    back: [
-      { block: "text", role: "answer", from: "entry.target" },
-      { block: "code", emphasis: "secondary", from: "entry.code", when: { from: "entry.codeSide", value: "back" } },
-      { block: "list", role: "notes", from: "entry.examples" },
-    ],
-  },
-});
-
-const PROFILES = Object.freeze({
-  [SUBJECTS.language]: LANGUAGE_PROFILE,
-  [SUBJECTS.programming]: PROGRAMMING_PROFILE,
-});
-
-export const SUBJECT_IDS = Object.freeze(Object.keys(PROFILES));
-
-export const normalizeSubject = (value) => (PROFILES[value] ? value : SUBJECTS.language);
-
-// What a deck stores for its subject: nothing for language.
+import { subjectRegistry } from "./registry.js";
+import { SUBJECTS } from "./constants.js";
+export { SUBJECTS, DIFFICULTIES } from "./constants.js";
+export { createSubjectRegistry, subjectRegistry } from "./registry.js";
+export const SUBJECT_IDS = subjectRegistry.ids;
+export const isSupportedSubject = (value) => subjectRegistry.has(value);
+export const normalizeSubject = (value) => subjectRegistry.has(value) ? (value || subjectRegistry.defaultId) : subjectRegistry.defaultId;
 export const storedSubject = (value) => {
   const subject = normalizeSubject(value);
   return subject === SUBJECTS.language ? "" : subject;
 };
+export const getSubjectProfile = (subject) => subjectRegistry.get(normalizeSubject(subject));
 
-export const getSubjectProfile = (subject) => PROFILES[normalizeSubject(subject)];
+export const getStudyPresentations = (deck = {}, words = []) => {
+  const profile = getSubjectProfile(deck.subject);
+  if (deck.pictureSide) return [];
+  return (profile.studyPresentations || []).filter((option) => !option.requires ||
+    (option.requires === "image" && words.some((word) => Boolean(word.image?.assetId))));
+};
 
 const parseObject = (value) => {
   if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -172,7 +67,7 @@ const normalizeFieldValue = (spec, value) => {
 
 // The fields a profile allows, cleaned; empty ones are left out, and so is
 // the whole object when nothing is set.
-const normalizeFields = (specs, value) => {
+export const normalizeProfileFields = (specs, value) => {
   const raw = parseObject(value);
   const result = {};
 
@@ -188,10 +83,10 @@ const normalizeFields = (specs, value) => {
 };
 
 export const normalizeEntrySubjectFields = (subject, value) =>
-  normalizeFields(getSubjectProfile(subject).entryFields, value);
+  normalizeProfileFields(getSubjectProfile(subject).entryFields, value);
 
 export const normalizeDeckSubjectFields = (subject, value) =>
-  normalizeFields(getSubjectProfile(subject).deckFields, value);
+  normalizeProfileFields(getSubjectProfile(subject).deckFields, value);
 
 export const hasSubjectFields = (fields) => Boolean(fields && Object.keys(fields).length);
 

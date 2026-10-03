@@ -62,6 +62,7 @@ describe("pictures in the browser database", () => {
     const file = (await decks.exportDeckPackage(deck.id)).package;
     const synced = (await decks.exportDeckPackage(deck.id, { includeMedia: false })).package;
 
+    expect(file.version).toBe(4);
     expect(file.media).toHaveLength(1);
     expect(file.media[0].id).toBe(PNG_ID);
     expect(synced.media).toBeUndefined();

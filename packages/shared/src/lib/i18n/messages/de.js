@@ -1,4 +1,27 @@
 export default {
+  "studyPresentation": {
+    "addImage": "Optionales Bild",
+    "label": "Kartendarstellung",
+    "text": "Text → Übersetzung",
+    "image": "Bild → Wort",
+    "shared": "Beide Darstellungen teilen einen Wiederholungsplan. Karten ohne Bild zeigen Text."
+},
+  "conceptSuggest": {
+    "title": "Kartenvorschläge",
+    "ask": "Karte vorschlagen",
+    "again": "Andere Varianten",
+    "thinking": "Wird überlegt…",
+    "hint": "Gib einen Begriff, eine Frage oder Material für bis zu drei Vorschläge ein.",
+    "suggested": "Vorschläge bereit",
+    "review": "Prüfe Antwort und Beispiele. Nur leere Felder werden ausgefüllt; die Karte speicherst du separat.",
+    "take": "Leere Felder ausfüllen",
+    "empty": "Kein verlässlicher Vorschlag. Ergänze den Kontext und versuche es erneut.",
+    "quota": "Tägliches KI-Limit erreicht. Du kannst Karten weiterhin selbst erstellen.",
+    "offline": "Keine Verbindung. Karten lassen sich weiterhin schreiben und speichern.",
+    "busy": "Der Assistent ist beschäftigt. Versuche es gleich noch einmal.",
+    "signin": "Melde dich an, um Vorschläge zu nutzen.",
+    "error": "Vorschlag konnte nicht geladen werden. Versuche es erneut."
+},
   "common": {
     "language": "Sprache",
     "confirm": "Bestätigen",

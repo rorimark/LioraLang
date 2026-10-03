@@ -1,3 +1,5 @@
+import { getSubjectProfile } from "../subjects/subjects.js";
+
 // What a vocabulary entry holds, and how one entry becomes the two sides of
 // a card.
 //
@@ -164,7 +166,19 @@ export const buildSideContent = (side, word = {}, deck = {}) => {
 };
 
 // Both sides of the card one entry makes in a direction.
-export const resolveCardFaces = (word, direction, deck = {}) => {
+export const resolveCardFaces = (word, direction, deck = {}, presentationId = "text") => {
+  const presentation = getSubjectProfile(deck.subject).studyPresentations?.find((item) => item.id === presentationId);
+  const image = normalizeWordImage(word?.image);
+  if (!deck.pictureSide && presentation?.renderer === "imageRecall" && image) {
+    const learnedSide = normalizeLearnedSide(deck.learnedSide);
+    const answer = learnedSide === "target" ? cleanText(word?.target) : cleanText(word?.source);
+    if (answer) return {
+      direction: CARD_DIRECTIONS.sourceToTarget,
+      presentation: presentation.id,
+      front: { type: CONTENT_TYPES.image, ...image },
+      back: { type: CONTENT_TYPES.text, role: learnedSide === "source" ? TEXT_ROLES.source : TEXT_ROLES.translation, text: answer },
+    };
+  }
   const resolvedDirection = resolveCardDirection(direction, word);
   const [frontSide, backSide] = resolvedDirection === CARD_DIRECTIONS.targetToSource
     ? [PICTURE_SIDES.target, PICTURE_SIDES.source]
