@@ -102,13 +102,14 @@ const trackChanges = (tracked, draft) => {
 export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enabled = true }) => {
   const repository = usePlatformService("wordSuggestRepository");
   const authRepository = usePlatformService("authRepository");
-  const { appPreferences } = useAppPreferences();
+  const { appPreferences, isLoaded } = useAppPreferences();
   const { locale } = useI18n();
   const tagLanguage = useMemo(() => languageNameOf(locale), [locale]);
   // The deck's tags by value: a list rebuilt on every render asks nothing new.
   const deckTagsKey = Array.isArray(deck?.tags) ? deck.tags.join("\u0000") : "";
   const isWanted =
     enabled &&
+    isLoaded !== false &&
     isAiFeatureEnabled(appPreferences, "wordSuggestions") &&
     typeof repository?.suggestWord === "function" &&
     Boolean(authRepository?.isConfigured?.());

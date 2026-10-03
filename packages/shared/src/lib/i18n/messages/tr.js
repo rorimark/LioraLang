@@ -1286,6 +1286,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "Yapay zekâ asistanını etkinleştir",
+    "aiMasterHint": "Kapatmak tüm yapay zekâ isteklerini durdurur. Her işlevin ayarları korunur.",
     "aiModes": {
       "automatic": "Otomatik",
       "manual": "İstek üzerine"

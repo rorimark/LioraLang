@@ -123,6 +123,7 @@ const main = async () => {
  await page.getByRole('switch',{name:'Complete a word list',exact:true}).uncheck();
  await page.getByText('3 / 6 functions on',{exact:true}).waitFor();
  await page.reload();
+ await page.waitForFunction(() => document.querySelector('input[name="aiFeatures.conceptSuggestions"]')?.checked === false);
  assert.equal(await page.getByRole('switch',{name:'Subject card suggestions',exact:true}).isChecked(),false);
  assert.equal(await page.getByRole('switch',{name:'Word suggestions while typing',exact:true}).isChecked(),false);
  assert.equal(await page.getByRole('switch',{name:'Collect words by topic',exact:true}).isChecked(),true);
@@ -133,6 +134,22 @@ const main = async () => {
  if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({path:path.join(process.env.ACCEPTANCE_SCREENSHOTS,'ai-settings-mobile.png')});
  await page.setViewportSize({width:1280,height:900});
  if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({path:path.join(process.env.ACCEPTANCE_SCREENSHOTS,'ai-settings-desktop.png')});
+ // Master switch hides individual settings, preserves their choices and blocks generation.
+ await page.getByRole('switch',{name:'Enable AI assistant',exact:true}).uncheck();
+ assert.equal(await page.getByRole('switch').count(),1);
+ await page.reload();
+ await page.waitForFunction(() => document.querySelector('input[name="aiAssistant.enabled"]')?.checked === false);
+ assert.equal(await page.getByRole('switch').count(),1);
+ const beforeMasterOff = asks;
+ await page.goto(quickEditorUrl);
+ await page.locator('input[name=source]').fill('Hoisting');
+ assert.equal(await page.getByRole('button',{name:'Suggest a card',exact:true}).count(),0);
+ assert.equal(asks,beforeMasterOff);
+ await page.goto(`${BASE}/app/settings?tab=assistant`);
+ await page.getByRole('switch',{name:'Enable AI assistant',exact:true}).check();
+ await page.getByText('3 / 6 functions on',{exact:true}).waitFor();
+ assert.equal(await page.getByRole('switch',{name:'Subject card suggestions',exact:true}).isChecked(),false);
+ assert.equal(await page.getByRole('switch',{name:'Collect words by topic',exact:true}).isChecked(),true);
  const noAsks = asks;
  await page.goto(quickEditorUrl);
  await page.locator('input[name=source]').fill('Hoisting');

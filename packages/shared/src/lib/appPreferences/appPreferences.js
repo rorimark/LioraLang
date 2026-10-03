@@ -1,5 +1,5 @@
 import { DEFAULT_APP_PREFERENCES } from "@shared/config/appPreferencesDefaults";
-import { AI_FEATURES, isAiFeatureEnabled } from "@shared/config/aiFeatures";
+import { AI_FEATURES, isAiEnabled, isAiFeatureSelected } from "@shared/config/aiFeatures";
 import { APP_PREFERENCES_APP_KEY } from "./constants";
 import { AUTO_LOCALE, LOCALE_CODES } from "../i18n/locales.js";
 
@@ -180,7 +180,8 @@ export const normalizeAppPreferences = (value = {}) => {
         DEFAULT_APP_PREFERENCES.deckDefaults.wordSuggestions,
       ),
     },
-    aiFeatures: Object.fromEntries(AI_FEATURES.map(({ id }) => [id, isAiFeatureEnabled(value, id)])),
+    aiAssistant: { enabled: isAiEnabled(value) },
+    aiFeatures: Object.fromEntries(AI_FEATURES.map(({ id }) => [id, isAiFeatureSelected(value, id)])),
     importExport: {
       autoOpenLanguageReview: toBoolean(
         value?.importExport?.autoOpenLanguageReview,

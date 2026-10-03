@@ -1207,6 +1207,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "AIアシスタントを有効にする",
+    "aiMasterHint": "無効にするとすべてのAIリクエストが停止します。各機能の設定は保持されます。",
     "aiModes": {
       "automatic": "自動",
       "manual": "リクエスト時"

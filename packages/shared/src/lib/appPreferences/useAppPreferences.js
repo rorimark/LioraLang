@@ -14,6 +14,7 @@ const areAppPreferencesEqual = (left, right) => {
 export const useAppPreferences = () => {
   const settingsRepository = usePlatformService("settingsRepository");
   const [appPreferences, setAppPreferences] = useState(DEFAULT_APP_PREFERENCES);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -25,6 +26,7 @@ export const useAppPreferences = () => {
           return;
         }
 
+        setIsLoaded(true);
         const nextPreferences = normalizeAppPreferences(
           settings?.[APP_PREFERENCES_APP_KEY],
         );
@@ -40,6 +42,7 @@ export const useAppPreferences = () => {
           return;
         }
 
+        setIsLoaded(true);
         setAppPreferences((prevSettings) =>
           areAppPreferencesEqual(prevSettings, DEFAULT_APP_PREFERENCES)
             ? prevSettings
@@ -48,6 +51,7 @@ export const useAppPreferences = () => {
       });
 
     const unsubscribe = settingsRepository.subscribeAppSettingsUpdated((nextSettings) => {
+      setIsLoaded(true);
       const nextPreferences = normalizeAppPreferences(
         nextSettings?.[APP_PREFERENCES_APP_KEY],
       );
@@ -85,6 +89,7 @@ export const useAppPreferences = () => {
 
   return {
     appPreferences,
+    isLoaded,
     updateAppPreferences,
   };
 };

@@ -29,6 +29,7 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
     // Legacy preference, retained for migration and older clients only.
     wordSuggestions: true,
   }),
+  aiAssistant: Object.freeze({ enabled: true }),
   aiFeatures: DEFAULT_AI_FEATURES,
   importExport: Object.freeze({
     autoOpenLanguageReview: false,

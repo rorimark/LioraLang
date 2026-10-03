@@ -51,8 +51,10 @@ describe("buildSettingsSummaries", () => {
   it("counts independently enabled AI functions", () => {
     const all = buildSettingsSummaries({ appPreferences: DEFAULT_APP_PREFERENCES, i18n });
     expect(all[SETTINGS_TAB_KEYS.assistant]).toBe("6 / 6 functions on");
-    const partial = buildSettingsSummaries({ appPreferences: { deckDefaults: { wordSuggestions: false }, aiFeatures: { conceptSuggestions: true } }, i18n });
+    const partial = buildSettingsSummaries({ appPreferences: { aiAssistant: { enabled: true }, deckDefaults: { wordSuggestions: false }, aiFeatures: { conceptSuggestions: true } }, i18n });
     expect(partial[SETTINGS_TAB_KEYS.assistant]).toBe("1 / 6 functions on");
+    const off = buildSettingsSummaries({ appPreferences: { ...DEFAULT_APP_PREFERENCES, aiAssistant: { enabled: false } }, i18n });
+    expect(off[SETTINGS_TAB_KEYS.assistant]).toBe("Off");
   });
 
   it("returns nothing without preferences", () => {

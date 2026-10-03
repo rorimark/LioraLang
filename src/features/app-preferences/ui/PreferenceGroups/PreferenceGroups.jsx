@@ -1,5 +1,5 @@
 import { memo, useId } from "react";
-import { AI_FEATURES, isAiFeatureEnabled } from "@shared/config/aiFeatures";
+import { AI_FEATURES, isAiEnabled, isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import {
   Button,
@@ -537,21 +537,29 @@ export const AssistantPreferences = memo(() => {
   const { appPreferences, handleBooleanFieldChange } = useAppPreferencesSection();
   return (
     <>
-      {["automatic", "manual"].map((mode) => (
-        <SettingGroup key={mode} title={t(`prefs.aiModes.${mode}`)} description={mode === "automatic" ? t("prefs.aiInfo") : ""} keywords="ai assistant gemini">
-          {AI_FEATURES.filter((feature) => feature.mode === mode).map(({ id, keywords }) => (
-            <SwitchRow key={id}
-              label={t(`prefs.aiFeatures.${id}.label`)}
-              hint={t(`prefs.aiFeatures.${id}.hint`)}
-              keywords={`ai assistant gemini ${keywords}`}
-              name={`aiFeatures.${id}`}
-              checked={isAiFeatureEnabled(appPreferences, id)}
-              onChange={handleBooleanFieldChange}
-            />
+      <SettingGroup keywords="ai assistant gemini">
+        <SwitchRow label={t("prefs.aiMaster")} hint={t("prefs.aiMasterHint")}
+          name="aiAssistant.enabled" checked={isAiEnabled(appPreferences)} onChange={handleBooleanFieldChange} />
+      </SettingGroup>
+      {isAiEnabled(appPreferences) ? (
+        <>
+          {["automatic", "manual"].map((mode) => (
+            <SettingGroup key={mode} title={t(`prefs.aiModes.${mode}`)} description={mode === "automatic" ? t("prefs.aiInfo") : ""} keywords="ai assistant gemini">
+              {AI_FEATURES.filter((feature) => feature.mode === mode).map(({ id, keywords }) => (
+                <SwitchRow key={id}
+                  label={t(`prefs.aiFeatures.${id}.label`)}
+                  hint={t(`prefs.aiFeatures.${id}.hint`)}
+                  keywords={`ai assistant gemini ${keywords}`}
+                  name={`aiFeatures.${id}`}
+                  checked={isAiFeatureEnabled(appPreferences, id)}
+                  onChange={handleBooleanFieldChange}
+                />
+              ))}
+            </SettingGroup>
           ))}
-        </SettingGroup>
-      ))}
-      <AiAllowanceRow />
+          <AiAllowanceRow />
+        </>
+      ) : null}
     </>
   );
 });

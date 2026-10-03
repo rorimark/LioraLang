@@ -1286,6 +1286,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "KI-Assistent aktivieren",
+    "aiMasterHint": "Beim Ausschalten werden alle KI-Anfragen gestoppt. Die Einstellungen der einzelnen Funktionen bleiben erhalten.",
     "aiModes": {
       "automatic": "Automatisch",
       "manual": "Auf Anfrage"

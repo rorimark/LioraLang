@@ -1372,6 +1372,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "Zapnout asistenta AI",
+    "aiMasterHint": "Vypnutí zastaví všechny požadavky AI. Nastavení jednotlivých funkcí zůstane zachováno.",
     "aiModes": {
       "automatic": "Automaticky",
       "manual": "Na vyžádání"

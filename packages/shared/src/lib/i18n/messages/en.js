@@ -1286,6 +1286,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "Enable AI assistant",
+    "aiMasterHint": "Turn off to stop all AI requests. Your individual function settings are saved.",
     "aiModes": {
       "automatic": "Automatic",
       "manual": "On request"

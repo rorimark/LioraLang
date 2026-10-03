@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import { isAiFeatureEnabled } from "@shared/config/aiFeatures";
+import { isAiEnabled, isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { useI18n } from "@shared/lib/i18n";
 
 // The interface language by its English name, the way the assistant is told
@@ -19,10 +19,12 @@ export const languageNameOf = (locale) => {
 export const useAiAccess = ({ enabled = true, feature = null } = {}) => {
   const repository = usePlatformService("wordSuggestRepository");
   const authRepository = usePlatformService("authRepository");
-  const { appPreferences } = useAppPreferences();
+  const { appPreferences, isLoaded } = useAppPreferences();
   const { locale } = useI18n();
   const isWanted =
     enabled &&
+    isLoaded !== false &&
+    isAiEnabled(appPreferences) &&
     (!feature || isAiFeatureEnabled(appPreferences, feature)) &&
     Boolean(repository) &&
     Boolean(authRepository?.isConfigured?.());

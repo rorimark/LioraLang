@@ -1365,6 +1365,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "Attiva l’assistente IA",
+    "aiMasterHint": "Disattivandolo si interrompono tutte le richieste IA. Le impostazioni delle singole funzioni vengono conservate.",
     "aiModes": {
       "automatic": "Automaticamente",
       "manual": "Su richiesta"

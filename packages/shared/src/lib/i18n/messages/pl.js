@@ -1444,6 +1444,8 @@ export default {
     }
   },
   "prefs": {
+    "aiMaster": "Włącz asystenta AI",
+    "aiMasterHint": "Wyłączenie zatrzymuje wszystkie zapytania AI. Ustawienia poszczególnych funkcji zostają zachowane.",
     "aiModes": {
       "automatic": "Automatycznie",
       "manual": "Na żądanie"

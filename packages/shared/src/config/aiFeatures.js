@@ -11,7 +11,13 @@ export const AI_FEATURES = Object.freeze([
 
 export const DEFAULT_AI_FEATURES = Object.freeze(Object.fromEntries(AI_FEATURES.map(({ id, defaultValue }) => [id, defaultValue])));
 
-export const isAiFeatureEnabled = (preferences, id) => {
+export const isAiEnabled = (preferences) => {
+  const enabled = preferences?.aiAssistant?.enabled;
+  return typeof enabled === "boolean" ? enabled : preferences?.deckDefaults?.wordSuggestions !== false;
+};
+
+// Stored choices are independent of the master switch so toggling it loses nothing.
+export const isAiFeatureSelected = (preferences, id) => {
   const feature = AI_FEATURES.find((item) => item.id === id);
   if (!feature) return false;
   const value = preferences?.aiFeatures?.[id];
@@ -19,3 +25,5 @@ export const isAiFeatureEnabled = (preferences, id) => {
   // Never turn AI back on for someone who disabled the old shared switch.
   return preferences?.deckDefaults?.wordSuggestions === false ? false : feature.defaultValue;
 };
+
+export const isAiFeatureEnabled = (preferences, id) => isAiEnabled(preferences) && isAiFeatureSelected(preferences, id);
