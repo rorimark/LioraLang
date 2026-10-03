@@ -11,6 +11,7 @@ import {
   useSuggestionSummary,
   useWordSuggestion,
 } from "@features/word-suggest";
+import { getSubjectProfile, SUBJECT_IDS } from "@shared/core/usecases/subjects";
 import { AI_TOPIC_COUNTS } from "@shared/core/usecases/wordSuggest";
 import { Button, Select, SettingSegmented } from "@shared/ui";
 import { useDialogA11y } from "@shared/lib/a11y";
@@ -63,13 +64,19 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
                   from: model.languages.pictureSide === "source" ? t("media.label") : languageName(model.languages.sourceLanguage),
                   to: model.languages.pictureSide === "target" ? t("media.label") : languageName(model.languages.targetLanguage),
                 })
-              : t(model.subjectProfile.nameKey)}
+              : [t(model.subjectProfile.nameKey), model.selectedDeck.subjectFields?.[model.subjectProfile.assistant?.languageField] ? languageName(model.selectedDeck.subjectFields[model.subjectProfile.assistant.languageField]) : ""].filter(Boolean).join(" · ")}
           </span>
         ) : null}
       </div>
 
       {model.isNewDeck ? (
         <div className="quick-add__new-deck">
+          <label className="quick-add__field quick-add__field--wide">
+            <span>{t("subjects.label")}</span>
+            <Select name="subject" value={model.newDeck.subject || getSubjectProfile("").id} label={t("subjects.label")} onChange={model.handleNewDeckSubjectChange} disabled={model.isSaving}>
+              {SUBJECT_IDS.map((id) => <option key={id} value={id}>{t(getSubjectProfile(id).nameKey)}</option>)}
+            </Select>
+          </label>
           <label
             className={`quick-add__field quick-add__field--wide${model.isDeckNameMissing ? " is-missing" : ""}`}
           >
@@ -90,40 +97,29 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
               </span>
             ) : null}
           </label>
-          {/* A picture instead of a word on one side, front or back: the
-              same choice as in the deck's settings. */}
-          <div className="quick-add__front">
-            <span>{t("media.label")}</span>
-            <SettingSegmented
-              name="newDeckPicture"
-              value={pictureSide || "none"}
-              ariaLabel={t("media.label")}
-              onChange={model.handleNewDeckPictureChange}
-              options={[
-                { value: "none", label: t("common.none") },
-                { value: "source", label: t("editor.sides.front") },
-                { value: "target", label: t("editor.sides.back") },
-              ]}
-            />
-            {pictureSide ? <small className="quick-add__hint">{t("editor.side.pictureHint")}</small> : null}
-          </div>
-          {pictureSide ? (
-            // One language only: the words on the side that is not pictures.
-            <label className="quick-add__field quick-add__field--wide">
-              <span>{t("quickAdd.wordsIn")}</span>
-              <Select name={wordsField} value={model.newDeck[wordsField]} onChange={model.handleNewDeckChange}>
-                {model.languageOptions.map((language) => (
-                  <option key={language} value={language}>
-                    {languageName(language)}
-                  </option>
-                ))}
-              </Select>
-            </label>
-          ) : (
-            <>
-              <label className="quick-add__field">
+          {model.subjectProfile.usesLanguages ? <>
+            {/* A picture instead of a word on one side, front or back: the
+                same choice as in the deck's settings. */}
+            <div className="quick-add__front">
+              <span>{t("media.label")}</span>
+              <SettingSegmented
+                name="newDeckPicture"
+                value={pictureSide || "none"}
+                ariaLabel={t("media.label")}
+                onChange={model.handleNewDeckPictureChange}
+                options={[
+                  { value: "none", label: t("common.none") },
+                  { value: "source", label: t("editor.sides.front") },
+                  { value: "target", label: t("editor.sides.back") },
+                ]}
+              />
+              {pictureSide ? <small className="quick-add__hint">{t("editor.side.pictureHint")}</small> : null}
+            </div>
+            {pictureSide ? (
+              // One language only: the words on the side that is not pictures.
+              <label className="quick-add__field quick-add__field--wide">
                 <span>{t("quickAdd.wordsIn")}</span>
-                <Select name="sourceLanguage" value={model.newDeck.sourceLanguage} onChange={model.handleNewDeckChange}>
+                <Select name={wordsField} value={model.newDeck[wordsField]} onChange={model.handleNewDeckChange}>
                   {model.languageOptions.map((language) => (
                     <option key={language} value={language}>
                       {languageName(language)}
@@ -131,19 +127,32 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
                   ))}
                 </Select>
               </label>
-              <label className="quick-add__field">
-                <span>{t("quickAdd.translationsIn")}</span>
-                <Select name="targetLanguage" value={model.newDeck.targetLanguage} onChange={model.handleNewDeckChange}>
-                  {model.languageOptions.map((language) => (
-                    <option key={language} value={language}>
-                      {languageName(language)}
-                    </option>
-                  ))}
-                </Select>
-              </label>
-            </>
-          )}
-          <p className="quick-add__hint">{t("quickAdd.newDeckHint")}</p>
+            ) : (
+              <>
+                <label className="quick-add__field">
+                  <span>{t("quickAdd.wordsIn")}</span>
+                  <Select name="sourceLanguage" value={model.newDeck.sourceLanguage} onChange={model.handleNewDeckChange}>
+                    {model.languageOptions.map((language) => (
+                      <option key={language} value={language}>
+                        {languageName(language)}
+                      </option>
+                    ))}
+                  </Select>
+                </label>
+                <label className="quick-add__field">
+                  <span>{t("quickAdd.translationsIn")}</span>
+                  <Select name="targetLanguage" value={model.newDeck.targetLanguage} onChange={model.handleNewDeckChange}>
+                    {model.languageOptions.map((language) => (
+                      <option key={language} value={language}>
+                        {languageName(language)}
+                      </option>
+                    ))}
+                  </Select>
+                </label>
+              </>
+            )}
+            <p className="quick-add__hint">{t("quickAdd.newDeckHint")}</p>
+          </> : <SubjectFieldInputs fields={model.subjectProfile.deckFields} values={model.newDeck.subjectFields} onChange={model.handleNewDeckSubjectFieldChange} fieldClassName="quick-add__field quick-add__field--wide" />}
         </div>
       ) : null}
     </div>
@@ -395,7 +404,7 @@ const SingleWordForm = memo(({ model, sourceInputRef }) => {
         <summary>{t("studyPresentation.addImage")}</summary>
         <WordImageField value={model.draftImage} onChange={model.setDraftImage} word={model.draft.source} isCompact isDisabled={model.isSaving} />
       </details> : null}
-      <ConceptSuggestion deck={model.selectedDeck || {}} draft={suggestDraft} onApply={model.applySuggestion} />
+      <ConceptSuggestion deck={model.selectedDeck || (model.isNewDeck ? model.newDeck : {})} draft={suggestDraft} onApply={model.applySuggestion} />
       <div className="quick-add__submit">
         <Button type="submit" variant="primary" disabled={model.isSaving}>
           {t("quickAdd.addCard")}

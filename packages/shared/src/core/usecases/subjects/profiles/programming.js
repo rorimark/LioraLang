@@ -1,4 +1,5 @@
 import { SUBJECTS, DIRECTIONS, DIFFICULTIES } from "../constants.js";
+import { CONTENT_LANGUAGE_FIELD } from "./commonFields.js";
 
 // Programming: a term or a question, often about a piece of code, and a
 // short answer. With code, the code is the thing to look at; without it, a
@@ -11,7 +12,7 @@ export const PROGRAMMING_PROFILE = Object.freeze({
   // The Hub keeps languages in columns; until it knows subjects, these
   // decks stay in the library.
   canPublishToHub: false,
-  assistant: { entry: "concept", batch: false, description: false, reviewHint: false,
+  assistant: { entry: "concept", languageField: "contentLanguage", batch: false, description: false, reviewHint: false,
     instruction: "Programming concepts and code. Prefer concise, correct, runnable examples in the deck technology. Never run code. Code that demonstrates the answer belongs on the back; code to reason about belongs on the front." },
   media: {},
   directions: [DIRECTIONS.sourceToTarget],
@@ -37,6 +38,7 @@ export const PROGRAMMING_PROFILE = Object.freeze({
       hintKey: "subjects.fields.technologyHint",
       placeholderKey: "subjects.fields.technologyPlaceholder",
     },
+    contentLanguage: CONTENT_LANGUAGE_FIELD,
   },
   entryFields: {
     code: {

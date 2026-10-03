@@ -6,6 +6,8 @@
 // Writes to one deck run one after another: pressing Enter three times
 // quickly must give three cards, not the last one twice.
 
+import { getSubjectProfile, storedSubject, normalizeDeckSubjectFields } from "@shared/core/usecases/subjects";
+
 const queues = new Map();
 
 const enqueue = (deckId, task) => {
@@ -62,6 +64,9 @@ const buildSavePayload = (deck, words) => ({
   tertiaryLanguage: deck.tertiaryLanguage || "",
   tags: parseTags(deck.tagsJson ?? deck.tags),
   usesWordLevels: deck.usesWordLevels !== false,
+  subject: storedSubject(deck.subject),
+  subjectFields: normalizeDeckSubjectFields(deck.subject, deck.subjectFields),
+  pictureSide: deck.pictureSide || "",
   words: words.map(toStoredWord),
 });
 
@@ -151,19 +156,19 @@ export const removeWordsFromDeck = (deckRepository, deckId, wordIds) =>
   });
 
 // A deck drafted on a topic arrives with its description and tags.
-export const createDeckForWords = (
-  deckRepository,
-  { name, sourceLanguage, targetLanguage, description = "", tags = [], pictureSide = "" },
-) =>
-  deckRepository.saveDeck({
-    name: String(name ?? "").trim(),
-    description: String(description ?? "").trim(),
-    // A picture side has no language.
-    sourceLanguage: pictureSide === "source" ? "" : sourceLanguage,
-    targetLanguage: pictureSide === "target" ? "" : targetLanguage,
-    pictureSide,
+export const createDeckForWords = (deckRepository, draft) => {
+  const subject = storedSubject(draft.subject);
+  const profile = getSubjectProfile(subject);
+  const pictureSide = profile.usesLanguages ? draft.pictureSide || "" : "";
+  return deckRepository.saveDeck({
+    name: String(draft.name ?? "").trim(),
+    description: String(draft.description ?? "").trim(),
+    sourceLanguage: profile.usesLanguages && pictureSide !== "source" ? draft.sourceLanguage : "",
+    targetLanguage: profile.usesLanguages && pictureSide !== "target" ? draft.targetLanguage : "",
+    pictureSide, subject, subjectFields: normalizeDeckSubjectFields(subject, draft.subjectFields),
     tertiaryLanguage: "",
-    tags: Array.isArray(tags) ? tags.slice(0, 10) : [],
-    usesWordLevels: true,
+    tags: Array.isArray(draft.tags) ? draft.tags.slice(0, 10) : [],
+    usesWordLevels: profile.usesLanguages,
     words: [],
   });
+};

@@ -28,15 +28,15 @@ const CodeInput = ({ id, name, value, onChange, placeholder, maxLength }) => (
 );
 
 const ChoiceInput = ({ id, name, value, onChange, spec, label }) => {
-  const { t } = useI18n();
+  const { t, languageName } = useI18n();
 
   return (
     <span className="subject-field__select">
       <Select id={id} name={name} value={value} onChange={onChange} label={label}>
-        <option value="">{t("quickAdd.notSet")}</option>
+        <option value="">{t(spec.placeholderKey || "quickAdd.notSet")}</option>
         {spec.values.map((option) => (
           <option key={option} value={option}>
-            {spec.valueKey ? t(`${spec.valueKey}.${option}`) : option}
+            {spec.languageValues ? languageName(option) : spec.valueKey ? t(`${spec.valueKey}.${option}`) : option}
           </option>
         ))}
       </Select>

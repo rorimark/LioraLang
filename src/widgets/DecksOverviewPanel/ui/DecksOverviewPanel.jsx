@@ -9,7 +9,6 @@ import { CardCatalogPagination } from "@features/card-catalog";
 import { Button, InlineAlert, SearchField } from "@shared/ui";
 import { DECK_PAGE_SIZE_OPTIONS, useDecksOverviewPanel } from "../model";
 import "./DecksOverviewPanel.css";
-import { getSubjectProfile, SUBJECT_IDS } from "@shared/core/usecases/subjects";
 import { useI18n } from "@shared/lib/i18n";
 
 // One labelled way to add a deck; the three ways to do it are its menu.
@@ -65,12 +64,6 @@ const NewDeckMenu = ({ onCreate, onCollect, onImport, onJson, isImporting }) => 
               <small>{t("decks.newMenu.emptyHint")}</small>
             </span>
           </button>
-          {SUBJECT_IDS.filter((id) => !getSubjectProfile(id).usesLanguages).map((id) => (
-            <button key={id} type="button" role="menuitem" onClick={() => choose(() => onCreate(id))}>
-              <FiCode aria-hidden="true" />
-              <span><strong>{t(getSubjectProfile(id).nameKey)}</strong><small>{t("subjects.newDeckHint")}</small></span>
-            </button>
-          ))}
           <button type="button" role="menuitem" onClick={() => choose(onCollect)}>
             <SparkIcon className="decks-page-panel__new-spark" />
             <span>

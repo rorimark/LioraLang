@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
-import { LANGUAGE_OPTIONS } from "@shared/config/languages";
+import { LANGUAGE_OPTIONS, defaultContentLanguage } from "@shared/config/languages";
 import { buildDeckDetailsRoute, buildDeckEditRoute, ROUTE_PATHS } from "@shared/config/routes";
 import { normalizePictureSide, PICTURE_SIDES } from "@shared/core/usecases/cardContent";
 import { collectDeckTags } from "@shared/core/usecases/wordSuggest";
-import { getSubjectProfile, SUBJECT_IDS, storedSubject } from "@shared/core/usecases/subjects";
+import { getSubjectProfile, SUBJECT_IDS, storedSubject, createDefaultSubjectFields } from "@shared/core/usecases/subjects";
 import { useI18n } from "@shared/lib/i18n";
 import {
   applySavedIds,
@@ -65,7 +65,7 @@ export const useDeckEditorPanel = () => {
   const deckRepository = usePlatformService("deckRepository");
   const { deckId } = useParams();
   const { appPreferences } = useAppPreferences();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const numericDeckId = parseNumericId(deckId);
   const isEditMode = Boolean(numericDeckId);
   const deckDefaults = appPreferences.deckDefaults;
@@ -73,7 +73,13 @@ export const useDeckEditorPanel = () => {
 
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [loadError, setLoadError] = useState("");
-  const [deckForm, setDeckForm] = useState(() => ({ ...createDefaultDeckForm(deckDefaults), subject: isEditMode ? "" : storedSubject(searchParams.get("subject")) }));
+  const [deckForm, setDeckForm] = useState(() => {
+    const subject = isEditMode ? "" : storedSubject(searchParams.get("subject"));
+    return {
+      ...createDefaultDeckForm(deckDefaults), subject,
+      subjectFields: isEditMode ? {} : createDefaultSubjectFields(subject, defaultContentLanguage(locale)),
+    };
+  });
   const [words, setWords] = useState([]);
   const [addDraft, setAddDraft] = useState(emptyDraft);
   const [addError, setAddError] = useState("");
@@ -291,9 +297,9 @@ export const useDeckEditorPanel = () => {
         return;
       }
 
-      updateForm({ subject: storedSubject(event.target.value), subjectFields: {} });
+      updateForm({ subject: storedSubject(event.target.value), subjectFields: createDefaultSubjectFields(event.target.value, defaultContentLanguage(locale)) });
     },
-    [canChangeSides, updateForm],
+    [canChangeSides, updateForm, locale],
   );
 
   const handleDeckSubjectFieldChange = useCallback(

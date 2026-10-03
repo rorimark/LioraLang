@@ -82,17 +82,15 @@ export const DeckEditorDeckSection = memo(() => {
   return (
     <section className="deck-editor__deck" aria-label={t("editor.settings")}>
       {/* What the deck is about, chosen while it is empty, like its sides. */}
-      {canChangeSides ? (
-        <div className="deck-editor__row deck-editor__row--wide">
+      <div className="deck-editor__row deck-editor__row--wide">
           <span className="deck-editor__row-text">
             <span>{t("subjects.label")}</span>
             <small>{t("subjects.hint")}</small>
           </span>
-          <Select name="subject" value={subject || subjectOptions[0]} label={t("subjects.label")} aria-label={t("subjects.label")} onChange={handleSubjectChange}>
+          {canChangeSides ? <Select name="subject" value={subject || getSubjectProfile("").id} label={t("subjects.label")} aria-label={t("subjects.label")} onChange={handleSubjectChange}>
             {subjectOptions.map((id) => <option key={id} value={id}>{t(getSubjectProfile(id).nameKey)}</option>)}
-          </Select>
-        </div>
-      ) : null}
+          </Select> : <strong>{t(subjectProfile.nameKey)}</strong>}
+      </div>
 
       <label className="deck-editor__name">
         <span className="deck-editor__eyebrow">{t("editor.nameLabel")}</span>

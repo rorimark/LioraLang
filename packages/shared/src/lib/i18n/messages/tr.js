@@ -7,6 +7,7 @@ export default {
     "shared": "Her iki görünüm aynı tekrar programını kullanır. Resimsiz kartlar metin gösterir."
 },
   "conceptSuggest": {
+    "languageRequired": "Yapay zekâya sormadan önce deste ayarlarında yanıt dilini seçin.",
     "title": "Kart önerileri",
     "ask": "Kart öner",
     "again": "Diğer seçenekler",
@@ -1864,6 +1865,10 @@ export default {
       "answer": "Cevap"
     },
     "fields": {
+      "contentLanguage": "Yanıt dili",
+      "contentLanguageHint": "Yanıtlar, notlar ve yapay zekâ önerileri bu dili kullanır. Dili değiştirmek mevcut kartları çevirmez.",
+      "contentLanguagePlaceholder": "Bir dil seçin",
+
       "question": "Terim veya soru",
       "questionPlaceholder": "Bir terim ya da kodla ilgili bir soru",
       "answer": "Cevap",

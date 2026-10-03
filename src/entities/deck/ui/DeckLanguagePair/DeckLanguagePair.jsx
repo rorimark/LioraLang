@@ -23,7 +23,10 @@ export const DeckLanguagePair = memo(({
   const profile = getSubjectProfile(subject);
 
   if (!profile.usesLanguages) {
-    const context = Object.values(normalizeDeckSubjectFields(subject, subjectFields));
+    const context = Object.entries(normalizeDeckSubjectFields(subject, subjectFields)).map(([key, value]) => {
+      const spec = profile.deckFields[key];
+      return spec.languageValues ? languageName(value) : spec.valueKey ? t(`${spec.valueKey}.${value}`) : value;
+    });
 
     return (
       <span className={["deck-language-pair", "deck-language-pair--subject", className].filter(Boolean).join(" ")}>

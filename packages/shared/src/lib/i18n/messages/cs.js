@@ -7,6 +7,7 @@ export default {
     "shared": "Obě zobrazení sdílejí plán opakování. Kartičky bez obrázku zobrazují text."
 },
   "conceptSuggest": {
+    "languageRequired": "Před dotazem na AI vyberte jazyk odpovědí v nastavení balíčku.",
     "title": "Návrhy kartiček",
     "ask": "Navrhnout kartičku",
     "again": "Další varianty",
@@ -1968,6 +1969,10 @@ export default {
       "answer": "Odpověď"
     },
     "fields": {
+      "contentLanguage": "Jazyk odpovědí",
+      "contentLanguageHint": "Odpovědi, poznámky a návrhy AI používají tento jazyk. Změna jazyka nepřeloží existující karty.",
+      "contentLanguagePlaceholder": "Vyberte jazyk",
+
       "question": "Pojem nebo otázka",
       "questionPlaceholder": "Pojem, nebo otázka ke kódu",
       "answer": "Odpověď",

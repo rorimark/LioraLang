@@ -8,7 +8,7 @@ import "./WordSuggest.css";
 
 export const ConceptSuggestion = memo(({ deck, draft, onApply }) => {
   const suggestion = useConceptSuggestion({ deck, draft, onApply });
-  const { t } = useI18n();
+  const { t, languageName } = useI18n();
   if (!suggestion.enabled || !suggestion.isAvailable) return null;
   const profile = getSubjectProfile(deck.subject);
   const thinking = suggestion.status === "thinking";
@@ -19,8 +19,9 @@ export const ConceptSuggestion = memo(({ deck, draft, onApply }) => {
           <SparkIcon className={thinking ? "is-breathing" : ""} />
           {t(thinking ? "conceptSuggest.thinking" : suggestion.cards.length ? "conceptSuggest.again" : "conceptSuggest.ask")}
         </button>
-        {suggestion.status !== "idle" ? <button type="button" className="suggest-bar__dismiss" onClick={suggestion.dismiss} aria-label={t("suggest.dismiss")}><FiX aria-hidden /></button> : null}
+        {!["idle", "signin", "offline", "languageRequired"].includes(suggestion.status) ? <button type="button" className="suggest-bar__dismiss" onClick={suggestion.dismiss} aria-label={t("suggest.dismiss")}><FiX aria-hidden /></button> : null}
       </div>
+      {suggestion.language ? <p className="concept-suggestion__field">{t("subjects.fields.contentLanguage")}: {languageName(suggestion.language)}</p> : null}
       <p className="concept-suggestion__status" role="status">{t(`conceptSuggest.${suggestion.status === "idle" ? "hint" : suggestion.status}`)}</p>
       {suggestion.cards.length ? <>
         <p className="concept-suggestion__review">{t("conceptSuggest.review")}</p>

@@ -7,6 +7,7 @@ export default {
     "shared": "Beide Darstellungen teilen einen Wiederholungsplan. Karten ohne Bild zeigen Text."
 },
   "conceptSuggest": {
+    "languageRequired": "Wähle vor der KI-Anfrage die Sprache der Antworten in den Stapeleinstellungen.",
     "title": "Kartenvorschläge",
     "ask": "Karte vorschlagen",
     "again": "Andere Varianten",
@@ -1864,6 +1865,10 @@ export default {
       "answer": "Antwort"
     },
     "fields": {
+      "contentLanguage": "Sprache der Antworten",
+      "contentLanguageHint": "Antworten, Notizen und KI-Vorschläge verwenden diese Sprache. Ein Wechsel übersetzt vorhandene Karten nicht.",
+      "contentLanguagePlaceholder": "Sprache auswählen",
+
       "question": "Begriff oder Frage",
       "questionPlaceholder": "Ein Begriff oder eine Frage zum Code",
       "answer": "Antwort",

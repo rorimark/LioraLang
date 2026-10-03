@@ -7,6 +7,7 @@ export default {
     "shared": "As duas vistas partilham o calendário de revisão. Cartões sem imagem mostram texto."
 },
   "conceptSuggest": {
+    "languageRequired": "Antes de consultar a IA, escolha o idioma das respostas nas definições do baralho.",
     "title": "Sugestões de cartões",
     "ask": "Sugerir cartão",
     "again": "Outras opções",
@@ -1956,6 +1957,10 @@ export default {
       "answer": "Resposta"
     },
     "fields": {
+      "contentLanguage": "Idioma das respostas",
+      "contentLanguageHint": "As respostas, notas e sugestões de IA usam este idioma. Alterá-lo não traduz os cartões existentes.",
+      "contentLanguagePlaceholder": "Escolha um idioma",
+
       "question": "Termo ou pergunta",
       "questionPlaceholder": "Um termo ou uma pergunta sobre código",
       "answer": "Resposta",

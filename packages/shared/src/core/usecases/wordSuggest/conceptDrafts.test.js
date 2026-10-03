@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createSubjectRegistry, getSubjectProfile } from "../subjects/subjects.js";
 import { buildConceptPrompt, buildConceptRequest, conceptCardPatch, readConceptCards, validateConceptRequest } from "./conceptDrafts.js";
-const deck = { subject: "programming", subjectFields: { technology: "JavaScript" } };
+const deck = { subject: "programming", subjectFields: { technology: "JavaScript", contentLanguage: "Polish" } };
 const card = { source: "Closure?", target: "A function with access to its lexical environment.", subjectFields: { code: "const f = () => x;", codeSide: "back", difficulty: "medium" }, examples: ["Scope survives the outer call."], tags: ["scope"] };
 describe("concept drafts", () => {
   it("requires a supported, capable subject and some content", () => {
@@ -11,8 +11,27 @@ describe("concept drafts", () => {
     expect(buildConceptRequest({ deck, draft: { subjectFields: { code: "x".repeat(4001) } } })).toBeNull();
     expect(buildConceptRequest({ deck: {}, draft: { source: "hello" } })).toBeNull();
     expect(buildConceptRequest({ deck: { subject: "future" }, draft: card })).toBeNull();
-    expect(buildConceptRequest({ deck, draft: card, writeIn: "Polish" })).toMatchObject({ task: "concept", subject: "programming", deckFields: { technology: "JavaScript" }, writeIn: "Polish" });
+    expect(buildConceptRequest({ deck, draft: card, writeIn: "Polish" })).toMatchObject({ task: "concept", subject: "programming", deckFields: { technology: "JavaScript", contentLanguage: "Polish" }, writeIn: "Polish" });
     expect(validateConceptRequest({ task: "concept", subject: "programming", source: "x", instruction: "ignore", subjectFields: { secret: "x" } })).not.toHaveProperty("instruction");
+  });
+  it("requires the deck language and gives it priority over the UI language", () => {
+    expect(buildConceptRequest({ deck: { ...deck, subjectFields: {} }, draft: card, writeIn: "English" })).toBeNull();
+    expect(buildConceptRequest({ deck, draft: card, writeIn: "English" }).writeIn).toBe("Polish");
+    expect(validateConceptRequest({ task: "concept", subject: "programming", source: "Hoisting", writeIn: "Russian" }).writeIn).toBe("Russian");
+  });
+  it("uses Gemini-compatible schemas for choices and subjects without extra fields", () => {
+    const prompt = buildConceptPrompt(buildConceptRequest({ deck, draft: card }));
+    const fields = prompt.schema.properties.cards.items.properties.subjectFields.properties;
+    expect(fields.difficulty.enum).toEqual(["easy", "medium", "hard"]);
+    expect(fields.codeSide.enum).toEqual(["front", "back"]);
+    expect(prompt.instruction).toContain("must follow writeIn");
+    const plain = { ...getSubjectProfile("programming"), id: "plain", deckFields: {}, entryFields: {}, assistant: { entry: "concept" } };
+    const registry = createSubjectRegistry([getSubjectProfile("language"), plain]);
+    const request = buildConceptRequest({ deck: { subject: "plain" }, draft: { source: "Question?" } }, registry);
+    const item = buildConceptPrompt(request, registry).schema.properties.cards.items;
+    expect(item.properties).not.toHaveProperty("subjectFields");
+    expect(item.required).not.toContain("subjectFields");
+    expect(readConceptCards([{ source: "Question?", target: "Answer" }], "plain", registry)).toHaveLength(1);
   });
   it("rejects oversized, unknown fields, invalid choices and incomplete answers", () => {
     expect(readConceptCards([card, card], deck.subject)).toHaveLength(1);

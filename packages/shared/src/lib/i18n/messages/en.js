@@ -7,6 +7,7 @@ export default {
     "shared": "Both presentations share one review schedule. Cards without a picture use text."
 },
   "conceptSuggest": {
+    "languageRequired": "Choose the answer language in the deck settings before asking AI.",
     "title": "Card suggestions",
     "ask": "Suggest a card",
     "again": "Other options",
@@ -1864,6 +1865,10 @@ export default {
       "answer": "Answer"
     },
     "fields": {
+      "contentLanguage": "Answer language",
+      "contentLanguageHint": "Answers, notes and AI suggestions use this language. Changing it does not translate existing cards.",
+      "contentLanguagePlaceholder": "Choose a language",
+
       "question": "Term or question",
       "questionPlaceholder": "A term, or a question about code",
       "answer": "Answer",

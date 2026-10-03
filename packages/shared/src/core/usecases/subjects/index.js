@@ -1,5 +1,6 @@
 export {
   createSubjectRegistry,
+  createDefaultSubjectFields,
   subjectRegistry,
   isSupportedSubject,
   normalizeProfileFields,

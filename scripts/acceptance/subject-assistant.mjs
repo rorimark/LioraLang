@@ -38,7 +38,7 @@ const main = async () => {
  await context.route('https://liora-acceptance.supabase.co/**',async route=>{
  const url=route.request().url();
  if(url.includes('/functions/v1/suggest-word')){
-  const body=route.request().postDataJSON();assert.equal(body.task,'concept');asks++;
+  const body=route.request().postDataJSON();assert.equal(body.task,'concept');assert.equal(body.writeIn,'Polish');asks++;
   if(mode==='late')await new Promise(r=>release=r);
   if(mode==='quota')return route.fulfill({status:429,json:{error:'quota'}});
   return route.fulfill({json:{result:{cards: cards.map((card) => ({ ...card, source: body.source }))}}});
@@ -49,6 +49,7 @@ const main = async () => {
  });
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(`${BASE}/app/decks/new?subject=programming`);
+ await page.getByRole('combobox',{name:'Answer language',exact:true}).click();await page.getByRole('option',{name:'Polish',exact:true}).click();
  await page.locator('input[name=name]').fill('AI acceptance');await page.locator('input[name=technology]').fill('JavaScript');await page.locator('input[name=source]').fill('Closure?');
  await page.getByRole('button',{name:'Suggest a card',exact:true}).waitFor();
  assert.equal(asks,0);await page.getByRole('button',{name:'Suggest a card',exact:true}).click();
@@ -82,6 +83,38 @@ const main = async () => {
  assert.equal(await page.locator('.deck-word-editor textarea[name=target]').inputValue(),'My own answer');
  assert.equal(await page.locator('.deck-word-editor textarea[name=code]').inputValue(),cards[0].subjectFields.code);
  assert(await page.locator('.deck-word-editor').getByRole('radio',{name:'With answer'}).isChecked());
+ // New deck from Learn: the catalog selects the form, language and AI context.
+ await page.goto(`${BASE}/app/learn`);
+ await page.getByRole('button',{name:'Add card',exact:true}).click();
+ await dialog.getByRole('combobox',{name:'Deck',exact:true}).click();
+ await page.getByRole('option',{name:'New deck…',exact:true}).click();
+ await dialog.getByRole('combobox',{name:'Subject',exact:true}).click();
+ await page.getByRole('option',{name:'Programming',exact:true}).click();
+ await dialog.locator('input[name=name]').fill('Quick JS');
+ await dialog.locator('input[name=technology]').fill('JavaScript');
+ await dialog.getByRole('combobox',{name:'Answer language',exact:true}).click();
+ await page.getByRole('option',{name:'Polish',exact:true}).click();
+ assert.equal(await dialog.locator('input[name=sourceLanguage]').count(),0);
+ if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({path:path.join(process.env.ACCEPTANCE_SCREENSHOTS,'quick-subject-desktop.png')});
+ await page.setViewportSize({width:390,height:844});
+ await page.waitForFunction(() => getComputedStyle(document.querySelector('.quick-add__sheet')).opacity === '1');
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({path:path.join(process.env.ACCEPTANCE_SCREENSHOTS,'quick-subject-mobile.png')});
+ await page.setViewportSize({width:1280,height:900});
+ await dialog.locator('input[name=source]').fill('Closure?');
+ await dialog.getByRole('button',{name:'Suggest a card',exact:true}).click();
+ await dialog.getByText('Suggestions ready',{exact:true}).waitFor();
+ await dialog.getByRole('button',{name:'Fill empty fields',exact:true}).first().click();
+ await dialog.getByRole('button',{name:'Add card',exact:true}).click();
+ await page.waitForFunction(() => document.querySelector('[role=dialog] input[name=source]')?.value === '');
+ await dialog.getByRole('button',{name:'Close dialog',exact:true}).click();
+ await page.goto(`${BASE}/app/decks`);
+ await page.getByText('Quick JS',{exact:true}).first().click();
+ await page.getByRole('button',{name:/Edit deck/}).click();
+ assert.equal(await page.locator('input[name=contentLanguage]').inputValue(),'Polish');
+ assert(await page.getByText('Programming',{exact:true}).isVisible());
+ await page.locator('.deck-word__open').filter({hasText:'Closure?'}).click();
+ assert.equal(await page.locator('.deck-word-editor textarea[name=code]').inputValue(),cards[0].subjectFields.code);
  assert.deepEqual(errors,[]);
  console.log('PASS: explicit request, review 2 candidates, fill, code side, save, stale response, quota, mobile layout, no AI from Learn');
  } finally { await browser?.close(); server.kill(); }

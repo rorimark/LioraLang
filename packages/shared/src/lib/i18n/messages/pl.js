@@ -7,6 +7,7 @@ export default {
     "shared": "Oba widoki mają wspólny harmonogram powtórek. Fiszki bez obrazka pokazują tekst."
 },
   "conceptSuggest": {
+    "languageRequired": "Przed użyciem AI wybierz język odpowiedzi w ustawieniach talii.",
     "title": "Propozycje fiszek",
     "ask": "Zaproponuj fiszkę",
     "again": "Inne warianty",
@@ -2048,6 +2049,10 @@ export default {
       "answer": "Odpowiedź"
     },
     "fields": {
+      "contentLanguage": "Język odpowiedzi",
+      "contentLanguageHint": "Odpowiedzi, notatki i propozycje AI będą w tym języku. Zmiana języka nie tłumaczy istniejących kart.",
+      "contentLanguagePlaceholder": "Wybierz język",
+
       "question": "Termin lub pytanie",
       "questionPlaceholder": "Termin albo pytanie o kod",
       "answer": "Odpowiedź",

@@ -7,6 +7,7 @@ export default {
     "shared": "Les deux présentations partagent le même calendrier de révision. Les cartes sans image affichent le texte."
 },
   "conceptSuggest": {
+    "languageRequired": "Avant de consulter l’IA, choisissez la langue des réponses dans les paramètres du paquet.",
     "title": "Suggestions de cartes",
     "ask": "Proposer une carte",
     "again": "Autres variantes",
@@ -1956,6 +1957,10 @@ export default {
       "answer": "Réponse"
     },
     "fields": {
+      "contentLanguage": "Langue des réponses",
+      "contentLanguageHint": "Les réponses, notes et suggestions IA utilisent cette langue. La modifier ne traduit pas les cartes existantes.",
+      "contentLanguagePlaceholder": "Choisir une langue",
+
       "question": "Terme ou question",
       "questionPlaceholder": "Un terme ou une question sur du code",
       "answer": "Réponse",

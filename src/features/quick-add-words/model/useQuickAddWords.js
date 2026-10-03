@@ -17,9 +17,10 @@ import {
   rowsToDraft,
   rowToWord,
 } from "@shared/core/usecases/wordSuggest";
+import { useI18n } from "@shared/lib/i18n";
 import { useAiAccess } from "@features/word-suggest";
-import { getSubjectProfile, normalizeEntrySubjectFields } from "@shared/core/usecases/subjects";
-import { DEFAULT_SOURCE_LANGUAGE, DEFAULT_TARGET_LANGUAGE, LANGUAGE_OPTIONS } from "@shared/config/languages";
+import { getSubjectProfile, normalizeEntrySubjectFields, storedSubject, createDefaultSubjectFields } from "@shared/core/usecases/subjects";
+import { DEFAULT_SOURCE_LANGUAGE, DEFAULT_TARGET_LANGUAGE, LANGUAGE_OPTIONS, defaultContentLanguage } from "@shared/config/languages";
 import { appendWordsToDeck, createDeckForWords, removeWordsFromDeck } from "./deckWordsWriter";
 import { ROW_STATUS, looksLikeWordList, parseWordList, resolveRowStatus } from "./parseWordList";
 import { DUPLICATE_KIND, buildDeckWordIndex, findDuplicate, markListDuplicates } from "./wordDuplicates";
@@ -118,6 +119,7 @@ export const useQuickAddWords = ({
   sourceInputRef,
   deckNameRef,
 } = {}) => {
+  const { locale } = useI18n();
   const deckRepository = usePlatformService("deckRepository");
   const { decks, isLoading: isDecksLoading } = useDecks();
   const { appPreferences } = useAppPreferences();
@@ -133,6 +135,7 @@ export const useQuickAddWords = ({
   const [deckChoice, setDeckChoice] = useState(initialChoice);
   const [newDeck, setNewDeck] = useState(() => ({
     name: "",
+    subject: "", subjectFields: {},
     // Filled when the assistant drafts a deck on a topic.
     description: "",
     tags: [],
@@ -214,8 +217,8 @@ export const useQuickAddWords = ({
       };
   // What the chosen deck is about decides the form: its fields, its labels,
   // and whether the assistant and pasted lists are on offer. A deck made
-  // here is a language deck.
-  const subject = selectedDeck?.subject || "";
+  // here follows the same profile as one made in the editor.
+  const subject = selectedDeck?.subject || (isNewDeck ? newDeck.subject : "");
   const subjectProfile = getSubjectProfile(subject);
   const usesWordLevels = subjectProfile.usesLanguages && (selectedDeck ? selectedDeck.usesWordLevels !== false : true);
   const pictureSide = languages.pictureSide;
@@ -282,7 +285,7 @@ export const useQuickAddWords = ({
       throw Object.assign(new Error("taken"), { i18nKey: "quickAdd.errors.deckNameTaken" });
     }
 
-    if (!newDeck.pictureSide && newDeck.sourceLanguage === newDeck.targetLanguage) {
+    if (getSubjectProfile(newDeck.subject).usesLanguages && !newDeck.pictureSide && newDeck.sourceLanguage === newDeck.targetLanguage) {
       throw Object.assign(new Error("languages"), { i18nKey: "quickAdd.errors.sameLanguages" });
     }
 
@@ -715,6 +718,7 @@ export const useQuickAddWords = ({
           { deck: aiDeck, rows: asked.map(({ source, target }) => ({ source, target })) },
           { signal: controller.signal },
         );
+        if (controller.signal.aborted) return;
         const byKey = new Map(
           cards
             .filter((card) => asked[card?.index])
@@ -762,6 +766,7 @@ export const useQuickAddWords = ({
         buildTopicRequest({ deck: aiDeck, topic: topic.text, level: topic.level, count: topic.count, avoid }),
         { signal: controller.signal },
       );
+      if (controller.signal.aborted) return;
       const drafted = cardsToRows(cards, aiDeck, nextRowKey);
 
       if (drafted.length === 0) {
@@ -803,6 +808,8 @@ export const useQuickAddWords = ({
 
   const handleDeckChoiceChange = useCallback((event) => {
     const choice = event.target.value;
+    aiControllerRef.current?.abort();
+    setAiState({ status: AI_STATUS.idle, done: 0, total: 0 });
 
     setDeckChoice(choice);
     setNotice(null);
@@ -822,6 +829,21 @@ export const useQuickAddWords = ({
     if (name === "name" && value.trim()) {
       setIsDeckNameMissing(false);
     }
+  }, []);
+
+  const handleNewDeckSubjectChange = useCallback((event) => {
+    const subject = storedSubject(event.target.value);
+    aiControllerRef.current?.abort();
+    setAiState({ status: AI_STATUS.idle, done: 0, total: 0 });
+    setNewDeck((current) => ({ ...current, subject, subjectFields: createDefaultSubjectFields(subject, defaultContentLanguage(locale)), pictureSide: "" }));
+    setDraft((current) => ({ ...current, subjectFields: {} }));
+    setDraftImage(null);
+    setDetails(EMPTY_DETAILS);
+    setTab("single");
+    setNotice(null);
+  }, [locale]);
+  const handleNewDeckSubjectFieldChange = useCallback((name, value) => {
+    setNewDeck((current) => ({ ...current, subjectFields: { ...current.subjectFields, [name]: value } }));
   }, []);
 
   // Which side of the new deck's cards is a picture, if any.
@@ -873,6 +895,8 @@ export const useQuickAddWords = ({
     hasUnsavedInput,
     handleDeckChoiceChange,
     handleNewDeckChange,
+    handleNewDeckSubjectChange,
+    handleNewDeckSubjectFieldChange,
     isDeckNameMissing,
     handleNewDeckPictureChange,
     handleDraftChange,

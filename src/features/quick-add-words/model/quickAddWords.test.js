@@ -196,6 +196,21 @@ describe("deckWordsWriter on the web store", () => {
     });
   });
 
+  it("creates a subject deck, retains its answer language through adding and undo", async () => {
+    const repository = createWebDeckRepository();
+    const { deck } = await createDeckForWords(repository, {
+      name: "JavaScript", subject: "programming",
+      subjectFields: { technology: "JavaScript", contentLanguage: "Polish" },
+      sourceLanguage: "English", targetLanguage: "English", pictureSide: "source",
+    });
+    expect(deck).toMatchObject({ subject: "programming", subjectFields: { technology: "JavaScript", contentLanguage: "Polish" }, sourceLanguage: "", targetLanguage: "", pictureSide: "", usesWordLevels: false });
+    const { added } = await appendWordsToDeck(repository, deck.id, [{ source: "Closure?", target: "Funkcja ze swoim środowiskiem leksykalnym.", subjectFields: { code: "const f = () => x;", codeSide: "back" } }]);
+    expect(added[0].subjectFields).toEqual({ code: "const f = () => x;", codeSide: "back" });
+    expect((await repository.getDeckById(deck.id)).subjectFields).toEqual(deck.subjectFields);
+    await removeWordsFromDeck(repository, deck.id, added.map((word) => word.id));
+    expect((await repository.getDeckById(deck.id)).subjectFields).toEqual(deck.subjectFields);
+  });
+
   it("creates an empty deck ready for words", async () => {
     const repository = createWebDeckRepository();
     const { deck } = await createDeckForWords(repository, {

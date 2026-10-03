@@ -7,7 +7,9 @@ const idle = { status: "idle", cards: [] };
 export const useConceptSuggestion = ({ deck, draft, onApply }) => {
   const enabled = getSubjectProfile(deck?.subject).assistant?.entry === "concept";
   const ai = useAiAccess({ enabled });
-  const request = buildConceptRequest({ deck, draft, writeIn: ai.language });
+  const profile = getSubjectProfile(deck?.subject);
+  const language = deck?.subjectFields?.[profile.assistant?.languageField] || "";
+  const request = buildConceptRequest({ deck, draft });
   // Includes every edited value, not just the question: changing notes or
   // switching decks invalidates an answer too, even with identical questions.
   const key = JSON.stringify([deck?.id, deck?.name, request, draft]);
@@ -56,7 +58,7 @@ export const useConceptSuggestion = ({ deck, draft, onApply }) => {
     latest.current.onApply?.(patch);
     dismiss();
   };
-  return { enabled, isAvailable: ai.isWanted, canAsk, ...visible,
-    status: !online ? "offline" : ai.needsSignIn ? "signin" : visible.status,
+  return { enabled, language, isAvailable: ai.isWanted, canAsk, ...visible,
+    status: !online ? "offline" : profile.assistant?.languageField && !language ? "languageRequired" : ai.needsSignIn ? "signin" : visible.status,
     ask, take, dismiss };
 };

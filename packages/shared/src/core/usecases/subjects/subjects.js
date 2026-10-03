@@ -88,6 +88,13 @@ export const normalizeEntrySubjectFields = (subject, value) =>
 export const normalizeDeckSubjectFields = (subject, value) =>
   normalizeProfileFields(getSubjectProfile(subject).deckFields, value);
 
+export const createDefaultSubjectFields = (subject, language) => {
+  const profile = getSubjectProfile(subject);
+  return normalizeProfileFields(profile.deckFields, Object.fromEntries(
+    Object.entries(profile.deckFields).filter(([, spec]) => spec.languageValues).map(([key]) => [key, language]),
+  ));
+};
+
 export const hasSubjectFields = (fields) => Boolean(fields && Object.keys(fields).length);
 
 // The direction a subject is studied in: the one asked for when the

@@ -7,6 +7,7 @@ export default {
     "shared": "両方の表示で同じ復習スケジュールを使います。画像がないカードはテキストで表示されます。"
 },
   "conceptSuggest": {
+    "languageRequired": "AIに質問する前に、デッキの設定で回答の言語を選択してください。",
     "title": "カードの提案",
     "ask": "カードを提案",
     "again": "別の候補",
@@ -1772,6 +1773,10 @@ export default {
       "answer": "答え"
     },
     "fields": {
+      "contentLanguage": "回答の言語",
+      "contentLanguageHint": "回答、メモ、AIの提案にはこの言語を使用します。変更しても既存のカードは翻訳されません。",
+      "contentLanguagePlaceholder": "言語を選択",
+
       "question": "用語または質問",
       "questionPlaceholder": "用語、またはコードについての質問",
       "answer": "答え",

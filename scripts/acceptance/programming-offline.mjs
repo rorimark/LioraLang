@@ -116,16 +116,18 @@ const main = async () => {
     const editor = await context.newPage();
     await editor.goto(`${BASE}/app/decks`);
     await editor.getByRole("button", { name: "New deck" }).click();
-    await editor.getByRole("menuitem", { name: /Programming/ }).click();
+    assert(await editor.getByRole("menuitem", { name: /Programming/ }).count() === 0, "the creation menu has no direct programming item");
+    await editor.getByRole("menuitem", { name: /Empty deck/ }).click();
+    await choose(editor.getByRole("combobox", { name: "Subject", exact: true }), "Programming");
     await editor.waitForSelector("input[name=name]");
-    assert(await editor.locator("input[name=subject]").inputValue() === "programming", "the menu opens a programming deck directly");
+    assert(await editor.locator("input[name=subject]").inputValue() === "programming", "the editor chooses the deck subject");
     await editor.fill("input[name=name]", "JavaScript offline");
     await editor.fill("input[name=technology]", "JavaScript");
     await editor.fill("input[name=source]", "What does this return?");
     await editor.fill("textarea[name=target]", "A new array with every user's name.\nThe original array stays unchanged.");
     await editor.fill("textarea[name=code]", CODE);
     await editor.getByRole("button", { name: /More details/ }).click();
-    await choose(editor.locator(".subject-field--choice [role=combobox]"), "Medium");
+    await choose(editor.getByRole("combobox", { name: "Difficulty", exact: true }), "Medium");
     await editor.getByRole("button", { name: "Add card" }).click();
     await editor.getByRole("button", { name: /Create deck/ }).first().click();
     await editor.waitForURL(/\/app\/decks\/\d+\/edit/);
@@ -146,7 +148,7 @@ const main = async () => {
     const page = await context.newPage();
     await page.goto(`${BASE}/app/decks`);
     await page.waitForSelector("text=JavaScript offline");
-    assert(await page.getByText("Programming · JavaScript").first().isVisible(), "the reopened library shows the deck by its subject");
+    assert(await page.getByText(/Programming.*JavaScript/).first().isVisible(), "the reopened library shows the deck by its subject");
 
     // Learn: the card is laid out around its code.
     await page.goto(`${BASE}/app/learn`);
@@ -281,6 +283,7 @@ const main = async () => {
     await page.getByText("Saved", { exact: true }).first().waitFor();
     await page.reload();
     await page.locator(".deck-word__open").first().click();
+    await page.locator(".deck-word-editor .word-image-field__preview img").waitFor();
     assert(await page.locator(".deck-word-editor .word-image-field__preview img").count() === 1, "optional image survives editing and reopening offline");
     assert(await page.locator(".deck-word-editor input[name=source]").inputValue() === "asparagus", "adding a picture preserves the word");
     await page.goto(`${BASE}/app/learn`);

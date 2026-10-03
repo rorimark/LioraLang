@@ -7,6 +7,7 @@ export default {
     "shared": "Ambas vistas comparten el calendario de repaso. Las tarjetas sin imagen muestran texto."
 },
   "conceptSuggest": {
+    "languageRequired": "Antes de consultar a la IA, elige el idioma de las respuestas en los ajustes del mazo.",
     "title": "Sugerencias de tarjetas",
     "ask": "Sugerir tarjeta",
     "again": "Otras opciones",
@@ -1956,6 +1957,10 @@ export default {
       "answer": "Respuesta"
     },
     "fields": {
+      "contentLanguage": "Idioma de las respuestas",
+      "contentLanguageHint": "Las respuestas, notas y sugerencias de IA usan este idioma. Cambiarlo no traduce las tarjetas existentes.",
+      "contentLanguagePlaceholder": "Elige un idioma",
+
       "question": "Término o pregunta",
       "questionPlaceholder": "Un término o una pregunta sobre código",
       "answer": "Respuesta",

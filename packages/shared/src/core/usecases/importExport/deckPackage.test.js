@@ -213,6 +213,16 @@ describe("deckPackage", () => {
       expect(words[0].level).toBeNull();
     });
 
+    it("keeps the answer language through export/import and protects it from old editors", () => {
+      const exported = buildExportDeckPackage({
+        deck: { name: "JS", subject: "programming", subjectFields: { technology: "JavaScript", contentLanguage: "Russian" } },
+        words: [{ source: "Hoisting", target: "Объявления обрабатываются до выполнения кода." }],
+      });
+      expect(exported.version).toBe(5);
+      const config = resolveImportConfig({ parsedPackage: parseDeckPackageFileText(JSON.stringify(exported)) });
+      expect(config.subjectFields).toEqual({ technology: "JavaScript", contentLanguage: "Russian" });
+    });
+
     it("requires a new reader for answer-side code and preserves it on import", () => {
       const exported = buildExportDeckPackage({
         deck: { name: "Code answers", subject: "programming" },
