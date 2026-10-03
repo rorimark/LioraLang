@@ -1365,6 +1365,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Automaticamente",
+      "manual": "A pedido"
+    },
+    "aiInfo": "As funções de IA são configuradas separadamente. Os pedidos enviam o material ao Google Gemini. É necessária uma conta; o limite diário é partilhado.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Sugestões ao escrever palavras",
+        "hint": "Após uma pausa, sugerir traduções, exemplos, nível e classe gramatical."
+      },
+      "reviewHints": {
+        "label": "Explicações após «Outra vez»",
+        "hint": "Explicar automaticamente um cartão de idioma após a avaliação «Outra vez»."
+      },
+      "conceptSuggestions": {
+        "label": "Sugestões de cartões temáticos",
+        "hint": "Sugerir respostas, notas e campos da matéria pelo botão de sugestões."
+      },
+      "listCompletion": {
+        "label": "Completar uma lista de palavras",
+        "hint": "Completar traduções e detalhes com o botão de IA numa lista colada."
+      },
+      "topicCollection": {
+        "label": "Reunir palavras por tema",
+        "hint": "Preparar a pedido uma lista de palavras sobre o tema indicado."
+      },
+      "deckDescription": {
+        "label": "Descrição e etiquetas do baralho",
+        "hint": "Sugerir descrição e etiquetas pelo botão no editor do baralho."
+      }
+    },
+
     "textSize": "Tamanho do texto",
     "compactLayout": "Layout compacto",
     "tighterSpacingMoreOnThe": "Espaçamento menor, mais conteúdo na tela.",
@@ -1480,7 +1512,7 @@ export default {
       },
       "assistant": {
         "title": "Assistente de IA",
-        "description": "Sugestões ao adicionar palavras e quantas restam hoje."
+        "description": "Configure cada função de IA separadamente e acompanhe o limite diário compartilhado."
       },
       "sync": {
         "title": "Sincronização",
@@ -1588,6 +1620,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} funções ativas",
     "theme": {
       "system": "Tema do sistema",
       "light": "Tema claro",

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { useI18n } from "@shared/lib/i18n";
 
 // The interface language by its English name, the way the assistant is told
@@ -15,14 +16,14 @@ export const languageNameOf = (locale) => {
 
 // Whether the assistant can be asked here: the app has it, the person has
 // not turned it off, and someone is signed in (the allowance is theirs).
-export const useAiAccess = ({ enabled = true } = {}) => {
+export const useAiAccess = ({ enabled = true, feature = null } = {}) => {
   const repository = usePlatformService("wordSuggestRepository");
   const authRepository = usePlatformService("authRepository");
   const { appPreferences } = useAppPreferences();
   const { locale } = useI18n();
   const isWanted =
     enabled &&
-    appPreferences?.deckDefaults?.wordSuggestions !== false &&
+    (!feature || isAiFeatureEnabled(appPreferences, feature)) &&
     Boolean(repository) &&
     Boolean(authRepository?.isConfigured?.());
   const [isSignedIn, setIsSignedIn] = useState(null);

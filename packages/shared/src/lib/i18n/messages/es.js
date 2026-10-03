@@ -1365,6 +1365,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Automáticamente",
+      "manual": "A petición"
+    },
+    "aiInfo": "Las funciones de IA se configuran por separado. Las solicitudes envían el material a Google Gemini. Se necesita una cuenta; el límite diario es compartido.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Sugerencias al escribir palabras",
+        "hint": "Tras una pausa, sugiere traducciones, ejemplos, nivel y categoría gramatical."
+      },
+      "reviewHints": {
+        "label": "Explicaciones después de «Otra vez»",
+        "hint": "Explica automáticamente una tarjeta de idioma tras calificarla «Otra vez»."
+      },
+      "conceptSuggestions": {
+        "label": "Sugerencias de tarjetas temáticas",
+        "hint": "Sugiere respuestas, notas y campos de la materia al pulsar el botón de sugerencias."
+      },
+      "listCompletion": {
+        "label": "Completar una lista de palabras",
+        "hint": "Completa traducciones y detalles con el botón de IA de una lista pegada."
+      },
+      "topicCollection": {
+        "label": "Reunir palabras por tema",
+        "hint": "Prepara a petición una lista de palabras sobre el tema indicado."
+      },
+      "deckDescription": {
+        "label": "Descripción y etiquetas del mazo",
+        "hint": "Sugiere una descripción y etiquetas con el botón del editor del mazo."
+      }
+    },
+
     "textSize": "Tamaño del texto",
     "compactLayout": "Diseño compacto",
     "tighterSpacingMoreOnThe": "Menos espacio, más contenido a la vez en pantalla.",
@@ -1480,7 +1512,7 @@ export default {
       },
       "assistant": {
         "title": "Asistente de IA",
-        "description": "Sugerencias al añadir palabras y cuántas te quedan hoy."
+        "description": "Configura cada función de IA por separado y consulta el límite diario compartido."
       },
       "sync": {
         "title": "Sincronización",
@@ -1588,6 +1620,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} funciones activadas",
     "theme": {
       "system": "Tema del sistema",
       "light": "Tema claro",

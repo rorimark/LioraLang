@@ -1,3 +1,4 @@
+import { AI_FEATURES, isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { SETTINGS_TAB_KEYS } from "@shared/config/settingsTabs";
 import { INTERFACE_LOCALES } from "@shared/lib/i18n";
 
@@ -48,7 +49,7 @@ export const buildSettingsSummaries = ({ appPreferences, themeMode, isDesktopMod
           )
         : "",
     [SETTINGS_TAB_KEYS.assistant]:
-      deckDefaults.wordSuggestions === false ? t("summaries.assistantOff") : t("summaries.assistantOn"),
+      t("summaries.assistantFeatures", { enabled: AI_FEATURES.filter(({ id }) => isAiFeatureEnabled(appPreferences, id)).length, total: AI_FEATURES.length }),
     [SETTINGS_TAB_KEYS.sync]: sync.autoSync === false ? t("summaries.syncManual") : t("summaries.syncAuto"),
     [SETTINGS_TAB_KEYS.importExport]: importExport.exportFormat
       ? t("summaries.exportsAs", { format: `.${importExport.exportFormat}` })

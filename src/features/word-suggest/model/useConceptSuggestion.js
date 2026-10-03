@@ -6,7 +6,7 @@ import { useAiAccess } from "./useAiAccess";
 const idle = { status: "idle", cards: [] };
 export const useConceptSuggestion = ({ deck, draft, onApply }) => {
   const enabled = getSubjectProfile(deck?.subject).assistant?.entry === "concept";
-  const ai = useAiAccess({ enabled });
+  const ai = useAiAccess({ enabled, feature: "conceptSuggestions" });
   const profile = getSubjectProfile(deck?.subject);
   const language = deck?.subjectFields?.[profile.assistant?.languageField] || "";
   const request = buildConceptRequest({ deck, draft });

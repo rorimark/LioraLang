@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   buildDeckDescriptionRequest,
   canDescribeDeck,
@@ -28,9 +28,13 @@ const statusOf = (error) =>
       : DECK_DESCRIPTION_STATUS.error;
 
 export const useDeckDescription = ({ deck, words, onApply }) => {
-  const ai = useAiAccess();
+  const ai = useAiAccess({ feature: "deckDescription" });
   const [state, setState] = useState({ status: DECK_DESCRIPTION_STATUS.idle, draft: null });
   const controllerRef = useRef(null);
+  useEffect(() => {
+    if (!ai.isReady) controllerRef.current?.abort();
+    return () => controllerRef.current?.abort();
+  }, [ai.isReady]);
   const request = useMemo(
     () => buildDeckDescriptionRequest({ deck, words, writeIn: ai.language }),
     [ai.language, deck, words],
@@ -45,10 +49,14 @@ export const useDeckDescription = ({ deck, words, onApply }) => {
     controllerRef.current?.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
+    controller.signal.addEventListener("abort", () => {
+      if (controllerRef.current === controller) setState({ status: DECK_DESCRIPTION_STATUS.idle, draft: null });
+    }, { once: true });
     setState({ status: DECK_DESCRIPTION_STATUS.loading, draft: null });
 
     try {
       const draft = normalizeDeckDescription(await ai.repository.suggestDeck(request, { signal: controller.signal }));
+      if (controller.signal.aborted) return;
       const hasDraft = Boolean(draft.description || draft.tags.length);
       setState({ status: hasDraft ? DECK_DESCRIPTION_STATUS.ready : DECK_DESCRIPTION_STATUS.empty, draft: hasDraft ? draft : null });
     } catch (error) {
@@ -63,7 +71,7 @@ export const useDeckDescription = ({ deck, words, onApply }) => {
   const take = useCallback(() => {
     const { draft } = state;
 
-    if (!draft) {
+    if (!draft || !ai.isReady) {
       return;
     }
 
@@ -72,7 +80,7 @@ export const useDeckDescription = ({ deck, words, onApply }) => {
       ...(draft.tags.length ? { tagsInput: mergeDeckTags(deck?.tagsInput, draft.tags) } : {}),
     });
     setState({ status: DECK_DESCRIPTION_STATUS.idle, draft: null });
-  }, [deck?.tagsInput, onApply, state]);
+  }, [ai.isReady, deck?.tagsInput, onApply, state]);
 
   const dismiss = useCallback(() => {
     controllerRef.current?.abort();

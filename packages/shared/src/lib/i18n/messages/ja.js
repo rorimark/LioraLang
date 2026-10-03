@@ -1207,6 +1207,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "自動",
+      "manual": "リクエスト時"
+    },
+    "aiInfo": "AIの各機能は個別に設定できます。入力した学習内容はGoogle Geminiに送信されます。アカウントが必要で、1日の上限は全機能で共通です。",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "単語入力中の提案",
+        "hint": "入力が止まったら、訳、例文、レベル、品詞を提案します。"
+      },
+      "reviewHints": {
+        "label": "「もう一度」後の説明",
+        "hint": "言語カードを「もう一度」と評価した後、自動で説明します。"
+      },
+      "conceptSuggestions": {
+        "label": "科目カードの提案",
+        "hint": "カード提案ボタンを押すと、回答、メモ、科目の項目を提案します。"
+      },
+      "listCompletion": {
+        "label": "単語リストの補完",
+        "hint": "貼り付けたリストのAIボタンで訳や詳細を補完します。"
+      },
+      "topicCollection": {
+        "label": "テーマ別の単語収集",
+        "hint": "指定したテーマの単語リストをリクエスト時に作成します。"
+      },
+      "deckDescription": {
+        "label": "デッキの説明とタグ",
+        "hint": "デッキ編集画面のボタンで説明とタグを提案します。"
+      }
+    },
+
     "textSize": "文字サイズ",
     "compactLayout": "コンパクト表示",
     "tighterSpacingMoreOnThe": "余白を詰めて、一度に多く表示します。",
@@ -1320,7 +1352,7 @@ export default {
       },
       "assistant": {
         "title": "AIアシスタント",
-        "description": "単語を追加するときの提案と、今日の残り回数。"
+        "description": "AIの各機能を個別に設定し、共通の1日あたりの利用上限を確認できます。"
       },
       "sync": {
         "title": "同期",
@@ -1428,6 +1460,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} 機能が有効",
     "theme": {
       "system": "システムのテーマ",
       "light": "ライトテーマ",

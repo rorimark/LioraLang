@@ -1444,6 +1444,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Automatycznie",
+      "manual": "Na żądanie"
+    },
+    "aiInfo": "Funkcje AI ustawia się niezależnie. Zapytania wysyłają wpisany materiał do Google Gemini. Wymagane jest konto; limit dzienny jest wspólny.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Podpowiedzi podczas wpisywania słów",
+        "hint": "Po przerwie w pisaniu proponuj tłumaczenia, przykłady, poziom i część mowy."
+      },
+      "reviewHints": {
+        "label": "Wyjaśnienia po „Ponownie”",
+        "hint": "Automatycznie wyjaśniaj kartę językową po ocenie „Ponownie”."
+      },
+      "conceptSuggestions": {
+        "label": "Propozycje kart przedmiotowych",
+        "hint": "Proponuj odpowiedzi, notatki i pola przedmiotu po naciśnięciu przycisku propozycji karty."
+      },
+      "listCompletion": {
+        "label": "Uzupełnianie listy słów",
+        "hint": "Uzupełniaj tłumaczenia i szczegóły po naciśnięciu przycisku AI we wklejonej liście."
+      },
+      "topicCollection": {
+        "label": "Dobór słów według tematu",
+        "hint": "Na żądanie przygotuj listę słów na podany temat."
+      },
+      "deckDescription": {
+        "label": "Opis i tagi talii",
+        "hint": "Proponuj opis i tagi po naciśnięciu przycisku w edytorze talii."
+      }
+    },
+
     "textSize": "Rozmiar tekstu",
     "compactLayout": "Układ kompaktowy",
     "tighterSpacingMoreOnThe": "Mniejsze odstępy, więcej na ekranie naraz.",
@@ -1560,7 +1592,7 @@ export default {
       },
       "assistant": {
         "title": "Asystent AI",
-        "description": "Podpowiedzi przy dodawaniu słów i ile ich zostało na dziś."
+        "description": "Ustaw każdą funkcję AI osobno i sprawdzaj wspólny dzienny limit."
       },
       "sync": {
         "title": "Synchronizacja",
@@ -1668,6 +1700,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} funkcji włączonych",
     "theme": {
       "system": "Motyw systemowy",
       "light": "Jasny motyw",

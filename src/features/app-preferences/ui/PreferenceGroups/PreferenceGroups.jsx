@@ -1,4 +1,5 @@
 import { memo, useId } from "react";
+import { AI_FEATURES, isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import {
   Button,
@@ -484,7 +485,8 @@ DeckDefaultPreferences.displayName = "DeckDefaultPreferences";
 
 // Today's assistant allowance in a row of its own: how many are left, a
 // bar that empties as they are used, when they come back and what counts
-// as one. Shown only while suggestions are on and someone is signed in.
+// as one. Reading this counter never generates content; it stays visible
+// to signed-in people even with every function disabled.
 const AiAllowanceRow = memo(() => {
   const { t, formatDate, formatNumber } = useI18n();
   const allowance = useAiAllowance({ refresh: true });
@@ -529,26 +531,28 @@ const AiAllowanceRow = memo(() => {
 
 AiAllowanceRow.displayName = "AiAllowanceRow";
 
-// The assistant: whether it suggests at all, and how much of today's
-// allowance is left.
+// Separate automatic requests from actions the person explicitly asks for.
 export const AssistantPreferences = memo(() => {
   const { t } = useI18n();
   const { appPreferences, handleBooleanFieldChange } = useAppPreferencesSection();
-  const { deckDefaults } = appPreferences;
-
   return (
-    <SettingGroup keywords="ai assistant gemini">
-      {/* Says plainly where a typed word goes before anyone turns it on. */}
-      <SwitchRow
-        label={t("prefs.wordSuggestions")}
-        hint={t("prefs.wordSuggestionsHint")}
-        keywords="ai assistant gemini suggest autofill translation"
-        name="deckDefaults.wordSuggestions"
-        checked={deckDefaults.wordSuggestions}
-        onChange={handleBooleanFieldChange}
-      />
-      {deckDefaults.wordSuggestions ? <AiAllowanceRow /> : null}
-    </SettingGroup>
+    <>
+      {["automatic", "manual"].map((mode) => (
+        <SettingGroup key={mode} title={t(`prefs.aiModes.${mode}`)} description={mode === "automatic" ? t("prefs.aiInfo") : ""} keywords="ai assistant gemini">
+          {AI_FEATURES.filter((feature) => feature.mode === mode).map(({ id, keywords }) => (
+            <SwitchRow key={id}
+              label={t(`prefs.aiFeatures.${id}.label`)}
+              hint={t(`prefs.aiFeatures.${id}.hint`)}
+              keywords={`ai assistant gemini ${keywords}`}
+              name={`aiFeatures.${id}`}
+              checked={isAiFeatureEnabled(appPreferences, id)}
+              onChange={handleBooleanFieldChange}
+            />
+          ))}
+        </SettingGroup>
+      ))}
+      <AiAllowanceRow />
+    </>
   );
 });
 

@@ -1,3 +1,5 @@
+import { DEFAULT_AI_FEATURES } from "./aiFeatures.js";
+
 export const DEFAULT_APP_PREFERENCES = Object.freeze({
   studySession: Object.freeze({
     defaultStudyMode: "review",
@@ -24,9 +26,10 @@ export const DEFAULT_APP_PREFERENCES = Object.freeze({
     level: "A1",
     partOfSpeech: "noun",
     tags: Object.freeze([]),
-    // Suggestions for the rest of a card once a word is typed.
+    // Legacy preference, retained for migration and older clients only.
     wordSuggestions: true,
   }),
+  aiFeatures: DEFAULT_AI_FEATURES,
   importExport: Object.freeze({
     autoOpenLanguageReview: false,
     duplicateStrategy: "skip",

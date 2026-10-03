@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
+import { isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { useI18n } from "@shared/lib/i18n";
 import { languageNameOf } from "./useAiAccess";
 import {
@@ -108,7 +109,7 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
   const deckTagsKey = Array.isArray(deck?.tags) ? deck.tags.join("\u0000") : "";
   const isWanted =
     enabled &&
-    appPreferences?.deckDefaults?.wordSuggestions !== false &&
+    isAiFeatureEnabled(appPreferences, "wordSuggestions") &&
     typeof repository?.suggestWord === "function" &&
     Boolean(authRepository?.isConfigured?.());
 
@@ -202,6 +203,7 @@ export const useWordSuggestion = ({ draft, deck, defaults = null, onFill, enable
 
       try {
         const raw = await repository.suggestWord(request, { signal: controller.signal });
+        if (controller.signal.aborted) return;
         const suggestion = normalizeSuggestion(raw || {}, request);
         failuresInARow = 0;
         remember(key, suggestion);

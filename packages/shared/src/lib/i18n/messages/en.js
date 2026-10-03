@@ -1286,6 +1286,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Automatic",
+      "manual": "On request"
+    },
+    "aiInfo": "AI functions are independent. Requests send the entered study material to Google Gemini. An account is required; all functions share the daily allowance.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Word suggestions while typing",
+        "hint": "After a pause in typing, suggest translations, examples, level and part of speech."
+      },
+      "reviewHints": {
+        "label": "Explanations after Again",
+        "hint": "Automatically explain a missed language card after you rate it Again."
+      },
+      "conceptSuggestions": {
+        "label": "Subject card suggestions",
+        "hint": "Suggest answers, notes and subject fields when you press Suggest a card."
+      },
+      "listCompletion": {
+        "label": "Complete a word list",
+        "hint": "Fill missing translations and details when you press the AI button in a pasted list."
+      },
+      "topicCollection": {
+        "label": "Collect words by topic",
+        "hint": "Draft a list of words for the topic you enter, on request."
+      },
+      "deckDescription": {
+        "label": "Deck description and tags",
+        "hint": "Draft a description and tags when you press the button in the deck editor."
+      }
+    },
+
     "textSize": "Text size",
     "compactLayout": "Compact layout",
     "tighterSpacingMoreOnThe": "Tighter spacing, more on the screen at once.",
@@ -1400,7 +1432,7 @@ export default {
       },
       "assistant": {
         "title": "AI assistant",
-        "description": "Suggestions while you add words, and how many are left today."
+        "description": "Choose each AI function separately and track the shared daily allowance."
       },
       "sync": {
         "title": "Sync",
@@ -1508,6 +1540,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} functions on",
     "theme": {
       "system": "System theme",
       "light": "Light theme",

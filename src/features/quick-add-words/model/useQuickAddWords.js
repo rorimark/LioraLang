@@ -17,6 +17,7 @@ import {
   rowsToDraft,
   rowToWord,
 } from "@shared/core/usecases/wordSuggest";
+import { isAiFeatureEnabled } from "@shared/config/aiFeatures";
 import { useI18n } from "@shared/lib/i18n";
 import { useAiAccess } from "@features/word-suggest";
 import { getSubjectProfile, normalizeEntrySubjectFields, storedSubject, createDefaultSubjectFields } from "@shared/core/usecases/subjects";
@@ -680,6 +681,8 @@ export const useQuickAddWords = ({
     [ai.language, deckTags, languages.sourceLanguage, languages.targetLanguage, languages.tertiaryLanguage, usesWordLevels],
   );
   const canUseAi = ai.isWanted && !pictureSide && subjectProfile.assistant?.batch && canDraftCards(aiDeck);
+  const canFillList = canUseAi && isAiFeatureEnabled(appPreferences, "listCompletion");
+  const canCollectTopic = canUseAi && isAiFeatureEnabled(appPreferences, "topicCollection");
   const [aiState, setAiState] = useState({ status: AI_STATUS.idle, done: 0, total: 0 });
   const [topic, setTopic] = useState({ text: "", level: "", count: 20 });
   const aiControllerRef = useRef(null);
@@ -689,12 +692,19 @@ export const useQuickAddWords = ({
     rowsRef.current = rows;
   }, [rows]);
 
+  useEffect(() => {
+    // Disabling a running function cancels its request without touching the other one.
+    if ((aiState.status === AI_STATUS.filling && !canFillList) || (aiState.status === AI_STATUS.collecting && !canCollectTopic)) aiControllerRef.current?.abort();
+  }, [aiState.status, canCollectTopic, canFillList]);
   useEffect(() => () => aiControllerRef.current?.abort(), []);
 
   const startAi = useCallback(() => {
     aiControllerRef.current?.abort();
     const controller = new AbortController();
     aiControllerRef.current = controller;
+    controller.signal.addEventListener("abort", () => {
+      if (aiControllerRef.current === controller) setAiState({ status: AI_STATUS.idle, done: 0, total: 0 });
+    }, { once: true });
     return controller;
   }, []);
 
@@ -703,7 +713,7 @@ export const useQuickAddWords = ({
   const fillWithAi = useCallback(async () => {
     const pending = rowsToDraft(rowsRef.current);
 
-    if (!canUseAi || !ai.isReady || pending.length === 0) {
+    if (!canFillList || !ai.isReady || pending.length === 0) {
       return;
     }
 
@@ -746,14 +756,14 @@ export const useQuickAddWords = ({
         setAiState({ status: aiErrorStatus(error), done, total: pending.length });
       }
     }
-  }, [ai.isReady, ai.repository, aiDeck, canUseAi, startAi, wordIndex]);
+  }, [ai.isReady, ai.repository, aiDeck, canFillList, startAi, wordIndex]);
 
   const changeTopic = useCallback((patch) => setTopic((current) => ({ ...current, ...patch })), []);
 
   // A deck on a topic: the assistant drafts the words, the person looks
   // them over in the list and adds them like any other.
   const collectByTopic = useCallback(async () => {
-    if (!canUseAi || !ai.isReady || !isTopicReady(topic.text)) {
+    if (!canCollectTopic || !ai.isReady || !isTopicReady(topic.text)) {
       return;
     }
 
@@ -789,7 +799,7 @@ export const useQuickAddWords = ({
         setAiState({ status: aiErrorStatus(error), done: 0, total: topic.count });
       }
     }
-  }, [ai.isReady, ai.repository, aiDeck, canUseAi, deckWords, startAi, topic, wordIndex]);
+  }, [ai.isReady, ai.repository, aiDeck, canCollectTopic, deckWords, startAi, topic, wordIndex]);
 
   // A misspelt line takes the word the assistant meant, and is asked again.
   const applyCorrection = useCallback(
@@ -920,7 +930,8 @@ export const useQuickAddWords = ({
     undo,
     isTopicFirst: startsWithTopic,
     ai: {
-      isAvailable: canUseAi,
+      isAvailable: canFillList || canCollectTopic,
+      canFillList, canCollectTopic,
       isReady: ai.isReady,
       needsSignIn: canUseAi && ai.needsSignIn,
       ...aiState,

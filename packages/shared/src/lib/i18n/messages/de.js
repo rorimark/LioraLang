@@ -1286,6 +1286,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Automatisch",
+      "manual": "Auf Anfrage"
+    },
+    "aiInfo": "KI-Funktionen werden unabhängig eingestellt. Anfragen senden Lernmaterial an Google Gemini. Ein Konto ist nötig; alle Funktionen teilen das Tageslimit.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Vorschläge beim Eingeben von Wörtern",
+        "hint": "Schlage nach einer Tipp-Pause Übersetzungen, Beispiele, Niveau und Wortart vor."
+      },
+      "reviewHints": {
+        "label": "Erklärungen nach „Nochmal”",
+        "hint": "Erkläre eine Sprachkarte automatisch nach der Bewertung „Nochmal”."
+      },
+      "conceptSuggestions": {
+        "label": "Vorschläge für Fachkarten",
+        "hint": "Schlage Antworten, Notizen und Fachfelder über die Schaltfläche für Kartenvorschläge vor."
+      },
+      "listCompletion": {
+        "label": "Wortliste ergänzen",
+        "hint": "Ergänze Übersetzungen und Details über die KI-Schaltfläche in einer eingefügten Liste."
+      },
+      "topicCollection": {
+        "label": "Wörter nach Thema sammeln",
+        "hint": "Erstelle auf Anfrage eine Wortliste zum angegebenen Thema."
+      },
+      "deckDescription": {
+        "label": "Beschreibung und Tags des Stapels",
+        "hint": "Schlage Beschreibung und Tags über die Schaltfläche im Stapeleditor vor."
+      }
+    },
+
     "textSize": "Textgröße",
     "compactLayout": "Kompakte Ansicht",
     "tighterSpacingMoreOnThe": "Engere Abstände, mehr auf einen Blick.",
@@ -1400,7 +1432,7 @@ export default {
       },
       "assistant": {
         "title": "KI-Assistent",
-        "description": "Vorschläge beim Hinzufügen von Wörtern und wie viele heute noch übrig sind."
+        "description": "Stelle jede KI-Funktion einzeln ein und prüfe das gemeinsame Tageslimit."
       },
       "sync": {
         "title": "Synchronisierung",
@@ -1508,6 +1540,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} Funktionen aktiv",
     "theme": {
       "system": "Systemdesign",
       "light": "Helles Design",

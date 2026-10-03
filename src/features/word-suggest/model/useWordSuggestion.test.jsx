@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const suggestWord = vi.fn();
 let signedIn = true;
+let wordSuggestions = true;
 const authRepository = {
   isConfigured: () => true,
   getSnapshot: async () => ({ isAuthenticated: signedIn }),
@@ -14,7 +15,7 @@ vi.mock("@shared/providers", () => ({
 }));
 
 vi.mock("@shared/lib/appPreferences", () => ({
-  useAppPreferences: () => ({ appPreferences: { deckDefaults: { wordSuggestions: true } } }),
+  useAppPreferences: () => ({ appPreferences: { aiFeatures: { wordSuggestions, reviewHints: false } } }),
 }));
 
 const deck = { sourceLanguage: "English", targetLanguage: "Polish", tertiaryLanguage: "", pictureSide: "", usesWordLevels: true };
@@ -34,6 +35,7 @@ describe("useWordSuggestion", () => {
   beforeEach(() => {
     suggestWord.mockReset();
     signedIn = true;
+    wordSuggestions = true;
     word += 1;
   });
 
@@ -53,6 +55,22 @@ describe("useWordSuggestion", () => {
     });
 
     expect(onFill).toHaveBeenCalledWith({ target: "bilet", level: "A2", examplesInput: "One.\nTwo." });
+  });
+
+  it("cancels a running suggestion when disabled and discards its late response", async () => {
+    let resolve;
+    suggestWord.mockImplementation(() => new Promise((done) => { resolve = done; }));
+    const draft = { ...empty, source: `cancel${word}` };
+    const { result, rerender, onFill } = await render(draft);
+    await waitFor(() => expect(suggestWord).toHaveBeenCalled());
+    const signal = suggestWord.mock.calls[0][1].signal;
+    wordSuggestions = false;
+    rerender({ draft });
+    expect(signal.aborted).toBe(true);
+    await act(async () => resolve({ target: "late translation" }));
+    expect(result.current.hasFills).toBe(false);
+    act(() => result.current.acceptAll());
+    expect(onFill).not.toHaveBeenCalled();
   });
 
   it("never offers to replace what was typed", async () => {

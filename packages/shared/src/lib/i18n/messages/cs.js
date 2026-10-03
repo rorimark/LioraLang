@@ -1372,6 +1372,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Automaticky",
+      "manual": "Na vyžádání"
+    },
+    "aiInfo": "Funkce AI se nastavují samostatně. Dotazy odesílají studijní obsah do Google Gemini. Je potřeba účet; denní limit je společný.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Návrhy při psaní slov",
+        "hint": "Po pauze při psaní navrhuj překlady, příklady, úroveň a slovní druh."
+      },
+      "reviewHints": {
+        "label": "Vysvětlení po „Znovu”",
+        "hint": "Automaticky vysvětli jazykovou kartu po hodnocení „Znovu”."
+      },
+      "conceptSuggestions": {
+        "label": "Návrhy tematických karet",
+        "hint": "Navrhuj odpovědi, poznámky a oborová pole tlačítkem pro návrh karty."
+      },
+      "listCompletion": {
+        "label": "Doplnění seznamu slov",
+        "hint": "Doplň překlady a podrobnosti tlačítkem AI ve vloženém seznamu."
+      },
+      "topicCollection": {
+        "label": "Sběr slov podle tématu",
+        "hint": "Na vyžádání připrav seznam slov k zadanému tématu."
+      },
+      "deckDescription": {
+        "label": "Popis a štítky balíčku",
+        "hint": "Navrhuj popis a štítky tlačítkem v editoru balíčku."
+      }
+    },
+
     "textSize": "Velikost textu",
     "compactLayout": "Kompaktní rozložení",
     "tighterSpacingMoreOnThe": "Menší mezery, víc obsahu na obrazovce.",
@@ -1488,7 +1520,7 @@ export default {
       },
       "assistant": {
         "title": "Asistent AI",
-        "description": "Návrhy při přidávání slov a kolik jich na dnešek zbývá."
+        "description": "Nastavte každou funkci AI zvlášť a sledujte společný denní limit."
       },
       "sync": {
         "title": "Synchronizace",
@@ -1596,6 +1628,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} funkcí zapnuto",
     "theme": {
       "system": "Motiv systému",
       "light": "Světlý motiv",

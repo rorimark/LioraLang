@@ -19,7 +19,7 @@ const remember = (key, hint) => {
 };
 
 export const useMissedWordHint = ({ word, deck, direction = "" }) => {
-  const ai = useAiAccess({ enabled: Boolean(word) });
+  const ai = useAiAccess({ enabled: Boolean(word), feature: "reviewHints" });
   // By value: the deck object is rebuilt as Learn renders, and a new object
   // must not ask (and spend the allowance) a second time.
   const sourceLanguage = deck?.sourceLanguage || "";
@@ -52,6 +52,7 @@ export const useMissedWordHint = ({ word, deck, direction = "" }) => {
     ai.repository
       .suggestHint(request, { signal: controller.signal })
       .then((hint) => {
+        if (controller.signal.aborted) return;
         remember(key, hint || "");
         setAnswer({ key, hint: hint || "", isDone: true });
       })

@@ -1286,6 +1286,38 @@ export default {
     }
   },
   "prefs": {
+    "aiModes": {
+      "automatic": "Otomatik",
+      "manual": "İstek üzerine"
+    },
+    "aiInfo": "Yapay zekâ işlevleri ayrı ayarlanır. İstekler çalışma içeriğini Google Gemini’ye gönderir. Hesap gerekir; günlük sınır ortaktır.",
+    "aiFeatures": {
+      "wordSuggestions": {
+        "label": "Yazarken kelime önerileri",
+        "hint": "Yazmaya ara verince çeviri, örnek, seviye ve sözcük türü öner."
+      },
+      "reviewHints": {
+        "label": "“Tekrar” sonrası açıklamalar",
+        "hint": "“Tekrar” olarak değerlendirilmiş dil kartını otomatik açıkla."
+      },
+      "conceptSuggestions": {
+        "label": "Konu kartı önerileri",
+        "hint": "Kart önerisi düğmesiyle yanıt, not ve konu alanları öner."
+      },
+      "listCompletion": {
+        "label": "Kelime listesini tamamlama",
+        "hint": "Yapıştırılmış listedeki yapay zekâ düğmesiyle çeviri ve ayrıntıları tamamla."
+      },
+      "topicCollection": {
+        "label": "Konuya göre kelime toplama",
+        "hint": "İstek üzerine belirtilen konuda kelime listesi oluştur."
+      },
+      "deckDescription": {
+        "label": "Deste açıklaması ve etiketleri",
+        "hint": "Deste düzenleyicisindeki düğmeyle açıklama ve etiketler öner."
+      }
+    },
+
     "textSize": "Metin boyutu",
     "compactLayout": "Sıkı düzen",
     "tighterSpacingMoreOnThe": "Daha dar boşluklar, ekranda daha fazla içerik.",
@@ -1400,7 +1432,7 @@ export default {
       },
       "assistant": {
         "title": "Yapay zekâ asistanı",
-        "description": "Kelime eklerken öneriler ve bugün kaç tane kaldığı."
+        "description": "Her yapay zekâ işlevini ayrı ayrı ayarlayın ve ortak günlük limiti takip edin."
       },
       "sync": {
         "title": "Eşitleme",
@@ -1508,6 +1540,7 @@ export default {
     }
   },
   "summaries": {
+    "assistantFeatures": "{enabled} / {total} işlev açık",
     "theme": {
       "system": "Sistem teması",
       "light": "Açık tema",

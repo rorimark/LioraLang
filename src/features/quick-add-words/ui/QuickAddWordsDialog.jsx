@@ -554,7 +554,7 @@ const TopicForm = memo(({ model }) => {
   const { ai } = model;
   const topicId = useId();
 
-  if (!ai.isAvailable) {
+  if (!ai.canCollectTopic) {
     return null;
   }
 
@@ -668,7 +668,7 @@ const PasteList = memo(({ model }) => {
           ) : null}
         </p>
         <div className="quick-add__preview-tools">
-          {model.ai.isAvailable && model.ai.isReady && model.ai.pendingCount > 0 ? (
+          {model.ai.canFillList && model.ai.isReady && model.ai.pendingCount > 0 ? (
             <Button size="sm" onClick={model.ai.fillWithAi} disabled={model.ai.isBusy}>
               <SparkIcon />
               {t("aiList.fill")}
