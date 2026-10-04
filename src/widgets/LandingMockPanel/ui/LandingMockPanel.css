@@ -2171,20 +2171,3 @@
     transition: none;
   }
 }
-
-/* The subject picker and cards share the app controls and profile layouts. */
-.lp-demo-picker {
-  width: min(100%, 360px);
-  margin: 24px auto 32px;
-  text-align: left;
-}
-.lp-demo__card { height: 380px; }
-.lp-demo .flashcard--index .flashcard__face--back {
-  background: var(--flashcard-back-bg);
-}
-.lp-demo .flashcard--index:is(.flashcard--layout-mathematics, .flashcard--layout-history) .flashcard__face--back {
-  background: var(--knowledge-back);
-}
-@media (max-width: 600px) {
-  .lp-demo__card { height: 340px; }
-}

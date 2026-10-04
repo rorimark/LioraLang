@@ -10,8 +10,6 @@ import {
   IoSyncOutline,
 } from "react-icons/io5";
 import { AppIcon } from "@shared/ui";
-import { BRAND_NAME } from "@shared/config/brand";
-import { LANDING_NEW_CARD_PREVIEW } from "../model/landingRatingPreview";
 import { useI18n } from "@shared/lib/i18n";
 import { buildLandingDemoDeck } from "../model/landingDemoDeck";
 
@@ -20,29 +18,31 @@ import { buildLandingDemoDeck } from "../model/landingDemoDeck";
 // platform pictures are also links to where they point.
 
 const STICKERS = [
-  { key: "again", tone: "red", className: "lp-sticker--a" },
-  { key: "hard", tone: "amber", className: "lp-sticker--b" },
-  { key: "good", tone: "blue", className: "lp-sticker--c" },
-  { key: "easy", tone: "green", className: "lp-sticker--d" },
+  { key: "again", value: "10m", tone: "red", className: "lp-sticker--a" },
+  { key: "hard", value: "15m", tone: "amber", className: "lp-sticker--b" },
+  { key: "good", value: "24h", tone: "blue", className: "lp-sticker--c" },
+  { key: "easy", value: "3d", tone: "green", className: "lp-sticker--d" },
 ];
 
 // The first demo word, turned over into the visitor's language.
 export const HeroIllustration = memo(() => {
-  const { t, formatInterval } = useI18n();
+  const { t, locale, languageName, formatInterval } = useI18n();
+  const deck = buildLandingDemoDeck(locale);
+  const [word] = deck.words;
 
   return (
     <div className="lp-hero-art" aria-hidden="true">
       <span className="lp-hero-art__disc" />
       <span className="lp-card lp-card--back">
-        <span className="lp-card__label">{t("subjects.names.mathematics")}</span>
-        <span className="lp-card__word" style={{ "--len": 6 }}>
-          {"x² = 4"}
+        <span className="lp-card__label">{languageName(deck.targetLanguage)}</span>
+        <span className="lp-card__word" style={{ "--len": [...word.target].length }}>
+          {word.target}
         </span>
       </span>
       <span className="lp-card lp-card--front">
-        <span className="lp-card__label">{t("landing.decks.examples.falseFriends")}</span>
-        <span className="lp-card__word" style={{ "--len": 11 }}>
-          {"array.map()"}
+        <span className="lp-card__label">{languageName(deck.sourceLanguage)}</span>
+        <span className="lp-card__word" style={{ "--len": [...word.source].length }}>
+          {word.source}
         </span>
       </span>
       {STICKERS.map((sticker) => (
@@ -51,7 +51,7 @@ export const HeroIllustration = memo(() => {
           className={`lp-sticker lp-tone-${sticker.tone} ${sticker.className}`}
         >
           {t(`grades.${sticker.key}.label`)}
-          <small>{formatInterval(LANDING_NEW_CARD_PREVIEW[sticker.key])}</small>
+          <small>{formatInterval(sticker.value)}</small>
         </span>
       ))}
     </div>
@@ -178,7 +178,7 @@ export const AiIllustration = memo(() => {
   return (
     <div className="lp-art lp-ai-art" aria-hidden="true">
       <span className="lp-ai-card">
-        <span className="lp-ai-card__label">{t("subjects.names.language")} · {languageName(deck.sourceLanguage)}</span>
+        <span className="lp-ai-card__label">{languageName(deck.sourceLanguage)}</span>
         <span className="lp-ai-card__word">
           {word.source}
           <span className="lp-ai-card__caret" />
@@ -255,7 +255,7 @@ export const PhoneIllustration = memo(() => {
       </span>
       <span className="lp-phone-icon">
         <AppIcon size={64} />
-        <span>{BRAND_NAME}</span>
+        <span>LioraLang</span>
       </span>
       <span className="lp-sticker lp-tone-green lp-phone-sticker lp-phone-sticker--offline">
         <IoCloudOfflineOutline />

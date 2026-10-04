@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "Liora: kartičky pro jazyky, programování, matematiku a historii",
-    "description": "Pamatujte si učivo pomocí kartiček podle předmětu, opakování a návrhů AI. Jazyky, programování, matematika a historie v prohlížeči, na počítači i telefonu."
+    "title": "LioraLang: kartičky zdarma na učení slovíček s opakováním v rozestupech",
+    "description": "Učte se slovíčka s kartičkami: opakování v rozestupech (FSRS) připomene slovo včas, AI vyplní kartičky, v prohlížeči, na počítači i v telefonu. Zdarma."
   },
   "topbar": {
     "open": "Otevřít aplikaci",
     "language": "Jazyk"
   },
   "hero": {
-    "title": "Učte se důležité. **Pamatujte si to.**",
-    "text": "Jazyky, kód, vzorce nebo historie. Tvořte kartičky, vybavte si odpověď a nechte opakování naplánovat návrat. Materiál zůstává ve vašem zařízení.",
+    "title": "Kartičky, které vědí, kdy **zapomenete.**",
+    "text": "Ohodnoťte každé slovo a LioraLang ho vrátí těsně předtím, než vám vypadne. Zdarma a kartičky zůstávají ve vašem zařízení.",
     "start": "Začít se učit",
     "download": "Stáhnout pro počítač"
   },
@@ -22,54 +22,32 @@ export default {
   },
   "try": {
     "title": "Vyzkoušejte to hned.",
-    "text": "Vyberte předmět a zkuste skutečné opakování. Bez účtu."
+    "text": "Šest slov, skutečné opakování, bez registrace."
   },
   "demo": {
-    "deckName": "Váš předmět. Váš způsob.",
+    "deckName": "Cestování a turistika",
     "doneTitle": "Výborně.",
-    "doneText": "Každá kartička má další opakování. V aplikaci se vrátí v určený čas.",
+    "doneText": "Každé slovo má teď své další opakování. V aplikaci se každé vrátí právě v ten den.",
     "answers": "Vaše odpovědi",
     "backIn": "vrátí se za {interval}",
     "again": "Projít znovu",
     "reveal": "Ukázat odpověď",
     "hintGrade": "Jak dobře jste to věděli? Čas říká, kdy se slovo vrátí.",
-    "hintThink": "Vybavte si odpověď a ověřte ji.",
+    "hintThink": "Vybavte si překlad a pak se zkontrolujte.",
     "keysGrade": "{keys} hodnocení",
     "keysReveal": "{key} ukáže odpověď",
-    "spaceKey": "Mezerník",
-    "subject": "Váš předmět. Váš způsob.",
-    "samples": {
-      "programming": {
-        "question1": "Co vrátí tento kód?",
-        "answer1": "Nové pole s dvojnásobnými hodnotami: [2, 4, 6].",
-        "question2": "Co chrání const?",
-        "answer2": "Proměnné nelze přiřadit novou hodnotu. Vlastnosti objektu lze měnit."
-      },
-      "mathematics": {
-        "question1": "Vyřešte $x^2 = 4$.",
-        "answer1": "Dvě řešení: $x = 2$ a $x = -2$.",
-        "question2": "Jaký je obsah kruhu s poloměrem $r$?",
-        "answer2": "$A = \\pi r^2$."
-      },
-      "history": {
-        "question1": "Kdy byla dobyta Bastila?",
-        "answer1": "14. července 1789.",
-        "question2": "Co změnil Gutenbergův tisk v Evropě?",
-        "answer2": "Usnadnil reprodukci knih a šíření znalostí.",
-        "context": "Francouzská revoluce"
-      }
-    }
+    "spaceKey": "Mezerník"
   },
   "ai": {
-    "title": "Od tématu k vlastnímu balíčku.",
-    "text": "Vyberte předmět, kontext a jazyk odpovědí. AI připraví návrhy s kódem, vzorci nebo vysvětlením. Před uložením je zkontrolujte a upravte. Potřebujete účet, internet a dostupný denní limit.",
+    "title": "Napište slovo. Dostanete celou kartičku.",
+    "text": "Překlad, příklad, úroveň a štítky se doplní, zatímco píšete. Tab vezme vše.",
     "try": "Vyzkoušet asistenta",
     "tag": "cestování",
-    "take": "Doplnit"
+    "take": "vzít vše"
   },
   "memory": {
-    "title": "Opakujte ve správný čas.",
-    "text": "Po Good se nová kartička vrátí za {first}, potom {second}, potom {third}. V tomto příkladu se {reviews} rozloží na {span}. Plán se přizpůsobuje odpovědím, aby známé učivo nezaplnilo celý den.",
+    "title": "Naučte se jednou. Pamatujte si měsíce.",
+    "text": "Odpovězte „Dobré“ a nové slovo se vrátí za {first}, pak za {second}, pak za {third} a každá přestávka je delší než ta předchozí. {reviews} ho udrží {span}, takže slova, která znáte, vám už nezabírají den.",
     "reviews": {
       "one": "{count} opakování",
       "few": "{count} opakování",
@@ -90,26 +68,26 @@ export default {
       "few": "{count} roky",
       "other": "{count} let"
     },
-    "chartLabel": "Dny mezi opakováními jedné kartičky",
+    "chartLabel": "Dny mezi opakováními jednoho slova",
     "day": "den {day}"
   },
   "decks": {
-    "title": "Vaše učivo. Vaše balíčky.",
-    "text": "Slova a příklady, otázky a kód, úlohy a vzorce, data a kontext. Každý předmět má vlastní pole a kartičky. Exportujte .lioradeck pro sdílení nebo kopii.",
+    "title": "Vaše slova. Vaše balíčky.",
+    "text": "Vytvořte balíček pro libovolnou dvojici jazyků, přidejte úrovně, štítky a ukázkové věty a učte se jen to, co opravdu potřebujete. Import a export do JSON, kdykoli chcete.",
     "words": {
-      "one": "{count} kartička",
-      "few": "{count} kartičky",
-      "other": "{count} kartiček"
+      "one": "{count} slovo",
+      "few": "{count} slova",
+      "other": "{count} slov"
     },
     "examples": {
       "travel": "Cestování a turistika",
-      "falseFriends": "JavaScript",
-      "business": "Matematika"
+      "falseFriends": "Zrádná slova",
+      "business": "Byznys a startupy"
     }
   },
   "hub": {
     "title": "Někdo už ten balíček udělal.",
-    "text": "Najděte jazykové balíčky ostatních a přidejte je kliknutím. Programování, matematiku a historii lze sdílet jako soubory a soukromě synchronizovat; veřejný Hub dnes přijímá jazykové balíčky.",
+    "text": "LioraLangHub je plný balíčků, které zveřejnili jiní studenti. Najděte si jeden, přidejte ho jedním kliknutím a začněte opakovat. Své sdílejte stejně.",
     "browse": "Procházet hub",
     "import": "Přidat",
     "inLibrary": "Ve vaší knihovně"
@@ -150,28 +128,24 @@ export default {
     "title": "Otázky",
     "items": {
       "free": {
-        "q": "Je Liora zdarma?",
-        "a": "Místní balíčky a opakování jsou zdarma a bez účtu. Synchronizace a desktop také. AI nyní umožňuje {count} požadavků na účet za den UTC podle dostupnosti poskytovatele."
+        "q": "Je LioraLang zdarma?",
+        "a": "Ano, úplně. Balíčky, opakování, synchronizace i aplikace pro počítač nestojí nic. Asistent AI je s účtem taky zdarma, až {count} návrhů denně."
       },
       "why": {
-        "q": "Proč Liora?",
-        "a": "Různé předměty na jednom místě s vhodnými poli a kartičkami. Vyberete učivo, ověříte návrhy AI a opakování naplánuje návrat."
+        "q": "Proč LioraLang?",
+        "a": "Napište slovo a Liora z něj udělá kartičku. Vy vybíráte, co je pro vás důležité, a o překlad, úroveň, příklady, štítky a plán opakování se postará Liora."
       },
       "srs": {
         "q": "Co je opakování v rozestupech?",
-        "a": "Vybavte si odpověď a ohodnoťte ji. Známé učivo se vrátí později, zapomenutá kartička dříve. Stejný plán funguje pro více předmětů."
+        "a": "Slovo uvidíte těsně předtím, než byste ho zapomněli. Umíte ho dobře, vrátí se za dlouho. Spletete se, vrátí se brzy."
       },
       "offline": {
         "q": "Funguje offline?",
-        "a": "Místní kartičky, úpravy a opakování fungují offline. Web nejprve otevřete online pro uložení souborů. Sync, Hub a AI potřebují internet."
+        "a": "Ano. Funguje bez internetu a synchronizuje se, jakmile jste zase online."
       },
       "languages": {
         "q": "Jaké jazyky se můžu učit?",
         "a": "Libovolné dva z těchto: {languages}."
-      },
-      "subjects": {
-        "q": "Co mohu studovat?",
-        "a": "Jazyky, programování, matematika a historie mají vlastní pole a kartičky. Katalog může růst; programování přijímá libovolnou technologii."
       }
     }
   },

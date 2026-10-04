@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "Liora: diller, programlama, matematik ve tarih için kartlar",
-    "description": "Konuya uygun kartlar, aralıklı tekrar ve AI taslaklarıyla öğrendiklerini hatırla. Diller, programlama, matematik ve tarih tarayıcıda, bilgisayarda ve telefonda."
+    "title": "LioraLang: aralıklı tekrarla kelime öğrenmek için ücretsiz kart uygulaması",
+    "description": "Kelime kartlarıyla kelime öğrenin: aralıklı tekrar (FSRS) her kelimeyi tam zamanında sorar, yapay zekâ kartları doldurur; tarayıcıda, bilgisayarda ve telefonda. Ücretsiz."
   },
   "topbar": {
     "open": "Uygulamayı aç",
     "language": "Dil"
   },
   "hero": {
-    "title": "Önemli olanı öğren. **Hatırla.**",
-    "text": "Diller, kod, formüller veya tarih. Kartlarını oluştur, yanıtı hatırla ve tekrarların dönüş zamanını planlamasına izin ver. İçeriğin cihazında kalır.",
+    "title": "Ne zaman **unutacağınızı** bilen kart uygulaması.",
+    "text": "Her kelimeyi değerlendirin; LioraLang onu tam aklınızdan çıkmadan önce geri getirir. Ücretsiz ve kartlarınız cihazınızda kalır.",
     "start": "Öğrenmeye başla",
     "download": "Bilgisayar için indir"
   },
@@ -21,54 +21,32 @@ export default {
   },
   "try": {
     "title": "Hemen deneyin.",
-    "text": "Bir konu seç ve gerçek bir tekrarı dene. Hesap gerekmez."
+    "text": "Altı kelime, gerçek bir tekrar, kayıt yok."
   },
   "demo": {
-    "deckName": "Konun. Yöntemin.",
+    "deckName": "Seyahat ve turizm",
     "doneTitle": "Harika.",
-    "doneText": "Her kartın artık sonraki tekrarı var. Uygulamada zamanı geldiğinde geri gelir.",
+    "doneText": "Her kelimenin artık kendi sonraki tekrarı var. Uygulamada her biri tam o gün geri gelir.",
     "answers": "Cevaplarınız",
     "backIn": "{interval} sonra geri gelir",
     "again": "Yeniden çalış",
     "reveal": "Cevabı göster",
     "hintGrade": "Ne kadar iyi biliyordunuz? Süre, ne zaman geri geleceğini gösterir.",
-    "hintThink": "Yanıtı hatırla, sonra kontrol et.",
+    "hintThink": "Çeviriyi düşünün, sonra kendinizi kontrol edin.",
     "keysGrade": "{keys} ile değerlendir",
     "keysReveal": "{key} cevabı gösterir",
-    "spaceKey": "Boşluk",
-    "subject": "Konun. Yöntemin.",
-    "samples": {
-      "programming": {
-        "question1": "Bu kod ne döndürür?",
-        "answer1": "Değerleri ikiye katlanmış yeni bir dizi: [2, 4, 6].",
-        "question2": "const neyi korur?",
-        "answer2": "Değişkene yeniden değer atanamaz. Nesne özellikleri değişebilir."
-      },
-      "mathematics": {
-        "question1": "$x^2 = 4$ denklemini çöz.",
-        "answer1": "İki çözüm: $x = 2$ ve $x = -2$.",
-        "question2": "Yarıçapı $r$ olan dairenin alanı nedir?",
-        "answer2": "$A = \\pi r^2$."
-      },
-      "history": {
-        "question1": "Bastille ne zaman alındı?",
-        "answer1": "14 Temmuz 1789.",
-        "question2": "Gutenberg'in matbaası Avrupa'da neyi değiştirdi?",
-        "answer2": "Kitapların çoğaltılmasını ve bilginin yayılmasını kolaylaştırdı.",
-        "context": "Fransız Devrimi"
-      }
-    }
+    "spaceKey": "Boşluk"
   },
   "ai": {
-    "title": "Bir başlıktan kendi destene.",
-    "text": "Konu, bağlam ve yanıt dilini seç. AI kod, formül veya açıklamalı taslaklar hazırlar. Kaydetmeden önce kontrol et ve düzenle. Hesap, internet ve kullanılabilir günlük kota gerekir.",
+    "title": "Bir kelime yazın. Kartın tamamını alın.",
+    "text": "Siz yazarken çeviri, örnek, seviye ve etiketler gelir. Tab hepsini alır.",
     "try": "Asistanı deneyin",
     "tag": "seyahat",
-    "take": "Doldur"
+    "take": "hepsini al"
   },
   "memory": {
-    "title": "Doğru zamanda tekrar et.",
-    "text": "Good ile yeni kart {first}, sonra {second}, sonra {third} içinde döner. Bu örnekte {reviews}, {span} boyunca dağılır. Plan yanıtlarına uyum sağlar; bildiklerin bütün günü doldurmaz.",
+    "title": "Bir kez öğrenin. Aylarca hatırlayın.",
+    "text": "“İyi” deyin; yeni bir kelime önce {first}, sonra {second}, sonra {third} sonra geri gelir ve her ara bir öncekinden uzundur. {reviews} onu {span} boyunca taşır; bildiğiniz kelimeler gününüzü doldurmaz.",
     "reviews": {
       "one": "{count} tekrar",
       "other": "{count} tekrar"
@@ -85,25 +63,25 @@ export default {
       "one": "{count} yıl",
       "other": "{count} yıl"
     },
-    "chartLabel": "Bir kartın tekrarları arasındaki günler",
+    "chartLabel": "Bir kelimenin tekrarları arasındaki günler",
     "day": "{day}. gün"
   },
   "decks": {
-    "title": "İçeriğin. Destelerin.",
-    "text": "Kelimeler ve örnekler, sorular ve kod, problemler ve formüller, tarihler ve bağlam. Her konunun kendi alanları ve kartları vardır. Paylaşmak veya kopya saklamak için .lioradeck dışa aktar.",
+    "title": "Sizin kelimeleriniz. Sizin desteleriniz.",
+    "text": "Her dil çifti için deste oluşturun; seviye, etiket ve örnek cümle ekleyin ve yalnızca gerçekten ihtiyacınız olanı çalışın. İstediğiniz zaman JSON olarak içe ve dışa aktarın.",
     "words": {
-      "one": "{count} kart",
-      "other": "{count} kart"
+      "one": "{count} kelime",
+      "other": "{count} kelime"
     },
     "examples": {
       "travel": "Seyahat ve turizm",
-      "falseFriends": "JavaScript",
-      "business": "Matematik"
+      "falseFriends": "Yanlış arkadaşlar",
+      "business": "İş ve girişim kültürü"
     }
   },
   "hub": {
     "title": "Birisi o desteyi çoktan yaptı.",
-    "text": "Başkalarının dil destelerini bul ve tek tıkla ekle. Programlama, matematik ve tarih dosya olarak paylaşılır ve özel eşitlenir; herkese açık Hub şu anda dil destelerini destekler.",
+    "text": "LioraLangHub, diğer öğrencilerin yayımladığı destelerle dolu. Birini bulun, tek tıkla içe aktarın ve tekrara başlayın. Kendi destelerinizi de aynı şekilde paylaşın.",
     "browse": "Hub'a göz at",
     "import": "İçe aktar",
     "inLibrary": "Kitaplığınızda"
@@ -144,28 +122,24 @@ export default {
     "title": "Sorular",
     "items": {
       "free": {
-        "q": "Liora ücretsiz mi?",
-        "a": "Yerel desteler ve tekrarlar ücretsizdir, hesap gerekmez. Eşitleme ve masaüstü de ücretsizdir. AI şu anda sağlayıcının durumuna bağlı olarak UTC günü başına hesap için {count} istek sağlar."
+        "q": "LioraLang ücretsiz mi?",
+        "a": "Evet, tamamen. Desteler, tekrarlar, senkronizasyon ve masaüstü uygulaması ücretsiz. Yapay zekâ asistanı da hesapla ücretsiz, günde en fazla {count} öneri."
       },
       "why": {
-        "q": "Neden Liora?",
-        "a": "Farklı konular tek yerde, içeriğe uygun alanlar ve kartlarla. Öğreneceğini seç, AI taslaklarını kontrol et ve tekrarların planlamasını kullan."
+        "q": "Neden LioraLang?",
+        "a": "Bir kelime yazın, Liora kartı sizin için hazırlasın. Neyin önemli olduğuna siz karar verirsiniz; çeviri, seviye, örnekler, etiketler ve tekrar takvimi Liora'da."
       },
       "srs": {
         "q": "Aralıklı tekrar nedir?",
-        "a": "Yanıtı hatırla ve değerlendir. Bildiğin içerik daha geç, unutulan kart daha erken döner. Aynı plan farklı konular için çalışır."
+        "a": "Bir kelimeyi unutmanızdan hemen önce görürsünüz. İyi biliyorsanız çok sonra döner. Yanılırsanız yakında döner."
       },
       "offline": {
         "q": "İnternetsiz çalışır mı?",
-        "a": "Yerel kartlar, düzenleme ve tekrarlar çevrimdışı çalışır. Web uygulamasını önce çevrimiçi açıp önbelleğe al. Eşitleme, Hub ve AI internet ister."
+        "a": "Evet. İnternetsiz çalışmaya devam eder ve bağlantı gelir gelmez senkronize olur."
       },
       "languages": {
         "q": "Hangi dilleri öğrenebilirim?",
         "a": "Bunlardan herhangi ikisi: {languages}."
-      },
-      "subjects": {
-        "q": "Neler çalışabilirim?",
-        "a": "Diller, programlama, matematik ve tarihin kendi alanları ve kartları var. Katalog büyüyebilir; programlama her teknolojiyi kabul eder."
       }
     }
   },

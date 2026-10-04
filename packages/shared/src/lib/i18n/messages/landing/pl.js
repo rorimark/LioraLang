@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "Liora: fiszki do języków, programowania, matematyki i historii",
-    "description": "Zapamiętuj materiał z fiszkami dopasowanymi do przedmiotu, powtórkami i szkicami AI. Ucz się języków, programowania, matematyki i historii w przeglądarce, na komputerze i telefonie."
+    "title": "LioraLang: darmowe fiszki do nauki słówek z powtórkami w odstępach",
+    "description": "Ucz się słówek z fiszkami: powtórki w odstępach (FSRS) przypominają słowo w porę, AI wypełnia fiszki, działa w przeglądarce, na komputerze i w telefonie. Za darmo."
   },
   "topbar": {
     "open": "Otwórz aplikację",
     "language": "Język"
   },
   "hero": {
-    "title": "Ucz się ważnego. **Pamiętaj.**",
-    "text": "Języki, kod, wzory lub historia. Twórz karty, przypominaj sobie odpowiedź, a powtórki podpowiedzą, kiedy wrócić. Materiał pozostaje na twoim urządzeniu.",
+    "title": "Fiszki, które wiedzą, kiedy **zapomnisz.**",
+    "text": "Oceniaj każde słowo, a LioraLang przypomni je tuż zanim ci umknie. Za darmo, a fiszki zostają na twoim urządzeniu.",
     "start": "Zacznij naukę",
     "download": "Pobierz na komputer"
   },
@@ -23,54 +23,32 @@ export default {
   },
   "try": {
     "title": "Spróbuj od razu.",
-    "text": "Wybierz przedmiot i wypróbuj prawdziwą powtórkę. Bez konta."
+    "text": "Sześć słów, prawdziwa powtórka, bez rejestracji."
   },
   "demo": {
-    "deckName": "Twój przedmiot. Twój sposób.",
+    "deckName": "Podróże i turystyka",
     "doneTitle": "Świetnie.",
-    "doneText": "Każda karta ma teraz następną powtórkę. W aplikacji wróci w wyznaczonym czasie.",
+    "doneText": "Każde słowo ma teraz swoją następną powtórkę. W aplikacji każde wróci właśnie tego dnia.",
     "answers": "Twoje odpowiedzi",
     "backIn": "wróci za {interval}",
     "again": "Powtórz jeszcze raz",
     "reveal": "Pokaż odpowiedź",
     "hintGrade": "Jak dobrze to pamiętałeś? Czas to moment, kiedy słowo wróci.",
-    "hintThink": "Przypomnij sobie odpowiedź, potem sprawdź.",
+    "hintThink": "Przypomnij sobie tłumaczenie, a potem sprawdź się.",
     "keysGrade": "{keys}: ocena",
     "keysReveal": "{key}: pokaż odpowiedź",
-    "spaceKey": "Spacja",
-    "subject": "Twój przedmiot. Twój sposób.",
-    "samples": {
-      "programming": {
-        "question1": "Co zwróci ten kod?",
-        "answer1": "Nową tablicę z podwojonymi wartościami: [2, 4, 6].",
-        "question2": "Co chroni const?",
-        "answer2": "Nie można przypisać nowej wartości do zmiennej. Właściwości obiektu mogą się zmieniać."
-      },
-      "mathematics": {
-        "question1": "Rozwiąż $x^2 = 4$.",
-        "answer1": "Dwa rozwiązania: $x = 2$ i $x = -2$.",
-        "question2": "Jakie jest pole koła o promieniu $r$?",
-        "answer2": "$A = \\pi r^2$."
-      },
-      "history": {
-        "question1": "Kiedy zdobyto Bastylię?",
-        "answer1": "14 lipca 1789 r.",
-        "question2": "Co zmieniła prasa Gutenberga w Europie?",
-        "answer2": "Ułatwiła powielanie książek i rozpowszechnianie wiedzy.",
-        "context": "Rewolucja francuska"
-      }
-    }
+    "spaceKey": "Spacja"
   },
   "ai": {
-    "title": "Od tematu do własnej talii.",
-    "text": "Wybierz przedmiot, kontekst i język odpowiedzi. AI przygotuje szkice z kodem, wzorami lub wyjaśnieniami. Przejrzyj, popraw i wybierz je przed zapisem. Potrzebujesz konta, internetu i dostępnego dziennego limitu.",
+    "title": "Wpisz słowo. Dostań całą fiszkę.",
+    "text": "Tłumaczenie, przykład, poziom i tagi pojawiają się, gdy piszesz. Tab bierze wszystko.",
     "try": "Wypróbuj asystenta",
     "tag": "podróże",
-    "take": "Uzupełnij"
+    "take": "weź wszystko"
   },
   "memory": {
-    "title": "Powtarzaj we właściwym momencie.",
-    "text": "Oceń nową kartę jako Good, a wróci za {first}, potem {second}, potem {third}. W tym przykładzie {reviews} rozkładają się na {span}. Harmonogram uwzględnia odpowiedzi, aby znany materiał nie zajmował całego dnia.",
+    "title": "Naucz się raz. Pamiętaj miesiącami.",
+    "text": "Odpowiedz „Dobrze”, a nowe słowo wróci za {first}, potem za {second}, potem za {third}, a każda przerwa jest dłuższa od poprzedniej. {reviews} trzyma je w pamięci przez {span}, więc znane słowa przestają zajmować ci dzień.",
     "reviews": {
       "one": "{count} powtórka",
       "few": "{count} powtórki",
@@ -95,27 +73,27 @@ export default {
       "many": "{count} lat",
       "other": "{count} lat"
     },
-    "chartLabel": "Dni między powtórkami jednej karty",
+    "chartLabel": "Dni między powtórkami jednego słowa",
     "day": "dzień {day}"
   },
   "decks": {
-    "title": "Twój materiał. Twoje talie.",
-    "text": "Słowa i przykłady, pytania i kod, zadania i wzory, daty i kontekst. Każdy przedmiot ma własne pola i wygląd kart. Eksportuj .lioradeck, aby udostępnić materiał lub zachować kopię.",
+    "title": "Twoje słowa. Twoje talie.",
+    "text": "Twórz talie dla dowolnej pary języków, dodawaj poziomy, tagi i przykładowe zdania i ucz się tylko tego, czego naprawdę potrzebujesz. Import i eksport do JSON, kiedy chcesz.",
     "words": {
-      "one": "{count} karta",
-      "few": "{count} karty",
-      "many": "{count} kart",
-      "other": "{count} kart"
+      "one": "{count} słowo",
+      "few": "{count} słowa",
+      "many": "{count} słów",
+      "other": "{count} słów"
     },
     "examples": {
       "travel": "Podróże i turystyka",
-      "falseFriends": "JavaScript",
-      "business": "Matematyka"
+      "falseFriends": "Fałszywi przyjaciele",
+      "business": "Biznes i startupy"
     }
   },
   "hub": {
     "title": "Ktoś już zrobił tę talię.",
-    "text": "Znajduj talie językowe innych osób i dodawaj jednym kliknięciem. Programowanie, matematyka i historia obsługują udostępnianie plików i prywatną synchronizację; publiczny Hub przyjmuje obecnie talie językowe.",
+    "text": "LioraLangHub jest pełen talii opublikowanych przez innych uczących się. Znajdź swoją, dodaj jednym kliknięciem i zacznij powtarzać. Swoimi dziel się tak samo.",
     "browse": "Przeglądaj hub",
     "import": "Dodaj",
     "inLibrary": "W twojej bibliotece"
@@ -156,28 +134,24 @@ export default {
     "title": "Pytania",
     "items": {
       "free": {
-        "q": "Czy Liora jest darmowy?",
-        "a": "Lokalne talie i powtórki są darmowe i nie wymagają konta. Synchronizacja i desktop też są darmowe. AI obecnie pozwala na {count} żądań na konto na dobę UTC, zależnie od dostępności dostawcy."
+        "q": "Czy LioraLang jest darmowy?",
+        "a": "Tak, całkowicie. Talie, powtórki, synchronizacja i aplikacja na komputer nic nie kosztują. Asystent AI z kontem też jest darmowy, do {count} podpowiedzi dziennie."
       },
       "why": {
-        "q": "Dlaczego Liora?",
-        "a": "Różne przedmioty w jednym miejscu, z polami i wyglądem dopasowanym do materiału. Wybierasz, czego się uczyć, sprawdzasz szkice AI przed zapisem, a powtórki planują powrót do kart."
+        "q": "Dlaczego LioraLang?",
+        "a": "Wpisz słowo, a Liora zrobi z niego fiszkę. Ty wybierasz, co jest dla ciebie ważne, a Liora zajmie się tłumaczeniem, poziomem, przykładami, tagami i harmonogramem powtórek."
       },
       "srs": {
         "q": "Czym są powtórki w odstępach?",
-        "a": "Przypomnij sobie odpowiedź i oceń ją. Znany materiał wróci później, zapomniana karta wcześniej. Ten sam harmonogram działa dla różnych przedmiotów."
+        "a": "Słowo wraca tuż przed tym, zanim je zapomnisz. Znasz je dobrze, to wróci za długo. Pomylisz się, to wróci szybko."
       },
       "offline": {
         "q": "Czy działa bez internetu?",
-        "a": "Lokalne karty, edycja i powtórki działają offline. Najpierw otwórz aplikację web online, aby zapisać jej pliki. Synchronizacja, Hub i AI wymagają internetu."
+        "a": "Tak. Działa bez internetu i synchronizuje się, gdy tylko wróci połączenie."
       },
       "languages": {
         "q": "Jakich języków mogę się uczyć?",
         "a": "Dowolne dwa z tych: {languages}."
-      },
-      "subjects": {
-        "q": "Czego mogę się uczyć?",
-        "a": "Języki, programowanie, matematyka i historia mają obecnie własne pola i wygląd kart. Katalog przedmiotów może rosnąć, a programowanie przyjmuje dowolną technologię."
       }
     }
   },
