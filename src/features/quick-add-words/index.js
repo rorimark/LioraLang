@@ -1,1 +1,1 @@
-export { QuickAddWordsDialog } from "./ui";
+export { QuickAddWordsDialog, GenerateDeckDialog } from "./ui";

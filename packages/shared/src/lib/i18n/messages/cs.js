@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Zkontrolovat karty",
+    "empty": "Zde se objeví karty. Vyber předmět a téma a vygeneruj návrh.",
+    "create": "Vytvořit balíček · {count} karet",
+    "disabled": "Zapni AI a generování balíčků v nastavení.",
+    "collecting": "Generování karet…",
+    "saved": "Přidáno {count} karet",
+    "menuHint": "Vyberte předmět a téma a zkontrolujte karty.",
+    "tab": "Vytvořit s AI",
+    "title": "Karty k tématu",
+    "placeholder": "Například: vlastnictví v Rustu, kvadratické rovnice, starověký Řím",
+    "generate": "Vygenerovat karty",
+    "cards": "{count} karet",
+    "review": "Zkontrolujte otázky, odpovědi a pole předmětu. Před uložením karty upravte nebo vyřaďte.",
+    "include": "Zahrnout kartu",
+    "remove": "Odstranit kartu",
+    "save": "Uložit {count} karet",
+    "clear": "Vymazat návrhy"
+  },
   "technologyCards": {
     "query": {
       "code": "Dotaz SQL",
@@ -1468,8 +1487,8 @@ export default {
         "hint": "Doplň překlady a podrobnosti tlačítkem AI ve vloženém seznamu."
       },
       "topicCollection": {
-        "label": "Sběr slov podle tématu",
-        "hint": "Na vyžádání připrav seznam slov k zadanému tématu."
+        "label": "Generovat balíčky podle tématu",
+        "hint": "Na požádání navrhnout karty pro vybraný předmět a téma."
       },
       "deckDescription": {
         "label": "Popis a štítky balíčku",

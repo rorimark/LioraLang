@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Rever cartões",
+    "empty": "Os cartões aparecerão aqui. Escolhe uma matéria e um tema e gera um rascunho.",
+    "create": "Criar baralho · {count} cartões",
+    "disabled": "Ativa a IA e a geração de baralhos nas definições.",
+    "collecting": "Gerando cartões…",
+    "saved": "{count} cartões adicionados",
+    "menuHint": "Escolha matéria e tema e revise os cartões.",
+    "tab": "Criar com IA",
+    "title": "Cartões sobre um tema",
+    "placeholder": "Por exemplo: ownership em Rust, equações quadráticas, Roma antiga",
+    "generate": "Gerar cartões",
+    "cards": "{count} cartões",
+    "review": "Verifique perguntas, respostas e campos. Edite ou exclua cartões antes de salvar.",
+    "include": "Incluir este cartão",
+    "remove": "Remover cartão",
+    "save": "Salvar {count} cartões",
+    "clear": "Limpar rascunhos"
+  },
   "technologyCards": {
     "query": {
       "code": "Consulta SQL",
@@ -1461,8 +1480,8 @@ export default {
         "hint": "Completar traduções e detalhes com o botão de IA numa lista colada."
       },
       "topicCollection": {
-        "label": "Reunir palavras por tema",
-        "hint": "Preparar a pedido uma lista de palavras sobre o tema indicado."
+        "label": "Gerar baralhos por tema",
+        "hint": "Criar cartões para a matéria e o tema escolhidos, a pedido."
       },
       "deckDescription": {
         "label": "Descrição e etiquetas do baralho",

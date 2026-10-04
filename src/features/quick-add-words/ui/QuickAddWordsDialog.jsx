@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useId, useRef, useState } from "react";
-import { FiAlertTriangle, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, FiX } from "react-icons/fi";
+import { FiAlertTriangle, FiLayers, FiChevronDown, FiCornerDownLeft, FiRepeat, FiTrash2, FiX } from "react-icons/fi";
 import { WordImageField } from "@features/word-image-field";
 import { SubjectFieldInputs } from "@features/subject-fields";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@features/word-suggest";
 import { getSubjectProfile, SUBJECT_IDS } from "@shared/core/usecases/subjects";
 import { AI_TOPIC_COUNTS } from "@shared/core/usecases/wordSuggest";
-import { Button, Select, SettingSegmented } from "@shared/ui";
+import { Button, Select, SettingSegmented, MathText } from "@shared/ui";
 import { useDialogA11y } from "@shared/lib/a11y";
 import { useI18n } from "@shared/lib/i18n";
 import {
@@ -26,15 +26,16 @@ import {
   useQuickAddWords,
 } from "../model";
 import "./QuickAddWordsDialog.css";
+import "./GenerateDeckDialog.css";
 
-const DeckPicker = memo(({ model, deckNameRef }) => {
+const DeckPicker = memo(({ model, deckNameRef, generationOnly = false }) => {
   const { t, languageName } = useI18n();
   const pictureSide = model.newDeck.pictureSide || "";
   const wordsField = pictureSide === "source" ? "targetLanguage" : "sourceLanguage";
 
   return (
     <div className="quick-add__deck">
-      <div className="quick-add__deck-row">
+      {!generationOnly ? <div className="quick-add__deck-row">
         <label className="quick-add__deck-label" htmlFor="quick-add-deck">
           {t("quickAdd.deck")}
         </label>
@@ -67,7 +68,7 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
               : [t(model.subjectProfile.nameKey), model.selectedDeck.subjectFields?.[model.subjectProfile.assistant?.languageField] ? languageName(model.selectedDeck.subjectFields[model.subjectProfile.assistant.languageField]) : ""].filter(Boolean).join(" · ")}
           </span>
         ) : null}
-      </div>
+      </div> : null}
 
       {model.isNewDeck ? (
         <div className="quick-add__new-deck">
@@ -100,7 +101,7 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
           {model.subjectProfile.usesLanguages ? <>
             {/* A picture instead of a word on one side, front or back: the
                 same choice as in the deck's settings. */}
-            <div className="quick-add__front">
+            {!generationOnly ? <div className="quick-add__front">
               <span>{t("media.label")}</span>
               <SettingSegmented
                 name="newDeckPicture"
@@ -114,7 +115,7 @@ const DeckPicker = memo(({ model, deckNameRef }) => {
                 ]}
               />
               {pictureSide ? <small className="quick-add__hint">{t("editor.side.pictureHint")}</small> : null}
-            </div>
+            </div> : null}
             {pictureSide ? (
               // One language only: the words on the side that is not pictures.
               <label className="quick-add__field quick-add__field--wide">
@@ -527,7 +528,7 @@ const AiStatus = memo(({ ai }) => {
   const { t } = useI18n();
   const key = {
     [AI_STATUS.filling]: "aiList.filling",
-    [AI_STATUS.collecting]: "aiList.collecting",
+    [AI_STATUS.collecting]: ai.isSubjectTopic ? "subjectTopic.collecting" : "aiList.collecting",
     [AI_STATUS.quota]: "suggest.quota",
     [AI_STATUS.busy]: "aiList.busy",
     [AI_STATUS.error]: "aiList.error",
@@ -568,7 +569,7 @@ const TopicForm = memo(({ model }) => {
     >
       <p className="quick-add__topic-title">
         <SparkIcon />
-        <span>{t("aiList.topicTitle")}</span>
+        <span>{t(model.isSubjectTopic ? "subjectTopic.title" : "aiList.topicTitle")}</span>
       </p>
       <div className="quick-add__topic-fields">
         <label className="quick-add__field quick-add__topic-text" htmlFor={topicId}>
@@ -577,8 +578,8 @@ const TopicForm = memo(({ model }) => {
             id={topicId}
             value={ai.topic.text}
             onChange={(event) => ai.changeTopic({ text: event.target.value })}
-            placeholder={t("aiList.topicPlaceholder")}
-            maxLength={80}
+            placeholder={t(model.isSubjectTopic ? "subjectTopic.placeholder" : "aiList.topicPlaceholder")}
+            maxLength={model.isSubjectTopic ? 120 : 80}
             autoComplete="off"
             data-autofocus={model.isTopicFirst || undefined}
           />
@@ -586,7 +587,7 @@ const TopicForm = memo(({ model }) => {
         {model.usesWordLevels ? (
           <label className="quick-add__field">
             <span>{t("catalog.level")}</span>
-            <Select value={ai.topic.level} onChange={(event) => ai.changeTopic({ level: event.target.value })}>
+            <Select label={t("catalog.level")} value={ai.topic.level} onChange={(event) => ai.changeTopic({ level: event.target.value })}>
               <option value="">{t("aiList.anyLevel")}</option>
               {LEVEL_OPTIONS.map((level) => (
                 <option key={level} value={level}>
@@ -596,24 +597,32 @@ const TopicForm = memo(({ model }) => {
             </Select>
           </label>
         ) : null}
+        {model.isSubjectTopic && model.subjectProfile.entryFields.difficulty?.values ? <label className="quick-add__field">
+          <span>{t(model.subjectProfile.entryFields.difficulty.labelKey)}</span>
+          <Select label={t(model.subjectProfile.entryFields.difficulty.labelKey)} value={ai.topic.difficulty} onChange={event => ai.changeTopic({difficulty:event.target.value})}>
+            <option value="">{t("aiList.anyLevel")}</option>
+            {model.subjectProfile.entryFields.difficulty.values.map(value => <option key={value} value={value}>{model.subjectProfile.entryFields.difficulty.valueKey ? t(`${model.subjectProfile.entryFields.difficulty.valueKey}.${value}`) : value}</option>)}
+          </Select>
+        </label> : null}
         <label className="quick-add__field">
           <span>{t("aiList.count")}</span>
-          <Select value={String(ai.topic.count)} onChange={(event) => ai.changeTopic({ count: Number(event.target.value) })}>
-            {AI_TOPIC_COUNTS.map((count) => (
+          <Select label={t("aiList.count")} value={String(ai.topic.count)} onChange={(event) => ai.changeTopic({ count: Number(event.target.value) })}>
+            {(ai.topicCounts || AI_TOPIC_COUNTS).map((count) => (
               <option key={count} value={count}>
-                {t("aiList.words", { count })}
+                {t(model.isSubjectTopic ? "subjectTopic.cards" : "aiList.words", { count })}
               </option>
             ))}
           </Select>
         </label>
       </div>
+      {ai.languageRequired ? <p className="suggest-bar suggest-bar--quiet">{t("conceptSuggest.languageRequired")}</p> : null}
       {ai.needsSignIn ? (
         <p className="suggest-bar suggest-bar--quiet">{t("suggest.signIn")}</p>
       ) : (
         <div className="quick-add__topic-submit">
-          <Button type="submit" disabled={!ai.isReady || ai.isBusy || !ai.topic.text.trim()}>
+          <Button type="submit" disabled={!ai.isReady || ai.isBusy || !ai.canGenerate}>
             <SparkIcon />
-            {t("aiList.collect")}
+            {t(model.isSubjectTopic ? "subjectTopic.generate" : "aiList.collect")}
           </Button>
           <AiStatus ai={ai} />
         </div>
@@ -623,6 +632,36 @@ const TopicForm = memo(({ model }) => {
 });
 
 TopicForm.displayName = "TopicForm";
+
+// Generated subject cards keep every profile field editable before saving.
+const SubjectTopic = ({model, showForm = true, showActions = true}) => {
+  const {t} = useI18n();
+  const profile = model.subjectProfile;
+  return <section className="quick-add__subject-topic">
+    {showForm ? <TopicForm model={model} /> : null}
+    {model.rows.length ? <>
+      <p className="quick-add__topic-review">{t("subjectTopic.review")}</p>
+      <fieldset className="quick-add__generated" disabled={model.isSaving}>
+        {model.rows.map(row => <details className="quick-add__generated-card" key={row.key}>
+          <summary><MathText>{row.source || t(profile.entryText.source.labelKey)}</MathText></summary>
+          <label className="quick-add__generated-include"><input type="checkbox" checked={row.include} onChange={event => model.toggleRow(row.key,event.target.checked)} />{t("subjectTopic.include")}</label>
+          {row.status !== ROW_STATUS.ready ? <p className="quick-add__field-error" role="status">{t(row.status === ROW_STATUS.missingWord ? profile.entryText.source.errorKey : profile.entryText.target.errorKey)}</p> : null}
+          <label className="quick-add__field"><span>{t(profile.entryText.source.labelKey)}</span><input value={row.source} onChange={event => model.handleRowChange(row.key,"source",event.target.value)} /></label>
+          <label className="quick-add__field"><span>{t(profile.entryText.target.labelKey)}</span><textarea value={row.target} rows={3} onChange={event => model.handleRowChange(row.key,"target",event.target.value)} /></label>
+          <p className="quick-add__generated-answer"><MathText>{row.target}</MathText></p>
+          <SubjectFieldInputs groupNamePrefix={`${row.key}-`} fields={profile.entryFields} values={row.subjectFields} onChange={(name,value) => model.updateRow(row.key,{subjectFields:{...row.subjectFields,[name]:value}})} fieldClassName="quick-add__field" />
+          <label className="quick-add__field"><span>{t("subjects.fields.notes")}</span><textarea rows={3} value={row.examples.join("\n")} onChange={event => model.updateRow(row.key,{examples:event.target.value.split("\n")})} /></label>
+          <label className="quick-add__field"><span>{t(profile.entryText.tagsKey || "subjects.fields.tags")}</span><input value={row.tags.join(", ")} onChange={event => model.updateRow(row.key,{tags:event.target.value.split(",")})} /></label>
+          <Button size="sm" onClick={() => model.removeRow(row.key)}>{t("subjectTopic.remove")}</Button>
+        </details>)}
+      </fieldset>
+      {showActions ? <div className="quick-add__list-submit">
+        <Button variant="primary" onClick={model.addRows} disabled={model.isSaving || model.ai.isBusy || !model.rowsToAdd.length}>{t("subjectTopic.save",{count:model.rowsToAdd.length})}</Button>
+        <Button onClick={model.clearList} disabled={model.isSaving}>{t("subjectTopic.clear")}</Button>
+      </div> : null}
+    </> : null}
+  </section>;
+};
 
 const PasteList = memo(({ model }) => {
   const { t, languageName } = useI18n();
@@ -743,6 +782,7 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
   const sheetRef = useRef(null);
   const titleId = useId();
   const [isConfirmingClose, setIsConfirmingClose] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const finish = useCallback(() => {
     onClose?.({ addedTotal: model.addedTotal });
@@ -758,7 +798,9 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
     finish();
   }, [finish, isConfirmingClose, model.hasUnsavedInput]);
 
-  useDialogA11y({ isOpen: true, containerRef: sheetRef, onClose: requestClose });
+  useDialogA11y({ isOpen: !isGenerating, containerRef: sheetRef, onClose: requestClose });
+
+  if (isGenerating) return <GenerateDeckDialog onWordsAdded={onWordsAdded} onClose={(result) => { if (result?.addedTotal) onClose?.(result); else setIsGenerating(false); }} />;
 
   return (
     <div className="quick-add" role="dialog" aria-modal="true" aria-labelledby={titleId}>
@@ -774,6 +816,8 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
         <div className="quick-add__body">
           <DeckPicker model={model} deckNameRef={deckNameRef} />
 
+          {model.ai.canCollectTopic ? <Button className="quick-add__open-generator" onClick={() => setIsGenerating(true)}><SparkIcon />{t("subjectTopic.tab")}</Button> : null}
+
           {/* A pasted list is text; a picture deck takes its words one by one. */}
           {model.languages.pictureSide || !model.subjectProfile.usesLanguages ? null : (
             <div className="quick-add__tabs" role="tablist" aria-label={t("quickAdd.modeLabel")}>
@@ -786,13 +830,13 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
                   className={model.tab === tab ? "is-active" : ""}
                   onClick={() => model.setTab(tab)}
                 >
-                  {t(tab === "single" ? "quickAdd.tabs.single" : "quickAdd.tabs.list")}
+                  {t(tab === "topic" ? "subjectTopic.tab" : tab === "single" && model.isSubjectTopic ? "subjects.addCard" : tab === "single" ? "quickAdd.tabs.single" : "quickAdd.tabs.list")}
                 </button>
               ))}
             </div>
           )}
 
-          {model.tab === "single" || model.languages.pictureSide || !model.subjectProfile.usesLanguages ? <SingleWordForm model={model} sourceInputRef={sourceInputRef} /> : <PasteList model={model} />}
+          {model.tab === "single" || model.languages.pictureSide ? <SingleWordForm model={model} sourceInputRef={sourceInputRef} /> : model.isSubjectTopic ? <SubjectTopic model={model} /> : <PasteList model={model} />}
 
           {/* Right under the fields, so a phone keyboard never hides it. */}
           <Notice model={model} />
@@ -812,7 +856,7 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
           ) : (
             <>
               <span className="quick-add__footer-count">
-                {model.addedTotal > 0 ? t("quickAdd.added.list", { count: model.addedTotal }) : ""}
+                {model.addedTotal > 0 ? t(model.isSubjectTopic ? "subjectTopic.saved" : "quickAdd.added.list", { count: model.addedTotal }) : ""}
               </span>
               <Button onClick={requestClose}>
                 {model.addedTotal > 0 ? t("quickAdd.doneLabel") : t("common.close")}
@@ -826,3 +870,64 @@ export const QuickAddWordsDialog = memo(({ initialDeckId = "", initialTab = "sin
 });
 
 QuickAddWordsDialog.displayName = "QuickAddWordsDialog";
+
+
+// A dedicated deck workflow. It shares the profile contract and writer with
+// quick add, while keeping creation, review and final save in one workspace.
+export function GenerateDeckDialog({ onClose, onWordsAdded }) {
+  const { t, languageName } = useI18n();
+  const sheetRef = useRef(null);
+  const deckNameRef = useRef(null);
+  const titleId = useId();
+  const [confirming, setConfirming] = useState(false);
+  const model = useQuickAddWords({ isOpen: true, initialTab: "topic", creationOnly: true, onWordsAdded, deckNameRef });
+  const requestClose = useCallback(() => {
+    if (model.isSaving) return;
+    if ((model.rows.length || model.ai.isBusy) && !confirming) setConfirming(true);
+    else onClose?.({ addedTotal: 0 });
+  }, [confirming, model.ai.isBusy, model.isSaving, model.rows.length, onClose]);
+  useDialogA11y({ isOpen: true, containerRef: sheetRef, onClose: requestClose });
+  const save = async () => {
+    const count = model.rowsToAdd.length;
+    if (await model.addRows()) onClose?.({ addedTotal: count });
+  };
+  return (
+    <div className="quick-add generate-deck" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <button type="button" className="quick-add__overlay" onClick={requestClose} aria-hidden="true" tabIndex={-1} />
+      <div className="quick-add__sheet generate-deck__sheet" ref={sheetRef} tabIndex={-1}>
+        <header className="quick-add__header generate-deck__header">
+          <div><h2 id={titleId}><SparkIcon /> {t("subjectTopic.tab")}</h2><p>{t("subjectTopic.menuHint")}</p></div>
+          <button type="button" className="quick-add__close" onClick={requestClose} disabled={model.isSaving} aria-label={t("common.closeDialog")}><FiX aria-hidden="true" /></button>
+        </header>
+        <div className="generate-deck__body">
+          <aside className="generate-deck__setup">
+            <fieldset disabled={model.isSaving}>
+              <DeckPicker model={model} deckNameRef={deckNameRef} generationOnly />
+              <details className="generate-deck__metadata"><summary>{t("quickAdd.details")}</summary>
+                <label className="quick-add__field"><span>{t("editor.description")}</span><textarea name="description" rows={3} value={model.newDeck.description} onChange={model.handleNewDeckChange} /></label>
+                <label className="quick-add__field"><span>{t("editor.tags")}</span><input value={model.newDeck.tags.join(", ")} onChange={event => model.handleNewDeckChange({target:{name:"tags",value:event.target.value.split(",")}})} /></label>
+              </details>
+              <TopicForm model={model} />
+            </fieldset>
+            {!model.ai.canCollectTopic ? <p role="status" className="quick-add__hint">{t("subjectTopic.disabled")}</p> : null}
+          </aside>
+          <section className="generate-deck__review" aria-label={t("subjectTopic.reviewTitle")}>
+            <h3>{t("subjectTopic.reviewTitle")} <span>{model.rows.length}</span></h3>
+            {model.rows.length ? model.isSubjectTopic ? <SubjectTopic model={model} showForm={false} showActions={false} /> : <>
+              <p className="quick-add__topic-review">{t("subjectTopic.review")}</p>
+              <ul className="quick-add__rows">{model.rows.map(row => <ListRow key={row.key} row={row} model={model} sourceLabel={languageName(model.languages.sourceLanguage)} targetLabel={languageName(model.languages.targetLanguage)} />)}</ul>
+            </> : <div className="generate-deck__empty"><FiLayers aria-hidden="true" /><p>{t("subjectTopic.empty")}</p></div>}
+            <Notice model={model} />
+          </section>
+        </div>
+        <footer className="quick-add__footer generate-deck__footer">
+          {confirming ? <div className="quick-add__confirm" role="alert"><span>{t("quickAdd.unsaved")}</span><Button onClick={() => setConfirming(false)}>{t("quickAdd.keepEditing")}</Button><Button variant="danger" onClick={() => onClose?.({addedTotal:0})}>{t("quickAdd.discard")}</Button></div> : <>
+            <Button onClick={requestClose} disabled={model.isSaving}>{t("common.close")}</Button>
+            {model.rows.length ? <Button onClick={model.clearList} disabled={model.isSaving}>{t("subjectTopic.clear")}</Button> : null}
+            <Button variant="primary" onClick={save} disabled={model.isSaving || model.ai.isBusy || !model.rowsToAdd.length}>{t("subjectTopic.create", {count:model.rowsToAdd.length})}</Button>
+          </>}
+        </footer>
+      </div>
+    </div>
+  );
+}

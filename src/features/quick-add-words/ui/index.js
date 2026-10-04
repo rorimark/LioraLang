@@ -1,1 +1,1 @@
-export { QuickAddWordsDialog } from "./QuickAddWordsDialog";
+export { QuickAddWordsDialog, GenerateDeckDialog } from "./QuickAddWordsDialog";

@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Revisar tarjetas",
+    "empty": "Tus tarjetas aparecerán aquí. Elige una materia y un tema y genera un borrador.",
+    "create": "Crear mazo · {count} tarjetas",
+    "disabled": "Activa la IA y la generación de mazos en Ajustes.",
+    "collecting": "Generando tarjetas…",
+    "saved": "Se añadieron {count} tarjetas",
+    "menuHint": "Elige materia y tema y revisa las tarjetas.",
+    "tab": "Crear con IA",
+    "title": "Tarjetas sobre un tema",
+    "placeholder": "Por ejemplo: propiedad en Rust, ecuaciones cuadráticas, Roma antigua",
+    "generate": "Generar tarjetas",
+    "cards": "{count} tarjetas",
+    "review": "Revisa las preguntas, respuestas y campos. Edita o excluye tarjetas antes de guardar.",
+    "include": "Incluir esta tarjeta",
+    "remove": "Eliminar tarjeta",
+    "save": "Guardar {count} tarjetas",
+    "clear": "Borrar borradores"
+  },
   "technologyCards": {
     "query": {
       "code": "Consulta SQL",
@@ -1461,8 +1480,8 @@ export default {
         "hint": "Completa traducciones y detalles con el botón de IA de una lista pegada."
       },
       "topicCollection": {
-        "label": "Reunir palabras por tema",
-        "hint": "Prepara a petición una lista de palabras sobre el tema indicado."
+        "label": "Generar mazos por tema",
+        "hint": "Crear tarjetas para una materia y un tema elegidos cuando lo pidas."
       },
       "deckDescription": {
         "label": "Descripción y etiquetas del mazo",

@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Vérifier les cartes",
+    "empty": "Tes cartes apparaîtront ici. Choisis une matière et un thème, puis génère un brouillon.",
+    "create": "Créer le paquet · {count} cartes",
+    "disabled": "Active l’IA et la génération de paquets dans les paramètres.",
+    "collecting": "Génération des cartes…",
+    "saved": "{count} cartes ajoutées",
+    "menuHint": "Choisissez la matière et le thème, puis vérifiez les cartes.",
+    "tab": "Créer avec l’IA",
+    "title": "Cartes sur un thème",
+    "placeholder": "Par exemple : ownership en Rust, équations du second degré, Rome antique",
+    "generate": "Générer les cartes",
+    "cards": "{count} cartes",
+    "review": "Vérifiez les questions, réponses et champs. Modifiez ou excluez les cartes avant de les enregistrer.",
+    "include": "Inclure cette carte",
+    "remove": "Supprimer la carte",
+    "save": "Enregistrer {count} cartes",
+    "clear": "Effacer les brouillons"
+  },
   "technologyCards": {
     "query": {
       "code": "Requête SQL",
@@ -1461,8 +1480,8 @@ export default {
         "hint": "Compléter traductions et détails via le bouton IA d’une liste collée."
       },
       "topicCollection": {
-        "label": "Collecter des mots par thème",
-        "hint": "Préparer sur demande une liste de mots sur le thème saisi."
+        "label": "Générer des paquets par thème",
+        "hint": "Créer des cartes pour la matière et le thème choisis, sur demande."
       },
       "deckDescription": {
         "label": "Description et étiquettes du paquet",

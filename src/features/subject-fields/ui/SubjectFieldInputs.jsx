@@ -73,6 +73,7 @@ export const SubjectFieldInputs = memo(({
   labelClassName = "",
   only = null,
   section = null,
+  groupNamePrefix = "",
 }) => {
   const { t } = useI18n();
   const id = useId();
@@ -93,7 +94,7 @@ export const SubjectFieldInputs = memo(({
         <label htmlFor={inputId} className={`subject-field__label ${labelClassName}`.trim()}>{label}</label>
         {placement ? (
           <SettingSegmented
-            name={spec.placementField}
+            name={`${groupNamePrefix}${spec.placementField}`}
             value={values?.[spec.placementField] || placement.defaultValue}
             ariaLabel={t(placement.labelKey)}
             onChange={(event) => onChange?.(spec.placementField, event.target.value)}

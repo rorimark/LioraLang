@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { closeWebDbConnection } from "@shared/platform/web/db/webDb.js";
 import { createWebDeckRepository } from "@shared/platform/web/model/createWebDeckRepository.js";
 import { ROW_STATUS, looksLikeWordList, parseWordList, splitWordLine } from "./parseWordList";
@@ -209,6 +209,17 @@ describe("deckWordsWriter on the web store", () => {
     expect((await repository.getDeckById(deck.id)).subjectFields).toEqual(deck.subjectFields);
     await removeWordsFromDeck(repository, deck.id, added.map((word) => word.id));
     expect((await repository.getDeckById(deck.id)).subjectFields).toEqual(deck.subjectFields);
+  });
+
+  it("creates a generated deck and its reviewed subject cards in one save", async () => {
+    const repository = createWebDeckRepository();
+    const saveDeck = vi.fn((payload) => repository.saveDeck(payload));
+    const cards = [{ source: "Ownership?", target: "One owner per value.", subjectFields: { code: "let x = 42;", codeSide: "back", difficulty: "easy" }, examples: ["An owner drops its value."], tags: ["memory"] }];
+    const result = await createDeckForWords({ saveDeck }, { name: "Rust", subject: "programming", subjectFields: { technology: "Rust", contentLanguage: "Polish" } }, cards);
+    expect(saveDeck).toHaveBeenCalledTimes(1);
+    expect(result.words).toHaveLength(1);
+    expect((await repository.getDeckWords(result.deck.id))[0]).toMatchObject(cards[0]);
+    expect((await repository.getDeckById(result.deck.id)).subjectFields).toEqual({ technology: "Rust", contentLanguage: "Polish" });
   });
 
   it("creates an empty deck ready for words", async () => {

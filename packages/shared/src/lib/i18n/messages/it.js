@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Controlla le schede",
+    "empty": "Le schede appariranno qui. Scegli una materia e un argomento, poi genera una bozza.",
+    "create": "Crea mazzo · {count} schede",
+    "disabled": "Attiva l’IA e la generazione dei mazzi nelle impostazioni.",
+    "collecting": "Generazione delle schede…",
+    "saved": "Aggiunte {count} schede",
+    "menuHint": "Scegli materia e argomento, poi controlla le schede.",
+    "tab": "Crea con IA",
+    "title": "Schede su un argomento",
+    "placeholder": "Ad esempio: ownership in Rust, equazioni quadratiche, Roma antica",
+    "generate": "Genera schede",
+    "cards": "{count} schede",
+    "review": "Controlla domande, risposte e campi. Modifica o escludi le schede prima di salvarle.",
+    "include": "Includi questa scheda",
+    "remove": "Rimuovi scheda",
+    "save": "Salva {count} schede",
+    "clear": "Cancella bozze"
+  },
   "technologyCards": {
     "query": {
       "code": "Query SQL",
@@ -1461,8 +1480,8 @@ export default {
         "hint": "Completa traduzioni e dettagli con il pulsante IA in una lista incollata."
       },
       "topicCollection": {
-        "label": "Raccogliere parole per argomento",
-        "hint": "Prepara su richiesta una lista di parole sull’argomento indicato."
+        "label": "Genera mazzi per argomento",
+        "hint": "Crea schede per la materia e l’argomento scelti, su richiesta."
       },
       "deckDescription": {
         "label": "Descrizione e tag del mazzo",

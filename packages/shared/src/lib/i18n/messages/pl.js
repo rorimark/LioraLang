@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Sprawdź karty",
+    "empty": "Tutaj pojawią się karty. Wybierz przedmiot i temat, a następnie wygeneruj szkic.",
+    "create": "Utwórz talię · {count} kart",
+    "disabled": "Włącz AI i generowanie talii w ustawieniach.",
+    "collecting": "Generowanie kart…",
+    "saved": "Dodano {count} kart",
+    "menuHint": "Wybierz przedmiot i temat, a następnie sprawdź karty.",
+    "tab": "Utwórz z AI",
+    "title": "Karty na wybrany temat",
+    "placeholder": "Na przykład: własność w Rust, równania kwadratowe, starożytny Rzym",
+    "generate": "Wygeneruj karty",
+    "cards": "{count} kart",
+    "review": "Sprawdź pytania, odpowiedzi i pola przedmiotu. Edytuj lub wyklucz karty przed zapisaniem.",
+    "include": "Uwzględnij kartę",
+    "remove": "Usuń kartę",
+    "save": "Zapisz {count} kart",
+    "clear": "Wyczyść szkice"
+  },
   "technologyCards": {
     "query": {
       "code": "Zapytanie SQL",
@@ -1540,8 +1559,8 @@ export default {
         "hint": "Uzupełniaj tłumaczenia i szczegóły po naciśnięciu przycisku AI we wklejonej liście."
       },
       "topicCollection": {
-        "label": "Dobór słów według tematu",
-        "hint": "Na żądanie przygotuj listę słów na podany temat."
+        "label": "Generowanie talii według tematu",
+        "hint": "Twórz karty dla wybranego przedmiotu i tematu na żądanie."
       },
       "deckDescription": {
         "label": "Opis i tagi talii",

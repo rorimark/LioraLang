@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Kartları incele",
+    "empty": "Kartların burada görünecek. Ders ve konu seç, ardından bir taslak oluştur.",
+    "create": "Deste oluştur · {count} kart",
+    "disabled": "Ayarlarda AI ve deste oluşturmayı etkinleştir.",
+    "collecting": "Kartlar oluşturuluyor…",
+    "saved": "{count} kart eklendi",
+    "menuHint": "Ders ve konuyu seçip kartları kontrol edin.",
+    "tab": "Yapay zekâyla oluştur",
+    "title": "Bir konuda kartlar",
+    "placeholder": "Örneğin: Rust sahipliği, ikinci derece denklemler, Antik Roma",
+    "generate": "Kart oluştur",
+    "cards": "{count} kart",
+    "review": "Soruları, yanıtları ve alanları kontrol edin. Kaydetmeden önce kartları düzenleyin veya dışarıda bırakın.",
+    "include": "Bu kartı dahil et",
+    "remove": "Kartı kaldır",
+    "save": "{count} kartı kaydet",
+    "clear": "Taslakları temizle"
+  },
   "technologyCards": {
     "query": {
       "code": "SQL sorgusu",
@@ -1382,8 +1401,8 @@ export default {
         "hint": "Yapıştırılmış listedeki yapay zekâ düğmesiyle çeviri ve ayrıntıları tamamla."
       },
       "topicCollection": {
-        "label": "Konuya göre kelime toplama",
-        "hint": "İstek üzerine belirtilen konuda kelime listesi oluştur."
+        "label": "Konuya göre deste oluştur",
+        "hint": "Seçilen ders ve konu için istek üzerine kartlar taslakla."
       },
       "deckDescription": {
         "label": "Deste açıklaması ve etiketleri",

@@ -156,7 +156,7 @@ export const removeWordsFromDeck = (deckRepository, deckId, wordIds) =>
   });
 
 // A deck drafted on a topic arrives with its description and tags.
-export const createDeckForWords = (deckRepository, draft) => {
+export const createDeckForWords = (deckRepository, draft, cards = []) => {
   const subject = storedSubject(draft.subject);
   const profile = getSubjectProfile(subject);
   const pictureSide = profile.usesLanguages ? draft.pictureSide || "" : "";
@@ -169,6 +169,6 @@ export const createDeckForWords = (deckRepository, draft) => {
     tertiaryLanguage: "",
     tags: Array.isArray(draft.tags) ? draft.tags.slice(0, 10) : [],
     usesWordLevels: profile.usesLanguages,
-    words: [],
+    words: cards.map((card, index) => toNewWord(card, index)),
   });
 };

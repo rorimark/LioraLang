@@ -3,7 +3,7 @@ import { FiChevronDown, FiCode, FiFilePlus, FiPlus, FiUpload } from "react-icons
 import { DecksTable } from "@entities/deck";
 import { CreateDeckFromJsonModal, ImportDeckModal } from "@features/deck-import";
 import { DeleteDeckModal } from "@features/deck-delete";
-import { QuickAddWordsDialog } from "@features/quick-add-words";
+import { GenerateDeckDialog } from "@features/quick-add-words";
 import { SparkIcon } from "@features/word-suggest";
 import { CardCatalogPagination } from "@features/card-catalog";
 import { Button, InlineAlert, SearchField } from "@shared/ui";
@@ -68,7 +68,7 @@ const NewDeckMenu = ({ onCreate, onCollect, onImport, onJson, isImporting }) => 
             <SparkIcon className="decks-page-panel__new-spark" />
             <span>
               <strong>{t("decks.newMenu.ai")}</strong>
-              <small>{t("decks.newMenu.aiHint")}</small>
+              <small>{t("subjectTopic.menuHint")}</small>
             </span>
           </button>
           <button type="button" role="menuitem" onClick={() => choose(onImport)} disabled={isImporting}>
@@ -302,7 +302,7 @@ export const DecksOverviewPanel = memo(() => {
 
       <CreateDeckFromJsonModal modal={jsonImportModal} />
 
-      {isCollectOpen ? <QuickAddWordsDialog initialTab="topic" onClose={closeCollect} /> : null}
+      {isCollectOpen ? <GenerateDeckDialog onClose={closeCollect} /> : null}
     </article>
   );
 });

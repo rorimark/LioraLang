@@ -78,6 +78,19 @@ describe("suggestWord", () => {
     expect(invoke.mock.calls[2][1]).toMatchObject({ body: { task: "hint" }, timeout: 15000 });
   });
 
+  it("generates a subject deck through the authenticated long-request path", async () => {
+    const api = await load();
+    const request = { subject: "mathematics", topic: "Quadratic equations", count: 10, deckFields: { contentLanguage: "Polish" } };
+    const result = { name: "Quadratics", cards: [{ source: "Solve $x^2=4$", target: "$x=\\pm 2$", subjectFields: { formula: "x=\\pm 2", formulaSide: "back" } }] };
+    invoke.mockResolvedValue({ data: { result }, error: null });
+    const signal = new AbortController().signal;
+    await expect(api.suggestConceptTopic(request, { signal })).resolves.toEqual(result);
+    expect(invoke).toHaveBeenCalledWith("suggest-word", { body: { ...request, task: "concept-topic" }, signal, timeout: 45000 });
+    getSession.mockResolvedValue({ data: { session: null } });
+    await expect(api.suggestConceptTopic(request)).rejects.toMatchObject({ code: "signin" });
+    expect(invoke).toHaveBeenCalledTimes(1);
+  });
+
   it("reads today's allowance and counts down with each call", async () => {
     const rpc = vi.fn().mockResolvedValue({
       data: [{ allowance: 300, used: 10, remaining: 290, resets_at: "2026-10-02T00:00:00+00:00" }],

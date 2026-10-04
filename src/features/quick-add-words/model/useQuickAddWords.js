@@ -4,6 +4,7 @@ import { usePlatformService } from "@shared/providers";
 import { useAppPreferences } from "@shared/lib/appPreferences";
 import {
   AI_LIST_CHUNK,
+  CONCEPT_TOPIC_COUNTS, buildConceptTopicRequest, readConceptTopicResult, conceptTopicCardsToRows, conceptTopicRowToCard,
   applyCardToRow,
   buildAiDeck,
   buildTopicRequest,
@@ -116,6 +117,7 @@ export const useQuickAddWords = ({
   isOpen,
   initialDeckId = "",
   initialTab = "single",
+  creationOnly = false,
   onWordsAdded,
   sourceInputRef,
   deckNameRef,
@@ -223,7 +225,8 @@ export const useQuickAddWords = ({
   const subjectProfile = getSubjectProfile(subject, selectedDeck?.subjectFields || newDeck.subjectFields);
   const usesWordLevels = subjectProfile.usesLanguages && (selectedDeck ? selectedDeck.usesWordLevels !== false : true);
   const pictureSide = languages.pictureSide;
-  const activeTab = subjectProfile.usesLanguages ? tab : "single";
+  const isSubjectTopic = subjectProfile.assistant?.topic === "concept";
+  const activeTab = subjectProfile.usesLanguages ? tab : isSubjectTopic && tab !== "single" ? "topic" : "single";
 
   const loadDeckWords = useCallback(async () => {
     if (!selectedDeck) {
@@ -264,9 +267,9 @@ export const useQuickAddWords = ({
   }, [sourceInputRef]);
 
   // The deck to write to: the chosen one, or the new one made on the spot.
-  const ensureDeck = useCallback(async () => {
+  const ensureDeck = useCallback(async (drafts) => {
     if (selectedDeck) {
-      return selectedDeck;
+      return { deck: selectedDeck };
     }
 
     const name = newDeck.name.trim();
@@ -290,7 +293,7 @@ export const useQuickAddWords = ({
       throw Object.assign(new Error("languages"), { i18nKey: "quickAdd.errors.sameLanguages" });
     }
 
-    const result = await createDeckForWords(deckRepository, newDeck);
+    const result = await createDeckForWords(deckRepository, newDeck, creationOnly ? drafts : []);
     const created = result?.deck;
 
     if (!created?.id) {
@@ -300,13 +303,13 @@ export const useQuickAddWords = ({
     setCreatedDeck(created);
     setDeckChoice(String(created.id));
     setNewDeck((current) => ({ ...current, name: "", description: "", tags: [] }));
-    return created;
-  }, [deckNameRef, deckRepository, decks, newDeck, selectedDeck]);
+    return { deck: created, initialWords: creationOnly ? result.words : null };
+  }, [creationOnly, deckNameRef, deckRepository, decks, newDeck, selectedDeck]);
 
   const writeWords = useCallback(
     async (drafts) => {
-      const deck = await ensureDeck();
-      const result = await appendWordsToDeck(deckRepository, deck.id, drafts);
+      const { deck, initialWords } = await ensureDeck(drafts);
+      const result = initialWords ? { deck, words: initialWords, added: initialWords } : await appendWordsToDeck(deckRepository, deck.id, drafts);
 
       setDeckWords(result.words);
       setAddedTotal((total) => total + result.added.length);
@@ -651,21 +654,23 @@ export const useQuickAddWords = ({
     setIsSaving(true);
 
     try {
-      const { added } = await writeWords(rowsToAdd.map((row) => rowToWord(row, { usesWordLevels })));
+      const { added } = await writeWords(rowsToAdd.map((row) => subjectProfile.usesLanguages ? rowToWord(row, { usesWordLevels }) : conceptTopicRowToCard(row, subject)));
       const addedKeys = new Set(rowsToAdd.map((row) => row.key));
       // What was added leaves the preview; what still needs fixing stays.
       const remaining = rows.filter((row) => !addedKeys.has(row.key));
 
       setRows(remaining);
       setPasteText(remaining.length ? pasteText : "");
-      setNotice({ kind: "added", key: "quickAdd.added.list", params: { count: added.length } });
+      setNotice({ kind: "added", key: subjectProfile.usesLanguages ? "quickAdd.added.list" : "subjectTopic.saved", params: { count: added.length } });
+      return true;
     } catch (error) {
       console.warn("[quick-add] list add failed", error);
       setNotice(error?.isShownAtField ? null : { kind: "error", key: error?.i18nKey || "quickAdd.errors.save" });
+      return false;
     } finally {
       setIsSaving(false);
     }
-  }, [pasteText, rows, rowsToAdd, usesWordLevels, writeWords]);
+  }, [pasteText, rows, rowsToAdd, subject, subjectProfile.usesLanguages, usesWordLevels, writeWords]);
 
   // ——— The assistant ———
 
@@ -682,10 +687,16 @@ export const useQuickAddWords = ({
   );
   const canUseAi = ai.isWanted && !pictureSide && subjectProfile.assistant?.batch && canDraftCards(aiDeck);
   const canFillList = canUseAi && isAiFeatureEnabled(appPreferences, "listCompletion");
-  const canCollectTopic = canUseAi && isAiFeatureEnabled(appPreferences, "topicCollection");
+  const canCollectTopic = ai.isWanted && !pictureSide && Boolean(subjectProfile.assistant?.topic) && (isSubjectTopic || canDraftCards(aiDeck)) && isAiFeatureEnabled(appPreferences, "topicCollection");
   const [aiState, setAiState] = useState({ status: AI_STATUS.idle, done: 0, total: 0 });
-  const [topic, setTopic] = useState({ text: "", level: "", count: 20 });
+  const [topic, setTopic] = useState({ text: "", level: "", difficulty: "", count: 20 });
+  useEffect(() => { setTopic(current => ({...current,count:isSubjectTopic ? 10 : 20,difficulty:""})); }, [isSubjectTopic]);
   const aiControllerRef = useRef(null);
+  const conceptDeck = selectedDeck || newDeck;
+  const topicCount = isSubjectTopic && !CONCEPT_TOPIC_COUNTS.includes(topic.count) ? 10 : topic.count;
+  const conceptRequest = isSubjectTopic ? buildConceptTopicRequest({deck:conceptDeck,topic:topic.text,count:topicCount,difficulty:topic.difficulty}) : null;
+  const aiContextKey = JSON.stringify([deckChoice,subject,conceptDeck.subjectFields,languages.sourceLanguage,languages.targetLanguage]);
+  useEffect(() => { aiControllerRef.current?.abort(); }, [aiContextKey]);
   const rowsRef = useRef(rows);
 
   useEffect(() => {
@@ -752,32 +763,32 @@ export const useQuickAddWords = ({
 
       setAiState({ status: AI_STATUS.done, done, total: pending.length });
     } catch (error) {
-      if (error?.code !== "aborted") {
+      if (!controller.signal.aborted && error?.code !== "aborted") {
         setAiState({ status: aiErrorStatus(error), done, total: pending.length });
       }
     }
   }, [ai.isReady, ai.repository, aiDeck, canFillList, startAi, wordIndex]);
 
-  const changeTopic = useCallback((patch) => setTopic((current) => ({ ...current, ...patch })), []);
+  const changeTopic = useCallback((patch) => { aiControllerRef.current?.abort(); setTopic((current) => ({ ...current, ...patch })); }, []);
 
   // A deck on a topic: the assistant drafts the words, the person looks
   // them over in the list and adds them like any other.
   const collectByTopic = useCallback(async () => {
-    if (!canCollectTopic || !ai.isReady || !isTopicReady(topic.text)) {
+    if (!canCollectTopic || !ai.isReady || (isSubjectTopic ? !conceptRequest : !isTopicReady(topic.text))) {
       return;
     }
 
     const controller = startAi();
-    setAiState({ status: AI_STATUS.collecting, done: 0, total: topic.count });
+    setAiState({ status: AI_STATUS.collecting, done: 0, total: topicCount });
 
     try {
       const avoid = [...deckWords.map((word) => word.source), ...rowsRef.current.map((row) => row.source)];
-      const { name, description, deckTags, cards } = await ai.repository.suggestTopic(
-        buildTopicRequest({ deck: aiDeck, topic: topic.text, level: topic.level, count: topic.count, avoid }),
-        { signal: controller.signal },
-      );
+      const request = isSubjectTopic ? {...conceptRequest,avoid} : buildTopicRequest({ deck: aiDeck, topic: topic.text, level: topic.level, count: topic.count, avoid });
+      const raw = await (isSubjectTopic ? ai.repository.suggestConceptTopic(request, {signal:controller.signal}) : ai.repository.suggestTopic(request, {signal:controller.signal}));
       if (controller.signal.aborted) return;
-      const drafted = cardsToRows(cards, aiDeck, nextRowKey);
+      const result = isSubjectTopic ? readConceptTopicResult(raw, request) : raw;
+      const {name,description,deckTags,cards} = result || {cards:[]};
+      const drafted = isSubjectTopic ? conceptTopicCardsToRows(cards, nextRowKey) : cardsToRows(cards, aiDeck, nextRowKey);
 
       if (drafted.length === 0) {
         setAiState({ status: AI_STATUS.error, done: 0, total: topic.count });
@@ -795,11 +806,11 @@ export const useQuickAddWords = ({
       }));
       setAiState({ status: AI_STATUS.done, done: drafted.length, total: drafted.length });
     } catch (error) {
-      if (error?.code !== "aborted") {
+      if (!controller.signal.aborted && error?.code !== "aborted") {
         setAiState({ status: aiErrorStatus(error), done: 0, total: topic.count });
       }
     }
-  }, [ai.isReady, ai.repository, aiDeck, canCollectTopic, deckWords, startAi, topic, wordIndex]);
+  }, [ai.isReady, ai.repository, aiDeck, canCollectTopic, conceptRequest, deckWords, isSubjectTopic, startAi, topic, topicCount, wordIndex]);
 
   // A misspelt line takes the word the assistant meant, and is asked again.
   const applyCorrection = useCallback(
@@ -821,6 +832,7 @@ export const useQuickAddWords = ({
     aiControllerRef.current?.abort();
     setAiState({ status: AI_STATUS.idle, done: 0, total: 0 });
 
+    setRows([]);
     setDeckChoice(choice);
     setNotice(null);
     setConfirmedPair("");
@@ -845,14 +857,17 @@ export const useQuickAddWords = ({
     const subject = storedSubject(event.target.value);
     aiControllerRef.current?.abort();
     setAiState({ status: AI_STATUS.idle, done: 0, total: 0 });
+    setRows([]);
     setNewDeck((current) => ({ ...current, subject, subjectFields: createDefaultSubjectFields(subject, defaultContentLanguage(locale)), pictureSide: "" }));
     setDraft((current) => ({ ...current, subjectFields: {} }));
     setDraftImage(null);
     setDetails(EMPTY_DETAILS);
-    setTab("single");
+    setTab(startsWithTopic ? "topic" : "single");
     setNotice(null);
-  }, [locale]);
+  }, [locale, startsWithTopic]);
   const handleNewDeckSubjectFieldChange = useCallback((name, value) => {
+    aiControllerRef.current?.abort();
+    setRows([]);
     setNewDeck((current) => ({ ...current, subjectFields: { ...current.subjectFields, [name]: value } }));
   }, []);
 
@@ -884,7 +899,9 @@ export const useQuickAddWords = ({
     languageOptions: LANGUAGE_OPTIONS,
     usesWordLevels,
     subjectProfile,
-    tab: activeTab,
+    isSubjectTopic,
+    updateRow,
+    tab: activeTab === "topic" && !canCollectTopic ? "single" : activeTab,
     setTab,
     draft,
     draftImage,
@@ -930,14 +947,18 @@ export const useQuickAddWords = ({
     undo,
     isTopicFirst: startsWithTopic,
     ai: {
+      isSubjectTopic,
       isAvailable: canFillList || canCollectTopic,
       canFillList, canCollectTopic,
       isReady: ai.isReady,
-      needsSignIn: canUseAi && ai.needsSignIn,
+      needsSignIn: (canUseAi || canCollectTopic) && ai.needsSignIn,
+      languageRequired: isSubjectTopic && !conceptDeck.subjectFields?.[subjectProfile.assistant?.languageField],
+      topicCounts: isSubjectTopic ? CONCEPT_TOPIC_COUNTS : [10,20,30],
+      canGenerate: isSubjectTopic ? Boolean(conceptRequest) : isTopicReady(topic.text),
       ...aiState,
       isBusy: aiState.status === AI_STATUS.filling || aiState.status === AI_STATUS.collecting,
       pendingCount: rowsToDraft(rows).length,
-      topic,
+      topic: {...topic,count:topicCount},
       changeTopic,
       fillWithAi,
       collectByTopic,

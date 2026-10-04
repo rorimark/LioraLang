@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Review cards",
+    "empty": "Your cards will appear here. Choose a subject and topic, then generate a draft.",
+    "create": "Create deck · {count} cards",
+    "disabled": "Enable AI and deck generation in Settings to use this feature.",
+    "collecting": "Generating cards…",
+    "saved": "Added {count} cards",
+    "menuHint": "Choose a subject and topic, then review the cards.",
+    "tab": "Generate a deck",
+    "title": "Create cards on a topic",
+    "placeholder": "For example: ownership, quadratic equations, Ancient Rome",
+    "generate": "Generate cards",
+    "cards": "{count} cards",
+    "review": "Review the questions, answers and subject fields. Edit or exclude cards before saving.",
+    "include": "Include this card",
+    "remove": "Remove card",
+    "save": "Save {count} cards",
+    "clear": "Clear drafts"
+  },
   "technologyCards": {
     "query": {
       "code": "SQL query",
@@ -1382,8 +1401,8 @@ export default {
         "hint": "Fill missing translations and details when you press the AI button in a pasted list."
       },
       "topicCollection": {
-        "label": "Collect words by topic",
-        "hint": "Draft a list of words for the topic you enter, on request."
+        "label": "Generate decks by topic",
+        "hint": "Draft cards for a chosen subject and topic, on request."
       },
       "deckDescription": {
         "label": "Deck description and tags",

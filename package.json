@@ -46,6 +46,7 @@
     "test:coverage:report": "node scripts/run-test-suite.mjs --coverage --report",
     "preview": "pnpm preview:web",
     "preview:web": "pnpm build:web && vite preview --host --port 4175 --strictPort",
+    "check:subject-topic": "node scripts/acceptance/subject-topic.mjs",
     "check:subject-assistant": "node scripts/acceptance/subject-assistant.mjs",
     "check:offline-knowledge": "node scripts/acceptance/knowledge-offline.mjs",
     "check:technology-appearances": "node scripts/acceptance/technology-appearances.mjs"

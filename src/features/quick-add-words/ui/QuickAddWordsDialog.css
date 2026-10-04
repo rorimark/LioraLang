@@ -778,3 +778,12 @@
 
 .quick-add__pair.quick-add__pair--structured { grid-template-columns: minmax(0, 1fr); }
 .quick-add__pair--structured textarea[name="target"] { min-height: 6.5em; padding: 12px; line-height: 1.5; resize: vertical; }
+
+.quick-add__generated { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 12px; }
+.quick-add__generated-card { padding: 14px; border: 2px solid var(--color-border); border-radius: 14px; background: var(--color-surface); min-width: 0; }
+.quick-add__generated-card summary { cursor: pointer; font-weight: 800; overflow-wrap: anywhere; }
+.quick-add__generated-card[open] summary { margin-bottom: 16px; }
+.quick-add__generated-card .quick-add__field { margin-block: 12px; }
+.quick-add__generated-include { display: flex; gap: 8px; align-items: center; font-weight: 700; }
+.quick-add__generated-answer { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border-radius: 8px; background: var(--color-surface-muted); }
+.quick-add__topic-review { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.5; }

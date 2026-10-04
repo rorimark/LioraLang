@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "カードを確認",
+    "empty": "科目とテーマを選んで下書きを生成すると、ここにカードが表示されます。",
+    "create": "デッキを作成 · {count} 枚",
+    "disabled": "設定でAIとデッキ生成を有効にしてください。",
+    "collecting": "カードを生成中…",
+    "saved": "{count} 枚を追加しました",
+    "menuHint": "科目とテーマを選んでカードを確認してください。",
+    "tab": "AIで作成",
+    "title": "テーマ別のカード",
+    "placeholder": "例：Rustの所有権、二次方程式、古代ローマ",
+    "generate": "カードを生成",
+    "cards": "{count} 枚のカード",
+    "review": "質問、回答、科目の項目を確認してください。保存前にカードを編集・除外できます。",
+    "include": "このカードを含める",
+    "remove": "カードを削除",
+    "save": "{count} 枚を保存",
+    "clear": "下書きを消去"
+  },
   "technologyCards": {
     "query": {
       "code": "SQLクエリ",
@@ -1303,8 +1322,8 @@ export default {
         "hint": "貼り付けたリストのAIボタンで訳や詳細を補完します。"
       },
       "topicCollection": {
-        "label": "テーマ別の単語収集",
-        "hint": "指定したテーマの単語リストをリクエスト時に作成します。"
+        "label": "テーマ別にデッキを生成",
+        "hint": "選択した科目とテーマのカードを、リクエスト時に作成します。"
       },
       "deckDescription": {
         "label": "デッキの説明とタグ",

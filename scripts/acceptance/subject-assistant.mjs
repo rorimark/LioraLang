@@ -126,7 +126,7 @@ const main = async () => {
  await page.waitForFunction(() => document.querySelector('input[name="aiFeatures.conceptSuggestions"]')?.checked === false);
  assert.equal(await page.getByRole('switch',{name:'Subject card suggestions',exact:true}).isChecked(),false);
  assert.equal(await page.getByRole('switch',{name:'Word suggestions while typing',exact:true}).isChecked(),false);
- assert.equal(await page.getByRole('switch',{name:'Collect words by topic',exact:true}).isChecked(),true);
+ assert.equal(await page.getByRole('switch',{name:'Generate decks by topic',exact:true}).isChecked(),true);
  assert.equal(await page.getByRole('switch',{name:'Explanations after Again',exact:true}).isChecked(),true);
  await page.setViewportSize({width:390,height:844});
  await page.waitForFunction(() => document.getAnimations().filter(a => a.effect?.getTiming().iterations !== Infinity).every(a => a.playState === 'finished'));
@@ -149,7 +149,7 @@ const main = async () => {
  await page.getByRole('switch',{name:'Enable AI assistant',exact:true}).check();
  await page.getByText('3 / 6 functions on',{exact:true}).waitFor();
  assert.equal(await page.getByRole('switch',{name:'Subject card suggestions',exact:true}).isChecked(),false);
- assert.equal(await page.getByRole('switch',{name:'Collect words by topic',exact:true}).isChecked(),true);
+ assert.equal(await page.getByRole('switch',{name:'Generate decks by topic',exact:true}).isChecked(),true);
  const noAsks = asks;
  await page.goto(quickEditorUrl);
  await page.locator('input[name=source]').fill('Hoisting');
@@ -177,7 +177,7 @@ const main = async () => {
  await dialog.getByRole('button',{name:'Close dialog',exact:true}).click();
  await dialog.getByRole('button',{name:'Discard them',exact:true}).click();
  await page.goto(`${BASE}/app/settings?tab=assistant`);
- await page.getByRole('switch',{name:'Collect words by topic',exact:true}).uncheck();
+ await page.getByRole('switch',{name:'Generate decks by topic',exact:true}).uncheck();
  await page.getByRole('switch',{name:'Complete a word list',exact:true}).check();
  await page.getByText('4 / 6 functions on',{exact:true}).waitFor();
  await page.goto(`${BASE}/app/learn`);

@@ -1,4 +1,23 @@
 export default {
+  "subjectTopic": {
+    "reviewTitle": "Karten prüfen",
+    "empty": "Hier erscheinen deine Karten. Wähle Fach und Thema und erstelle einen Entwurf.",
+    "create": "Stapel erstellen · {count} Karten",
+    "disabled": "Aktiviere KI und Stapelerstellung in den Einstellungen.",
+    "collecting": "Karten werden generiert…",
+    "saved": "{count} Karten hinzugefügt",
+    "menuHint": "Wähle Fach und Thema und prüfe die Karten.",
+    "tab": "Mit KI erstellen",
+    "title": "Karten zu einem Thema",
+    "placeholder": "Zum Beispiel: Rust-Ownership, quadratische Gleichungen, antikes Rom",
+    "generate": "Karten generieren",
+    "cards": "{count} Karten",
+    "review": "Prüfe Fragen, Antworten und Fachfelder. Bearbeite Karten oder schließe sie vor dem Speichern aus.",
+    "include": "Karte einschließen",
+    "remove": "Karte entfernen",
+    "save": "{count} Karten speichern",
+    "clear": "Entwürfe löschen"
+  },
   "technologyCards": {
     "query": {
       "code": "SQL-Abfrage",
@@ -1382,8 +1401,8 @@ export default {
         "hint": "Ergänze Übersetzungen und Details über die KI-Schaltfläche in einer eingefügten Liste."
       },
       "topicCollection": {
-        "label": "Wörter nach Thema sammeln",
-        "hint": "Erstelle auf Anfrage eine Wortliste zum angegebenen Thema."
+        "label": "Stapel nach Thema erstellen",
+        "hint": "Auf Anfrage Karten für ein gewähltes Fach und Thema entwerfen."
       },
       "deckDescription": {
         "label": "Beschreibung und Tags des Stapels",
