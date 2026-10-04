@@ -14,6 +14,7 @@ import {
 import { EMPTY_SRS_SESSION as EMPTY_SESSION } from "@shared/core/usecases/srs";
 import { useSrsSession } from "./useSrsSession";
 import { buildSessionReceipt } from "./sessionReceipt";
+import { isInteractiveEventTarget } from "./keyboardTarget";
 import {
   hasStoredLearnProgressViewMode,
   readLearnProgressFromSession,
@@ -132,21 +133,6 @@ const buildCardBackDetails = (word, sessionSettings = {}) => {
     .map((example) => (typeof example === "string" ? example.trim() : ""))
     .filter(Boolean)
     .slice(0, 3);
-};
-
-const isInteractiveEventTarget = (target) => {
-  if (!target || typeof target !== "object") {
-    return false;
-  }
-
-  const tagName =
-    typeof target.tagName === "string" ? target.tagName.toLowerCase() : "";
-
-  if (["input", "textarea", "select", "option"].includes(tagName)) {
-    return true;
-  }
-
-  return Boolean(target.isContentEditable);
 };
 
 const hasNoModifiers = (event) =>
@@ -838,6 +824,7 @@ export const useLearnFlashcardsPanel = () => {
     const handleWindowKeyDown = (event) => {
       // Keys pressed in a dialog over the desk belong to the dialog.
       if (
+        event.defaultPrevented ||
         isInteractiveEventTarget(event.target) ||
         event.target?.closest?.('[aria-modal="true"]')
       ) {

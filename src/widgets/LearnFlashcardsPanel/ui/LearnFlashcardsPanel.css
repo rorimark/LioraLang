@@ -41,6 +41,8 @@
 
 .learn-desk__deck-select {
   display: inline-flex;
+  flex: 0 1 auto;
+  width: max-content;
   min-width: 0;
   max-width: min(46vw, 560px);
   font-size: clamp(1.05rem, 0.9rem + 0.4vw, 1.3rem);
@@ -49,7 +51,12 @@
 }
 
 .learn-desk__deck-select .ui-select {
+  width: 100%;
   min-width: 0;
+}
+
+.learn-desk__deck-select .ui-select__trigger {
+  margin-left: 0;
 }
 
 .learn-desk__direction {

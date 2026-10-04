@@ -4,6 +4,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import process from "node:process";
 import { setTimeout as sleep } from "node:timers/promises";
+import { verifyLearnSelector } from "./learn-selector.mjs";
 
 const PORT = Number(process.env.ACCEPTANCE_PORT || 4191);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -113,6 +114,7 @@ const main = async () => {
       await page.goto(`${BASE}/app/learn`);
       await choose(page.locator("#learn-deck-select"), name);
       await page.keyboard.press("Escape");
+      await verifyLearnSelector(page, name);
       const layout = subject === "Mathematics" ? "mathematics" : "history";
       await page.locator(`.flashcard--layout-${layout}`).waitFor();
       const front = page.locator(".flashcard__face--front");
