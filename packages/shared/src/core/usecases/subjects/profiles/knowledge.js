@@ -5,7 +5,7 @@ import { CONTENT_LANGUAGE_FIELD } from "./commonFields.js";
 export const difficultyField = { type: "choice", values: DIFFICULTIES,
   labelKey: "subjects.fields.difficulty", valueKey: "subjects.difficulty",
   aiHint: "Difficulty of recalling the idea: easy, medium or hard." };
-export const knowledgeField = (key, type = "code", section = "main") => ({
+export const knowledgeField = (key, type = "multiline", section = "main") => ({
   type, section, maxLength: type === "text" ? 120 : 4000,
   labelKey: `knowledge.fields.${key}`, placeholderKey: `knowledge.placeholders.${key}`,
 });

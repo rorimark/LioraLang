@@ -1,3 +1,4 @@
+import { MathFormula } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 
 // A card drawn from blocks (see buildCardPresentation): each block type is
@@ -75,7 +76,27 @@ const ListBlock = ({ block }) => (
   </span>
 );
 
+const FormulaBlock = ({ block }) => <span className="flashcard__formula"><MathFormula value={block.text} /></span>;
+const CalloutBlock = ({ block }) => {
+  const { t } = useI18n();
+  return <span className={`flashcard__callout flashcard__callout--${block.emphasis}`}>
+    {block.labelKey ? <span className="flashcard__block-label">{t(block.labelKey)}</span> : null}
+    <strong>{block.text}</strong>
+  </span>;
+};
+const SequenceBlock = ({ block }) => {
+  const { t } = useI18n();
+  return <span className={`flashcard__sequence flashcard__sequence--${block.role}`}>
+    {block.labelKey ? <span className="flashcard__block-label">{t(block.labelKey)}</span> : null}
+    <span role="list">{block.items.map((item, index) => <span className="flashcard__sequence-item" role="listitem" key={index}>
+      <span className="flashcard__sequence-number" aria-hidden="true">{index + 1}</span><span>{item}</span>
+    </span>)}</span>
+  </span>;
+};
 const BLOCKS = {
+  formula: FormulaBlock,
+  callout: CalloutBlock,
+  sequence: SequenceBlock,
   meta: MetaBlock,
   text: TextBlock,
   code: CodeBlock,

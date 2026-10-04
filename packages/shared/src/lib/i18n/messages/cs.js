@@ -1,5 +1,6 @@
 export default {
   "knowledge": {
+  "invalidFormula": "Zkontrolujte zápis vzorce. Je zobrazen původní text.",
   "fields": {
     "area": "Oblast matematiky",
     "period": "Období nebo region",

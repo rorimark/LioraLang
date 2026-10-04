@@ -1,5 +1,6 @@
 export default {
   "knowledge": {
+  "invalidFormula": "Проверьте запись формулы. Показан исходный текст.",
   "fields": {
     "area": "Раздел математики",
     "period": "Период или регион",

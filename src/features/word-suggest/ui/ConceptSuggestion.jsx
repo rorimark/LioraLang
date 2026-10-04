@@ -1,3 +1,4 @@
+import { MathFormula } from "@shared/ui";
 import { memo } from "react";
 import { FiX } from "react-icons/fi";
 import { getSubjectProfile } from "@shared/core/usecases/subjects";
@@ -31,6 +32,8 @@ export const ConceptSuggestion = memo(({ deck, draft, onApply }) => {
             <p className="concept-suggestion__answer">{card.target}</p>
             {Object.entries(card.subjectFields).map(([key, value]) => {
               const spec = profile.entryFields[key];
+              if (spec.type === "formula") return <MathFormula key={key} value={value} label={t(spec.labelKey)} />;
+              if (spec.type === "multiline") return <p className="concept-suggestion__answer" key={key}>{value}</p>;
               if (spec.type === "code") return <pre key={key}><code>{value}</code></pre>;
               return <p className="concept-suggestion__field" key={key}><span>{t(spec.labelKey)}: </span>{spec.valueKey ? t(`${spec.valueKey}.${value}`) : value}</p>;
             })}

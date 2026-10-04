@@ -1,5 +1,6 @@
 export default {
   "knowledge": {
+  "invalidFormula": "Sprawdź zapis wzoru. Wyświetlany jest tekst źródłowy.",
   "fields": {
     "area": "Dział matematyki",
     "period": "Okres lub region",

@@ -20,7 +20,7 @@ export const createSubjectRegistry = (profiles, defaultId = "language") => {
     if (!/^[a-z][a-z0-9_-]*$/.test(profile.id) || entries.has(profile.id)) throw new Error("Invalid or duplicate subject profile");
     if (!profile.directions?.length || !profile.entryFields || !profile.deckFields) throw new Error(`Incomplete subject profile: ${profile.id}`);
     for (const field of [...Object.values(profile.entryFields), ...Object.values(profile.deckFields)]) {
-      if (!["text", "code", "choice"].includes(field.type)) throw new Error(`Unsupported field type: ${field.type}`);
+      if (!["text", "code", "choice", "formula", "multiline"].includes(field.type)) throw new Error(`Unsupported field type: ${field.type}`);
       if (field.type === "choice" ? !field.values?.length : !(field.maxLength > 0)) throw new Error("Invalid subject field");
     }
     entries.set(profile.id, freeze(profile));

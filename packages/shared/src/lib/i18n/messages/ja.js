@@ -1,5 +1,6 @@
 export default {
   "knowledge": {
+  "invalidFormula": "数式の記法を確認してください。元のテキストを表示しています。",
   "fields": {
     "area": "数学の分野",
     "period": "時代または地域",

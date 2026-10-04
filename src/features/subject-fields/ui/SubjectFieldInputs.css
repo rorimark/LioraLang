@@ -38,3 +38,7 @@
 @media (max-width: 600px) {
   .subject-field .subject-field__code { font-size: 16px; }
 }
+
+.subject-field .subject-field__multiline { width: 100%; min-height: 6em; resize: vertical; font: inherit; line-height: 1.5; padding: 12px; box-sizing: border-box; }
+.subject-field__formula-preview { display: block; min-width: 0; padding: 12px; border-radius: 12px; background: var(--color-surface-muted); border: 1px solid var(--color-border); }
+.subject-field__formula-preview:empty { display: none; }

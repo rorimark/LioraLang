@@ -1,5 +1,5 @@
 import { memo, useId } from "react";
-import { Select, SettingSegmented } from "@shared/ui";
+import { Select, SettingSegmented, MathFormula } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 import "./SubjectFieldInputs.css";
 
@@ -57,7 +57,13 @@ const TextInput = ({ id, name, value, onChange, placeholder, maxLength }) => (
   />
 );
 
-const INPUTS = { code: CodeInput, choice: ChoiceInput, text: TextInput };
+const MultilineInput = (props) => <textarea className="subject-field__multiline" id={props.id} name={props.name} value={props.value}
+  onChange={props.onChange} placeholder={props.placeholder} maxLength={props.maxLength} rows={4} />;
+const FormulaInput = (props) => <>
+  <CodeInput {...props} />
+  <span className="subject-field__formula-preview"><MathFormula value={props.value} label={props.label} /></span>
+</>;
+const INPUTS = { formula: FormulaInput, multiline: MultilineInput, code: CodeInput, choice: ChoiceInput, text: TextInput };
 
 export const SubjectFieldInputs = memo(({
   fields = {},

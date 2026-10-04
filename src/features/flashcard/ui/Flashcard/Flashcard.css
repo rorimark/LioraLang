@@ -700,3 +700,42 @@
   margin-inline: 0;
   border-radius: 12px;
 }
+
+/* Mathematics: a workbook with a ruled calculation area and a teal answer. */
+.flashcard--layout-mathematics {
+  --knowledge-accent: #0f766e;
+  --knowledge-back: #115e59;
+}
+.flashcard--index.flashcard--layout-mathematics .flashcard__face--front {
+  background: linear-gradient(color-mix(in srgb, var(--knowledge-accent) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--knowledge-accent) 10%, transparent) 1px, transparent 1px), var(--flashcard-front-bg);
+  background-size: max(20px, 4cqi) max(20px, 4cqi);
+  border-top: 6px solid var(--knowledge-accent);
+}
+.flashcard--index.flashcard--layout-mathematics .flashcard__face--front::before,
+.flashcard--index.flashcard--layout-history .flashcard__face--front::before { display: none; }
+.flashcard--index:is(.flashcard--layout-mathematics,.flashcard--layout-history) .flashcard__head { padding-bottom: 1em; border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+.flashcard--index:is(.flashcard--layout-mathematics,.flashcard--layout-history) .flashcard__content--blocks { align-content: safe center; gap: 1.3em; padding-block: 1.4em; }
+.flashcard--layout-mathematics .flashcard__block-text--prompt { font-size: clamp(1.4rem, 5.6cqi, 3rem); line-height: 1.2; }
+.flashcard--layout-mathematics .flashcard__block-text--answer { font-size: clamp(1.2rem, 4.5cqi, 2.5rem); }
+.flashcard--index.flashcard--layout-mathematics .flashcard__face--back { background: var(--knowledge-back); border-color: #0b4541; }
+.flashcard__formula { display: block; min-width: 0; padding: 1em; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: 14px; font-size: clamp(1.1rem, 4.5cqi, 2.6rem); background: color-mix(in srgb, var(--flashcard-front-bg) 50%, transparent); }
+.flashcard__face--back .flashcard__formula { background: color-mix(in srgb, #ffffff 8%, transparent); }
+.flashcard__block-label { display: block; font-family: var(--font-family, inherit); font-size: clamp(0.7rem, 1.6cqi, 0.9rem); font-weight: 900; letter-spacing: 0.08em; margin-bottom: 0.6em; opacity: 0.78; }
+.flashcard__sequence { display: grid; gap: 0.5em; font-size: clamp(0.95rem, 2.7cqi, 1.5rem); }
+.flashcard__sequence-item { display: grid; grid-template-columns: 1.8em minmax(0, 1fr); gap: 0.6em; align-items: start; margin-block: 0.65em; line-height: 1.5; overflow-wrap: anywhere; }
+.flashcard__sequence-number { display: grid; place-items: center; width: 1.8em; height: 1.8em; border-radius: 50%; background: color-mix(in srgb, currentColor 15%, transparent); font-size: 0.8em; font-weight: 900; }
+
+/* History: an archival sheet, serif headline, a stamped date and a timeline. */
+.flashcard--layout-history { --history-sheet: #fff9ed; --history-ink: #604627; --history-back: #644534; }
+:root[theme="dark"] .flashcard--layout-history { --history-sheet: #282331; --history-ink: #f2dfbc; --history-back: #48322c; }
+.flashcard--index.flashcard--layout-history .flashcard__face--front { background: var(--history-sheet); color: var(--history-ink); border-top: 6px solid var(--history-ink); }
+.flashcard--index.flashcard--layout-history .flashcard__face--back { background: var(--history-back); border-color: #402b20; }
+.flashcard--layout-history .flashcard__block-text--prompt { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.45rem, 6cqi, 3.4rem); font-weight: 700; line-height: 1.18; }
+.flashcard--layout-history .flashcard__block-text--answer { font-size: clamp(1.1rem, 4.5cqi, 2.6rem); }
+.flashcard--layout-history .flashcard__block-text--context { border-left: 3px solid color-mix(in srgb, currentColor 36%, transparent); padding-left: 1em; font-size: clamp(0.95rem, 2.7cqi, 1.45rem); line-height: 1.55; font-weight: 600; }
+.flashcard__callout { display: block; padding: 1em 1.4em; border: 2px solid color-mix(in srgb, currentColor 60%, transparent); border-radius: 8px; width: fit-content; max-width: 100%; box-sizing: border-box; }
+.flashcard__callout strong { font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.7rem, 7cqi, 3.8rem); font-variant-numeric: lining-nums; overflow-wrap: anywhere; }
+.flashcard--layout-history .flashcard__sequence-item { position: relative; }
+.flashcard--layout-history .flashcard__sequence-item::before { content: ""; position: absolute; left: 0.7em; top: 1.7em; height: calc(100% + 0.5em); width: 1px; background: color-mix(in srgb, currentColor 30%, transparent); }
+.flashcard--layout-history .flashcard__sequence-item:last-child::before { display: none; }

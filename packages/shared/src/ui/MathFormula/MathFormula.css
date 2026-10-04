@@ -1,0 +1,5 @@
+.math-formula { display: grid; min-width: 0; gap: 0.5rem; }
+.math-formula__rendered { display: block; overflow-x: auto; max-width: 100%; padding-block: 0.45em; scrollbar-width: thin; }
+.math-formula__source { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
+.math-formula .katex { color: inherit; font-size: 1.15em; }
+.math-formula__error { font-family: inherit; font-size: 0.75rem; font-weight: 600; color: var(--color-text-subtle); }

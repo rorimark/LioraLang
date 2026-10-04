@@ -1,5 +1,6 @@
 export default {
   "knowledge": {
+  "invalidFormula": "Formülün yazımını kontrol edin. Orijinal metin gösteriliyor.",
   "fields": {
     "area": "Matematik dalı",
     "period": "Dönem veya bölge",

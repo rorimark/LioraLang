@@ -61,7 +61,7 @@ const normalizeFieldValue = (spec, value) => {
   }
 
   // Code keeps its lines and indentation; only trailing blank space goes.
-  const text = spec.type === "code" ? value.replace(/\r\n?/g, "\n").replace(/\s+$/, "") : value.replace(/\s+/g, " ").trim();
+  const text = ["code", "formula", "multiline"].includes(spec.type) ? value.replace(/\r\n?/g, "\n").replace(/\s+$/, "") : value.replace(/\s+/g, " ").trim();
   return text.length > spec.maxLength ? text.slice(0, spec.maxLength) : text;
 };
 
@@ -140,6 +140,12 @@ const buildBlock = (spec, context) => {
     return items.length ? { type: "list", role: spec.role, items } : null;
   }
 
+  if (spec.block === "sequence") {
+    const raw = readSource(spec.from, context);
+    const items = typeof raw === "string" ? raw.split("\n").map(line => line.replace(/^\s*\d+[.)]\s*/, "").trim()).filter(Boolean) : [];
+    return items.length ? { type: "sequence", role: spec.role, labelKey: spec.labelKey, items } : null;
+  }
+
   const value = readSource(spec.from, context);
   // A text that stands alone on its face, with nothing it introduces, is
   // set as the headline.
@@ -150,8 +156,8 @@ const buildBlock = (spec, context) => {
     return null;
   }
 
-  return spec.block === "code"
-    ? { type: "code", emphasis: spec.emphasis, text }
+  return ["code", "formula", "callout"].includes(spec.block)
+    ? { type: spec.block, emphasis: spec.emphasis, ...(spec.labelKey ? { labelKey: spec.labelKey } : {}), text }
     : { type: "text", role: spec.role, text, ...(leads ? { emphasis: "lead" } : {}) };
 };
 

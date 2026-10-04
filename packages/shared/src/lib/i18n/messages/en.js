@@ -1,5 +1,6 @@
 export default {
   "knowledge": {
+  "invalidFormula": "Check the formula syntax. The original text is shown.",
   "fields": {
     "area": "Branch of mathematics",
     "period": "Period or region",
