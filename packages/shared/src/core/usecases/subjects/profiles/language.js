@@ -7,7 +7,7 @@ export const LANGUAGE_PROFILE = Object.freeze({
   nameKey: "subjects.names.language",
   usesLanguages: true,
   canPublishToHub: true,
-  assistant: { entry: "word", batch: true, description: true, reviewHint: true },
+  assistant: { entry: "word", topic: "word", batch: true, description: true, reviewHint: true },
   media: { optionalImage: true },
   directions: [DIRECTIONS.sourceToTarget, DIRECTIONS.targetToSource, DIRECTIONS.mixed],
   // Side names come from the deck's languages.

@@ -14,7 +14,7 @@ export const PROGRAMMING_PROFILE = Object.freeze({
   // The Hub keeps languages in columns; until it knows subjects, these
   // decks stay in the library.
   canPublishToHub: false,
-  assistant: { entry: "concept", languageField: "contentLanguage", batch: false, description: false, reviewHint: false,
+  assistant: { entry: "concept", topic: "concept", languageField: "contentLanguage", batch: false, description: false, reviewHint: false,
     instruction: "Programming concepts and code. Prefer concise, correct, runnable examples in the deck technology. Never run code. Code that demonstrates the answer belongs on the back; code to reason about belongs on the front." },
   media: {},
   directions: [DIRECTIONS.sourceToTarget],

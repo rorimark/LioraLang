@@ -22,7 +22,7 @@ export const createKnowledgeProfile = ({ id, deckFields, entryFields, presentati
   },
   deckFields: { ...deckFields, contentLanguage: CONTENT_LANGUAGE_FIELD },
   entryFields: { ...entryFields, difficulty: difficultyField },
-  assistant: { entry: "concept", languageField: "contentLanguage", batch: false, description: false, reviewHint: false, instruction },
+  assistant: { entry: "concept", topic: "concept", languageField: "contentLanguage", batch: false, description: false, reviewHint: false, instruction },
   presentation,
 });
 export const contextBlock = (field) => ({ block: "meta", items: [

@@ -128,6 +128,10 @@ export const createSupabaseWordSuggestApi = () => ({
     };
   },
 
+  async suggestConceptTopic(request, { signal } = {}) {
+    return (await invoke({ ...request, task: "concept-topic" }, { signal, timeout: LONG_TIMEOUT_MS }))?.result || null;
+  },
+
   // A description and tags for a deck that already has a name or words.
   async suggestDeck(request, { signal } = {}) {
     const result = (await invoke({ ...request, task: "deck" }, { signal, timeout: TIMEOUT_MS }))?.result;

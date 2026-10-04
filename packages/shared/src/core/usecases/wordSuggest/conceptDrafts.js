@@ -41,9 +41,9 @@ export const buildConceptRequest = ({ deck = {}, draft = {}, writeIn }, registry
 };
 
 // Reject malformed cards instead of silently truncating code or an answer.
-export const readConceptCards = (value, subject, registry = subjectRegistry) => {
+export const readConceptCards = (value, subject, registry = subjectRegistry, { maxCards = 3 } = {}) => {
   const profile = conceptProfile(subject, registry);
-  if (!profile || !Array.isArray(value) || value.length > 3) return [];
+  if (!profile || !Array.isArray(value) || value.length > maxCards) return [];
   const seen = new Set();
   return value.flatMap((raw) => {
     if (!object(raw) || !text(raw.source) || !text(raw.target)) return [];

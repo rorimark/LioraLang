@@ -22,6 +22,8 @@ import {
 
 import { validateConceptRequest, buildConceptPrompt, readConceptCards } from "../../../packages/shared/src/core/usecases/wordSuggest/conceptDrafts.js";
 
+import { validateConceptTopicRequest, buildConceptTopicPrompt, readConceptTopicResult } from "../../../packages/shared/src/core/usecases/wordSuggest/conceptTopics.js";
+
 export const MAX_LIST_ROWS = 30;
 export const MIN_TOPIC_WORDS = 5;
 export const MAX_TOPIC_WORDS = 30;
@@ -75,7 +77,8 @@ export type DeckRequest = {
   writeIn: string;
 };
 export type ConceptRequest = { task: "concept"; subject: string; source: string; target: string; subjectFields: Record<string, string>; deckFields: Record<string, string>; writeIn: string; tags: string[] };
-export type TaskRequest = ListRequest | TopicRequest | HintRequest | DeckRequest | ConceptRequest;
+export type ConceptTopicRequest = {task:"concept-topic";subject:string;topic:string;count:number;difficulty:string;deckFields:Record<string,string>;writeIn:string;avoid:string[]};
+export type TaskRequest = ListRequest | TopicRequest | HintRequest | DeckRequest | ConceptRequest | ConceptTopicRequest;
 
 export type CardDraft = {
   index: number;
@@ -115,6 +118,8 @@ const readDeck = (value: unknown): DeckContext | null => {
 
 export const validateTaskRequest = (body: unknown): TaskRequest | null => {
   const value = (body ?? {}) as Record<string, unknown>;
+
+  if (value.task === "concept-topic") return validateConceptTopicRequest(value) as ConceptTopicRequest | null;
 
   if (value.task === "concept") return validateConceptRequest(value) as ConceptRequest | null;
 
@@ -365,8 +370,8 @@ const outputTokens = (model: string, small: boolean) =>
 
 export const buildTaskRequest = (request: TaskRequest, model: string, { withThinking = true } = {}) => {
   const thinking = withThinking ? thinkingFor(model) : {};
-  if (request.task === "concept") {
-    const prompt = buildConceptPrompt(request);
+  if (request.task === "concept" || request.task === "concept-topic") {
+    const prompt = request.task === "concept-topic" ? buildConceptTopicPrompt(request) : buildConceptPrompt(request);
     return {
       systemInstruction: { parts: [{ text: prompt.instruction }] },
       contents: [{ role: "user", parts: [{ text: prompt.input }] }],
@@ -477,6 +482,8 @@ export const readTaskAnswer = (request: TaskRequest, response: unknown): Record<
   if (!raw) {
     return null;
   }
+
+  if (request.task === "concept-topic") return readConceptTopicResult(raw, request);
 
   if (request.task === "concept") return { cards: readConceptCards(raw.cards, request.subject) };
 

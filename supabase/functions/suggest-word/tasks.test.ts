@@ -187,3 +187,16 @@ describe("suggest-word: subject concepts", () => {
     expect(validateTaskRequest({ task: "concept", subject: "unknown", source: "x" })).toBeNull();
   });
 });
+
+describe("subject topic task", () => {
+  it("dispatches through the shared profile contract", () => {
+    const request = validateTaskRequest({task:"concept-topic",subject:"mathematics",topic:"Quadratic equations",count:5,deckFields:{contentLanguage:"Russian"}})!;
+    const body = buildTaskRequest(request,"gemini-3.8-flash-lite");
+    expect(body.generationConfig.responseSchema.properties.cards.maxItems).toBe(5);
+    expect(body.systemInstruction.parts[0].text).toContain("Mathematics");
+    expect(body.systemInstruction.parts[0].text).toContain("Russian");
+    const answer = readTaskAnswer(request,reply({name:"Algebra",cards:[{source:"Roots?",target:"Use the formula",subjectFields:{formula:"x=2"}}]}));
+    expect(answer?.cards).toHaveLength(1);
+    expect(readTaskAnswer(request,reply({cards:[]}))).toBeNull();
+  });
+});
