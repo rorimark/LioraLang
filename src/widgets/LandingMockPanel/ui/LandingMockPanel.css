@@ -1,4 +1,4 @@
-/* LioraLang landing: bright and friendly, built on two things the product
+/* Liora landing: bright and friendly, built on two things the product
    already owns: the blue of its icon and the four grade colours of its
    Again / Hard / Good / Easy buttons. Tokens are scoped to .lp so the app
    screens are untouched. */
@@ -30,7 +30,7 @@
   --lp-device: #1b2230;
 
   --lp-font: "Nunito Variable", "Sora", system-ui, sans-serif;
-  --lp-width: 1080px;
+  --lp-width: 1240px;
   --lp-gutter: clamp(18px, 4vw, 32px);
 
   display: flex;
@@ -81,8 +81,8 @@
   font-family: var(--lp-font);
   font-size: 0.98rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -109,31 +109,6 @@
   transform: translateY(3px);
   border-bottom-width: 2px;
   transition-duration: 60ms;
-}
-
-/* A soft glint crosses the filled buttons on hover. */
-.lp-btn--primary::after,
-.lp-btn--inverse::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    105deg,
-    transparent 30%,
-    rgb(255 255 255 / 0.28) 50%,
-    transparent 70%
-  );
-  transform: translateX(-110%);
-  pointer-events: none;
-}
-
-@media (hover: hover) {
-  .lp-btn--primary:hover::after,
-  .lp-btn--inverse:hover::after {
-    transform: translateX(110%);
-    transition: transform 650ms ease;
-  }
 }
 
 .lp-btn--primary {
@@ -187,8 +162,8 @@
   color: var(--lp-blue);
   font-weight: 800;
   font-size: 0.95rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
   padding-bottom: 3px;
 }
@@ -348,109 +323,107 @@
   font-size: 1.15rem;
 }
 
-/* === Hero === */
-
+/* The first screen is an actual review, next to a short explanation. */
 .lp-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
-  gap: clamp(32px, 6vw, 80px);
+  gap: clamp(32px, 5vw, 72px);
   width: 100%;
   max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
   margin-inline: auto;
-  padding: clamp(40px, 7vw, 96px) var(--lp-gutter) clamp(48px, 7vw, 96px);
+  padding: clamp(36px, 4vw, 64px) var(--lp-gutter) clamp(48px, 5vw, 72px);
 }
 
 .lp-hero__copy {
   display: grid;
-  justify-items: center;
-  gap: 20px;
-  text-align: center;
+  justify-items: start;
+  gap: 24px;
+  text-align: start;
+}
+
+.lp-hero__eyebrow {
+  color: var(--lp-ink-soft);
+  font-size: 0.88rem;
+  font-weight: 800;
 }
 
 .lp-hero h1 {
-  max-width: 16ch;
-  font-size: clamp(2rem, 3.8vw, 2.9rem);
+  max-width: 17ch;
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
   font-weight: 900;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
 .lp-hero h1 em {
   font-style: normal;
-  color: var(--lp-red);
-  /* A hand-drawn feel: a thick amber underline that sits under the word. */
-  text-decoration: underline;
-  text-decoration-color: var(--lp-amber);
-  text-decoration-thickness: 0.14em;
-  text-underline-offset: 0.12em;
+  color: var(--lp-blue);
 }
 
 .lp-hero__copy > p {
-  max-width: 40ch;
+  max-width: 45ch;
   color: var(--lp-ink-soft);
-  font-size: 1.12rem;
+  font-size: 1.08rem;
   font-weight: 600;
-  line-height: 1.55;
+  line-height: 1.65;
+}
+
+.lp-hero__copy > .lp-hero__note {
+  max-width: 44ch;
+  font-size: 0.86rem;
+  line-height: 1.5;
 }
 
 .lp-hero__actions {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  width: min(100%, 340px);
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
-/* The hero art echoes the app icon: a blue disc with two tilted cards. */
-.lp-hero-art {
-  position: relative;
-  width: min(100%, 440px);
-  aspect-ratio: 1;
-  justify-self: center;
+.lp-hero__actions .lp-btn {
+  min-height: 50px;
+  padding-inline: 20px;
 }
 
-.lp-hero-art__disc {
-  position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  background: var(--lp-blue-soft);
-}
-
-.lp-card {
-  position: absolute;
+.lp-hero__demo {
   display: grid;
-  align-content: space-between;
-  width: 46%;
-  aspect-ratio: 3 / 4;
-  padding: 18px;
-  border: 3px solid;
-  border-bottom-width: 9px;
-  border-radius: 24px;
-  container-type: inline-size;
+  gap: 14px;
+  min-width: 0;
 }
 
-.lp-card--back {
-  top: 12%;
-  left: 47%;
-  justify-items: end;
-  text-align: right;
-  transform: rotate(12deg);
-  /* The front card covers this one's left side: the word keeps to the
-     part that shows. */
-  --fit: 68cqi;
-  background: var(--lp-surface);
-  border-color: var(--lp-line-strong);
+.lp-hero__demo > h2 {
   color: var(--lp-ink);
+  font-size: 1rem;
+  font-weight: 800;
 }
 
-.lp-card--front {
-  top: 24%;
-  left: 12%;
-  transform: rotate(-8deg);
-  background: var(--lp-blue);
-  border-color: var(--lp-blue-edge);
-  color: var(--lp-on-color);
+.lp-demo-subjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-block: 2px;
+  border-bottom: 1px solid var(--lp-line);
+}
+
+.lp-demo-subject.ui-button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: var(--lp-ink-soft);
+  font-size: 0.83rem;
+  --button-bg: transparent;
+  scroll-margin-block: 84px;
+}
+
+.lp-demo-subject.ui-button[aria-pressed="true"] {
+  --button-bg: var(--lp-blue-soft);
+  --button-text: var(--lp-blue);
+  --button-border: var(--lp-blue-soft);
+  --button-edge: var(--lp-blue);
+  color: var(--lp-blue);
 }
 
 .lp-card__label {
@@ -462,20 +435,6 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.lp-card__word {
-  /* A long word ("путешествие") gets smaller rather than run past the
-     card: a heavy letter is at most about 0.7em wide, so the word fits the
-     card's inner width. */
-  max-width: var(--fit, 100cqi);
-  line-height: 1.1;
-  font-size: max(1rem, min(clamp(1.4rem, 3.2vw, 2.1rem), calc(var(--fit, 100cqi) / (0.7 * var(--len, 6)))));
-  /* Below a readable size it breaks by syllable instead. */
-  hyphens: auto;
-  overflow-wrap: anywhere;
-  font-weight: 900;
-  letter-spacing: -0.02em;
 }
 
 /* Grade stickers around the cards. */
@@ -513,61 +472,6 @@
   }
 }
 
-/* === Languages strip === */
-
-.lp-langs {
-  border-block: 2px solid var(--lp-line);
-}
-
-.lp-langs__inner {
-  display: grid;
-  justify-items: center;
-  gap: 14px;
-  max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
-  margin-inline: auto;
-  padding: 18px var(--lp-gutter);
-}
-
-.lp-langs__label {
-  color: var(--lp-ink-soft);
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.lp-langs ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  max-width: 720px;
-  padding: 0;
-  list-style: none;
-}
-
-.lp-langs li {
-  padding: 6px 14px;
-  border: 2px solid var(--tone-edge);
-  border-bottom-width: 4px;
-  border-radius: 12px;
-  background: var(--tone-soft);
-  color: var(--lp-ink);
-  font-size: 1rem;
-  font-weight: 800;
-}
-
-/* === Try it === */
-
-.lp-try {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  padding: clamp(56px, 8vw, 96px) var(--lp-gutter) clamp(32px, 5vw, 56px);
-  text-align: center;
-}
-
-.lp-try h2,
 .lp-feature h2,
 .lp-faq h2,
 .lp-cta h2 {
@@ -586,16 +490,9 @@
   word-break: auto-phrase;
 }
 
-.lp-try h2,
 .lp-feature h2,
 .lp-faq h2 {
-  color: var(--lp-blue);
-}
-
-.lp-try > p {
-  color: var(--lp-ink-soft);
-  font-size: 1.08rem;
-  font-weight: 600;
+  color: var(--lp-ink);
 }
 
 /* The demo reuses the app's Flashcard and SrsRatingControls and restyles
@@ -603,8 +500,8 @@
 .lp-demo {
   display: grid;
   gap: 14px;
-  width: min(100%, 520px);
-  margin-top: 20px;
+  width: 100%;
+  margin-top: 0;
   text-align: left;
 }
 
@@ -619,7 +516,7 @@
 }
 
 .lp-demo__progress {
-  height: 14px;
+  height: 6px;
   border-radius: 999px;
   background: var(--lp-line);
   overflow: hidden;
@@ -638,7 +535,7 @@
 }
 
 .lp-demo__card {
-  height: 300px;
+  height: 354px;
   margin: -8px;
 }
 
@@ -693,7 +590,7 @@
     border-bottom-width 180ms var(--lp-spring),
     filter 160ms ease,
     opacity 120ms ease;
-  animation: lp-pop-in 320ms var(--lp-spring) both;
+  animation: none;
 }
 
 .lp-demo .srs-rating-controls__button:nth-child(2) {
@@ -873,7 +770,7 @@
   width: 100%;
   max-width: calc(var(--lp-width) + 2 * var(--lp-gutter));
   margin-inline: auto;
-  padding: clamp(48px, 7vw, 88px) var(--lp-gutter);
+  padding: clamp(40px, 5vw, 64px) var(--lp-gutter);
 }
 
 .lp-feature + .lp-feature {
@@ -1068,8 +965,8 @@
   background: var(--lp-blue);
   color: var(--lp-on-color);
   font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .lp-hub-arrow {
@@ -1227,8 +1124,8 @@
   color: var(--lp-ink-soft);
   font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .lp-ai-card__word {
@@ -1839,8 +1736,7 @@
 
 .lp-deck,
 .lp-platform,
-.lp-hub-card,
-.lp-langs li {
+.lp-hub-card {
   transition:
     translate 220ms var(--lp-spring),
     rotate 220ms var(--lp-spring),
@@ -1868,18 +1764,7 @@
   }
 }
 
-@media (hover: hover) {
-  .lp-langs li:hover {
-    translate: 0 -4px;
-    rotate: -3deg;
-  }
-}
 
-@media (hover: hover) {
-  .lp-langs li:nth-child(even):hover {
-    rotate: 3deg;
-  }
-}
 
 .lp-platform__icon {
   transition: transform 300ms var(--lp-spring);
@@ -1909,7 +1794,7 @@
 
 /* The next card in the demo slides in after a grade. */
 .lp-demo__card {
-  animation: lp-card-in 360ms var(--lp-spring) both;
+  animation: lp-card-in 180ms ease both;
 }
 
 @keyframes lp-card-in {
@@ -2043,8 +1928,9 @@
     order: -1;
   }
 
-  .lp-hero-art {
-    width: min(100%, 320px);
+  .lp-hero__demo {
+    width: min(100%, 640px);
+    justify-self: center;
   }
 
   .lp-feature--reversed .lp-feature__art {
@@ -2061,7 +1947,7 @@
   }
 
   .lp-demo__ratings {
-    height: 104px;
+    height: 84px;
   }
 }
 
@@ -2082,7 +1968,45 @@
   }
 
   .lp-demo__card {
-    height: 260px;
+    height: 320px;
+  }
+
+  .lp-hero {
+    padding-top: 28px;
+    gap: 28px;
+  }
+
+  .lp-hero__copy {
+    gap: 16px;
+  }
+
+  .lp-hero h1 {
+    font-size: 2.35rem;
+  }
+
+  .lp-hero__copy > p {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .lp-hero__actions {
+    gap: 8px;
+  }
+
+  .lp-hero__actions .lp-btn {
+    padding-inline: 12px;
+    font-size: 0.88rem;
+    min-height: 48px;
+  }
+
+  .lp-demo-subjects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lp-demo-subject.ui-button {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .lp-chart {
@@ -2163,7 +2087,6 @@
   .lp-platform__go,
   .lp-hub-card,
   .lp-deck,
-  .lp-langs li,
   .lp-faq__item,
   .lp-faq__toggle,
   .lp-faq__answer,
@@ -2172,19 +2095,10 @@
   }
 }
 
-/* The subject picker and cards share the app controls and profile layouts. */
-.lp-demo-picker {
-  width: min(100%, 360px);
-  margin: 24px auto 32px;
-  text-align: left;
-}
-.lp-demo__card { height: 380px; }
+/* Preserve the actual answer colours from each subject profile. */
 .lp-demo .flashcard--index .flashcard__face--back {
   background: var(--flashcard-back-bg);
 }
 .lp-demo .flashcard--index:is(.flashcard--layout-mathematics, .flashcard--layout-history) .flashcard__face--back {
   background: var(--knowledge-back);
-}
-@media (max-width: 600px) {
-  .lp-demo__card { height: 340px; }
 }

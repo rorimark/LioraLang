@@ -19,47 +19,6 @@ import { buildLandingDemoDeck } from "../model/landingDemoDeck";
 // decks. The headings and copy beside them carry the meaning; the hub and
 // platform pictures are also links to where they point.
 
-const STICKERS = [
-  { key: "again", tone: "red", className: "lp-sticker--a" },
-  { key: "hard", tone: "amber", className: "lp-sticker--b" },
-  { key: "good", tone: "blue", className: "lp-sticker--c" },
-  { key: "easy", tone: "green", className: "lp-sticker--d" },
-];
-
-// The first demo word, turned over into the visitor's language.
-export const HeroIllustration = memo(() => {
-  const { t, formatInterval } = useI18n();
-
-  return (
-    <div className="lp-hero-art" aria-hidden="true">
-      <span className="lp-hero-art__disc" />
-      <span className="lp-card lp-card--back">
-        <span className="lp-card__label">{t("subjects.names.mathematics")}</span>
-        <span className="lp-card__word" style={{ "--len": 6 }}>
-          {"x² = 4"}
-        </span>
-      </span>
-      <span className="lp-card lp-card--front">
-        <span className="lp-card__label">{t("landing.decks.examples.falseFriends")}</span>
-        <span className="lp-card__word" style={{ "--len": 11 }}>
-          {"array.map()"}
-        </span>
-      </span>
-      {STICKERS.map((sticker) => (
-        <span
-          key={sticker.key}
-          className={`lp-sticker lp-tone-${sticker.tone} ${sticker.className}`}
-        >
-          {t(`grades.${sticker.key}.label`)}
-          <small>{formatInterval(LANDING_NEW_CARD_PREVIEW[sticker.key])}</small>
-        </span>
-      ))}
-    </div>
-  );
-});
-
-HeroIllustration.displayName = "HeroIllustration";
-
 export const DecksIllustration = memo(({ decks }) => {
   const { t } = useI18n();
 
@@ -231,7 +190,7 @@ export const PhoneIllustration = memo(() => {
           <span className="lp-phone__battery" />
         </span>
         <span className="lp-phone__head">
-          <span>{t("landing.demo.deckName")}</span>
+          <span>{t("landing.decks.examples.travel")}</span>
           <span className="lp-phone__progress" />
         </span>
         <span className="lp-phone__card">
@@ -249,7 +208,7 @@ export const PhoneIllustration = memo(() => {
               {t(`grades.${grade.key}.label`)}
             </span>
           ))}
-          <span className="lp-phone__next">{formatInterval("24h")}</span>
+          <span className="lp-phone__next">{formatInterval(LANDING_NEW_CARD_PREVIEW.good)}</span>
         </span>
         <span className="lp-phone__home" />
       </span>

@@ -8,25 +8,17 @@ export default {
     "language": "Język"
   },
   "hero": {
-    "title": "Ucz się ważnego. **Pamiętaj.**",
-    "text": "Języki, kod, wzory lub historia. Twórz karty, przypominaj sobie odpowiedź, a powtórki podpowiedzą, kiedy wrócić. Materiał pozostaje na twoim urządzeniu.",
-    "start": "Zacznij naukę",
-    "download": "Pobierz na komputer"
-  },
-  "langs": {
-    "label": {
-      "one": "{count} język, dowolna para",
-      "few": "{count} języki, dowolna para",
-      "many": "{count} języków, dowolna para",
-      "other": "{count} języków, dowolna para"
-    }
+    "title": "To, czego się uczysz, **na fiszkach.**",
+    "text": "Słowa, kod, wzory lub historia. Liora planuje powtórki na podstawie Twoich odpowiedzi.",
+    "start": "Utwórz talię",
+    "download": "Pobierz aplikację",
+    "eyebrow": "Fiszki i powtórki rozłożone w czasie",
+    "note": "Fiszki zostają na Twoim urządzeniu. Możesz zacząć bez konta."
   },
   "try": {
-    "title": "Spróbuj od razu.",
-    "text": "Wybierz przedmiot i wypróbuj prawdziwą powtórkę. Bez konta."
+    "title": "Wypróbuj fiszkę"
   },
   "demo": {
-    "deckName": "Twój przedmiot. Twój sposób.",
     "doneTitle": "Świetnie.",
     "doneText": "Każda karta ma teraz następną powtórkę. W aplikacji wróci w wyznaczonym czasie.",
     "answers": "Twoje odpowiedzi",
@@ -38,7 +30,6 @@ export default {
     "keysGrade": "{keys}: ocena",
     "keysReveal": "{key}: pokaż odpowiedź",
     "spaceKey": "Spacja",
-    "subject": "Twój przedmiot. Twój sposób.",
     "samples": {
       "programming": {
         "question1": "Co zwróci ten kod?",
@@ -62,14 +53,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Od tematu do własnej talii.",
+    "title": "Twórz talie z AI",
     "text": "Wybierz przedmiot, kontekst i język odpowiedzi. AI przygotuje szkice z kodem, wzorami lub wyjaśnieniami. Przejrzyj, popraw i wybierz je przed zapisem. Potrzebujesz konta, internetu i dostępnego dziennego limitu.",
     "try": "Wypróbuj asystenta",
     "tag": "podróże",
     "take": "Uzupełnij"
   },
   "memory": {
-    "title": "Powtarzaj we właściwym momencie.",
+    "title": "Powtórki dostosowane do odpowiedzi",
     "text": "Oceń nową kartę jako Good, a wróci za {first}, potem {second}, potem {third}. W tym przykładzie {reviews} rozkładają się na {span}. Harmonogram uwzględnia odpowiedzi, aby znany materiał nie zajmował całego dnia.",
     "reviews": {
       "one": "{count} powtórka",
@@ -99,7 +90,7 @@ export default {
     "day": "dzień {day}"
   },
   "decks": {
-    "title": "Twój materiał. Twoje talie.",
+    "title": "Twórz, importuj i udostępniaj talie",
     "text": "Słowa i przykłady, pytania i kod, zadania i wzory, daty i kontekst. Każdy przedmiot ma własne pola i wygląd kart. Eksportuj .lioradeck, aby udostępnić materiał lub zachować kopię.",
     "words": {
       "one": "{count} karta",
@@ -114,14 +105,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Ktoś już zrobił tę talię.",
+    "title": "Gotowe talie językowe",
     "text": "Znajduj talie językowe innych osób i dodawaj jednym kliknięciem. Programowanie, matematyka i historia obsługują udostępnianie plików i prywatną synchronizację; publiczny Hub przyjmuje obecnie talie językowe.",
     "browse": "Przeglądaj hub",
     "import": "Dodaj",
     "inLibrary": "W twojej bibliotece"
   },
   "anywhere": {
-    "title": "Jedno konto, każde urządzenie.",
+    "title": "Twoje talie w przeglądarce i na komputerze",
     "text": "Ucz się w przeglądarce, na macOS lub Windows albo w telefonie. Zaloguj się, a talie, obrazki i postępy będą z tobą na każdym z nich.",
     "web": {
       "title": "Przeglądarka",
@@ -138,7 +129,7 @@ export default {
     "synced": "Zsynchronizowano"
   },
   "phone": {
-    "title": "W telefonie to aplikacja.",
+    "title": "Ucz się z ekranu głównego telefonu",
     "text": "Dodaj do ekranu głównego: własna ikona, pełny ekran, działa offline.",
     "ios": {
       "title": "iPhone i iPad",
@@ -153,7 +144,7 @@ export default {
     "fullscreen": "Pełny ekran"
   },
   "faq": {
-    "title": "Pytania",
+    "title": "O Liora",
     "items": {
       "free": {
         "q": "Czy Liora jest darmowy?",
@@ -182,7 +173,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Pierwsza powtórka zajmie minutę."
+    "title": "Utwórz pierwszą talię"
   },
   "footer": {
     "madeBy": "Autor: {name}",

@@ -4,28 +4,21 @@ export default {
     "description": "Ricorda ciò che studi con schede per materia, ripetizione dilazionata e bozze IA. Lingue, programmazione, matematica e storia su browser, computer e telefono."
   },
   "topbar": {
-    "open": "Apri l'app web",
+    "open": "Apri l’app",
     "language": "Lingua"
   },
   "hero": {
-    "title": "Impara ciò che conta. **Ricordalo.**",
-    "text": "Lingue, codice, formule o storia. Crea schede, ricorda una risposta e lascia che i ripassi pianifichino quando tornare. Il materiale resta sul tuo dispositivo.",
-    "start": "Inizia a imparare",
-    "download": "Scarica per computer"
-  },
-  "langs": {
-    "label": {
-      "one": "{count} lingua, qualsiasi coppia",
-      "many": "{count} lingue, qualsiasi coppia",
-      "other": "{count} lingue, qualsiasi coppia"
-    }
+    "title": "Quello che studi, **su schede.**",
+    "text": "Parole, codice, formule o storia. Liora pianifica i ripassi in base alle tue risposte.",
+    "start": "Crea un mazzo",
+    "download": "Scarica l’app",
+    "eyebrow": "Schede e ripetizione dilazionata",
+    "note": "Le schede restano sul tuo dispositivo. Puoi iniziare senza account."
   },
   "try": {
-    "title": "Provalo subito.",
-    "text": "Scegli una materia e prova un vero ripasso. Senza account."
+    "title": "Prova una scheda"
   },
   "demo": {
-    "deckName": "La tua materia. Il tuo metodo.",
     "doneTitle": "Ottimo lavoro.",
     "doneText": "Ogni scheda ha il prossimo ripasso. Nell'app torna quando è previsto.",
     "answers": "Le tue risposte",
@@ -37,7 +30,6 @@ export default {
     "keysGrade": "{keys} per valutare",
     "keysReveal": "{key} mostra la risposta",
     "spaceKey": "Spazio",
-    "subject": "La tua materia. Il tuo metodo.",
     "samples": {
       "programming": {
         "question1": "Cosa restituisce questo codice?",
@@ -61,14 +53,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Da un argomento al tuo mazzo.",
+    "title": "Prepara mazzi con l’IA",
     "text": "Scegli materia, contesto e lingua delle risposte. L'IA prepara bozze con codice, formule o spiegazioni. Controllale e modificale prima di salvarle. Servono account, internet e quota disponibile.",
     "try": "Prova l'assistente",
     "tag": "viaggi",
     "take": "Compila"
   },
   "memory": {
-    "title": "Ripassa al momento giusto.",
+    "title": "Ripassi in base alle tue risposte",
     "text": "Con Good una nuova scheda torna dopo {first}, poi {second}, poi {third}. In questo esempio {reviews} coprono {span}. Il calendario segue le risposte, così il materiale noto non riempie la giornata.",
     "reviews": {
       "one": "{count} ripasso",
@@ -94,7 +86,7 @@ export default {
     "day": "giorno {day}"
   },
   "decks": {
-    "title": "Il tuo materiale. I tuoi mazzi.",
+    "title": "Crea, importa e condividi mazzi",
     "text": "Parole ed esempi, domande e codice, problemi e formule, date e contesto. Ogni materia ha campi e schede propri. Esporta .lioradeck per condividere o conservare una copia.",
     "words": {
       "one": "{count} scheda",
@@ -108,14 +100,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Qualcuno ha già fatto quel mazzo.",
+    "title": "Mazzi di lingue condivisi",
     "text": "Trova mazzi di lingue di altri studenti e aggiungili con un clic. Programmazione, matematica e storia si condividono come file e si sincronizzano privatamente; l'Hub pubblico accetta oggi mazzi di lingue.",
     "browse": "Esplora l'hub",
     "import": "Importa",
     "inLibrary": "Nella tua libreria"
   },
   "anywhere": {
-    "title": "Un account, tutti i dispositivi.",
+    "title": "La tua raccolta sul web e sul desktop",
     "text": "Studia nel browser, su macOS o Windows, o sul telefono. Accedi, e mazzi, immagini e progressi ti seguono da uno all'altro.",
     "web": {
       "title": "Web",
@@ -132,7 +124,7 @@ export default {
     "synced": "Sincronizzato"
   },
   "phone": {
-    "title": "Sul telefono è un'app.",
+    "title": "Studia dalla schermata iniziale",
     "text": "Aggiungila alla schermata Home: icona propria, schermo intero, funziona offline.",
     "ios": {
       "title": "iPhone e iPad",
@@ -147,7 +139,7 @@ export default {
     "fullscreen": "Schermo intero"
   },
   "faq": {
-    "title": "Domande",
+    "title": "Informazioni su Liora",
     "items": {
       "free": {
         "q": "Liora è gratis?",
@@ -176,7 +168,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Il tuo primo ripasso richiede un minuto."
+    "title": "Crea il tuo primo mazzo"
   },
   "footer": {
     "madeBy": "Creato da {name}",

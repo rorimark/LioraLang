@@ -8,23 +8,17 @@ export default {
     "language": "Dil"
   },
   "hero": {
-    "title": "Önemli olanı öğren. **Hatırla.**",
-    "text": "Diller, kod, formüller veya tarih. Kartlarını oluştur, yanıtı hatırla ve tekrarların dönüş zamanını planlamasına izin ver. İçeriğin cihazında kalır.",
-    "start": "Öğrenmeye başla",
-    "download": "Bilgisayar için indir"
-  },
-  "langs": {
-    "label": {
-      "one": "{count} dil, her çift",
-      "other": "{count} dil, her çift"
-    }
+    "title": "Çalıştığın konular **kartlara dönüşsün.**",
+    "text": "Kelimeler, kod, formüller veya tarih. Liora yanıtlarına göre tekrarları planlar.",
+    "start": "Deste oluştur",
+    "download": "Uygulamayı indir",
+    "eyebrow": "Kartlar ve aralıklı tekrar",
+    "note": "Kartların cihazında kalır. Hesap olmadan başlayabilirsin."
   },
   "try": {
-    "title": "Hemen deneyin.",
-    "text": "Bir konu seç ve gerçek bir tekrarı dene. Hesap gerekmez."
+    "title": "Bir kart dene"
   },
   "demo": {
-    "deckName": "Konun. Yöntemin.",
     "doneTitle": "Harika.",
     "doneText": "Her kartın artık sonraki tekrarı var. Uygulamada zamanı geldiğinde geri gelir.",
     "answers": "Cevaplarınız",
@@ -36,7 +30,6 @@ export default {
     "keysGrade": "{keys} ile değerlendir",
     "keysReveal": "{key} cevabı gösterir",
     "spaceKey": "Boşluk",
-    "subject": "Konun. Yöntemin.",
     "samples": {
       "programming": {
         "question1": "Bu kod ne döndürür?",
@@ -60,14 +53,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Bir başlıktan kendi destene.",
+    "title": "Yapay zekâ ile deste taslağı oluştur",
     "text": "Konu, bağlam ve yanıt dilini seç. AI kod, formül veya açıklamalı taslaklar hazırlar. Kaydetmeden önce kontrol et ve düzenle. Hesap, internet ve kullanılabilir günlük kota gerekir.",
     "try": "Asistanı deneyin",
     "tag": "seyahat",
     "take": "Doldur"
   },
   "memory": {
-    "title": "Doğru zamanda tekrar et.",
+    "title": "Yanıtlarına göre tekrar programı",
     "text": "Good ile yeni kart {first}, sonra {second}, sonra {third} içinde döner. Bu örnekte {reviews}, {span} boyunca dağılır. Plan yanıtlarına uyum sağlar; bildiklerin bütün günü doldurmaz.",
     "reviews": {
       "one": "{count} tekrar",
@@ -89,7 +82,7 @@ export default {
     "day": "{day}. gün"
   },
   "decks": {
-    "title": "İçeriğin. Destelerin.",
+    "title": "Deste oluştur, içe aktar ve paylaş",
     "text": "Kelimeler ve örnekler, sorular ve kod, problemler ve formüller, tarihler ve bağlam. Her konunun kendi alanları ve kartları vardır. Paylaşmak veya kopya saklamak için .lioradeck dışa aktar.",
     "words": {
       "one": "{count} kart",
@@ -102,14 +95,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Birisi o desteyi çoktan yaptı.",
+    "title": "Paylaşılan dil desteleri",
     "text": "Başkalarının dil destelerini bul ve tek tıkla ekle. Programlama, matematik ve tarih dosya olarak paylaşılır ve özel eşitlenir; herkese açık Hub şu anda dil destelerini destekler.",
     "browse": "Hub'a göz at",
     "import": "İçe aktar",
     "inLibrary": "Kitaplığınızda"
   },
   "anywhere": {
-    "title": "Tek hesap, tüm cihazlar.",
+    "title": "Web ve masaüstünde kartların",
     "text": "Tarayıcıda, macOS veya Windows'ta ya da telefonda çalışın. Giriş yapın; desteleriniz, görselleriniz ve ilerlemeniz her cihazda sizinle olsun.",
     "web": {
       "title": "Web",
@@ -126,7 +119,7 @@ export default {
     "synced": "Senkronize"
   },
   "phone": {
-    "title": "Telefonunuzda bir uygulama.",
+    "title": "Ana ekrandan çalış",
     "text": "Ana ekranınıza ekleyin: kendi simgesi, tam ekran, çevrimdışı çalışır.",
     "ios": {
       "title": "iPhone ve iPad",
@@ -141,7 +134,7 @@ export default {
     "fullscreen": "Tam ekran"
   },
   "faq": {
-    "title": "Sorular",
+    "title": "Liora hakkında",
     "items": {
       "free": {
         "q": "Liora ücretsiz mi?",
@@ -170,7 +163,7 @@ export default {
     }
   },
   "cta": {
-    "title": "İlk tekrarınız bir dakika sürer."
+    "title": "İlk desteni oluştur"
   },
   "footer": {
     "madeBy": "{name} tarafından yapıldı",

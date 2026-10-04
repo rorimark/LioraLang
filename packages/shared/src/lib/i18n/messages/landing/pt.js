@@ -4,28 +4,21 @@ export default {
     "description": "Lembre o que estuda com cartões por matéria, repetição espaçada e rascunhos de IA. Idiomas, programação, matemática e história no navegador, computador e celular."
   },
   "topbar": {
-    "open": "Abrir o app web",
+    "open": "Abrir app",
     "language": "Idioma"
   },
   "hero": {
-    "title": "Aprenda o que importa. **Lembre.**",
-    "text": "Idiomas, código, fórmulas ou história. Crie cartões, lembre a resposta e deixe os estudos planejarem quando voltar. Seu material fica no seu dispositivo.",
-    "start": "Começar a aprender",
-    "download": "Baixar para computador"
-  },
-  "langs": {
-    "label": {
-      "one": "{count} idioma, qualquer par",
-      "many": "{count} idiomas, qualquer par",
-      "other": "{count} idiomas, qualquer par"
-    }
+    "title": "O que você estuda, **em cartões.**",
+    "text": "Palavras, código, fórmulas ou história. Liora planeja revisões conforme suas respostas.",
+    "start": "Criar um baralho",
+    "download": "Baixar app",
+    "eyebrow": "Cartões e repetição espaçada",
+    "note": "Seus cartões ficam no seu dispositivo. Comece sem conta."
   },
   "try": {
-    "title": "Experimente agora mesmo.",
-    "text": "Escolha uma matéria e tente uma revisão real. Sem conta."
+    "title": "Experimente um cartão"
   },
   "demo": {
-    "deckName": "Sua matéria. Seu jeito.",
     "doneTitle": "Muito bem.",
     "doneText": "Cada cartão tem sua próxima revisão. No app, ele volta no momento marcado.",
     "answers": "Suas respostas",
@@ -37,7 +30,6 @@ export default {
     "keysGrade": "{keys} avalia",
     "keysReveal": "{key} mostra a resposta",
     "spaceKey": "Espaço",
-    "subject": "Sua matéria. Seu jeito.",
     "samples": {
       "programming": {
         "question1": "O que este código retorna?",
@@ -61,14 +53,14 @@ export default {
     }
   },
   "ai": {
-    "title": "De um tema ao seu baralho.",
+    "title": "Crie rascunhos de baralhos com IA",
     "text": "Escolha matéria, contexto e idioma das respostas. A IA prepara cartões com código, fórmulas ou explicações. Revise e edite antes de salvar. Exige conta, internet e cota disponível.",
     "try": "Experimentar o assistente",
     "tag": "viagem",
     "take": "Preencher"
   },
   "memory": {
-    "title": "Revise na hora certa.",
+    "title": "Revisões conforme suas respostas",
     "text": "Com Good, um novo cartão volta em {first}, depois {second}, depois {third}. Neste exemplo, {reviews} cobrem {span}. O calendário segue suas respostas para que material conhecido não ocupe todo o dia.",
     "reviews": {
       "one": "{count} revisão",
@@ -94,7 +86,7 @@ export default {
     "day": "dia {day}"
   },
   "decks": {
-    "title": "Seu material. Seus baralhos.",
+    "title": "Crie, importe e compartilhe baralhos",
     "text": "Palavras e exemplos, perguntas e código, problemas e fórmulas, datas e contexto. Cada matéria tem campos e cartões próprios. Exporte .lioradeck para compartilhar ou guardar uma cópia.",
     "words": {
       "one": "{count} cartão",
@@ -108,14 +100,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Alguém já fez esse baralho.",
+    "title": "Baralhos de idiomas compartilhados",
     "text": "Encontre baralhos de idiomas de outros estudantes e adicione com um clique. Programação, matemática e história podem ser compartilhadas por arquivos e sincronizadas em privado; o Hub público aceita hoje baralhos de idiomas.",
     "browse": "Explorar o hub",
     "import": "Importar",
     "inLibrary": "Na sua biblioteca"
   },
   "anywhere": {
-    "title": "Uma conta, todos os dispositivos.",
+    "title": "Sua biblioteca na web e no computador",
     "text": "Estude no navegador, no macOS ou Windows, ou no celular. Entre na sua conta e seus baralhos, imagens e progresso vão com você de um para o outro.",
     "web": {
       "title": "Web",
@@ -132,7 +124,7 @@ export default {
     "synced": "Sincronizado"
   },
   "phone": {
-    "title": "No celular, é um app.",
+    "title": "Estude pela tela inicial",
     "text": "Adicione à tela inicial: ícone próprio, tela cheia, funciona offline.",
     "ios": {
       "title": "iPhone e iPad",
@@ -147,7 +139,7 @@ export default {
     "fullscreen": "Tela cheia"
   },
   "faq": {
-    "title": "Perguntas",
+    "title": "Sobre Liora",
     "items": {
       "free": {
         "q": "O Liora é grátis?",
@@ -176,7 +168,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Sua primeira revisão leva um minuto."
+    "title": "Crie seu primeiro baralho"
   },
   "footer": {
     "madeBy": "Feito por {name}",
