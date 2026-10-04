@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Branche des mathématiques",
+    "period": "Période ou région",
+    "formula": "Formule",
+    "steps": "Étapes de résolution",
+    "date": "Date ou intervalle",
+    "context": "Contexte",
+    "consequences": "Conséquences"
+  },
+  "placeholders": {
+    "area": "Par exemple : algèbre, géométrie",
+    "period": "Par exemple : Rome antique",
+    "formula": "LaTeX, par exemple : x^2 + 2x + 1",
+    "steps": "Une étape par ligne",
+    "date": "Par exemple : 1789 ou 1914–1918",
+    "context": "Contexte sans révéler la réponse",
+    "consequences": "Une conséquence par ligne"
+  },
+  "mathematics": {
+    "question": "Problème ou règle",
+    "questionHint": "Que voulez-vous retenir ?",
+    "answer": "Réponse ou résultat",
+    "answerHint": "Le résultat et une courte explication"
+  },
+  "history": {
+    "question": "Événement ou question",
+    "questionHint": "Quel événement, date ou cause voulez-vous retenir ?",
+    "answer": "Réponse",
+    "answerHint": "Le fait ou le lien à retenir"
+  }
+},
   "studyPresentation": {
     "addImage": "Image facultative",
     "label": "Présentation de la carte",
@@ -1984,6 +2016,8 @@ export default {
     "label": "Sujet",
     "hint": "Le thème des cartes. Choisi avant la première carte.",
     "names": {
+      "mathematics": "Mathématiques",
+      "history": "Histoire",
       "language": "Langues",
       "programming": "Programmation"
     },

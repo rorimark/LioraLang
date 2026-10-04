@@ -101,6 +101,22 @@ const main = () => {
   assert(importedSession.card?.subjectFields?.codeSide === "back", "file import keeps the code placement");
   assert(session.stats.totalCards === 1, "one entry is one card");
 
+  for (const [subject, fields] of [
+    ["mathematics", { formula: "x^2", steps: "1. Expand\n2. Simplify" }],
+    ["history", { date: "1789", context: "Political crisis", consequences: "Monarchy abolished" }],
+  ]) {
+    const knowledge = saveDeck({ name: subject, subject, subjectFields: { contentLanguage: "Polish" }, words: [{ source: "Question", target: "Answer", subjectFields: fields }] });
+    const exported = exportDeckToJsonPackage(knowledge.deck.id, {}).package;
+    assert(exported.version === 6, "new subjects require version 6");
+    const file = path.join(sandbox, `${subject}.lioradeck`);
+    fs.writeFileSync(file, JSON.stringify(exported));
+    const imported = importDeckFromJsonFile(file, {});
+    const snapshot = getSrsSessionSnapshot({ deckId: imported.deckId, settings: {} });
+    assert(snapshot.deck.subject === subject, "knowledge subject survives import");
+    assert(JSON.stringify(snapshot.card.subjectFields) === JSON.stringify(fields), "knowledge fields reach the review session");
+    assert(snapshot.stats.totalCards === 1, "knowledge entries use one review unit");
+  }
+
   closeDatabaseConnection();
   fs.rmSync(sandbox, { recursive: true, force: true });
   console.log("Subjects check passed.");

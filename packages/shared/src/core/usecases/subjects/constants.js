@@ -1,6 +1,8 @@
 export const SUBJECTS = Object.freeze({
   language: "language",
   programming: "programming",
+  mathematics: "mathematics",
+  history: "history",
 });
 
 export const DIRECTIONS = Object.freeze({

@@ -57,3 +57,13 @@ describe("concept drafts", () => {
     expect(() => createSubjectRegistry([science, science])).toThrow();
   });
 });
+
+
+it.each(["mathematics", "history"])("uses the shared concept contract for %s", (subject) => {
+  const fields = subject === "mathematics" ? { formula: "x^2", steps: "1. Expand" } : { date: "1789", context: "Crisis" };
+  const request = buildConceptRequest({ deck: { subject, subjectFields: { contentLanguage: "Polish" } }, draft: { source: "Question", subjectFields: fields } });
+  expect(request).toMatchObject({ subject, writeIn: "Polish", subjectFields: fields });
+  const prompt = buildConceptPrompt(request);
+  expect(prompt.schema.properties.cards.items.properties.subjectFields.properties).toHaveProperty(subject === "mathematics" ? "formula" : "date");
+  expect(readConceptCards([{ source: "Question", target: "Answer", subjectFields: fields }], subject)[0].subjectFields).toEqual(fields);
+});

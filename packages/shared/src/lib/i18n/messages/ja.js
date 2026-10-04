@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "数学の分野",
+    "period": "時代または地域",
+    "formula": "数式",
+    "steps": "解法の手順",
+    "date": "日付または期間",
+    "context": "背景",
+    "consequences": "結果・影響"
+  },
+  "placeholders": {
+    "area": "例：代数、幾何学",
+    "period": "例：古代ローマ",
+    "formula": "LaTeXの例：x^2 + 2x + 1",
+    "steps": "1行につき1つの手順",
+    "date": "例：1789年、1914–1918年",
+    "context": "答えを明かさない背景情報",
+    "consequences": "1行につき1つの影響"
+  },
+  "mathematics": {
+    "question": "問題または法則",
+    "questionHint": "何を思い出しますか？",
+    "answer": "答えまたは結果",
+    "answerHint": "結果と簡潔な説明"
+  },
+  "history": {
+    "question": "出来事または質問",
+    "questionHint": "どの出来事、日付、原因を思い出しますか？",
+    "answer": "答え",
+    "answerHint": "覚える事実または関連性"
+  }
+},
   "studyPresentation": {
     "addImage": "画像（任意）",
     "label": "カードの表示",
@@ -1800,6 +1832,8 @@ export default {
     "label": "分野",
     "hint": "カードの内容。最初のカードの前に選びます。",
     "names": {
+      "mathematics": "数学",
+      "history": "歴史",
       "language": "言語",
       "programming": "プログラミング"
     },

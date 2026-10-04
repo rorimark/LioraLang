@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Oblast matematiky",
+    "period": "Období nebo region",
+    "formula": "Vzorec",
+    "steps": "Postup řešení",
+    "date": "Datum nebo rozsah dat",
+    "context": "Kontext",
+    "consequences": "Důsledky"
+  },
+  "placeholders": {
+    "area": "Například: algebra, geometrie",
+    "period": "Například: starověký Řím",
+    "formula": "LaTeX, například: x^2 + 2x + 1",
+    "steps": "Jeden krok na řádek",
+    "date": "Například: 1789 nebo 1914–1918",
+    "context": "Pozadí bez prozrazení odpovědi",
+    "consequences": "Jeden důsledek na řádek"
+  },
+  "mathematics": {
+    "question": "Úloha nebo pravidlo",
+    "questionHint": "Co si chcete vybavit?",
+    "answer": "Odpověď nebo výsledek",
+    "answerHint": "Výsledek a krátké vysvětlení"
+  },
+  "history": {
+    "question": "Událost nebo otázka",
+    "questionHint": "Jakou událost, datum nebo příčinu si chcete vybavit?",
+    "answer": "Odpověď",
+    "answerHint": "Fakt nebo souvislost k zapamatování"
+  }
+},
   "studyPresentation": {
     "addImage": "Volitelný obrázek",
     "label": "Zobrazení kartičky",
@@ -1996,6 +2028,8 @@ export default {
     "label": "Téma",
     "hint": "O čem karty jsou. Volí se před první kartou.",
     "names": {
+      "mathematics": "Matematika",
+      "history": "Historie",
       "language": "Jazyky",
       "programming": "Programování"
     },

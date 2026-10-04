@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Teilgebiet der Mathematik",
+    "period": "Zeitraum oder Region",
+    "formula": "Formel",
+    "steps": "Lösungsschritte",
+    "date": "Datum oder Zeitraum",
+    "context": "Kontext",
+    "consequences": "Folgen"
+  },
+  "placeholders": {
+    "area": "Zum Beispiel: Algebra, Geometrie",
+    "period": "Zum Beispiel: das antike Rom",
+    "formula": "LaTeX, zum Beispiel: x^2 + 2x + 1",
+    "steps": "Ein Schritt pro Zeile",
+    "date": "Zum Beispiel: 1789 oder 1914–1918",
+    "context": "Hintergrund ohne die Antwort zu verraten",
+    "consequences": "Eine Folge pro Zeile"
+  },
+  "mathematics": {
+    "question": "Aufgabe oder Regel",
+    "questionHint": "Was möchtest du dir merken?",
+    "answer": "Antwort oder Ergebnis",
+    "answerHint": "Ergebnis mit kurzer Erklärung"
+  },
+  "history": {
+    "question": "Ereignis oder Frage",
+    "questionHint": "Welches Ereignis, Datum oder welche Ursache möchtest du dir merken?",
+    "answer": "Antwort",
+    "answerHint": "Ein Fakt oder Zusammenhang zum Erinnern"
+  }
+},
   "studyPresentation": {
     "addImage": "Optionales Bild",
     "label": "Kartendarstellung",
@@ -1892,6 +1924,8 @@ export default {
     "label": "Thema",
     "hint": "Worum es auf den Karten geht. Wird vor der ersten Karte gewählt.",
     "names": {
+      "mathematics": "Mathematik",
+      "history": "Geschichte",
       "language": "Sprachen",
       "programming": "Programmierung"
     },

@@ -3,6 +3,9 @@
 import { LANGUAGE_PROFILE } from "./profiles/language.js";
 import { PROGRAMMING_PROFILE } from "./profiles/programming.js";
 
+import { MATHEMATICS_PROFILE } from "./profiles/mathematics.js";
+import { HISTORY_PROFILE } from "./profiles/history.js";
+
 const freeze = (value) => {
   if (value && typeof value === "object") {
     Object.values(value).forEach(freeze);
@@ -31,4 +34,4 @@ export const createSubjectRegistry = (profiles, defaultId = "language") => {
   });
 };
 
-export const subjectRegistry = createSubjectRegistry([LANGUAGE_PROFILE, PROGRAMMING_PROFILE]);
+export const subjectRegistry = createSubjectRegistry([LANGUAGE_PROFILE, PROGRAMMING_PROFILE, MATHEMATICS_PROFILE, HISTORY_PROFILE]);

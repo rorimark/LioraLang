@@ -84,3 +84,30 @@ describe("subjects", () => {
     expect(presentation.back).toEqual([{ type: "text", role: "answer", text: "A function with the scope it was made in." }]);
   });
 });
+
+
+describe("knowledge subjects", () => {
+  it("keeps formulas and solution steps behind the answer by default", () => {
+    const card = buildCardPresentation({ deck: { subject: "mathematics" }, entry: {
+      source: "Expand (a+b)²", target: "a² + 2ab + b²",
+      subjectFields: { formula: "(a+b)^2=a^2+2ab+b^2", steps: "1. Multiply\n2. Combine terms" },
+    } });
+    expect(card.front.some(block => block.text?.includes("2ab"))).toBe(false);
+    expect(card.back.some(block => block.text?.includes("2ab"))).toBe(true);
+    const prompt = buildCardPresentation({ deck: { subject: "mathematics" }, entry: {
+      source: "Solve the equation", target: "x = 2", subjectFields: { formula: "2x=4", formulaSide: "front" },
+    } });
+    expect(prompt.front.some(block => block.text === "2x=4")).toBe(true);
+    expect(prompt.back.some(block => block.text === "2x=4")).toBe(false);
+  });
+  it("shows background on the question and dates and consequences only on the answer", () => {
+    const card = buildCardPresentation({ deck: { subject: "history", subjectFields: { period: "France" } }, entry: {
+      source: "When did the French Revolution begin?", target: "In 1789",
+      subjectFields: { date: "1789", context: "An economic and political crisis", consequences: "End of absolute monarchy" },
+    } });
+    expect(card.front.some(block => block.text === "1789")).toBe(false);
+    expect(card.front.some(block => block.text?.includes("monarchy"))).toBe(false);
+    expect(card.back.some(block => block.text === "1789")).toBe(true);
+    expect(card.front.some(block => block.text?.includes("crisis"))).toBe(true);
+  });
+});

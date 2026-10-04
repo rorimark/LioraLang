@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Ramo della matematica",
+    "period": "Periodo o regione",
+    "formula": "Formula",
+    "steps": "Passaggi della soluzione",
+    "date": "Data o intervallo",
+    "context": "Contesto",
+    "consequences": "Conseguenze"
+  },
+  "placeholders": {
+    "area": "Per esempio: algebra, geometria",
+    "period": "Per esempio: Roma antica",
+    "formula": "LaTeX, per esempio: x^2 + 2x + 1",
+    "steps": "Un passaggio per riga",
+    "date": "Per esempio: 1789 o 1914–1918",
+    "context": "Contesto senza rivelare la risposta",
+    "consequences": "Una conseguenza per riga"
+  },
+  "mathematics": {
+    "question": "Problema o regola",
+    "questionHint": "Che cosa vuoi ricordare?",
+    "answer": "Risposta o risultato",
+    "answerHint": "Il risultato e una breve spiegazione"
+  },
+  "history": {
+    "question": "Evento o domanda",
+    "questionHint": "Quale evento, data o causa vuoi ricordare?",
+    "answer": "Risposta",
+    "answerHint": "Il fatto o il collegamento da ricordare"
+  }
+},
   "studyPresentation": {
     "addImage": "Immagine facoltativa",
     "label": "Visualizzazione della carta",
@@ -1984,6 +2016,8 @@ export default {
     "label": "Argomento",
     "hint": "Di cosa parlano le carte. Si sceglie prima della prima carta.",
     "names": {
+      "mathematics": "Matematica",
+      "history": "Storia",
       "language": "Lingue",
       "programming": "Programmazione"
     },

@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Dział matematyki",
+    "period": "Okres lub region",
+    "formula": "Wzór",
+    "steps": "Kroki rozwiązania",
+    "date": "Data lub zakres dat",
+    "context": "Kontekst",
+    "consequences": "Skutki"
+  },
+  "placeholders": {
+    "area": "Na przykład: algebra, geometria",
+    "period": "Na przykład: starożytny Rzym",
+    "formula": "LaTeX, na przykład: x^2 + 2x + 1",
+    "steps": "Jeden krok w wierszu",
+    "date": "Na przykład: 1789 lub 1914–1918",
+    "context": "Tło bez ujawniania odpowiedzi",
+    "consequences": "Jeden skutek w wierszu"
+  },
+  "mathematics": {
+    "question": "Zadanie lub reguła",
+    "questionHint": "Co chcesz zapamiętać?",
+    "answer": "Odpowiedź lub wynik",
+    "answerHint": "Wynik i krótkie wyjaśnienie"
+  },
+  "history": {
+    "question": "Wydarzenie lub pytanie",
+    "questionHint": "Jakie wydarzenie, datę lub przyczynę chcesz zapamiętać?",
+    "answer": "Odpowiedź",
+    "answerHint": "Fakt lub związek do zapamiętania"
+  }
+},
   "studyPresentation": {
     "addImage": "Opcjonalny obrazek",
     "label": "Widok fiszki",
@@ -2076,6 +2108,8 @@ export default {
     "label": "Temat",
     "hint": "O czym są karty. Wybierany przed pierwszą kartą.",
     "names": {
+      "mathematics": "Matematyka",
+      "history": "Historia",
       "language": "Języki",
       "programming": "Programowanie"
     },

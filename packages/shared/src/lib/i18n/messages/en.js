@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Branch of mathematics",
+    "period": "Period or region",
+    "formula": "Formula",
+    "steps": "Solution steps",
+    "date": "Date or date range",
+    "context": "Context",
+    "consequences": "Consequences"
+  },
+  "placeholders": {
+    "area": "For example: algebra, geometry",
+    "period": "For example: Ancient Rome",
+    "formula": "LaTeX, for example: x^2 + 2x + 1",
+    "steps": "One step per line",
+    "date": "For example: 1789 or 1914–1918",
+    "context": "Background without revealing the answer",
+    "consequences": "One consequence per line"
+  },
+  "mathematics": {
+    "question": "Problem or rule",
+    "questionHint": "What do you want to recall?",
+    "answer": "Answer or result",
+    "answerHint": "The result and a short explanation"
+  },
+  "history": {
+    "question": "Event or question",
+    "questionHint": "What event, date or cause do you want to recall?",
+    "answer": "Answer",
+    "answerHint": "The fact or connection to recall"
+  }
+},
   "studyPresentation": {
     "addImage": "Optional picture",
     "label": "Study presentation",
@@ -1892,6 +1924,8 @@ export default {
     "label": "Subject",
     "hint": "What the cards are about. Chosen before the first card.",
     "names": {
+      "mathematics": "Mathematics",
+      "history": "History",
       "language": "Languages",
       "programming": "Programming"
     },

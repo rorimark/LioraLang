@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Rama de las matemáticas",
+    "period": "Periodo o región",
+    "formula": "Fórmula",
+    "steps": "Pasos de resolución",
+    "date": "Fecha o intervalo",
+    "context": "Contexto",
+    "consequences": "Consecuencias"
+  },
+  "placeholders": {
+    "area": "Por ejemplo: álgebra, geometría",
+    "period": "Por ejemplo: la antigua Roma",
+    "formula": "LaTeX, por ejemplo: x^2 + 2x + 1",
+    "steps": "Un paso por línea",
+    "date": "Por ejemplo: 1789 o 1914–1918",
+    "context": "Antecedentes sin revelar la respuesta",
+    "consequences": "Una consecuencia por línea"
+  },
+  "mathematics": {
+    "question": "Problema o regla",
+    "questionHint": "¿Qué quieres recordar?",
+    "answer": "Respuesta o resultado",
+    "answerHint": "El resultado y una explicación breve"
+  },
+  "history": {
+    "question": "Evento o pregunta",
+    "questionHint": "¿Qué evento, fecha o causa quieres recordar?",
+    "answer": "Respuesta",
+    "answerHint": "El hecho o la relación que debes recordar"
+  }
+},
   "studyPresentation": {
     "addImage": "Imagen opcional",
     "label": "Vista de la tarjeta",
@@ -1984,6 +2016,8 @@ export default {
     "label": "Tema",
     "hint": "De qué tratan las tarjetas. Se elige antes de la primera tarjeta.",
     "names": {
+      "mathematics": "Matemáticas",
+      "history": "Historia",
       "language": "Idiomas",
       "programming": "Programación"
     },

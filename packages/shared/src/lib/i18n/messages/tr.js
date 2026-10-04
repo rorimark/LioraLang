@@ -1,4 +1,36 @@
 export default {
+  "knowledge": {
+  "fields": {
+    "area": "Matematik dalı",
+    "period": "Dönem veya bölge",
+    "formula": "Formül",
+    "steps": "Çözüm adımları",
+    "date": "Tarih veya tarih aralığı",
+    "context": "Bağlam",
+    "consequences": "Sonuçlar"
+  },
+  "placeholders": {
+    "area": "Örneğin: cebir, geometri",
+    "period": "Örneğin: Antik Roma",
+    "formula": "LaTeX, örneğin: x^2 + 2x + 1",
+    "steps": "Her satırda bir adım",
+    "date": "Örneğin: 1789 veya 1914–1918",
+    "context": "Yanıtı açıklamayan arka plan",
+    "consequences": "Her satırda bir sonuç"
+  },
+  "mathematics": {
+    "question": "Problem veya kural",
+    "questionHint": "Neyi hatırlamak istiyorsunuz?",
+    "answer": "Yanıt veya sonuç",
+    "answerHint": "Sonuç ve kısa açıklama"
+  },
+  "history": {
+    "question": "Olay veya soru",
+    "questionHint": "Hangi olayı, tarihi veya nedeni hatırlamak istiyorsunuz?",
+    "answer": "Yanıt",
+    "answerHint": "Hatırlanacak bilgi veya bağlantı"
+  }
+},
   "studyPresentation": {
     "addImage": "İsteğe bağlı resim",
     "label": "Kart görünümü",
@@ -1892,6 +1924,8 @@ export default {
     "label": "Konu",
     "hint": "Kartların konusu. İlk karttan önce seçilir.",
     "names": {
+      "mathematics": "Matematik",
+      "history": "Tarih",
       "language": "Diller",
       "programming": "Programlama"
     },

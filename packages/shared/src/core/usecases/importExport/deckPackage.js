@@ -36,7 +36,8 @@ const DECK_PACKAGE_VERSION = 1;
 const SUBJECT_PACKAGE_VERSION = 2;
 // Version 3 preserves answer-side code; older readers must not expose it as a question.
 // Version 5 preserves the explicit language of subject answers.
-const MAX_READABLE_PACKAGE_VERSION = 5;
+// Version 6 adds knowledge subjects; older editors must reject unknown profiles.
+const MAX_READABLE_PACKAGE_VERSION = 6;
 const MAX_DECK_TAGS = 10;
 const MAX_WORD_TAGS = 10;
 const MAX_WORD_EXAMPLES = 1000;

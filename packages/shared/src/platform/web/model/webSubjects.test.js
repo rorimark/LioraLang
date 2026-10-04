@@ -98,6 +98,23 @@ describe("web subjects", () => {
     expect(session.stats.totalCards).toBe(1);
   });
 
+  it.each([
+    ["mathematics", { area: "Algebra", contentLanguage: "Polish" }, { formula: "x^2", steps: "1. Expand\n2. Simplify", difficulty: "medium" }],
+    ["history", { period: "France", contentLanguage: "Russian" }, { date: "1789", context: "Political crisis", consequences: "Monarchy abolished", difficulty: "easy" }],
+  ])("carries %s fields through reopening, export, import and review", async (subject, subjectFields, fields) => {
+    const repository = createWebDeckRepository();
+    const saved = await repository.saveDeck({ name: subject, subject, subjectFields, words: [{ source: "Question", target: "Answer", subjectFields: fields }] });
+    await closeWebDbConnection();
+    expect((await repository.getDeckWords(saved.deck.id))[0].subjectFields).toEqual(fields);
+    const exported = (await repository.exportDeckPackage(saved.deck.id)).package;
+    expect(exported.version).toBe(6);
+    const imported = await repository.importDeckFromJson({ deckName: subject, fileName: "knowledge.lioradeck", fileText: JSON.stringify(exported) });
+    const session = await createWebSrsRepository().getSrsSession(imported.deckId, {});
+    expect(session.deck).toMatchObject({ subject, subjectFields });
+    expect(session.card.subjectFields).toEqual(fields);
+    expect(session.stats.totalCards).toBe(1);
+  });
+
   it("leaves a language deck's records, file and session as they were", async () => {
     const repository = createWebDeckRepository();
     const saved = await repository.saveDeck({
