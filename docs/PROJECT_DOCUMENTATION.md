@@ -1,31 +1,33 @@
-# Путеводитель по проекту
+# Project guide
 
-LioraLang 0.9.1 представляет собой React-приложение с двумя платформами хранения: IndexedDB в браузере и SQLite в Electron. Предметы, содержимое карточек, формат файлов, SRS и правила синхронизации описаны в общем коде. Онлайн-функции используют Supabase; ИИ обращается к Gemini через серверную функцию.
+**English** | [Русский](PROJECT_DOCUMENTATION.ru.md) | [Polski](PROJECT_DOCUMENTATION.pl.md)
 
-## С чего начать задачу
+LioraLang 0.9.1 is a React app with IndexedDB in the browser and SQLite in Electron. Subjects, card content, file formats, SRS and sync rules share common code. Online features use Supabase, and AI calls Gemini through a server function.
 
-| Задача | Сначала прочитайте | Где менять код |
+## Where to start
+
+| Task | Read first | Main code |
 | --- | --- | --- |
-| Запуск или проблема сборки | [Onboarding](onboarding.md) | `package.json`, `vite.config.js`, `electron/`, `scripts/` |
-| Новое поле или предмет | [Предметы](learning-objects.md), [формат файлов](deck-format.md) | `packages/shared/src/core/usecases/subjects/`, редактор, адаптеры хранения |
-| Карточка или форма | [Правила UI](../rules/ui-rules.md) | `src/features/flashcard/`, `src/features/subject-fields/`, нужный виджет |
-| Интервалы или очередь | [SRS](srs.md) | `packages/shared/src/core/usecases/srs/`, `useSrsSession`, оба репозитория |
-| Генерация или подсказки | [ИИ](word-suggestions.md) | `src/features/word-suggest/`, `src/features/quick-add-words/`, `supabase/functions/suggest-word/` |
-| Импорт или синхронизация | [Хранение](platforms-and-storage.md), [формат](deck-format.md) | общее ядро, `packages/shared/src/sync/`, платформенные репозитории |
-| Сервер и Hub | [Supabase](../supabase/README.md) | миграции и Edge Functions |
+| Setup or build failure | [Onboarding](onboarding.md) | `package.json`, `vite.config.js`, `electron/`, `scripts/` |
+| New field or subject | [Subjects](learning-objects.md), [file format](deck-format.md) | `packages/shared/src/core/usecases/subjects/`, editor, storage adapters |
+| Card or form | [UI rules](../rules/ui-rules.md) | `src/features/flashcard/`, `src/features/subject-fields/`, relevant widget |
+| Intervals or queue | [SRS](srs.md) | `packages/shared/src/core/usecases/srs/`, `useSrsSession`, both repositories |
+| Generation or suggestions | [AI](word-suggestions.md) | `src/features/word-suggest/`, `src/features/quick-add-words/`, `supabase/functions/suggest-word/` |
+| Import or sync | [Storage](platforms-and-storage.md), [format](deck-format.md) | shared core, `packages/shared/src/sync/`, platform repositories |
+| Server or Hub | [Supabase](../supabase/README.md) | migrations and Edge Functions |
 
-Полный список точек входа есть в [карте модулей](module-catalog.md), устройство слоёв в [архитектуре](architecture.md).
+The [module map](module-catalog.md) lists entry points. [Architecture](architecture.md) explains the layers.
 
-## Что важно сохранить
+## Behavior to preserve
 
-Языковые колоды остаются совместимыми, если новая функция им не нужна. Экспорт выбирает минимальную версию формата по содержимому. Неизвестный предмет или неподдерживаемая версия должны вызывать понятный отказ, а не терять поля.
+Language decks remain compatible when they do not need a new feature. Export selects the minimum format version required by content. Unknown subjects and unsupported versions must fail clearly, without losing fields.
 
-Одна запись имеет одно расписание повторений. Смена направления или вида карточки не создаёт вторую единицу SRS. Новые предметы получают поля и оформление из профиля, а не из проверок названия предмета по всему UI.
+One entry has one review schedule. Changing direction or presentation does not create another SRS unit. New subjects get fields and layouts from profiles, rather than checks for subject names throughout the UI.
 
-Пользователь может учиться без аккаунта. Локальное сохранение не должно зависеть от ИИ, Hub или доступности сети. Предложения ИИ являются черновиками до явного применения или создания колоды.
+Local study does not require an account. Saving must work without AI, Hub or a network connection. AI output remains a draft until the user applies it or creates a deck.
 
-## Перед завершением
+## Before finishing
 
-Проверьте поведение на затронутых платформах, выполните подходящие [проверки](onboarding.md), обновите основной документ функции. Для релиза также проверьте упакованное приложение и напишите описание в `docs/releases/`.
+Check the affected platforms, run suitable [checks](onboarding.md), and update the feature document in all three languages. For a release, also check the packaged app and add notes to `docs/releases/`.
 
-[Срез проверок](baseline.md) относится к конкретной версии и не заменяет проверку новых изменений. [Заметки о качестве](code-audit.md) перечисляют известные ограничения, а не обещают полное отсутствие ошибок.
+The [baseline](baseline.md) belongs to a specific version and does not verify later changes. [Quality notes](code-audit.md) describe known limitations rather than promising no bugs.

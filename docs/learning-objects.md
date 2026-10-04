@@ -1,12 +1,16 @@
-# Предметы, поля и оформление карточек
+# Subjects, fields and card layouts
 
-LioraLang поддерживает языки, программирование, математику и историю. Список должен расширяться без новых веток в каждой форме и без отдельной таблицы для каждого предмета.
+**English** | [Русский](learning-objects.ru.md) | [Polski](learning-objects.pl.md)
 
-## Общая запись
+LioraLang supports languages, programming, mathematics and history. The catalog must grow without branches in every form or a table for each subject.
 
-Общее содержимое карточки включает `source`, `target`, теги и примеры или заметки. Языковые записи также используют уровень, часть речи и третий язык. Предметные поля находятся в отдельном объекте `subjectFields`.
+## Common entry
 
-У колоды есть `subject` и собственный `subjectFields`. Пустой `subject` означает язык. Историческое имя `words` в коде, API и базе не ограничивает запись словарным словом.
+An entry shares `source`, `target`, tags and examples or notes. Language entries also use level, part of speech and a third language. Subject-specific fields live in `subjectFields`.
+
+A deck has `subject` and its own `subjectFields`. An empty subject means language. The historical `words` name in code, API and storage does not restrict entries to vocabulary.
+
+Example deck fields and entry:
 
 ```json
 {
@@ -17,8 +21,6 @@ LioraLang поддерживает языки, программирование,
   }
 }
 ```
-
-Пример предметных полей записи:
 
 ```json
 {
@@ -32,86 +34,86 @@ LioraLang поддерживает языки, программирование,
 }
 ```
 
-`code` не является новой колонкой общего ядра. Его смысл и ограничения задаёт профиль Programming. Не переносите его в корень записи ради одной формы.
+`code` is not a new core column. Programming defines its meaning and constraints. Do not move it to the entry root for one form.
 
-## Что задаёт профиль
+## Profile responsibilities
 
-Каталог находится в `packages/shared/src/core/usecases/subjects/`. `registry.js` регистрирует профили, `subjects.js` нормализует поля и разрешает профиль. Каждый профиль описывает:
+The catalog is `packages/shared/src/core/usecases/subjects/`. `registry.js` registers profiles; `subjects.js` normalizes fields and resolves appearance. Each profile declares:
 
-- идентификатор и ключи переводов;
-- поля колоды и записи с типами, допустимыми значениями, длинами и значениями по умолчанию;
-- подписи вопроса и ответа, направления повторения;
-- допустимые изображения и публикацию в Hub;
-- доступные функции ИИ, язык и инструкцию генерации;
-- композицию лицевой и оборотной стороны из блоков;
-- минимальную версию пакета для новых возможностей.
+- ID and translation keys;
+- deck/entry fields, types, choices, lengths and defaults;
+- side labels and review directions;
+- image support and Hub publishing;
+- AI capabilities, language and generation instructions;
+- front/back composition from blocks;
+- minimum package versions for new capabilities.
 
-Реестр проверяет уникальность идентификаторов и полноту описаний. Неизвестный предмет отклоняется при импорте: иначе старый редактор мог бы стереть его поля.
+The registry checks unique IDs and complete definitions. Import rejects unknown subjects so an older editor cannot erase their fields.
 
-## Текущие предметы
+## Current subjects
 
-| Предмет | Поля колоды | Поля записи | Карточка |
+| Subject | Deck fields | Entry fields | Layout |
 | --- | --- | --- | --- |
-| Языки | Языки сторон, третий язык, изучаемая сторона, сторона изображения | Слово, перевод, CEFR, часть речи, примеры, теги, изображение | Знакомая языковая карточка |
-| Программирование | `technology`, `contentLanguage` | `code`, `codeSide`, `difficulty`, вопрос, ответ, заметки | Спокойный редактор с вкладкой технологии |
-| Математика | `area`, `contentLanguage` | `formula`, `formulaSide`, `steps`, `difficulty`, вопрос и ответ | Сетка тетради, формулы и решение |
-| История | `period`, `contentLanguage` | `context`, `date`, `consequences`, `difficulty`, вопрос и ответ | Архивная карточка с контекстом |
+| Languages | Side languages, third language, learned side, picture side | Word, translation, CEFR, part of speech, examples, tags, image | Familiar language card |
+| Programming | `technology`, `contentLanguage` | `code`, `codeSide`, `difficulty`, question, answer, notes | Calm editor and technology tab |
+| Mathematics | `area`, `contentLanguage` | `formula`, `formulaSide`, `steps`, `difficulty`, question, answer | Notebook grid, formulas, solution |
+| History | `period`, `contentLanguage` | `context`, `date`, `consequences`, `difficulty`, question, answer | Archive card and context |
 
-`difficulty` предметной записи описывает сложность материала. Оно не совпадает с трудностью памяти FSRS. Изменение сложности материала не переписывает расписание.
+Entry `difficulty` describes material, not FSRS memory difficulty. Changing it does not rewrite the schedule.
 
-## Программирование и технологии
+## Programming technologies
 
-Поле технологии свободное. SQL, CSS и PHP не отдельные предметы; JavaScript, Rust, Java, C++, C и C# тоже используют профиль Programming. Каталог `profiles/technologyAppearances.js` выбирает вкладку, акцент и детали оформления по нормализованной технологии. Неизвестная технология сохраняет общий дизайн.
+Technology is free text. SQL, CSS, PHP, JavaScript, Rust, Java, C++, C and C# all use Programming. `profiles/technologyAppearances.js` selects tabs, accents and details from normalized technology. Unknown technologies use the general design.
 
-Карточка без кода показывает термин или вопрос крупным текстом. С кодом используется аккуратная панель с номерами исходных строк и переносом длинных строк. Перенос не меняет сам сохранённый код. Код не выполняется.
+Without code, a card shows a large term or question. Code uses a pane with original line numbers and soft wrapping. Wrapping does not alter saved code. Code is never executed.
 
-`codeSide` по умолчанию `front`. При `back` код скрыт до открытия ответа. Выбор стороны хранится рядом с кодом и сохраняется во всех путях добавления, импорта и обмена.
+`codeSide` defaults to `front`. `back` hides code until answer reveal. Placement stays with the code through adding, importing and syncing.
 
-## Математика
+## Mathematics
 
-`formula` хранит LaTeX без обрамления. `formulaSide` по умолчанию `back`, чтобы решение не раскрывалось вместе с вопросом. Уравнение, которое нужно решить, можно явно поставить на лицевую сторону. `steps` содержит шаги решения на обороте.
+`formula` is LaTeX without fences. `formulaSide` defaults to `back` to hide a solution. An equation to solve can explicitly go on the front. `steps` contains back-side solution steps.
 
-Вопрос, ответ, заметки и шаги также могут смешивать текст и формулы. Поддерживаются `$...$`, `\(...\)`, `$$...$$` и `\[...\]`. Парсер отделяет математические фрагменты от обычного текста; KaTeX загружается локально и работает без сети после кэширования. Некорректная формула остаётся исходным текстом. Кодовые фрагменты и обычные цены не должны ошибочно превращаться в формулы.
+Questions, answers, notes and steps can mix text and formulas: `$...$`, `\(...\)`, `$$...$$`, `\[...\]`. The parser separates math from prose; local KaTeX works offline after caching. Invalid formulas stay as source text. Code and prices must not be mistaken for math.
 
-Рендеринг использует `trust: false` и не выполняет пользовательские команды. Корректный LaTeX не означает математически верное решение: вычисления и доказательства по-прежнему проверяет автор.
+Rendering uses `trust: false` and does not run user commands. Valid LaTeX is not proof of a valid solution; authors still check calculations and reasoning.
 
-## История
+## History
 
-`period` задаёт контекст колоды, например регион или эпоху. `context` виден на лицевой стороне, поэтому не должен содержать ответ на вопрос. `date` и `consequences` показываются после переворота. Это отдельные поля, а не формула или код под другим названием.
+`period` sets deck context, such as region or era. `context` is visible on the front and must not disclose the answer. `date` and `consequences` appear after the flip. These are distinct fields, not renamed code or formulas.
 
-## Язык ответов
+## Answer language
 
-У неязыковой колоды `contentLanguage` задаётся явно из списка поддерживаемых языков. Технология `JavaScript` не означает английские ответы. Язык интерфейса также не определяет язык карточки.
+Non-language decks explicitly choose `contentLanguage` from supported languages. JavaScript does not imply English answers, and interface language does not determine content.
 
-ИИ получает эту настройку вместе с профилем и контекстом. Смена языка отменяет устаревший запрос, но не переводит уже сохранённые карточки. При создании и импорте нужно сохранять значение, а не вычислять его заново из браузера.
+AI receives this choice with profile and context. Language changes cancel stale requests without translating saved entries. Creation and import preserve the value instead of recalculating it from the browser.
 
-## UI и ИИ
+## UI and AI
 
-Редактор, быстрое добавление и генератор строят предметные поля через общий компонент `subject-fields`. Поля могут иметь тип `text`, `multiline`, `code`, `formula` или `choice`. Сторона кода или формулы привязана к своему полю; группы переключателей разных карточек не должны влиять друг на друга.
+The editor, quick add and generator build fields with `subject-fields`. Supported types are `text`, `multiline`, `code`, `formula`, `choice`. Code/formula placement is attached to its field; switches in different cards must not affect each other.
 
-`buildCardPresentation()` строит блоки по профилю. Рендер карточки сопоставляет тип блока с компонентом, а не проверяет конкретный предмет. Языковой путь сохраняет прежнее поведение.
+`buildCardPresentation()` builds profile blocks. Rendering maps block types to components rather than branching by subject ID. Language cards keep their previous path.
 
-Профиль отдельно объявляет подсказку записи, генерацию темы, заполнение списка, описание и пояснение после ошибки. Не стоит показывать функцию лишь потому, что у колоды есть кнопка ИИ. Программирование, математика и история поддерживают предложения карточек и генерацию колод; языковые функции списка и review hint им не подставляются.
+Profiles independently declare entry suggestions, topic generation, lists, descriptions and review hints. A generic AI button is not enough to enable every task. Programming, mathematics and history support suggestions and topic decks without language-list completion or language hints.
 
-## Хранение и совместимость
+## Storage and compatibility
 
-Web и SQLite сохраняют поля предмета вместе с общим содержимым. Экспорт, импорт, хэш и синхронизация учитывают непустые поля. Поля по умолчанию не нужно добавлять в старые языковые пакеты без причины.
+Web and SQLite save subject fields with common content. Export, import, hash and sync include nonempty fields. Default fields should not be added to old language packages unnecessarily.
 
-Версия пакета выбирается по реально использованным возможностям. Математика и история требуют формат 6; программирование без новых полей может использовать более ранний формат. [Полная таблица](deck-format.md).
+Package versions follow used capabilities. Mathematics/history require format 6; programming may use older formats without newer fields. [Version table](deck-format.md).
 
-Одна запись остаётся одной единицей SRS. Смена дизайна, технологии или направления не создаёт новый журнал и не обнуляет память. В Hub пока публикуются только языковые колоды; запрет проверяется и в интерфейсе, и в ядре публикации.
+One entry remains one SRS unit. Layout, technology and direction changes do not create another log or reset memory. Hub publishing remains language-only, enforced in UI and publishing core.
 
-## Как добавить предмет
+## Adding a subject
 
-1. Определите полезные поля, подписи сторон и что должно оставаться скрытым до ответа.
-2. Создайте профиль и зарегистрируйте его. Используйте существующие типы полей и блоки; новый тип добавляйте лишь при реальной необходимости.
-3. Добавьте собственную композицию и стили через профиль. Общие элементы, оценки, управление и доступность остаются согласованными.
-4. Опишите язык содержимого, возможности и инструкцию ИИ. Проверьте серверную схему и нормализацию, а не только форму клиента.
-5. Назначьте минимальную версию формата. Старый клиент должен явно отказаться от неподдерживаемого содержимого.
-6. Добавьте переводы на все 12 языков интерфейса.
-7. Проверьте оба хранилища, экспорт, импорт, хэш, приватную синхронизацию и попадание карточки в Learn.
-8. Проверьте офлайн-цикл создания и оценки, мобильную ширину, обе темы и старые языковые карточки.
+1. Define useful fields, side labels and what stays hidden before reveal.
+2. Create and register a profile. Reuse field types and blocks unless a new type is necessary.
+3. Give it a profile-driven composition and styles while sharing controls, grades and accessibility.
+4. Define language, AI capabilities and instructions; check server schemas and normalization too.
+5. Set minimum format versions so older clients clearly reject unsupported content.
+6. Add all twelve interface translations.
+7. Check both stores, export/import, hashes, private sync and Learn sessions.
+8. Check offline creation/grading, mobile, both themes and existing language cards.
 
-Отдельная таблица или серверная миграция не нужны только ради новых ключей `subjectFields`. Если меняется серверный индекс, RLS, контракт или возможность Hub, миграция может понадобиться. Нельзя обещать, что любое расширение всегда обходится без неё.
+New `subjectFields` keys alone do not need tables or server migrations. Server indexes, RLS, contracts or Hub capabilities may require a migration. Not every extension is automatically migration-free.
 
-[Команды проверки](onboarding.md) · [ИИ](word-suggestions.md) · [Правила UI](../rules/ui-rules.md)
+[Checks](onboarding.md) · [AI](word-suggestions.md) · [UI rules](../rules/ui-rules.md)

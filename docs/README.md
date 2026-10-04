@@ -1,37 +1,39 @@
-# Документация LioraLang
+# LioraLang documentation
 
-Актуально для версии 0.9.1. Последнее обновление: 4 октября 2026 года.
+**English** | [Русский](README.ru.md) | [Polski](README.pl.md)
 
-Если вы впервые открыли проект, начните с [README](../README.ru.md). Здесь собраны подробности для пользователей и разработчиков. В каждом документе описано текущее поведение приложения; история изменений вынесена в отдельную папку.
+For version 0.9.1. Last updated: October 4, 2026.
 
-## Для пользователя
+Start with the [README](../README.md) if you are new to the project. These documents cover everyday use and development. They describe the current app; release history is kept separately. English is the primary version. Every document also has Russian and Polish versions, linked below its title.
 
-- [Как пользоваться](user-guide.md): создание и импорт колод, повторения, ИИ, работа без сети.
-- [Предметы и карточки](learning-objects.md): языки, программирование, математика и история.
-- [SRS](srs.md): интервалы, оценки, лимиты и очередь.
-- [ИИ-помощник](word-suggestions.md): доступные функции, настройки, данные и ограничения.
-- [Файлы колод](deck-format.md): перенос между устройствами, версии формата и примеры.
-- [Изображения](card-media.md): добавление, хранение и перенос картинок.
+## For users
 
-## Для разработчика
+- [User guide](user-guide.md): decks, imports, reviews, AI and offline use.
+- [Subjects and cards](learning-objects.md): languages, programming, mathematics and history.
+- [SRS](srs.md): intervals, ratings, limits and the queue.
+- [AI assistant](word-suggestions.md): features, settings, data and limitations.
+- [Deck files](deck-format.md): transfer, format versions and examples.
+- [Images](card-media.md): adding, storing and transferring pictures.
 
-- [Путеводитель по проекту](PROJECT_DOCUMENTATION.md): с чего начать конкретную задачу.
-- [Назначение и возможности](project-overview.md): что приложение умеет сейчас.
-- [Запуск и сборка](onboarding.md): окружение, команды, отладка и релизы.
-- [Архитектура](architecture.md): слои, общее ядро и потоки данных.
-- [Контракт двух платформ](architecture-dual-platform.md): как UI получает сервисы web и Electron.
-- [Хранение и синхронизация](platforms-and-storage.md): IndexedDB, SQLite, аккаунт и Hub.
-- [Карта модулей](module-catalog.md): где искать код нужной функции.
-- [Проверки и ограничения](code-audit.md): что покрыто тестами и что требует внимания.
-- [Контрольный прогон](smoke-checklist.md) и [срез качества](baseline.md).
-- [Supabase](../supabase/README.md): миграции, серверные функции и модерация.
+## For developers
 
-## Правила и история
+- [Project guide](PROJECT_DOCUMENTATION.md): where to start a particular task.
+- [Product overview](project-overview.md): what the app currently supports.
+- [Setup and builds](onboarding.md): environment, commands, debugging and releases.
+- [Architecture](architecture.md): layers, shared core and data flow.
+- [Two-platform contract](architecture-dual-platform.md): services for web and Electron.
+- [Storage and sync](platforms-and-storage.md): IndexedDB, SQLite, accounts and Hub.
+- [Module map](module-catalog.md): where to find each feature.
+- [Checks and limitations](code-audit.md): test coverage and areas needing attention.
+- [Smoke checklist](smoke-checklist.md) and [verification baseline](baseline.md).
+- [Supabase](../supabase/README.md): migrations, functions and moderation.
 
-- [Код и компоненты](../rules/code-and-components-rules.md).
-- [Интерфейс](../rules/ui-rules.md).
-- [Git и коммиты](../rules/git-and-commits-rules.md).
-- [Статус Bun](../rules/bun-code-and-components-rules.md).
-- [Описания релизов](releases/README.md).
+## Rules and history
 
-При изменении функции обновляйте её основной документ и затронутые инструкции запуска. Не копируйте одно описание в несколько технических разделов: лучше дать ссылку.
+- [Code and components](../rules/code-and-components-rules.md).
+- [Interface](../rules/ui-rules.md).
+- [Git and commits](../rules/git-and-commits-rules.md).
+- [Bun status](../rules/bun-code-and-components-rules.md).
+- [Release notes](releases/README.md).
+
+When changing a feature, update its main document, affected setup instructions and all three language versions. Link to shared explanations instead of repeating them across technical documents.

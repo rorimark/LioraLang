@@ -1,46 +1,48 @@
-# Контракт web и desktop
+# Web and desktop contract
 
-UI работает через одинаковые сервисы на обеих платформах. Различается транспорт: web обращается к браузерным хранилищам, desktop к API Electron. Общие правила остаются в ядре.
+**English** | [Русский](architecture-dual-platform.ru.md) | [Polski](architecture-dual-platform.pl.md)
 
-## Как подключается платформа
+UI uses the same services on both platforms. Transport differs: web uses browser storage, desktop uses the Electron API. Domain rules stay shared.
 
-1. Vite выбирает `@platform-target` по режиму сборки.
-2. Модуль `platform/target/web.js` или `desktop.js` создаёт набор сервисов.
-3. `PlatformProvider` из `@shared/providers` передаёт набор приложению.
-4. Модели UI вызывают `usePlatformService("имяСервиса")`.
+## Platform composition
 
-Основные реализации:
+1. Vite chooses `@platform-target` for the build mode.
+2. `platform/target/web.js` or `desktop.js` creates services.
+3. `PlatformProvider` from `@shared/providers` supplies them to the app.
+4. UI models call `usePlatformService("serviceName")`.
+
+Implementations:
 
 - `packages/shared/src/platform/web/createWebPlatformServices.js`.
 - `packages/shared/src/platform/electron/createElectronPlatformServices.js`.
 - `packages/shared/src/providers/PlatformProvider/`.
 
-## Доступные сервисы
+## Available services
 
-| Сервис | Назначение |
+| Service | Purpose |
 | --- | --- |
-| `authRepository` | Аккаунт и состояние авторизации |
-| `deckRepository` | Колоды, записи, импорт и экспорт |
-| `mediaRepository` | Изображения и уведомления об их изменении |
-| `settingsRepository` | Настройки приложения |
-| `hubRepository` | Публичные колоды и публикация |
-| `srsRepository` | Очередь и запись оценки |
-| `progressRepository` | Статистика и состояние изучения колоды |
-| `syncRepository` | Обмен личной библиотекой и прогрессом |
-| `systemRepository` | Путь базы, папки и проверка целостности на desktop |
-| `wordSuggestRepository` | Подсказки и генерация через сервер |
-| `runtimeGateway` | Окно, версия, события среды и обновления |
+| `authRepository` | Account and authentication state |
+| `deckRepository` | Decks, entries, import and export |
+| `mediaRepository` | Images and change notifications |
+| `settingsRepository` | App settings |
+| `hubRepository` | Public decks and publishing |
+| `srsRepository` | Queue and grade persistence |
+| `progressRepository` | Statistics and deck learning state |
+| `syncRepository` | Private library and progress exchange |
+| `systemRepository` | Desktop database path, folders and integrity checks |
+| `wordSuggestRepository` | Server suggestions and generation |
+| `runtimeGateway` | Window, version, runtime events and updates |
 
-Не все возможности среды одинаковы. Web не может открыть папку базы, перенести SQLite или установить desktop-обновление. Адаптер возвращает понятное отсутствие возможности; интерфейс должен учитывать это, а не пробовать Electron из браузера.
+Web cannot open database folders, relocate SQLite or install desktop updates. Adapters report unsupported capabilities clearly; UI should handle this instead of trying Electron from the browser.
 
-Auth и ИИ используют общий Supabase API. Текущий Hub-репозиторий использует общую web-реализацию и на desktop. Нельзя считать, что любой сетевой вызов desktop обязательно проходит через IPC.
+Auth and AI use shared Supabase APIs. Hub currently uses the shared web implementation on desktop too. Not every desktop network call goes through IPC.
 
-## Правила изменений
+## Change rules
 
-- Не импортируйте `electron/` из `src/` и не вызывайте `window.electronAPI` в компонентах.
-- Не обращайтесь к `@shared/api` из страниц, виджетов и фич напрямую.
-- Новое правило нормализации, SRS или формата файла сначала добавьте в общее ядро.
-- При изменении контракта обновите оба адаптера и проверки сохранения.
-- Системную функцию, доступную только на desktop, обозначайте как такую в UI.
+- Do not import `electron/` from `src/` or call `window.electronAPI` in components.
+- Do not call `@shared/api` directly from pages, widgets or features.
+- Put new normalization, SRS and format rules in the shared core first.
+- Update both adapters and persistence checks when changing a contract.
+- Label desktop-only system functions accordingly in UI.
 
-Для web запускайте `pnpm dev:web`, для desktop `pnpm dev`. Сборки: `pnpm build:web` и `pnpm build:desktop`. [Подробный запуск](onboarding.md) · [Хранилища](platforms-and-storage.md)
+Run `pnpm dev:web` for web and `pnpm dev` for desktop. Build with `pnpm build:web` and `pnpm build:desktop`. [Setup](onboarding.md) · [Storage](platforms-and-storage.md)

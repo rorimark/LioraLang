@@ -1,96 +1,98 @@
-# ИИ-помощник и генерация колод
+# AI assistant and deck generation
 
-ИИ помогает заполнить материал, но не участвует в назначении повторений. Сохранённые карточки работают локально. Подсказки и генерация требуют аккаунта, интернета и настроенного сервера.
+**English** | [Русский](word-suggestions.ru.md) | [Polski](word-suggestions.pl.md)
 
-Название `suggest-word` осталось историческим: одна серверная функция обслуживает слова, предметные карточки, списки, темы, описания и пояснения.
+AI helps create material without scheduling reviews. Saved cards work locally; suggestions and generation need an account, network and configured server.
 
-## Настройки
+The historical name `suggest-word` covers words, subject cards, lists, topics, descriptions and explanations.
 
-В **Настройках → ИИ-помощник** есть главный переключатель и шесть отдельных функций:
+## Settings
 
-| Настройка | Что контролирует |
+**Settings → AI assistant** has a master switch and six feature switches:
+
+| Setting | Controls |
 | --- | --- |
-| Подсказки слов | Автоматическое предложение пустых полей языковой карточки |
-| Пояснения после Again | Короткая помощь после ошибки в поддерживаемом языковом режиме |
-| Предложения карточек | Предметные предложения по термину, вопросу или коду |
-| Заполнение списка | Дополнение вставленного языкового списка |
-| Колоды по теме | Генерация новой колоды для поддерживаемого предмета |
-| Описание колоды | Предложение описания и тегов языковой колоды |
+| Word suggestions | Automatic suggestions for empty language-card fields |
+| Explanations after Again | Help after a miss in supported language presentations |
+| Card suggestions | Subject suggestions from terms, questions or code |
+| List completion | Completing a pasted language list |
+| Topic decks | Generating a new deck for a supported subject |
+| Deck descriptions | Descriptions and tags for language decks |
 
-Общий переключатель находится в `appPreferences.aiAssistant.enabled`; отдельные флаги в `aiFeatures`. Старые настройки переводятся в эту модель при нормализации. Не используйте прежний `deckDefaults.wordSuggestions` как текущий главный источник состояния.
+The master preference is `appPreferences.aiAssistant.enabled`; individual flags are in `aiFeatures`. Normalization migrates legacy preferences. `deckDefaults.wordSuggestions` is no longer the master source.
 
-Выключение общего переключателя блокирует все запросы и отменяет ожидающие ответы. Отдельные предпочтения сохраняются и возвращаются после включения. Выключение конкретной функции останавливает только её работу. Устаревший ответ не должен примениться после смены колоды, предмета, языка или ввода.
+Master off blocks requests and cancels pending results, preserving individual choices for re-enabling. A feature switch stops only that function. Late responses must not apply after deck, subject, language or input changes.
 
-Профиль предмета дополнительно определяет, какие функции вообще поддерживаются. Включённый переключатель не делает языковое заполнение списка доступным для математических задач.
+Profiles also declare capabilities. Enabling list completion does not make a mathematical problem a language list.
 
-## Функции и серверные задачи
+## Functions and tasks
 
-| Задача | Где доступна | Результат |
+| Task | Available in | Output |
 | --- | --- | --- |
-| `word` или запрос без task | Языковой редактор и быстрое добавление | Перевод, третий язык, уровень, часть речи, примеры, теги |
-| `list` | Языковой список | Дополнение строк пакетами до 30 |
-| `topic` | Генератор языковой колоды | 10, 20 или 30 слов по теме и уровню |
-| `hint` | После Again на языковой карточке | Пояснение в языке интерфейса |
-| `deck` | Языковая колода | Описание и теги по выборке до 40 слов |
-| `concept` | Программирование, математика, история | До трёх альтернативных карточек |
-| `concept-topic` | Генератор предметной колоды | 5, 10 или 20 карточек по теме и сложности |
+| `word` or omitted task | Language editor and quick add | Translation, third language, CEFR, part of speech, examples, tags |
+| `list` | Language lists | Batches of up to 30 rows |
+| `topic` | Language generator | 10, 20 or 30 words by topic and level |
+| `hint` | After Again in language study | Explanation in interface language |
+| `deck` | Language decks | Description and tags from up to 40 sample words |
+| `concept` | Programming, mathematics, history | Up to three alternative cards |
+| `concept-topic` | Subject generator | 5, 10 or 20 cards by topic and difficulty |
 
-Автоматическая подсказка слова начинается после паузы ввода около 350 ms. Она заполняет предложения в пустых полях, а не заменяет написанное пользователем. Можно принять отдельное поле, Tab принять предложение целиком, Escape скрыть его.
+Automatic word suggestions start after roughly 350 ms without typing. They suggest empty fields without replacing user input. Apply a field individually, use Tab for the whole suggestion, or Escape to hide it.
 
-Предметные предложения вызываются кнопкой. Запрос содержит профиль, исходный термин или вопрос, при необходимости код и контекст колоды. Код не выполняется. Поля ответа проверяются по тому же профилю, который строит форму.
+Subject suggestions use an explicit button. Requests include the profile, term or question, optional code and deck context. Code is never executed. Responses are validated against the form's profile.
 
-## Отдельное окно генерации
+## Dedicated generation window
 
-Генератор открывается из меню новой колоды в Decks и из быстрого добавления на Learn. В нём нет выбора существующей колоды или вкладок обычного добавления: это процесс создания новой колоды.
+Open it from New deck in Decks or quick add in Learn. It creates a new deck and has no existing-deck selector or ordinary add tabs.
 
-Слева на широком экране находятся настройки: предмет, технология или контекст, тема, язык ответов, количество и сложность или языковой уровень. Справа находятся черновики. Обе части прокручиваются независимо. На телефоне используется вертикальная форма с доступным действием создания внизу.
+On wide screens, settings are left and drafts right with independent scrolling. Settings include subject, technology or context, topic, answer language, count and difficulty or CEFR. Mobile uses a vertical form with the create action accessible at the bottom.
 
-После генерации можно изменить имя, описание, теги и все поля карточек, выбрать сторону кода или формулы, исключить черновик или удалить его. Переключатели сторон принадлежат конкретной карточке. Фактическое число карточек показывается даже при неполном ответе модели.
+Edit name, description, tags and every card field; set code/formula side, exclude or delete drafts. Side switches belong to individual cards. The actual count is shown even for partial model output.
 
-До подтверждения данные не сохраняются. Кнопка создания сохраняет колоду и выбранные карточки одним вызовом `saveDeck`. Повторная генерация, смена настроек и закрытие окна не должны применять ответ старого запроса.
+Nothing saves before confirmation. Creation writes the deck and selected cards with one `saveDeck`. Regeneration, settings changes and closing must not apply old responses.
 
-Компонент `GenerateDeckDialog` объявлен в `src/features/quick-add-words/ui/QuickAddWordsDialog.jsx`; отдельные стили находятся в `GenerateDeckDialog.css`. Модель использует режим `creationOnly` в `useQuickAddWords`.
+`GenerateDeckDialog` is defined in `src/features/quick-add-words/ui/QuickAddWordsDialog.jsx`, with `GenerateDeckDialog.css`. Its model uses `creationOnly` in `useQuickAddWords`.
 
-## На каком языке отвечать
+## Answer language
 
-Языковая карточка использует языки сторон. Неязыковая колода имеет явный `subjectFields.contentLanguage`. ИИ получает этот язык вместе с технологией, областью или периодом; сервер не должен доверять противоречащему ему клиентскому `writeIn`.
+Language cards use their side languages. Other subjects use explicit `subjectFields.contentLanguage`. AI receives it with technology, area or period; the server must not trust a conflicting client `writeIn`.
 
-Язык интерфейса не является языком ответов, кроме задачи пояснения `hint`. Изменение настройки не переводит уже сохранённые карточки. Данные из старого запроса на другом языке нужно отбросить.
+Interface language is not answer language, except for `hint`. Changing the setting does not translate saved cards. Replies to earlier requests in another language are discarded.
 
-## Сервер и квота
+## Server and allowance
 
-`supabase/functions/suggest-word/` проверяет запрос и сессию, затем вызывает Gemini. `GEMINI_API_KEY` хранится только в серверном секрете. `GEMINI_MODEL` позволяет задать предпочтительную модель; без него код выбирает доступные стабильные Flash-модели с fallback.
+`supabase/functions/suggest-word/` validates session and request, then calls Gemini. `GEMINI_API_KEY` is server-only. Optional `GEMINI_MODEL` sets a preferred model; otherwise stable available Flash models and fallbacks are selected.
 
-JWT-проверка должна оставаться включённой. Сервер отдельно проверяет пользователя и дневной лимит. Миграции `0004` и `0007` создают потребление и чтение квоты. Сейчас лимит составляет 300 запросов на аккаунт за сутки по UTC. Оставшийся лимит виден в настройках.
+Keep JWT verification enabled. The server also checks the user and allowance. Migrations `0004` and `0007` implement consumption and remaining-count reads. Current allowance: 300 requests per account per UTC day, visible in settings.
 
-Квота считается по обращениям к функции, не по количеству полученных карточек. Повторные попытки и fallback провайдера могут означать несколько обращений к модели в рамках одного принятого запроса. Не обещайте фиксированную стоимость или всегда бесплатную работу по серверному счётчику.
+Allowance counts function requests, not generated cards. Provider retries and fallback may make multiple model calls within one accepted request. The counter is not a guarantee of fixed cost or free operation.
 
-Клиент ждёт короткие задачи до 15 секунд, длинные до 45 секунд. Сервер ограничивает быстрые задачи примерно 13 секундами, длинные 42 секундами. Таймаут, отсутствие конфигурации, квота, сеть, вход и перегрузка должны давать понятное состояние, а не бесконечный spinner.
+Client timeouts are 15 seconds for short tasks, 45 for long tasks. Server budgets are about 13 and 42 seconds. Timeout, missing configuration, allowance, network, sign-in and overload must show clear states instead of an endless spinner.
 
-## Какие данные уходят наружу
+## Data sent to the provider
 
-Провайдер получает материал нужной задачи: слово, вопрос, код или тему, выбранные языки, контекст предмета, отдельные поля и выборку слов для описания. Нельзя писать, что отправляются только слово и пара языков: генерация использует больше данных.
+A task may send words, questions, code, topics, languages, subject context, selected fields and sampled words for descriptions. More than a word and language pair is sent for generation.
 
-Секрет Gemini и административный ключ Supabase не попадают в web- или Electron-сборку. Однако сами запросы содержат пользовательский материал. Не вставляйте в карточки секреты проекта, если собираетесь отправлять их ИИ.
+Gemini secrets and Supabase administrative keys stay out of web and Electron builds. Requests still contain user material. Avoid secrets in cards you plan to send to AI.
 
-## Проверка ответа
+## Response validation
 
-Запрос и ответ нормализуются, ограничиваются по длинам и допустимым значениям. Тема использует поля профиля и удаляет повторяющиеся или неподходящие записи. Контент отображается как данные; код не выполняется, произвольный HTML не вставляется.
+Requests and responses are normalized and constrained by length and allowed values. Topic results use profile fields and remove duplicate or unsuitable entries. Content is rendered as data, without code execution or arbitrary HTML.
 
-Такая проверка гарантирует форму данных, но не фактическую точность. Формула может быть красиво написана и неверно решена, дата может быть ошибочной, пример кода может содержать баг. Перед сохранением проверяйте смысл.
+Validation checks structure, not facts. Valid-looking formulas, dates and code can still be wrong. Review meaning before saving.
 
-## Где менять и как проверять
+## Code and verification
 
-| Путь | Назначение |
+| Path | Purpose |
 | --- | --- |
-| `packages/shared/src/config/aiFeatures.js` | Флаги и общие проверки доступности |
-| `packages/shared/src/api/createSupabaseWordSuggestApi.js` | Запросы, таймауты и ошибки |
-| `packages/shared/src/core/usecases/subjects/` | Поля, возможности, язык и инструкции предметов |
-| `src/features/word-suggest/` | Предложения и применение в UI |
-| `src/features/quick-add-words/` | Списки, темы и отдельное окно генератора |
-| `supabase/functions/suggest-word/gemini.ts` | Запрос слова и выбор моделей |
-| `supabase/functions/suggest-word/tasks.ts` | Остальные задачи и структурированные ответы |
+| `packages/shared/src/config/aiFeatures.js` | Flags and availability |
+| `packages/shared/src/api/createSupabaseWordSuggestApi.js` | Requests, timeouts and errors |
+| `packages/shared/src/core/usecases/subjects/` | Fields, capabilities, language and instructions |
+| `src/features/word-suggest/` | Suggestions and application |
+| `src/features/quick-add-words/` | Lists, topics and generation window |
+| `supabase/functions/suggest-word/gemini.ts` | Word requests and model selection |
+| `supabase/functions/suggest-word/tasks.ts` | Other tasks and structured output |
 
-Выполните `pnpm test:run`, `pnpm check:subject-assistant` и `pnpm check:subject-topic` для затронутых сценариев. Браузерные проверки подставляют ответы и не подтверждают доступность реального Gemini. Проверка развёрнутой функции должна отдельно проверить сессию, квоту и пример задачи без вывода секретов.
+Run `pnpm test:run`, `pnpm check:subject-assistant` and `pnpm check:subject-topic` as relevant. Browser scenarios mock responses and do not verify real Gemini availability. Test deployed sessions, allowance and sample tasks separately without exposing secrets.
 
-При развёртывании нужно включить относительные импорты общего каталога из `packages/shared`, иначе клиент и сервер разойдутся. Обновление сайта само по себе не развёртывает Edge Function. [Настройка сервера](../supabase/README.md) · [Окружение](onboarding.md)
+Deployments must include relative shared-profile imports from `packages/shared`. Updating the website does not deploy the Edge Function. [Server setup](../supabase/README.md) · [Environment](onboarding.md)

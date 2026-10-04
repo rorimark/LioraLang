@@ -1,26 +1,28 @@
-# Bun и текущие инструменты проекта
+# Bun and current tooling
 
-LioraLang сейчас использует Node.js, pnpm 10.33.0, Vite и Vitest. Electron запускает собственный runtime, серверные функции Supabase используют Deno. Этот файл не требует перевести проект на Bun и не заменяет [инструкции запуска](../docs/onboarding.md).
+**English** | [Русский](bun-code-and-components-rules.ru.md) | [Polski](bun-code-and-components-rules.pl.md)
 
-Ранее здесь находился общий набор правил для Bun. Большинство правил компонентов дублировало основной документ. Теперь общие требования собраны в [правилах кода](code-and-components-rules.md).
+LioraLang uses Node.js, pnpm 10.33.0, Vite and Vitest. Electron has its own runtime; Supabase functions use Deno. This file does not mandate Bun or replace [setup instructions](../docs/onboarding.md).
 
-## Если появится задача перехода на Bun
+Earlier generic Bun guidance duplicated component rules. Those requirements are now in the [code rules](code-and-components-rules.md).
 
-Переход выполняется отдельной задачей с проверяемой причиной: например скорость установки или конкретная серверная функция. Не меняйте менеджер, lockfile и тестовый runner попутно с UI-правкой.
+## A possible Bun migration
 
-До перехода нужно проверить:
+Make migration a separate task with a verifiable reason, such as install speed or a server capability. Do not change package manager, lockfile and runner during an unrelated UI task.
 
-- Vite и существующие скрипты сборки;
-- Vitest и браузерную приёмку;
-- Electron и сборку нативного `better-sqlite3` под его ABI;
-- electron-builder и зависимости внутри `app.asar`;
-- GitHub Actions и воспроизводимую установку;
-- совместимость модулей Node и отдельную среду Supabase Deno.
+Check before migrating:
 
-Выберите один основной менеджер и lockfile для воспроизводимой установки. Не держите несколько расходящихся lockfile как равноправные источники зависимостей. Обновите инструкции и CI вместе с фактической сменой инструментов.
+- Vite and build scripts;
+- Vitest and browser acceptance;
+- Electron and `better-sqlite3` for its ABI;
+- electron-builder and dependencies in `app.asar`;
+- GitHub Actions and reproducible installation;
+- Node compatibility and the separate Supabase Deno environment.
 
-## Границы runtime
+Choose one primary package manager and lockfile. Do not maintain divergent lockfiles as equal authorities. Update documentation and CI with the actual tooling change.
 
-`Bun.file`, `Bun.write` и `Bun.serve` допустимы только в явно выбранной инфраструктуре Bun. Браузер, чистое ядро и renderer не должны зависеть от этих API. Там, где нужен общий контракт, используйте стандартные Web API или адаптер.
+## Runtime boundaries
 
-Установка глобального Bun сама по себе не меняет runtime Electron и не превращает Edge Function Deno в Bun-сервис. Проверяйте среду каждого исполняемого модуля отдельно.
+`Bun.file`, `Bun.write` and `Bun.serve` belong only in explicitly selected Bun infrastructure. Browser, core and renderer must not depend on them. Use standard Web APIs or adapters for shared contracts.
+
+Installing Bun does not change Electron's runtime or make Deno Edge Functions Bun services. Verify each executable module's environment.

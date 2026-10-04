@@ -1,46 +1,44 @@
-# Git и коммиты
+# Git and commits
 
-История должна объяснять, что изменилось и почему. Каждый коммит представляет законченную логическую часть, которую можно проверить и откатить без соседней несвязанной работы.
+**English** | [Русский](git-and-commits-rules.ru.md) | [Polski](git-and-commits-rules.pl.md)
 
-## Перед изменениями
+History should explain what changed and why. Each commit is a complete logical part that can be reviewed and reverted independently of unrelated work.
 
-Посмотрите `git status`, текущую ветку и состояние удалённой ветки. Не сбрасывайте и не переносите чужие изменения автоматически. Для отдельной задачи обычно используется отдельная ветка; явная договорённость работать и публиковать в main имеет приоритет.
+## Before changes
 
-Имя ветки должно кратко описывать задачу и соответствовать действующим инструкциям проекта. Не создавайте новую ветку только ради сохранения уже согласованного этапа.
+Inspect `git status`, branch and remote state. Do not reset or move others' edits automatically. Tasks usually use separate branches; an explicit agreement to work and publish on main takes precedence.
 
-## Что включать в коммит
+Branch names describe the task and follow current project instructions. Do not create another branch merely to save an already agreed stage.
 
-Просмотрите `git diff`, добавьте только нужные файлы или фрагменты, затем прочитайте `git diff --cached`. Не используйте слепой `git add .`, если есть чужие или несвязанные изменения.
+## Commit contents
 
-Изменение поведения и необходимые тесты обычно составляют один цельный коммит. Несвязанный рефакторинг, переименование и массовое форматирование отделяйте. Не дробите изменение так, чтобы промежуточный коммит заведомо не запускался.
+Read `git diff`, stage selected files or hunks, then inspect `git diff --cached`. Avoid blind `git add .` when unrelated work exists.
 
-Перед фиксацией выполните проверки, подходящие для области изменения. В описании не пишите, что прошла проверка, которую не запускали. Не коммитьте токены, локальные env-файлы, базы, артефакты сборки или случайные логи.
+Behavior and its required tests normally belong together. Separate unrelated refactoring, renaming and mass formatting. Avoid commits that deliberately cannot run without the next one.
+
+Run relevant checks before committing. Do not claim checks you did not run. Never include tokens, local env, databases, build artifacts or accidental logs.
 
 ## Conventional Commits
 
-Формат:
-
 ```text
-type(scope): короткое описание действия
+type(scope): concise action
 ```
 
-| Тип | Когда использовать |
+| Type | Use |
 | --- | --- |
-| `feat` | Новая возможность |
-| `fix` | Исправление ошибки |
-| `refactor` | Перестройка кода без изменения поведения |
-| `perf` | Проверенное улучшение производительности |
-| `test` | Тесты и их инфраструктура |
-| `docs` | Документация |
-| `style` | Форматирование кода без изменения логики |
-| `build` | Сборка и зависимости |
-| `ci` | Автоматизация CI |
-| `chore` | Обслуживание проекта, включая подготовку версии |
-| `revert` | Откат опубликованного изменения |
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `refactor` | Restructuring without behavior change |
+| `perf` | Verified performance improvement |
+| `test` | Tests and test infrastructure |
+| `docs` | Documentation |
+| `style` | Code formatting without logic change |
+| `build` | Builds and dependencies |
+| `ci` | CI automation |
+| `chore` | Maintenance, including version preparation |
+| `revert` | Reverting published changes |
 
-Scope уточняет область, например `srs`, `ai`, `cards`, `release` или `docs`. Не используйте `style` для пользовательского редизайна: если меняется UI, выбирайте тип по смыслу поведения.
-
-Примеры:
+Scopes identify areas such as `srs`, `ai`, `cards`, `release` or `docs`. `style` is not for a user-visible redesign; choose the type by behavior.
 
 ```text
 fix(srs): keep the card after a failed grade
@@ -49,18 +47,18 @@ docs: refresh project guides
 chore(release): prepare v0.9.1
 ```
 
-Заголовок краткий, без точки в конце. При необходимости тело объясняет причину, совместимость и способ проверки. Несовместимое изменение обозначается `!` или `BREAKING CHANGE:` с понятным путём перехода.
+Keep subjects short, without a final period. Bodies explain reasons, compatibility and checks where useful. Use `!` or `BREAKING CHANGE:` for incompatible changes with a migration path.
 
-## Публикация и история
+## Publishing and history
 
-Публикуйте завершённые этапы в соответствии с договорённостью по задаче. Push не заменяет проверку staged diff. Перед push проверьте удалённое состояние; чужие коммиты нужно сохранить при согласовании истории.
+Publish completed stages as agreed. Push does not replace staged review. Check remote state and preserve others' commits when integrating.
 
-Rebase и объединение коммитов допустимы для собственной неопубликованной работы. Не переписывайте общую историю и не делайте force push в main. Для отмены опубликованного изменения используйте `revert`, если нет отдельной явной договорённости.
+Rebase and squash your own unpublished work. Do not rewrite shared history or force-push main. Revert published changes unless explicitly agreed otherwise.
 
-При конфликтах проверяйте смысл обеих сторон, а не выбирайте целиком ours или theirs ради продолжения. После разрешения повторите затронутые проверки.
+Resolve conflicts by understanding both sides, not selecting all ours/theirs to continue. Repeat affected checks.
 
-## Описание для ревью
+## Review descriptions
 
-Объясните проблему и итоговое поведение, затем укажите проверку и важные ограничения. Описание должно быть понятно человеку, который не видел обсуждение. Не перечисляйте всю хронологию работы и отброшенные варианты без причины.
+Describe the problem and resulting behavior, then validation and material limitations. Write for a reviewer without conversation history. Omit chronological narration and abandoned options unless relevant.
 
-Для релиза тег должен совпадать с `package.json`, а заметки находиться в `docs/releases/vX.Y.Z.md`. [Порядок выпуска](../docs/onboarding.md).
+Release tags match `package.json`, with primary notes in `docs/releases/vX.Y.Z.md` and Russian/Polish companions. [Release process](../docs/onboarding.md).

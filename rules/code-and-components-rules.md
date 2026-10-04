@@ -1,56 +1,58 @@
-# Правила кода и компонентов
+# Code and component rules
 
-Код должен позволять найти правило, изменить его в одном месте и проверить поведение. Эти правила относятся к текущему React-приложению, общему ядру и адаптерам LioraLang. Инструкция конкретной задачи имеет приоритет над общими рекомендациями.
+**English** | [Русский](code-and-components-rules.ru.md) | [Polski](code-and-components-rules.pl.md)
 
-## Структура и зависимости
+Code should make a rule easy to find, change in one place and verify. These rules cover React, shared core and adapters. Instructions for a specific task take precedence over general guidance.
 
-Направление зависимостей: `app → pages → widgets → features → entities → shared`. Нижний слой не импортирует верхний. Модуль открывает публичный API через `index.js`; не обходите его импортом приватного файла другого модуля.
+## Structure and dependencies
 
-Страница собирает экран, виджет объединяет значимый блок, фича выполняет действие, shared содержит общие элементы и инфраструктуру. Чистые правила карточек, SRS и форматов живут в `packages/shared/src/core/usecases/`, даже если относятся к предметной области. Это не повод переносить в shared целую страницу.
+Dependencies flow `app → pages → widgets → features → entities → shared`. Lower layers cannot import higher ones. Expose public APIs through `index.js`; do not import another module's private implementation.
 
-UI получает сервисы через `usePlatformService` из `@shared/providers`. Не вызывайте `@shared/api`, SQLite, IndexedDB или `window.electronAPI` из страниц и компонентов. Специфика среды находится в адаптерах.
+Pages compose screens, widgets major areas, features actions, and shared reusable controls/infrastructure. Pure card, SRS and format rules belong in `packages/shared/src/core/usecases/` despite being domain-specific. Whole pages do not belong there.
 
-## Модули и имена
+UI gets services through `usePlatformService` from `@shared/providers`. Do not call `@shared/api`, SQLite, IndexedDB or `window.electronAPI` in pages/components. Platform details belong in adapters.
 
-Обычно модуль содержит `ui/`, `model/`, `index.js` и тесты рядом с кодом. Не создавайте пустые каталоги только ради структуры. Используйте именованные exports, кроме оправданных точек входа вроде lazy routes.
+## Modules and naming
 
-Компоненты называются PascalCase, hooks начинаются с `use`, функции и переменные используют camelCase, общие константы UPPER_CASE. Имя описывает действие или роль; `handleThing`, `data2` и `doStuff` скрывают смысл.
+A module usually has `ui/`, `model/`, `index.js` and nearby tests. Do not create empty directories for ceremony. Prefer named exports except justified entry points such as lazy routes.
 
-Внутри модуля подходят относительные импорты. Между модулями используйте алиасы и публичные exports. Сначала внешние зависимости, затем общие и локальные. Не допускайте циклы и одинаковые названия для разных сущностей.
+Use PascalCase components, `use` hooks, camelCase functions/variables and UPPER_CASE constants. Names should describe purpose; `handleThing`, `data2` and `doStuff` do not.
 
-## Правила и состояние
+Relative imports fit within a module; aliases and public exports connect modules. Order external, shared and local imports. Avoid cycles and ambiguous duplicate names.
 
-- Одно правило нормализации должно использоваться обеими платформами и сервером, если сервер принимает эти данные.
-- Производные значения вычисляйте из исходных данных, не храните второй несовместимый снимок без причины.
-- Чистые use case не зависят от React и не читают время, сеть или хранилище скрытым образом; передавайте нужное окружение аргументами.
-- Предметные поля и возможности задаёт профиль. Не добавляйте проверки двух известных предметов в каждую форму.
-- Новое поле должно проходить сохранение, повторное открытие, экспорт, импорт, хэш и синхронизацию.
-- Изменение представления карточки не создаёт отдельное расписание SRS без явно согласованного изменения модели.
+## Rules and state
 
-## React и асинхронность
+- Share normalization across platforms and the server when it accepts the data.
+- Derive values rather than storing conflicting copies without a reason.
+- Pure use cases avoid React and hidden time/network/storage access; pass dependencies explicitly.
+- Subject fields and capabilities come from profiles, not two-subject checks throughout forms.
+- Every new field survives save/reopen, export/import, hashes and sync.
+- Presentation changes do not create independent schedules without an agreed model change.
 
-Эффекты предназначены для внешней синхронизации, подписок и ресурсов, а не для копирования вычислимого состояния. У каждого эффекта должны быть корректные зависимости и cleanup.
+## React and async work
 
-Запрос может завершиться после смены колоды, аккаунта, ввода или закрытия окна. Используйте отмену и проверку актуальности результата. После выключения функции ИИ её поздний ответ не применяется.
+Effects synchronize external resources and subscriptions, not derived-state copies. Dependencies and cleanup must be correct.
 
-Не обновляйте state размонтированного компонента. Подписки, таймеры, observers и object URL освобождаются. Блокировка двойного действия должна срабатывать до следующего render, если повторное выполнение опасно для данных.
+Requests can finish after deck, account, input or window changes. Cancel and check response relevance. Disabled AI must not apply late replies.
 
-Мемоизация нужна при измеренной проблеме или конкретной необходимости стабильной ссылки. Не оборачивайте всё в memo, useMemo и useCallback автоматически.
+Avoid state writes after unmount. Release subscriptions, timers, observers and object URLs. Protect duplicate actions synchronously when repetition risks data, before the next render.
 
-## UI и ошибки
+Memoize for a measured issue or a specific stable-reference need. Do not automatically wrap everything in memo, useMemo or useCallback.
 
-Формы имеют label, правильный тип кнопки и ожидаемую работу Enter. Иконки без текста имеют доступное имя. Компоненты общего UI не знают о конкретной колоде или серверной задаче.
+## UI and errors
 
-CSS находится рядом с компонентом и использует токены. Динамические inline styles подходят для вычисляемой геометрии или пользовательских данных, но не заменяют стили темы. Подробности в [правилах интерфейса](ui-rules.md).
+Forms have labels, correct button types and expected Enter behavior. Icon-only controls have accessible names. Shared UI must not know a particular deck or server task.
 
-Ошибку нормализуйте на границе сервиса и покажите рядом с действием. После неудачного сохранения ввод остаётся. Не скрывайте ошибку пустым catch и не считайте отсутствие сервиса успешной записью.
+Keep CSS nearby and use tokens. Inline styles fit computed geometry/user data, not theme styling. [UI rules](ui-rules.md).
 
-Секреты, токены и личное содержимое не выводятся в обычные логи. Любой импорт и результат ИИ считаются данными, а не командами; пользовательский код не выполняется.
+Normalize errors at service boundaries and show them near the action. Failed saves retain input. Do not hide failures in empty catches or treat a missing service as a successful write.
 
-## Тесты и завершение
+Do not log secrets, tokens or personal content routinely. Imports and AI output are data, not instructions; never execute user code.
 
-Проверяйте поведение, границы данных и ранее найденную ошибку. Тест, который копирует реализацию, мало помогает. Для косметической правки достаточно подходящей визуальной проверки; для хранения и совместимости нужны настоящие круговые сценарии.
+## Tests and completion
 
-Перед завершением просмотрите diff, выполните нужные lint, проверки слоёв и тесты. Если затронуто общее правило или адаптер, проверьте обе платформы. Обновите документацию функции и оформите цельный [коммит](git-and-commits-rules.md).
+Test behavior, data boundaries and regressions. Tests duplicating implementation add little value. Cosmetic work needs suitable visual verification; storage and compatibility need real round trips.
 
-[Архитектура](../docs/architecture.md) · [Команды](../docs/onboarding.md)
+Review the diff and run relevant lint, boundaries and tests. Shared-rule/adapter changes need both platforms. Update all three documentation versions and make a cohesive [commit](git-and-commits-rules.md).
+
+[Architecture](../docs/architecture.md) · [Commands](../docs/onboarding.md)

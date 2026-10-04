@@ -1,10 +1,10 @@
 # LioraLang
 
-[English](README.md) · [Русский](README.ru.md)
+[English](README.md) | [Русский](README.ru.md) | **Polski**
 
 LioraLang pomaga uczyć się z własnych fiszek. Utwórz talię, dodaj materiał i wracaj do niego, gdy nadejdzie termin powtórki. Aplikacja działa w przeglądarce i na komputerze. Nauka lokalna nie wymaga konta.
 
-[Otwórz aplikację](https://liora-lang.vercel.app/app/learn) · [Pobierz wersję na komputer](https://github.com/rorimark/LioraLang/releases/latest) · [Dokumentacja](docs/README.md)
+[Otwórz aplikację](https://liora-lang.vercel.app/app/learn) · [Pobierz wersję na komputer](https://github.com/rorimark/LioraLang/releases/latest) · [Dokumentacja](docs/README.pl.md)
 
 ## Czego możesz się uczyć
 
@@ -52,17 +52,17 @@ pnpm dev:web
 
 Otwórz `http://localhost:5175`. Aby uruchomić Electron, użyj `pnpm dev`. Jeśli moduł SQLite wymaga przebudowania, najpierw uruchom `pnpm rebuild:native`.
 
-Lokalny edytor i powtórki nie wymagają konfiguracji Supabase. Konto, Hub, synchronizacja i AI jej wymagają. Konfigurację, testy i wydawanie wersji opisuje [przewodnik programisty](docs/onboarding.md).
+Lokalny edytor i powtórki nie wymagają konfiguracji Supabase. Konto, Hub, synchronizacja i AI jej wymagają. Konfigurację, testy i wydawanie wersji opisuje [przewodnik programisty](docs/onboarding.pl.md).
 
 ## Dalsza dokumentacja
 
-Dokumenty techniczne są obecnie po rosyjsku.
+Wszystkie dokumenty mają pełne wersje angielską, rosyjską i polską. Główna jest angielska.
 
-- [Przewodnik użytkownika](docs/user-guide.md): talie, nauka, AI i typowe problemy.
-- [Architektura](docs/architecture.md): React, wspólna logika i usługi platformowe.
-- [Przedmioty i fiszki](docs/learning-objects.md): rozszerzanie katalogu przedmiotów.
-- [Format pliku talii](docs/deck-format.md): zgodność, przykłady i limity importu.
-- [SRS](docs/srs.md), [obrazy](docs/card-media.md), [AI](docs/word-suggestions.md), [dane i synchronizacja](docs/platforms-and-storage.md).
-- [Historia wydań](docs/releases/README.md) i [zasady pracy z kodem](rules/code-and-components-rules.md).
+- [Przewodnik użytkownika](docs/user-guide.pl.md): talie, nauka, AI i typowe problemy.
+- [Architektura](docs/architecture.pl.md): React, wspólna logika i usługi platformowe.
+- [Przedmioty i fiszki](docs/learning-objects.pl.md): rozszerzanie katalogu przedmiotów.
+- [Format pliku talii](docs/deck-format.pl.md): zgodność, przykłady i limity importu.
+- [SRS](docs/srs.pl.md), [obrazy](docs/card-media.pl.md), [AI](docs/word-suggestions.pl.md), [dane i synchronizacja](docs/platforms-and-storage.pl.md).
+- [Historia wydań](docs/releases/README.pl.md) i [zasady pracy z kodem](rules/code-and-components-rules.pl.md).
 
 Dokumentacja opisuje wersję 0.9.1. Informacje o starszych wydaniach dotyczą funkcji dostępnych w danej wersji.

@@ -1,96 +1,98 @@
-# Как пользоваться LioraLang
+# User guide
 
-LioraLang хранит материал в колодах и назначает повторения для каждой карточки. Можно учиться локально, без регистрации. Аккаунт открывает синхронизацию, публикацию в Hub и ИИ.
+**English** | [Русский](user-guide.ru.md) | [Polski](user-guide.pl.md)
 
-## Создать колоду
+LioraLang stores material in decks and schedules each card for review. Local study needs no registration. An account enables sync, Hub publishing and AI.
 
-Откройте **Колоды → Новая колода** и выберите предмет в редакторе. Выбор предмета доступен и при быстром создании колоды из раздела **Учить**. Отдельный пункт для программирования не нужен: все предметы выбираются в одной форме.
+## Create a deck
 
-Для языка задайте языки сторон, при необходимости третий язык. Для программирования задайте технологию и язык ответов, для математики область и язык ответов, для истории период или регион и язык ответов. Технология может быть любой, например Rust, Python или SQL.
+Open **Decks → New deck** and choose a subject in the editor. Subject selection is also available when creating a deck from **Learn** quick add. All subjects use one creation form; there is no separate Programming menu item.
 
-Язык ответов определяет язык пояснений, в том числе предложений ИИ. Он не зависит от языка интерфейса. Изменение этой настройки не переводит уже написанные карточки.
+For languages, select the languages of each side and an optional third language. For programming, set a technology and answer language; for mathematics, an area and answer language; for history, a period or region and answer language. Technology can be anything, such as Rust, Python or SQL.
 
-Укажите понятное название. Описание и теги помогут найти колоду позже. Новую колоду сохраните кнопкой создания. Изменения в существующей колоде сохраняются автоматически; проверяйте состояние сохранения перед закрытием.
+Answer language determines explanations, including AI suggestions. It is independent of interface language. Changing it does not translate existing cards.
 
-## Добавить карточки
+Give the deck a useful name. Description and tags help you find it. Create a new deck explicitly. Existing deck edits save automatically; check the save state before closing.
 
-В редакторе заполните вопрос и ответ. Остальные поля зависят от предмета:
+## Add cards
 
-- Язык: перевод, примеры, уровень, часть речи, теги и изображение.
-- Программирование: код, его сторона, сложность и заметки. Код необязателен.
-- Математика: формула, её сторона, шаги решения и сложность.
-- История: контекст на лицевой стороне, дата и последствия на обороте.
+Fill in the question and answer. Other fields depend on the subject:
 
-Код с ответом и формула с ответом остаются скрыты до переворота. Не помещайте решение в сам вопрос или исторический контекст, если хотите проверить память.
+- Languages: translation, examples, level, part of speech, tags and image.
+- Programming: optional code, code side, difficulty and notes.
+- Mathematics: formula, formula side, solution steps and difficulty.
+- History: context on the front, date and consequences on the back.
 
-Быстрое добавление открывается и на странице обучения. Для языков можно вставить список и проверить разбор перед добавлением. В многострочных полях Enter создаёт новую строку; Ctrl/Command + Enter добавляет карточку. Языковая форма поддерживает быстрое добавление через Enter.
+Answer-side code and formulas stay hidden until reveal. Avoid putting the solution into the question or historical context if you want to test recall.
 
-## Формулы в тексте
+Quick add also opens from Learn. Language decks accept pasted lists with a preview before adding. Enter inserts a line in multiline fields; Ctrl/Command + Enter adds a card. The language form supports fast adding with Enter.
 
-В математической колоде обычный текст можно смешивать с LaTeX:
+## Formulas in text
+
+Mathematical cards can mix prose and LaTeX:
 
 ```text
-Решите $x^2 = 4$.
-Ответ: \(x = \pm 2\).
-Общая формула:
+Solve $x^2 = 4$.
+Answer: \(x = \pm 2\).
+General formula:
 $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 ```
 
-В отдельном поле формулы пишите сам LaTeX без `$`. Для формулы внутри текста используйте `$...$` или `\(...\)`, для отдельного блока `$$...$$` или `\[...\]`. Ошибка записи остаётся видимым текстом, который можно исправить. Формулы не вычисляются автоматически.
+Use LaTeX without `$` in the formula field. In prose, use `$...$` or `\(...\)` inline, and `$$...$$` or `\[...\]` for a block. Invalid notation remains visible text you can edit. Formulas are not calculated automatically.
 
-## Учиться и повторять
+## Study and review
 
-Выберите колоду в **Учить**, прочитайте вопрос и попробуйте вспомнить ответ до переворота. После открытия ответа оцените результат:
+Choose a deck in **Learn**, read the question, and try to recall the answer before revealing it. Rate the result:
 
-| Оценка | Когда выбирать |
+| Rating | When to use it |
 | --- | --- |
-| Again | Не вспомнили или ответили неверно |
-| Hard | Вспомнили с большим усилием |
-| Good | Вспомнили нормально |
-| Easy | Ответ был очевиден |
+| Again | You forgot or answered incorrectly |
+| Hard | You recalled it with great effort |
+| Good | You recalled it normally |
+| Easy | The answer was obvious |
 
-Интервалы на кнопках показывают планируемое следующее повторение. Оценка относится к одной карточке, даже если вы меняете направление перевода или показ текста на изображение.
+The buttons show planned review intervals. A rating applies to one card even if you change translation direction or switch between text and image presentation.
 
-Настройки сессии управляют доступным для предмета направлением и показом. Дневные лимиты новых карточек и повторений находятся в настройках обучения. Дневная цель служит ориентиром и не блокирует шаги обучения. Дополнительная сессия позволяет выйти за дневные лимиты, но не вытягивает карточки, срок которых ещё не наступил.
+Session settings control directions and presentations supported by the subject. Learning settings set daily new-card and review limits. The daily goal is guidance and does not block learning steps. A bonus session bypasses daily limits without pulling future cards.
 
-Свободный просмотр не меняет расписание. Подробности интервалов и настроек есть в [документе SRS](srs.md).
+Free browsing does not change the schedule. [SRS details](srs.md).
 
-## Сгенерировать колоду
+## Generate a deck
 
-Откройте **Колоды → Новая колода → Собрать колоду с ИИ**. Из Learn окно доступно через быстрое добавление и действие генерации колоды. Названия кнопок зависят от языка интерфейса.
+Open **Decks → New deck → Collect a deck with AI**. In Learn, use quick add and its generate-deck action. Button names follow the interface language.
 
-1. Выберите предмет, тему, язык ответов и контекст колоды.
-2. Задайте количество карточек и доступный для предмета уровень или сложность.
-3. Запустите генерацию.
-4. Проверьте вопросы, ответы и дополнительные поля. Исправьте ошибки, исключите или удалите ненужные черновики.
-5. Нажмите создание колоды. До этого момента черновики не записаны в библиотеку.
+1. Choose the subject, topic, answer language and deck context.
+2. Set the card count and available level or difficulty.
+3. Start generation.
+4. Check questions, answers and extra fields. Correct mistakes, exclude or remove unwanted drafts.
+5. Create the deck. Drafts are not saved to the library before this action.
 
-Для программирования, математики и истории можно запросить 5, 10 или 20 карточек; для языков 10, 20 или 30 слов. Модель иногда возвращает меньше, и окно показывает фактическое количество. Черновики стоит проверять на точность и повторы.
+Programming, mathematics and history offer 5, 10 or 20 cards; languages offer 10, 20 or 30 words. The model may return fewer, and the window shows the actual count. Check accuracy and duplicates.
 
-В **Настройках → ИИ-помощник** есть общий переключатель. Когда он включён, доступны отдельные настройки подсказок слов, пояснений после Again, предложений карточек, заполнения списка, генерации колод по теме и описаний колод. Некоторые функции доступны только для языков. [Подробнее про ИИ](word-suggestions.md).
+**Settings → AI assistant** has a master switch. When it is on, separate controls enable word suggestions, explanations after Again, card suggestions, list completion, topic decks and deck descriptions. Some features support only languages. [AI details](word-suggestions.md).
 
-## Импорт, экспорт и Hub
+## Import, export and Hub
 
-Импорт принимает `.lioradeck`, старые `.lioralang` и поддерживаемые JSON-файлы. При совпадениях можно пропустить запись, обновить её или сохранить обе. Перед подтверждением проверьте предмет, языки и выбранный способ обработки совпадений.
+Import accepts `.lioradeck`, legacy `.lioralang` and supported JSON files. For matching entries, choose skip, update or keep both. Check the subject, languages and matching strategy before confirming.
 
-Экспорт содержит материал колоды и включённые изображения. Это удобный способ делиться материалом, но не полная резервная копия аккаунта и истории повторений. [Формат и совместимость](deck-format.md).
+Export includes deck material and included images. It is useful for sharing, but is not a complete backup of the account or review history. [Format and compatibility](deck-format.md).
 
-Hub содержит публичные языковые колоды. Можно посмотреть содержимое, добавить колоду к себе и пожаловаться на неподходящий материал. Публикация программирования, математики и истории пока недоступна.
+Hub contains public language decks. Preview a deck, add it and report unsuitable material. Programming, mathematics and history cannot be published yet.
 
-## Без сети и на нескольких устройствах
+## Offline and multiple devices
 
-В браузере сначала посетите приложение с интернетом. Оно кэширует файлы для дальнейшего запуска без сети. Колоды, карточки, изображения и оценки хранятся на устройстве. Десктоп также работает с локальной базой. ИИ, загрузка из Hub, вход и обмен с аккаунтом требуют сети.
+Visit the web app online first to cache resources. Decks, cards, images and ratings are stored on the device. Desktop also uses a local database. AI, Hub downloads, sign-in and account exchange need a connection.
 
-Аккаунт синхронизирует колоды и прогресс. Если соединения нет, изменения ждут следующего обмена. При параллельном редактировании возможна конфликтная копия: сравните её с основной колодой перед удалением. Синхронизация не заменяет экспорт важных материалов.
+An account syncs decks and progress. Offline changes wait for the next exchange. Concurrent editing can create a conflict copy; compare it with the main deck before deleting it. Sync does not replace exports of important material.
 
-## Если что-то не работает
+## Troubleshooting
 
-| Проблема | Что проверить |
+| Problem | Check |
 | --- | --- |
-| Нет карточек в очереди | Есть ли карточки в колоде, наступил ли срок, не исчерпан ли дневной лимит |
-| ИИ не отвечает | Вход в аккаунт, интернет, общий и нужный отдельный переключатель, остаток лимита |
-| Старый десктоп не импортирует файл | Обновите приложение: новый формат защищает поля от потери в старом редакторе |
-| В браузере пропали локальные колоды | Не очищались ли данные сайта и не используется ли другой профиль браузера |
-| На macOS не устанавливается обновление | Скачайте актуальную сборку со страницы релизов; автоматическая установка пока требует подписи |
+| No queued cards | Does the deck contain cards, are any due, and is a daily limit reached? |
+| AI does not respond | Account, connection, master and feature switches, remaining allowance |
+| Old desktop cannot import | Update the app; newer formats protect fields from older editors |
+| Local web decks disappeared | Was site data cleared, or are you in another browser profile? |
+| macOS cannot install an update | Download the release manually; automatic installation requires signing |
 
-Если проблема повторяется, сохраните точные шаги, версию, платформу и текст ошибки. Не прикладывайте токены аккаунта, секретные ключи или личные колоды без необходимости.
+For a recurring issue, record exact steps, version, platform and error text. Do not include account tokens, secret keys or personal decks unnecessarily.

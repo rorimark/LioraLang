@@ -1,74 +1,76 @@
-# Платформы, хранение и синхронизация
+# Platforms, storage and sync
 
-Колоды и повторения сохраняются локально. Аккаунт добавляет обмен с сервером, но не заменяет локальное хранилище. Web и desktop используют одно ядро с разными адаптерами.
+**English** | [Русский](platforms-and-storage.ru.md) | [Polski](platforms-and-storage.pl.md)
 
-## Где лежат данные
+Decks and reviews are stored locally. An account adds server exchange without replacing local storage. Web and desktop share the core and use different adapters.
 
-| Данные | Web | Desktop |
+## Data locations
+
+| Data | Web | Desktop |
 | --- | --- | --- |
-| Колоды и записи | IndexedDB, `decks` и `words` | SQLite, `decks` и `words` |
-| Расписание | `reviewCards` | `review_cards` |
-| Журнал ответов | `reviewLogs` | `review_logs` |
-| Изображения | `mediaAssets`, бинарные данные | `media_assets`, BLOB |
-| Настройки | `settings` и браузерные настройки окружения | настройки приложения и базы |
-| Состояние обмена | `syncQueue`, состояние в `settings` | сервис синхронизации SQLite |
+| Decks and entries | IndexedDB `decks`, `words` | SQLite `decks`, `words` |
+| Schedule | `reviewCards` | `review_cards` |
+| Answer log | `reviewLogs` | `review_logs` |
+| Images | Binary data in `mediaAssets` | BLOB in `media_assets` |
+| Settings | `settings` and browser environment preferences | App and database settings |
+| Exchange state | `syncQueue`, state in `settings` | SQLite sync service |
 
-Браузерная база называется `lioralang-web`, текущая версия схемы 4. Схему создаёт `packages/shared/src/platform/web/db/webDb.js`. SQLite создаётся и обновляется в `electron/db/initDb.js`. Не редактируйте пользовательскую базу вручную ради разработки: интеграционные проверки используют отдельные данные.
+The browser database is `lioralang-web`, schema version 4, initialized in `packages/shared/src/platform/web/db/webDb.js`. SQLite initializes and migrates in `electron/db/initDb.js`. Do not modify the user's database for development; integration checks use separate data.
 
-У колоды есть `subject` и `subjectFields`, у записи свой `subjectFields`. В SQLite поля предмета лежат в `subject_fields_json`. Пустой предмет означает язык, поэтому старые языковые данные не требуют принудительного переписывания.
+Decks have `subject` and `subjectFields`, and entries have their own `subjectFields`. SQLite uses `subject_fields_json`. An empty subject means language, so old language data does not need forced rewriting.
 
-## Работа без сети
+## Offline use
 
-Редактор, изучение, оценки и статистика работают с локальными данными. Desktop включает ресурсы в установку. Web сначала нужно открыть онлайн, чтобы service worker сохранил оболочку, маршруты, стили, формулы и шрифты.
+Editing, study, grades and statistics use local data. Desktop includes its resources. Web must first be visited online so the service worker can cache the shell, routes, styles, math and fonts.
 
-`public/sw.js` использует `asset-manifest.json` из web-сборки. Файлы сборки находятся от корня сайта. Нельзя запрашивать манифест как `/app/asset-manifest.json`: сервер может вернуть HTML маршрута приложения вместо JSON.
+`public/sw.js` uses `asset-manifest.json` from the web build. Assets are rooted at the site root. `/app/asset-manifest.json` may return app-route HTML instead of JSON, so it is not a valid manifest address.
 
-Кэш приложения и пользовательская IndexedDB выполняют разные задачи. Обновление кэша не должно стирать колоды. Очистка данных сайта, другой браузерный профиль или ограничения приватного режима могут привести к отсутствию локальной библиотеки.
+App cache and user IndexedDB serve different purposes. Updating cache must not erase decks. Clearing site data, switching browser profiles or using private-mode storage restrictions may remove the local library.
 
-## Личная синхронизация
+## Private sync
 
-Реализация находится в `packages/shared/src/sync/createSyncRepository.js`. Она использует Supabase API и платформенный адаптер локальной очереди.
+`packages/shared/src/sync/createSyncRepository.js` combines the Supabase API with a platform-local queue adapter.
 
-Колода имеет устойчивый `syncId`, хэш содержимого и сведения об источнике. После успешного обмена сохраняется последнее известное состояние. Следующий обмен сравнивает его с локальной колодой и версией на сервере, чтобы передавать изменения, а не публиковать новую версию без причины.
+Decks have a stable `syncId`, content hash and origin metadata. Successful exchange records the last known state. The next exchange compares it with local content and server versions, avoiding unnecessary new versions.
 
-Журнал ответов передаётся событиями с `opId`. Повторная доставка одного события не должна повторно учитывать ответ. Событие содержит следующее состояние расписания, включая память FSRS. Изображения загружаются отдельно до публикации пакета, который на них ссылается.
+Answers travel as events with `opId`. Repeated delivery must not count an answer twice. Events include the next schedule state and FSRS memory. Images upload before the deck package referencing them.
 
-Личная библиотека использует закрытый bucket `user-library-decks`. Публичный Hub использует bucket `decks` и отдельные таблицы. Наличие личной колоды на сервере не означает её публичную публикацию.
+Private library files use the closed `user-library-decks` bucket. Public Hub uses `decks` and separate tables. A privately synced deck is not automatically published.
 
-## Профили и конфликты
+## Profiles and conflicts
 
-Состояние прогресса и обмена привязано к гостевому профилю или конкретному пользователю. При смене аккаунта активная сессия обучения очищается, чтобы ответ не попал в предыдущий профиль. Данные прогресса нельзя объединять только по локальному идентификатору слова.
+Progress and exchange state belong to a guest profile or a specific user. Switching accounts clears the active study session so answers do not enter the previous profile. Local word ID alone is insufficient for merging progress.
 
-Если локальная колода изменилась после последнего обмена и на сервере появилась новая версия, текущая реализация сохраняет локальную конфликтную копию, затем применяет серверную версию к основной колоде. При серверном удалении и локальных изменениях также сохраняется копия. Это защита от потери материала, а не построчное совместное редактирование.
+If both local and remote deck content changed since the last sync, the implementation preserves a local conflict copy and applies the remote version to the main deck. Remote deletion with local edits also preserves a copy. This protects material; it is not collaborative line-by-line editing.
 
-Удаление только с устройства и удаление из личной библиотеки являются разными действиями. Состояние обмена отслеживает локальное удаление, чтобы не возвращать колоду при каждом обновлении.
+Removing a deck from one device differs from deleting it from the private library. Sync tracks local removals to avoid downloading the same deck on every update.
 
-Базовые случаи покрыты тестами, но реальный одновременный обмен нескольких устройств требует отдельной проверки. Конфликтные копии стоит сравнить перед удалением. Фоновый обмен не должен постоянно переключать экран обучения на загрузку; ошибки и ручной запуск имеют отдельный статус.
+Tests cover basic cases; simultaneous real devices need separate verification. Compare conflict copies before deletion. Background sync should not repeatedly replace the study card with a loading screen; errors and manual exchange have separate status.
 
-## Изображения
+## Images
 
-Полная картинка и миниатюра хранятся локально; запись ссылается на `assetId`. В личном облаке файлы привязаны к пользователю, имя определяется хэшем байтов. Получение сверяет хэш. Если файл ещё не доступен, UI показывает отсутствие изображения без удаления ссылки.
+Full images and thumbnails are local; entries reference `assetId`. Cloud images belong to a user and use byte hashes in their paths. Downloads verify hashes. Missing files show a placeholder without deleting the reference.
 
-Очистка неиспользуемых файлов отложена, чтобы не удалить файл, который нужен другому устройству или пакету. Удалённая очистка проверяет актуальные пакеты. [Параметры и формат изображений](card-media.md).
+Unused-file cleanup is delayed to protect files needed by other devices or packages. Remote cleanup checks current packages. [Image parameters and format](card-media.md).
 
-## Аккаунт и токены
+## Accounts and tokens
 
-Клиент использует публичный ключ Supabase. RLS и серверные проверки отвечают за доступ к чужим данным; публичный ключ не является административным секретом.
+The client uses a public Supabase key. RLS and server checks protect other users' data; the public key is not an administrative secret.
 
-На desktop сессия Supabase сохраняется через IPC в `secureStorage.service.js`. Когда Electron `safeStorage` доступен, значение шифруется средствами ОС. Если шифрование недоступно, текущая реализация записывает значение в открытом виде. Нельзя обещать, что токены всегда зашифрованы. В браузере используется хранилище сессии Supabase по умолчанию.
+Desktop stores Supabase sessions through IPC in `secureStorage.service.js`. When Electron `safeStorage` is available, values use OS encryption. Otherwise the implementation stores plaintext. Do not promise unconditional token encryption. Web uses the default Supabase session storage.
 
-Удаление аккаунта выполняет серверная функция с подтверждением адреса. Оно удаляет серверные данные пользователя; локальные колоды остаются. Настройка сервера описана в [Supabase README](../supabase/README.md).
+Account deletion is a server function with email confirmation. Server data is removed while local decks remain. [Server setup](../supabase/README.md).
 
-## Резервные копии
+## Backups
 
-Экспорт `.lioradeck` переносит содержимое конкретной колоды и изображения, но не весь журнал SRS и аккаунт. Это не полный снимок базы.
+`.lioradeck` export includes one deck's content and images, not the full SRS log or account. It is not a database snapshot.
 
-Desktop умеет менять расположение базы и делать резервные копии по расписанию. Копии находятся в папке `backups` рядом с SQLite; количество и период задаются настройками. Текущий механизм выполняет checkpoint WAL и копирует файл базы. Для восстановления и переноса базы закройте приложение и сохраняйте исходную копию до проверки результата.
+Desktop can relocate the database and schedule backups. Copies go in `backups` beside SQLite; settings control interval and count. The current implementation checkpoints WAL and copies the database file. Close the app before restoring or moving a database, and keep the original until verification.
 
-Для браузера используйте экспорт колод. Синхронизация полезна для нескольких устройств, но не заменяет отдельную копию важного материала.
+Use deck export in the browser. Sync helps across devices but does not replace a separate copy of important material.
 
-## Что проверять при изменении
+## Checks after changes
 
-Прогоните сохранение и повторное открытие на обеих платформах, экспорт и импорт, смену профиля, повторную доставку события, конфликт редактирования, удаление и восстановление медиа. Нельзя проверять совместимость только через объект в памяти.
+Verify save and reopen on both platforms, export/import, profile switching, repeated event delivery, edit conflicts, deletion and media recovery. Objects in memory alone do not prove persistence compatibility.
 
-[Команды проверок](onboarding.md) · [Формат колоды](deck-format.md) · [Заметки о безопасности](code-audit.md)
+[Commands](onboarding.md) · [Deck format](deck-format.md) · [Security notes](code-audit.md)

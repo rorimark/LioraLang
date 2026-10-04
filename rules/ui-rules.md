@@ -1,139 +1,141 @@
-# Правила интерфейса LioraLang
+# LioraLang interface rules
 
-Интерфейс должен помогать добавлять и вспоминать материал. На экране сразу понятно, где пользователь находится, что важно и какое действие доступно. Эти правила описывают общий дизайн и места, где предмету нужна собственная композиция.
+**English** | [Русский](ui-rules.ru.md) | [Polski](ui-rules.pl.md)
 
-## Общий стиль
+The interface helps people add and recall material. Each screen makes its location, important information and available action clear. These rules cover the shared design and subject-specific compositions.
 
-Learn выглядит как стол с одной карточкой. Языковая карточка сохраняет бумагу с линовкой, программирование использует спокойный редактор, математика тетрадную сетку, история архивный лист. У предметов свои детали, но одинаковые управление, оценки и ощущение нажатия.
+## Shared style
 
-Остальные экраны спокойные: один шрифт UI, согласованные цвета и контроли. Не превращайте их в административный dashboard с рамкой вокруг всей страницы и вложенными декоративными коробками. Рамка нужна объекту: форме, таблице, карточке или плавающему меню.
+Learn is a desk with one card. Language cards use lined paper, programming a calm editor, mathematics a notebook grid and history an archive sheet. Subjects have distinct details but share controls, grades and tactile feedback.
 
-Не используйте свечение, шумные градиенты и декоративные бейджи без смысла. Глубину дают края и умеренная тень. Панели сами по себе не требуют тени; тень уместна под учебной карточкой и плавающими слоями.
+Other screens stay quiet: one UI font, consistent colours and controls. Avoid an administrative dashboard with a frame around the whole page and nested decorative boxes. Frames belong to objects: forms, tables, cards or floating menus.
 
-## Токены, кнопки и текст
+Avoid glow, noisy gradients and meaningless badges. Edges and restrained shadows provide depth. Panels do not automatically need shadows; study cards and floating layers can use them.
 
-Контроли выглядят как клавиши: рамка 2 px и нижний край через `--edge-width`, обычно 4 px. Hover поднимает на 1 px, нажатие опускает на 2 px с быстрым откликом около 60 ms. Hover включается только при `hover: hover`.
+## Tokens, buttons and text
 
-Радиус панели задаёт `--radius-panel`, обычно 20 px; контроля `--radius-control`, обычно 12 px. Цвета, размеры, отступы, тени и слои берите из токенов. Тема должна работать в light, dark и system.
+Controls resemble keys: a 2 px border and a bottom edge through `--edge-width`, usually 4 px. Hover lifts them 1 px, pressing moves them down 2 px with a response around 60 ms. Enable hover only for `hover: hover`.
 
-Основной шрифт UI Nunito. Кнопки и поля наследуют его. Заголовки обычно имеют вес 900, кнопки 800, метки 700 или 800. Код использует моноширинный шрифт; предметное оформление может применять отдельную гарнитуру в содержимом карточки.
+Use `--radius-panel`, usually 20 px, and `--radius-control`, usually 12 px. Take colours, sizes, spacing, shadows and layers from tokens. Support light, dark and system themes.
 
-Используйте Button из `@shared/ui`: primary, secondary, ghost и danger. В блоке одно основное действие. Оценки идут всегда в порядке Again, Hard, Good, Easy: красный, янтарный, синий, зелёный. Для них используются отдельные семантические токены и края.
+Nunito is the UI font, inherited by buttons and fields. Headings generally use weight 900, buttons 800, labels 700 or 800. Code is monospace; subject styling may use another font inside card content.
 
-Каждому контролу нужны normal, hover, active, focus, disabled и loading. Фокус видим: outline 3 px с `--color-primary-border`. Цвет не является единственным способом передать состояние.
+Use Button from `@shared/ui`: primary, secondary, ghost and danger. Give each block one primary action. Grades always appear as Again, Hard, Good, Easy: red, amber, blue, green, with their own semantic tokens and edges.
 
-## Layout и навигация
+Every control needs normal, hover, active, focus, disabled and loading states. Show a 3 px focus outline using `--color-primary-border`. Colour must not be the only state indicator.
 
-На широком экране и планшете навигация находится слева. В вертикальном телефоне снизу, в низком горизонтальном окне слева только иконки. Учитывайте safe-area со всех сторон. Активный раздел отмечается иконкой и короткой синей меткой без лишней подложки.
+## Layout and navigation
 
-Повторное нажатие на активный пункт не должно сбрасывать данные или scroll. Тулбар телефона остаётся компактным; второстепенные действия могут иметь иконку с доступным именем.
+Navigation is on the left on wide screens and tablets, at the bottom on portrait phones, and as icons on the left in short landscape windows. Respect safe areas on all sides. Mark the active section with its icon and a short blue marker without an extra background.
 
-Растягивающиеся flex/grid контейнеры используют `min-height: 0`, `min-width: 0` и `minmax(0, 1fr)`, чтобы содержимое могло прокручиваться внутри. Страница не должна получать случайный горизонтальный scroll.
+Clicking an active item again must not reset data or scroll. Keep the phone toolbar compact; secondary actions may use icons with accessible names.
 
-Карточка Learn измеряется от своего контейнера через container queries. На широком экране ориентир 5:3, на вертикальном контейнере форма выше; максимальная ширина 1440 px. Оценки должны помещаться вместе с карточкой. Размер содержимого можно задавать в `cqi` самой карточки.
+Flexible flex/grid containers need `min-height: 0`, `min-width: 0` and `minmax(0, 1fr)` so content can scroll inside them. Avoid accidental horizontal page scrolling.
 
-Проверяйте телефон, планшет, landscape и ширину 2560 px. Длинное название колоды не должно превращаться в одну букву там, где место позволяет показать больше.
+Learn cards measure their own container through container queries. Aim for 5:3 on wide screens and a taller portrait shape, with maximum width 1440 px. Grades must fit alongside the card. Content may use the card's own `cqi` units.
 
-## Формы и сохранение
+Check phones, tablets, landscape and 2560 px width. Do not truncate a deck title to one letter when space allows more.
 
-Используйте form, label и button с правильным type. Placeholder не заменяет подпись. Ошибка находится рядом с полем и объясняет, как исправить ввод. Укажите подходящий autocomplete.
+## Forms and saving
 
-Новая колода создаётся явным действием. Существующая колода сохраняет изменения автоматически, с понятным статусом. Не обещайте сохранение, пока операция не завершилась.
+Use form, label and button elements with the correct type. Placeholders do not replace labels. Put errors beside fields and explain how to fix input. Set suitable autocomplete.
 
-Для языковой карточки быстрый путь состоит из слова и перевода, дополнительные поля находятся в «Подробнее». Не подставляйте неизвестный уровень как A1. В языковой форме Enter помогает перейти и добавить запись; в коде, ответе и других многострочных полях Enter создаёт строку, Ctrl/Command + Enter добавляет карточку.
+New decks require explicit creation. Existing decks save changes automatically with a clear status. Do not claim a save before it completes.
 
-Паста списка сначала разбирается и показывается пользователю. Совпадения не должны молча удаляться или сливаться. Последовательные записи и undo не теряют `subjectFields` уже имеющихся карточек. После ошибки ввод сохраняется.
+The quick language-card path uses a word and translation; extra fields live under More details. Do not replace an unknown level with A1. Enter advances and adds an entry in language forms; in code, answers and other multiline fields it inserts a line, while Ctrl/Command + Enter adds a card.
 
-Предметные поля строятся из профиля. Язык ответов выбирается явно и не смешивается с языком интерфейса или технологией. Код и формулу можно поставить с вопросом или с ответом; ответ не раскрывается на лицевой стороне.
+Parse pasted lists and show them before saving. Never silently remove or merge duplicates. Sequential additions and undo preserve existing cards' `subjectFields`. Keep input after errors.
 
-## Настройки
+Build subject fields from profiles. Choose answer language explicitly, separately from interface language and technology. Code and formulas may accompany the question or answer; never reveal answers on the front.
 
-Используйте `SettingRow`, `SettingGroup` и контролы из общего UI. Название и короткая подсказка слева, контрол справа. Группа не нуждается в заголовке, если он повторяет раздел или содержит единственную очевидную строку.
+## Settings
 
-| Данные | Контрол |
+Use `SettingRow`, `SettingGroup` and shared controls. Put the name and short hint on the left and control on the right. Omit a group heading if it repeats the section or describes a single obvious row.
+
+| Data | Control |
 | --- | --- |
-| Включено или выключено | SettingSwitch |
-| От двух до шести коротких вариантов | SettingSegmented |
-| Число | SettingStepper |
-| Длинный список | SettingSelect |
-| Свободный текст | Поле на всю ширину строки |
+| On or off | SettingSwitch |
+| Two to six short options | SettingSegmented |
+| Number | SettingStepper |
+| Long list | SettingSelect |
+| Free text | Full-width field |
 
-Подсказка объясняет реальное изменение поведения. На широком экране список разделов и содержимое имеют независимый scroll. На узком сначала список, затем раздел с возвратом. `?tab=` сохраняет навигацию браузера.
+Hints explain actual behaviour changes. On wide screens, sections and content scroll independently. Narrow screens show the section list first, then the selected section with a back action. `?tab=` preserves browser navigation.
 
-Список показывает текущие значения через `buildSettingsSummaries`. Поиск учитывает названия, подсказки и ключевые слова; совпадение с группой может раскрывать всю группу. Нестандартное содержимое оборачивается в `SettingContent`. Аккаунт остаётся отдельным элементом над поиском.
+Show current values through `buildSettingsSummaries`. Search names, hints and keywords; matching a group may reveal the whole group. Wrap custom content in `SettingContent`. Account remains separate above search.
 
-Настройки ИИ начинаются с общего переключателя. Отдельные функции доступны при включённом общем переключателе. Выключение не сбрасывает предпочтения и не оставляет поздние ответы активными.
+AI settings start with a master switch. Individual functions are available while it is on. Turning it off preserves preferences and blocks late responses.
 
-## Select и диалоги
+## Selects and dialogs
 
-Используйте общий Select вместо отдельной реализации. Он принимает дочерние option и передаёт `onChange` с `target.name` и `target.value`. На компьютере список выбирает место над или под полем, на телефоне открывается шторкой снизу.
+Use shared Select rather than a separate implementation. It accepts option children and calls `onChange` with `target.name` and `target.value`. On computers the list appears above or below the field; on phones it opens a bottom sheet.
 
-Плавающий список рендерится порталом в body, чтобы transform или container query предка не меняли координаты fixed. От девяти вариантов доступен поиск. На телефоне поиск получает фокус по нажатию, чтобы клавиатура не перекрывала варианты сразу.
+Render floating lists through a portal into body so ancestors' transforms or container queries cannot alter fixed coordinates. Provide search from nine options. On phones, focus search only when tapped so the keyboard does not immediately cover options.
 
-Стрелки открывают список и двигают выбор, Enter выбирает, Escape закрывает список, Tab уходит дальше. Эти события не должны одновременно переворачивать карточку или закрывать внешний диалог. Выбор отмечается меткой и галочкой.
+Arrows open and navigate the list, Enter selects, Escape closes it and Tab moves on. These events must not also flip a card or close an outer dialog. Mark selection with a label and check mark.
 
-Диалог имеет заголовок, доступное имя, управляемый фокус и возврат фокуса после закрытия. Escape закрывает ближайший активный слой. Потерю несохранённого ввода подтверждают там, где она действительно возможна.
+Dialogs need a heading, accessible name, managed focus and focus restoration on close. Escape closes the nearest active layer. Confirm loss of unsaved input where it can actually occur.
 
-## Окно генерации колоды
+## Deck generation window
 
-Генерация новой колоды имеет отдельное окно. Оно показывает предмет, контекст, тему, язык, количество и сложность, затем редактируемые черновики. Не добавляйте в него вкладки обычного быстрого добавления и выбор существующей колоды.
+New-deck generation uses a separate window: subject, context, topic, language, count and difficulty, then editable drafts. Do not include ordinary quick-add tabs or an existing-deck selector.
 
-На desktop настройки и черновики прокручиваются независимо. На телефоне форма вертикальная, действие создания остаётся доступным внизу. До подтверждения колода не сохраняется.
+On desktop, settings and drafts scroll independently. Phones use a vertical form with creation accessible at the bottom. Nothing is saved before confirmation.
 
-У каждого черновика свои переключатели стороны, включения и удаления. Пользователь видит фактическое количество выбранных карточек. Квота, offline, вход, ошибка и отмена объясняются возле действия. Не заменяйте собственный текст пользователя предложением без применения.
+Each draft has its own side, inclusion and removal controls. Show the actual selected card count. Explain quota, offline state, sign-in, errors and cancellation near the action. Do not replace the user's text until they apply a suggestion.
 
-## Прогресс, графики и стикеры
+## Progress, charts and stickers
 
-Статистику рассчитывает общее ядро `buildLearningStats`, платформы передают ему данные. Не выдумывайте проценты и примеры для заполнения пустого экрана. Различайте уникальные изученные карточки и число ответов.
+Shared `buildLearningStats` calculates statistics from platform data. Do not invent percentages or examples to fill an empty screen. Distinguish unique learned cards from answers.
 
-Графики используют `--chart-*`, понятные подписи и легенду при нескольких рядах. У столбиков должен оставаться зазор, обычно не менее 2 px. У графика есть доступное описание и таблица данных. Палитру проверяет общий валидатор, не случайные цвета компонента.
+Charts use `--chart-*`, clear labels and a legend for multiple series. Leave gaps between bars, usually at least 2 px. Provide an accessible description and data table. Validate palettes through the shared validator instead of arbitrary component colours.
 
-Календарь показывает целые недели, варианты 17, 26, 39 и 53 недели выбираются по месту и возрасту данных. Одно место в tab order, стрелки для движения, понятный tooltip и live-описание. Геометрию измеряйте по контейнеру и обновляйте при изменении размера.
+Calendars show whole weeks: 17, 26, 39 or 53 according to space and data age. Use one tab stop, arrows, a clear tooltip and live description. Measure the container and update geometry when resized.
 
-Колоды прогресса показываются стабильными страницами по шесть, на широком экране в две колонки. Длинное имя можно сократить с полным title, но не менять высоту всех строк скачками. Числа должны оставаться читаемыми.
+Deck progress has stable pages of six, in two columns on wide screens. Long names may truncate with a full title, but row heights must not jump. Keep numbers readable.
 
-Стикеры считает общий `buildAchievements`. Восемь семейств имеют свои пороги; нельзя выдавать награду только ради заполнения альбома. Событийные достижения связаны с журналом, зависящие от текущего содержимого пересчитываются. Прогресс серии использует текущую серию, общий счётчик общий результат.
+Shared `buildAchievements` calculates stickers. Eight families have their own thresholds; never award stickers just to fill an album. Event achievements use logs, while content-dependent achievements are recalculated. Streak progress uses the current streak; totals use the overall result.
 
-Полученный стикер цветной, с белым краем и лёгким наклоном. Заблокированный прямой, с пунктиром и понятным содержимым. Текст и иконки полностью помещаются внутри, контраст подписи не ниже 4.5:1. Наклон и маска не должны обрезать число или длинную подпись. История достижений привязана к профилю.
+Earned stickers have colour, a white edge and slight tilt. Locked stickers are straight, dotted and understandable. Text and icons fit completely, with label contrast at least 4.5:1. Tilts and masks must not crop numbers or long labels. Achievement history belongs to the profile.
 
-## Аккаунт и синхронизация
+## Account and sync
 
-Учётная карточка использует общую статистику и достижения; календарь подстраивается под доступные 17 или 12 недель. Эффект наклона от указателя рассчитывается через requestAnimationFrame и transform, а не новый React render на каждое движение.
+The account card uses shared statistics and achievements; its calendar adapts to 17 or 12 available weeks. Calculate pointer tilt through requestAnimationFrame and transform, not a new React render on every movement.
 
-Переворот учётной карточки показывает одну сторону и меняет её у ребра, чтобы не зависеть только от backface в Firefox. Гостевой режим показывает понятный preview и вход. Неподтверждённый адрес позволяет повторно отправить подтверждение.
+The account flip shows one side and swaps it at the edge, avoiding reliance on backface alone in Firefox. Guests see a clear preview and sign-in. Unconfirmed accounts can resend confirmation.
 
-Фоновый обмен не мигает надписью Syncing на каждом проходе. Заметная загрузка нужна для ручного или первого обмена; ошибки и offline остаются видимыми. Обновление очереди не прячет текущую учебную карточку на долю секунды.
+Background sync must not flash Syncing on every pass. Prominent loading is for manual or first sync; errors and offline state remain visible. Queue refresh must not briefly hide the current study card.
 
-## Таблицы и страницы
+## Tables and pages
 
-Для каталога используйте общую пагинацию `CardCatalogPagination`: назад, страница и далее на узкой ширине. Подписи не переносятся по буквам. Номер страницы хранится в URL, возврат сохраняет его, изменение фильтра сбрасывает, уменьшение списка ограничивает допустимым диапазоном.
+Catalogs use shared `CardCatalogPagination`: back, page and next on narrow screens. Do not wrap labels letter by letter. Keep the page in the URL, preserve it on return, reset it on filter changes and clamp it when the list shrinks.
 
-Сортировка, пустое состояние, ошибка и загрузка не должны разрушать layout. Действие удаления явно показывает, что удаляется и можно ли это восстановить.
+Sorting, empty states, errors and loading preserve layout. Deletion clearly states what is removed and whether recovery is possible.
 
-## Анимация и доступность
+## Animation and accessibility
 
-Анимации поддерживают действие, но не задерживают расчёт и сохранение. Для уходящей учебной карточки используйте отдельную копию через `useLeavingCard`; у неё есть таймаут очистки, если animationend не пришёл.
+Animations support actions without delaying calculations or saving. Use a separate copy through `useLeavingCard` for departing cards, with a cleanup timeout if animationend never arrives.
 
-Движение использует transform и opacity, тактильный край может менять ширину. Пружинная кривая уместна для подъёма и появления, обычный ease для цвета. `prefers-reduced-motion` убирает движение; зависимость от события конца сохраняется коротким fade или другим надёжным завершением.
+Animate transform and opacity; tactile edges may change width. Spring curves suit lifting and appearing, ordinary ease suits colour. `prefers-reduced-motion` removes movement; retain end-event dependencies with a short fade or another reliable completion.
 
-Минимальная область касания 44 на 44 px. Фокус видим, tab order предсказуем, нет случайного zoom при вводе. Tabs, menu, tooltip и modal имеют корректные роли и связи. Иконка без подписи получает aria-label. Ключевой результат нельзя показывать только цветом.
+Touch targets are at least 44 by 44 px. Focus is visible, tab order predictable, and input does not accidentally zoom. Tabs, menus, tooltips and modals need correct roles and relationships. Unlabelled icons need aria-label. Colour alone must not communicate a key result.
 
-## Переводы и тексты
+## Translations and writing
 
-Тексты короткие, конкретные, называют действие. Не переносите в продуктовые формы внутренние названия протоколов и реализаций без пользы для пользователя. В документации и новых текстах избегайте длинных тире: используйте предложения, двоеточие или перестройте фразу.
+Write short, concrete text naming the action. Do not expose internal protocol or implementation names in product forms unless useful. Avoid long dashes in documentation and new text: use sentences, colons or rewrite. Maintain English primary documentation and complete Russian and Polish versions.
 
-Строки `/app` берутся через `t()` из каталога i18n. Новый ключ добавляется в en и остальные 11 языков. Бренд, автор и пользовательское название являются данными, а не строкой для перевода.
+Get `/app` strings through `t()` from the i18n catalog. Add each key to English and the other 11 languages. Brand, author and user-provided names are data, not translation strings.
 
-Множественное число задаётся формами и выбирается `Intl.PluralRules`; не склеивайте фразу из числа и универсального слова. Для ru, uk и pl нужны one/few/many/other, для cs one/few/other, для ja other. Даты, проценты, числа и размеры форматируйте через функции `useI18n`, без жёсткой локали en-US.
+Use forms selected by `Intl.PluralRules`, not a number joined to a universal word. ru, uk and pl need one/few/many/other, cs one/few/other, ja other. Format dates, percentages, numbers and sizes through `useI18n`, without hardcoded en-US.
 
-Чистые модели возвращают ключи или принимают formatter, не импортируют React ради перевода. Ошибки передают `i18nKey`. Неполный новый язык помечается `pending: true` и не попадает в выбор. Настройка языка по умолчанию следует системе или браузеру, затем английскому.
+Pure models return keys or accept a formatter; do not import React just to translate. Errors carry `i18nKey`. Mark incomplete languages `pending: true` and omit them from selection. Defaults follow the system or browser, then English.
 
-Лендинг имеет отдельный URL для каждого языка, статический HTML, canonical, hreflang, OG, JSON-LD, sitemap и robots. Первый render должен работать без window, document и localStorage. Новая локаль требует проверки prerender и `vercel.json`, а не только списка языка.
+The landing has a URL per language, static HTML, canonical, hreflang, OG, JSON-LD, sitemap and robots. First render works without window, document and localStorage. New locales require checking prerender and `vercel.json`, not just the language list.
 
-Проверяйте длинные подписи минимум на en, de, pl и ja на телефоне. Каталоги должны иметь одинаковые ключи, placeholders и непустые переводы. Используйте `pnpm check:i18n` и тесты каталогов.
+Check long labels on phones in at least en, de, pl and ja. Catalogs need matching keys, placeholders and nonempty translations. Use `pnpm check:i18n` and catalog tests.
 
-## Когда UI-задача готова
+## When a UI task is complete
 
-Проверены основной путь, loading, empty, error и success; новая и существующая колода; клавиатура и касание; телефон и landscape; обе темы и длинные переводы. Управление соответствует общим компонентам, поля сохраняются, а ошибки не уничтожают ввод.
+Check the main path, loading, empty, error and success states; new and existing decks; keyboard and touch; phones and landscape; both themes and long translations. Controls follow shared components, fields persist and errors keep input.
 
-[Руководство пользователя](../docs/user-guide.md) · [Предметы](../docs/learning-objects.md) · [Проверки](../docs/onboarding.md)
+[User guide](../docs/user-guide.md) · [Subjects](../docs/learning-objects.md) · [Checks](../docs/onboarding.md)

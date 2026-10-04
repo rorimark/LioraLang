@@ -1,10 +1,12 @@
-# Файл колоды
+# Deck files
 
-Файл `.lioradeck` содержит JSON с материалом колоды. Он удобен для обмена, переноса и отдельной копии содержимого. Личный журнал ответов, настройки аккаунта и вся база в него не входят.
+**English** | [Русский](deck-format.ru.md) | [Polski](deck-format.pl.md)
 
-Общие функции находятся в `packages/shared/src/core/usecases/importExport/deckPackage.js`: `parseDeckPackageFileText`, `validateDeckPackageObject` и `buildExportDeckPackage`. Web и desktop используют эти правила.
+A `.lioradeck` file is JSON containing a deck's material. It supports sharing, transfer and a content copy, without personal answer history, account settings or the entire database.
 
-## Структура
+Shared functions are in `packages/shared/src/core/usecases/importExport/deckPackage.js`: `parseDeckPackageFileText`, `validateDeckPackageObject`, `buildExportDeckPackage`. Both platforms use them.
+
+## Structure
 
 ```json
 {
@@ -14,7 +16,9 @@
     "name": "Travel words",
     "sourceLanguage": "English",
     "targetLanguage": "Polish",
-    "tags": ["travel"]
+    "tags": [
+      "travel"
+    ]
   },
   "words": [
     {
@@ -23,20 +27,24 @@
       "target": "bilet",
       "level": "A1",
       "part_of_speech": "noun",
-      "examples": ["I bought a train ticket."],
-      "tags": ["transport"]
+      "examples": [
+        "I bought a train ticket."
+      ],
+      "tags": [
+        "transport"
+      ]
     }
   ]
 }
 ```
 
-Экспорт добавляет дату, хэш, идентичность синхронизации и сведения об источнике. Не придумывайте `contentHash` вручную: пусть его вычислит приложение. В примере эти необязательные метаданные опущены.
+Export adds time, hash, sync identity and origin metadata. Let the app compute `contentHash`; the example omits optional metadata.
 
-Импорт также читает поддерживаемые старые `.lioralang`, `.json` и простые массивы записей. Алиасы полей нужны для старых файлов, а не для нового внутреннего контракта. Для обмена между версиями предпочтителен штатный экспорт.
+Import also accepts supported legacy `.lioralang`, `.json` and entry arrays. Field aliases support old files, not the new internal contract. Prefer app export between versions.
 
-## Предметы
+## Subjects
 
-Предмет хранится в `deck.subject`. Пустое или отсутствующее значение означает язык. Поля колоды находятся в `deck.subjectFields`, поля записи в `word.subjectFields`.
+`deck.subject` identifies the subject; absent or empty means language. Deck fields live in `deck.subjectFields`, entry fields in `word.subjectFields`.
 
 ```json
 {
@@ -65,30 +73,33 @@
 }
 ```
 
-Для математики и истории формат 6. [Поля предметов и значения по умолчанию](learning-objects.md). Формулу записывают как строку JSON: обратную косую черту нужно экранировать, например `"x = \\pm 2"`.
+Mathematics and history use format 6. [Fields and defaults](learning-objects.md). JSON strings escape backslashes, for example `"x = \\pm 2"`.
 
-## Примеры математики и истории
+## Mathematics and history examples
 
-Небольшая математическая колода с формулой на стороне ответа:
+A mathematics deck with an answer-side formula:
 
 ```json
 {
   "format": "lioralang.deck",
   "version": 6,
   "deck": {
-    "name": "Квадратные корни",
+    "name": "Square roots",
     "subject": "mathematics",
-    "subjectFields": { "area": "Алгебра", "contentLanguage": "Russian" }
+    "subjectFields": {
+      "area": "Algebra",
+      "contentLanguage": "English"
+    }
   },
   "words": [
     {
       "id": "roots",
-      "source": "Решите $x^2 = 4$.",
-      "target": "Два корня: $x = 2$ и $x = -2$.",
+      "source": "Solve $x^2 = 4$.",
+      "target": "Two roots: $x = 2$ and $x = -2$.",
       "subjectFields": {
         "formula": "x = \\pm 2",
         "formulaSide": "back",
-        "steps": "1. Извлеките квадратный корень.\n2. Учтите оба знака.",
+        "steps": "1. Take the square root.\n2. Include both signs.",
         "difficulty": "easy"
       }
     }
@@ -96,26 +107,29 @@
 }
 ```
 
-Историческая карточка с датой и последствиями на обороте:
+A history card with date and consequences on the back:
 
 ```json
 {
   "format": "lioralang.deck",
   "version": 6,
   "deck": {
-    "name": "Французская революция",
+    "name": "French Revolution",
     "subject": "history",
-    "subjectFields": { "period": "Франция XVIII века", "contentLanguage": "Russian" }
+    "subjectFields": {
+      "period": "18th-century France",
+      "contentLanguage": "English"
+    }
   },
   "words": [
     {
       "id": "bastille",
-      "source": "Когда произошёл штурм Бастилии?",
-      "target": "14 июля 1789 года.",
+      "source": "When was the Bastille stormed?",
+      "target": "July 14, 1789.",
       "subjectFields": {
-        "context": "Начало Французской революции.",
-        "date": "14 июля 1789 года",
-        "consequences": "Стал символом революции.",
+        "context": "The start of the French Revolution.",
+        "date": "July 14, 1789",
+        "consequences": "Became a symbol of the revolution.",
         "difficulty": "easy"
       }
     }
@@ -123,57 +137,57 @@
 }
 ```
 
-Контекст виден до ответа. Не помещайте туда дату, которую спрашивает карточка. При экспорте значения по умолчанию могут быть опущены; например `formulaSide: "back"` не нужно сохранять явно.
+Context is visible before the answer: do not put the requested date there. Default fields may be omitted on export, such as `formulaSide: "back"`.
 
-## Версии и совместимость
+## Versions and compatibility
 
-Текущий клиент читает версии от 1 до 6. Экспорт выбирает минимальную нужную версию по содержимому; номер приложения и номер формата не равны.
+Current clients read formats 1 through 6. Export chooses the minimum version needed by content. App version and format version differ.
 
-| Версия формата | Возможность, требующая эту версию |
+| Format | Capability requiring it |
 | --- | --- |
-| 1 | Обычная языковая колода и прежние колоды со стороной из картинок |
-| 2 | Базовая колода программирования |
-| 3 | Код на стороне ответа |
-| 4 | Необязательное изображение рядом с текстом обычной языковой карточки |
-| 5 | Явный язык ответов предметной колоды |
-| 6 | Математика и история |
+| 1 | Ordinary language decks and legacy picture-side decks |
+| 2 | Basic programming decks |
+| 3 | Answer-side code |
+| 4 | Optional image alongside ordinary language text |
+| 5 | Explicit subject answer language |
+| 6 | Mathematics and history |
 
-Если в Programming указаны язык ответов и код с ответом, итоговая версия 5. Обычная языковая колода без новых возможностей остаётся версией 1.
+Programming with both answer language and answer-side code exports as 5. Ordinary language decks without new features remain 1.
 
-Старый клиент отказывается от более нового формата. Это предотвращает ситуацию, когда файл открывается, но после сохранения пропадает код, изображение или язык ответа. Не понижайте номер вручную, чтобы обойти проверку. Неизвестный предмет также вызывает отказ.
+Older clients reject newer formats to prevent losing code, pictures or language after saving. Do not manually lower the version to bypass protection. Unknown subjects are rejected too.
 
-## Изображения
+## Images
 
-Запись содержит `image: { assetId, alt }`. `assetId` основан на SHA-256 байтов. Массив `media` несёт используемые изображения с MIME-типом и данными base64. В пакет попадают только файлы, на которые ссылаются записи.
+Entries hold `image: { assetId, alt }`. `assetId` uses a SHA-256 byte hash. `media` contains referenced images with MIME type and base64 data. Unreferenced files are excluded.
 
-`pictureSide` описывает колоду с одной целой стороной из картинок. Необязательное изображение у обычного слова отличается от такой колоды и требует формат 4. [Обработка изображений](card-media.md).
+`pictureSide` describes an entire image side. An optional image in a normal word card is a different capability and requires format 4. [Image processing](card-media.md).
 
-## Нормализация и ограничения
+## Normalization and limits
 
-| Ограничение | Текущее значение |
+| Limit | Value |
 | --- | --- |
-| Записей в пакете | До 50 000 |
-| Тегов у колоды или записи | До 10 |
-| Примеров у записи | До 1000 |
-| Обычного текстового поля | До 500 символов |
-| Описания колоды | До 2000 символов |
-| Медиафайлов в пакете | До 10 000 |
-| Одного медиафайла | До 3 MiB |
+| Entries | 50,000 |
+| Deck or entry tags | 10 |
+| Examples per entry | 1,000 |
+| Ordinary text field | 500 characters |
+| Deck description | 2,000 characters |
+| Media files | 10,000 |
+| One media file | 3 MiB |
 
-Предметные строки имеют собственные ограничения профиля, например код до 4000 символов. Нормализатор может обрезать слишком длинный текст и удалить неподдерживаемые поля; перед массовым импортом проверьте результат. Лимиты транспортной загрузки дополнительно задаются конкретным адаптером, поэтому файловые и сетевые ограничения не следует смешивать.
+Subject strings have profile-specific limits, such as 4,000 characters of code. Normalization can truncate long text and remove unsupported fields; check results before bulk import. Transport limits belong to each adapter and differ from format limits.
 
-Языки сверяются со списком поддерживаемых значений. Колоде неязыкового предмета не требуется языковая пара. У картинной стороны текст может отсутствовать; обычная карточка должна иметь осмысленное содержимое обеих сторон.
+Languages are checked against supported values. Non-language subjects need no language pair. Image sides may have no text; ordinary cards need meaningful content on both sides.
 
-## Совпадения при импорте
+## Matching entries
 
-- `skip`: оставить имеющуюся запись.
-- `update`: применить импорт к совпавшей записи.
-- `keep_both`: сохранить обе.
+- `skip`: keep the existing entry.
+- `update`: apply imported content to the match.
+- `keep_both`: preserve both.
 
-Стратегия должна быть явной. Импорт не должен молча выбирать между потерей полей и дублированием. Проверяйте совпадения, изображения и поля предмета перед подтверждением.
+The strategy must be explicit. Import must not silently choose between field loss and duplication. Review matches, images and subject fields before confirming.
 
-## Проверка изменений формата
+## Format-change checks
 
-При изменении формата проверьте чтение старых языковых файлов, круговой экспорт и импорт каждого предмета, хэш после нормализации, сохранение в IndexedDB и SQLite, перенос медиа и отказ старого клиента. Unit-теста сборки объекта недостаточно для проверки сохранения.
+Check old language files, round trips for every subject, normalized hashes, IndexedDB and SQLite persistence, media transfer and older-client rejection. A unit test building an object alone does not verify persistence.
 
-[Архитектура](architecture.md) · [Хранение](platforms-and-storage.md) · [Проверки](onboarding.md)
+[Architecture](architecture.md) · [Storage](platforms-and-storage.md) · [Checks](onboarding.md)

@@ -1,6 +1,6 @@
 # LioraLang
 
-[Русский](README.ru.md) · [Polski](README.pl.md)
+**English** | [Русский](README.ru.md) | [Polski](README.pl.md)
 
 LioraLang helps you learn from your own flashcards. Create a deck, add what you want to remember, and review it when it is due. It runs in a browser and as a desktop app. Local study works without an account.
 
@@ -55,6 +55,8 @@ Open `http://localhost:5175`. For the Electron app, run `pnpm dev`. If the nativ
 Local editing and review do not require Supabase credentials. Authentication, Hub, sync and AI do. Configuration, checks and release instructions are in the [developer guide](docs/onboarding.md).
 
 ## Find the right document
+
+Every document has complete English, Russian and Polish versions. English is primary.
 
 - [User guide](docs/user-guide.md): creating decks, studying, AI and common problems.
 - [Architecture](docs/architecture.md): React, shared domain logic and platform services.

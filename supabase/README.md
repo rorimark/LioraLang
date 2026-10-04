@@ -1,62 +1,64 @@
-# Серверная часть Supabase
+# Supabase backend
 
-Supabase обслуживает аккаунт, личную библиотеку, прогресс, Hub и ИИ. Локальная учёба не зависит от его доступности. Здесь хранятся SQL-миграции и Edge Functions; обновление сайта не применяет их автоматически.
+**English** | [Русский](README.ru.md) | [Polski](README.pl.md)
 
-## Миграции
+Supabase handles accounts, private libraries, progress, Hub and AI. Local study does not depend on its availability. This directory contains SQL migrations and Edge Functions; deploying the website does not apply them automatically.
 
-Применяйте файлы по порядку и проверяйте историю уже применённых миграций. Для существующего проекта сначала сделайте резервную копию и просмотрите изменения. Не удаляйте старые данные автоматически ради перехода на новую модель владения.
+## Migrations
 
-| Файл в `migrations/` | Что добавляет |
+Apply files in order and check the history of applied migrations. Back up an existing project and review changes first. Do not automatically delete old data to adopt a new ownership model.
+
+| File in `migrations/` | Adds |
 | --- | --- |
-| `20260331_0001_auth_hub_foundation.sql` | Профили, владельцев Hub, версии колод, RLS и публичное хранилище |
-| `20260427_0002_account_sync_foundation.sql` | Устройства, личную библиотеку, версии и события прогресса |
-| `20260427_0003_account_sync_storage.sql` | Закрытый bucket личных файлов и правила доступа |
-| `20261001_0004_word_suggestion_allowance.sql` | Учёт дневной квоты ИИ |
-| `20261001_0005_hub_picture_decks.sql` | Публикацию языковых картинных колод и лимит файлов Hub |
-| `20261001_0006_hub_reports.sql` | Жалобы, скрытие и модерацию |
-| `20261001_0007_word_suggestion_allowance_read.sql` | Чтение остатка и единый источник размера квоты |
+| `20260331_0001_auth_hub_foundation.sql` | Profiles, Hub owners, deck versions, RLS and public storage |
+| `20260427_0002_account_sync_foundation.sql` | Devices, private library, versions and progress events |
+| `20260427_0003_account_sync_storage.sql` | Private file bucket and access policies |
+| `20261001_0004_word_suggestion_allowance.sql` | Daily AI allowance tracking |
+| `20261001_0005_hub_picture_decks.sql` | Language picture-deck publication and Hub file limits |
+| `20261001_0006_hub_reports.sql` | Reports, hiding and moderation |
+| `20261001_0007_word_suggestion_allowance_read.sql` | Remaining allowance lookup and a single source for its limit |
 
-Public Hub использует bucket `decks`, личная библиотека закрытый `user-library-decks`. RLS и storage policies должны ограничивать личные данные текущим пользователем. Предметные поля передаются в JSON-пакетах; новая тема сама по себе не требует новую таблицу.
+Public Hub uses the `decks` bucket; private libraries use `user-library-decks`. RLS and storage policies must restrict private data to its owner. Subject fields travel in JSON packages; a new subject alone does not require another table.
 
-## Конфигурация клиента и Auth
+## Client configuration and Auth
 
-Клиент получает только `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`. Ключ публичный; административные полномочия не должны от него зависеть. Настройте разрешённые redirect URL для web и desktop OAuth.
+The client receives only `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`. The key is public; administrative authority must not depend on it. Configure allowed redirect URLs for web and desktop OAuth.
 
-Публикация и жалобы используют аккаунт с подтверждённым адресом. Не рассчитывайте на анонимные sign-in как замену модели владельца. При переносе старого сервера отдельно проверьте прежние записи и политики, не запускайте очистку без разбора.
+Publishing and reporting require an account with a confirmed email. Anonymous sign-in is not a substitute for ownership. When migrating an older backend, inspect existing records and policies separately rather than running indiscriminate cleanup.
 
 ## Edge Functions
 
 ### suggest-word
 
-`functions/suggest-word/` обслуживает слова, списки, темы, подсказки, описания и предметную генерацию. Использует Gemini, требует серверный секрет `GEMINI_API_KEY`; `GEMINI_MODEL` необязателен.
+`functions/suggest-word/` serves words, lists, topics, hints, descriptions and subject generation. It uses Gemini and requires the server secret `GEMINI_API_KEY`; `GEMINI_MODEL` is optional.
 
-Оставляйте JWT verification включённой. Функция дополнительно проверяет пользователя, формат запроса и квоту. Сейчас квота 300 принятых запросов на аккаунт в сутки по UTC; чтение остатка доступно через `word_suggestion_allowance()`.
+Keep JWT verification enabled. The function also checks the user, request format and allowance. The current quota is 300 accepted requests per account per UTC day; `word_suggestion_allowance()` returns the remaining allowance.
 
-Сервер импортирует общий каталог предметов из `packages/shared`. Проверьте, что bundler включает эти относительные зависимости. Иначе сайт может знать новый предмет, а функция его отклонять. После развёртывания проверьте реальный запрос каждого изменённого task. [Контракты ИИ](../docs/word-suggestions.md).
+The server imports the shared subject catalog from `packages/shared`. Check that bundling includes those relative dependencies. Otherwise the site may know a new subject that the function rejects. After deployment, send a real request for each changed task. [AI contracts](../docs/word-suggestions.md).
 
 ### delete-account
 
-`functions/delete-account/` проверяет токен через Auth, требует подтверждение адресом пользователя, удаляет его файлы из двух bucket, затем аккаунт. Связанные строки удаляются каскадно. Локальные колоды на устройствах функция не трогает.
+`functions/delete-account/` validates the token through Auth, requires confirmation using the user's email, removes their files from both buckets, then deletes the account. Related rows are deleted through cascades. Local decks on devices are untouched.
 
-Она использует серверный `SUPABASE_SERVICE_ROLE_KEY`, предоставляемый средой Supabase. Этот ключ нельзя передавать клиенту. JWT verification остаётся включённой. Проверки удаления выполняются на отдельном тестовом аккаунте.
+It uses the server-only `SUPABASE_SERVICE_ROLE_KEY` supplied by Supabase. Never expose this key to clients. JWT verification stays enabled. Test deletion on a separate test account.
 
-## Команды развёртывания
+## Deployment commands
 
-Команды ниже выполняются владельцем проекта из корня репозитория с авторизованным Supabase CLI. Замените `PROJECT_REF` своим project ref. Флаги сверены со справкой CLI 2.117.0; перед использованием другой версии проверьте её `--help`.
+The project owner runs these commands from the repository root with an authenticated Supabase CLI. Replace `PROJECT_REF` with your project ref. Flags were checked against CLI 2.117.0 help; check `--help` before using a different version.
 
-Сначала посмотрите, какие миграции планируются:
+First inspect planned migrations:
 
 ```sh
 supabase db push --project-ref PROJECT_REF --dry-run
 ```
 
-После проверки списка и резервной копии примените миграции:
+After reviewing the list and taking a backup, apply them:
 
 ```sh
 supabase db push --project-ref PROJECT_REF
 ```
 
-Для секретов используйте локальный некоммитимый файл, например `.env.supabase.local`, и задайте только серверные значения. Не вставляйте настоящий ключ в инструкцию, историю shell или логи.
+Use a local, uncommitted file such as `.env.supabase.local` for server secrets. Do not place real keys in instructions, shell history or logs.
 
 ```sh
 supabase secrets set --project-ref PROJECT_REF --env-file .env.supabase.local
@@ -64,28 +66,28 @@ supabase functions deploy suggest-word --project-ref PROJECT_REF
 supabase functions deploy delete-account --project-ref PROJECT_REF
 ```
 
-Не используйте `--no-verify-jwt` для этих функций. Способ bundling зависит от окружения CLI: убедитесь, что общие файлы входят в deployment, и проверьте результат на тестовом проекте. В репозитории нет общего закоммиченного `supabase/config.toml`; параметры собственного локального стека настраиваются отдельно.
+Do not use `--no-verify-jwt` for these functions. Bundling depends on the CLI environment: ensure shared files enter the deployment and verify it on a test project. No shared `supabase/config.toml` is committed here; configure your own local stack separately.
 
-## Жалобы и модерация Hub
+## Hub reports and moderation
 
-Подтверждённый пользователь может пожаловаться на публичную колоду один раз. Три разных автора жалобы скрывают колоду. Повторная публикация владельцем не снимает блокировку.
+A confirmed user can report a public deck once. Three distinct reporters hide the deck. Republishing by its owner does not remove the restriction.
 
-Сводка доступна администратору через SQL Editor:
+Administrators can inspect the summary through SQL Editor:
 
 ```sql
 select * from public.hub_deck_report_summary;
 ```
 
-Функция `moderate_hub_deck(uuid, text)` принимает `hide`, `restore` или `remove`. Обычный клиент не имеет права её вызвать. Восстановление снимает скрытие и очищает жалобы; удаление убирает строку колоды, но её storage-файл требует отдельного разбора. Например, для скрытия выбранной колоды:
+`moderate_hub_deck(uuid, text)` accepts `hide`, `restore` or `remove`. Ordinary clients cannot call it. Restoring unhides the deck and clears reports; removal deletes its row, but handling its storage file is separate. To hide a selected deck:
 
 ```sql
 select public.moderate_hub_deck('DECK_UUID'::uuid, 'hide');
 ```
 
-`DECK_UUID` является заполнителем, а не готовым UUID. Проверьте нужную колоду перед административной операцией.
+`DECK_UUID` is a placeholder, not a valid UUID. Verify the selected deck before administrative action.
 
-## Проверка доступа
+## Access checks
 
-На тестовых данных проверьте двух разных пользователей, чтение чужой личной колоды и файла, доступ без сессии, неподтверждённый адрес, повтор события прогресса, квоту, скрытую колоду и удаление аккаунта. Клиентский запрет кнопки не заменяет RLS или серверную проверку.
+On test data, check two different users, reading another user's private deck and file, access without a session, unconfirmed email, duplicate progress events, quota, hidden decks and account deletion. Disabling a client button does not replace RLS or server validation.
 
-[Хранение и обмен](../docs/platforms-and-storage.md) · [Настройка клиента](../docs/onboarding.md) · [Известные ограничения](../docs/code-audit.md)
+[Storage and sync](../docs/platforms-and-storage.md) · [Client setup](../docs/onboarding.md) · [Known limitations](../docs/code-audit.md)

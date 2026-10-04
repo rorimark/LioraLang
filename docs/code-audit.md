@@ -1,68 +1,70 @@
-# Проверки качества и известные ограничения
+# Quality checks and known limitations
 
-Срез для версии 0.9.1, 4 октября 2026 года. Это заметки по текущему коду и проверкам, а не независимый аудит безопасности или обещание отсутствия ошибок. Старые оценки по десятибалльной шкале и выводы о заглушках больше не описывают проект.
+**English** | [Русский](code-audit.ru.md) | [Polski](code-audit.pl.md)
 
-## Что уже устроено последовательно
+Snapshot for 0.9.1, October 4, 2026. These are implementation and verification notes, not an independent security audit or a promise of no bugs. Earlier subjective scores and placeholder claims no longer describe the app.
 
-- Web и desktop используют общее ядро SRS, импорта, хэшей и предметов.
-- Запись оценки проверяет revision и профиль, затем сохраняет расписание и журнал в одной транзакции.
-- Новые предметы описываются профилями. Поля, оформление, язык и возможности ИИ доступны клиенту и серверу из общего каталога.
-- Неподдерживаемый формат файла отклоняется. Старый клиент не должен молча стирать неизвестные поля.
-- Синхронизация имеет состояние профиля, очередь событий и конфликтные копии. Она реализована, а не является заглушкой.
-- Генератор показывает редактируемые черновики и сохраняет только после подтверждения.
-- Изображения имеют проверяемый хэш и отдельное локальное хранение.
-- Клиент не содержит ключ Gemini или service role Supabase.
+## Consistent foundations
 
-## Что проверяет автоматизация
+- Web and desktop share SRS, import, hashes and subject rules.
+- Grading verifies revision and profile, then writes schedule and log in one transaction.
+- Profiles define subjects; fields, layouts, language and AI capabilities are shared with the server.
+- Unsupported formats are rejected to prevent older clients discarding unknown fields.
+- Sync has profile state, queued events and conflict copies; it is implemented.
+- Generation shows editable drafts and saves after confirmation.
+- Images have verified hashes and separate local storage.
+- Client builds contain neither Gemini secrets nor Supabase service role.
 
-| Проверка | Что она подтверждает | Чего она не подтверждает |
+## Automated coverage
+
+| Check | Confirms | Does not confirm |
 | --- | --- | --- |
-| Vitest | Контракты, нормализацию, очереди, гонки и компоненты | Все возможные действия пользователя |
-| SQLite checks | Сохранение, журнал, медиа и предметные поля | Работу реальной пользовательской базы при любой миграции |
-| Браузерная приёмка | Офлайн-путь, оформление, генерацию с контролируемыми ответами | Качество фактов Gemini и реальный дневной лимит |
-| Lint и проверки слоёв | Ошибки кода и запрещённые импорты | Полную архитектурную корректность |
-| Проверка `app.asar` | Наличие и разрешение упакованных зависимостей | Полный запуск всех функций на каждой ОС |
+| Vitest | Contracts, normalization, queues, races and components | Every possible user action |
+| SQLite checks | Storage, logs, media and subject fields | Every migration of real user data |
+| Browser acceptance | Offline use, layouts and mocked generation | Gemini factual quality or real allowance |
+| Lint and boundaries | Code errors and prohibited imports | Complete architectural correctness |
+| `app.asar` check | Packaged dependency presence and resolution | Every feature running on each OS |
 
-На функциональном срезе перед 0.9.1 прошли 544 теста в 77 файлах. Команды и ограничения окружения описаны в [onboarding](onboarding.md), результат среза в [baseline](baseline.md). Новая правка требует своих проверок.
+Before 0.9.1, 544 tests passed across 77 files. [Onboarding](onboarding.md) describes commands and environment; [baseline](baseline.md) records the snapshot. New behavior needs its own checks.
 
-## Что требует внимания
+## Areas needing attention
 
-### Desktop-сессия
+### Desktop sessions
 
-`electron/services/secureStorage.service.js` использует `safeStorage`, когда шифрование ОС доступно. При недоступности сохраняет значение в режиме `plain`. Сначала стоит сделать поведение fallback явным и проверить восстановление сессии на поддерживаемых ОС. Нельзя документировать гарантированное шифрование всех токенов при текущей реализации.
+`electron/services/secureStorage.service.js` uses OS `safeStorage` when available, otherwise `plain` storage. Make fallback behavior explicit and test session restoration on supported OSes. Encryption is not guaranteed for every token.
 
-### Навигация Electron
+### Electron navigation
 
-У окна включены `contextIsolation` и отключён `nodeIntegration`, есть CSP и контроль devtools. В `windowLifecycle.js` нет явно установленного `setWindowOpenHandler` и общего `will-navigate` guard. Перед добавлением новых внешних ссылок нужно отдельно проверить, какие адреса разрешены и кто открывает их в системном браузере.
+The window has context isolation, no Node integration, CSP and devtools controls. `windowLifecycle.js` has no explicit `setWindowOpenHandler` or general `will-navigate` guard. Check allowed addresses and external-browser handling before adding links.
 
-### Удалённый импорт
+### Remote import
 
-`importWorkflow.js` сначала допускает `http` и `https`, затем проверяет адрес через `isTrustedHubStorageUrl`. При заданном origin сервер сравнивается строго с ним, без origin fallback требует HTTPS и домен Supabase. Это не произвольная загрузка любого HTTP URL, но правила конфигурации и редиректов следует проверить перед расширением источников импорта.
+`importWorkflow.js` first accepts HTTP/HTTPS, then checks `isTrustedHubStorageUrl`. Configured origins require exact equality; fallback requires HTTPS and a Supabase domain. This is not arbitrary HTTP download support, but configuration and redirect rules need review before adding import sources.
 
-### Резервные копии SQLite
+### SQLite backups
 
-Текущий механизм делает checkpoint WAL и копирует файл базы. Checkpoint обрабатывается как best effort. Это не то же самое, что доказанная консистентность снимка при любом параллельном доступе. Перед изменением backup или миграций нужен сценарий восстановления на отдельной базе.
+Backups checkpoint WAL and copy the database file. Checkpoint is best effort, so consistency under every concurrent access pattern is not established. Backup and migration changes require restoration tests on separate databases.
 
-### Одновременная работа устройств
+### Concurrent devices
 
-События повторений имеют идентификаторы, а конфликты содержимого сохраняют копию. Тесты не заменяют проверку двух реальных устройств, сетевого сбоя в середине обмена, смены аккаунта и удаления. Перед изменением порядка push/pull такие сценарии обязательны.
+Events have IDs and content conflicts preserve copies. Tests do not replace two-device checks, interrupted exchanges, account switches and deletions. Test these before changing push/pull order.
 
-### Качество ИИ
+### AI quality
 
-Валидация ограничивает форму ответа, длины и поля, но не доказывает корректность кода, исторических фактов или решения. Browser acceptance использует фикстуры, не реального провайдера. Запросы могут завершаться таймаутом или перегрузкой независимо от остатка квоты.
+Validation checks shape, lengths and fields, not code, historical facts or solutions. Browser scenarios use fixtures, not a real provider. Requests can time out or overload even with allowance remaining.
 
-### Публичный Hub
+### Public Hub
 
-Hub поддерживает языковые колоды, в том числе с картинками. Остальные предметы заблокированы ядром и UI, пока серверная модель публикации не будет расширена. Удаление кнопки само по себе не является серверной защитой; доступ к данным определяется RLS и RPC.
+Hub supports language decks including images. Other subjects are blocked in UI and core until publishing expands. Hiding a button is not server security; access relies on RLS and RPC.
 
-### Релизы и CI
+### Releases and CI
 
-Десктопные сборки не подписаны. macOS не устанавливает обновление автоматически. Есть workflow релиза, но нет отдельного общего workflow, который гарантированно запускает весь набор тестов на каждый push. Проверка renderer без проверки упакованных зависимостей недостаточна.
+Builds are unsigned; macOS updates are manual. Release CI exists, but no general workflow guarantees every check on each push. Renderer checks alone do not verify packaged dependencies.
 
-## Как менять проект без лишнего риска
+## Safe changes
 
-Исправляйте проблему в том слое, где находится её правило. Не дублируйте SRS в адаптере, профиль в компоненте или нормализацию отдельно на сервере. Нельзя прятать ошибку сохранения переходом к следующей карточке или очищать пользовательские данные ради зелёного теста.
+Change rules where they belong. Do not duplicate SRS in adapters, profiles in components or server normalization. A failed save must not advance the card, and clearing user data is not a test fix.
 
-Производительность проверяйте измерением: размер и загрузку bundle, повторные запросы, длинные списки, время расчёта и память изображений. Не добавляйте memo, кэш и абстракции только ради предполагаемой оптимизации.
+Measure performance: bundle size/loading, requests, long lists, calculation time and image memory. Add memoization, caches and abstractions for demonstrated needs.
 
-[Контрольный прогон](smoke-checklist.md) · [Архитектура](architecture.md) · [Правила кода](../rules/code-and-components-rules.md)
+[Smoke checklist](smoke-checklist.md) · [Architecture](architecture.md) · [Code rules](../rules/code-and-components-rules.md)

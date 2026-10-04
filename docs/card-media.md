@@ -1,55 +1,55 @@
-# Изображения на карточках
+# Images on cards
 
-Изображение является содержимым карточки и хранится локально. Оно должно работать без сети, переноситься в файле колоды и синхронизироваться между устройствами.
+**English** | [Русский](card-media.ru.md) | [Polski](card-media.pl.md)
 
-## Два способа использования
+Images are card content stored locally. They must work offline, travel in deck files and sync across devices.
 
-**Колода со стороной из картинок.** `pictureSide` выбирает лицевую или оборотную сторону. На ней вместо языка показывается изображение; другая сторона остаётся текстовой. Картинка может учить слово или слово может требовать вспомнить картинку.
+## Two uses
 
-**Картинка рядом со словом.** Обычная языковая карточка сохраняет слово и перевод, а изображение является дополнительным способом показа. В сессии можно выбрать текст или картинку; без изображения карточка использует текст.
+**Picture-side decks.** `pictureSide` chooses front or back. That side shows an image instead of a language; the other stays textual. Study can go from picture to word or word to picture.
 
-Оба представления одной записи имеют общее расписание SRS. Изменение вида не создаёт новую карточку. Сейчас эти возможности доступны для языкового профиля; не подставляйте их автоматически всем предметам.
+**A picture alongside text.** Ordinary language cards keep word and translation, with an optional image presentation. Sessions can show text or image; cards without images use text.
 
-## Что хранится
+Presentations share one SRS schedule. Switching appearance does not create another entry. These capabilities currently belong to language profiles, not every subject.
 
-Запись содержит `image: { assetId, alt }`. Подпись `alt` нужна для доступности и понятного отсутствующего изображения. Байты не помещаются в текстовое поле слова.
+## Stored data
 
-`assetId` вычисляется по SHA-256 содержимого. Одинаковые байты могут использовать одну запись медиа. Web хранит бинарные данные в `mediaAssets`, SQLite в `media_assets`; ссылка слова лежит в `image_json`.
+Entries contain `image: { assetId, alt }`. Alt text supports accessibility and a clear missing-image state. Bytes do not go into word text.
 
-UI получает локальный URL через медиа-репозиторий. Временные object URL нужно освобождать при замене и закрытии. После получения недостающего файла подписчики обновляют картинку без потери карточки.
+`assetId` is a SHA-256 hash of content. Equal bytes can share media. Web stores binary data in `mediaAssets`; SQLite uses `media_assets`, with entry references in `image_json`.
 
-## Подготовка файла
+UI gets local URLs through the repository. Revoke object URLs on replacement and close. Subscribers refresh missing images when downloaded without losing the card.
 
-`packages/shared/src/lib/media/prepareImage.js` принимает поддерживаемые растровые изображения и преобразует их в WebP с JPEG fallback. Во входной форме поддерживаются JPEG, PNG, WebP, GIF, AVIF и BMP; итоговый пакет проверяет фактические байты сохранённого формата. SVG не используется.
+## File preparation
 
-Текущие параметры:
+`packages/shared/src/lib/media/prepareImage.js` converts supported raster inputs to WebP with JPEG fallback. Input supports JPEG, PNG, WebP, GIF, AVIF and BMP; package validation checks the saved bytes. SVG is not used.
 
-| Параметр | Значение |
+| Parameter | Value |
 | --- | --- |
-| Максимальный исходный файл | 25 MiB |
-| Длинная сторона полной картинки | До 1280 px |
-| Длинная сторона миниатюры | До 320 px |
-| Целевой размер полной картинки | Около 450 KiB, зависит от сжатия |
-| Максимальный медиафайл в пакете | 3 MiB |
+| Maximum input | 25 MiB |
+| Full image longest side | 1280 px |
+| Thumbnail longest side | 320 px |
+| Target full-image size | About 450 KiB, depending on compression |
+| Maximum media asset in a package | 3 MiB |
 
-Преобразование через canvas убирает исходные метаданные. Не обещайте сохранение анимации GIF или оригинальных байтов: карточка хранит подготовленное изображение.
+Canvas conversion removes original metadata. Animated GIFs and original bytes are not promised; the card stores the prepared image.
 
-## Экспорт и импорт
+## Export and import
 
-Экспорт добавляет в `media` только файлы, на которые ссылаются записи. Файл включает данные base64, тип и идентификатор. Импорт проверяет ограничения, формат байтов и связи; отсутствующее изображение не должно превращаться в потерю текстового содержимого.
+Export includes only referenced assets in `media`, with base64, MIME type and ID. Import checks limits, bytes and references. A missing image must not discard text.
 
-Колода с прежней картинной стороной остаётся форматом 1. Обычная языковая колода с дополнительными изображениями требует формат 4, чтобы старый редактор не стёр картинки. [Совместимость файлов](deck-format.md).
+Legacy picture-side decks stay format 1. Ordinary language cards with optional images require format 4 to prevent older editors dropping them. [File compatibility](deck-format.md).
 
-## Синхронизация и Hub
+## Sync and Hub
 
-Личная синхронизация загружает изображения до пакета колоды в закрытый `user-library-decks`, с привязкой к пользователю и хэшу. Получение проверяет совпадение хэша. При временном отсутствии файла остаётся ссылка и понятная заглушка.
+Private sync uploads images before referencing packages into closed `user-library-decks`, scoped by user and hash. Downloads verify hashes. Unavailable files retain references and a clear placeholder.
 
-Публичный Hub поддерживает языковые колоды с картинками, включая picture-side decks. Для сервера нужна миграция `20261001_0005_hub_picture_decks.sql`. Программирование, математика и история пока не публикуются в Hub по другим ограничениям профиля, а не из-за запрета изображений вообще.
+Public Hub supports language decks with pictures, including picture-side decks, using `20261001_0005_hub_picture_decks.sql`. Programming, mathematics and history remain blocked by subject publishing capabilities, not a universal image ban.
 
-Неиспользуемые локальные файлы очищаются с задержкой не менее суток. Удалённая очистка использует отсрочку семь дней и проверку актуальных пакетов. Это помогает избежать удаления изображения во время обмена устройств.
+Local unused assets wait at least a day before cleanup. Remote cleanup waits seven days and checks current packages to avoid deleting in-use assets during sync.
 
-## Проверки и границы
+## Checks and limits
 
-Проверьте подготовку, повторное использование одинакового файла, замену и удаление ссылки, экспорт и импорт, получение недостающего файла и офлайн-показ. `pnpm check:media` проверяет desktop-хранение, unit-тесты подготовку и обмен. Общие команды описаны в [onboarding](onboarding.md).
+Check preparation, deduplication, replacement/deletion, export/import, missing-asset download and offline display. `pnpm check:media` covers desktop persistence; unit tests cover preparation and exchange. [Commands](onboarding.md).
 
-ИИ сейчас не генерирует изображения. Наличие вспомогательного контракта в коде не означает, что такая пользовательская функция уже доступна.
+AI does not currently generate images. A helper contract alone does not mean a user-facing feature exists.

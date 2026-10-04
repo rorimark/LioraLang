@@ -1,10 +1,10 @@
 # LioraLang
 
-[English](README.md) · [Polski](README.pl.md)
+[English](README.md) | **Русский** | [Polski](README.pl.md)
 
 LioraLang помогает запоминать материал по своим карточкам. Создайте колоду, добавьте то, что хотите выучить, и повторяйте, когда придёт время. Приложение работает в браузере и на компьютере. Для локального обучения аккаунт не нужен.
 
-[Открыть веб-приложение](https://liora-lang.vercel.app/app/learn) · [Скачать приложение](https://github.com/rorimark/LioraLang/releases/latest) · [Документация](docs/README.md)
+[Открыть веб-приложение](https://liora-lang.vercel.app/app/learn) · [Скачать приложение](https://github.com/rorimark/LioraLang/releases/latest) · [Документация](docs/README.ru.md)
 
 ## Что можно учить
 
@@ -52,15 +52,17 @@ pnpm dev:web
 
 Откройте `http://localhost:5175`. Для Electron запустите `pnpm dev`. Если SQLite-модулю нужна пересборка, сначала выполните `pnpm rebuild:native`.
 
-Для локального редактора и повторений ключи Supabase не нужны. Для аккаунта, Hub, синхронизации и ИИ нужны. Настройка, проверки и выпуск версий описаны в [руководстве разработчика](docs/onboarding.md).
+Для локального редактора и повторений ключи Supabase не нужны. Для аккаунта, Hub, синхронизации и ИИ нужны. Настройка, проверки и выпуск версий описаны в [руководстве разработчика](docs/onboarding.ru.md).
 
 ## Где читать дальше
 
-- [Руководство пользователя](docs/user-guide.md): колоды, обучение, ИИ и частые проблемы.
-- [Архитектура](docs/architecture.md): React, общее ядро и платформенные сервисы.
-- [Предметы и карточки](docs/learning-objects.md): как добавлять новые предметы без привязки к двум видам колод.
-- [Формат файла колоды](docs/deck-format.md): совместимость, примеры и ограничения импорта.
-- [SRS](docs/srs.md), [изображения](docs/card-media.md), [ИИ](docs/word-suggestions.md), [хранение и синхронизация](docs/platforms-and-storage.md).
-- [История версий](docs/releases/README.md) и [правила работы с кодом](rules/code-and-components-rules.md).
+Все документы доступны полностью на английском, русском и польском. Основная версия английская.
+
+- [Руководство пользователя](docs/user-guide.ru.md): колоды, обучение, ИИ и частые проблемы.
+- [Архитектура](docs/architecture.ru.md): React, общее ядро и платформенные сервисы.
+- [Предметы и карточки](docs/learning-objects.ru.md): как добавлять новые предметы без привязки к двум видам колод.
+- [Формат файла колоды](docs/deck-format.ru.md): совместимость, примеры и ограничения импорта.
+- [SRS](docs/srs.ru.md), [изображения](docs/card-media.ru.md), [ИИ](docs/word-suggestions.ru.md), [хранение и синхронизация](docs/platforms-and-storage.ru.md).
+- [История версий](docs/releases/README.ru.md) и [правила работы с кодом](rules/code-and-components-rules.ru.md).
 
 Документация описывает версию 0.9.1. Описания релизов сохраняют поведение соответствующих старых версий.

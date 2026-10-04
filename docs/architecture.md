@@ -1,35 +1,37 @@
-# Архитектура
+# Architecture
 
-В LioraLang один интерфейс и два способа работать с локальными данными. Браузер использует IndexedDB, Electron использует SQLite. Правила карточек, импорта, SRS и синхронизации вынесены в общий код, чтобы результаты на платформах не расходились.
+**English** | [Русский](architecture.ru.md) | [Polski](architecture.pl.md)
 
-## Слои приложения
+LioraLang has one interface and two local storage implementations: IndexedDB in the browser and SQLite in Electron. Card rules, import, SRS and sync use shared code so results stay consistent across platforms.
 
-| Слой | Ответственность |
+## Application layers
+
+| Layer | Responsibility |
 | --- | --- |
-| `src/app/` | Запуск, маршруты, общий layout, подключение провайдеров |
-| `src/pages/` | Сборка конкретной страницы |
-| `src/widgets/` | Крупные части страницы: обучение, редактор, настройки, прогресс |
-| `src/features/` | Действия пользователя: оценить, импортировать, добавить, сгенерировать |
-| `src/entities/` | Представление и модели сущностей интерфейса |
-| `packages/shared/src/` | Общие компоненты, конфигурация, чистое ядро, API и платформенные адаптеры |
-| `electron/` | Процесс Electron, preload, IPC, база, системные операции |
-| `supabase/` | Миграции и серверные функции |
+| `src/app/` | Startup, routes, layout and providers |
+| `src/pages/` | Page composition |
+| `src/widgets/` | Major page areas: study, editor, settings, progress |
+| `src/features/` | User actions: rate, import, add, generate |
+| `src/entities/` | Entity presentation and UI models |
+| `packages/shared/src/` | Shared UI, configuration, pure core, API and platform adapters |
+| `electron/` | Electron main process, preload, IPC, database and system operations |
+| `supabase/` | Migrations and server functions |
 
-Импорты направлены сверху вниз: app, pages, widgets, features, entities, shared. Модуль открывает публичный API через `index.js`. Shared не импортирует UI верхних слоёв; его ядро не зависит от React, IndexedDB или Electron.
+Imports flow downward: app, pages, widgets, features, entities, shared. Modules expose their public API through `index.js`. Shared does not import higher-layer UI; its core does not depend on React, IndexedDB or Electron.
 
-Исключение по назначению, а не по платформе: общий код API и адаптеров находится в shared, но компоненты не вызывают его напрямую. Они получают сервис через провайдер.
+API and adapter infrastructure also live in shared, but components access them through services rather than directly.
 
-## Запуск и выбор платформы
+## Startup and platform selection
 
-`src/main.jsx` запускает приложение. `src/app/App.jsx` подключает окружение и маршрутизацию. `PlatformProvider` находится в `packages/shared/src/providers/PlatformProvider/`.
+`src/main.jsx` starts the app. `src/app/App.jsx` connects the environment and routes. `PlatformProvider` lives in `packages/shared/src/providers/PlatformProvider/`.
 
-Vite выбирает платформу по `VITE_APP_TARGET`. Алиас `@platform-target` ведёт в `packages/shared/src/platform/target/web.js` или `desktop.js`. Алиас `@app-router-routes` выбирает маршруты web или desktop.
+Vite selects the platform through `VITE_APP_TARGET`. `@platform-target` points to `packages/shared/src/platform/target/web.js` or `desktop.js`. `@app-router-routes` selects web or desktop routes.
 
-Web использует абсолютную базу `/`, десктоп относительную `./`. В web есть лендинг, локализованные страницы и публичный переход по ссылке колоды. Десктоп начинает с обучения. Общие страницы находятся под `/app/`.
+Web uses base `/`; desktop uses `./`. Web includes the landing page, localized pages and public deck-link redirects. Desktop starts with Learn. Shared pages are under `/app/`.
 
-## Доступ к данным
+## Data access
 
-В UI используйте `usePlatformService` из `@shared/providers`. Например:
+UI uses `usePlatformService` from `@shared/providers`:
 
 ```jsx
 import { usePlatformService } from "@shared/providers";
@@ -37,59 +39,59 @@ import { usePlatformService } from "@shared/providers";
 const deckRepository = usePlatformService("deckRepository");
 ```
 
-Дальше модель вызывает метод репозитория и обрабатывает загрузку, результат и ошибку. Компонент не должен знать, хранится запись в IndexedDB или SQLite. Контракт всех сервисов перечислен в [описании двух платформ](architecture-dual-platform.md).
+The model calls the repository and handles loading, results and errors. Components do not need to know which database stores the entry. The [platform contract](architecture-dual-platform.md) lists all services.
 
 ```mermaid
 flowchart TD
-  UI[Страница и модель UI] --> Services[PlatformProvider и сервисы]
-  Services --> Web[Адаптер IndexedDB]
-  Services --> Desktop[Адаптер Electron]
-  Desktop --> IPC[Preload и IPC]
+  UI[Page and UI model] --> Services[PlatformProvider and services]
+  Services --> Web[IndexedDB adapter]
+  Services --> Desktop[Electron adapter]
+  Desktop --> IPC[Preload and IPC]
   IPC --> SQLite[SQLite]
-  Web --> Core[Общие правила ядра]
+  Web --> Core[Shared domain rules]
   SQLite --> Core
   Services --> Online[Supabase API]
   Online --> Functions[Edge Functions]
 ```
 
-Стрелки показывают обращения и использование правил. Ядро не обращается обратно к адаптерам.
+Arrows show calls and rule usage. The core does not call adapters back.
 
-## Данные и предметы
+## Data and subjects
 
-Колода хранит имя, описание, теги, идентичность для синхронизации и настройки предмета. Запись хранит `source`, `target`, дополнительные общие поля и `subjectFields`. В коде и базе записи исторически называются `words`, даже когда содержат задачи или вопросы.
+A deck holds its name, description, tags, sync identity and subject configuration. An entry holds `source`, `target`, other common fields and `subjectFields`. Entries retain the historical name `words` in code and storage, including problems and questions.
 
-Профиль предмета задаёт поля, подписи сторон, направления, возможности ИИ, доступность Hub и композицию карточки. Реестр находится в `core/usecases/subjects/registry.js`. Технология уточняет внешний вид программирования через каталог оформлений, а не через новый тип записи.
+A subject profile defines fields, side labels, directions, AI capabilities, Hub availability and card composition. The registry is `core/usecases/subjects/registry.js`. Technology refines programming appearance through a catalog rather than creating another entry type.
 
-`buildCardPresentation()` собирает блоки из профиля; Flashcard сопоставляет тип блока с компонентом. Языковой путь поддерживает прежний рендер. [Подробнее о расширении](learning-objects.md).
+`buildCardPresentation()` builds profile blocks; Flashcard maps block types to components. Language cards retain their existing rendering path. [Extension details](learning-objects.md).
 
-## Основные потоки
+## Main flows
 
-### Сохранение колоды
+### Saving a deck
 
-Форма собирает данные и нормализует поля по профилю. Репозиторий сохраняет колоду и записи, пересчитывает идентичность содержимого и уведомляет подписчиков. В новой колоде из окна генерации выбранные черновики и колода сохраняются одним вызовом `saveDeck`.
+The form gathers data and normalizes profile fields. The repository saves the deck and entries, updates content identity and notifies subscribers. The generation window saves a new deck and selected drafts in one `saveDeck` call.
 
-### Повторение
+### Review
 
-Репозиторий читает карточки и журнал. Общий движок строит очередь и превью интервалов. При оценке хранилище проверяет профиль и revision, затем в одной транзакции записывает расписание и событие ответа. UI переходит дальше только после успешной записи. [Подробнее о SRS](srs.md).
+The repository reads cards and logs. The shared engine builds the queue and interval previews. Before grading, storage checks profile and revision, then writes the schedule and answer event in one transaction. UI advances only after a successful write. [SRS](srs.md).
 
-### Синхронизация
+### Sync
 
-Общий `createSyncRepository` сравнивает локальные хэши с последним известным состоянием сервера. Пакеты колод и изображения передаются отдельно от событий повторений. Адаптеры локального хранения сохраняют очередь и состояние профиля. [Хранение, конфликты и восстановление](platforms-and-storage.md).
+Shared `createSyncRepository` compares local hashes with the last known server state. Deck packages and images travel separately from review events. Storage adapters persist the queue and profile state. [Storage, conflicts and recovery](platforms-and-storage.md).
 
-### ИИ
+### AI
 
-UI проверяет настройки, сессию и сеть, затем вызывает `wordSuggestRepository`. Supabase Edge Function проверяет пользователя, лимит и запрос, обращается к Gemini и проверяет ответ. Результат остаётся предложением до применения. [Контракты и ограничения](word-suggestions.md).
+UI checks settings, session and network, then calls `wordSuggestRepository`. The Edge Function checks the user, allowance and request, calls Gemini and validates the response. Output remains a suggestion until applied. [AI contracts](word-suggestions.md).
 
 ## Electron
 
-`electron/main.js` собирает модули из `electron/main/`. Жизненный цикл окна, меню, импорт, резервные копии, OAuth, обновления и IPC разделены. `electron/preload.cjs` открывает ограниченный API для renderer.
+`electron/main.js` composes modules from `electron/main/`. Window lifecycle, menus, import, backups, OAuth, updates and IPC are separated. `electron/preload.cjs` exposes a limited renderer API.
 
-SQLite и файловые операции выполняются в main. У окна включён `contextIsolation`, отключён `nodeIntegration`. Доступ к `window.electronAPI` разрешён адаптерам и инфраструктуре, но не страницам и виджетам.
+SQLite and files are handled in main. Windows enable `contextIsolation` and disable `nodeIntegration`. `window.electronAPI` belongs in infrastructure and adapters, not pages or widgets.
 
-## Сборка и проверки
+## Builds and checks
 
-Страницы загружаются через lazy routes. Web SRS и статистика также подключаются по требованию. Web-сборка создаёт манифест ресурсов для service worker и статические страницы лендинга через SSR и prerender.
+Pages use lazy routes. Web SRS and progress repositories also load on demand. Web builds create a resource manifest for the service worker and static landing pages through SSR and prerender.
 
-Проверки границ выполняются `check:boundaries` и `check:layers`. ESLint проверяет код и React hooks. Наличие установленного пакета проверки FSD само по себе не означает, что он включён в ESLint: фактические правила задают конфигурация и скрипты проекта.
+`check:boundaries` and `check:layers` enforce import boundaries. ESLint checks code and hooks. An installed FSD package alone does not prove ESLint enforcement; the configuration and scripts define the actual checks.
 
-[Команды и окружение](onboarding.md) · [Карта модулей](module-catalog.md) · [Правила кода](../rules/code-and-components-rules.md)
+[Environment and commands](onboarding.md) · [Module map](module-catalog.md) · [Code rules](../rules/code-and-components-rules.md)
