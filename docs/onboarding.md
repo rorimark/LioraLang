@@ -1,164 +1,143 @@
-# Onboarding
+# Запуск, проверки и выпуск версии
 
-## Что нужно знать перед стартом
+Документ описывает окружение для LioraLang 0.9.1. Проект использует Node.js, pnpm и Vitest. Bun не является основным инструментом сборки или тестов.
 
-LioraLang - это не два разных приложения, а один React-код с двумя платформенными рантаймами.
+## Требования
 
-Главная мысль для нового разработчика:
+- Node.js 22.12 или новее; Node.js 24 подходит. Релизный workflow использует Node.js 22.
+- pnpm 10.33.0, как в релизном workflow.
+- Для Electron рабочая графическая среда и возможность собрать нативный `better-sqlite3`. При пересборке могут понадобиться инструменты компиляции ОС.
+- Для браузерной приёмки отдельная установка Playwright и Chromium. Они не включены в зависимости проекта.
 
-- UI и доменная логика в `src`;
-- Electron shell и SQLite - в `electron`;
-- web persistence - в `packages/shared/src/platform/web`;
-- общий контракт между ними - platform services.
+Если pnpm не установлен, можно установить нужную версию через `npm install --global pnpm@10.33.0`. Не обновляйте lockfile другой основной версией менеджера без отдельной задачи.
 
-## Быстрый старт
+## Установка и запуск
 
-### Требования
-
-- Node.js 20+
-- pnpm 10+
-
-### Установка
-
-```bash
-pnpm install
-```
-
-### Запуск
-
-Desktop development:
-
-```bash
-pnpm dev
-```
-
-Web development:
-
-```bash
+```sh
+git clone https://github.com/rorimark/LioraLang.git
+cd LioraLang
+pnpm install --frozen-lockfile
 pnpm dev:web
 ```
 
-### Проверки
+Web доступен на `http://localhost:5175`. Порт фиксированный; если он занят, освободите его или явно запустите Vite с другим портом. Не останавливайте чужие процессы по общему имени.
 
-```bash
+Для desktop:
+
+```sh
+pnpm rebuild:native
+pnpm dev
+```
+
+`dev` запускает renderer и Electron. Отдельные команды `dev:renderer` и `dev:electron` полезны при отладке. Пересборка SQLite привязывает нативный модуль к версии Electron из `package.json`. Если возникает несовпадение ABI, повторите `rebuild:native`, а не копируйте случайный бинарный файл.
+
+`setup:web` и `setup:desktop` являются сокращениями для установки зависимостей, не отдельными конфигураторами платформы.
+
+## Онлайн-функции
+
+Локальное редактирование и повторения работают без Supabase. Для аккаунта, Hub, синхронизации и ИИ создайте локальный, некоммитимый `.env.local`:
+
+```dotenv
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your-publishable-key
+```
+
+Это публичная клиентская конфигурация. Переменные с префиксом `VITE_` попадают в сборку, поэтому никогда не помещайте туда service role, ключ Gemini или другие секреты.
+
+Файлы `.env.web` и `.env.desktop` задают `VITE_APP_TARGET`. После изменения локальных env-переменных перезапустите Vite. Проверьте разрешённые адреса возврата авторизации для своего localhost и продакшена. Desktop OAuth использует системный браузер и локальный loopback.
+
+Схема и серверные секреты описаны в [Supabase README](../supabase/README.md). Наличие клиентских переменных ещё не означает, что серверная функция настроена.
+
+## Сборка
+
+| Команда | Результат |
+| --- | --- |
+| `pnpm build:web` | Web bundle, SSR и статические страницы лендинга, манифест ресурсов |
+| `pnpm build:desktop` | Renderer для упакованного Electron |
+| `pnpm build` | То же, что `build:desktop` |
+| `pnpm preview:web` | Сначала новая web-сборка, затем preview на порту 4175 |
+| `pnpm dist:local:mac` | Локальная macOS ARM64 сборка `.dmg` и `.zip` |
+| `pnpm dist:local:win` | Локальная Windows x64 сборка NSIS |
+| `pnpm dist:local` | Обе desktop-цели; требует подходящего окружения для их сборки |
+
+Выходные каталоги: `dist/`, `dist-ssr/`, `release/`. Не коммитьте их как исходники. Локальная сборка для одной ОС не заменяет проверку релизного артефакта другой ОС.
+
+## Быстрые проверки
+
+```sh
 pnpm lint
 pnpm check:boundaries
+pnpm check:layers
+pnpm check:i18n
+pnpm test:run
+```
+
+`test` запускает watch, `test:run` один прогон, `test:coverage` прогон с покрытием. Варианты `:verbose` и `:report` меняют отчёт. Результаты тестов не доказывают доступность реального провайдера ИИ или правильность настроек серверного проекта.
+
+## SQLite и сохранение
+
+```sh
+pnpm check:srs
 pnpm check:persistence
+pnpm check:media
+pnpm check:subjects
 ```
 
-### Сборки
+Эти скрипты запускают проверки в Electron с отдельными тестовыми данными. `check:subjects` проверяет поля предметов, импорт, экспорт и попадание записи в сессию. После изменения хранения нужны проверки обеих платформ, а не только unit-тест нормализации.
 
-Web production build:
+## Браузерная приёмка
 
-```bash
-pnpm build:web
+Playwright должен быть доступен скриптам. Если он установлен отдельно, укажите `NODE_PATH` на каталог с модулем. `PLAYWRIGHT_CHROMIUM` может указывать на установленный исполняемый файл Chromium. Нужны разрешения на запуск браузера и локального сервера.
+
+После `pnpm build:web` доступны:
+
+```sh
+pnpm check:offline-programming
+pnpm check:offline-knowledge
+pnpm check:technology-appearances
 ```
 
-Desktop renderer build:
+Офлайн-сценарии используют production preview, загружают приложение с сетью и затем отключают её. Проверка технологий сравнивает варианты карточек. Сначала обязательно соберите именно web: обе цели пишут в `dist/`.
 
-```bash
-pnpm build:desktop
+ИИ-сценарии запускают собственный dev server и подставляют контролируемые ответы Supabase:
+
+```sh
+pnpm check:subject-assistant
+pnpm check:subject-topic
 ```
 
-Локальные installer builds:
+Они проверяют UI, поля, сохранение, отмену и настройки без расхода реальной квоты. Это не проверка качества Gemini. Порты и подробности окружения задаются в соответствующих файлах `scripts/acceptance/`; используйте `ACCEPTANCE_PORT`, если порт занят.
 
-```bash
-pnpm dist:local
-pnpm dist:local:mac
-pnpm dist:local:win
-```
+## Отладка
 
-## Как читать проект
+| Симптом | Где смотреть |
+| --- | --- |
+| Ошибка страницы | Console и Network браузера, модель виджета, RouteErrorBoundary |
+| Не сохраняется поле предмета | Профиль, нормализация, payload `saveDeck`, оба репозитория |
+| Неверная очередь | Ядро SRS, журнал, локальный день, revision и profileScope |
+| Не работает ИИ | Ответ Edge Function, сессия, настройки, лимит, серверный секрет и логи функции |
+| Offline получает HTML вместо JSON | Путь манифеста, правила `vercel.json`, service worker |
+| Desktop не стартует после упаковки | Зависимости внутри `app.asar`, SQLite ABI, main process log |
 
-### Если нужно понять UI
+Сохраняйте точные шаги и статус ошибки. Удаляйте из отчётов токены, секреты и личные данные. Не лечите ошибку сохранения очисткой пользовательской базы без резервной копии.
 
-Смотри в таком порядке:
+## Выпуск desktop-релиза
 
-1. `src/main.jsx`
-2. `src/app/App.jsx`
-3. `src/app/layouts/AppLayout.jsx`
-4. `src/app/router/*`
-5. нужную страницу в `src/pages/*`
-6. соответствующий widget
-7. model hook widget-а
+1. Обновите версию в `package.json` и добавьте `docs/releases/vX.Y.Z.md` с изменениями для пользователя и совместимостью.
+2. Выполните проверки по области изменений, обе сборки и [контрольный прогон](smoke-checklist.md).
+3. Зафиксируйте изменения Conventional Commit. Версия пакета должна совпасть с тегом `vX.Y.Z`.
+4. Запустите `.github/workflows/release.yml` через тег или workflow_dispatch с нужным тегом.
+5. Проверьте macOS и Windows jobs, проверку зависимостей упакованного приложения и публикацию.
+6. Проверьте установочные файлы, `.blockmap` и метаданные `latest-mac.yml` / `latest.yml` на странице релиза.
 
-### Если нужно понять storage
+Workflow использует Node.js 22, pnpm 10.33.0 и frozen lockfile. Он читает клиентские параметры Supabase из secrets `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`. Права публикации выдаются GitHub token.
 
-Desktop:
+`release:notes` создаёт локальный черновик `release/RELEASE_NOTES.md` по истории Git. `release:publish` публикует локальные артефакты через `gh`; это действие записи в GitHub. Для обычного выпуска предпочтителен workflow с отдельными runner для ОС. Ни один из этих скриптов не заменяет содержательное описание в `docs/releases/`.
 
-1. `electron/preload.cjs`
-2. `packages/shared/src/platform/electron/createElectronPlatformServices.js`
-3. `electron/main.js`
-4. `electron/db/services/*`
+В репозитории сейчас есть release workflow, но нет отдельного общего CI workflow для всего набора тестов. Не предполагайте, что зелёная сборка релиза означает запуск всех приёмочных сценариев.
 
-Web:
+## Web и сервер
 
-1. `packages/shared/src/platform/web/createWebPlatformServices.js`
-2. `packages/shared/src/platform/web/model/*`
-3. `packages/shared/src/platform/web/db/webDb.js`
+Web-конфигурация находится в `vercel.json`. Production должен отдавать bundle, статические страницы и `/asset-manifest.json` как JSON, а маршруты `/app/` как оболочку приложения. После обновления проверьте новую версию и запуск из старого кэша.
 
-### Если нужно понять доменную логику
-
-Смотри:
-
-- `packages/shared/src/core/usecases/srs/srsEngine.js`
-- `packages/shared/src/core/usecases/importExport/deckPackage.js`
-- `packages/shared/src/core/usecases/progress/buildProgressOverview.js`
-
-## Как правильно добавлять новый код
-
-### Новая страница
-
-1. создать `src/pages/<page-name>`;
-2. держать страницу тонкой;
-3. собирать экран из widget-ов;
-4. зарегистрировать route.
-
-### Новый widget
-
-Подходит, когда нужен крупный экранный блок с собственной model/ui-логикой.
-
-Ожидаемая структура:
-
-- `index.js`
-- `model/*`
-- `ui/*`
-
-### Новая feature
-
-Подходит для изолированного пользовательского сценария:
-
-- modal;
-- toolbar controls;
-- form section;
-- independent filters/pagination.
-
-### Новый shared module
-
-Нужно убедиться, что модуль действительно универсален и не зависит от `app/pages/widgets/features/entities`.
-
-Если модуль знает о конкретном route flow или об app-specific context, это уже плохой кандидат для `shared`.
-
-## Что важно не ломать
-
-1. Renderer не должен лезть в Electron напрямую в обход platform layer.
-2. Web и desktop должны продолжать использовать один UI-код.
-3. Изменения в storage contracts нужно проверять на обеих платформах.
-4. Любой новый крупный hook лучше сразу дробить, а не выращивать ещё один монолит.
-
-## Что особенно стоит покрыть тестами в будущем
-
-- SRS scheduling;
-- import/export package validation;
-- duplication strategy при импорте;
-- platform service contracts;
-- integrity repair;
-- migration paths.
-
-## Полезные документы после onboarding
-
-- [project-overview.md](./project-overview.md)
-- [architecture.md](./architecture.md)
-- [platforms-and-storage.md](./platforms-and-storage.md)
-- [module-catalog.md](./module-catalog.md)
-- [code-audit.md](./code-audit.md)
+Изменение React-кода не развёртывает Edge Function и не применяет SQL-миграции. Серверная часть обновляется отдельно. [Порядок работы с сервером](../supabase/README.md) · [Правила коммитов](../rules/git-and-commits-rules.md)

@@ -1,35 +1,91 @@
-# Supabase
+# Серверная часть Supabase
 
-This directory stores the database schema changes that must exist for:
+Supabase обслуживает аккаунт, личную библиотеку, прогресс, Hub и ИИ. Локальная учёба не зависит от его доступности. Здесь хранятся SQL-миграции и Edge Functions; обновление сайта не применяет их автоматически.
 
-- account-backed authentication
-- Hub deck ownership
-- Hub deck versioning
-- row-level security
-- storage policies for published deck packages
+## Миграции
 
-Apply migrations with the Supabase CLI or copy them into the Supabase SQL Editor if you are still migrating from a manually managed project.
+Применяйте файлы по порядку и проверяйте историю уже применённых миграций. Для существующего проекта сначала сделайте резервную копию и просмотрите изменения. Не удаляйте старые данные автоматически ради перехода на новую модель владения.
 
-Important:
+| Файл в `migrations/` | Что добавляет |
+| --- | --- |
+| `20260331_0001_auth_hub_foundation.sql` | Профили, владельцев Hub, версии колод, RLS и публичное хранилище |
+| `20260427_0002_account_sync_foundation.sql` | Устройства, личную библиотеку, версии и события прогресса |
+| `20260427_0003_account_sync_storage.sql` | Закрытый bucket личных файлов и правила доступа |
+| `20261001_0004_word_suggestion_allowance.sql` | Учёт дневной квоты ИИ |
+| `20261001_0005_hub_picture_decks.sql` | Публикацию языковых картинных колод и лимит файлов Hub |
+| `20261001_0006_hub_reports.sql` | Жалобы, скрытие и модерацию |
+| `20261001_0007_word_suggestion_allowance_read.sql` | Чтение остатка и единый источник размера квоты |
 
-- disable anonymous sign-ins before enabling the account-backed Hub flow
-- delete legacy anonymous Hub data before applying the new ownership model
+Public Hub использует bucket `decks`, личная библиотека закрытый `user-library-decks`. RLS и storage policies должны ограничивать личные данные текущим пользователем. Предметные поля передаются в JSON-пакетах; новая тема сама по себе не требует новую таблицу.
+
+## Конфигурация клиента и Auth
+
+Клиент получает только `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`. Ключ публичный; административные полномочия не должны от него зависеть. Настройте разрешённые redirect URL для web и desktop OAuth.
+
+Публикация и жалобы используют аккаунт с подтверждённым адресом. Не рассчитывайте на анонимные sign-in как замену модели владельца. При переносе старого сервера отдельно проверьте прежние записи и политики, не запускайте очистку без разбора.
 
 ## Edge Functions
 
-- `functions/suggest-word` — suggestions for the rest of a card (translation, examples, level, part of speech) from Google Gemini. Needs the `GEMINI_API_KEY` secret (`GEMINI_MODEL` is optional) and the `20261001_0004_word_suggestion_allowance` migration for the daily allowance. Deploy with JWT verification on. See `docs/word-suggestions.md`.
-- `functions/delete-account` — deletes the signed-in person's account: checks the session with the auth server, requires their email address typed as confirmation, removes their files from the `decks` and `user-library-decks` buckets, then deletes the user (every table row goes with it, all reference `auth.users` on delete cascade). Uses the built-in `SUPABASE_SERVICE_ROLE_KEY`. Deploy with JWT verification on.
+### suggest-word
 
-## Hub moderation
+`functions/suggest-word/` обслуживает слова, списки, темы, подсказки, описания и предметную генерацию. Использует Gemini, требует серверный секрет `GEMINI_API_KEY`; `GEMINI_MODEL` необязателен.
 
-Migration `20261001_0006_hub_reports` adds reports. Anyone signed in with a confirmed email can report a public deck once; three reports from different people hide it (`hub_decks.is_hidden`), and the owner cannot unhide it by publishing again. Look after the Hub from the SQL editor:
+Оставляйте JWT verification включённой. Функция дополнительно проверяет пользователя, формат запроса и квоту. Сейчас квота 300 принятых запросов на аккаунт в сутки по UTC; чтение остатка доступно через `word_suggestion_allowance()`.
 
-```sql
-select * from public.hub_deck_report_summary;           -- what was reported, newest and hidden first
-select public.moderate_hub_deck('<deck id>', 'hide');     -- hide now
-select public.moderate_hub_deck('<deck id>', 'restore');  -- show again, reports cleared
-select public.moderate_hub_deck('<deck id>', 'remove');   -- delete the deck; its file stays in Storage → decks → <owner id>
+Сервер импортирует общий каталог предметов из `packages/shared`. Проверьте, что bundler включает эти относительные зависимости. Иначе сайт может знать новый предмет, а функция его отклонять. После развёртывания проверьте реальный запрос каждого изменённого task. [Контракты ИИ](../docs/word-suggestions.md).
+
+### delete-account
+
+`functions/delete-account/` проверяет токен через Auth, требует подтверждение адресом пользователя, удаляет его файлы из двух bucket, затем аккаунт. Связанные строки удаляются каскадно. Локальные колоды на устройствах функция не трогает.
+
+Она использует серверный `SUPABASE_SERVICE_ROLE_KEY`, предоставляемый средой Supabase. Этот ключ нельзя передавать клиенту. JWT verification остаётся включённой. Проверки удаления выполняются на отдельном тестовом аккаунте.
+
+## Команды развёртывания
+
+Команды ниже выполняются владельцем проекта из корня репозитория с авторизованным Supabase CLI. Замените `PROJECT_REF` своим project ref. Флаги сверены со справкой CLI 2.117.0; перед использованием другой версии проверьте её `--help`.
+
+Сначала посмотрите, какие миграции планируются:
+
+```sh
+supabase db push --project-ref PROJECT_REF --dry-run
 ```
 
-None of these can be called from the app.
+После проверки списка и резервной копии примените миграции:
 
+```sh
+supabase db push --project-ref PROJECT_REF
+```
+
+Для секретов используйте локальный некоммитимый файл, например `.env.supabase.local`, и задайте только серверные значения. Не вставляйте настоящий ключ в инструкцию, историю shell или логи.
+
+```sh
+supabase secrets set --project-ref PROJECT_REF --env-file .env.supabase.local
+supabase functions deploy suggest-word --project-ref PROJECT_REF
+supabase functions deploy delete-account --project-ref PROJECT_REF
+```
+
+Не используйте `--no-verify-jwt` для этих функций. Способ bundling зависит от окружения CLI: убедитесь, что общие файлы входят в deployment, и проверьте результат на тестовом проекте. В репозитории нет общего закоммиченного `supabase/config.toml`; параметры собственного локального стека настраиваются отдельно.
+
+## Жалобы и модерация Hub
+
+Подтверждённый пользователь может пожаловаться на публичную колоду один раз. Три разных автора жалобы скрывают колоду. Повторная публикация владельцем не снимает блокировку.
+
+Сводка доступна администратору через SQL Editor:
+
+```sql
+select * from public.hub_deck_report_summary;
+```
+
+Функция `moderate_hub_deck(uuid, text)` принимает `hide`, `restore` или `remove`. Обычный клиент не имеет права её вызвать. Восстановление снимает скрытие и очищает жалобы; удаление убирает строку колоды, но её storage-файл требует отдельного разбора. Например, для скрытия выбранной колоды:
+
+```sql
+select public.moderate_hub_deck('DECK_UUID'::uuid, 'hide');
+```
+
+`DECK_UUID` является заполнителем, а не готовым UUID. Проверьте нужную колоду перед административной операцией.
+
+## Проверка доступа
+
+На тестовых данных проверьте двух разных пользователей, чтение чужой личной колоды и файла, доступ без сессии, неподтверждённый адрес, повтор события прогресса, квоту, скрытую колоду и удаление аккаунта. Клиентский запрет кнопки не заменяет RLS или серверную проверку.
+
+[Хранение и обмен](../docs/platforms-and-storage.md) · [Настройка клиента](../docs/onboarding.md) · [Известные ограничения](../docs/code-audit.md)

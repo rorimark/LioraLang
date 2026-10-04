@@ -1,156 +1,95 @@
-# Architecture
+# Архитектура
 
-## Общая схема
-
-Проект построен вокруг одного React-приложения, которое на этапе сборки получает разные платформенные адаптеры.
-
-Схема высокого уровня:
-
-`React UI -> PlatformProvider -> platform services -> desktop/web repositories -> local storage / Hub`
-
-## Boot flow
-
-### 1. Точка входа
-
-Файл `src/main.jsx`:
-
-- монтирует React root;
-- при web build лениво подключает `@vercel/analytics`;
-- оборачивает приложение в `PlatformProvider`.
-
-### 2. Провайдер платформы
-
-Файлы `src/app/providers/PlatformProvider/*`:
-
-- создают и кэшируют набор platform services;
-- делают их доступными во всем приложении;
-- позволяют UI не знать, desktop это или web.
-
-### 3. Приложение
-
-Файл `src/app/App.jsx`:
-
-- применяет тему;
-- применяет startup accessibility preferences;
-- запускает глобальные эффекты уровня приложения;
-- рендерит роутер.
-
-### 4. Layout и роутинг
-
-Файлы `src/app/layouts/AppLayout.jsx` и `src/app/router/*`:
-
-- строят shell приложения;
-- выбирают маршруты для web и desktop;
-- подключают `DesktopTitleBar`, `NavBar`, `PageHeader`;
-- подписываются на desktop runtime events;
-- регистрируют PWA и прелоад route chunks.
-
-## Маршрутизация
-
-Есть два варианта route tree:
-
-- `src/app/router/routes.web.jsx`
-- `src/app/router/routes.desktop.jsx`
-
-Разница:
-
-- у web есть landing page на `/`;
-- у desktop корень сразу редиректит в `/app/learn`.
-
-Остальные страницы общие:
-
-- `learn`
-- `decks`
-- `deck-editor`
-- `deck-details`
-- `browse`
-- `progress`
-- `settings`
-- `account`
-
-## Platform abstraction
-
-Это самая сильная архитектурная идея проекта.
-
-`packages/shared/src/platform/createPlatformServices.js` выбирает target implementation:
-
-- `packages/shared/src/platform/target/web.js`
-- `packages/shared/src/platform/target/desktop.js`
-
-Дальше UI работает только с интерфейсами сервисов:
-
-- `deckRepository`
-- `settingsRepository`
-- `hubRepository`
-- `srsRepository`
-- `progressRepository`
-- `systemRepository`
-- `runtimeGateway`
-
-Именно это позволяет держать один UI-код и не размазывать условные `if (desktop)` по компонентам.
+В LioraLang один интерфейс и два способа работать с локальными данными. Браузер использует IndexedDB, Electron использует SQLite. Правила карточек, импорта, SRS и синхронизации вынесены в общий код, чтобы результаты на платформах не расходились.
 
 ## Слои приложения
 
-Проект внешне разложен по FSD:
+| Слой | Ответственность |
+| --- | --- |
+| `src/app/` | Запуск, маршруты, общий layout, подключение провайдеров |
+| `src/pages/` | Сборка конкретной страницы |
+| `src/widgets/` | Крупные части страницы: обучение, редактор, настройки, прогресс |
+| `src/features/` | Действия пользователя: оценить, импортировать, добавить, сгенерировать |
+| `src/entities/` | Представление и модели сущностей интерфейса |
+| `packages/shared/src/` | Общие компоненты, конфигурация, чистое ядро, API и платформенные адаптеры |
+| `electron/` | Процесс Electron, preload, IPC, база, системные операции |
+| `supabase/` | Миграции и серверные функции |
 
-- `app`
-- `pages`
-- `widgets`
-- `features`
-- `entities`
-- `shared`
+Импорты направлены сверху вниз: app, pages, widgets, features, entities, shared. Модуль открывает публичный API через `index.js`. Shared не импортирует UI верхних слоёв; его ядро не зависит от React, IndexedDB или Electron.
 
-### Что работает хорошо
+Исключение по назначению, а не по платформе: общий код API и адаптеров находится в shared, но компоненты не вызывают его напрямую. Они получают сервис через провайдер.
 
-- страницы в основном тонкие;
-- крупная композиция собрана в `widgets`;
-- переиспользуемые примитивы вынесены в `shared/ui`;
-- бизнес-логика SRS и import/export лежит в `shared/core/usecases`.
+## Запуск и выбор платформы
 
-### Где есть отклонения
+`src/main.jsx` запускает приложение. `src/app/App.jsx` подключает окружение и маршрутизацию. `PlatformProvider` находится в `packages/shared/src/providers/PlatformProvider/`.
 
-- нижние слои напрямую зависят от `@app/providers`;
-- `shared` знает об `app`, что противоречит FSD-направлению зависимостей;
-- нет полноценного lint enforcement для границ слоев;
-- есть style coupling между виджетами.
+Vite выбирает платформу по `VITE_APP_TARGET`. Алиас `@platform-target` ведёт в `packages/shared/src/platform/target/web.js` или `desktop.js`. Алиас `@app-router-routes` выбирает маршруты web или desktop.
 
-Подробности см. в [code-audit.md](./code-audit.md).
+Web использует абсолютную базу `/`, десктоп относительную `./`. В web есть лендинг, локализованные страницы и публичный переход по ссылке колоды. Десктоп начинает с обучения. Общие страницы находятся под `/app/`.
 
-## Потоки данных
+## Доступ к данным
 
-### Deck management flow
+В UI используйте `usePlatformService` из `@shared/providers`. Например:
 
-1. страница рендерит widget;
-2. widget вызывает model hook;
-3. hook берет `deckRepository` через platform service;
-4. repository идёт либо в Electron IPC, либо в IndexedDB;
-5. результат нормализуется и возвращается в UI.
+```jsx
+import { usePlatformService } from "@shared/providers";
 
-### Learn flow
+const deckRepository = usePlatformService("deckRepository");
+```
 
-1. `LearnFlashcardsPanel` выбирает колоду;
-2. `srsRepository` получает snapshot сессии;
-3. UI показывает карточку и доступные рейтинги;
-4. при оценке карточки вызывается `gradeSrsCard`;
-5. новое состояние возвращается обратно в UI.
+Дальше модель вызывает метод репозитория и обрабатывает загрузку, результат и ошибку. Компонент не должен знать, хранится запись в IndexedDB или SQLite. Контракт всех сервисов перечислен в [описании двух платформ](architecture-dual-platform.md).
 
-### Browse / Hub flow
+```mermaid
+flowchart TD
+  UI[Страница и модель UI] --> Services[PlatformProvider и сервисы]
+  Services --> Web[Адаптер IndexedDB]
+  Services --> Desktop[Адаптер Electron]
+  Desktop --> IPC[Preload и IPC]
+  IPC --> SQLite[SQLite]
+  Web --> Core[Общие правила ядра]
+  SQLite --> Core
+  Services --> Online[Supabase API]
+  Online --> Functions[Edge Functions]
+```
 
-1. widget вызывает `hubRepository`;
-2. web-версия использует Supabase напрямую;
-3. desktop-версия использует Electron service;
-4. пакет колоды скачивается, валидируется и импортируется локально.
+Стрелки показывают обращения и использование правил. Ядро не обращается обратно к адаптерам.
 
-## Архитектурные плюсы
+## Данные и предметы
 
-- понятная развязка между UI и storage/runtime;
-- shared use cases реально переиспользуются;
-- data storage локализован по платформам;
-- route-level lazy loading уже включён.
+Колода хранит имя, описание, теги, идентичность для синхронизации и настройки предмета. Запись хранит `source`, `target`, дополнительные общие поля и `subjectFields`. В коде и базе записи исторически называются `words`, даже когда содержат задачи или вопросы.
 
-## Архитектурные минусы
+Профиль предмета задаёт поля, подписи сторон, направления, возможности ИИ, доступность Hub и композицию карточки. Реестр находится в `core/usecases/subjects/registry.js`. Технология уточняет внешний вид программирования через каталог оформлений, а не через новый тип записи.
 
-- часть логики держится в слишком больших файлах;
-- много ответственности внутри widget model hooks;
-- нет единого контракта для FSD-boundaries на уровне ESLint;
-- desktop bridge и часть platform code дублируются.
+`buildCardPresentation()` собирает блоки из профиля; Flashcard сопоставляет тип блока с компонентом. Языковой путь поддерживает прежний рендер. [Подробнее о расширении](learning-objects.md).
+
+## Основные потоки
+
+### Сохранение колоды
+
+Форма собирает данные и нормализует поля по профилю. Репозиторий сохраняет колоду и записи, пересчитывает идентичность содержимого и уведомляет подписчиков. В новой колоде из окна генерации выбранные черновики и колода сохраняются одним вызовом `saveDeck`.
+
+### Повторение
+
+Репозиторий читает карточки и журнал. Общий движок строит очередь и превью интервалов. При оценке хранилище проверяет профиль и revision, затем в одной транзакции записывает расписание и событие ответа. UI переходит дальше только после успешной записи. [Подробнее о SRS](srs.md).
+
+### Синхронизация
+
+Общий `createSyncRepository` сравнивает локальные хэши с последним известным состоянием сервера. Пакеты колод и изображения передаются отдельно от событий повторений. Адаптеры локального хранения сохраняют очередь и состояние профиля. [Хранение, конфликты и восстановление](platforms-and-storage.md).
+
+### ИИ
+
+UI проверяет настройки, сессию и сеть, затем вызывает `wordSuggestRepository`. Supabase Edge Function проверяет пользователя, лимит и запрос, обращается к Gemini и проверяет ответ. Результат остаётся предложением до применения. [Контракты и ограничения](word-suggestions.md).
+
+## Electron
+
+`electron/main.js` собирает модули из `electron/main/`. Жизненный цикл окна, меню, импорт, резервные копии, OAuth, обновления и IPC разделены. `electron/preload.cjs` открывает ограниченный API для renderer.
+
+SQLite и файловые операции выполняются в main. У окна включён `contextIsolation`, отключён `nodeIntegration`. Доступ к `window.electronAPI` разрешён адаптерам и инфраструктуре, но не страницам и виджетам.
+
+## Сборка и проверки
+
+Страницы загружаются через lazy routes. Web SRS и статистика также подключаются по требованию. Web-сборка создаёт манифест ресурсов для service worker и статические страницы лендинга через SSR и prerender.
+
+Проверки границ выполняются `check:boundaries` и `check:layers`. ESLint проверяет код и React hooks. Наличие установленного пакета проверки FSD само по себе не означает, что он включён в ESLint: фактические правила задают конфигурация и скрипты проекта.
+
+[Команды и окружение](onboarding.md) · [Карта модулей](module-catalog.md) · [Правила кода](../rules/code-and-components-rules.md)

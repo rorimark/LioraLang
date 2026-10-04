@@ -1,135 +1,66 @@
 # LioraLang
 
-> Languages: **English (default)** | [Русский](README.ru.md) | [Polski](README.pl.md)
+[Русский](README.ru.md) · [Polski](README.pl.md)
 
-Stop collecting random words you never remember.
+LioraLang helps you learn from your own flashcards. Create a deck, add what you want to remember, and review it when it is due. It runs in a browser and as a desktop app. Local study works without an account.
 
-**LioraLang is the language app that finally sticks.**
-It turns your real vocabulary into a daily learning loop you can actually maintain: custom decks, powerful flashcards, spaced repetition, and full offline ownership.
+[Open the web app](https://liora-lang.vercel.app/app/learn) · [Download the desktop app](https://github.com/rorimark/LioraLang/releases/latest) · [Documentation](docs/README.md)
 
-If you are serious about speaking, writing, and thinking faster in another language, this becomes your daily tool, not another abandoned app.
+## What you can learn
 
-## Why You Won't Want to Learn Without It
+| Subject | What a card contains |
+| --- | --- |
+| Languages | A word, translation, optional third language, examples, CEFR level, part of speech, tags and pictures |
+| Programming | A term or question, answer, optional code, difficulty and notes |
+| Mathematics | A problem or rule, answer, LaTeX formulas and solution steps |
+| History | A question, background, answer, date and consequences |
 
-- You learn **your words**, not generic textbook filler.
-- You keep everything local: no forced cloud, no account lock-in, no dependency on servers.
-- You build decks for real goals: jobs, interviews, travel, exams, relocation, hobbies.
-- You review with large, immersive flip cards designed to keep momentum.
-- You can import/export decks and share them with friends, students, or communities.
+Each subject has its own editor fields and card layout. Programming uses a calm editor design with technology tabs for SQL, CSS, PHP, JavaScript, Rust, Java, C++, C and C#. You can enter other technologies too.
 
-## What Makes LioraLang Different
+Math renders in questions, answers and explanations as well as in the formula field. Code is displayed, never executed. Code and formulas can belong to the question or the answer, so a solution can stay hidden until you reveal it.
 
-- `Learn` mode with full-screen style flashcards and smooth flip interaction.
-- `Decks` system: create, edit, rename, delete, import, export.
-- Deck detail pages with filtering and pagination for fast navigation.
-- Deck editor with languages, description, tags, and full words table.
-- `Progress` section with modern visual analytics.
-- Light and dark themes.
-- Desktop-first experience with local SQLite storage.
+## Everyday use
 
-## Who This Is Built For
+1. Create or import a deck in **Decks**. Choose its subject and, for non-language subjects, the answer language.
+2. Add cards in the editor or from **Learn**. Language decks also accept pasted word lists.
+3. Reveal the answer and choose Again, Hard, Good or Easy. FSRS-5 schedules the next review.
+4. Use **Progress** to see activity, upcoming reviews and earned stickers.
+5. Export a `.lioradeck` file when you want to share a deck or keep a copy.
 
-- Learners tired of one-size-fits-all apps.
-- People who want controlled, high-quality vocabulary growth.
-- Users who value privacy and local-first data ownership.
-- Anyone who wants a system they can trust for months and years.
+AI can suggest a card or generate a whole deck in a separate window. Review and edit the drafts before saving. A master switch and six separate function switches are in **Settings → AI assistant**. AI requires an account, an internet connection and remaining daily allowance. The current server allowance is 300 requests per account per UTC day; provider availability can impose additional limits.
 
-## Typical Flow
+## Local data and online features
 
-1. Create a deck for a real objective.
-2. Add words, meanings, tags, and examples from your real life.
-3. Review daily in `Learn` mode.
-4. Refine, export, and share decks.
-5. Repeat until your vocabulary becomes automatic.
+The web app stores decks, review history and images in IndexedDB. Visit it online first to cache the app for offline use. Clearing browser site data can erase local decks, so keep exports of important material.
 
-## Import/Export Format
+The desktop app uses SQLite. Current release builds are available for macOS on Apple Silicon and Windows x64. They are not code-signed. macOS releases need to be downloaded manually because automatic installation requires signing.
 
-LioraLang supports deck package import/export with metadata + words.
-Minimum required word field: `source`.
+An optional account syncs your library and review progress between devices. The public Hub currently accepts language decks, including picture decks. Programming, Mathematics and History decks can be exported and synced privately, but cannot yet be published to the Hub.
 
-```json
-{
-  "format": "lioralang.deck",
-  "version": 1,
-  "deck": {
-    "name": "Travel Basics",
-    "description": "Core words for travel",
-    "sourceLanguage": "English",
-    "targetLanguage": "Polish",
-    "tertiaryLanguage": "Russian",
-    "tags": ["travel", "starter"]
-  },
-  "words": [
-    {
-      "id": "w1",
-      "source": "apple",
-      "target": "jablko",
-      "tertiary": "яблоко",
-      "level": "A1",
-      "part_of_speech": "noun",
-      "tags": ["food", "basic"],
-      "examples": ["I eat an apple."]
-    }
-  ]
-}
+The interface supports English, Ukrainian, Russian, Polish, German, Spanish, French, Italian, Portuguese, Turkish, Czech and Japanese. Interface language, answer language and programming technology are separate choices.
+
+## Run the project
+
+Use Node.js 22.12 or newer and pnpm 10.33.0. Node.js 24 also works.
+
+```sh
+git clone https://github.com/rorimark/LioraLang.git
+cd LioraLang
+pnpm install --frozen-lockfile
+pnpm dev:web
 ```
 
-## Optional: Build It Yourself
+Open `http://localhost:5175`. For the Electron app, run `pnpm dev`. If the native SQLite module needs rebuilding, run `pnpm rebuild:native` first.
 
-### Requirements
+Local editing and review do not require Supabase credentials. Authentication, Hub, sync and AI do. Configuration, checks and release instructions are in the [developer guide](docs/onboarding.md).
 
-- Node.js 20+
-- pnpm 10+
+## Find the right document
 
-### Install
+- [User guide](docs/user-guide.md): creating decks, studying, AI and common problems.
+- [Architecture](docs/architecture.md): React, shared domain logic and platform services.
+- [Subjects and card layouts](docs/learning-objects.md): adding new subjects without hardcoding two deck types.
+- [Deck file format](docs/deck-format.md): compatibility, examples and import limits.
+- [SRS](docs/srs.md), [images](docs/card-media.md), [AI](docs/word-suggestions.md) and [storage and sync](docs/platforms-and-storage.md).
+- [Release notes](docs/releases/README.md) and [contribution rules](rules/code-and-components-rules.md).
 
-```bash
-pnpm install
-```
-
-### Run
-
-```bash
-pnpm run dev
-```
-
-Web-only development:
-
-```bash
-pnpm run dev:web
-```
-
-## Documentation
-
-Full technical documentation is available in [docs/README.md](docs/README.md).
-
-### Build installers
-
-```bash
-pnpm run build:desktop
-pnpm run dist:local
-```
-
-Installer artifacts are generated in `release/`.
-
-## Troubleshooting
-
-### Electron failed to install correctly
-
-```bash
-pnpm approve-builds
-pnpm install
-```
-
-### better-sqlite3 NODE_MODULE_VERSION mismatch
-
-```bash
-pnpm run rebuild:native
-```
-
-### White screen in packaged app (`index-*.js/css` not found)
-
-```bash
-pnpm run build:desktop
-pnpm run dist:local
-```
+This documentation describes version 0.9.1. Release notes describe the behavior of each older version.

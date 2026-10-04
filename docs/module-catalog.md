@@ -1,236 +1,87 @@
-# Module Catalog
+# Где искать код
 
-## Общая карта проекта
+Эта карта показывает основные точки входа версии 0.9.1. Она не перечисляет каждый компонент: для конкретной задачи ищите публичный `index.js`, соседнюю модель и тесты.
 
-На момент аудита в `src`, `electron`, `public` и `scripts` находится `319` файлов.
+## Приложение и страницы
 
-Распределение по ключевым зонам:
-
-| Папка | Назначение | Файлов |
-| --- | --- | ---: |
-| `src/app` | вход приложения, layout, роутинг, провайдеры | 16 |
-| `src/pages` | маршрутные страницы | 20 |
-| `src/widgets` | крупные экранные блоки | 72 |
-| `src/features` | отдельные пользовательские фичи | 61 |
-| `src/entities` | доменные сущности | 13 |
-| `packages/shared/src` | общие UI/lib/config/platform/core модули | 95 |
-| `electron` | main/preload/SQLite/services | 28 |
-| `public` | manifest, offline page, icons, sw | 9 |
-| `scripts` | release и boundary scripts | 3 |
-
-## Root files
-
-| Файл | Роль |
+| Путь | Назначение |
 | --- | --- |
-| `package.json` | скрипты, зависимости, electron-builder config |
-| `vite.config.js` | alias-ы, platform target switching, build define |
-| `eslint.config.js` | базовый ESLint для JS/JSX |
-| `vercel.json` | настройки деплоя web-версии |
-| `README.md` / `README.ru.md` / `README.pl.md` | продуктовые readme |
+| `src/main.jsx`, `src/app/App.jsx` | Запуск и подключение приложения |
+| `src/app/layouts/AppLayout.jsx` | Общий layout |
+| `src/app/router/` | Общие, web и desktop маршруты |
+| `src/app/prerender/landingPrerender.jsx` | SSR лендинга |
+| `src/pages/learn/` | Обучение |
+| `src/pages/decks/`, `deck-details/`, `deck-editor/` | Библиотека и редактор |
+| `src/pages/browse/` | Hub |
+| `src/pages/progress/` | Прогресс и альбом стикеров |
+| `src/pages/account/`, `settings/` | Аккаунт и настройки |
+| `src/pages/landing/`, `share/` | Публичные web-страницы |
 
-## `src/app`
+Сокращённые пути в одной ячейке относятся к одному родителю `src/pages/`.
 
-| Файл/папка | Роль |
+## Виджеты и действия
+
+| Модуль | Что смотреть |
 | --- | --- |
-| `App.jsx` | глобальные эффекты приложения: тема, accessibility, router |
-| `providers/PlatformProvider/*` | доступ к platform services |
-| `router/routes.base.jsx` | общая маршрутная схема |
-| `router/routes.web.jsx` | web routing, landing на `/` |
-| `router/routes.desktop.jsx` | desktop routing, redirect в learn |
-| `router/router.jsx` | создание browser router |
-| `router/preloadRoutesForOffline.js` | прелоад lazy routes |
-| `layouts/AppLayout.jsx` | shell приложения |
+| `src/widgets/LearnFlashcardsPanel/` | Сессия, данные для Flashcard, таймеры и оценки |
+| `src/widgets/DeckEditorPanel/` | Поля колоды, создание и редактирование записей |
+| `src/widgets/DecksOverviewPanel/` | Список, меню создания и переход к генерации |
+| `src/widgets/DeckDetailsPanel/` | Страница локальной колоды |
+| `src/widgets/BrowseDecksPanel/`, `BrowseDeckDetailsPanel/` | Список и карточка Hub |
+| `src/widgets/ProgressOverviewPanel/` | Данные и UI прогресса |
+| `src/features/flashcard/` | Карточка, блоки предметов и стили |
+| `src/features/subject-fields/` | Поля формы по профилю предмета |
+| `src/features/quick-add-words/` | Быстрое добавление и генерация колоды |
+| `src/features/word-suggest/` | Подсказки, концепты, запросы и защита от устаревших ответов |
+| `src/features/srs-rating-controls/` | Кнопки оценок |
+| `src/features/deck-import/` | Пользовательский процесс импорта |
+| `src/features/word-image-field/` | Добавление изображения |
+| `src/features/app-preferences/`, `sync-settings/` | Настройки приложения и обмена |
 
-## `src/pages`
+Отдельное окно `GenerateDeckDialog` сейчас объявлено в `src/features/quick-add-words/ui/QuickAddWordsDialog.jsx`. Его стили находятся в `GenerateDeckDialog.css`; модель использует `useQuickAddWords` в режиме создания. Файла `GenerateDeckDialog.jsx` в этой версии нет.
 
-Все страницы intentionally thin и обычно только подключают один widget.
+## Общее ядро
 
-| Страница | Что рендерит |
+Все пути ниже начинаются с `packages/shared/src/core/usecases/`.
+
+| Каталог | Назначение |
 | --- | --- |
-| `landing` | `LandingMockPanel` |
-| `learn` | `LearnFlashcardsPanel` |
-| `decks` | `DecksOverviewPanel` |
-| `deck-editor` | `DeckEditorPanel` |
-| `deck-details` | `DeckDetailsPanel` |
-| `browse` | `BrowseDecksPanel` или `BrowseDeckDetailsPanel` |
-| `progress` | `ProgressOverviewPanel` |
-| `settings` | `SettingsDatabasePanel` |
-| `account` | `AccountHubPanel` |
+| `subjects/` | Реестр предметов, поля, возможности, композиции и технологии |
+| `cardContent/` | Содержимое карточки, изображения и построение представления |
+| `srs/` | FSRS-5, интервалы, нормализация, очередь и лимиты |
+| `importExport/` | Чтение и создание файлов колод, совпадения и медиа |
+| `sync/` | Идентичность колоды, хэш, профиль и состояние обмена |
+| `hub/` | Подготовка и проверка публикации |
 
-## `src/widgets`
+Для математического текста смотрите `packages/shared/src/ui/MathFormula/`: `MathText`, `parseMathText`, `MathFormula` и локальный загрузчик KaTeX.
 
-### Главные widgets
+## Сервисы и инфраструктура shared
 
-| Widget | Роль |
+| Путь в `packages/shared/src/` | Назначение |
 | --- | --- |
-| `LearnFlashcardsPanel` | основной экран обучения и SRS-сессии |
-| `DecksOverviewPanel` | библиотека локальных колод |
-| `DeckEditorPanel` | форма создания/редактирования колоды |
-| `DeckDetailsPanel` | просмотр колоды и слов |
-| `BrowseDecksPanel` | список публичных колод Hub |
-| `BrowseDeckDetailsPanel` | детали публичной колоды и импорт |
-| `ProgressOverviewPanel` | аналитика обучения |
-| `SettingsDatabasePanel` | все настройки и desktop utilities |
-| `DesktopTitleBar` | desktop-only title bar layer |
-| `NavbBar` | боковая и mobile navigation |
-| `PageHeader` | заголовок текущей страницы |
-| `LandingMockPanel` | маркетинговый landing block |
-| `AccountHubPanel` | заглушка под будущий account/sync слой |
+| `providers/PlatformProvider/` | Доступ UI к сервисам |
+| `platform/target/` | Выбор web или desktop при сборке |
+| `platform/web/` | IndexedDB и браузерные адаптеры |
+| `platform/electron/` | Адаптеры API Electron |
+| `api/` | Supabase auth, sync, Hub и ИИ; совместимый desktop API |
+| `sync/` | Общий обмен библиотекой и изображениями |
+| `config/` | Предпочтения, языки, маршруты, токены CSS и возможности ИИ |
+| `lib/i18n/` | Переводы и форматирование |
+| `lib/media/` | Подготовка изображений и URL локальных файлов |
+| `ui/` | Общие элементы интерфейса |
 
-### Что обычно лежит внутри widget
+## Electron и сервер
 
-- `ui/*` - JSX и CSS;
-- `model/*` - hook или context;
-- `index.js` - public API.
+`electron/main.js` собирает приложение. Модули `electron/main/` отвечают за окно, меню, навигацию, импорт, резервные копии, OAuth и обновления. Обработчики IPC находятся в `electron/main/ipc/`, мост в `electron/preload.cjs`.
 
-## `src/features`
+`electron/db/initDb.js` создаёт схему. `electron/db/services/` содержит операции колод, SRS, статистики, настроек, медиа и обмена. `electron/services/` содержит Hub, проверку целостности, путь базы, миграцию старого хранилища и сохранение токенов.
 
-| Feature | Роль |
-| --- | --- |
-| `deck-import` | импорт из файла, текста и пакета |
-| `deck-delete` | удаление колоды |
-| `deck-rename` | переименование колоды |
-| `flashcard` | UI одной карточки |
-| `srs-rating-controls` | кнопки рейтинга карточки |
-| `card-catalog` | фильтры, сортировка, пагинация слов |
-| `theme-switch` | переключение темы |
-| `shortcut-settings` | настройки клавиатурных shortcut-ов |
-| `app-preferences` | большие формы настроек приложения |
-| `runtime-error` | показ runtime error modal |
-| `integrity-repair` | запуск repair flow для БД |
+`supabase/migrations/` хранит серверную схему. `supabase/functions/suggest-word/` содержит ИИ, `delete-account/` удаление аккаунта. [Описание сервера](../supabase/README.md).
 
-## `src/entities`
+## Сборка и проверки
 
-### Deck
+`vite.config.js` выбирает target, маршруты, алиасы и манифест ресурсов. `scripts/prerender-landing.mjs` создаёт статические страницы. `public/sw.js` отвечает за web-кэш.
 
-| Файл | Роль |
-| --- | --- |
-| `model/useDecks.js` | загрузка списка колод |
-| `model/useDeckWords.js` | слова конкретной колоды |
-| `model/useDeckTagsPopover.js` | локальная UI-логика тегов |
-| `ui/DecksTable/*` | таблица колод |
+`scripts/check-*` проверяют слои, строки UI и упакованные зависимости. `scripts/acceptance/` содержит браузерные сценарии. `electron/scripts/` содержит интеграционные проверки SQLite. `.github/workflows/release.yml` собирает и публикует desktop-релиз.
 
-### Word
-
-| Файл | Роль |
-| --- | --- |
-| `model/useWords.js` | загрузка списка слов |
-| `model/useWordsTable.js` | табличная логика слова |
-| `ui/WordsTable/*` | таблица слов |
-| `api/wordsApi.js` | получение fallback words |
-| `lib/wordsStorage.js` | утилиты вокруг локальных слов |
-
-## `packages/shared/src`
-
-### `shared/ui`
-
-Переиспользуемые UI primitives:
-
-- `Button`
-- `TextInput`
-- `Tabs`
-- `Panel`
-- `SectionHeader`
-- `InlineAlert`
-- `ActionModal`
-- `ToastViewport`
-- `NavTab`
-- `MetaBadge`
-- `RouteErrorBoundary`
-- `RouteHydrateFallback`
-
-### `shared/config`
-
-| Файл | Роль |
-| --- | --- |
-| `routes.js` | route constants и page meta |
-| `languages.js` | языки по умолчанию и список опций |
-| `settingsTabs.js` | tab keys и section ids |
-| `externalLinks.js` | внешние ссылки |
-| `variables.css` | theme tokens |
-
-### `shared/lib`
-
-Основные зоны:
-
-- `appPreferences` - нормализация и хуки пользовательских настроек;
-- `shortcutSettings` - shortcut schema и hooks;
-- `theme` - применение темы и desktop title bar sync;
-- `pwa` - регистрация service worker и asset prefetch;
-- `seo` - мета-теги страницы;
-- `a11y` - dialog a11y и pointer focus guard;
-- `toast`, `clipboard`, `date`, `word`, `debug`.
-
-### `shared/core/usecases`
-
-Здесь лежит самая полезная platform-agnostic бизнес-логика:
-
-- `srs/srsEngine.js`
-- `importExport/deckPackage.js`
-- `progress/buildProgressOverview.js`
-- `hub/publishDeck.js`
-
-### `shared/platform`
-
-| Файл | Роль |
-| --- | --- |
-| `createPlatformServices.js` | выбор платформенного набора сервисов |
-| `electron/createElectronPlatformServices.js` | desktop repositories/gateways |
-| `web/createWebPlatformServices.js` | web repositories/gateways |
-| `web/model/*` | IndexedDB repositories |
-| `web/db/webDb.js` | IndexedDB schema и transaction helpers |
-
-## `electron`
-
-### Ключевые файлы
-
-| Файл | Роль |
-| --- | --- |
-| `main.js` | основной Electron runtime |
-| `preload.cjs` | безопасный bridge в renderer |
-| `db/db.js` | открытие и закрытие SQLite |
-| `db/initDb.js` | инициализация БД |
-| `db/services/db.services.js` | CRUD колод и слов |
-| `db/services/srs.services.js` | SRS snapshot и grading |
-| `db/services/progress.services.js` | сводка прогресса |
-| `db/services/settings.services.js` | app settings |
-| `db/services/import-export.js` | deck package import/export |
-| `services/hub.service.js` | работа с Supabase из main process |
-| `services/integrity.service.js` | integrity verify/repair |
-| `services/dbPath.service.js` | смена пути БД |
-| `services/legacyStorageMigration.service.js` | перенос старых данных |
-
-## `public`
-
-| Файл | Роль |
-| --- | --- |
-| `manifest.webmanifest` | PWA manifest |
-| `sw.js` | service worker |
-| `offline.html` | offline fallback |
-| `icons/*` | иконки PWA |
-| `data/words.json` | fallback deck dataset |
-
-## `scripts`
-
-| Файл | Роль |
-| --- | --- |
-| `release-notes.mjs` | генерация release notes |
-| `release-publish.mjs` | release publish flow |
-| `check-no-electron-imports.sh` | проверка, что renderer не ходит в Electron напрямую |
-
-## Где лежат самые важные публичные API проекта
-
-Если нужно понять проект быстро, полезнее всего открыть именно эти файлы:
-
-1. `src/main.jsx`
-2. `src/app/App.jsx`
-3. `src/app/layouts/AppLayout.jsx`
-4. `src/app/router/routes.base.jsx`
-5. `packages/shared/src/platform/createPlatformServices.js`
-6. `packages/shared/src/platform/web/createWebPlatformServices.js`
-7. `packages/shared/src/platform/electron/createElectronPlatformServices.js`
-8. `packages/shared/src/core/usecases/srs/srsEngine.js`
-9. `packages/shared/src/core/usecases/importExport/deckPackage.js`
-10. `electron/main.js`
-11. `electron/preload.cjs`
-12. `electron/db/services/*.js`
+[Полный список команд](onboarding.md) · [Архитектура](architecture.md)

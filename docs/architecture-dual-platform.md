@@ -1,47 +1,46 @@
-# LioraLang Dual-Platform Architecture
+# Контракт web и desktop
 
-## Goal
+UI работает через одинаковые сервисы на обеих платформах. Различается транспорт: web обращается к браузерным хранилищам, desktop к API Electron. Общие правила остаются в ядре.
 
-One codebase, two full targets:
-- Electron desktop app
-- Browser web app
+## Как подключается платформа
 
-## Core Rules
+1. Vite выбирает `@platform-target` по режиму сборки.
+2. Модуль `platform/target/web.js` или `desktop.js` создаёт набор сервисов.
+3. `PlatformProvider` из `@shared/providers` передаёт набор приложению.
+4. Модели UI вызывают `usePlatformService("имяСервиса")`.
 
-1. `src/**` does not import `electron/*` directly.
-2. UI (`pages/widgets/features/entities`) does not import `@shared/api` directly.
-3. Platform calls go through `@app/providers -> usePlatformService(...)`.
-4. Only `packages/shared/src/platform/**` can adapt platform specifics.
+Основные реализации:
 
-## Runtime Composition
+- `packages/shared/src/platform/web/createWebPlatformServices.js`.
+- `packages/shared/src/platform/electron/createElectronPlatformServices.js`.
+- `packages/shared/src/providers/PlatformProvider/`.
 
-1. `PlatformProvider` is mounted in app root.
-2. Provider resolves services via `@shared/platform`.
-3. `@platform-target` alias is injected by Vite:
-   - `desktop` target -> `packages/shared/src/platform/target/desktop.js`
-   - `web` target -> `packages/shared/src/platform/target/web.js`
+## Доступные сервисы
 
-## Service Contract (current)
+| Сервис | Назначение |
+| --- | --- |
+| `authRepository` | Аккаунт и состояние авторизации |
+| `deckRepository` | Колоды, записи, импорт и экспорт |
+| `mediaRepository` | Изображения и уведомления об их изменении |
+| `settingsRepository` | Настройки приложения |
+| `hubRepository` | Публичные колоды и публикация |
+| `srsRepository` | Очередь и запись оценки |
+| `progressRepository` | Статистика и состояние изучения колоды |
+| `syncRepository` | Обмен личной библиотекой и прогрессом |
+| `systemRepository` | Путь базы, папки и проверка целостности на desktop |
+| `wordSuggestRepository` | Подсказки и генерация через сервер |
+| `runtimeGateway` | Окно, версия, события среды и обновления |
 
-- `deckRepository`
-- `settingsRepository`
-- `hubRepository`
-- `srsRepository`
-- `progressRepository`
-- `systemRepository`
-- `runtimeGateway`
+Не все возможности среды одинаковы. Web не может открыть папку базы, перенести SQLite или установить desktop-обновление. Адаптер возвращает понятное отсутствие возможности; интерфейс должен учитывать это, а не пробовать Electron из браузера.
 
-## Build Modes
+Auth и ИИ используют общий Supabase API. Текущий Hub-репозиторий использует общую web-реализацию и на desktop. Нельзя считать, что любой сетевой вызов desktop обязательно проходит через IPC.
 
-- `pnpm dev` -> desktop renderer + electron shell.
-- `pnpm dev:web` -> pure web mode.
-- `pnpm build:desktop` -> production desktop renderer.
-- `pnpm build:web` -> production web bundle.
+## Правила изменений
 
-## Migration Strategy
+- Не импортируйте `electron/` из `src/` и не вызывайте `window.electronAPI` в компонентах.
+- Не обращайтесь к `@shared/api` из страниц, виджетов и фич напрямую.
+- Новое правило нормализации, SRS или формата файла сначала добавьте в общее ядро.
+- При изменении контракта обновите оба адаптера и проверки сохранения.
+- Системную функцию, доступную только на desktop, обозначайте как такую в UI.
 
-Strangler approach:
-1. Keep old transport (`shared/api`) as compatibility layer.
-2. Move page/widget hooks to `usePlatformService`.
-3. Replace desktop fallbacks in web adapters with native web repositories.
-4. Extract pure business logic to `shared/core`.
+Для web запускайте `pnpm dev:web`, для desktop `pnpm dev`. Сборки: `pnpm build:web` и `pnpm build:desktop`. [Подробный запуск](onboarding.md) · [Хранилища](platforms-and-storage.md)

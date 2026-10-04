@@ -1,386 +1,68 @@
-# Code Audit
+# Проверки качества и известные ограничения
 
-## Executive summary
+Срез для версии 0.9.1, 4 октября 2026 года. Это заметки по текущему коду и проверкам, а не независимый аудит безопасности или обещание отсутствия ошибок. Старые оценки по десятибалльной шкале и выводы о заглушках больше не описывают проект.
 
-Проект производит хорошее впечатление по архитектурной идее и product direction, но в текущем виде он еще нельзя назвать максимально простым, полностью оптимизированным и строго безопасным.
+## Что уже устроено последовательно
 
-Общий вердикт:
+- Web и desktop используют общее ядро SRS, импорта, хэшей и предметов.
+- Запись оценки проверяет revision и профиль, затем сохраняет расписание и журнал в одной транзакции.
+- Новые предметы описываются профилями. Поля, оформление, язык и возможности ИИ доступны клиенту и серверу из общего каталога.
+- Неподдерживаемый формат файла отклоняется. Старый клиент не должен молча стирать неизвестные поля.
+- Синхронизация имеет состояние профиля, очередь событий и конфликтные копии. Она реализована, а не является заглушкой.
+- Генератор показывает редактируемые черновики и сохраняет только после подтверждения.
+- Изображения имеют проверяемый хэш и отдельное локальное хранение.
+- Клиент не содержит ключ Gemini или service role Supabase.
 
-- архитектура: `7/10`
-- простота кода: `5/10`
-- оптимизация: `7/10`
-- безопасность: `6/10`
-- соблюдение FSD: `5/10`
+## Что проверяет автоматизация
 
-## Что уже сделано хорошо
+| Проверка | Что она подтверждает | Чего она не подтверждает |
+| --- | --- | --- |
+| Vitest | Контракты, нормализацию, очереди, гонки и компоненты | Все возможные действия пользователя |
+| SQLite checks | Сохранение, журнал, медиа и предметные поля | Работу реальной пользовательской базы при любой миграции |
+| Браузерная приёмка | Офлайн-путь, оформление, генерацию с контролируемыми ответами | Качество фактов Gemini и реальный дневной лимит |
+| Lint и проверки слоёв | Ошибки кода и запрещённые импорты | Полную архитектурную корректность |
+| Проверка `app.asar` | Наличие и разрешение упакованных зависимостей | Полный запуск всех функций на каждой ОС |
 
-### 1. Платформенная абстракция
+На функциональном срезе перед 0.9.1 прошли 544 теста в 77 файлах. Команды и ограничения окружения описаны в [onboarding](onboarding.md), результат среза в [baseline](baseline.md). Новая правка требует своих проверок.
 
-Самая сильная сторона проекта - separation между UI и платформой.
+## Что требует внимания
 
-Плюсы:
+### Desktop-сессия
 
-- web и desktop обслуживаются одним React-кодом;
-- storage/runtime differences скрыты за repository/gateway-слоем;
-- большая часть UI не знает о конкретной платформе.
+`electron/services/secureStorage.service.js` использует `safeStorage`, когда шифрование ОС доступно. При недоступности сохраняет значение в режиме `plain`. Сначала стоит сделать поведение fallback явным и проверить восстановление сессии на поддерживаемых ОС. Нельзя документировать гарантированное шифрование всех токенов при текущей реализации.
 
-### 2. Shared use cases
+### Навигация Electron
 
-Вынесены полезные platform-agnostic модули:
+У окна включены `contextIsolation` и отключён `nodeIntegration`, есть CSP и контроль devtools. В `windowLifecycle.js` нет явно установленного `setWindowOpenHandler` и общего `will-navigate` guard. Перед добавлением новых внешних ссылок нужно отдельно проверить, какие адреса разрешены и кто открывает их в системном браузере.
 
-- SRS engine;
-- import/export deck package;
-- progress aggregation;
-- hub publish helpers.
+### Удалённый импорт
 
-Это хороший фундамент и для тестов, и для будущего рефакторинга.
+`importWorkflow.js` сначала допускает `http` и `https`, затем проверяет адрес через `isTrustedHubStorageUrl`. При заданном origin сервер сравнивается строго с ним, без origin fallback требует HTTPS и домен Supabase. Это не произвольная загрузка любого HTTP URL, но правила конфигурации и редиректов следует проверить перед расширением источников импорта.
 
-### 3. Базовая оптимизация уже есть
+### Резервные копии SQLite
 
-На `pnpm build:web` проект собрался успешно.
+Текущий механизм делает checkpoint WAL и копирует файл базы. Checkpoint обрабатывается как best effort. Это не то же самое, что доказанная консистентность снимка при любом параллельном доступе. Перед изменением backup или миграций нужен сценарий восстановления на отдельной базе.
 
-Хорошие сигналы:
+### Одновременная работа устройств
 
-- ленивые routes работают;
-- Hub уже уехал в отдельный chunk;
-- SRS и progress для web тоже грузятся лениво;
-- CSS разложен по экранным чанкам.
+События повторений имеют идентификаторы, а конфликты содержимого сохраняют копию. Тесты не заменяют проверку двух реальных устройств, сетевого сбоя в середине обмена, смены аккаунта и удаления. Перед изменением порядка push/pull такие сценарии обязательны.
 
-Снимок тяжёлых чанков:
+### Качество ИИ
 
-| Chunk | Размер | gzip |
-| --- | ---: | ---: |
-| `dist/assets/index-*.js` | 211.12 kB | 66.52 kB |
-| `dist/assets/hubDecksApi-*.js` | 175.31 kB | 46.28 kB |
-| `dist/assets/routes-*.js` | 93.70 kB | 31.06 kB |
-| `dist/assets/SettingsDatabasePanel-*.js` | 34.18 kB | 8.07 kB |
-| `dist/assets/BrowsePage-*.js` | 23.81 kB | 6.55 kB |
+Валидация ограничивает форму ответа, длины и поля, но не доказывает корректность кода, исторических фактов или решения. Browser acceptance использует фикстуры, не реального провайдера. Запросы могут завершаться таймаутом или перегрузкой независимо от остатка квоты.
 
-Для приложения такого класса это не катастрофа, но уже есть зоны, где стоит дробить код дальше.
+### Публичный Hub
 
-## Главные проблемы
+Hub поддерживает языковые колоды, в том числе с картинками. Остальные предметы заблокированы ядром и UI, пока серверная модель публикации не будет расширена. Удаление кнопки само по себе не является серверной защитой; доступ к данным определяется RLS и RPC.
 
-### 1. Security: desktop remote import принимает `http`
+### Релизы и CI
 
-Файл: `electron/main.js`
+Десктопные сборки не подписаны. macOS не устанавливает обновление автоматически. Есть workflow релиза, но нет отдельного общего workflow, который гарантированно запускает весь набор тестов на каждый push. Проверка renderer без проверки упакованных зависимостей недостаточна.
 
-Проблема:
+## Как менять проект без лишнего риска
 
-- `resolveRemoteImportUrl()` принимает и `https`, и `http`;
-- дальше desktop app скачивает пакет и импортирует его как локальные данные.
+Исправляйте проблему в том слое, где находится её правило. Не дублируйте SRS в адаптере, профиль в компоненте или нормализацию отдельно на сервере. Нельзя прятать ошибку сохранения переходом к следующей карточке или очищать пользовательские данные ради зелёного теста.
 
-Почему это риск:
+Производительность проверяйте измерением: размер и загрузку bundle, повторные запросы, длинные списки, время расчёта и память изображений. Не добавляйте memo, кэш и абстракции только ради предполагаемой оптимизации.
 
-- при `http` пакет может быть подменён по дороге;
-- для desktop app это особенно нежелательно, потому что файл сохраняется во временную директорию и затем импортируется в локальную БД.
-
-Где смотреть:
-
-- `electron/main.js:669`
-- `electron/main.js:683`
-- `electron/main.js:717`
-
-Рекомендация:
-
-- разрешать только `https`;
-- если нужны dev/test URL, делать отдельный opt-in флаг только для development.
-
-### 2. Security: Hub auth storage пишется в plain JSON
-
-Файл: `electron/services/hub.service.js`
-
-Проблема:
-
-- storage для Supabase auth складывается в обычный JSON-файл внутри userData.
-
-Почему это риск:
-
-- токены не защищены OS keychain/credential storage;
-- любое локальное ПО с доступом к профилю пользователя сможет их читать.
-
-Где смотреть:
-
-- `electron/services/hub.service.js:90`
-- `electron/services/hub.service.js:97`
-- `electron/services/hub.service.js:128`
-- `electron/services/hub.service.js:131`
-
-Рекомендация:
-
-- хранить чувствительные токены через системный keychain;
-- если сейчас используются только anonymous sessions, все равно стоит явно задокументировать это ограничение.
-
-### 3. FSD соблюдается частично, но не enforce-ится
-
-Файлы:
-
-- `eslint.config.js`
-- `packages/shared/src/lib/appPreferences/useStartupPreferences.js`
-- `packages/shared/src/lib/appPreferences/useAppPreferences.js`
-- `src/entities/deck/model/useDecks.js`
-
-Проблема:
-
-- в ESLint нет boundary rules для FSD;
-- нижние слои тянут `@app/providers`.
-
-Почему это важно:
-
-- `shared` и `entities` начинают зависеть от `app`;
-- направления зависимостей размываются;
-- любой дальнейший рост проекта будет сильнее сцеплять слои.
-
-Где смотреть:
-
-- `eslint.config.js:1`
-- `packages/shared/src/lib/appPreferences/useStartupPreferences.js:2`
-- `packages/shared/src/lib/appPreferences/useAppPreferences.js:2`
-- `src/entities/deck/model/useDecks.js:2`
-
-Рекомендация:
-
-- вынести platform access hook в слой, который может быть законно импортирован нижними слоями;
-- включить `eslint-plugin-boundaries` или аналогичный слой правил для FSD.
-
-### 4. Дублирование desktop API слоя
-
-Файлы:
-
-- `packages/shared/src/api/desktopApi.js`
-- `packages/shared/src/platform/electron/createElectronPlatformServices.js`
-
-Проблема:
-
-- в проекте живет большой `desktopApi.js`, который по структуре и смыслу дублирует bridge/runtime-логику из `createElectronPlatformServices.js`;
-- при этом `desktopApi` больше нигде не используется.
-
-Почему это важно:
-
-- дублирование резко увеличивает цену изменений;
-- возникает ложное ощущение нескольких "правильных" путей к Electron API;
-- код поддерживать сложнее, чем нужно.
-
-Где смотреть:
-
-- `packages/shared/src/api/desktopApi.js:1`
-- `packages/shared/src/api/desktopApi.js:475`
-- `packages/shared/src/platform/electron/createElectronPlatformServices.js:1`
-- `packages/shared/src/platform/electron/createElectronPlatformServices.js:566`
-
-Рекомендация:
-
-- удалить или архивировать `desktopApi`, если он действительно не нужен;
-- оставить один canonical desktop adapter.
-
-### 5. Качество snapshot-а: lint уже красный
-
-Результат `pnpm lint`:
-
-- `src/widgets/BrowseDeckDetailsPanel/ui/BrowseDeckDetailsPanel.jsx:96` - unused variable
-- `src/widgets/ProgressOverviewPanel/ui/ProgressOverviewPanel.jsx:55` - unused variable
-- `src/widgets/ProgressOverviewPanel/ui/ProgressOverviewPanel.jsx:56` - unused variable
-- `src/widgets/DesktopTitleBar/model/useDesktopTitleBar.js:215` - missing effect dependency warning
-
-Это не критические runtime-bugs, но это явный сигнал, что качество сборки нельзя считать зелёным.
-
-## Монолитные файлы и кандидаты на декомпозицию
-
-### Самые тяжёлые файлы по размеру
-
-| Файл | Строк |
-| --- | ---: |
-| `electron/main.js` | 3180 |
-| `electron/db/services/srs.services.js` | 1387 |
-| `packages/shared/src/platform/web/model/createWebDeckRepository.js` | 1061 |
-| `src/widgets/LearnFlashcardsPanel/model/useLearnFlashcardsPanel.js` | 1039 |
-| `packages/shared/src/core/usecases/srs/srsEngine.js` | 961 |
-| `packages/shared/src/api/desktopApi.js` | 954 |
-| `electron/services/hub.service.js` | 835 |
-| `electron/db/services/db.services.js` | 828 |
-| `src/widgets/DeckEditorPanel/model/useDeckEditorPanel.js` | 696 |
-| `packages/shared/src/core/usecases/importExport/deckPackage.js` | 633 |
-
-### Что вынести в отдельные модули в первую очередь
-
-#### `electron/main.js`
-
-Стоит разделить минимум на:
-
-- `window/bootstrap`
-- `menu`
-- `csp`
-- `updater`
-- `deck-import`
-- `runtime-error`
-- `ipc/decks`
-- `ipc/settings`
-- `ipc/hub`
-- `ipc/window`
-
-#### `useLearnFlashcardsPanel`
-
-Стоит разрезать на:
-
-- `useLearnSessionCache`
-- `useLearnKeyboardShortcuts`
-- `useLearnDeckSelection`
-- `useLearnBrowseMode`
-- `useLearnSrsSession`
-
-#### `createWebDeckRepository`
-
-Стоит вынести:
-
-- CRUD deck operations;
-- import/export browser flow;
-- file/url download helpers;
-- normalization helpers.
-
-#### `useDeckEditorPanel`
-
-Стоит вынести:
-
-- `useDeckForm`
-- `useDeckWordDraft`
-- `useDeckWordPagination`
-- `useDeckEditorPersistence`
-
-#### `SettingsDatabasePanel` и `AppPreferencesSection`
-
-Сейчас это хорошие кандидаты на smaller section components.
-
-Сигналы:
-
-- большой destructuring state;
-- длинные условные блоки JSX;
-- несколько логически независимых секций в одном файле.
-
-Где смотреть:
-
-- `src/widgets/SettingsDatabasePanel/ui/SettingsDatabasePanel.jsx:44`
-- `src/features/app-preferences/ui/AppPreferencesSection/AppPreferencesSection.jsx:47`
-
-#### `BrowseDeckDetailsPanel`
-
-Сейчас виджет уже переиспользует визуальные стили других widget-ов напрямую:
-
-- `src/widgets/BrowseDeckDetailsPanel/ui/BrowseDeckDetailsPanel.jsx:12`
-- `src/widgets/BrowseDeckDetailsPanel/ui/BrowseDeckDetailsPanel.jsx:13`
-
-Это знак, что нужна общая card/layout abstraction, а не cross-import CSS между widget-слоями.
-
-## Простота кода
-
-### Что хорошо
-
-- названия функций и модулей в целом понятные;
-- в проекте много нормализации входных данных;
-- у большинства экранов предсказуемая структура `page -> widget -> model/ui`.
-
-### Что ухудшает простоту
-
-- слишком длинные hooks и repositories;
-- много локальных helper-функций внутри одного файла;
-- есть no-op и недоведённые до конца абстракции.
-
-Примеры:
-
-- `packages/shared/src/hooks/useThrottleDebounce.js:1` - `useThrottle` пустой;
-- `packages/shared/src/lib/theme/theme.js:44` и `packages/shared/src/lib/theme/theme.js:96` - `saveThemeMode` и `saveTheme` пустые;
-- `src/main.jsx:18` - `StrictMode` закомментирован.
-
-Это не ломает приложение напрямую, но создаёт ощущение незавершённого слоя и усложняет понимание того, что реально является production API.
-
-## Оптимизация
-
-### Уже хорошо
-
-- route-level code splitting;
-- lazy import analytics;
-- lazy loading web SRS/progress repositories;
-- PWA asset prefetch;
-- chunking по страницам и большим widgets.
-
-### Что можно улучшить
-
-1. Отложить загрузку всех Hub-частей ещё сильнее.
-2. Дробить settings-экран по вкладкам не только визуально, но и по import boundary.
-3. Вынести тяжёлые нормализаторы import/export из always-on чанков.
-4. Добавить bundle analysis в CI.
-5. При росте таблиц слов подумать о virtualization.
-
-## Безопасность
-
-### Уже хорошо
-
-- `contextIsolation: true`;
-- `nodeIntegration: false`;
-- preload bridge вместо прямого доступа к Node;
-- есть CSP;
-- import/export проходят через валидацию и ограничения размера.
-
-### Чего не хватает
-
-1. Явных `will-navigate` и `setWindowOpenHandler` ограничений в main process.
-2. Только `https` для remote import.
-3. Более безопасного хранения auth session.
-4. Явного audit trail для sensitive IPC handlers.
-
-## FSD verdict
-
-### Что соблюдается
-
-- слои названы правильно;
-- pages остаются тонкими;
-- widgets обычно агрегируют features/entities/shared;
-- shared UI и shared config используются централизованно.
-
-### Что нарушено
-
-- `shared` и `entities` зависят от `app`;
-- нет автоматического контроля зависимостей между слоями;
-- некоторые widgets делят CSS напрямую.
-
-Итог:
-
-FSD в проекте скорее используется как directory convention, чем как жестко соблюдаемая dependency architecture.
-
-## Сильные стороны проекта
-
-- сильная продуктовая идея и понятный use case;
-- хороший offline-first фундамент;
-- реально удачная dual-platform архитектура;
-- полезные shared use cases;
-- аккуратный UI skeleton и page composition.
-
-## Слабые стороны проекта
-
-- слишком большие файлы;
-- частичное нарушение FSD;
-- дублирование desktop adapter logic;
-- незавершённые abstraction-и;
-- текущий lint snapshot не зелёный;
-- security hardening desktop-версии ещё не завершён.
-
-## Что улучшать в первую очередь
-
-### Приоритет P1
-
-1. Запретить `http` remote import.
-2. Добавить navigation/window hardening для Electron.
-3. Починить lint до зелёного состояния.
-4. Удалить или объединить `desktopApi`.
-
-### Приоритет P2
-
-1. Разрезать `electron/main.js`.
-2. Разрезать `useLearnFlashcardsPanel`.
-3. Ввести FSD boundary rules в ESLint/CI.
-4. Упростить `SettingsDatabasePanel` и `AppPreferencesSection`.
-
-### Приоритет P3
-
-1. Ввести TypeScript или хотя бы JSDoc contracts на platform services.
-2. Добавить тесты на SRS/import-export.
-3. Добавить bundle budget и perf monitoring.
-4. Подготовить account/sync слой без разрушения текущей offline-first модели.
+[Контрольный прогон](smoke-checklist.md) · [Архитектура](architecture.md) · [Правила кода](../rules/code-and-components-rules.md)
