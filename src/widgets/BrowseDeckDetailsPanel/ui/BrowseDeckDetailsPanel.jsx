@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "@shared/config/brand";
 import { memo, useMemo } from "react";
 import { FiArrowLeft, FiFilter, FiLink } from "react-icons/fi";
 import { DeckLanguagePair, HubDeckAction, normalizeHubTags, useHubLibraryIndex } from "@entities/deck";
@@ -23,7 +24,7 @@ export const BrowseDeckDetailsPanel = memo(({ deckSlug = "" }) => {
   const { t, formatBytes, formatDate } = useI18n();
 
   usePageMeta({
-    title: `${panel.deck?.title || t("browse.communityDeck")} - LioraLang`,
+    title: `${panel.deck?.title || t("browse.communityDeck")} - ${BRAND_NAME}`,
     description:
       typeof panel.deck?.description === "string" && panel.deck.description.trim().length > 0
         ? panel.deck.description.trim()

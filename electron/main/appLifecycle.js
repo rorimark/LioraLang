@@ -173,7 +173,7 @@ export const createAppLifecycleManager = ({
     } catch (startupError) {
       logError("Failed to start Electron app:", startupError);
       const startupPayload = buildRuntimeErrorPayload({
-        title: "LioraLang Startup Error",
+        title: "Liora Startup Error",
         message: startupError?.message || "Failed to start application",
         details: startupError?.stack || "Run: pnpm rebuild:native",
         source: "startup",

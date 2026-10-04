@@ -2,7 +2,7 @@
 
 [English](user-guide.md) | [Русский](user-guide.ru.md) | **Polski**
 
-LioraLang przechowuje materiał w taliach i wyznacza powtórki każdej fiszki. Lokalna nauka nie wymaga rejestracji. Konto umożliwia synchronizację, publikację w Hubie i AI.
+Liora przechowuje materiał w taliach i wyznacza powtórki każdej fiszki. Lokalna nauka nie wymaga rejestracji. Konto umożliwia synchronizację, publikację w Hubie i AI.
 
 ## Utwórz talię
 

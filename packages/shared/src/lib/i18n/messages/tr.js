@@ -150,7 +150,7 @@ export default {
     "signIn": "Giriş yap",
     "signInOrUp": "Giriş yap veya hesap oluştur",
     "primary": "Ana gezinme",
-    "brandToLearn": "LioraLang, Öğren'e git"
+    "brandToLearn": "Liora, Öğren'e git"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Deste",
-      "subtitle": "Bir destenin kelimeleri, filtre ve aramayla."
+      "subtitle": "Destenin kartlarını incele, filtrele ve tekrar et."
     },
     "deckEdit": {
       "title": "Deste düzenleyici",
-      "subtitle": "Destenin dilleri, yeni kelimeler ve düzenlemeler."
+      "subtitle": "Konu ve bağlamı seç, kart ekle."
     },
     "progress": {
       "title": "İlerleme",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Çalışma oturumları, uygulama ve verilerin."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Kalıcı kelimeler."
+      "title": "Liora",
+      "subtitle": "Çalıştıklarını hatırla."
     }
   },
   "titleBar": {
@@ -406,12 +406,12 @@ export default {
     "status": {
       "exportedEmpty": "“{name}” boş deste olarak dışa aktarıldı",
       "exportedNoPath": {
-        "one": "“{name}” dışa aktarıldı: {count} kelime (dosya konumu bilinmiyor)",
-        "other": "“{name}” dışa aktarıldı: {count} kelime (dosya konumu bilinmiyor)"
+        "one": "“{name}” dışa aktarıldı: {count} kart (dosya konumu bilinmiyor)",
+        "other": "“{name}” dışa aktarıldı: {count} kart (dosya konumu bilinmiyor)"
       },
       "exported": {
-        "one": "“{name}” dışa aktarıldı: {count} kelime",
-        "other": "“{name}” dışa aktarıldı: {count} kelime"
+        "one": "“{name}” dışa aktarıldı: {count} kart",
+        "other": "“{name}” dışa aktarıldı: {count} kart"
       },
       "publishUpToDate": {
         "one": "“{name}” hub'da zaten güncel (v{version}, {count} kelime)",
@@ -433,7 +433,7 @@ export default {
       "delete": "Deste silinemedi.",
       "notFound": "Bu deste artık yok.",
       "load": "Destelerin yüklenemedi.",
-      "loadWords": "Bu destenin kelimeleri yüklenemedi."
+      "loadWords": "Bu destenin kartları yüklenemedi."
     },
     "table": {
       "label": "Desteler",
@@ -454,29 +454,29 @@ export default {
     "newDeck": "Yeni deste",
     "newMenu": {
       "empty": "Boş deste",
-      "emptyHint": "Adını koyun, kelimeleri kendiniz ekleyin.",
+      "emptyHint": "Konu seç ve kendi kartlarını ekle.",
       "file": "Dosyadan",
       "fileHint": ".lioradeck, .lioralang veya .json",
       "json": "JSON'dan",
-      "jsonHint": "Bir deste ya da kelime listesi yapıştırın.",
+      "jsonHint": "Deste veya kart listesi yapıştır.",
       "ai": "Yapay zekâyla deste oluştur",
-      "aiHint": "Bir konu ve seviye verin, sonra kelimeleri gözden geçirin"
+      "aiHint": "Konu ve başlık seç, sonra taslakları kontrol et."
     },
     "row": {
       "learned": "Öğrenilen",
       "review": "Bugün",
       "done": "Hepsi tekrarlandı",
-      "empty": "Henüz kelime yok",
+      "empty": "Henüz kart yok",
       "learn": "Çalış",
       "learnNamed": "{name} çalış",
-      "learnedOf": "{words} kelimeden {known} tanesi öğrenildi",
+      "learnedOf": "{words} karttan {known} tanesi öğrenildi",
       "due": {
         "one": "{count} tekrar bekliyor",
         "other": "{count} tekrar bekliyor"
       },
       "new": {
-        "one": "{count} yeni kelime",
-        "other": "{count} yeni kelime"
+        "one": "{count} yeni kart",
+        "other": "{count} yeni kart"
       }
     }
   },
@@ -484,13 +484,13 @@ export default {
     "importedDeck": "İçe aktarılan deste",
     "deckNameOptional": "Deste adı (isteğe bağlı)",
     "json": {
-      "description": "Bir deste paketi (.lioradeck veya .lioralang) ya da düz bir kelime listesi yapıştır, JSON olarak.",
+      "description": "Deste veya kart listesi yapıştır. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "JSON'daki adı kullanmak için boş bırak",
       "label": "Deste JSON'u",
       "placeholder": "Deste JSON'unu buraya yapıştır"
     },
     "file": {
-      "description": ".lioradeck, .lioralang ve .json dosyalarını açar. Ayrıntıları ve dilleri kontrol et, sonra içe aktar.",
+      "description": "Deste dosyasını seç ve içe aktarmadan önce içeriğini kontrol et. (.lioradeck, .lioralang, .json)",
       "confirm": "İçe aktar",
       "namePlaceholder": "Dosya adını kullanmak için boş bırak",
       "detected": "Dosyadaki diller:",
@@ -501,8 +501,8 @@ export default {
       "optional": "Ek dil",
       "selected": "Seçilen dosya: {name}",
       "wordsInFile": {
-        "one": "Dosyada {count} kelime",
-        "other": "Dosyada {count} kelime"
+        "one": "Dosyada {count} kart",
+        "other": "Dosyada {count} kart"
       },
       "savedAs": "Şu adla kaydedilecek: {name}",
       "nameFromPackage": "dosyadaki ad"
@@ -516,13 +516,13 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "“{name}” içe aktarıldı: {count} kelime",
-        "other": "“{name}” içe aktarıldı: {count} kelime"
+        "one": "“{name}” içe aktarıldı: {count} kart",
+        "other": "“{name}” içe aktarıldı: {count} kart"
       },
       "importedWithSkipped": "“{name}” içe aktarıldı: {added} eklendi, {skipped} atlandı",
       "nothingNew": {
-        "one": "İçe aktarılacak yeni bir şey yok: {count} kelime atlandı",
-        "other": "İçe aktarılacak yeni bir şey yok: {count} kelime atlandı"
+        "one": "İçe aktarılacak yeni bir şey yok: {count} kart atlandı",
+        "other": "İçe aktarılacak yeni bir şey yok: {count} kart atlandı"
       }
     },
     "errors": {
@@ -534,7 +534,7 @@ export default {
       "optionalLanguage": "Ek dil, kaynak ve hedef dilden farklı olmalı.",
       "import": "Deste içe aktarılamadı.",
       "pasteFirst": "Önce deste JSON'unu yapıştır.",
-      "parse": "LioraLang bu desteyi okuyamıyor. JSON'un eksiksiz olduğundan emin ol."
+      "parse": "Liora bu desteyi okuyamıyor. JSON'un eksiksiz olduğundan emin ol."
     }
   },
   "deleteDeck": {
@@ -572,7 +572,7 @@ export default {
       "one": "{count} sonuç",
       "other": "{count} sonuç"
     },
-    "searchPlaceholder": "Kelime veya çeviri ara",
+    "searchPlaceholder": "Soruları ve yanıtları ara",
     "search": "Kartlarda ara",
     "sortLabel": "Kartları sırala",
     "clear": "Filtreleri temizle",
@@ -583,9 +583,9 @@ export default {
     "showFilters": "Filtreleri göster"
   },
   "wordsTable": {
-    "label": "Kelimeler",
-    "caption": "Filtrelere uyan kelimeler",
-    "empty": "Kelime bulunamadı.",
+    "label": "Kartlar",
+    "caption": "Filtrelere uyan kartlar",
+    "empty": "Kart bulunamadı.",
     "tapHint": "Genişletmek için dokun"
   },
   "deck": {
@@ -595,21 +595,21 @@ export default {
     "exportShort": "Dışa aktar",
     "addWords": "Kelime ekle",
     "wordsCount": {
-      "one": "{count} kelime",
-      "other": "{count} kelime"
+      "one": "{count} kart",
+      "other": "{count} kart"
     },
-    "emptyDeck": "Bu destede henüz kelime yok.",
-    "emptyFilter": "Burada kelime yok.",
+    "emptyDeck": "Bu destede henüz kart yok.",
+    "emptyFilter": "Burada kart yok.",
     "study": {
       "title": "İlerlemeniz",
       "notStarted": "Bu desteyi henüz çalışmadınız",
       "newWaiting": {
-        "one": "Başlamak için {count} yeni kelime",
-        "other": "Başlamak için {count} yeni kelime"
+        "one": "Başlamak için {count} yeni kart",
+        "other": "Başlamak için {count} yeni kart"
       },
       "due": {
-        "one": "Şimdi tekrar edilecek {count} kelime",
-        "other": "Şimdi tekrar edilecek {count} kelime"
+        "one": "Şimdi tekrar edilecek {count} kart",
+        "other": "Şimdi tekrar edilecek {count} kart"
       },
       "caughtUp": "Şu an tekrar edilecek bir şey yok",
       "nextReview": "Sonraki tekrar {when}",
@@ -621,7 +621,7 @@ export default {
       "recall": "Son 30 günde {percent} hatırlandı"
     },
     "filter": {
-      "label": "Kelimeleri göster",
+      "label": "Kartları göster",
       "all": "Tümü",
       "due": "Tekrar edilecek",
       "known": "Hatırlanan"
@@ -838,7 +838,7 @@ export default {
         "other": "{count} gün sonra"
       },
       "title": "Bugün",
-      "noWords": "Henüz kelime yok",
+      "noWords": "Henüz kart yok",
       "pickDeck": "Öğrenmeye başlamak için topluluktan bir deste seç.",
       "browse": "Destelere göz at",
       "due": {
@@ -852,7 +852,7 @@ export default {
       "allIn": "Hepsi {name} destesinde.",
       "reviewNow": "Şimdi tekrar et",
       "caughtUp": "Her şey tamam",
-      "learnNew": "Yeni kelimeler öğren"
+      "learnNew": "Yeni kartlar öğren"
     },
     "streak": {
       "reviewsToday": {
@@ -914,23 +914,23 @@ export default {
       "text": "Çalışma geçmişin okunamadı. Biraz sonra tekrar dene."
     },
     "words": {
-      "eyebrow": "Kelimelerin",
+      "eyebrow": "Kartların",
       "youKnow": {
-        "one": "bildiğin kelime",
-        "other": "bildiğin kelime"
+        "one": "bildiğin kart",
+        "other": "bildiğin kart"
       },
-      "empty": "Bir deste ekle; öğrendiğin kelimeler burada sayılır.",
+      "empty": "Bir deste ekle; öğrendiğin kartlar burada sayılır.",
       "outOf": {
-        "one": "Destelerindeki {count} kelimeden.",
-        "other": "Destelerindeki {count} kelimeden."
+        "one": "Destelerindeki {count} karttan.",
+        "other": "Destelerindeki {count} karttan."
       },
       "inLongTerm": {
         "one": "{count} tanesi uzun süreli bellekte.",
         "other": "{count} tanesi uzun süreli bellekte."
       },
-      "longTermHint": "Bir kelime, sonraki tekrarı üç hafta sonra olduğunda uzun süreli belleğe geçer.",
-      "byStage": "Aşamalara göre kelimelerin: {summary}",
-      "note": "Bilinen kelimeler yeni öğrenilmiş ve uzun vadeli olanlardır: doğru cevaplanmış ve bugün tekrar beklemeyen."
+      "longTermHint": "Bir kart, sonraki tekrarı üç hafta sonra olduğunda uzun süreli belleğe geçer.",
+      "byStage": "Aşamalara göre kartların: {summary}",
+      "note": "Bilinen kartlar yeni öğrenilmiş ve uzun vadeli olanlardır: doğru cevaplanmış ve bugün tekrar beklemeyen."
     },
     "forecast": {
       "title": "Yaklaşanlar",
@@ -938,7 +938,7 @@ export default {
         "one": "2 haftada {count} tekrar",
         "other": "2 haftada {count} tekrar"
       },
-      "empty": "Henüz planlanmış bir şey yok. Çalıştığın kelimeler buraya döner; hatırladıkça aralar uzar.",
+      "empty": "Henüz planlanmış bir şey yok. Çalıştığın kartlar buraya döner; hatırladıkça aralar uzar.",
       "label": {
         "one": "Önümüzdeki {count} günde bekleyen tekrarlar. Günleri okumak için ok tuşlarını kullan.",
         "other": "Önümüzdeki {count} günde bekleyen tekrarlar. Günleri okumak için ok tuşlarını kullan."
@@ -975,7 +975,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Yeni.",
     "progressLabel": "{title}: ilerleme",
-    "undatedNote": "Kelimelerinin şu anki hâline göre sayılır; bu yüzden tarih, bu cihazın onu ilk kez kazanılmış gördüğü gündür.",
+    "undatedNote": "Kartlarının şu anki hâline göre sayılır; bu yüzden tarih, bu cihazın onu ilk kez kazanılmış gördüğü gündür.",
     "earnedOn": "Kazanıldı: {date}",
     "earnedBy": "{date} tarihine kadar kazanıldı",
     "progress": {
@@ -983,18 +983,18 @@ export default {
       "other": "{target} {unit} içinden {progress}, {count} kaldı"
     },
     "known": {
-      "title": "Kelime hazinesi",
+      "title": "Bilgi",
       "unit": {
-        "one": "kelime",
-        "other": "kelime"
+        "one": "kart",
+        "other": "kart"
       },
       "goal": {
-        "one": "{count} kelime bil.",
-        "other": "{count} kelime bil."
+        "one": "{count} kart bil.",
+        "other": "{count} kart bil."
       },
       "now": {
-        "one": "Şu an {count} kelime biliniyor",
-        "other": "Şu an {count} kelime biliniyor"
+        "one": "Şu an {count} kart biliniyor",
+        "other": "Şu an {count} kart biliniyor"
       }
     },
     "streak": {
@@ -1015,16 +1015,16 @@ export default {
     "mature": {
       "title": "Uzun süreli bellek",
       "unit": {
-        "one": "kelime",
-        "other": "kelime"
+        "one": "kart",
+        "other": "kart"
       },
       "goal": {
-        "one": "Sonraki tekrarı üç hafta veya daha sonra olan {count} kelimen uzun süreli bellekte olsun.",
-        "other": "Sonraki tekrarı üç hafta veya daha sonra olan {count} kelimen uzun süreli bellekte olsun."
+        "one": "{count} kart bil. Sonraki tekrar en az üç hafta sonra.",
+        "other": "{count} kart bil. Sonraki tekrar en az üç hafta sonra."
       },
       "now": {
-        "one": "Uzun süreli bellekte {count} kelime",
-        "other": "Uzun süreli bellekte {count} kelime"
+        "one": "Uzun süreli bellekte {count} kart",
+        "other": "Uzun süreli bellekte {count} kart"
       }
     },
     "days": {
@@ -1095,10 +1095,10 @@ export default {
         "one": "deste",
         "other": "deste"
       },
-      "goalFirst": "{min} veya daha fazla kelimelik bir destedeki her kelimeyi bil.",
+      "goalFirst": "En az {min} kart içeren bir destenin tüm kartlarını bil.",
       "goal": {
-        "one": "{min} veya daha fazla kelimelik {count} destedeki her kelimeyi bil.",
-        "other": "{min} veya daha fazla kelimelik {count} destedeki her kelimeyi bil."
+        "one": "Her biri en az {min} kart içeren {count} destenin tüm kartlarını bil.",
+        "other": "Her biri en az {min} kart içeren {count} destenin tüm kartlarını bil."
       },
       "now": {
         "one": "Tamamen bilinen {count} deste",
@@ -1143,7 +1143,7 @@ export default {
       "back": "Girişe dön"
     },
     "providersLabel": "Bir hizmetle giriş yap",
-    "desktopProvidersNote": "Giriş tarayıcınızda açılır. Bitince LioraLang'e dönün.",
+    "desktopProvidersNote": "Giriş tarayıcınızda açılır. Bitince Liora'e dönün.",
     "hub": {
       "loading": "Hub'daki destelerin yükleniyor…",
       "emptyTitle": "Henüz bir şey yayımlanmadı.",
@@ -1201,8 +1201,8 @@ export default {
       "browser": "Tarayıcıda",
       "yourName": "Adın",
       "wordsKnown": {
-        "one": "kelime biliniyor",
-        "other": "kelime biliniyor"
+        "one": "kart biliniyor",
+        "other": "kart biliniyor"
       },
       "dayStreak": {
         "one": "günlük seri",
@@ -1306,7 +1306,7 @@ export default {
       "missing_email": "E-postanı gir.",
       "missing_password": "Bir parola gir.",
       "social_desktop_unavailable": "Google ve GitHub ile giriş için uygulamanın daha yeni bir sürümü gerekiyor. Şimdilik e-posta ve parola kullanın.",
-      "social_port_busy": "LioraLang'in ihtiyaç duyduğu bağlantıyı başka bir giriş kullanıyor. Onu kapatıp tekrar deneyin.",
+      "social_port_busy": "Liora'in ihtiyaç duyduğu bağlantıyı başka bir giriş kullanıyor. Onu kapatıp tekrar deneyin.",
       "social_timeout": "Giriş çok uzun sürdü. Tekrar deneyin.",
       "social_cancelled": "Giriş iptal edildi.",
       "social_failed": "Giriş tamamlanmadı. Tekrar deneyin."
@@ -1330,7 +1330,7 @@ export default {
       "thisDevice": "Bu cihaz",
       "forget": "Kaldır",
       "forgetNamed": "{name} cihazını kaldır",
-      "app": "LioraLang uygulaması",
+      "app": "Liora uygulaması",
       "browser": "Tarayıcı",
       "activeNow": "Şu an etkin",
       "active": "Son etkinlik: {time}",
@@ -1429,19 +1429,19 @@ export default {
     "repeatMissedCardsSooner": "Yanlış kartları daha erken tekrarla",
     "againBringsTheCardBack": "“Tekrar” kartı bir dakika sonra, hatırlamayı sınamak için bir arayla geri getirir.",
     "spacedRepetition": "Aralıklı tekrar",
-    "howOftenWordsComeBack": "Kelimelerin ne sıklıkla döndüğü. Varsayılanlar çoğu kişiye uyar.",
+    "howOftenWordsComeBack": "Kartların ne sıklıkla döndüğü. Varsayılanlar çoğu kişiye uyar.",
     "recommendedSchedule": "Önerilen program",
     "useTheCurrentDefaultsFor": "Sonraki cevaplar için güncel varsayılanları kullan. Kayıtlı ilerlemen ve tarihlerin olduğu gibi kalır.",
-    "newWordsADay": "Günde yeni kelime",
-    "newWordsIntroducedPerDeck": "Her gün deste başına yeni kelime. Tekrarlara odaklanmak için 0 yap.",
+    "newWordsADay": "Günde yeni kart",
+    "newWordsIntroducedPerDeck": "Her gün deste başına yeni kart. Yalnızca tekrar yapmak için 0 seç.",
     "reviewsADay": "Günde tekrar",
     "distinctReviewCardsPerDeck": "Her gün deste başına farklı tekrar kartı. Öğrenme adımları her zaman sürer.",
     "learningSteps": "Öğrenme adımları",
     "default10mAgainWaits10": "Varsayılan: 10m. Tekrar 10 dakika, Zor 1 gün, İyi 3 gün, Kolay 16 gün bekler. Daha fazla alıştırma için adımları virgülle ayırarak ekleyin.",
     "desiredRetention": "Hatırlama hedefi",
-    "desiredRetentionHint": "Kelimeler geri geldiğinde hâlâ bilmeniz gereken oran. Daha yüksek, daha çok tekrar ve daha az unutulan kelime demektir; %90 iyi bir dengedir.",
+    "desiredRetentionHint": "Bir sonraki tekrarda hatırlamak istediğin yanıtların oranı. Daha yüksek değer daha çok tekrar demektir; %90 iyi bir dengedir.",
     "maximumInterval": "En uzun ara",
-    "maximumIntervalHint": "Hiçbir kelime iki tekrar arasında bundan uzun beklemez.",
+    "maximumIntervalHint": "Bir kartın iki tekrarı arasındaki en uzun süre.",
     "noLimit": "Sınır yok",
     "wordsIn": "Kelimelerin dili",
     "translatedTo": "Çeviri dili",
@@ -1470,7 +1470,7 @@ export default {
     "developerMode": "Geliştirici modu",
     "logLevel": "Günlük düzeyi",
     "importAndExportFiles": "Dosya içe ve dışa aktarma",
-    "whenAWordIsAlready": "Kelime destede zaten varsa",
+    "whenAWordIsAlready": "Kart destede zaten varsa",
     "exportAs": "Dışa aktarma biçimi",
     "includeExamples": "Örnekleri dahil et",
     "includeTags": "Etiketleri dahil et",
@@ -1516,7 +1516,7 @@ export default {
       },
       "learning-core": {
         "title": "Öğrenme",
-        "description": "Oturumlar ve kelimelerin ne sıklıkla döndüğü."
+        "description": "Oturumlar ve tekrar aralıkları."
       },
       "deck-defaults": {
         "title": "Yeni desteler",
@@ -1587,7 +1587,7 @@ export default {
     "importFile": "Deste dosyası içe aktar",
     "importFileHint": "Bir .lioradeck veya .json dosyası.",
     "chooseFile": "Dosya seç",
-    "pasteHint": "Kelimeleri JSON metni olarak yapıştır.",
+    "pasteHint": "Deste veya kartları JSON metni olarak yapıştır.",
     "pasteJson": "JSON yapıştır",
     "database": "Veritabanı",
     "location": "Konum",
@@ -1740,9 +1740,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Giriş yaptınız",
-      "doneText": "Bu sekmeyi kapatıp LioraLang'e dönebilirsiniz.",
+      "doneText": "Bu sekmeyi kapatıp Liora'e dönebilirsiniz.",
       "failedTitle": "Giriş tamamlanmadı",
-      "failedText": "LioraLang'e dönüp tekrar deneyin."
+      "failedText": "Liora'e dönüp tekrar deneyin."
     },
     "menu": {
       "about": "{app} hakkında",
@@ -1775,20 +1775,20 @@ export default {
       "view": "Görünüm",
       "window": "Pencere",
       "help": "Yardım",
-      "github": "GitHub'da LioraLang"
+      "github": "GitHub'da Liora"
     },
     "tray": {
-      "show": "LioraLang'i göster",
+      "show": "Liora'i göster",
       "quit": "Çık"
     },
     "dialogs": {
       "chooseDbFolder": "Veritabanı klasörünü seç",
       "jsonFiles": "JSON dosyaları",
-      "deckPackages": "LioraLang desteleri",
+      "deckPackages": "Liora desteleri",
       "exportDeck": "Desteyi dışa aktar",
       "importDeck": "Deste dosyası içe aktar",
       "deckFiles": "Deste dosyaları",
-      "legacyPackages": "Eski LioraLang desteleri"
+      "legacyPackages": "Eski Liora desteleri"
     }
   },
   "quickAdd": {
@@ -1835,7 +1835,7 @@ export default {
       "other": "{count} kart kaldırıldı"
     },
     "doneLabel": "Tamam",
-    "unsaved": "Bazı kelimeler henüz eklenmedi.",
+    "unsaved": "Bazı kartlar henüz eklenmedi.",
     "keepEditing": "Düzenlemeye devam et",
     "discard": "Vazgeç",
     "errors": {

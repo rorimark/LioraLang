@@ -1,4 +1,4 @@
-# LioraLang documentation
+# Liora documentation
 
 **English** | [Русский](README.ru.md) | [Polski](README.pl.md)
 

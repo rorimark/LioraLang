@@ -1,7 +1,7 @@
 {
-  "name": "LioraLang",
-  "short_name": "LioraLang",
-  "description": "Offline-first language learning with flashcards and spaced repetition.",
+  "name": "Liora",
+  "short_name": "Liora",
+  "description": "Learn and remember your material with subject-specific flashcards and spaced repetition. Local study works offline.",
   "start_url": "/app/learn",
   "scope": "/app/",
   "display": "standalone",

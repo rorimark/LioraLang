@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "LioraLang: application de flashcards gratuite pour apprendre du vocabulaire",
-    "description": "Apprenez du vocabulaire avec des flashcards : la répétition espacée (FSRS) révise chaque mot au bon moment, l'IA remplit les cartes, sur navigateur, ordinateur et téléphone. Gratuit."
+    "title": "Liora : fiches pour les langues, le code, les maths et l'histoire",
+    "description": "Retenez vos cours avec des fiches par matière, la répétition espacée et des brouillons IA. Langues, programmation, maths et histoire sur navigateur, ordinateur et téléphone."
   },
   "topbar": {
     "open": "Ouvrir l'app web",
     "language": "Langue"
   },
   "hero": {
-    "title": "L'app de cartes qui sait quand vous allez **oublier.**",
-    "text": "Notez chaque mot, et LioraLang le ramène juste avant qu'il ne vous échappe. Gratuit, et vos cartes restent sur votre appareil.",
+    "title": "Apprenez l'essentiel. **Retenez-le.**",
+    "text": "Langues, code, formules ou histoire. Créez vos fiches, rappelez-vous une réponse et laissez les révisions prévoir votre retour. Vos contenus restent sur votre appareil.",
     "start": "Commencer",
     "download": "Version ordinateur"
   },
@@ -22,32 +22,54 @@ export default {
   },
   "try": {
     "title": "Essayez tout de suite.",
-    "text": "Six mots, une vraie révision, sans inscription."
+    "text": "Choisissez une matière et essayez une vraie révision. Sans compte."
   },
   "demo": {
-    "deckName": "Voyage et tourisme",
+    "deckName": "Votre matière. Votre méthode.",
     "doneTitle": "Bien joué.",
-    "doneText": "Chaque mot a maintenant sa propre prochaine révision. Dans l'app, chacun revient ce jour-là.",
+    "doneText": "Chaque fiche a sa prochaine révision. Dans l'app, elle revient à cette date.",
     "answers": "Vos réponses",
     "backIn": "revient dans {interval}",
     "again": "Les revoir",
     "reveal": "Voir la réponse",
     "hintGrade": "Le saviez-vous bien ? Le délai indique quand il reviendra.",
-    "hintThink": "Pensez à la traduction, puis vérifiez.",
+    "hintThink": "Rappelez-vous la réponse, puis vérifiez.",
     "keysGrade": "{keys} pour noter",
     "keysReveal": "{key} affiche la réponse",
-    "spaceKey": "Espace"
+    "spaceKey": "Espace",
+    "subject": "Votre matière. Votre méthode.",
+    "samples": {
+      "programming": {
+        "question1": "Que renvoie ce code ?",
+        "answer1": "Un nouveau tableau avec les valeurs doublées : [2, 4, 6].",
+        "question2": "Que protège const ?",
+        "answer2": "La variable ne peut pas être réaffectée. Les propriétés d'un objet peuvent changer."
+      },
+      "mathematics": {
+        "question1": "Résolvez $x^2 = 4$.",
+        "answer1": "Deux solutions : $x = 2$ et $x = -2$.",
+        "question2": "Quelle est l'aire d'un cercle de rayon $r$ ?",
+        "answer2": "$A = \\pi r^2$."
+      },
+      "history": {
+        "question1": "Quand la Bastille a-t-elle été prise ?",
+        "answer1": "Le 14 juillet 1789.",
+        "question2": "Qu'a changé la presse de Gutenberg en Europe ?",
+        "answer2": "Elle a facilité la reproduction des livres et la diffusion des connaissances.",
+        "context": "Révolution française"
+      }
+    }
   },
   "ai": {
-    "title": "Tapez un mot. Obtenez toute la carte.",
-    "text": "Traduction, exemple, niveau et étiquettes arrivent pendant que vous tapez. Tab prend tout.",
+    "title": "D'un sujet à votre propre paquet.",
+    "text": "Choisissez matière, contexte et langue des réponses. L'IA prépare des fiches avec code, formules ou explications. Vérifiez et modifiez avant d'enregistrer. Compte, internet et quota disponible requis.",
     "try": "Essayer l'assistant",
     "tag": "voyage",
-    "take": "tout prendre"
+    "take": "Remplir"
   },
   "memory": {
-    "title": "Apprenez une fois. Retenez pendant des mois.",
-    "text": "Répondez « Bien » et un nouveau mot revient dans {first}, puis dans {second}, puis dans {third}, chaque écart plus long que le précédent. {reviews} le portent sur {span}, et les mots que vous connaissez n'encombrent plus votre journée.",
+    "title": "Révisez au bon moment.",
+    "text": "Avec Good, une nouvelle fiche revient après {first}, puis {second}, puis {third}. Dans cet exemple, {reviews} couvrent {span}. Le calendrier suit vos réponses pour que le contenu connu n'occupe pas toute la journée.",
     "reviews": {
       "one": "{count} révision",
       "many": "{count} révisions",
@@ -68,26 +90,26 @@ export default {
       "many": "{count} ans",
       "other": "{count} ans"
     },
-    "chartLabel": "Jours entre les révisions d'un mot",
+    "chartLabel": "Jours entre les révisions d'une fiche",
     "day": "jour {day}"
   },
   "decks": {
-    "title": "Vos mots. Vos paquets.",
-    "text": "Créez un paquet pour n'importe quelle paire de langues, ajoutez niveaux, étiquettes et phrases d'exemple, et révisez seulement ce dont vous avez besoin. Importez et exportez en JSON quand vous voulez.",
+    "title": "Vos contenus. Vos paquets.",
+    "text": "Mots et exemples, questions et code, problèmes et formules, dates et contexte. Chaque matière a ses champs et ses fiches. Exportez .lioradeck pour partager ou garder une copie.",
     "words": {
-      "one": "{count} mot",
-      "many": "{count} mots",
-      "other": "{count} mots"
+      "one": "{count} fiche",
+      "many": "{count} fiches",
+      "other": "{count} fiches"
     },
     "examples": {
       "travel": "Voyage et tourisme",
-      "falseFriends": "Faux amis",
-      "business": "Business et start-ups"
+      "falseFriends": "JavaScript",
+      "business": "Mathématiques"
     }
   },
   "hub": {
     "title": "Quelqu'un a déjà fait ce paquet.",
-    "text": "LioraLangHub regorge de paquets publiés par d'autres apprenants. Trouvez-en un, importez-le en un clic et commencez à réviser. Partagez les vôtres de la même façon.",
+    "text": "Trouvez des paquets de langues d'autres apprenants et ajoutez-les en un clic. Programmation, maths et histoire se partagent par fichiers et se synchronisent en privé ; le Hub public accepte actuellement les langues.",
     "browse": "Parcourir le hub",
     "import": "Importer",
     "inLibrary": "Dans votre bibliothèque"
@@ -128,24 +150,28 @@ export default {
     "title": "Questions",
     "items": {
       "free": {
-        "q": "LioraLang est-il gratuit ?",
-        "a": "Oui, entièrement. Paquets, révisions, synchronisation et application de bureau ne coûtent rien. L'assistant IA est gratuit lui aussi avec un compte, jusqu'à {count} suggestions par jour."
+        "q": "Liora est-il gratuit ?",
+        "a": "Les paquets et révisions locaux sont gratuits et sans compte. Sync et application de bureau sont aussi gratuits. L'IA autorise actuellement {count} requêtes par compte et jour UTC, selon la disponibilité du fournisseur."
       },
       "why": {
-        "q": "Pourquoi LioraLang ?",
-        "a": "Tapez un mot et Liora crée la carte pour vous. Vous choisissez ce qui compte pour vous ; Liora s'occupe de la traduction, du niveau, des exemples, des étiquettes et du calendrier des révisions."
+        "q": "Pourquoi Liora ?",
+        "a": "Plusieurs matières au même endroit, avec des champs et fiches adaptés. Vous choisissez le contenu, vérifiez les brouillons IA et laissez les révisions planifier votre retour."
       },
       "srs": {
         "q": "Qu'est-ce que la répétition espacée ?",
-        "a": "Vous revoyez un mot juste avant de l'oublier. Bien su, il revient beaucoup plus tard. Raté, il revient vite."
+        "a": "Rappelez-vous puis évaluez la réponse. Le contenu connu revient plus tard ; une fiche oubliée plus tôt. Le même calendrier sert différentes matières."
       },
       "offline": {
         "q": "Est-ce que ça marche hors ligne ?",
-        "a": "Oui. Tout marche sans internet et se synchronise dès que vous êtes de nouveau en ligne."
+        "a": "Fiches, édition et révisions locales fonctionnent hors ligne. Ouvrez d'abord l'app web en ligne pour la mettre en cache. Sync, Hub et IA nécessitent internet."
       },
       "languages": {
         "q": "Quelles langues puis-je apprendre ?",
         "a": "Deux au choix parmi : {languages}."
+      },
+      "subjects": {
+        "q": "Que puis-je étudier ?",
+        "a": "Langues, programmation, maths et histoire ont leurs champs et fiches. Le catalogue peut grandir ; la programmation accepte toute technologie."
       }
     }
   },

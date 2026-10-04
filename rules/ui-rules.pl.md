@@ -1,4 +1,4 @@
-# Zasady interfejsu LioraLang
+# Zasady interfejsu Liora
 
 [English](ui-rules.md) | [Русский](ui-rules.ru.md) | **Polski**
 

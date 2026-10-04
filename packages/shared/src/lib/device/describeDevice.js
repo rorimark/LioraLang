@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "../../config/brand.js";
 // A name for this device that its owner will recognise in a list of their
 // devices: the browser and the system, or the app and the system. Proper
 // names only, so it reads the same in every interface language.
@@ -34,8 +35,8 @@ export const describeDevice = ({ userAgent = "", maxTouchPoints = 0, isDesktopAp
     system = "iPad";
   }
 
-  const client = isDesktopApp ? "LioraLang" : pick(BROWSERS, agent);
-  return [client, system].filter(Boolean).join(" · ") || (isDesktopApp ? "LioraLang" : "");
+  const client = isDesktopApp ? BRAND_NAME : pick(BROWSERS, agent);
+  return [client, system].filter(Boolean).join(" · ") || (isDesktopApp ? BRAND_NAME : "");
 };
 
 export const describeThisDevice = ({ isDesktopApp = false } = {}) =>

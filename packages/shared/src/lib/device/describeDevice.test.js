@@ -26,7 +26,7 @@ describe("describeDevice", () => {
   });
 
   it("names the desktop app by the app, not its engine", () => {
-    expect(describeDevice({ userAgent: UA.electronWin, isDesktopApp: true })).toBe("LioraLang · Windows");
+    expect(describeDevice({ userAgent: UA.electronWin, isDesktopApp: true })).toBe("Liora · Windows");
   });
 
   it("returns nothing it cannot recognise", () => {

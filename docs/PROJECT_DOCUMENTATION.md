@@ -2,7 +2,7 @@
 
 **English** | [Русский](PROJECT_DOCUMENTATION.ru.md) | [Polski](PROJECT_DOCUMENTATION.pl.md)
 
-LioraLang 0.9.1 is a React app with IndexedDB in the browser and SQLite in Electron. Subjects, card content, file formats, SRS and sync rules share common code. Online features use Supabase, and AI calls Gemini through a server function.
+Liora 0.9.1 is a React app with IndexedDB in the browser and SQLite in Electron. Subjects, card content, file formats, SRS and sync rules share common code. Online features use Supabase, and AI calls Gemini through a server function.
 
 ## Where to start
 

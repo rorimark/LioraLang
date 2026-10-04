@@ -150,7 +150,7 @@ export default {
     "signIn": "ログイン",
     "signInOrUp": "ログインまたはアカウント作成",
     "primary": "メインナビゲーション",
-    "brandToLearn": "LioraLang、学習へ"
+    "brandToLearn": "Liora、学習へ"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "デッキ",
-      "subtitle": "デッキの単語を、絞り込みや検索で確認できます。"
+      "subtitle": "デッキのカードを閲覧・絞り込み・復習します。"
     },
     "deckEdit": {
       "title": "デッキエディター",
-      "subtitle": "デッキの言語設定、単語の追加と更新。"
+      "subtitle": "科目と背景を選び、カードを追加します。"
     },
     "progress": {
       "title": "進捗",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "学習セッション、アプリ、データの設定。"
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "忘れない単語を。"
+      "title": "Liora",
+      "subtitle": "学んだことを覚えておく。"
     }
   },
   "titleBar": {
@@ -428,7 +428,7 @@ export default {
       "delete": "デッキを削除できませんでした。",
       "notFound": "このデッキはもう存在しません。",
       "load": "デッキを読み込めませんでした。",
-      "loadWords": "このデッキの単語を読み込めませんでした。"
+      "loadWords": "このデッキのカードを読み込めませんでした。"
     },
     "table": {
       "label": "デッキ",
@@ -449,19 +449,19 @@ export default {
     "newDeck": "新しいデッキ",
     "newMenu": {
       "empty": "空のデッキ",
-      "emptyHint": "名前を付けて、単語を自分で追加します。",
+      "emptyHint": "科目を選んで自分のカードを追加。",
       "file": "ファイルから",
       "fileHint": ".lioradeck、.lioralang、.json",
       "json": "JSONから",
-      "jsonHint": "デッキか単語リストを貼り付けます。",
+      "jsonHint": "デッキまたはカードのリストを貼り付け。",
       "ai": "AIでデッキを作る",
-      "aiHint": "テーマとレベルを決めて、単語を確認します"
+      "aiHint": "科目とテーマを選んで下書きを確認。"
     },
     "row": {
       "learned": "習得",
       "review": "今日",
       "done": "すべて復習済み",
-      "empty": "単語はまだありません",
+      "empty": "カードはまだありません",
       "learn": "学習",
       "learnNamed": "{name}を学習",
       "learnedOf": "{words}語中{known}語を習得",
@@ -469,7 +469,7 @@ export default {
         "other": "復習{count}件"
       },
       "new": {
-        "other": "新しい単語{count}語"
+        "other": "新しいカード{count}語"
       }
     }
   },
@@ -477,13 +477,13 @@ export default {
     "importedDeck": "読み込んだデッキ",
     "deckNameOptional": "デッキ名（任意）",
     "json": {
-      "description": "デッキパッケージ（.lioradeck または .lioralang）か、単語の配列をJSONで貼り付けてください。",
+      "description": "デッキまたはカードのリストを貼り付け。 (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "空欄ならJSON内の名前を使います",
       "label": "デッキのJSON",
       "placeholder": "ここにデッキのJSONを貼り付け"
     },
     "file": {
-      "description": ".lioradeck、.lioralang、.json ファイルを開きます。内容と言語を確認してから読み込みます。",
+      "description": "デッキファイルを選び、内容を確認してから取り込みます。 (.lioradeck, .lioralang, .json)",
       "confirm": "読み込む",
       "namePlaceholder": "空欄ならファイル名を使います",
       "detected": "ファイル内の言語：",
@@ -494,7 +494,7 @@ export default {
       "optional": "追加の言語",
       "selected": "選択したファイル：{name}",
       "wordsInFile": {
-        "other": "ファイル内の単語：{count}語"
+        "other": "ファイル内のカード：{count}語"
       },
       "savedAs": "保存名：{name}",
       "nameFromPackage": "ファイル内の名前"
@@ -512,7 +512,7 @@ export default {
       },
       "importedWithSkipped": "「{name}」を読み込みました：{added}語追加、{skipped}語スキップ",
       "nothingNew": {
-        "other": "新しく読み込む単語はありません：{count}語スキップ"
+        "other": "新しく読み込むカードはありません：{count}語スキップ"
       }
     },
     "errors": {
@@ -524,7 +524,7 @@ export default {
       "optionalLanguage": "追加の言語は、元の言語・訳の言語と別にしてください。",
       "import": "デッキを読み込めませんでした。",
       "pasteFirst": "先にデッキのJSONを貼り付けてください。",
-      "parse": "LioraLangはこのデッキを読み取れません。JSONが完全か確認してください。"
+      "parse": "Lioraはこのデッキを読み取れません。JSONが完全か確認してください。"
     }
   },
   "deleteDeck": {
@@ -561,7 +561,7 @@ export default {
     "results": {
       "other": "{count}件"
     },
-    "searchPlaceholder": "単語や訳で検索",
+    "searchPlaceholder": "質問と回答を検索",
     "search": "カードを検索",
     "sortLabel": "カードの並べ替え",
     "clear": "絞り込みを解除",
@@ -572,9 +572,9 @@ export default {
     "showFilters": "絞り込みを表示"
   },
   "wordsTable": {
-    "label": "単語",
-    "caption": "絞り込み条件に合う単語",
-    "empty": "単語が見つかりません。",
+    "label": "カード",
+    "caption": "絞り込み条件に合うカード",
+    "empty": "カードが見つかりません。",
     "tapHint": "タップして展開"
   },
   "deck": {
@@ -586,16 +586,16 @@ export default {
     "wordsCount": {
       "other": "{count}語"
     },
-    "emptyDeck": "このデッキにはまだ単語がありません。",
-    "emptyFilter": "ここには単語がありません。",
+    "emptyDeck": "このデッキにはまだカードがありません。",
+    "emptyFilter": "ここにはカードがありません。",
     "study": {
       "title": "学習状況",
       "notStarted": "このデッキはまだ学習していません",
       "newWaiting": {
-        "other": "新しい単語が{count}語あります"
+        "other": "新しいカードが{count}語あります"
       },
       "due": {
-        "other": "いま復習する単語が{count}語あります"
+        "other": "いま復習するカードが{count}語あります"
       },
       "caughtUp": "いま復習するものはありません",
       "nextReview": "次の復習は{when}",
@@ -606,7 +606,7 @@ export default {
       "recall": "過去30日間の想起率 {percent}"
     },
     "filter": {
-      "label": "表示する単語",
+      "label": "表示するカード",
       "all": "すべて",
       "due": "復習",
       "known": "定着"
@@ -812,7 +812,7 @@ export default {
         "other": "{count}日後"
       },
       "title": "今日",
-      "noWords": "まだ単語がありません",
+      "noWords": "まだカードがありません",
       "pickDeck": "コミュニティのデッキを選んで学習を始めましょう。",
       "browse": "デッキを見る",
       "due": {
@@ -824,7 +824,7 @@ export default {
       "allIn": "すべて{name}です。",
       "reviewNow": "今すぐ復習",
       "caughtUp": "すべて完了",
-      "learnNew": "新しい単語を学ぶ"
+      "learnNew": "新しいカードを学ぶ"
     },
     "streak": {
       "reviewsToday": {
@@ -879,27 +879,27 @@ export default {
       "text": "学習履歴を読み取れませんでした。少ししてからもう一度お試しください。"
     },
     "words": {
-      "eyebrow": "あなたの単語",
+      "eyebrow": "あなたのカード",
       "youKnow": {
         "other": "語を習得"
       },
-      "empty": "デッキを追加すると、覚えた単語がここで数えられます。",
+      "empty": "デッキを追加すると、覚えたカードがここで数えられます。",
       "outOf": {
         "other": "デッキ内の{count}語のうち。"
       },
       "inLongTerm": {
         "other": "そのうち{count}語は長期記憶にあります。"
       },
-      "longTermHint": "次の復習が3週間先になると、その単語は長期記憶に入ります。",
-      "byStage": "段階別の単語：{summary}",
-      "note": "習得済みは「最近覚えた」と「長期記憶」の単語です。正しく答えられ、今日は復習不要のものです。"
+      "longTermHint": "次の復習が3週間先になると、そのカードは長期記憶に入ります。",
+      "byStage": "段階別のカード：{summary}",
+      "note": "習得済みは「最近覚えた」と「長期記憶」のカードです。正しく答えられ、今日は復習不要のものです。"
     },
     "forecast": {
       "title": "今後の予定",
       "total": {
         "other": "2週間で復習{count}回"
       },
-      "empty": "まだ予定はありません。学習した単語はここに戻ってきます。覚えているほど間隔が広がります。",
+      "empty": "まだ予定はありません。学習したカードはここに戻ってきます。覚えているほど間隔が広がります。",
       "label": {
         "other": "今後{count}日間の復習予定。矢印キーで各日を確認できます。"
       },
@@ -932,14 +932,14 @@ export default {
     "aria": "{title} {value}：{goal} {status}。",
     "ariaNew": "{title} {value}：{goal} {status}。新着。",
     "progressLabel": "{title}：進捗",
-    "undatedNote": "今の単語の状態から数えるため、日付はこのデバイスが初めて獲得を確認した日です。",
+    "undatedNote": "今のカードの状態から数えるため、日付はこのデバイスが初めて獲得を確認した日です。",
     "earnedOn": "{date}に獲得",
     "earnedBy": "{date}までに獲得",
     "progress": {
       "other": "{target}{unit}中{progress}、あと{count}"
     },
     "known": {
-      "title": "語彙",
+      "title": "知識",
       "unit": {
         "other": "語"
       },
@@ -968,7 +968,7 @@ export default {
         "other": "語"
       },
       "goal": {
-        "other": "次の復習が3週間以上先の単語を{count}語、長期記憶に入れる。"
+        "other": "{count}語を習得する。 次の復習は3週間以上先です。"
       },
       "now": {
         "other": "長期記憶に{count}語"
@@ -1029,9 +1029,9 @@ export default {
       "unit": {
         "other": "デッキ"
       },
-      "goalFirst": "{min}語以上のデッキ1つの単語をすべて習得する。",
+      "goalFirst": "{min}枚以上のデッキですべてのカードを覚える。",
       "goal": {
-        "other": "{min}語以上のデッキ{count}つの単語をすべて習得する。"
+        "other": "各{min}枚以上のデッキを{count}個すべて覚える。"
       },
       "now": {
         "other": "完全に習得したデッキ：{count}"
@@ -1074,7 +1074,7 @@ export default {
       "back": "ログインに戻る"
     },
     "providersLabel": "外部サービスでログイン",
-    "desktopProvidersNote": "ログインはブラウザで開きます。終わったらLioraLangに戻ってください。",
+    "desktopProvidersNote": "ログインはブラウザで開きます。終わったらLioraに戻ってください。",
     "hub": {
       "loading": "ハブのデッキを読み込み中…",
       "emptyTitle": "まだ何も公開していません。",
@@ -1230,7 +1230,7 @@ export default {
       "missing_email": "メールアドレスを入力してください。",
       "missing_password": "パスワードを入力してください。",
       "social_desktop_unavailable": "GoogleとGitHubでのログインには新しいバージョンのアプリが必要です。今はメールとパスワードを使ってください。",
-      "social_port_busy": "LioraLangが必要とする接続を別のログインが使用中です。それを閉じてもう一度お試しください。",
+      "social_port_busy": "Lioraが必要とする接続を別のログインが使用中です。それを閉じてもう一度お試しください。",
       "social_timeout": "ログインに時間がかかりすぎました。もう一度お試しください。",
       "social_cancelled": "ログインをキャンセルしました。",
       "social_failed": "ログインが完了しませんでした。もう一度お試しください。"
@@ -1254,7 +1254,7 @@ export default {
       "thisDevice": "このデバイス",
       "forget": "削除",
       "forgetNamed": "{name}を削除",
-      "app": "LioraLangアプリ",
+      "app": "Lioraアプリ",
       "browser": "ブラウザ",
       "activeNow": "使用中",
       "active": "{time}に使用",
@@ -1350,19 +1350,19 @@ export default {
     "repeatMissedCardsSooner": "間違えたカードを早めに復習",
     "againBringsTheCardBack": "「もう一度」を付けたカードは、思い出す練習のため1分後に戻ってきます。",
     "spacedRepetition": "間隔反復",
-    "howOftenWordsComeBack": "単語が戻ってくる頻度です。ほとんどの人は初期設定で十分です。",
+    "howOftenWordsComeBack": "カードが戻る頻度です。通常は初期設定で十分です。",
     "recommendedSchedule": "おすすめのスケジュール",
     "useTheCurrentDefaultsFor": "今後の回答に現在の初期設定を使います。保存済みの進捗と期限はそのままです。",
-    "newWordsADay": "1日の新しい単語",
-    "newWordsIntroducedPerDeck": "デッキごとに1日に出す新しい単語の数。0にすると復習だけになります。",
+    "newWordsADay": "1日の新規カード数",
+    "newWordsIntroducedPerDeck": "デッキごとの1日の新規カード数。0にすると復習のみになります。",
     "reviewsADay": "1日の復習",
     "distinctReviewCardsPerDeck": "デッキごとに1日に復習するカードの数。学習ステップは常に続きます。",
     "learningSteps": "学習ステップ",
     "default10mAgainWaits10": "既定値：10m。「もう一度」は10分後、「難しい」は1日後、「正解」は3日後、「簡単」は16日後。もっと練習したい場合は、カンマ区切りでステップを追加します。",
     "desiredRetention": "記憶の目標",
-    "desiredRetentionHint": "単語が再出題されたときに覚えている割合の目標です。高くすると復習が増え、忘れる単語が減ります。90%がバランスの良い値です。",
+    "desiredRetentionHint": "次の復習で覚えていたい回答の割合です。高いほど復習が増えます。90%が目安です。",
     "maximumInterval": "最長の間隔",
-    "maximumIntervalHint": "どの単語もこれ以上間隔を空けずに復習されます。",
+    "maximumIntervalHint": "同じカードの復習間隔の上限です。",
     "noLimit": "上限なし",
     "wordsIn": "単語の言語",
     "translatedTo": "訳の言語",
@@ -1391,7 +1391,7 @@ export default {
     "developerMode": "開発者モード",
     "logLevel": "ログレベル",
     "importAndExportFiles": "ファイルの読み込みと書き出し",
-    "whenAWordIsAlready": "単語がすでにデッキにある場合",
+    "whenAWordIsAlready": "カードがすでにデッキにある場合",
     "exportAs": "書き出し形式",
     "includeExamples": "例文を含める",
     "includeTags": "タグを含める",
@@ -1436,7 +1436,7 @@ export default {
       },
       "learning-core": {
         "title": "学習",
-        "description": "セッションと単語が戻ってくる頻度。"
+        "description": "セッションと復習間隔。"
       },
       "deck-defaults": {
         "title": "新しいデッキ",
@@ -1507,7 +1507,7 @@ export default {
     "importFile": "デッキファイルを読み込む",
     "importFileHint": ".lioradeck または .json ファイル。",
     "chooseFile": "ファイルを選ぶ",
-    "pasteHint": "単語をJSONテキストとして貼り付けます。",
+    "pasteHint": "デッキまたはカードをJSONテキストで貼り付けます。",
     "pasteJson": "JSONを貼り付け",
     "database": "データベース",
     "location": "場所",
@@ -1657,9 +1657,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "ログインしました",
-      "doneText": "このタブを閉じてLioraLangに戻れます。",
+      "doneText": "このタブを閉じてLioraに戻れます。",
       "failedTitle": "ログインが完了しませんでした",
-      "failedText": "LioraLangに戻ってもう一度お試しください。"
+      "failedText": "Lioraに戻ってもう一度お試しください。"
     },
     "menu": {
       "about": "{app}について",
@@ -1692,20 +1692,20 @@ export default {
       "view": "表示",
       "window": "ウィンドウ",
       "help": "ヘルプ",
-      "github": "GitHubのLioraLang"
+      "github": "GitHubのLiora"
     },
     "tray": {
-      "show": "LioraLangを表示",
+      "show": "Lioraを表示",
       "quit": "終了"
     },
     "dialogs": {
       "chooseDbFolder": "データベースのフォルダーを選択",
       "jsonFiles": "JSONファイル",
-      "deckPackages": "LioraLangのデッキ",
+      "deckPackages": "Lioraのデッキ",
       "exportDeck": "デッキを書き出す",
       "importDeck": "デッキファイルを読み込む",
       "deckFiles": "デッキファイル",
-      "legacyPackages": "以前のLioraLangのデッキ"
+      "legacyPackages": "以前のLioraのデッキ"
     }
   },
   "quickAdd": {
@@ -1750,7 +1750,7 @@ export default {
       "other": "{count}枚のカードを削除しました"
     },
     "doneLabel": "完了",
-    "unsaved": "まだ追加していない単語があります。",
+    "unsaved": "まだ追加していないカードがあります。",
     "keepEditing": "編集を続ける",
     "discard": "破棄する",
     "errors": {

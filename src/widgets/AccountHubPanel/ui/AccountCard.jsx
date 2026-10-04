@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "@shared/config/brand";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { FiCheck, FiRotateCw } from "react-icons/fi";
 import { IoBook, IoCalendar, IoFlame, IoFlash, IoInfinite, IoLayers, IoSparkles, IoTrophy } from "react-icons/io5";
@@ -159,7 +160,7 @@ const CardFront = ({ name, email, memberSince, cardNumber, stats, isVerified, is
       <div className="acard__band">
         <span className="acard__brand">
           <AppIcon size={26} />
-          LioraLang
+          {BRAND_NAME}
         </span>
       </div>
 

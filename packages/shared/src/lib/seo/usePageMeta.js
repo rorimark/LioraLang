@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "../../config/brand.js";
 import { useEffect } from "react";
 
 const ensureDescriptionTag = () => {
@@ -14,7 +15,7 @@ const ensureDescriptionTag = () => {
 };
 
 export const usePageMeta = ({
-  title = "LioraLang",
+  title = BRAND_NAME,
   description = "",
 }) => {
   useEffect(() => {

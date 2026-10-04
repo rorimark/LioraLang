@@ -2,7 +2,7 @@
 
 [English](bun-code-and-components-rules.md) | **Русский** | [Polski](bun-code-and-components-rules.pl.md)
 
-LioraLang сейчас использует Node.js, pnpm 10.33.0, Vite и Vitest. Electron запускает собственный runtime, серверные функции Supabase используют Deno. Этот файл не требует перевести проект на Bun и не заменяет [инструкции запуска](../docs/onboarding.ru.md).
+Liora сейчас использует Node.js, pnpm 10.33.0, Vite и Vitest. Electron запускает собственный runtime, серверные функции Supabase используют Deno. Этот файл не требует перевести проект на Bun и не заменяет [инструкции запуска](../docs/onboarding.ru.md).
 
 Ранее здесь находился общий набор правил для Bun. Большинство правил компонентов дублировало основной документ. Теперь общие требования собраны в [правилах кода](code-and-components-rules.ru.md).
 

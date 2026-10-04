@@ -2,9 +2,15 @@
 
 **English** | [Русский](project-overview.ru.md) | [Polski](project-overview.pl.md)
 
-LioraLang helps people remember their own material with flashcards and spaced repetition. The basic loop is to add material, recall an answer, rate it, and return when it is due.
+Liora helps people remember their own material with flashcards and spaced repetition. The basic loop is to add material, recall an answer, rate it, and return when it is due.
 
 It supports words and expressions, programming, mathematical rules and problems, historical events and causal relationships. Users choose their material or review drafts suggested by AI.
+
+## Public name and compatibility
+
+The public product name is **Liora**. It is a flashcard app for remembering material across subjects, rather than a language-only trainer. Languages are one subject alongside programming, mathematics and history; new profiles can add more.
+
+Existing technical names remain compatible: the GitHub repository and website address, `liora-lang` package, `com.lioralang.app` desktop identity and `LioraLang` installer names. Desktop startup preserves the existing user-data folder when setting the public name. Deck files, browser storage and sync identities do not change.
 
 ## Features in 0.9.1
 

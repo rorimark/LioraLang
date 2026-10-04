@@ -2,7 +2,7 @@
 
 **English** | [Русский](learning-objects.ru.md) | [Polski](learning-objects.pl.md)
 
-LioraLang supports languages, programming, mathematics and history. The catalog must grow without branches in every form or a table for each subject.
+Liora supports languages, programming, mathematics and history. The catalog must grow without branches in every form or a table for each subject.
 
 ## Common entry
 

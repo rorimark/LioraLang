@@ -48,7 +48,7 @@ export const createRuntimeErrorManager = ({
     }
 
     return {
-      title: "LioraLang Error",
+      title: "Liora Error",
       message: normalizeRuntimeErrorText(message),
       details: truncateRuntimeText(stack),
     };
@@ -136,7 +136,7 @@ export const createRuntimeErrorManager = ({
       .replaceAll("'", "&#39;");
 
   const buildFatalStartupErrorHtml = (payload) => {
-    const title = escapeHtml(payload?.title || "LioraLang Startup Error");
+    const title = escapeHtml(payload?.title || "Liora Startup Error");
     const message = escapeHtml(payload?.message || "Unknown startup error");
     const details = escapeHtml(payload?.details || "");
 

@@ -106,7 +106,7 @@ const buildStructuredData = (locale, meta, faq) => [
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "LioraLang",
+    name: "Liora",
     url: pageUrl(locale),
     description: meta.description,
     inLanguage: locale,
@@ -129,7 +129,7 @@ const buildStructuredData = (locale, meta, faq) => [
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "LioraLang",
+    name: "Liora",
     url: `${SITE_URL}/`,
     inLanguage: locale,
   },
@@ -151,7 +151,7 @@ const buildHead = ({ locale, locales, meta, faq, assets }) => {
     `<link rel="canonical" href="${url}" />`,
     ...alternates,
     `<meta property="og:type" content="website" />`,
-    `<meta property="og:site_name" content="LioraLang" />`,
+    `<meta property="og:site_name" content="Liora" />`,
     `<meta property="og:title" content="${escapeHtml(meta.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(meta.description)}" />`,
     `<meta property="og:url" content="${url}" />`,

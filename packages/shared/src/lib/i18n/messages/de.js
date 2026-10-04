@@ -150,7 +150,7 @@ export default {
     "signIn": "Anmelden",
     "signInOrUp": "Anmelden oder Konto erstellen",
     "primary": "Hauptnavigation",
-    "brandToLearn": "LioraLang, zum Lernen"
+    "brandToLearn": "Liora, zum Lernen"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Deck",
-      "subtitle": "Die Wörter eines Decks, mit Filtern und Suche."
+      "subtitle": "Durchsuche, filtere und wiederhole die Karten eines Stapels."
     },
     "deckEdit": {
       "title": "Deck-Editor",
-      "subtitle": "Sprachen festlegen, Wörter hinzufügen und das Deck pflegen."
+      "subtitle": "Wähle Fach und Kontext und füge Karten hinzu."
     },
     "progress": {
       "title": "Fortschritt",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Lernsitzungen, die App und deine Daten."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Wörter, die bleiben."
+      "title": "Liora",
+      "subtitle": "Behalte, was du lernst."
     }
   },
   "titleBar": {
@@ -406,12 +406,12 @@ export default {
     "status": {
       "exportedEmpty": "„{name}“ als leeres Deck exportiert",
       "exportedNoPath": {
-        "one": "„{name}“ exportiert: {count} Wort (Speicherort unbekannt)",
-        "other": "„{name}“ exportiert: {count} Wörter (Speicherort unbekannt)"
+        "one": "„{name}“ exportiert: {count} Karte (Speicherort unbekannt)",
+        "other": "„{name}“ exportiert: {count} Karten (Speicherort unbekannt)"
       },
       "exported": {
-        "one": "„{name}“ exportiert: {count} Wort",
-        "other": "„{name}“ exportiert: {count} Wörter"
+        "one": "„{name}“ exportiert: {count} Karte",
+        "other": "„{name}“ exportiert: {count} Karten"
       },
       "publishUpToDate": {
         "one": "„{name}“ ist im Hub schon aktuell (v{version}, {count} Wort)",
@@ -433,7 +433,7 @@ export default {
       "delete": "Das Deck konnte nicht gelöscht werden.",
       "notFound": "Dieses Deck gibt es nicht mehr.",
       "load": "Deine Decks konnten nicht geladen werden.",
-      "loadWords": "Die Wörter dieses Decks konnten nicht geladen werden."
+      "loadWords": "Die Karten dieses Decks konnten nicht geladen werden."
     },
     "table": {
       "label": "Decks",
@@ -454,29 +454,29 @@ export default {
     "newDeck": "Neues Deck",
     "newMenu": {
       "empty": "Leeres Deck",
-      "emptyHint": "Gib ihm einen Namen und füge selbst Wörter hinzu.",
+      "emptyHint": "Wähle ein Fach und füge eigene Karten hinzu.",
       "file": "Aus einer Datei",
       "fileHint": ".lioradeck, .lioralang oder .json",
       "json": "Aus JSON",
-      "jsonHint": "Füge ein Deck oder eine Wortliste ein.",
+      "jsonHint": "Füge einen Stapel oder eine Kartenliste ein.",
       "ai": "Deck mit KI zusammenstellen",
-      "aiHint": "Thema und Niveau angeben, dann die Wörter durchsehen"
+      "aiHint": "Wähle Fach und Thema und prüfe die Entwürfe."
     },
     "row": {
       "learned": "Gelernt",
       "review": "Heute",
       "done": "Alles wiederholt",
-      "empty": "Noch keine Wörter",
+      "empty": "Noch keine Karten",
       "learn": "Lernen",
       "learnNamed": "{name} lernen",
-      "learnedOf": "{known} von {words} Wörtern gelernt",
+      "learnedOf": "{known} von {words} Karten gelernt",
       "due": {
         "one": "{count} zu wiederholen",
         "other": "{count} zu wiederholen"
       },
       "new": {
-        "one": "{count} neues Wort",
-        "other": "{count} neue Wörter"
+        "one": "{count} neue Karte",
+        "other": "{count} neue Karten"
       }
     }
   },
@@ -484,13 +484,13 @@ export default {
     "importedDeck": "Importiertes Deck",
     "deckNameOptional": "Deckname (optional)",
     "json": {
-      "description": "Füge ein Deck-Paket (.lioradeck oder .lioralang) oder eine einfache Wortliste als JSON ein.",
+      "description": "Füge einen Stapel oder eine Kartenliste ein. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Leer lassen, um den Namen aus dem JSON zu nehmen",
       "label": "Deck-JSON",
       "placeholder": "Deck-JSON hier einfügen"
     },
     "file": {
-      "description": "Öffnet .lioradeck-, .lioralang- und .json-Dateien. Details und Sprachen prüfen, dann importieren.",
+      "description": "Wähle eine Deckdatei und prüfe den Inhalt vor dem Import. (.lioradeck, .lioralang, .json)",
       "confirm": "Importieren",
       "namePlaceholder": "Leer lassen, um den Dateinamen zu nehmen",
       "detected": "Sprachen in der Datei:",
@@ -501,8 +501,8 @@ export default {
       "optional": "Zusätzliche Sprache",
       "selected": "Gewählte Datei: {name}",
       "wordsInFile": {
-        "one": "{count} Wort in der Datei",
-        "other": "{count} Wörter in der Datei"
+        "one": "{count} Karte in der Datei",
+        "other": "{count} Karten in der Datei"
       },
       "savedAs": "Gespeichert als: {name}",
       "nameFromPackage": "der Name in der Datei"
@@ -516,13 +516,13 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "„{name}“ importiert: {count} Wort",
-        "other": "„{name}“ importiert: {count} Wörter"
+        "one": "„{name}“ importiert: {count} Karte",
+        "other": "„{name}“ importiert: {count} Karten"
       },
       "importedWithSkipped": "„{name}“ importiert: {added} hinzugefügt, {skipped} übersprungen",
       "nothingNew": {
-        "one": "Nichts Neues zu importieren: {count} Wort übersprungen",
-        "other": "Nichts Neues zu importieren: {count} Wörter übersprungen"
+        "one": "Nichts Neues zu importieren: {count} Karte übersprungen",
+        "other": "Nichts Neues zu importieren: {count} Karten übersprungen"
       }
     },
     "errors": {
@@ -534,7 +534,7 @@ export default {
       "optionalLanguage": "Die zusätzliche Sprache muss sich von Ausgangs- und Zielsprache unterscheiden.",
       "import": "Das Deck konnte nicht importiert werden.",
       "pasteFirst": "Füge zuerst das Deck-JSON ein.",
-      "parse": "LioraLang kann dieses Deck nicht lesen. Prüfe, ob das JSON vollständig ist."
+      "parse": "Liora kann dieses Deck nicht lesen. Prüfe, ob das JSON vollständig ist."
     }
   },
   "deleteDeck": {
@@ -572,7 +572,7 @@ export default {
       "one": "{count} Ergebnis",
       "other": "{count} Ergebnisse"
     },
-    "searchPlaceholder": "Wort oder Übersetzung suchen",
+    "searchPlaceholder": "Fragen und Antworten suchen",
     "search": "Karten durchsuchen",
     "sortLabel": "Karten sortieren",
     "clear": "Filter zurücksetzen",
@@ -583,9 +583,9 @@ export default {
     "showFilters": "Filter zeigen"
   },
   "wordsTable": {
-    "label": "Wörter",
-    "caption": "Wörter, die zu den Filtern passen",
-    "empty": "Keine Wörter gefunden.",
+    "label": "Karten",
+    "caption": "Karten, die zu den Filtern passen",
+    "empty": "Keine Karten gefunden.",
     "tapHint": "Tippen zum Aufklappen"
   },
   "deck": {
@@ -595,21 +595,21 @@ export default {
     "exportShort": "Exportieren",
     "addWords": "Wörter hinzufügen",
     "wordsCount": {
-      "one": "{count} Wort",
-      "other": "{count} Wörter"
+      "one": "{count} Karte",
+      "other": "{count} Karten"
     },
-    "emptyDeck": "Dieses Deck hat noch keine Wörter.",
-    "emptyFilter": "Hier gibt es keine Wörter.",
+    "emptyDeck": "Dieses Deck hat noch keine Karten.",
+    "emptyFilter": "Hier gibt es keine Karten.",
     "study": {
       "title": "Dein Fortschritt",
       "notStarted": "Du hast dieses Deck noch nicht gelernt",
       "newWaiting": {
-        "one": "{count} neues Wort wartet",
-        "other": "{count} neue Wörter warten"
+        "one": "{count} neue Karte wartet",
+        "other": "{count} neue Karten warten"
       },
       "due": {
-        "one": "{count} Wort ist zur Wiederholung fällig",
-        "other": "{count} Wörter sind zur Wiederholung fällig"
+        "one": "{count} Karte ist zur Wiederholung fällig",
+        "other": "{count} Karten sind zur Wiederholung fällig"
       },
       "caughtUp": "Gerade gibt es nichts zu wiederholen",
       "nextReview": "Nächste Wiederholung {when}",
@@ -621,7 +621,7 @@ export default {
       "recall": "{percent} in den letzten 30 Tagen gewusst"
     },
     "filter": {
-      "label": "Wörter anzeigen",
+      "label": "Karten anzeigen",
       "all": "Alle",
       "due": "Fällig",
       "known": "Gemerkt"
@@ -838,7 +838,7 @@ export default {
         "other": "in {count} Tagen"
       },
       "title": "Heute",
-      "noWords": "Noch keine Wörter",
+      "noWords": "Noch keine Karten",
       "pickDeck": "Wähle ein Deck aus der Community, um loszulegen.",
       "browse": "Decks ansehen",
       "due": {
@@ -852,7 +852,7 @@ export default {
       "allIn": "Alle in {name}.",
       "reviewNow": "Jetzt wiederholen",
       "caughtUp": "Alles erledigt",
-      "learnNew": "Neue Wörter lernen"
+      "learnNew": "Neue Karten lernen"
     },
     "streak": {
       "reviewsToday": {
@@ -914,12 +914,12 @@ export default {
       "text": "Dein Lernverlauf konnte nicht gelesen werden. Versuche es gleich noch einmal."
     },
     "words": {
-      "eyebrow": "Deine Wörter",
+      "eyebrow": "Deine Karten",
       "youKnow": {
-        "one": "Wort, das du kannst",
-        "other": "Wörter, die du kannst"
+        "one": "Karte, die du kannst",
+        "other": "Karten, die du kannst"
       },
-      "empty": "Füge ein Deck hinzu, dann werden die gelernten Wörter hier gezählt.",
+      "empty": "Füge ein Deck hinzu, dann werden die gelernten Karten hier gezählt.",
       "outOf": {
         "one": "Von {count} in deinen Decks.",
         "other": "Von {count} in deinen Decks."
@@ -928,9 +928,9 @@ export default {
         "one": "{count} davon ist im Langzeitgedächtnis.",
         "other": "{count} davon sind im Langzeitgedächtnis."
       },
-      "longTermHint": "Ein Wort ist im Langzeitgedächtnis, wenn seine nächste Wiederholung drei Wochen entfernt ist.",
-      "byStage": "Deine Wörter nach Stufe: {summary}",
-      "note": "Gekonnt sind die frischen und die langfristigen Wörter: richtig beantwortet und heute nicht mehr fällig."
+      "longTermHint": "Eine Karte ist im Langzeitgedächtnis, wenn ihre nächste Wiederholung drei Wochen entfernt ist.",
+      "byStage": "Deine Karten nach Stufe: {summary}",
+      "note": "Gekonnt sind die frischen und die langfristigen Karten: richtig beantwortet und heute nicht mehr fällig."
     },
     "forecast": {
       "title": "Demnächst",
@@ -938,7 +938,7 @@ export default {
         "one": "{count} Wiederholung in 2 Wochen",
         "other": "{count} Wiederholungen in 2 Wochen"
       },
-      "empty": "Noch ist nichts geplant. Gelernte Wörter kommen hier wieder, jedes Mal in größerem Abstand, wenn du sie weißt.",
+      "empty": "Noch ist nichts geplant. Gelernte Karten kommen hier wieder, jedes Mal in größerem Abstand, wenn du sie weißt.",
       "label": {
         "one": "Fällige Wiederholungen am nächsten {count} Tag. Mit den Pfeiltasten gehst du die Tage durch.",
         "other": "Fällige Wiederholungen in den nächsten {count} Tagen. Mit den Pfeiltasten gehst du die Tage durch."
@@ -975,7 +975,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Neu.",
     "progressLabel": "{title}: Fortschritt",
-    "undatedNote": "Gezählt nach deinen Wörtern, wie sie jetzt sind. Das Datum ist der Tag, an dem dieses Gerät ihn zum ersten Mal verdient gesehen hat.",
+    "undatedNote": "Gezählt nach deinen Karten, wie sie jetzt sind. Das Datum ist der Tag, an dem dieses Gerät ihn zum ersten Mal verdient gesehen hat.",
     "earnedOn": "Verdient am {date}",
     "earnedBy": "Verdient bis {date}",
     "progress": {
@@ -983,18 +983,18 @@ export default {
       "other": "{progress} von {target} {unit}, noch {count}"
     },
     "known": {
-      "title": "Wortschatz",
+      "title": "Wissen",
       "unit": {
-        "one": "Wort",
-        "other": "Wörter"
+        "one": "Karte",
+        "other": "Karten"
       },
       "goal": {
-        "one": "Kenne {count} Wort.",
-        "other": "Kenne {count} Wörter."
+        "one": "Kenne {count} Karte.",
+        "other": "Kenne {count} Karten."
       },
       "now": {
-        "one": "{count} Wort kannst du jetzt",
-        "other": "{count} Wörter kannst du jetzt"
+        "one": "{count} Karte kannst du jetzt",
+        "other": "{count} Karten kannst du jetzt"
       }
     },
     "streak": {
@@ -1015,16 +1015,16 @@ export default {
     "mature": {
       "title": "Langzeitgedächtnis",
       "unit": {
-        "one": "Wort",
-        "other": "Wörter"
+        "one": "Karte",
+        "other": "Karten"
       },
       "goal": {
-        "one": "Habe {count} Wort im Langzeitgedächtnis, mit der nächsten Wiederholung in drei Wochen oder später.",
-        "other": "Habe {count} Wörter im Langzeitgedächtnis, mit der nächsten Wiederholung in drei Wochen oder später."
+        "one": "Kenne {count} Karte. Die nächste Wiederholung ist mindestens drei Wochen entfernt.",
+        "other": "Kenne {count} Karten. Die nächste Wiederholung ist mindestens drei Wochen entfernt."
       },
       "now": {
-        "one": "{count} Wort im Langzeitgedächtnis",
-        "other": "{count} Wörter im Langzeitgedächtnis"
+        "one": "{count} Karte im Langzeitgedächtnis",
+        "other": "{count} Karten im Langzeitgedächtnis"
       }
     },
     "days": {
@@ -1095,10 +1095,10 @@ export default {
         "one": "Deck",
         "other": "Decks"
       },
-      "goalFirst": "Kenne jedes Wort in einem Deck mit {min} oder mehr Wörtern.",
+      "goalFirst": "Kenne jede Karte in einem Deck mit mindestens {min} Karten.",
       "goal": {
-        "one": "Kenne jedes Wort in {count} Deck mit {min} oder mehr Wörtern.",
-        "other": "Kenne jedes Wort in {count} Decks mit {min} oder mehr Wörtern."
+        "one": "Kenne jede Karte in {count} Deck mit mindestens {min} Karten.",
+        "other": "Kenne jede Karte in {count} Decks mit jeweils mindestens {min} Karten."
       },
       "now": {
         "one": "{count} Deck vollständig gekonnt",
@@ -1143,7 +1143,7 @@ export default {
       "back": "Zurück zur Anmeldung"
     },
     "providersLabel": "Mit einem Dienst anmelden",
-    "desktopProvidersNote": "Die Anmeldung öffnet sich im Browser. Kehre danach zu LioraLang zurück.",
+    "desktopProvidersNote": "Die Anmeldung öffnet sich im Browser. Kehre danach zu Liora zurück.",
     "hub": {
       "loading": "Deine Hub-Decks werden geladen…",
       "emptyTitle": "Noch nichts veröffentlicht.",
@@ -1201,8 +1201,8 @@ export default {
       "browser": "Im Browser",
       "yourName": "Dein Name",
       "wordsKnown": {
-        "one": "Wort gekonnt",
-        "other": "Wörter gekonnt"
+        "one": "Karte gekonnt",
+        "other": "Karten gekonnt"
       },
       "dayStreak": {
         "one": "Tag am Stück",
@@ -1306,7 +1306,7 @@ export default {
       "missing_email": "Gib deine E-Mail ein.",
       "missing_password": "Gib ein Passwort ein.",
       "social_desktop_unavailable": "Für die Anmeldung mit Google und GitHub brauchst du eine neuere Version der Desktop-App. Nutze vorerst E-Mail und Passwort.",
-      "social_port_busy": "Eine andere Anmeldung belegt die Verbindung, die LioraLang braucht. Schließe sie und versuche es erneut.",
+      "social_port_busy": "Eine andere Anmeldung belegt die Verbindung, die Liora braucht. Schließe sie und versuche es erneut.",
       "social_timeout": "Die Anmeldung hat zu lange gedauert. Versuche es erneut.",
       "social_cancelled": "Anmeldung abgebrochen.",
       "social_failed": "Die Anmeldung wurde nicht abgeschlossen. Versuche es erneut."
@@ -1330,7 +1330,7 @@ export default {
       "thisDevice": "Dieses Gerät",
       "forget": "Entfernen",
       "forgetNamed": "{name} entfernen",
-      "app": "LioraLang-App",
+      "app": "Liora-App",
       "browser": "Browser",
       "activeNow": "Gerade aktiv",
       "active": "Aktiv {time}",
@@ -1429,19 +1429,19 @@ export default {
     "repeatMissedCardsSooner": "Vergessene Karten früher wiederholen",
     "againBringsTheCardBack": "„Nochmal“ bringt die Karte nach einer Minute zurück, mit einer Pause zum Abrufen.",
     "spacedRepetition": "Verteilte Wiederholung",
-    "howOftenWordsComeBack": "Wie oft Wörter wiederkommen. Die Standardwerte passen für die meisten.",
+    "howOftenWordsComeBack": "Wie oft Karten wiederkommen. Die Standardwerte passen für die meisten.",
     "recommendedSchedule": "Empfohlener Plan",
     "useTheCurrentDefaultsFor": "Die aktuellen Standardwerte für künftige Antworten verwenden. Dein Fortschritt und die Fälligkeiten bleiben erhalten.",
-    "newWordsADay": "Neue Wörter pro Tag",
-    "newWordsIntroducedPerDeck": "Neue Wörter pro Deck und Tag. 0, um dich auf Wiederholungen zu konzentrieren.",
+    "newWordsADay": "Neue Karten pro Tag",
+    "newWordsIntroducedPerDeck": "Neue Karten pro Deck und Tag. 0 bedeutet nur Wiederholungen.",
     "reviewsADay": "Wiederholungen pro Tag",
     "distinctReviewCardsPerDeck": "Verschiedene Wiederholungskarten pro Deck und Tag. Lernschritte laufen immer weiter.",
     "learningSteps": "Lernschritte",
     "default10mAgainWaits10": "Standard: 10m. Nochmal wartet 10 Minuten, Schwer 1 Tag, Gut 3 Tage, Leicht 16 Tage. Weitere Schritte durch Kommas getrennt für mehr Übung.",
     "desiredRetention": "Behaltensziel",
-    "desiredRetentionHint": "Welcher Anteil der Wörter noch sitzen soll, wenn sie wiederkommen. Höher heißt mehr Wiederholungen und weniger Vergessenes; 90 % sind ein guter Mittelweg.",
+    "desiredRetentionHint": "Der Anteil der Antworten, die du bei der nächsten Wiederholung noch wissen möchtest. Höher bedeutet mehr Wiederholungen; 90 % sind ein guter Mittelweg.",
     "maximumInterval": "Längste Pause",
-    "maximumIntervalHint": "Kein Wort wartet länger als das auf die nächste Wiederholung.",
+    "maximumIntervalHint": "Die längste Pause zwischen Wiederholungen einer Karte.",
     "noLimit": "Keine Grenze",
     "wordsIn": "Wörter auf",
     "translatedTo": "Übersetzt auf",
@@ -1470,7 +1470,7 @@ export default {
     "developerMode": "Entwicklermodus",
     "logLevel": "Protokollstufe",
     "importAndExportFiles": "Dateien importieren und exportieren",
-    "whenAWordIsAlready": "Wenn ein Wort schon im Deck ist",
+    "whenAWordIsAlready": "Wenn eine Karte schon im Deck ist",
     "exportAs": "Exportieren als",
     "includeExamples": "Beispiele einschließen",
     "includeTags": "Tags einschließen",
@@ -1516,7 +1516,7 @@ export default {
       },
       "learning-core": {
         "title": "Lernen",
-        "description": "Sitzungen und wie oft Wörter wiederkommen."
+        "description": "Sitzungen und Wiederholungsabstände."
       },
       "deck-defaults": {
         "title": "Neue Decks",
@@ -1587,7 +1587,7 @@ export default {
     "importFile": "Deck-Datei importieren",
     "importFileHint": "Eine .lioradeck- oder .json-Datei.",
     "chooseFile": "Datei wählen",
-    "pasteHint": "Die Wörter als JSON-Text einfügen.",
+    "pasteHint": "Füge ein Deck oder Karten als JSON-Text ein.",
     "pasteJson": "JSON einfügen",
     "database": "Datenbank",
     "location": "Speicherort",
@@ -1740,9 +1740,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Du bist angemeldet",
-      "doneText": "Du kannst diesen Tab schließen und zu LioraLang zurückkehren.",
+      "doneText": "Du kannst diesen Tab schließen und zu Liora zurückkehren.",
       "failedTitle": "Anmeldung nicht abgeschlossen",
-      "failedText": "Kehre zu LioraLang zurück und versuche es erneut."
+      "failedText": "Kehre zu Liora zurück und versuche es erneut."
     },
     "menu": {
       "about": "Über {app}",
@@ -1775,20 +1775,20 @@ export default {
       "view": "Darstellung",
       "window": "Fenster",
       "help": "Hilfe",
-      "github": "LioraLang auf GitHub"
+      "github": "Liora auf GitHub"
     },
     "tray": {
-      "show": "LioraLang zeigen",
+      "show": "Liora zeigen",
       "quit": "Beenden"
     },
     "dialogs": {
       "chooseDbFolder": "Ordner für die Datenbank wählen",
       "jsonFiles": "JSON-Dateien",
-      "deckPackages": "LioraLang-Decks",
+      "deckPackages": "Liora-Decks",
       "exportDeck": "Deck exportieren",
       "importDeck": "Deck-Datei importieren",
       "deckFiles": "Deck-Dateien",
-      "legacyPackages": "Ältere LioraLang-Decks"
+      "legacyPackages": "Ältere Liora-Decks"
     }
   },
   "quickAdd": {
@@ -1835,7 +1835,7 @@ export default {
       "other": "{count} Karten entfernt"
     },
     "doneLabel": "Fertig",
-    "unsaved": "Einige Wörter sind noch nicht hinzugefügt.",
+    "unsaved": "Einige Karten sind noch nicht hinzugefügt.",
     "keepEditing": "Weiter bearbeiten",
     "discard": "Verwerfen",
     "errors": {

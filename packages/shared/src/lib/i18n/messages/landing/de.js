@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "LioraLang: kostenlose Karteikarten-App zum Vokabeln lernen",
-    "description": "Vokabeln lernen mit Karteikarten: verteilte Wiederholung (FSRS) fragt jedes Wort zur richtigen Zeit ab, KI füllt Karten aus, im Browser, auf Computer und Handy. Kostenlos."
+    "title": "Liora: Karteikarten für Sprachen, Programmierung, Mathematik und Geschichte",
+    "description": "Lerne mit passenden Karteikarten, verteilten Wiederholungen und KI-Entwürfen. Sprachen, Programmierung, Mathematik und Geschichte im Browser, am Computer und am Handy."
   },
   "topbar": {
     "open": "Web-App öffnen",
     "language": "Sprache"
   },
   "hero": {
-    "title": "Die Karteikarten-App, die weiß, wann du **vergisst.**",
-    "text": "Bewerte jedes Wort, und LioraLang holt es zurück, kurz bevor es dir entgleitet. Kostenlos, und deine Karten bleiben auf deinem Gerät.",
+    "title": "Lerne, was zählt. **Behalte es.**",
+    "text": "Sprachen, Code, Formeln oder Geschichte. Erstelle Karten, erinnere dich an die Antwort und lass Wiederholungen den nächsten Termin planen. Dein Material bleibt auf deinem Gerät.",
     "start": "Jetzt lernen",
     "download": "Desktop-Version"
   },
@@ -21,32 +21,54 @@ export default {
   },
   "try": {
     "title": "Probier es gleich aus.",
-    "text": "Sechs Wörter, eine echte Wiederholung, ohne Anmeldung."
+    "text": "Wähle ein Fach und probiere eine echte Wiederholung. Ohne Konto."
   },
   "demo": {
-    "deckName": "Reisen & Tourismus",
+    "deckName": "Dein Fach. Dein Weg.",
     "doneTitle": "Gut gemacht.",
-    "doneText": "Jedes Wort hat jetzt seine eigene nächste Wiederholung. In der App kommt jedes genau an diesem Tag zurück.",
+    "doneText": "Jede Karte hat jetzt einen nächsten Termin. In der App kommt sie dann wieder.",
     "answers": "Deine Antworten",
     "backIn": "wieder in {interval}",
     "again": "Noch einmal lernen",
     "reveal": "Antwort zeigen",
     "hintGrade": "Wie gut wusstest du es? Die Zeit sagt, wann es zurückkommt.",
-    "hintThink": "Denk an die Übersetzung und prüf dich dann selbst.",
+    "hintThink": "Erinnere dich an die Antwort und prüfe dich.",
     "keysGrade": "{keys} bewerten",
     "keysReveal": "{key} zeigt die Antwort",
-    "spaceKey": "Leertaste"
+    "spaceKey": "Leertaste",
+    "subject": "Dein Fach. Dein Weg.",
+    "samples": {
+      "programming": {
+        "question1": "Was gibt dieser Code zurück?",
+        "answer1": "Ein neues Array mit verdoppelten Werten: [2, 4, 6].",
+        "question2": "Was schützt const?",
+        "answer2": "Die Variable kann nicht neu zugewiesen werden. Objekteigenschaften dürfen sich ändern."
+      },
+      "mathematics": {
+        "question1": "Löse $x^2 = 4$.",
+        "answer1": "Zwei Lösungen: $x = 2$ und $x = -2$.",
+        "question2": "Wie groß ist die Fläche eines Kreises mit Radius $r$?",
+        "answer2": "$A = \\pi r^2$."
+      },
+      "history": {
+        "question1": "Wann wurde die Bastille gestürmt?",
+        "answer1": "Am 14. Juli 1789.",
+        "question2": "Was veränderte Gutenbergs Druckpresse in Europa?",
+        "answer2": "Sie vereinfachte die Vervielfältigung von Büchern und die Verbreitung von Wissen.",
+        "context": "Französische Revolution"
+      }
+    }
   },
   "ai": {
-    "title": "Ein Wort tippen. Die ganze Karte bekommen.",
-    "text": "Übersetzung, Beispiel, Niveau und Tags erscheinen, während du tippst. Tab übernimmt alles.",
+    "title": "Vom Thema zum eigenen Stapel.",
+    "text": "Wähle Fach, Kontext und Antwortsprache. Die KI erstellt Entwürfe mit Code, Formeln oder Erklärungen. Prüfe und bearbeite sie vor dem Speichern. Konto, Internet und freies Tageskontingent sind erforderlich.",
     "try": "Assistenten ausprobieren",
     "tag": "Reisen",
-    "take": "alles übernehmen"
+    "take": "Ausfüllen"
   },
   "memory": {
-    "title": "Einmal lernen. Monatelang behalten.",
-    "text": "Antworte mit „Gut“, und ein neues Wort kommt {first} später wieder, dann {second} später, dann {third} später, und jeder Abstand ist länger als der letzte. {reviews} tragen es über {span}, damit die Wörter, die du kennst, deinen Tag nicht mehr füllen.",
+    "title": "Wiederhole zur richtigen Zeit.",
+    "text": "Mit Good kommt eine neue Karte nach {first}, dann {second}, dann {third} zurück. In diesem Beispiel verteilen sich {reviews} über {span}. Der Plan passt sich deinen Antworten an, damit bekanntes Material deinen Tag nicht füllt.",
     "reviews": {
       "one": "{count} Wiederholung",
       "other": "{count} Wiederholungen"
@@ -63,25 +85,25 @@ export default {
       "one": "{count} Jahr",
       "other": "{count} Jahre"
     },
-    "chartLabel": "Tage zwischen den Wiederholungen eines Wortes",
+    "chartLabel": "Tage zwischen Wiederholungen einer Karte",
     "day": "Tag {day}"
   },
   "decks": {
-    "title": "Deine Wörter. Deine Stapel.",
-    "text": "Erstelle einen Stapel für jedes Sprachpaar, füge Niveaus, Tags und Beispielsätze hinzu und lerne nur, was du wirklich brauchst. Import und Export als JSON, wann immer du willst.",
+    "title": "Dein Material. Deine Stapel.",
+    "text": "Wörter und Beispiele, Fragen und Code, Aufgaben und Formeln, Daten und Kontext. Jedes Fach hat eigene Felder und Karten. Exportiere .lioradeck zum Teilen oder als Kopie.",
     "words": {
-      "one": "{count} Wort",
-      "other": "{count} Wörter"
+      "one": "{count} Karte",
+      "other": "{count} Karten"
     },
     "examples": {
       "travel": "Reisen & Tourismus",
-      "falseFriends": "Falsche Freunde",
-      "business": "Business & Start-up-Kultur"
+      "falseFriends": "JavaScript",
+      "business": "Mathematik"
     }
   },
   "hub": {
     "title": "Jemand hat diesen Stapel schon gemacht.",
-    "text": "LioraLangHub ist voller Stapel, die andere Lernende veröffentlicht haben. Such dir einen aus, importiere ihn mit einem Klick und fang an zu wiederholen. Teile deine eigenen genauso.",
+    "text": "Finde Sprachstapel anderer Lernender und füge sie mit einem Klick hinzu. Programmierung, Mathematik und Geschichte lassen sich als Dateien teilen und privat synchronisieren; der öffentliche Hub unterstützt derzeit Sprachstapel.",
     "browse": "Hub durchsuchen",
     "import": "Importieren",
     "inLibrary": "In deiner Bibliothek"
@@ -122,24 +144,28 @@ export default {
     "title": "Fragen",
     "items": {
       "free": {
-        "q": "Ist LioraLang kostenlos?",
-        "a": "Ja, komplett. Stapel, Wiederholungen, Synchronisierung und die Desktop-App kosten nichts. Der KI-Assistent ist mit Konto auch kostenlos, bis zu {count} Vorschläge am Tag."
+        "q": "Ist Liora kostenlos?",
+        "a": "Lokale Stapel und Wiederholungen sind kostenlos und brauchen kein Konto. Auch Sync und Desktop sind kostenlos. Die KI erlaubt derzeit {count} Anfragen pro Konto und UTC-Tag, abhängig vom Anbieter."
       },
       "why": {
-        "q": "Warum LioraLang?",
-        "a": "Tippe ein Wort und Liora baut die Karte für dich. Du entscheidest, was dir wichtig ist; Liora kümmert sich um Übersetzung, Niveau, Beispiele, Tags und den Wiederholungsplan."
+        "q": "Warum Liora?",
+        "a": "Verschiedene Fächer an einem Ort, mit passenden Feldern und Karten. Du wählst den Stoff, prüfst KI-Entwürfe und lässt Wiederholungen die Termine planen."
       },
       "srs": {
         "q": "Was ist verteilte Wiederholung?",
-        "a": "Du siehst ein Wort kurz bevor du es vergessen würdest. Kannst du es gut, kommt es viel später wieder. Liegst du daneben, kommt es bald wieder."
+        "a": "Erinnere dich und bewerte deine Antwort. Bekanntes kommt später, Vergessenes früher zurück. Derselbe Plan funktioniert für verschiedene Fächer."
       },
       "offline": {
         "q": "Funktioniert es offline?",
-        "a": "Ja. Es läuft ohne Internet weiter und synchronisiert sich, sobald du wieder online bist."
+        "a": "Lokale Karten, Bearbeitung und Wiederholungen funktionieren offline. Öffne die Web-App zuerst online zum Zwischenspeichern. Sync, Hub und KI brauchen Internet."
       },
       "languages": {
         "q": "Welche Sprachen kann ich lernen?",
         "a": "Zwei beliebige aus diesen: {languages}."
+      },
+      "subjects": {
+        "q": "Was kann ich lernen?",
+        "a": "Sprachen, Programmierung, Mathematik und Geschichte haben eigene Felder und Karten. Der Katalog kann wachsen; Programmierung akzeptiert jede Technologie."
       }
     }
   },

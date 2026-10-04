@@ -1,3 +1,4 @@
+import { BRAND_NAME } from "@shared/config/brand";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { DesktopTitleBar } from "@widgets/DesktopTitleBar";
 import { NavBar } from "@widgets/NavbBar";
@@ -34,7 +35,7 @@ export const AppLayout = () => {
   const isSettingsPage = normalizedPathname === ROUTE_PATHS.settings;
 
   usePageMeta({
-    title: `${pageTitle} - LioraLang`,
+    title: `${pageTitle} - ${BRAND_NAME}`,
     description: t(`${pageMeta.key}.subtitle`),
   });
 

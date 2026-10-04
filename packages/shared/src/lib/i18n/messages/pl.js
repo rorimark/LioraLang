@@ -150,7 +150,7 @@ export default {
     "signIn": "Zaloguj się",
     "signInOrUp": "Zaloguj się lub załóż konto",
     "primary": "Główna nawigacja",
-    "brandToLearn": "LioraLang, przejdź do nauki"
+    "brandToLearn": "Liora, przejdź do nauki"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Talia",
-      "subtitle": "Słowa talii z filtrami i wyszukiwaniem."
+      "subtitle": "Przeglądaj, filtruj i powtarzaj karty talii."
     },
     "deckEdit": {
       "title": "Edytor talii",
-      "subtitle": "Języki talii, nowe słowa i poprawki."
+      "subtitle": "Wybierz przedmiot, ustaw kontekst i dodaj karty."
     },
     "progress": {
       "title": "Postępy",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Sesje nauki, aplikacja i twoje dane."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Słowa, które zostają."
+      "title": "Liora",
+      "subtitle": "Zapamiętuj to, czego się uczysz."
     }
   },
   "titleBar": {
@@ -408,16 +408,16 @@ export default {
     "status": {
       "exportedEmpty": "Wyeksportowano „{name}” jako pustą talię",
       "exportedNoPath": {
-        "one": "Wyeksportowano „{name}”: {count} słowo (nieznana lokalizacja pliku)",
-        "few": "Wyeksportowano „{name}”: {count} słowa (nieznana lokalizacja pliku)",
-        "many": "Wyeksportowano „{name}”: {count} słów (nieznana lokalizacja pliku)",
-        "other": "Wyeksportowano „{name}”: {count} słów (nieznana lokalizacja pliku)"
+        "one": "Wyeksportowano „{name}”: {count} karta (nieznana lokalizacja pliku)",
+        "few": "Wyeksportowano „{name}”: {count} karty (nieznana lokalizacja pliku)",
+        "many": "Wyeksportowano „{name}”: {count} kart (nieznana lokalizacja pliku)",
+        "other": "Wyeksportowano „{name}”: {count} kart (nieznana lokalizacja pliku)"
       },
       "exported": {
-        "one": "Wyeksportowano „{name}”: {count} słowo",
-        "few": "Wyeksportowano „{name}”: {count} słowa",
-        "many": "Wyeksportowano „{name}”: {count} słów",
-        "other": "Wyeksportowano „{name}”: {count} słów"
+        "one": "Wyeksportowano „{name}”: {count} karta",
+        "few": "Wyeksportowano „{name}”: {count} karty",
+        "many": "Wyeksportowano „{name}”: {count} kart",
+        "other": "Wyeksportowano „{name}”: {count} kart"
       },
       "publishUpToDate": {
         "one": "„{name}” jest już aktualna w hubie (v{version}, {count} słowo)",
@@ -443,7 +443,7 @@ export default {
       "delete": "Nie udało się usunąć talii.",
       "notFound": "Ta talia już nie istnieje.",
       "load": "Nie udało się wczytać twoich talii.",
-      "loadWords": "Nie udało się wczytać słów tej talii."
+      "loadWords": "Nie udało się wczytać kart tej talii."
     },
     "table": {
       "label": "Talie",
@@ -464,22 +464,22 @@ export default {
     "newDeck": "Nowa talia",
     "newMenu": {
       "empty": "Pusta talia",
-      "emptyHint": "Nazwij ją i dodaj słowa samodzielnie.",
+      "emptyHint": "Wybierz przedmiot i dodaj własne karty.",
       "file": "Z pliku",
       "fileHint": ".lioradeck, .lioralang lub .json",
       "json": "Z JSON",
-      "jsonHint": "Wklej talię lub listę słów.",
+      "jsonHint": "Wklej talię lub listę kart.",
       "ai": "Zbierz talię z AI",
-      "aiHint": "Podaj temat i poziom, potem przejrzyj słowa"
+      "aiHint": "Wybierz przedmiot i temat, potem sprawdź szkice."
     },
     "row": {
       "learned": "Nauczone",
       "review": "Dziś",
       "done": "Wszystko powtórzone",
-      "empty": "Brak słów",
+      "empty": "Brak kart",
       "learn": "Ucz się",
       "learnNamed": "Ucz się: {name}",
-      "learnedOf": "Nauczone {known} z {words} słów",
+      "learnedOf": "Nauczone {known} z {words} kart",
       "due": {
         "one": "{count} do powtórki",
         "few": "{count} do powtórki",
@@ -487,10 +487,10 @@ export default {
         "other": "{count} do powtórki"
       },
       "new": {
-        "one": "{count} nowe słowo",
-        "few": "{count} nowe słowa",
-        "many": "{count} nowych słów",
-        "other": "{count} nowego słowa"
+        "one": "{count} nowa karta",
+        "few": "{count} nowe karty",
+        "many": "{count} nowych kart",
+        "other": "{count} nowe karty"
       }
     }
   },
@@ -498,13 +498,13 @@ export default {
     "importedDeck": "Zaimportowana talia",
     "deckNameOptional": "Nazwa talii (opcjonalnie)",
     "json": {
-      "description": "Wklej pakiet talii (.lioradeck lub .lioralang) albo zwykłą tablicę słów w formacie JSON.",
+      "description": "Wklej talię lub listę kart. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Puste — użyj nazwy z JSON",
       "label": "JSON talii",
       "placeholder": "Wklej tutaj JSON talii"
     },
     "file": {
-      "description": "Otwiera pliki .lioradeck, .lioralang i .json. Sprawdź szczegóły i języki, a potem zaimportuj.",
+      "description": "Wybierz plik talii i sprawdź zawartość przed importem. (.lioradeck, .lioralang, .json)",
       "confirm": "Importuj",
       "namePlaceholder": "Puste — użyj nazwy pliku",
       "detected": "Języki w pliku:",
@@ -515,10 +515,10 @@ export default {
       "optional": "Dodatkowy język",
       "selected": "Wybrany plik: {name}",
       "wordsInFile": {
-        "one": "{count} słowo w pliku",
-        "few": "{count} słowa w pliku",
-        "many": "{count} słów w pliku",
-        "other": "{count} słów w pliku"
+        "one": "{count} karta w pliku",
+        "few": "{count} karty w pliku",
+        "many": "{count} kart w pliku",
+        "other": "{count} kart w pliku"
       },
       "savedAs": "Zapisze się jako: {name}",
       "nameFromPackage": "nazwa z pliku"
@@ -532,17 +532,17 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "Zaimportowano „{name}”: {count} słowo",
-        "few": "Zaimportowano „{name}”: {count} słowa",
-        "many": "Zaimportowano „{name}”: {count} słów",
-        "other": "Zaimportowano „{name}”: {count} słów"
+        "one": "Zaimportowano „{name}”: {count} karta",
+        "few": "Zaimportowano „{name}”: {count} karty",
+        "many": "Zaimportowano „{name}”: {count} kart",
+        "other": "Zaimportowano „{name}”: {count} kart"
       },
       "importedWithSkipped": "Zaimportowano „{name}”: dodano {added}, pominięto {skipped}",
       "nothingNew": {
-        "one": "Nic nowego do zaimportowania: pominięto {count} słowo",
-        "few": "Nic nowego do zaimportowania: pominięto {count} słowa",
-        "many": "Nic nowego do zaimportowania: pominięto {count} słów",
-        "other": "Nic nowego do zaimportowania: pominięto {count} słów"
+        "one": "Nic nowego do zaimportowania: pominięto {count} kartę",
+        "few": "Nic nowego do zaimportowania: pominięto {count} karty",
+        "many": "Nic nowego do zaimportowania: pominięto {count} kart",
+        "other": "Nic nowego do zaimportowania: pominięto {count} kart"
       }
     },
     "errors": {
@@ -554,7 +554,7 @@ export default {
       "optionalLanguage": "Dodatkowy język musi różnić się od źródłowego i języka tłumaczenia.",
       "import": "Nie udało się zaimportować talii.",
       "pasteFirst": "Najpierw wklej JSON talii.",
-      "parse": "LioraLang nie potrafi odczytać tej talii. Sprawdź, czy JSON jest kompletny."
+      "parse": "Liora nie potrafi odczytać tej talii. Sprawdź, czy JSON jest kompletny."
     }
   },
   "deleteDeck": {
@@ -594,7 +594,7 @@ export default {
       "many": "{count} wyników",
       "other": "{count} wyników"
     },
-    "searchPlaceholder": "Słowo lub tłumaczenie",
+    "searchPlaceholder": "Szukaj pytań i odpowiedzi",
     "search": "Szukaj kart",
     "sortLabel": "Sortowanie kart",
     "clear": "Wyczyść filtry",
@@ -605,9 +605,9 @@ export default {
     "showFilters": "Pokaż filtry"
   },
   "wordsTable": {
-    "label": "Słowa",
-    "caption": "Słowa pasujące do filtrów",
-    "empty": "Nie znaleziono słów.",
+    "label": "Karty",
+    "caption": "Karty pasujące do filtrów",
+    "empty": "Nie znaleziono kart.",
     "tapHint": "Dotknij, aby rozwinąć"
   },
   "deck": {
@@ -617,27 +617,27 @@ export default {
     "exportShort": "Eksportuj",
     "addWords": "Dodaj słowa",
     "wordsCount": {
-      "one": "{count} słowo",
-      "few": "{count} słowa",
-      "many": "{count} słów",
-      "other": "{count} słowa"
+      "one": "{count} karta",
+      "few": "{count} karty",
+      "many": "{count} kart",
+      "other": "{count} karty"
     },
-    "emptyDeck": "Ta talia nie ma jeszcze słów.",
-    "emptyFilter": "Brak słów.",
+    "emptyDeck": "Ta talia nie ma jeszcze kart.",
+    "emptyFilter": "Brak kart.",
     "study": {
       "title": "Twoje postępy",
       "notStarted": "Nie uczyłeś się jeszcze tej talii",
       "newWaiting": {
-        "one": "{count} nowe słowo czeka",
-        "few": "{count} nowe słowa czekają",
-        "many": "{count} nowych słów czeka",
-        "other": "{count} nowe słowa czekają"
+        "one": "{count} nowa karta czeka",
+        "few": "{count} nowe karty czekają",
+        "many": "{count} nowych kart czeka",
+        "other": "{count} nowe karty czekają"
       },
       "due": {
-        "one": "{count} słowo do powtórki",
-        "few": "{count} słowa do powtórki",
-        "many": "{count} słów do powtórki",
-        "other": "{count} słowa do powtórki"
+        "one": "{count} karta do powtórki",
+        "few": "{count} karty do powtórki",
+        "many": "{count} kart do powtórki",
+        "other": "{count} karty do powtórki"
       },
       "caughtUp": "Teraz nie ma nic do powtórki",
       "nextReview": "Następna powtórka {when}",
@@ -651,7 +651,7 @@ export default {
       "recall": "{percent} zapamiętanych w ciągu 30 dni"
     },
     "filter": {
-      "label": "Pokaż słowa",
+      "label": "Pokaż karty",
       "all": "Wszystkie",
       "due": "Do powtórki",
       "known": "Zapamiętane"
@@ -890,7 +890,7 @@ export default {
         "other": "za {count} dni"
       },
       "title": "Dziś",
-      "noWords": "Brak słów",
+      "noWords": "Brak kart",
       "pickDeck": "Wybierz talię społeczności, aby zacząć naukę.",
       "browse": "Przeglądaj talie",
       "due": {
@@ -908,7 +908,7 @@ export default {
       "allIn": "Wszystkie w „{name}”.",
       "reviewNow": "Powtórz teraz",
       "caughtUp": "Wszystko zrobione",
-      "learnNew": "Ucz się nowych słów"
+      "learnNew": "Ucz się nowych kart"
     },
     "streak": {
       "reviewsToday": {
@@ -984,14 +984,14 @@ export default {
       "text": "Nie udało się odczytać historii nauki. Spróbuj za chwilę."
     },
     "words": {
-      "eyebrow": "Twoje słowa",
+      "eyebrow": "Twoje karty",
       "youKnow": {
-        "one": "słowo znasz",
-        "few": "słowa znasz",
-        "many": "słów znasz",
-        "other": "słów znasz"
+        "one": "kartę znasz",
+        "few": "karty znasz",
+        "many": "kart znasz",
+        "other": "kart znasz"
       },
-      "empty": "Dodaj talię, a poznane słowa będą liczone tutaj.",
+      "empty": "Dodaj talię, a poznane karty będą liczone tutaj.",
       "outOf": {
         "one": "Z {count} w twoich taliach.",
         "few": "Z {count} w twoich taliach.",
@@ -1004,9 +1004,9 @@ export default {
         "many": "{count} z nich jest w pamięci długotrwałej.",
         "other": "{count} z nich jest w pamięci długotrwałej."
       },
-      "longTermHint": "Słowo trafia do pamięci długotrwałej, gdy następna powtórka jest za trzy tygodnie.",
-      "byStage": "Twoje słowa według etapów: {summary}",
-      "note": "Znane słowa to świeże i długotrwałe: odpowiedziane poprawnie i niewymagające dziś powtórki."
+      "longTermHint": "Karta trafia do pamięci długotrwałej, gdy następna powtórka jest za trzy tygodnie.",
+      "byStage": "Twoje karty według etapów: {summary}",
+      "note": "Znane karty to świeże i długotrwałe: odpowiedziane poprawnie i niewymagające dziś powtórki."
     },
     "forecast": {
       "title": "Przed tobą",
@@ -1016,7 +1016,7 @@ export default {
         "many": "{count} powtórek w 2 tygodnie",
         "other": "{count} powtórek w 2 tygodnie"
       },
-      "empty": "Nic jeszcze nie zaplanowano. Poznane słowa będą tu wracać, coraz rzadziej, jeśli je pamiętasz.",
+      "empty": "Nic jeszcze nie zaplanowano. Poznane karty będą tu wracać, coraz rzadziej, jeśli je pamiętasz.",
       "label": {
         "one": "Powtórki na najbliższy {count} dzień. Strzałkami możesz przejść po dniach.",
         "few": "Powtórki na najbliższe {count} dni. Strzałkami możesz przejść po dniach.",
@@ -1061,7 +1061,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Nowa.",
     "progressLabel": "{title}: postęp",
-    "undatedNote": "Liczone z twoich słów w obecnym stanie, więc data to dzień, w którym to urządzenie pierwszy raz zobaczyło ją zdobytą.",
+    "undatedNote": "Liczone z twoich kart w obecnym stanie, więc data to dzień, w którym to urządzenie pierwszy raz zobaczyło ją zdobytą.",
     "earnedOn": "Zdobyta {date}",
     "earnedBy": "Zdobyta do {date}",
     "progress": {
@@ -1071,24 +1071,24 @@ export default {
       "other": "{progress} z {target} {unit}, zostało {count}"
     },
     "known": {
-      "title": "Słownictwo",
+      "title": "Wiedza",
       "unit": {
-        "one": "słowo",
-        "few": "słowa",
-        "many": "słów",
-        "other": "słów"
+        "one": "karta",
+        "few": "karty",
+        "many": "kart",
+        "other": "kart"
       },
       "goal": {
-        "one": "Znaj {count} słowo.",
-        "few": "Znaj {count} słowa.",
-        "many": "Znaj {count} słów.",
-        "other": "Znaj {count} słów."
+        "one": "Znaj {count} kartę.",
+        "few": "Znaj {count} karty.",
+        "many": "Znaj {count} kart.",
+        "other": "Znaj {count} kart."
       },
       "now": {
-        "one": "Teraz znasz {count} słowo",
-        "few": "Teraz znasz {count} słowa",
-        "many": "Teraz znasz {count} słów",
-        "other": "Teraz znasz {count} słów"
+        "one": "Teraz znasz {count} kartę",
+        "few": "Teraz znasz {count} karty",
+        "many": "Teraz znasz {count} kart",
+        "other": "Teraz znasz {count} kart"
       }
     },
     "streak": {
@@ -1115,22 +1115,22 @@ export default {
     "mature": {
       "title": "Pamięć długotrwała",
       "unit": {
-        "one": "słowo",
-        "few": "słowa",
-        "many": "słów",
-        "other": "słów"
+        "one": "karta",
+        "few": "karty",
+        "many": "kart",
+        "other": "kart"
       },
       "goal": {
-        "one": "Miej {count} słowo w pamięci długotrwałej, z powtórką za trzy tygodnie lub później.",
-        "few": "Miej {count} słowa w pamięci długotrwałej, z powtórką za trzy tygodnie lub później.",
-        "many": "Miej {count} słów w pamięci długotrwałej, z powtórką za trzy tygodnie lub później.",
-        "other": "Miej {count} słów w pamięci długotrwałej, z powtórką za trzy tygodnie lub później."
+        "one": "Znaj {count} kartę. Następna powtórka za co najmniej trzy tygodnie.",
+        "few": "Znaj {count} karty. Następna powtórka za co najmniej trzy tygodnie.",
+        "many": "Znaj {count} kart. Następna powtórka za co najmniej trzy tygodnie.",
+        "other": "Znaj {count} kart. Następna powtórka za co najmniej trzy tygodnie."
       },
       "now": {
-        "one": "{count} słowo w pamięci długotrwałej",
-        "few": "{count} słowa w pamięci długotrwałej",
-        "many": "{count} słów w pamięci długotrwałej",
-        "other": "{count} słów w pamięci długotrwałej"
+        "one": "{count} karta w pamięci długotrwałej",
+        "few": "{count} karty w pamięci długotrwałej",
+        "many": "{count} kart w pamięci długotrwałej",
+        "other": "{count} kart w pamięci długotrwałej"
       }
     },
     "days": {
@@ -1227,12 +1227,12 @@ export default {
         "many": "talii",
         "other": "talii"
       },
-      "goalFirst": "Znaj każde słowo w talii liczącej co najmniej {min} słów.",
+      "goalFirst": "Znać wszystkie karty talii zawierającej co najmniej {min} kart.",
       "goal": {
-        "one": "Znaj każde słowo w {count} talii liczącej co najmniej {min} słów.",
-        "few": "Znaj każde słowo w {count} taliach liczących co najmniej {min} słów.",
-        "many": "Znaj każde słowo w {count} taliach liczących co najmniej {min} słów.",
-        "other": "Znaj każde słowo w {count} taliach liczących co najmniej {min} słów."
+        "one": "Opanować {count} talię zawierającą co najmniej {min} kart.",
+        "few": "Opanować {count} talie zawierające po co najmniej {min} kart.",
+        "many": "Opanować {count} talii zawierających po co najmniej {min} kart.",
+        "other": "Opanować {count} talii zawierających po co najmniej {min} kart."
       },
       "now": {
         "one": "{count} talia opanowana w całości",
@@ -1281,7 +1281,7 @@ export default {
       "back": "Wróć do logowania"
     },
     "providersLabel": "Zaloguj się przez usługę",
-    "desktopProvidersNote": "Logowanie otworzy się w przeglądarce. Gdy skończysz, wróć do LioraLang.",
+    "desktopProvidersNote": "Logowanie otworzy się w przeglądarce. Gdy skończysz, wróć do Liora.",
     "hub": {
       "loading": "Ładujemy twoje talie w hubie…",
       "emptyTitle": "Nic jeszcze nie opublikowano.",
@@ -1343,10 +1343,10 @@ export default {
       "browser": "W przeglądarce",
       "yourName": "Twoje imię",
       "wordsKnown": {
-        "one": "znane słowo",
-        "few": "znane słowa",
-        "many": "znanych słów",
-        "other": "znanych słów"
+        "one": "znana karta",
+        "few": "znane karty",
+        "many": "znanych kart",
+        "other": "znanych kart"
       },
       "dayStreak": {
         "one": "dzień z rzędu",
@@ -1482,7 +1482,7 @@ export default {
       "thisDevice": "To urządzenie",
       "forget": "Usuń",
       "forgetNamed": "Usuń {name}",
-      "app": "Aplikacja LioraLang",
+      "app": "Aplikacja Liora",
       "browser": "Przeglądarka",
       "activeNow": "Aktywne teraz",
       "active": "Aktywne {time}",
@@ -1587,19 +1587,19 @@ export default {
     "repeatMissedCardsSooner": "Szybciej powtarzaj zapomniane karty",
     "againBringsTheCardBack": "„Znowu” przywraca kartę po minucie, z przerwą na sprawdzenie pamięci.",
     "spacedRepetition": "Powtórki rozłożone w czasie",
-    "howOftenWordsComeBack": "Jak często wracają słowa. Domyślne wartości pasują większości osób.",
+    "howOftenWordsComeBack": "Jak często wracają karty. Domyślne wartości pasują większości osób.",
     "recommendedSchedule": "Zalecany harmonogram",
     "useTheCurrentDefaultsFor": "Użyj obecnych wartości domyślnych dla przyszłych odpowiedzi. Zapisane postępy i terminy zostaną nietknięte.",
-    "newWordsADay": "Nowe słowa dziennie",
-    "newWordsIntroducedPerDeck": "Nowe słowa na talię każdego dnia. Ustaw 0, aby skupić się na powtórkach.",
+    "newWordsADay": "Nowe karty dziennie",
+    "newWordsIntroducedPerDeck": "Nowe karty na talię każdego dnia. Ustaw 0, aby skupić się na powtórkach.",
     "reviewsADay": "Powtórki dziennie",
     "distinctReviewCardsPerDeck": "Różne karty do powtórki na talię każdego dnia. Kroki nauki trwają zawsze.",
     "learningSteps": "Kroki nauki",
     "default10mAgainWaits10": "Domyślnie: 10m. „Znowu” czeka 10 minut, „Trudne” 1 dzień, „Dobrze” 3 dni, „Łatwe” 16 dni. Dodaj kroki po przecinku, żeby ćwiczyć więcej.",
     "desiredRetention": "Cel zapamiętywania",
-    "desiredRetentionHint": "Jaką część słów masz jeszcze pamiętać, gdy wracają. Wyżej to więcej powtórek i mniej zapomnianych słów; 90% to dobra równowaga.",
+    "desiredRetentionHint": "Odsetek odpowiedzi, które chcesz pamiętać przy kolejnej powtórce. Wyższa wartość oznacza więcej powtórek; 90% to dobry kompromis.",
     "maximumInterval": "Najdłuższa przerwa",
-    "maximumIntervalHint": "Żadne słowo nie czeka na powtórkę dłużej niż tyle.",
+    "maximumIntervalHint": "Najdłuższa przerwa między powtórkami jednej karty.",
     "noLimit": "Bez limitu",
     "wordsIn": "Słowa w języku",
     "translatedTo": "Tłumaczone na",
@@ -1628,7 +1628,7 @@ export default {
     "developerMode": "Tryb programisty",
     "logLevel": "Poziom dziennika",
     "importAndExportFiles": "Import i eksport plików",
-    "whenAWordIsAlready": "Gdy słowo już jest w talii",
+    "whenAWordIsAlready": "Gdy karta już jest w talii",
     "exportAs": "Eksportuj jako",
     "includeExamples": "Dołącz przykłady",
     "includeTags": "Dołącz tagi",
@@ -1676,7 +1676,7 @@ export default {
       },
       "learning-core": {
         "title": "Nauka",
-        "description": "Sesje i to, jak często wracają słowa."
+        "description": "Sesje i odstępy między powtórkami."
       },
       "deck-defaults": {
         "title": "Nowe talie",
@@ -1747,7 +1747,7 @@ export default {
     "importFile": "Importuj plik talii",
     "importFileHint": "Plik .lioradeck lub .json.",
     "chooseFile": "Wybierz plik",
-    "pasteHint": "Wklej słowa jako tekst JSON.",
+    "pasteHint": "Wklej talię lub karty jako tekst JSON.",
     "pasteJson": "Wklej JSON",
     "database": "Baza danych",
     "location": "Lokalizacja",
@@ -1906,9 +1906,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Zalogowano",
-      "doneText": "Możesz zamknąć tę kartę i wrócić do LioraLang.",
+      "doneText": "Możesz zamknąć tę kartę i wrócić do Liora.",
       "failedTitle": "Logowanie nie zostało dokończone",
-      "failedText": "Wróć do LioraLang i spróbuj ponownie."
+      "failedText": "Wróć do Liora i spróbuj ponownie."
     },
     "menu": {
       "about": "O {app}",
@@ -1941,20 +1941,20 @@ export default {
       "view": "Widok",
       "window": "Okno",
       "help": "Pomoc",
-      "github": "LioraLang na GitHubie"
+      "github": "Liora na GitHubie"
     },
     "tray": {
-      "show": "Pokaż LioraLang",
+      "show": "Pokaż Liora",
       "quit": "Zakończ"
     },
     "dialogs": {
       "chooseDbFolder": "Wybierz folder bazy danych",
       "jsonFiles": "Pliki JSON",
-      "deckPackages": "Talie LioraLang",
+      "deckPackages": "Talie Liora",
       "exportDeck": "Eksportuj talię",
       "importDeck": "Importuj plik talii",
       "deckFiles": "Pliki talii",
-      "legacyPackages": "Starsze talie LioraLang"
+      "legacyPackages": "Starsze talie Liora"
     }
   },
   "quickAdd": {
@@ -2005,7 +2005,7 @@ export default {
       "other": "Usunięto {count} fiszek"
     },
     "doneLabel": "Gotowe",
-    "unsaved": "Część słów nie została jeszcze dodana.",
+    "unsaved": "Część kart nie została jeszcze dodana.",
     "keepEditing": "Wróć do edycji",
     "discard": "Nie dodawaj",
     "errors": {

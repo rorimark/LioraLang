@@ -150,7 +150,7 @@ export default {
     "signIn": "Iniciar sesión",
     "signInOrUp": "Inicia sesión o crea una cuenta",
     "primary": "Navegación principal",
-    "brandToLearn": "LioraLang, ir a Aprender"
+    "brandToLearn": "Liora, ir a Aprender"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Mazo",
-      "subtitle": "Las palabras de un mazo, con filtros y búsqueda."
+      "subtitle": "Explora, filtra y repasa las tarjetas de un mazo."
     },
     "deckEdit": {
       "title": "Editor de mazos",
-      "subtitle": "Idiomas del mazo, palabras nuevas y cambios."
+      "subtitle": "Elige materia, contexto y añade tarjetas."
     },
     "progress": {
       "title": "Progreso",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Sesiones de estudio, la aplicación y tus datos."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Palabras que se quedan."
+      "title": "Liora",
+      "subtitle": "Recuerda lo que estudias."
     }
   },
   "titleBar": {
@@ -407,14 +407,14 @@ export default {
     "status": {
       "exportedEmpty": "«{name}» exportado como mazo vacío",
       "exportedNoPath": {
-        "one": "«{name}» exportado: {count} palabra (ubicación del archivo desconocida)",
-        "other": "«{name}» exportado: {count} palabras (ubicación del archivo desconocida)",
-        "many": "«{name}» exportado: {count} palabras (ubicación del archivo desconocida)"
+        "one": "«{name}» exportado: {count} tarjeta (ubicación del archivo desconocida)",
+        "other": "«{name}» exportado: {count} tarjetas (ubicación del archivo desconocida)",
+        "many": "«{name}» exportado: {count} tarjetas (ubicación del archivo desconocida)"
       },
       "exported": {
-        "one": "«{name}» exportado: {count} palabra",
-        "other": "«{name}» exportado: {count} palabras",
-        "many": "«{name}» exportado: {count} palabras"
+        "one": "«{name}» exportado: {count} tarjeta",
+        "other": "«{name}» exportado: {count} tarjetas",
+        "many": "«{name}» exportado: {count} tarjetas"
       },
       "publishUpToDate": {
         "one": "«{name}» ya está actualizado en el hub (v{version}, {count} palabra)",
@@ -438,7 +438,7 @@ export default {
       "delete": "No se ha podido eliminar el mazo.",
       "notFound": "Este mazo ya no existe.",
       "load": "No se han podido cargar tus mazos.",
-      "loadWords": "No se han podido cargar las palabras de este mazo."
+      "loadWords": "No se han podido cargar las tarjetas de este mazo."
     },
     "table": {
       "label": "Mazos",
@@ -459,31 +459,31 @@ export default {
     "newDeck": "Nuevo mazo",
     "newMenu": {
       "empty": "Mazo vacío",
-      "emptyHint": "Ponle nombre y añade palabras tú.",
+      "emptyHint": "Elige una materia y añade tus propias tarjetas.",
       "file": "Desde un archivo",
       "fileHint": ".lioradeck, .lioralang o .json",
       "json": "Desde JSON",
-      "jsonHint": "Pega un mazo o una lista de palabras.",
+      "jsonHint": "Pega un mazo o una lista de tarjetas.",
       "ai": "Crear un mazo con IA",
-      "aiHint": "Indica un tema y un nivel, luego revisa las palabras"
+      "aiHint": "Elige materia y tema y revisa los borradores."
     },
     "row": {
       "learned": "Aprendidas",
       "review": "Hoy",
       "done": "Todo repasado",
-      "empty": "Aún sin palabras",
+      "empty": "Aún sin tarjetas",
       "learn": "Aprender",
       "learnNamed": "Aprender {name}",
-      "learnedOf": "{known} de {words} palabras aprendidas",
+      "learnedOf": "{known} de {words} tarjetas aprendidas",
       "due": {
         "one": "{count} por repasar",
         "many": "{count} por repasar",
         "other": "{count} por repasar"
       },
       "new": {
-        "one": "{count} palabra nueva",
-        "many": "{count} palabras nuevas",
-        "other": "{count} palabras nuevas"
+        "one": "{count} tarjeta nueva",
+        "many": "{count} tarjetas nuevas",
+        "other": "{count} tarjetas nuevas"
       }
     }
   },
@@ -491,13 +491,13 @@ export default {
     "importedDeck": "Mazo importado",
     "deckNameOptional": "Nombre del mazo (opcional)",
     "json": {
-      "description": "Pega un paquete de mazo (.lioradeck o .lioralang) o una lista simple de palabras, en JSON.",
+      "description": "Pega un mazo o una lista de tarjetas. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Déjalo vacío para usar el nombre del JSON",
       "label": "JSON del mazo",
       "placeholder": "Pega aquí el JSON del mazo"
     },
     "file": {
-      "description": "Abre archivos .lioradeck, .lioralang y .json. Revisa los detalles y los idiomas, y luego importa.",
+      "description": "Elige un archivo de mazo y revisa su contenido antes de importarlo. (.lioradeck, .lioralang, .json)",
       "confirm": "Importar",
       "namePlaceholder": "Déjalo vacío para usar el nombre del archivo",
       "detected": "Idiomas del archivo:",
@@ -508,9 +508,9 @@ export default {
       "optional": "Idioma adicional",
       "selected": "Archivo elegido: {name}",
       "wordsInFile": {
-        "one": "{count} palabra en el archivo",
-        "other": "{count} palabras en el archivo",
-        "many": "{count} palabras en el archivo"
+        "one": "{count} tarjeta en el archivo",
+        "other": "{count} tarjetas en el archivo",
+        "many": "{count} tarjetas en el archivo"
       },
       "savedAs": "Se guardará como: {name}",
       "nameFromPackage": "el nombre del archivo"
@@ -524,15 +524,15 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "«{name}» importado: {count} palabra",
-        "other": "«{name}» importado: {count} palabras",
-        "many": "«{name}» importado: {count} palabras"
+        "one": "«{name}» importado: {count} tarjeta",
+        "other": "«{name}» importado: {count} tarjetas",
+        "many": "«{name}» importado: {count} tarjetas"
       },
       "importedWithSkipped": "«{name}» importado: {added} añadidas, {skipped} omitidas",
       "nothingNew": {
-        "one": "Nada nuevo que importar: {count} palabra omitida",
-        "other": "Nada nuevo que importar: {count} palabras omitidas",
-        "many": "Nada nuevo que importar: {count} palabras omitidas"
+        "one": "Nada nuevo que importar: {count} tarjeta omitida",
+        "other": "Nada nuevo que importar: {count} tarjetas omitidas",
+        "many": "Nada nuevo que importar: {count} tarjetas omitidas"
       }
     },
     "errors": {
@@ -544,7 +544,7 @@ export default {
       "optionalLanguage": "El idioma adicional debe ser distinto de los de origen y destino.",
       "import": "No se ha podido importar el mazo.",
       "pasteFirst": "Pega primero el JSON del mazo.",
-      "parse": "LioraLang no puede leer este mazo. Comprueba que el JSON esté completo."
+      "parse": "Liora no puede leer este mazo. Comprueba que el JSON esté completo."
     }
   },
   "deleteDeck": {
@@ -583,7 +583,7 @@ export default {
       "other": "{count} resultados",
       "many": "{count} resultados"
     },
-    "searchPlaceholder": "Busca una palabra o traducción",
+    "searchPlaceholder": "Buscar preguntas y respuestas",
     "search": "Buscar tarjetas",
     "sortLabel": "Ordenar tarjetas",
     "clear": "Quitar filtros",
@@ -594,9 +594,9 @@ export default {
     "showFilters": "Mostrar filtros"
   },
   "wordsTable": {
-    "label": "Palabras",
-    "caption": "Palabras que coinciden con los filtros",
-    "empty": "No se han encontrado palabras.",
+    "label": "Tarjetas",
+    "caption": "Tarjetas que coinciden con los filtros",
+    "empty": "No se han encontrado tarjetas.",
     "tapHint": "Toca para ampliar"
   },
   "deck": {
@@ -606,24 +606,24 @@ export default {
     "exportShort": "Exportar",
     "addWords": "Añadir palabras",
     "wordsCount": {
-      "one": "{count} palabra",
-      "many": "{count} palabras",
-      "other": "{count} palabras"
+      "one": "{count} tarjeta",
+      "many": "{count} tarjetas",
+      "other": "{count} tarjetas"
     },
-    "emptyDeck": "Este mazo aún no tiene palabras.",
-    "emptyFilter": "No hay palabras aquí.",
+    "emptyDeck": "Este mazo aún no tiene tarjetas.",
+    "emptyFilter": "No hay tarjetas aquí.",
     "study": {
       "title": "Tu progreso",
       "notStarted": "Todavía no has estudiado este mazo",
       "newWaiting": {
-        "one": "{count} palabra nueva para empezar",
-        "many": "{count} palabras nuevas para empezar",
-        "other": "{count} palabras nuevas para empezar"
+        "one": "{count} tarjeta nueva para empezar",
+        "many": "{count} tarjetas nuevas para empezar",
+        "other": "{count} tarjetas nuevas para empezar"
       },
       "due": {
-        "one": "{count} palabra para repasar ahora",
-        "many": "{count} palabras para repasar ahora",
-        "other": "{count} palabras para repasar ahora"
+        "one": "{count} tarjeta para repasar ahora",
+        "many": "{count} tarjetas para repasar ahora",
+        "other": "{count} tarjetas para repasar ahora"
       },
       "caughtUp": "Ahora no hay nada que repasar",
       "nextReview": "Próximo repaso {when}",
@@ -636,7 +636,7 @@ export default {
       "recall": "{percent} recordado en los últimos 30 días"
     },
     "filter": {
-      "label": "Mostrar palabras",
+      "label": "Mostrar tarjetas",
       "all": "Todas",
       "due": "Para repasar",
       "known": "Recordadas"
@@ -864,7 +864,7 @@ export default {
         "many": "dentro de {count} días"
       },
       "title": "Hoy",
-      "noWords": "Aún no hay palabras",
+      "noWords": "Aún no hay tarjetas",
       "pickDeck": "Elige un mazo de la comunidad para empezar a aprender.",
       "browse": "Explorar mazos",
       "due": {
@@ -880,7 +880,7 @@ export default {
       "allIn": "Todas en {name}.",
       "reviewNow": "Repasar ahora",
       "caughtUp": "Todo al día",
-      "learnNew": "Aprender palabras nuevas"
+      "learnNew": "Aprender tarjetas nuevas"
     },
     "streak": {
       "reviewsToday": {
@@ -949,13 +949,13 @@ export default {
       "text": "No se ha podido leer tu historial de estudio. Inténtalo de nuevo en un momento."
     },
     "words": {
-      "eyebrow": "Tus palabras",
+      "eyebrow": "Tus tarjetas",
       "youKnow": {
-        "one": "palabra que sabes",
-        "other": "palabras que sabes",
-        "many": "palabras que sabes"
+        "one": "tarjeta que sabes",
+        "other": "tarjetas que sabes",
+        "many": "tarjetas que sabes"
       },
-      "empty": "Añade un mazo y aquí se contarán las palabras que aprendas.",
+      "empty": "Añade un mazo y aquí se contarán las tarjetas que aprendas.",
       "outOf": {
         "one": "De {count} en tus mazos.",
         "other": "De {count} en tus mazos.",
@@ -966,9 +966,9 @@ export default {
         "other": "{count} de ellas están en la memoria a largo plazo.",
         "many": "{count} de ellas están en la memoria a largo plazo."
       },
-      "longTermHint": "Una palabra llega a la memoria a largo plazo cuando su próximo repaso está a tres semanas.",
-      "byStage": "Tus palabras por etapa: {summary}",
-      "note": "Las palabras sabidas son las recientes y las de largo plazo: respondidas bien y sin repaso pendiente hoy."
+      "longTermHint": "Una tarjeta llega a la memoria a largo plazo cuando su próximo repaso está a tres semanas.",
+      "byStage": "Tus tarjetas por etapa: {summary}",
+      "note": "Las tarjetas sabidas son las recientes y las de largo plazo: respondidas bien y sin repaso pendiente hoy."
     },
     "forecast": {
       "title": "Próximamente",
@@ -977,7 +977,7 @@ export default {
         "other": "{count} repasos en 2 semanas",
         "many": "{count} repasos en 2 semanas"
       },
-      "empty": "Aún no hay nada programado. Las palabras que estudies volverán aquí, cada vez más espaciadas si las recuerdas.",
+      "empty": "Aún no hay nada programado. Las tarjetas que estudies volverán aquí, cada vez más espaciadas si las recuerdas.",
       "label": {
         "one": "Repasos pendientes en el próximo {count} día. Usa las flechas para recorrer cada día.",
         "other": "Repasos pendientes en los próximos {count} días. Usa las flechas para recorrer cada día.",
@@ -1018,7 +1018,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Nueva.",
     "progressLabel": "{title}: progreso",
-    "undatedNote": "Se cuenta con tus palabras tal como están, así que la fecha es el día en que este dispositivo la vio ganada por primera vez.",
+    "undatedNote": "Se cuenta con tus tarjetas tal como están, así que la fecha es el día en que este dispositivo la vio ganada por primera vez.",
     "earnedOn": "Ganada el {date}",
     "earnedBy": "Ganada antes del {date}",
     "progress": {
@@ -1027,21 +1027,21 @@ export default {
       "many": "{progress} de {target} {unit}, faltan {count}"
     },
     "known": {
-      "title": "Vocabulario",
+      "title": "Conocimientos",
       "unit": {
-        "one": "palabra",
-        "other": "palabras",
-        "many": "palabras"
+        "one": "tarjeta",
+        "other": "tarjetas",
+        "many": "tarjetas"
       },
       "goal": {
-        "one": "Saber {count} palabra.",
-        "other": "Saber {count} palabras.",
-        "many": "Saber {count} palabras."
+        "one": "Saber {count} tarjeta.",
+        "other": "Saber {count} tarjetas.",
+        "many": "Saber {count} tarjetas."
       },
       "now": {
-        "one": "{count} palabra sabida ahora",
-        "other": "{count} palabras sabidas ahora",
-        "many": "{count} palabras sabidas ahora"
+        "one": "{count} tarjeta sabida ahora",
+        "other": "{count} tarjetas sabidas ahora",
+        "many": "{count} tarjetas sabidas ahora"
       }
     },
     "streak": {
@@ -1065,19 +1065,19 @@ export default {
     "mature": {
       "title": "Memoria a largo plazo",
       "unit": {
-        "one": "palabra",
-        "other": "palabras",
-        "many": "palabras"
+        "one": "tarjeta",
+        "other": "tarjetas",
+        "many": "tarjetas"
       },
       "goal": {
-        "one": "Tener {count} palabra en la memoria a largo plazo, con su próximo repaso a tres semanas o más.",
-        "other": "Tener {count} palabras en la memoria a largo plazo, con su próximo repaso a tres semanas o más.",
-        "many": "Tener {count} palabras en la memoria a largo plazo, con su próximo repaso a tres semanas o más."
+        "one": "Saber {count} tarjeta. El siguiente repaso está a tres semanas o más.",
+        "other": "Saber {count} tarjetas. El siguiente repaso está a tres semanas o más.",
+        "many": "Saber {count} tarjetas. El siguiente repaso está a tres semanas o más."
       },
       "now": {
-        "one": "{count} palabra en la memoria a largo plazo",
-        "other": "{count} palabras en la memoria a largo plazo",
-        "many": "{count} palabras en la memoria a largo plazo"
+        "one": "{count} tarjeta en la memoria a largo plazo",
+        "other": "{count} tarjetas en la memoria a largo plazo",
+        "many": "{count} tarjetas en la memoria a largo plazo"
       }
     },
     "days": {
@@ -1161,11 +1161,11 @@ export default {
         "other": "mazos",
         "many": "mazos"
       },
-      "goalFirst": "Saber todas las palabras de un mazo de {min} palabras o más.",
+      "goalFirst": "Conocer todas las tarjetas de un mazo de al menos {min} tarjetas.",
       "goal": {
-        "one": "Saber todas las palabras de {count} mazo de {min} palabras o más.",
-        "other": "Saber todas las palabras de {count} mazos de {min} palabras o más.",
-        "many": "Saber todas las palabras de {count} mazos de {min} palabras o más."
+        "one": "Conocer todas las tarjetas de {count} mazo de al menos {min} tarjetas.",
+        "other": "Conocer todas las tarjetas de {count} mazos de al menos {min} tarjetas cada uno.",
+        "many": "Conocer todas las tarjetas de {count} mazos de al menos {min} tarjetas cada uno."
       },
       "now": {
         "one": "{count} mazo sabido por completo",
@@ -1212,7 +1212,7 @@ export default {
       "back": "Volver a iniciar sesión"
     },
     "providersLabel": "Iniciar sesión con un servicio",
-    "desktopProvidersNote": "El inicio de sesión se abre en el navegador. Cuando termines, vuelve a LioraLang.",
+    "desktopProvidersNote": "El inicio de sesión se abre en el navegador. Cuando termines, vuelve a Liora.",
     "hub": {
       "loading": "Cargando tus mazos del hub…",
       "emptyTitle": "Aún no has publicado nada.",
@@ -1272,9 +1272,9 @@ export default {
       "browser": "En el navegador",
       "yourName": "Tu nombre",
       "wordsKnown": {
-        "one": "palabra sabida",
-        "other": "palabras sabidas",
-        "many": "palabras sabidas"
+        "one": "tarjeta sabida",
+        "other": "tarjetas sabidas",
+        "many": "tarjetas sabidas"
       },
       "dayStreak": {
         "one": "día seguido",
@@ -1382,7 +1382,7 @@ export default {
       "missing_email": "Escribe tu correo.",
       "missing_password": "Escribe una contraseña.",
       "social_desktop_unavailable": "Para entrar con Google y GitHub necesitas una versión más reciente de la aplicación. Por ahora usa correo y contraseña.",
-      "social_port_busy": "Otro inicio de sesión está usando la conexión que necesita LioraLang. Ciérralo e inténtalo de nuevo.",
+      "social_port_busy": "Otro inicio de sesión está usando la conexión que necesita Liora. Ciérralo e inténtalo de nuevo.",
       "social_timeout": "El inicio de sesión tardó demasiado. Inténtalo de nuevo.",
       "social_cancelled": "Inicio de sesión cancelado.",
       "social_failed": "El inicio de sesión no terminó. Inténtalo de nuevo."
@@ -1406,7 +1406,7 @@ export default {
       "thisDevice": "Este dispositivo",
       "forget": "Quitar",
       "forgetNamed": "Quitar {name}",
-      "app": "App LioraLang",
+      "app": "App Liora",
       "browser": "Navegador",
       "activeNow": "Activo ahora",
       "active": "Activo {time}",
@@ -1508,19 +1508,19 @@ export default {
     "repeatMissedCardsSooner": "Repetir antes las tarjetas falladas",
     "againBringsTheCardBack": "«Otra vez» devuelve la tarjeta al cabo de un minuto, con una pausa para poner a prueba la memoria.",
     "spacedRepetition": "Repetición espaciada",
-    "howOftenWordsComeBack": "Con qué frecuencia vuelven las palabras. Los valores por defecto sirven a la mayoría.",
+    "howOftenWordsComeBack": "Con qué frecuencia vuelven las tarjetas. Los valores predeterminados sirven para la mayoría.",
     "recommendedSchedule": "Calendario recomendado",
     "useTheCurrentDefaultsFor": "Usa los valores por defecto actuales para las próximas respuestas. Tu progreso y tus fechas se mantienen.",
-    "newWordsADay": "Palabras nuevas al día",
-    "newWordsIntroducedPerDeck": "Palabras nuevas por mazo cada día. Pon 0 para centrarte en los repasos.",
+    "newWordsADay": "Tarjetas nuevas al día",
+    "newWordsIntroducedPerDeck": "Tarjetas nuevas por mazo y día. Pon 0 para centrarte en los repasos.",
     "reviewsADay": "Repasos al día",
     "distinctReviewCardsPerDeck": "Tarjetas distintas de repaso por mazo cada día. Los pasos de aprendizaje siempre continúan.",
     "learningSteps": "Pasos de aprendizaje",
     "default10mAgainWaits10": "Por defecto: 10m. Otra vez espera 10 minutos, Difícil 1 día, Bien 3 días, Fácil 16 días. Añade pasos separados por comas para practicar más.",
     "desiredRetention": "Objetivo de memoria",
-    "desiredRetentionHint": "La parte de las palabras que deberías recordar cuando vuelven. Más alto significa más repasos y menos olvidos; 90 % es un buen equilibrio.",
+    "desiredRetentionHint": "La proporción de respuestas que quieres recordar en el siguiente repaso. Un valor mayor implica más repasos; el 90% es un buen equilibrio.",
     "maximumInterval": "Pausa más larga",
-    "maximumIntervalHint": "Ninguna palabra espera más que esto entre repasos.",
+    "maximumIntervalHint": "La pausa máxima entre repasos de una tarjeta.",
     "noLimit": "Sin límite",
     "wordsIn": "Palabras en",
     "translatedTo": "Traducidas al",
@@ -1549,7 +1549,7 @@ export default {
     "developerMode": "Modo desarrollador",
     "logLevel": "Nivel de registro",
     "importAndExportFiles": "Importar y exportar archivos",
-    "whenAWordIsAlready": "Si una palabra ya está en el mazo",
+    "whenAWordIsAlready": "Cuando una tarjeta ya está en el mazo",
     "exportAs": "Exportar como",
     "includeExamples": "Incluir ejemplos",
     "includeTags": "Incluir etiquetas",
@@ -1596,7 +1596,7 @@ export default {
       },
       "learning-core": {
         "title": "Aprendizaje",
-        "description": "Sesiones y con qué frecuencia vuelven las palabras."
+        "description": "Sesiones e intervalos de repaso."
       },
       "deck-defaults": {
         "title": "Mazos nuevos",
@@ -1667,7 +1667,7 @@ export default {
     "importFile": "Importar un archivo de mazo",
     "importFileHint": "Un archivo .lioradeck o .json.",
     "chooseFile": "Elegir archivo",
-    "pasteHint": "Pega las palabras como texto JSON.",
+    "pasteHint": "Pega un mazo o tarjetas como texto JSON.",
     "pasteJson": "Pegar JSON",
     "database": "Base de datos",
     "location": "Ubicación",
@@ -1823,9 +1823,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Has iniciado sesión",
-      "doneText": "Puedes cerrar esta pestaña y volver a LioraLang.",
+      "doneText": "Puedes cerrar esta pestaña y volver a Liora.",
       "failedTitle": "El inicio de sesión no terminó",
-      "failedText": "Vuelve a LioraLang e inténtalo de nuevo."
+      "failedText": "Vuelve a Liora e inténtalo de nuevo."
     },
     "menu": {
       "about": "Acerca de {app}",
@@ -1858,20 +1858,20 @@ export default {
       "view": "Ver",
       "window": "Ventana",
       "help": "Ayuda",
-      "github": "LioraLang en GitHub"
+      "github": "Liora en GitHub"
     },
     "tray": {
-      "show": "Mostrar LioraLang",
+      "show": "Mostrar Liora",
       "quit": "Salir"
     },
     "dialogs": {
       "chooseDbFolder": "Elige la carpeta de la base de datos",
       "jsonFiles": "Archivos JSON",
-      "deckPackages": "Mazos de LioraLang",
+      "deckPackages": "Mazos de Liora",
       "exportDeck": "Exportar mazo",
       "importDeck": "Importar archivo de mazo",
       "deckFiles": "Archivos de mazos",
-      "legacyPackages": "Mazos antiguos de LioraLang"
+      "legacyPackages": "Mazos antiguos de Liora"
     }
   },
   "quickAdd": {
@@ -1920,7 +1920,7 @@ export default {
       "other": "{count} tarjetas quitadas"
     },
     "doneLabel": "Listo",
-    "unsaved": "Algunas palabras aún no se han añadido.",
+    "unsaved": "Algunas tarjetas aún no se han añadido.",
     "keepEditing": "Seguir editando",
     "discard": "Descartarlas",
     "errors": {

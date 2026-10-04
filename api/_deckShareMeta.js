@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { buildBrowseDeckRoute, buildShareDeckRoute } from "../packages/shared/src/config/routes.js";
 
-export const APP_NAME = "LioraLang";
+export const APP_NAME = "Liora";
 
 export const toCleanString = (value) => {
   if (typeof value !== "string") {
@@ -116,7 +116,7 @@ export const buildFallbackDescription = (deck) => {
   }
 
   if (parts.length === 0) {
-    return "Open this public deck in LioraLang.";
+    return "Open this public deck in Liora.";
   }
 
   return `${parts.join(" • ")} on ${APP_NAME}.`;

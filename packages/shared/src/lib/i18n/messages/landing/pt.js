@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "LioraLang: app de flashcards grátis para aprender vocabulário com repetição espaçada",
-    "description": "Aprenda vocabulário com flashcards: a repetição espaçada (FSRS) revisa cada palavra na hora certa, a IA preenche os cartões, no navegador, computador e celular. Grátis."
+    "title": "Liora: cartões para idiomas, programação, matemática e história",
+    "description": "Lembre o que estuda com cartões por matéria, repetição espaçada e rascunhos de IA. Idiomas, programação, matemática e história no navegador, computador e celular."
   },
   "topbar": {
     "open": "Abrir o app web",
     "language": "Idioma"
   },
   "hero": {
-    "title": "O app de flashcards que sabe quando você vai **esquecer.**",
-    "text": "Avalie cada palavra, e o LioraLang a traz de volta logo antes de ela escapar. Grátis, e seus cartões ficam no seu dispositivo.",
+    "title": "Aprenda o que importa. **Lembre.**",
+    "text": "Idiomas, código, fórmulas ou história. Crie cartões, lembre a resposta e deixe os estudos planejarem quando voltar. Seu material fica no seu dispositivo.",
     "start": "Começar a aprender",
     "download": "Baixar para computador"
   },
@@ -22,32 +22,54 @@ export default {
   },
   "try": {
     "title": "Experimente agora mesmo.",
-    "text": "Seis palavras, uma revisão de verdade, sem cadastro."
+    "text": "Escolha uma matéria e tente uma revisão real. Sem conta."
   },
   "demo": {
-    "deckName": "Viagem e turismo",
+    "deckName": "Sua matéria. Seu jeito.",
     "doneTitle": "Muito bem.",
-    "doneText": "Cada palavra agora tem sua próxima revisão. No app, cada uma volta exatamente nesse dia.",
+    "doneText": "Cada cartão tem sua próxima revisão. No app, ele volta no momento marcado.",
     "answers": "Suas respostas",
     "backIn": "volta em {interval}",
     "again": "Estudar de novo",
     "reveal": "Mostrar resposta",
     "hintGrade": "Quão bem você sabia? O tempo mostra quando ela volta.",
-    "hintThink": "Pense na tradução e depois confira.",
+    "hintThink": "Lembre a resposta e depois confira.",
     "keysGrade": "{keys} avalia",
     "keysReveal": "{key} mostra a resposta",
-    "spaceKey": "Espaço"
+    "spaceKey": "Espaço",
+    "subject": "Sua matéria. Seu jeito.",
+    "samples": {
+      "programming": {
+        "question1": "O que este código retorna?",
+        "answer1": "Um novo array com valores dobrados: [2, 4, 6].",
+        "question2": "O que const protege?",
+        "answer2": "A variável não pode ser reatribuída. Propriedades de um objeto podem mudar."
+      },
+      "mathematics": {
+        "question1": "Resolva $x^2 = 4$.",
+        "answer1": "Duas soluções: $x = 2$ e $x = -2$.",
+        "question2": "Qual é a área de um círculo de raio $r$?",
+        "answer2": "$A = \\pi r^2$."
+      },
+      "history": {
+        "question1": "Quando a Bastilha foi tomada?",
+        "answer1": "Em 14 de julho de 1789.",
+        "question2": "O que a prensa de Gutenberg mudou na Europa?",
+        "answer2": "Facilitou reproduzir livros e espalhar conhecimento.",
+        "context": "Revolução Francesa"
+      }
+    }
   },
   "ai": {
-    "title": "Digite uma palavra. Receba o cartão inteiro.",
-    "text": "Tradução, exemplo, nível e tags aparecem enquanto você digita. Tab aceita tudo.",
+    "title": "De um tema ao seu baralho.",
+    "text": "Escolha matéria, contexto e idioma das respostas. A IA prepara cartões com código, fórmulas ou explicações. Revise e edite antes de salvar. Exige conta, internet e cota disponível.",
     "try": "Experimentar o assistente",
     "tag": "viagem",
-    "take": "aceitar tudo"
+    "take": "Preencher"
   },
   "memory": {
-    "title": "Aprenda uma vez. Lembre por meses.",
-    "text": "Responda “Bom” e uma palavra nova volta em {first}, depois em {second}, depois em {third}, e cada intervalo é maior que o anterior. {reviews} a levam por {span}, e as palavras que você já sabe param de lotar o seu dia.",
+    "title": "Revise na hora certa.",
+    "text": "Com Good, um novo cartão volta em {first}, depois {second}, depois {third}. Neste exemplo, {reviews} cobrem {span}. O calendário segue suas respostas para que material conhecido não ocupe todo o dia.",
     "reviews": {
       "one": "{count} revisão",
       "many": "{count} revisões",
@@ -68,26 +90,26 @@ export default {
       "many": "{count} anos",
       "other": "{count} anos"
     },
-    "chartLabel": "Dias entre as revisões de uma palavra",
+    "chartLabel": "Dias entre revisões de um cartão",
     "day": "dia {day}"
   },
   "decks": {
-    "title": "Suas palavras. Seus baralhos.",
-    "text": "Crie um baralho para qualquer par de idiomas, adicione níveis, tags e frases de exemplo e estude só o que você realmente precisa. Importe e exporte em JSON quando quiser.",
+    "title": "Seu material. Seus baralhos.",
+    "text": "Palavras e exemplos, perguntas e código, problemas e fórmulas, datas e contexto. Cada matéria tem campos e cartões próprios. Exporte .lioradeck para compartilhar ou guardar uma cópia.",
     "words": {
-      "one": "{count} palavra",
-      "many": "{count} palavras",
-      "other": "{count} palavras"
+      "one": "{count} cartão",
+      "many": "{count} cartões",
+      "other": "{count} cartões"
     },
     "examples": {
       "travel": "Viagem e turismo",
-      "falseFriends": "Falsos cognatos",
-      "business": "Negócios e startups"
+      "falseFriends": "JavaScript",
+      "business": "Matemática"
     }
   },
   "hub": {
     "title": "Alguém já fez esse baralho.",
-    "text": "O LioraLangHub está cheio de baralhos publicados por outros estudantes. Encontre um, importe com um clique e comece a revisar. Compartilhe os seus do mesmo jeito.",
+    "text": "Encontre baralhos de idiomas de outros estudantes e adicione com um clique. Programação, matemática e história podem ser compartilhadas por arquivos e sincronizadas em privado; o Hub público aceita hoje baralhos de idiomas.",
     "browse": "Explorar o hub",
     "import": "Importar",
     "inLibrary": "Na sua biblioteca"
@@ -128,24 +150,28 @@ export default {
     "title": "Perguntas",
     "items": {
       "free": {
-        "q": "O LioraLang é grátis?",
-        "a": "Sim, totalmente. Baralhos, revisões, sincronização e o app para computador não custam nada. O assistente de IA também é grátis com uma conta, até {count} sugestões por dia."
+        "q": "O Liora é grátis?",
+        "a": "Baralhos e revisões locais são grátis e sem conta. Sincronização e desktop também são grátis. A IA permite hoje {count} pedidos por conta por dia UTC, conforme a disponibilidade do fornecedor."
       },
       "why": {
-        "q": "Por que o LioraLang?",
-        "a": "Digite uma palavra e a Liora monta o cartão para você. Você escolhe o que importa; a Liora cuida da tradução, do nível, dos exemplos, das tags e do calendário de revisões."
+        "q": "Por que o Liora?",
+        "a": "Matérias diferentes em um lugar, com campos e cartões adequados. Você escolhe o conteúdo, revisa os rascunhos de IA e deixa a repetição planejar as revisões."
       },
       "srs": {
         "q": "O que é repetição espaçada?",
-        "a": "Você vê uma palavra logo antes de esquecê-la. Se sabe bem, ela volta bem depois. Se erra, ela volta logo."
+        "a": "Lembre e avalie a resposta. O que você sabe volta mais tarde; um cartão esquecido mais cedo. O mesmo calendário funciona para várias matérias."
       },
       "offline": {
         "q": "Funciona offline?",
-        "a": "Sim. Funciona sem internet e sincroniza assim que você volta a ficar online."
+        "a": "Cartões, edição e revisões locais funcionam offline. Abra o app web online primeiro para armazenar os arquivos. Sync, Hub e IA precisam de internet."
       },
       "languages": {
         "q": "Quais idiomas posso aprender?",
         "a": "Quaisquer dois destes: {languages}."
+      },
+      "subjects": {
+        "q": "O que posso estudar?",
+        "a": "Idiomas, programação, matemática e história têm campos e cartões próprios. O catálogo pode crescer; programação aceita qualquer tecnologia."
       }
     }
   },

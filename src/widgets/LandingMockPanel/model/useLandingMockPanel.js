@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { EXTERNAL_LINKS } from "@shared/config/externalLinks";
-import { LANGUAGE_OPTIONS } from "@shared/config/languages";
 import { buildLandingRoute, ROUTE_PATHS } from "@shared/config/routes";
 import {
   APP_PREFERENCES_APP_KEY,
@@ -12,14 +11,6 @@ import { usePlatformService } from "@shared/providers";
 import { READY_LOCALES, storeLocaleChoice, useI18n } from "@shared/lib/i18n";
 import { prefetchAppAssets } from "@shared/lib/pwa";
 
-// Every language a deck can use, straight from the app's own list, so the
-// landing never promises fewer or more than the deck editor offers.
-const LANGUAGE_TONES = ["blue", "red", "amber", "green"];
-const DECK_LANGUAGES = LANGUAGE_OPTIONS.map((name, index) => ({
-  name,
-  tone: LANGUAGE_TONES[index % LANGUAGE_TONES.length],
-}));
-
 const AUTHOR_URL = "https://mark-storchovyi.com";
 const AUTHOR_NAME = "Mark Storchovyi";
 // A deck from the hub, by the name its author gave it.
@@ -29,8 +20,8 @@ const HUB_EXAMPLE_DECK = "Game of Thrones B1–C2";
 // the page's language.
 const EXAMPLE_DECKS = [
   { key: "travel", pair: "EN · PL · RU", words: 200, tone: "blue" },
-  { key: "falseFriends", pair: "PL · UK", words: 250, tone: "green" },
-  { key: "business", pair: "DE · PL", words: 200, tone: "amber" },
+  { key: "falseFriends", pair: "JavaScript", words: 40, tone: "green" },
+  { key: "business", pair: "x² = 4", words: 30, tone: "amber" },
 ];
 
 // Each platform card leads somewhere: the web app, or the desktop download.
@@ -102,7 +93,6 @@ export const useLandingMockPanel = () => {
     locale,
     locales: READY_LOCALES,
     handleLanguageChange,
-    deckLanguages: DECK_LANGUAGES,
     exampleDecks: EXAMPLE_DECKS,
     authorUrl: AUTHOR_URL,
     authorName: AUTHOR_NAME,

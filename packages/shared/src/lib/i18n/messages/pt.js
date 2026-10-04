@@ -150,7 +150,7 @@ export default {
     "signIn": "Entrar",
     "signInOrUp": "Entre ou crie uma conta",
     "primary": "Navegação principal",
-    "brandToLearn": "LioraLang, ir para Estudar"
+    "brandToLearn": "Liora, ir para Estudar"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Baralho",
-      "subtitle": "As palavras de um baralho, com filtros e pesquisa."
+      "subtitle": "Explore, filtre e revise os cartões de um baralho."
     },
     "deckEdit": {
       "title": "Editor de baralho",
-      "subtitle": "Idiomas do baralho, palavras novas e ajustes."
+      "subtitle": "Escolha matéria, contexto e adicione cartões."
     },
     "progress": {
       "title": "Progresso",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Sessões de estudo, o app e seus dados."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Palavras que ficam."
+      "title": "Liora",
+      "subtitle": "Lembre o que você estuda."
     }
   },
   "titleBar": {
@@ -407,14 +407,14 @@ export default {
     "status": {
       "exportedEmpty": "“{name}” exportado como baralho vazio",
       "exportedNoPath": {
-        "one": "“{name}” exportado: {count} palavra (local do arquivo desconhecido)",
-        "other": "“{name}” exportado: {count} palavras (local do arquivo desconhecido)",
-        "many": "“{name}” exportado: {count} palavras (local do arquivo desconhecido)"
+        "one": "“{name}” exportado: {count} cartão (local do arquivo desconhecido)",
+        "other": "“{name}” exportado: {count} cartões (local do arquivo desconhecido)",
+        "many": "“{name}” exportado: {count} cartões (local do arquivo desconhecido)"
       },
       "exported": {
-        "one": "“{name}” exportado: {count} palavra",
-        "other": "“{name}” exportado: {count} palavras",
-        "many": "“{name}” exportado: {count} palavras"
+        "one": "“{name}” exportado: {count} cartão",
+        "other": "“{name}” exportado: {count} cartões",
+        "many": "“{name}” exportado: {count} cartões"
       },
       "publishUpToDate": {
         "one": "“{name}” já está atualizado no hub (v{version}, {count} palavra)",
@@ -438,7 +438,7 @@ export default {
       "delete": "Não foi possível excluir o baralho.",
       "notFound": "Este baralho não existe mais.",
       "load": "Não foi possível carregar seus baralhos.",
-      "loadWords": "Não foi possível carregar as palavras deste baralho."
+      "loadWords": "Não foi possível carregar os cartões deste baralho."
     },
     "table": {
       "label": "Baralhos",
@@ -459,31 +459,31 @@ export default {
     "newDeck": "Novo baralho",
     "newMenu": {
       "empty": "Baralho vazio",
-      "emptyHint": "Dê um nome e adicione as palavras você mesmo.",
+      "emptyHint": "Escolha uma matéria e adicione seus cartões.",
       "file": "De um arquivo",
       "fileHint": ".lioradeck, .lioralang ou .json",
       "json": "De JSON",
-      "jsonHint": "Cole um baralho ou uma lista de palavras.",
+      "jsonHint": "Cole um baralho ou uma lista de cartões.",
       "ai": "Montar um baralho com IA",
-      "aiHint": "Informe um tema e um nível e depois revise as palavras"
+      "aiHint": "Escolha matéria e tema, depois revise os rascunhos."
     },
     "row": {
       "learned": "Aprendidas",
       "review": "Hoje",
       "done": "Tudo revisado",
-      "empty": "Ainda sem palavras",
+      "empty": "Ainda sem cartões",
       "learn": "Estudar",
       "learnNamed": "Estudar {name}",
-      "learnedOf": "{known} de {words} palavras aprendidas",
+      "learnedOf": "{known} de {words} cartões aprendidos",
       "due": {
         "one": "{count} para revisar",
         "many": "{count} para revisar",
         "other": "{count} para revisar"
       },
       "new": {
-        "one": "{count} palavra nova",
-        "many": "{count} palavras novas",
-        "other": "{count} palavras novas"
+        "one": "{count} cartão novo",
+        "many": "{count} cartões novos",
+        "other": "{count} cartões novos"
       }
     }
   },
@@ -491,13 +491,13 @@ export default {
     "importedDeck": "Baralho importado",
     "deckNameOptional": "Nome do baralho (opcional)",
     "json": {
-      "description": "Cole um pacote de baralho (.lioradeck ou .lioralang) ou uma lista simples de palavras, em JSON.",
+      "description": "Cole um baralho ou uma lista de cartões. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Deixe vazio para usar o nome do JSON",
       "label": "JSON do baralho",
       "placeholder": "Cole aqui o JSON do baralho"
     },
     "file": {
-      "description": "Abre arquivos .lioradeck, .lioralang e .json. Confira os detalhes e os idiomas e depois importe.",
+      "description": "Escolha um arquivo de baralho e confira o conteúdo antes de importar. (.lioradeck, .lioralang, .json)",
       "confirm": "Importar",
       "namePlaceholder": "Deixe vazio para usar o nome do arquivo",
       "detected": "Idiomas no arquivo:",
@@ -508,9 +508,9 @@ export default {
       "optional": "Idioma adicional",
       "selected": "Arquivo escolhido: {name}",
       "wordsInFile": {
-        "one": "{count} palavra no arquivo",
-        "other": "{count} palavras no arquivo",
-        "many": "{count} palavras no arquivo"
+        "one": "{count} cartão no arquivo",
+        "other": "{count} cartões no arquivo",
+        "many": "{count} cartões no arquivo"
       },
       "savedAs": "Será salvo como: {name}",
       "nameFromPackage": "o nome do arquivo"
@@ -524,15 +524,15 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "“{name}” importado: {count} palavra",
-        "other": "“{name}” importado: {count} palavras",
-        "many": "“{name}” importado: {count} palavras"
+        "one": "“{name}” importado: {count} cartão",
+        "other": "“{name}” importado: {count} cartões",
+        "many": "“{name}” importado: {count} cartões"
       },
       "importedWithSkipped": "“{name}” importado: {added} adicionadas, {skipped} ignoradas",
       "nothingNew": {
-        "one": "Nada novo para importar: {count} palavra ignorada",
-        "other": "Nada novo para importar: {count} palavras ignoradas",
-        "many": "Nada novo para importar: {count} palavras ignoradas"
+        "one": "Nada novo para importar: {count} cartão ignorado",
+        "other": "Nada novo para importar: {count} cartões ignorados",
+        "many": "Nada novo para importar: {count} cartões ignorados"
       }
     },
     "errors": {
@@ -544,7 +544,7 @@ export default {
       "optionalLanguage": "O idioma adicional deve ser diferente dos idiomas de origem e destino.",
       "import": "Não foi possível importar o baralho.",
       "pasteFirst": "Cole primeiro o JSON do baralho.",
-      "parse": "O LioraLang não consegue ler este baralho. Verifique se o JSON está completo."
+      "parse": "O Liora não consegue ler este baralho. Verifique se o JSON está completo."
     }
   },
   "deleteDeck": {
@@ -583,7 +583,7 @@ export default {
       "other": "{count} resultados",
       "many": "{count} resultados"
     },
-    "searchPlaceholder": "Pesquise uma palavra ou tradução",
+    "searchPlaceholder": "Buscar perguntas e respostas",
     "search": "Pesquisar cartões",
     "sortLabel": "Ordenar cartões",
     "clear": "Limpar filtros",
@@ -594,9 +594,9 @@ export default {
     "showFilters": "Mostrar filtros"
   },
   "wordsTable": {
-    "label": "Palavras",
-    "caption": "Palavras que correspondem aos filtros",
-    "empty": "Nenhuma palavra encontrada.",
+    "label": "Cartões",
+    "caption": "Cartões que correspondem aos filtros",
+    "empty": "Nenhum cartão encontrado.",
     "tapHint": "Toque para expandir"
   },
   "deck": {
@@ -606,24 +606,24 @@ export default {
     "exportShort": "Exportar",
     "addWords": "Adicionar palavras",
     "wordsCount": {
-      "one": "{count} palavra",
-      "many": "{count} palavras",
-      "other": "{count} palavras"
+      "one": "{count} cartão",
+      "many": "{count} cartões",
+      "other": "{count} cartões"
     },
-    "emptyDeck": "Este baralho ainda não tem palavras.",
-    "emptyFilter": "Nenhuma palavra aqui.",
+    "emptyDeck": "Este baralho ainda não tem cartões.",
+    "emptyFilter": "Nenhum cartão aqui.",
     "study": {
       "title": "Seu progresso",
       "notStarted": "Você ainda não estudou este baralho",
       "newWaiting": {
-        "one": "{count} palavra nova para começar",
-        "many": "{count} palavras novas para começar",
-        "other": "{count} palavras novas para começar"
+        "one": "{count} cartão novo para começar",
+        "many": "{count} cartões novos para começar",
+        "other": "{count} cartões novos para começar"
       },
       "due": {
-        "one": "{count} palavra para revisar agora",
-        "many": "{count} palavras para revisar agora",
-        "other": "{count} palavras para revisar agora"
+        "one": "{count} cartão para revisar agora",
+        "many": "{count} cartões para revisar agora",
+        "other": "{count} cartões para revisar agora"
       },
       "caughtUp": "Nada para revisar agora",
       "nextReview": "Próxima revisão {when}",
@@ -636,7 +636,7 @@ export default {
       "recall": "{percent} lembrado nos últimos 30 dias"
     },
     "filter": {
-      "label": "Mostrar palavras",
+      "label": "Mostrar cartões",
       "all": "Todas",
       "due": "Para revisar",
       "known": "Lembradas"
@@ -864,7 +864,7 @@ export default {
         "many": "daqui a {count} dias"
       },
       "title": "Hoje",
-      "noWords": "Ainda sem palavras",
+      "noWords": "Ainda sem cartões",
       "pickDeck": "Escolha um baralho da comunidade para começar.",
       "browse": "Explorar baralhos",
       "due": {
@@ -880,7 +880,7 @@ export default {
       "allIn": "Todos em {name}.",
       "reviewNow": "Revisar agora",
       "caughtUp": "Tudo em dia",
-      "learnNew": "Aprender palavras novas"
+      "learnNew": "Aprender cartões novos"
     },
     "streak": {
       "reviewsToday": {
@@ -949,13 +949,13 @@ export default {
       "text": "Não foi possível ler seu histórico de estudo. Tente de novo daqui a pouco."
     },
     "words": {
-      "eyebrow": "Suas palavras",
+      "eyebrow": "Suos cartões",
       "youKnow": {
-        "one": "palavra que você sabe",
-        "other": "palavras que você sabe",
-        "many": "palavras que você sabe"
+        "one": "cartão que você sabe",
+        "other": "cartões que você sabe",
+        "many": "cartões que você sabe"
       },
-      "empty": "Adicione um baralho e as palavras que aprender serão contadas aqui.",
+      "empty": "Adicione um baralho e os cartões que aprender serão contados aqui.",
       "outOf": {
         "one": "De {count} nos seus baralhos.",
         "other": "De {count} nos seus baralhos.",
@@ -966,9 +966,9 @@ export default {
         "other": "{count} delas estão na memória de longo prazo.",
         "many": "{count} delas estão na memória de longo prazo."
       },
-      "longTermHint": "Uma palavra chega à memória de longo prazo quando a próxima revisão está a três semanas.",
-      "byStage": "Suas palavras por etapa: {summary}",
-      "note": "Palavras sabidas são as recentes e as de longo prazo: respondidas certo e sem revisão pendente hoje."
+      "longTermHint": "Um cartão chega à memória de longo prazo quando a próxima revisão está a três semanas.",
+      "byStage": "Suos cartões por etapa: {summary}",
+      "note": "Os cartões conhecidos são os recentes e os de longo prazo: respondidos corretamente e sem revisão pendente hoje."
     },
     "forecast": {
       "title": "Em breve",
@@ -977,7 +977,7 @@ export default {
         "other": "{count} revisões em 2 semanas",
         "many": "{count} revisões em 2 semanas"
       },
-      "empty": "Nada agendado ainda. As palavras que você estuda voltam aqui, cada vez mais espaçadas quando você lembra.",
+      "empty": "Nada agendado ainda. Os cartões que você estuda voltam aqui, cada vez mais espaçados quando você lembra.",
       "label": {
         "one": "Revisões previstas para o próximo {count} dia. Use as setas para ler cada dia.",
         "other": "Revisões previstas para os próximos {count} dias. Use as setas para ler cada dia.",
@@ -1018,7 +1018,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Novo.",
     "progressLabel": "{title}: progresso",
-    "undatedNote": "Contado pelas suas palavras como estão agora, então a data é o dia em que este dispositivo o viu ganho pela primeira vez.",
+    "undatedNote": "Contado pelas suos cartões como estão agora, então a data é o dia em que este dispositivo o viu ganho pela primeira vez.",
     "earnedOn": "Ganho em {date}",
     "earnedBy": "Ganho até {date}",
     "progress": {
@@ -1027,21 +1027,21 @@ export default {
       "many": "{progress} de {target} {unit}, faltam {count}"
     },
     "known": {
-      "title": "Vocabulário",
+      "title": "Conhecimento",
       "unit": {
-        "one": "palavra",
-        "other": "palavras",
-        "many": "palavras"
+        "one": "cartão",
+        "other": "cartões",
+        "many": "cartões"
       },
       "goal": {
-        "one": "Saber {count} palavra.",
-        "other": "Saber {count} palavras.",
-        "many": "Saber {count} palavras."
+        "one": "Saber {count} cartão.",
+        "other": "Saber {count} cartões.",
+        "many": "Saber {count} cartões."
       },
       "now": {
-        "one": "{count} palavra sabida agora",
-        "other": "{count} palavras sabidas agora",
-        "many": "{count} palavras sabidas agora"
+        "one": "{count} cartão conhecido agora",
+        "other": "{count} cartões conhecidos agora",
+        "many": "{count} cartões conhecidos agora"
       }
     },
     "streak": {
@@ -1065,19 +1065,19 @@ export default {
     "mature": {
       "title": "Memória de longo prazo",
       "unit": {
-        "one": "palavra",
-        "other": "palavras",
-        "many": "palavras"
+        "one": "cartão",
+        "other": "cartões",
+        "many": "cartões"
       },
       "goal": {
-        "one": "Ter {count} palavra na memória de longo prazo, com a próxima revisão a três semanas ou mais.",
-        "other": "Ter {count} palavras na memória de longo prazo, com a próxima revisão a três semanas ou mais.",
-        "many": "Ter {count} palavras na memória de longo prazo, com a próxima revisão a três semanas ou mais."
+        "one": "Saber {count} cartão. A próxima revisão será daqui a pelo menos três semanas.",
+        "other": "Saber {count} cartões. A próxima revisão será daqui a pelo menos três semanas.",
+        "many": "Saber {count} cartões. A próxima revisão será daqui a pelo menos três semanas."
       },
       "now": {
-        "one": "{count} palavra na memória de longo prazo",
-        "other": "{count} palavras na memória de longo prazo",
-        "many": "{count} palavras na memória de longo prazo"
+        "one": "{count} cartão na memória de longo prazo",
+        "other": "{count} cartões na memória de longo prazo",
+        "many": "{count} cartões na memória de longo prazo"
       }
     },
     "days": {
@@ -1161,11 +1161,11 @@ export default {
         "other": "baralhos",
         "many": "baralhos"
       },
-      "goalFirst": "Saber todas as palavras de um baralho de {min} palavras ou mais.",
+      "goalFirst": "Conhecer todos os cartões de um baralho com pelo menos {min} cartões.",
       "goal": {
-        "one": "Saber todas as palavras de {count} baralho de {min} palavras ou mais.",
-        "other": "Saber todas as palavras de {count} baralhos de {min} palavras ou mais.",
-        "many": "Saber todas as palavras de {count} baralhos de {min} palavras ou mais."
+        "one": "Conhecer todos os cartões de {count} baralho com pelo menos {min} cartões.",
+        "other": "Conhecer todos os cartões de {count} baralhos com pelo menos {min} cartões cada.",
+        "many": "Conhecer todos os cartões de {count} baralhos com pelo menos {min} cartões cada."
       },
       "now": {
         "one": "{count} baralho sabido por completo",
@@ -1212,7 +1212,7 @@ export default {
       "back": "Voltar para entrar"
     },
     "providersLabel": "Entrar com um serviço",
-    "desktopProvidersNote": "O login abre no seu navegador. Quando terminar, volte ao LioraLang.",
+    "desktopProvidersNote": "O login abre no seu navegador. Quando terminar, volte ao Liora.",
     "hub": {
       "loading": "Carregando seus baralhos no hub…",
       "emptyTitle": "Nada publicado ainda.",
@@ -1272,9 +1272,9 @@ export default {
       "browser": "No navegador",
       "yourName": "Seu nome",
       "wordsKnown": {
-        "one": "palavra sabida",
-        "other": "palavras sabidas",
-        "many": "palavras sabidas"
+        "one": "cartão conhecido",
+        "other": "cartões conhecidos",
+        "many": "cartões conhecidos"
       },
       "dayStreak": {
         "one": "dia seguido",
@@ -1382,7 +1382,7 @@ export default {
       "missing_email": "Digite seu e-mail.",
       "missing_password": "Digite uma senha.",
       "social_desktop_unavailable": "Para entrar com Google e GitHub é preciso uma versão mais recente do app. Por enquanto, use e-mail e senha.",
-      "social_port_busy": "Outro login está usando a conexão de que o LioraLang precisa. Feche-o e tente de novo.",
+      "social_port_busy": "Outro login está usando a conexão de que o Liora precisa. Feche-o e tente de novo.",
       "social_timeout": "O login demorou demais. Tente de novo.",
       "social_cancelled": "Login cancelado.",
       "social_failed": "O login não foi concluído. Tente de novo."
@@ -1406,7 +1406,7 @@ export default {
       "thisDevice": "Este dispositivo",
       "forget": "Remover",
       "forgetNamed": "Remover {name}",
-      "app": "App LioraLang",
+      "app": "App Liora",
       "browser": "Navegador",
       "activeNow": "Ativo agora",
       "active": "Ativo {time}",
@@ -1508,19 +1508,19 @@ export default {
     "repeatMissedCardsSooner": "Repetir antes os cartões errados",
     "againBringsTheCardBack": "“De novo” traz o cartão de volta após um minuto, com uma pausa para testar a memória.",
     "spacedRepetition": "Repetição espaçada",
-    "howOftenWordsComeBack": "Com que frequência as palavras voltam. Os valores padrão servem para a maioria.",
+    "howOftenWordsComeBack": "Com que frequência os cartões voltam. Os valores padrão servem para a maioria.",
     "recommendedSchedule": "Programação recomendada",
     "useTheCurrentDefaultsFor": "Usar os valores padrão atuais nas próximas respostas. Seu progresso e as datas salvas continuam intactos.",
-    "newWordsADay": "Palavras novas por dia",
-    "newWordsIntroducedPerDeck": "Palavras novas por baralho a cada dia. Use 0 para focar nas revisões.",
+    "newWordsADay": "Cartões novos por dia",
+    "newWordsIntroducedPerDeck": "Cartões novos por baralho a cada dia. Use 0 para focar nas revisões.",
     "reviewsADay": "Revisões por dia",
     "distinctReviewCardsPerDeck": "Cartões diferentes de revisão por baralho a cada dia. As etapas de aprendizado sempre continuam.",
     "learningSteps": "Etapas de aprendizado",
     "default10mAgainWaits10": "Padrão: 10m. De novo espera 10 minutos, Difícil 1 dia, Bom 3 dias, Fácil 16 dias. Adicione etapas separadas por vírgulas para praticar mais.",
     "desiredRetention": "Meta de memorização",
-    "desiredRetentionHint": "A parte das palavras que você ainda deve lembrar quando elas voltam. Mais alto significa mais revisões e menos esquecimentos; 90% é um bom equilíbrio.",
+    "desiredRetentionHint": "A proporção de respostas que você quer lembrar na próxima revisão. Um valor maior significa mais revisões; 90% é um bom equilíbrio.",
     "maximumInterval": "Maior intervalo",
-    "maximumIntervalHint": "Nenhuma palavra espera mais do que isso entre revisões.",
+    "maximumIntervalHint": "A pausa máxima entre revisões de um cartão.",
     "noLimit": "Sem limite",
     "wordsIn": "Palavras em",
     "translatedTo": "Traduzidas para",
@@ -1549,7 +1549,7 @@ export default {
     "developerMode": "Modo desenvolvedor",
     "logLevel": "Nível de log",
     "importAndExportFiles": "Importar e exportar arquivos",
-    "whenAWordIsAlready": "Quando uma palavra já está no baralho",
+    "whenAWordIsAlready": "Quando um cartão já está no baralho",
     "exportAs": "Exportar como",
     "includeExamples": "Incluir exemplos",
     "includeTags": "Incluir etiquetas",
@@ -1596,7 +1596,7 @@ export default {
       },
       "learning-core": {
         "title": "Estudo",
-        "description": "Sessões e com que frequência as palavras voltam."
+        "description": "Sessões e intervalos de revisão."
       },
       "deck-defaults": {
         "title": "Baralhos novos",
@@ -1667,7 +1667,7 @@ export default {
     "importFile": "Importar um arquivo de baralho",
     "importFileHint": "Um arquivo .lioradeck ou .json.",
     "chooseFile": "Escolher arquivo",
-    "pasteHint": "Cole as palavras como texto JSON.",
+    "pasteHint": "Cole um baralho ou cartões como texto JSON.",
     "pasteJson": "Colar JSON",
     "database": "Banco de dados",
     "location": "Local",
@@ -1823,9 +1823,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Você entrou",
-      "doneText": "Pode fechar esta aba e voltar ao LioraLang.",
+      "doneText": "Pode fechar esta aba e voltar ao Liora.",
       "failedTitle": "O login não foi concluído",
-      "failedText": "Volte ao LioraLang e tente de novo."
+      "failedText": "Volte ao Liora e tente de novo."
     },
     "menu": {
       "about": "Sobre o {app}",
@@ -1858,20 +1858,20 @@ export default {
       "view": "Exibir",
       "window": "Janela",
       "help": "Ajuda",
-      "github": "LioraLang no GitHub"
+      "github": "Liora no GitHub"
     },
     "tray": {
-      "show": "Mostrar LioraLang",
+      "show": "Mostrar Liora",
       "quit": "Sair"
     },
     "dialogs": {
       "chooseDbFolder": "Escolha a pasta do banco de dados",
       "jsonFiles": "Arquivos JSON",
-      "deckPackages": "Baralhos do LioraLang",
+      "deckPackages": "Baralhos do Liora",
       "exportDeck": "Exportar baralho",
       "importDeck": "Importar arquivo de baralho",
       "deckFiles": "Arquivos de baralho",
-      "legacyPackages": "Baralhos antigos do LioraLang"
+      "legacyPackages": "Baralhos antigos do Liora"
     }
   },
   "quickAdd": {
@@ -1920,7 +1920,7 @@ export default {
       "other": "{count} cartões removidos"
     },
     "doneLabel": "Pronto",
-    "unsaved": "Algumas palavras ainda não foram adicionadas.",
+    "unsaved": "Algumos cartões ainda não foram adicionados.",
     "keepEditing": "Continuar editando",
     "discard": "Descartar",
     "errors": {

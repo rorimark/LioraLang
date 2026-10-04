@@ -1,8 +1,8 @@
-# LioraLang
+# Liora
 
 [English](README.md) | [Русский](README.ru.md) | **Polski**
 
-LioraLang pomaga uczyć się z własnych fiszek. Utwórz talię, dodaj materiał i wracaj do niego, gdy nadejdzie termin powtórki. Aplikacja działa w przeglądarce i na komputerze. Nauka lokalna nie wymaga konta.
+Liora to aplikacja z fiszkami do języków, programowania, matematyki, historii i własnego materiału. Utwórz talię, dodaj materiał i wracaj do niego, gdy nadejdzie termin powtórki. Aplikacja działa w przeglądarce i na komputerze. Nauka lokalna nie wymaga konta.
 
 [Otwórz aplikację](https://liora-lang.vercel.app/app/learn) · [Pobierz wersję na komputer](https://github.com/rorimark/LioraLang/releases/latest) · [Dokumentacja](docs/README.pl.md)
 

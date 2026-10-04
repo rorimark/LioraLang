@@ -2,7 +2,7 @@
 
 **English** | [Русский](architecture.ru.md) | [Polski](architecture.pl.md)
 
-LioraLang has one interface and two local storage implementations: IndexedDB in the browser and SQLite in Electron. Card rules, import, SRS and sync use shared code so results stay consistent across platforms.
+Liora has one interface and two local storage implementations: IndexedDB in the browser and SQLite in Electron. Card rules, import, SRS and sync use shared code so results stay consistent across platforms.
 
 ## Application layers
 

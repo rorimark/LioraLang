@@ -68,7 +68,7 @@ export const createDesktopRuntimeManager = ({
     }
 
     const tray = new Tray(appIconPath);
-    tray.setToolTip("LioraLang");
+    tray.setToolTip("Liora");
     tray.setContextMenu(buildTrayMenu());
     tray.on("click", () => {
       showMainWindow();

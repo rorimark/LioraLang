@@ -2,7 +2,7 @@
 
 [English](onboarding.md) | [Русский](onboarding.ru.md) | **Polski**
 
-Instrukcja dotyczy LioraLang 0.9.1. Projekt używa Node.js, pnpm i Vitest. Bun nie jest głównym narzędziem kompilacji ani testów.
+Instrukcja dotyczy Liora 0.9.1. Projekt używa Node.js, pnpm i Vitest. Bun nie jest głównym narzędziem kompilacji ani testów.
 
 ## Wymagania
 

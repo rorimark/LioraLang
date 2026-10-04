@@ -2,7 +2,7 @@
 
 [English](architecture.md) | [Русский](architecture.ru.md) | **Polski**
 
-LioraLang ma jeden interfejs i dwa lokalne mechanizmy danych: IndexedDB w przeglądarce i SQLite w Electron. Zasady fiszek, importu, SRS i synchronizacji korzystają ze wspólnego kodu, aby wyniki były spójne.
+Liora ma jeden interfejs i dwa lokalne mechanizmy danych: IndexedDB w przeglądarce i SQLite w Electron. Zasady fiszek, importu, SRS i synchronizacji korzystają ze wspólnego kodu, aby wyniki były spójne.
 
 ## Warstwy aplikacji
 

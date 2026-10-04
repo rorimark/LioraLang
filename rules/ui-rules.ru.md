@@ -1,4 +1,4 @@
-# Правила интерфейса LioraLang
+# Правила интерфейса Liora
 
 [English](ui-rules.md) | **Русский** | [Polski](ui-rules.pl.md)
 

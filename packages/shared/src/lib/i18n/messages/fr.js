@@ -150,7 +150,7 @@ export default {
     "signIn": "Se connecter",
     "signInOrUp": "Se connecter ou créer un compte",
     "primary": "Navigation principale",
-    "brandToLearn": "LioraLang, aller à Apprendre"
+    "brandToLearn": "Liora, aller à Apprendre"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Paquet",
-      "subtitle": "Les mots d'un paquet, avec filtres et recherche."
+      "subtitle": "Parcourez, filtrez et révisez les fiches d'un paquet."
     },
     "deckEdit": {
       "title": "Éditeur de paquet",
-      "subtitle": "Langues du paquet, nouveaux mots et mises à jour."
+      "subtitle": "Choisissez une matière, son contexte et ajoutez des fiches."
     },
     "progress": {
       "title": "Progrès",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Vos sessions d'étude, l'application et vos données."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Des mots qui restent."
+      "title": "Liora",
+      "subtitle": "Retenez ce que vous étudiez."
     }
   },
   "titleBar": {
@@ -407,14 +407,14 @@ export default {
     "status": {
       "exportedEmpty": "« {name} » exporté comme paquet vide",
       "exportedNoPath": {
-        "one": "« {name} » exporté : {count} mot (emplacement du fichier inconnu)",
-        "other": "« {name} » exporté : {count} mots (emplacement du fichier inconnu)",
-        "many": "« {name} » exporté : {count} mots (emplacement du fichier inconnu)"
+        "one": "« {name} » exporté : {count} fiche (emplacement du fichier inconnu)",
+        "other": "« {name} » exporté : {count} fiches (emplacement du fichier inconnu)",
+        "many": "« {name} » exporté : {count} fiches (emplacement du fichier inconnu)"
       },
       "exported": {
-        "one": "« {name} » exporté : {count} mot",
-        "other": "« {name} » exporté : {count} mots",
-        "many": "« {name} » exporté : {count} mots"
+        "one": "« {name} » exporté : {count} fiche",
+        "other": "« {name} » exporté : {count} fiches",
+        "many": "« {name} » exporté : {count} fiches"
       },
       "publishUpToDate": {
         "one": "« {name} » est déjà à jour sur le hub (v{version}, {count} mot)",
@@ -438,7 +438,7 @@ export default {
       "delete": "Le paquet n'a pas pu être supprimé.",
       "notFound": "Ce paquet n'existe plus.",
       "load": "Vos paquets n'ont pas pu être chargés.",
-      "loadWords": "Les mots de ce paquet n'ont pas pu être chargés."
+      "loadWords": "Les fiches de ce paquet n'ont pas pu être chargées."
     },
     "table": {
       "label": "Paquets",
@@ -459,31 +459,31 @@ export default {
     "newDeck": "Nouveau deck",
     "newMenu": {
       "empty": "Deck vide",
-      "emptyHint": "Nommez-le et ajoutez les mots vous-même.",
+      "emptyHint": "Choisissez une matière et ajoutez vos fiches.",
       "file": "Depuis un fichier",
       "fileHint": ".lioradeck, .lioralang ou .json",
       "json": "Depuis du JSON",
-      "jsonHint": "Collez un deck ou une liste de mots.",
+      "jsonHint": "Collez un paquet ou une liste de fiches.",
       "ai": "Créer un paquet avec l'IA",
-      "aiHint": "Indiquez un thème et un niveau, puis relisez les mots"
+      "aiHint": "Choisissez matière et sujet, puis vérifiez les brouillons."
     },
     "row": {
       "learned": "Appris",
       "review": "Aujourd'hui",
       "done": "Tout est révisé",
-      "empty": "Aucun mot",
+      "empty": "Aucune fiche",
       "learn": "Apprendre",
       "learnNamed": "Apprendre {name}",
-      "learnedOf": "{known} mots appris sur {words}",
+      "learnedOf": "{known} fiches apprises sur {words}",
       "due": {
         "one": "{count} à réviser",
         "many": "{count} à réviser",
         "other": "{count} à réviser"
       },
       "new": {
-        "one": "{count} nouveau mot",
-        "many": "{count} nouveaux mots",
-        "other": "{count} nouveaux mots"
+        "one": "{count} nouvelle fiche",
+        "many": "{count} nouvelles fiches",
+        "other": "{count} nouvelles fiches"
       }
     }
   },
@@ -491,13 +491,13 @@ export default {
     "importedDeck": "Paquet importé",
     "deckNameOptional": "Nom du paquet (facultatif)",
     "json": {
-      "description": "Collez un paquet (.lioradeck ou .lioralang) ou une simple liste de mots, au format JSON.",
+      "description": "Collez un paquet ou une liste de fiches. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Laisser vide pour reprendre le nom du JSON",
       "label": "JSON du paquet",
       "placeholder": "Collez ici le JSON du paquet"
     },
     "file": {
-      "description": "Ouvre les fichiers .lioradeck, .lioralang et .json. Vérifiez les détails et les langues, puis importez.",
+      "description": "Choisissez un fichier de paquet et vérifiez son contenu avant l’importation. (.lioradeck, .lioralang, .json)",
       "confirm": "Importer",
       "namePlaceholder": "Laisser vide pour reprendre le nom du fichier",
       "detected": "Langues trouvées dans le fichier :",
@@ -508,9 +508,9 @@ export default {
       "optional": "Langue supplémentaire",
       "selected": "Fichier choisi : {name}",
       "wordsInFile": {
-        "one": "{count} mot dans le fichier",
-        "other": "{count} mots dans le fichier",
-        "many": "{count} mots dans le fichier"
+        "one": "{count} fiche dans le fichier",
+        "other": "{count} fiches dans le fichier",
+        "many": "{count} fiches dans le fichier"
       },
       "savedAs": "Enregistré sous : {name}",
       "nameFromPackage": "le nom du fichier"
@@ -524,15 +524,15 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "« {name} » importé : {count} mot",
-        "other": "« {name} » importé : {count} mots",
-        "many": "« {name} » importé : {count} mots"
+        "one": "« {name} » importé : {count} fiche",
+        "other": "« {name} » importé : {count} fiches",
+        "many": "« {name} » importé : {count} fiches"
       },
       "importedWithSkipped": "« {name} » importé : {added} ajoutés, {skipped} ignorés",
       "nothingNew": {
-        "one": "Rien de nouveau à importer : {count} mot ignoré",
-        "other": "Rien de nouveau à importer : {count} mots ignorés",
-        "many": "Rien de nouveau à importer : {count} mots ignorés"
+        "one": "Rien de nouveau à importer : {count} fiche ignorée",
+        "other": "Rien de nouveau à importer : {count} fiches ignorées",
+        "many": "Rien de nouveau à importer : {count} fiches ignorées"
       }
     },
     "errors": {
@@ -544,7 +544,7 @@ export default {
       "optionalLanguage": "La langue supplémentaire doit être différente des langues source et cible.",
       "import": "Le paquet n'a pas pu être importé.",
       "pasteFirst": "Collez d'abord le JSON du paquet.",
-      "parse": "LioraLang ne peut pas lire ce paquet. Vérifiez que le JSON est complet."
+      "parse": "Liora ne peut pas lire ce paquet. Vérifiez que le JSON est complet."
     }
   },
   "deleteDeck": {
@@ -583,7 +583,7 @@ export default {
       "other": "{count} résultats",
       "many": "{count} résultats"
     },
-    "searchPlaceholder": "Chercher un mot ou une traduction",
+    "searchPlaceholder": "Rechercher dans les questions et réponses",
     "search": "Rechercher des cartes",
     "sortLabel": "Trier les cartes",
     "clear": "Effacer les filtres",
@@ -594,9 +594,9 @@ export default {
     "showFilters": "Afficher les filtres"
   },
   "wordsTable": {
-    "label": "Mots",
-    "caption": "Mots correspondant aux filtres",
-    "empty": "Aucun mot trouvé.",
+    "label": "Fiches",
+    "caption": "Fiches correspondant aux filtres",
+    "empty": "Aucune fiche trouvée.",
     "tapHint": "Touchez pour déplier"
   },
   "deck": {
@@ -606,24 +606,24 @@ export default {
     "exportShort": "Exporter",
     "addWords": "Ajouter des mots",
     "wordsCount": {
-      "one": "{count} mot",
-      "many": "{count} mots",
-      "other": "{count} mots"
+      "one": "{count} fiche",
+      "many": "{count} fiches",
+      "other": "{count} fiches"
     },
-    "emptyDeck": "Ce paquet n’a pas encore de mots.",
-    "emptyFilter": "Aucun mot ici.",
+    "emptyDeck": "Ce paquet n’a pas encore de fiches.",
+    "emptyFilter": "Aucune fiche ici.",
     "study": {
       "title": "Votre progression",
       "notStarted": "Vous n’avez pas encore étudié ce paquet",
       "newWaiting": {
-        "one": "{count} nouveau mot pour commencer",
-        "many": "{count} nouveaux mots pour commencer",
-        "other": "{count} nouveaux mots pour commencer"
+        "one": "{count} nouvelle fiche pour commencer",
+        "many": "{count} nouvelles fiches pour commencer",
+        "other": "{count} nouvelles fiches pour commencer"
       },
       "due": {
-        "one": "{count} mot à réviser maintenant",
-        "many": "{count} mots à réviser maintenant",
-        "other": "{count} mots à réviser maintenant"
+        "one": "{count} fiche à réviser maintenant",
+        "many": "{count} fiches à réviser maintenant",
+        "other": "{count} fiches à réviser maintenant"
       },
       "caughtUp": "Rien à réviser pour l’instant",
       "nextReview": "Prochaine révision {when}",
@@ -636,7 +636,7 @@ export default {
       "recall": "{percent} retenus ces 30 derniers jours"
     },
     "filter": {
-      "label": "Afficher les mots",
+      "label": "Afficher les fiches",
       "all": "Tous",
       "due": "À réviser",
       "known": "Retenus"
@@ -864,7 +864,7 @@ export default {
         "many": "dans {count} jours"
       },
       "title": "Aujourd'hui",
-      "noWords": "Pas encore de mots",
+      "noWords": "Pas encore de fiches",
       "pickDeck": "Choisissez un paquet de la communauté pour commencer.",
       "browse": "Parcourir les paquets",
       "due": {
@@ -880,7 +880,7 @@ export default {
       "allIn": "Toutes dans {name}.",
       "reviewNow": "Réviser maintenant",
       "caughtUp": "Tout est à jour",
-      "learnNew": "Apprendre de nouveaux mots"
+      "learnNew": "Apprendre de nouvelles fiches"
     },
     "streak": {
       "reviewsToday": {
@@ -949,13 +949,13 @@ export default {
       "text": "Votre historique d'étude n'a pas pu être lu. Réessayez dans un instant."
     },
     "words": {
-      "eyebrow": "Vos mots",
+      "eyebrow": "Vos fiches",
       "youKnow": {
-        "one": "mot que vous savez",
-        "other": "mots que vous savez",
-        "many": "mots que vous savez"
+        "one": "fiche que vous savez",
+        "other": "fiches que vous savez",
+        "many": "fiches que vous savez"
       },
-      "empty": "Ajoutez un paquet et les mots que vous apprenez seront comptés ici.",
+      "empty": "Ajoutez un paquet et les fiches que vous apprenez seront comptées ici.",
       "outOf": {
         "one": "Sur {count} dans vos paquets.",
         "other": "Sur {count} dans vos paquets.",
@@ -966,9 +966,9 @@ export default {
         "other": "{count} d'entre eux sont en mémoire à long terme.",
         "many": "{count} d'entre eux sont en mémoire à long terme."
       },
-      "longTermHint": "Un mot passe en mémoire à long terme quand sa prochaine révision est dans trois semaines.",
-      "byStage": "Vos mots par étape : {summary}",
-      "note": "Les mots sus sont les récents et ceux à long terme : bien répondus, et pas à revoir aujourd'hui."
+      "longTermHint": "Une fiche passe en mémoire à long terme quand sa prochaine révision est dans trois semaines.",
+      "byStage": "Vos fiches par étape : {summary}",
+      "note": "Les fiches connues sont celles apprises récemment ou retenues à long terme : bien répondues et sans révision prévue aujourd’hui."
     },
     "forecast": {
       "title": "À venir",
@@ -977,7 +977,7 @@ export default {
         "other": "{count} révisions sur 2 semaines",
         "many": "{count} révisions sur 2 semaines"
       },
-      "empty": "Rien n'est encore prévu. Les mots étudiés reviennent ici, de plus en plus espacés à chaque fois que vous vous en souvenez.",
+      "empty": "Rien n'est encore prévu. Les fiches étudiées reviennent ici, de plus en plus espacées à chaque fois que vous vous en souvenez.",
       "label": {
         "one": "Révisions prévues sur le prochain {count} jour. Utilisez les flèches pour parcourir les jours.",
         "other": "Révisions prévues sur les {count} prochains jours. Utilisez les flèches pour parcourir les jours.",
@@ -1018,7 +1018,7 @@ export default {
     "aria": "{title} {value} : {goal} {status}.",
     "ariaNew": "{title} {value} : {goal} {status}. Nouveau.",
     "progressLabel": "{title} : progression",
-    "undatedNote": "Compté d'après vos mots tels qu'ils sont, donc la date est celle où cet appareil l'a vu gagné pour la première fois.",
+    "undatedNote": "Calculé selon l’état actuel de vos fiches. La date indique quand cet appareil a constaté le succès pour la première fois.",
     "earnedOn": "Gagné le {date}",
     "earnedBy": "Gagné avant le {date}",
     "progress": {
@@ -1027,21 +1027,21 @@ export default {
       "many": "{progress} sur {target} {unit}, encore {count}"
     },
     "known": {
-      "title": "Vocabulaire",
+      "title": "Connaissances",
       "unit": {
-        "one": "mot",
-        "other": "mots",
-        "many": "mots"
+        "one": "fiche",
+        "other": "fiches",
+        "many": "fiches"
       },
       "goal": {
-        "one": "Savoir {count} mot.",
-        "other": "Savoir {count} mots.",
-        "many": "Savoir {count} mots."
+        "one": "Savoir {count} fiche.",
+        "other": "Savoir {count} fiches.",
+        "many": "Savoir {count} fiches."
       },
       "now": {
-        "one": "{count} mot su aujourd'hui",
-        "other": "{count} mots sus aujourd'hui",
-        "many": "{count} mots sus aujourd'hui"
+        "one": "{count} fiche connue aujourd'hui",
+        "other": "{count} fiches connues aujourd'hui",
+        "many": "{count} fiches connues aujourd'hui"
       }
     },
     "streak": {
@@ -1065,19 +1065,19 @@ export default {
     "mature": {
       "title": "Mémoire à long terme",
       "unit": {
-        "one": "mot",
-        "other": "mots",
-        "many": "mots"
+        "one": "fiche",
+        "other": "fiches",
+        "many": "fiches"
       },
       "goal": {
-        "one": "Avoir {count} mot en mémoire à long terme, avec sa prochaine révision dans trois semaines ou plus.",
-        "other": "Avoir {count} mots en mémoire à long terme, avec leur prochaine révision dans trois semaines ou plus.",
-        "many": "Avoir {count} mots en mémoire à long terme, avec leur prochaine révision dans trois semaines ou plus."
+        "one": "Savoir {count} fiche. La prochaine révision est dans au moins trois semaines.",
+        "other": "Savoir {count} fiches. La prochaine révision est dans au moins trois semaines.",
+        "many": "Savoir {count} fiches. La prochaine révision est dans au moins trois semaines."
       },
       "now": {
-        "one": "{count} mot en mémoire à long terme",
-        "other": "{count} mots en mémoire à long terme",
-        "many": "{count} mots en mémoire à long terme"
+        "one": "{count} fiche en mémoire à long terme",
+        "other": "{count} fiches en mémoire à long terme",
+        "many": "{count} fiches en mémoire à long terme"
       }
     },
     "days": {
@@ -1161,11 +1161,11 @@ export default {
         "other": "paquets",
         "many": "paquets"
       },
-      "goalFirst": "Savoir tous les mots d'un paquet de {min} mots ou plus.",
+      "goalFirst": "Connaître toutes les fiches d’un paquet d’au moins {min} fiches.",
       "goal": {
-        "one": "Savoir tous les mots de {count} paquet de {min} mots ou plus.",
-        "other": "Savoir tous les mots de {count} paquets de {min} mots ou plus.",
-        "many": "Savoir tous les mots de {count} paquets de {min} mots ou plus."
+        "one": "Connaître toutes les fiches de {count} paquet d’au moins {min} fiches.",
+        "other": "Connaître toutes les fiches de {count} paquets d’au moins {min} fiches chacun.",
+        "many": "Connaître toutes les fiches de {count} paquets d’au moins {min} fiches chacun."
       },
       "now": {
         "one": "{count} paquet entièrement su",
@@ -1212,7 +1212,7 @@ export default {
       "back": "Retour à la connexion"
     },
     "providersLabel": "Se connecter avec un service",
-    "desktopProvidersNote": "La connexion s'ouvre dans votre navigateur. Une fois terminée, revenez dans LioraLang.",
+    "desktopProvidersNote": "La connexion s'ouvre dans votre navigateur. Une fois terminée, revenez dans Liora.",
     "hub": {
       "loading": "Chargement de vos paquets du hub…",
       "emptyTitle": "Rien de publié pour l'instant.",
@@ -1272,9 +1272,9 @@ export default {
       "browser": "Dans le navigateur",
       "yourName": "Votre nom",
       "wordsKnown": {
-        "one": "mot su",
-        "other": "mots sus",
-        "many": "mots sus"
+        "one": "fiche connue",
+        "other": "fiches connues",
+        "many": "fiches connues"
       },
       "dayStreak": {
         "one": "jour d'affilée",
@@ -1382,7 +1382,7 @@ export default {
       "missing_email": "Saisissez votre e-mail.",
       "missing_password": "Saisissez un mot de passe.",
       "social_desktop_unavailable": "La connexion avec Google et GitHub demande une version plus récente de l'application. Utilisez l'e-mail et le mot de passe pour l'instant.",
-      "social_port_busy": "Une autre connexion utilise l'accès dont LioraLang a besoin. Fermez-la et réessayez.",
+      "social_port_busy": "Une autre connexion utilise l'accès dont Liora a besoin. Fermez-la et réessayez.",
       "social_timeout": "La connexion a pris trop de temps. Réessayez.",
       "social_cancelled": "Connexion annulée.",
       "social_failed": "La connexion n'a pas abouti. Réessayez."
@@ -1406,7 +1406,7 @@ export default {
       "thisDevice": "Cet appareil",
       "forget": "Retirer",
       "forgetNamed": "Retirer {name}",
-      "app": "Application LioraLang",
+      "app": "Application Liora",
       "browser": "Navigateur",
       "activeNow": "Actif maintenant",
       "active": "Actif {time}",
@@ -1508,19 +1508,19 @@ export default {
     "repeatMissedCardsSooner": "Revoir plus tôt les cartes oubliées",
     "againBringsTheCardBack": "« Encore » ramène la carte après une minute, avec une pause pour tester la mémoire.",
     "spacedRepetition": "Répétition espacée",
-    "howOftenWordsComeBack": "La fréquence de retour des mots. Les valeurs par défaut conviennent à la plupart.",
+    "howOftenWordsComeBack": "La fréquence de retour des fiches. Les valeurs par défaut conviennent à la plupart.",
     "recommendedSchedule": "Calendrier recommandé",
     "useTheCurrentDefaultsFor": "Utiliser les valeurs par défaut actuelles pour les prochaines réponses. Vos progrès et échéances restent intacts.",
-    "newWordsADay": "Nouveaux mots par jour",
-    "newWordsIntroducedPerDeck": "Nouveaux mots par paquet et par jour. Mettez 0 pour vous concentrer sur les révisions.",
+    "newWordsADay": "Nouvelles fiches par jour",
+    "newWordsIntroducedPerDeck": "Nouvelles fiches par paquet et par jour. Mettez 0 pour vous concentrer sur les révisions.",
     "reviewsADay": "Révisions par jour",
     "distinctReviewCardsPerDeck": "Cartes différentes à réviser par paquet et par jour. Les étapes d'apprentissage continuent toujours.",
     "learningSteps": "Étapes d'apprentissage",
     "default10mAgainWaits10": "Par défaut : 10m. Encore attend 10 minutes, Difficile 1 jour, Bien 3 jours, Facile 16 jours. Ajoutez des étapes séparées par des virgules pour vous entraîner davantage.",
     "desiredRetention": "Objectif de mémorisation",
-    "desiredRetentionHint": "La part des mots que vous devriez encore connaître quand ils reviennent. Plus haut, c'est plus de révisions et moins d'oublis ; 90 % est un bon équilibre.",
+    "desiredRetentionHint": "La part des réponses que vous souhaitez retenir à la prochaine révision. Une valeur plus élevée signifie davantage de révisions ; 90 % est un bon équilibre.",
     "maximumInterval": "Écart maximal",
-    "maximumIntervalHint": "Aucun mot n'attend plus longtemps que cela entre deux révisions.",
+    "maximumIntervalHint": "La durée maximale entre les révisions d’une fiche.",
     "noLimit": "Sans limite",
     "wordsIn": "Mots en",
     "translatedTo": "Traduits en",
@@ -1549,7 +1549,7 @@ export default {
     "developerMode": "Mode développeur",
     "logLevel": "Niveau de journal",
     "importAndExportFiles": "Importer et exporter des fichiers",
-    "whenAWordIsAlready": "Si un mot est déjà dans le paquet",
+    "whenAWordIsAlready": "Si une fiche est déjà dans le paquet",
     "exportAs": "Exporter en",
     "includeExamples": "Inclure les exemples",
     "includeTags": "Inclure les étiquettes",
@@ -1596,7 +1596,7 @@ export default {
       },
       "learning-core": {
         "title": "Apprentissage",
-        "description": "Les sessions et la fréquence de retour des mots."
+        "description": "Sessions et intervalles de révision."
       },
       "deck-defaults": {
         "title": "Nouveaux paquets",
@@ -1667,7 +1667,7 @@ export default {
     "importFile": "Importer un fichier de paquet",
     "importFileHint": "Un fichier .lioradeck ou .json.",
     "chooseFile": "Choisir un fichier",
-    "pasteHint": "Collez les mots sous forme de texte JSON.",
+    "pasteHint": "Collez un paquet ou des fiches sous forme de texte JSON.",
     "pasteJson": "Coller du JSON",
     "database": "Base de données",
     "location": "Emplacement",
@@ -1823,9 +1823,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Vous êtes connecté",
-      "doneText": "Vous pouvez fermer cet onglet et revenir dans LioraLang.",
+      "doneText": "Vous pouvez fermer cet onglet et revenir dans Liora.",
       "failedTitle": "La connexion n'a pas abouti",
-      "failedText": "Revenez dans LioraLang et réessayez."
+      "failedText": "Revenez dans Liora et réessayez."
     },
     "menu": {
       "about": "À propos de {app}",
@@ -1858,20 +1858,20 @@ export default {
       "view": "Affichage",
       "window": "Fenêtre",
       "help": "Aide",
-      "github": "LioraLang sur GitHub"
+      "github": "Liora sur GitHub"
     },
     "tray": {
-      "show": "Afficher LioraLang",
+      "show": "Afficher Liora",
       "quit": "Quitter"
     },
     "dialogs": {
       "chooseDbFolder": "Choisir le dossier de la base de données",
       "jsonFiles": "Fichiers JSON",
-      "deckPackages": "Paquets LioraLang",
+      "deckPackages": "Paquets Liora",
       "exportDeck": "Exporter le paquet",
       "importDeck": "Importer un fichier de paquet",
       "deckFiles": "Fichiers de paquets",
-      "legacyPackages": "Anciens paquets LioraLang"
+      "legacyPackages": "Anciens paquets Liora"
     }
   },
   "quickAdd": {
@@ -1920,7 +1920,7 @@ export default {
       "other": "{count} cartes retirées"
     },
     "doneLabel": "Terminé",
-    "unsaved": "Certains mots ne sont pas encore ajoutés.",
+    "unsaved": "Certaines fiches ne sont pas encore ajoutées.",
     "keepEditing": "Continuer",
     "discard": "Les abandonner",
     "errors": {

@@ -150,7 +150,7 @@ export default {
     "signIn": "Accedi",
     "signInOrUp": "Accedi o crea un account",
     "primary": "Navigazione principale",
-    "brandToLearn": "LioraLang, vai a Studia"
+    "brandToLearn": "Liora, vai a Studia"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Mazzo",
-      "subtitle": "Le parole di un mazzo, con filtri e ricerca."
+      "subtitle": "Sfoglia, filtra e ripassa le schede di un mazzo."
     },
     "deckEdit": {
       "title": "Editor del mazzo",
-      "subtitle": "Lingue del mazzo, nuove parole e modifiche."
+      "subtitle": "Scegli materia, contesto e aggiungi schede."
     },
     "progress": {
       "title": "Progressi",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Sessioni di studio, l'app e i tuoi dati."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Parole che restano."
+      "title": "Liora",
+      "subtitle": "Ricorda ciò che studi."
     }
   },
   "titleBar": {
@@ -407,14 +407,14 @@ export default {
     "status": {
       "exportedEmpty": "«{name}» esportato come mazzo vuoto",
       "exportedNoPath": {
-        "one": "«{name}» esportato: {count} parola (posizione del file sconosciuta)",
-        "other": "«{name}» esportato: {count} parole (posizione del file sconosciuta)",
-        "many": "«{name}» esportato: {count} parole (posizione del file sconosciuta)"
+        "one": "«{name}» esportato: {count} scheda (posizione del file sconosciuta)",
+        "other": "«{name}» esportato: {count} schede (posizione del file sconosciuta)",
+        "many": "«{name}» esportato: {count} schede (posizione del file sconosciuta)"
       },
       "exported": {
-        "one": "«{name}» esportato: {count} parola",
-        "other": "«{name}» esportato: {count} parole",
-        "many": "«{name}» esportato: {count} parole"
+        "one": "«{name}» esportato: {count} scheda",
+        "other": "«{name}» esportato: {count} schede",
+        "many": "«{name}» esportato: {count} schede"
       },
       "publishUpToDate": {
         "one": "«{name}» è già aggiornato sull'hub (v{version}, {count} parola)",
@@ -438,7 +438,7 @@ export default {
       "delete": "Non è stato possibile eliminare il mazzo.",
       "notFound": "Questo mazzo non esiste più.",
       "load": "Non è stato possibile caricare i tuoi mazzi.",
-      "loadWords": "Non è stato possibile caricare le parole di questo mazzo."
+      "loadWords": "Non è stato possibile caricare le schede di questo mazzo."
     },
     "table": {
       "label": "Mazzi",
@@ -459,31 +459,31 @@ export default {
     "newDeck": "Nuovo mazzo",
     "newMenu": {
       "empty": "Mazzo vuoto",
-      "emptyHint": "Dagli un nome e aggiungi tu le parole.",
+      "emptyHint": "Scegli una materia e aggiungi le tue schede.",
       "file": "Da un file",
       "fileHint": ".lioradeck, .lioralang o .json",
       "json": "Da JSON",
-      "jsonHint": "Incolla un mazzo o un elenco di parole.",
+      "jsonHint": "Incolla un mazzo o un elenco di schede.",
       "ai": "Crea un mazzo con l'IA",
-      "aiHint": "Indica un tema e un livello, poi controlla le parole"
+      "aiHint": "Scegli materia e argomento, poi controlla le bozze."
     },
     "row": {
       "learned": "Imparate",
       "review": "Oggi",
       "done": "Tutto ripassato",
-      "empty": "Ancora nessuna parola",
+      "empty": "Ancora nessuna scheda",
       "learn": "Studia",
       "learnNamed": "Studia {name}",
-      "learnedOf": "{known} parole imparate su {words}",
+      "learnedOf": "{known} schede imparate su {words}",
       "due": {
         "one": "{count} da ripassare",
         "many": "{count} da ripassare",
         "other": "{count} da ripassare"
       },
       "new": {
-        "one": "{count} parola nuova",
-        "many": "{count} parole nuove",
-        "other": "{count} parole nuove"
+        "one": "{count} scheda nuova",
+        "many": "{count} schede nuove",
+        "other": "{count} schede nuove"
       }
     }
   },
@@ -491,13 +491,13 @@ export default {
     "importedDeck": "Mazzo importato",
     "deckNameOptional": "Nome del mazzo (facoltativo)",
     "json": {
-      "description": "Incolla un pacchetto di mazzo (.lioradeck o .lioralang) o un semplice elenco di parole, in JSON.",
+      "description": "Incolla un mazzo o un elenco di schede. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Lascia vuoto per usare il nome nel JSON",
       "label": "JSON del mazzo",
       "placeholder": "Incolla qui il JSON del mazzo"
     },
     "file": {
-      "description": "Apre file .lioradeck, .lioralang e .json. Controlla dettagli e lingue, poi importa.",
+      "description": "Scegli un file del mazzo e controlla il contenuto prima di importarlo. (.lioradeck, .lioralang, .json)",
       "confirm": "Importa",
       "namePlaceholder": "Lascia vuoto per usare il nome del file",
       "detected": "Lingue nel file:",
@@ -508,9 +508,9 @@ export default {
       "optional": "Lingua aggiuntiva",
       "selected": "File scelto: {name}",
       "wordsInFile": {
-        "one": "{count} parola nel file",
-        "other": "{count} parole nel file",
-        "many": "{count} parole nel file"
+        "one": "{count} scheda nel file",
+        "other": "{count} schede nel file",
+        "many": "{count} schede nel file"
       },
       "savedAs": "Salvato come: {name}",
       "nameFromPackage": "il nome nel file"
@@ -524,15 +524,15 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "«{name}» importato: {count} parola",
-        "other": "«{name}» importato: {count} parole",
-        "many": "«{name}» importato: {count} parole"
+        "one": "«{name}» importato: {count} scheda",
+        "other": "«{name}» importato: {count} schede",
+        "many": "«{name}» importato: {count} schede"
       },
       "importedWithSkipped": "«{name}» importato: {added} aggiunte, {skipped} saltate",
       "nothingNew": {
-        "one": "Niente di nuovo da importare: {count} parola saltata",
-        "other": "Niente di nuovo da importare: {count} parole saltate",
-        "many": "Niente di nuovo da importare: {count} parole saltate"
+        "one": "Niente di nuovo da importare: {count} scheda saltata",
+        "other": "Niente di nuovo da importare: {count} schede saltate",
+        "many": "Niente di nuovo da importare: {count} schede saltate"
       }
     },
     "errors": {
@@ -544,7 +544,7 @@ export default {
       "optionalLanguage": "La lingua aggiuntiva deve essere diversa da quelle di origine e di arrivo.",
       "import": "Non è stato possibile importare il mazzo.",
       "pasteFirst": "Incolla prima il JSON del mazzo.",
-      "parse": "LioraLang non riesce a leggere questo mazzo. Controlla che il JSON sia completo."
+      "parse": "Liora non riesce a leggere questo mazzo. Controlla che il JSON sia completo."
     }
   },
   "deleteDeck": {
@@ -583,7 +583,7 @@ export default {
       "other": "{count} risultati",
       "many": "{count} risultati"
     },
-    "searchPlaceholder": "Cerca una parola o una traduzione",
+    "searchPlaceholder": "Cerca domande e risposte",
     "search": "Cerca carte",
     "sortLabel": "Ordina carte",
     "clear": "Azzera filtri",
@@ -594,9 +594,9 @@ export default {
     "showFilters": "Mostra filtri"
   },
   "wordsTable": {
-    "label": "Parole",
-    "caption": "Parole che corrispondono ai filtri",
-    "empty": "Nessuna parola trovata.",
+    "label": "Schede",
+    "caption": "Schede che corrispondono ai filtri",
+    "empty": "Nessuna scheda trovata.",
     "tapHint": "Tocca per espandere"
   },
   "deck": {
@@ -606,24 +606,24 @@ export default {
     "exportShort": "Esporta",
     "addWords": "Aggiungi parole",
     "wordsCount": {
-      "one": "{count} parola",
-      "many": "{count} parole",
-      "other": "{count} parole"
+      "one": "{count} scheda",
+      "many": "{count} schede",
+      "other": "{count} schede"
     },
-    "emptyDeck": "Questo mazzo non ha ancora parole.",
-    "emptyFilter": "Nessuna parola qui.",
+    "emptyDeck": "Questo mazzo non ha ancora schede.",
+    "emptyFilter": "Nessuna scheda qui.",
     "study": {
       "title": "I tuoi progressi",
       "notStarted": "Non hai ancora studiato questo mazzo",
       "newWaiting": {
-        "one": "{count} parola nuova per iniziare",
-        "many": "{count} parole nuove per iniziare",
-        "other": "{count} parole nuove per iniziare"
+        "one": "{count} scheda nuova per iniziare",
+        "many": "{count} schede nuove per iniziare",
+        "other": "{count} schede nuove per iniziare"
       },
       "due": {
-        "one": "{count} parola da ripassare ora",
-        "many": "{count} parole da ripassare ora",
-        "other": "{count} parole da ripassare ora"
+        "one": "{count} scheda da ripassare ora",
+        "many": "{count} schede da ripassare ora",
+        "other": "{count} schede da ripassare ora"
       },
       "caughtUp": "Ora non c’è niente da ripassare",
       "nextReview": "Prossimo ripasso {when}",
@@ -636,7 +636,7 @@ export default {
       "recall": "{percent} ricordato negli ultimi 30 giorni"
     },
     "filter": {
-      "label": "Mostra parole",
+      "label": "Mostra schede",
       "all": "Tutte",
       "due": "Da ripassare",
       "known": "Ricordate"
@@ -864,7 +864,7 @@ export default {
         "many": "tra {count} giorni"
       },
       "title": "Oggi",
-      "noWords": "Ancora nessuna parola",
+      "noWords": "Ancora nessuna scheda",
       "pickDeck": "Scegli un mazzo della community per iniziare.",
       "browse": "Esplora mazzi",
       "due": {
@@ -880,7 +880,7 @@ export default {
       "allIn": "Tutte in {name}.",
       "reviewNow": "Ripassa ora",
       "caughtUp": "Tutto in pari",
-      "learnNew": "Impara parole nuove"
+      "learnNew": "Impara schede nuove"
     },
     "streak": {
       "reviewsToday": {
@@ -949,13 +949,13 @@ export default {
       "text": "Non è stato possibile leggere la cronologia di studio. Riprova tra poco."
     },
     "words": {
-      "eyebrow": "Le tue parole",
+      "eyebrow": "Le tue schede",
       "youKnow": {
-        "one": "parola che sai",
-        "other": "parole che sai",
-        "many": "parole che sai"
+        "one": "scheda che sai",
+        "other": "schede che sai",
+        "many": "schede che sai"
       },
-      "empty": "Aggiungi un mazzo e le parole che impari saranno contate qui.",
+      "empty": "Aggiungi un mazzo e le schede che impari saranno contate qui.",
       "outOf": {
         "one": "Su {count} nei tuoi mazzi.",
         "other": "Su {count} nei tuoi mazzi.",
@@ -966,9 +966,9 @@ export default {
         "other": "{count} di queste sono nella memoria a lungo termine.",
         "many": "{count} di queste sono nella memoria a lungo termine."
       },
-      "longTermHint": "Una parola entra nella memoria a lungo termine quando il prossimo ripasso è tra tre settimane.",
-      "byStage": "Le tue parole per fase: {summary}",
-      "note": "Le parole sapute sono le recenti e quelle a lungo termine: risposte giuste e non da ripassare oggi."
+      "longTermHint": "Una scheda entra nella memoria a lungo termine quando il prossimo ripasso è tra tre settimane.",
+      "byStage": "Le tue schede per fase: {summary}",
+      "note": "Le schede sapute sono le recenti e quelle a lungo termine: risposte giuste e non da ripassare oggi."
     },
     "forecast": {
       "title": "In arrivo",
@@ -977,7 +977,7 @@ export default {
         "other": "{count} ripassi in 2 settimane",
         "many": "{count} ripassi in 2 settimane"
       },
-      "empty": "Ancora niente in programma. Le parole che studi torneranno qui, ogni volta più distanziate se le ricordi.",
+      "empty": "Ancora niente in programma. Le schede che studi torneranno qui, ogni volta più distanziate se le ricordi.",
       "label": {
         "one": "Ripassi previsti nel prossimo {count} giorno. Usa le frecce per leggere ogni giorno.",
         "other": "Ripassi previsti nei prossimi {count} giorni. Usa le frecce per leggere ogni giorno.",
@@ -1018,7 +1018,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Nuovo.",
     "progressLabel": "{title}: progresso",
-    "undatedNote": "Calcolato sulle tue parole così come sono ora, quindi la data è il giorno in cui questo dispositivo l'ha visto guadagnato per la prima volta.",
+    "undatedNote": "Calcolato sulle tue schede così come sono ora, quindi la data è il giorno in cui questo dispositivo l'ha visto guadagnato per la prima volta.",
     "earnedOn": "Guadagnato il {date}",
     "earnedBy": "Guadagnato entro il {date}",
     "progress": {
@@ -1027,21 +1027,21 @@ export default {
       "many": "{progress} su {target} {unit}, ne mancano {count}"
     },
     "known": {
-      "title": "Vocabolario",
+      "title": "Conoscenze",
       "unit": {
-        "one": "parola",
-        "other": "parole",
-        "many": "parole"
+        "one": "scheda",
+        "other": "schede",
+        "many": "schede"
       },
       "goal": {
-        "one": "Sapere {count} parola.",
-        "other": "Sapere {count} parole.",
-        "many": "Sapere {count} parole."
+        "one": "Sapere {count} scheda.",
+        "other": "Sapere {count} schede.",
+        "many": "Sapere {count} schede."
       },
       "now": {
-        "one": "{count} parola saputa ora",
-        "other": "{count} parole sapute ora",
-        "many": "{count} parole sapute ora"
+        "one": "{count} scheda saputa ora",
+        "other": "{count} schede sapute ora",
+        "many": "{count} schede sapute ora"
       }
     },
     "streak": {
@@ -1065,19 +1065,19 @@ export default {
     "mature": {
       "title": "Memoria a lungo termine",
       "unit": {
-        "one": "parola",
-        "other": "parole",
-        "many": "parole"
+        "one": "scheda",
+        "other": "schede",
+        "many": "schede"
       },
       "goal": {
-        "one": "Avere {count} parola nella memoria a lungo termine, con il prossimo ripasso tra tre settimane o più.",
-        "other": "Avere {count} parole nella memoria a lungo termine, con il prossimo ripasso tra tre settimane o più.",
-        "many": "Avere {count} parole nella memoria a lungo termine, con il prossimo ripasso tra tre settimane o più."
+        "one": "Sapere {count} scheda. Il prossimo ripasso è tra almeno tre settimane.",
+        "other": "Sapere {count} schede. Il prossimo ripasso è tra almeno tre settimane.",
+        "many": "Sapere {count} schede. Il prossimo ripasso è tra almeno tre settimane."
       },
       "now": {
-        "one": "{count} parola nella memoria a lungo termine",
-        "other": "{count} parole nella memoria a lungo termine",
-        "many": "{count} parole nella memoria a lungo termine"
+        "one": "{count} scheda nella memoria a lungo termine",
+        "other": "{count} schede nella memoria a lungo termine",
+        "many": "{count} schede nella memoria a lungo termine"
       }
     },
     "days": {
@@ -1161,11 +1161,11 @@ export default {
         "other": "mazzi",
         "many": "mazzi"
       },
-      "goalFirst": "Sapere ogni parola di un mazzo di {min} parole o più.",
+      "goalFirst": "Conoscere tutte le schede di un mazzo con almeno {min} schede.",
       "goal": {
-        "one": "Sapere ogni parola di {count} mazzo di {min} parole o più.",
-        "other": "Sapere ogni parola di {count} mazzi di {min} parole o più.",
-        "many": "Sapere ogni parola di {count} mazzi di {min} parole o più."
+        "one": "Conoscere tutte le schede di {count} mazzo con almeno {min} schede.",
+        "other": "Conoscere tutte le schede di {count} mazzi con almeno {min} schede ciascuno.",
+        "many": "Conoscere tutte le schede di {count} mazzi con almeno {min} schede ciascuno."
       },
       "now": {
         "one": "{count} mazzo saputo del tutto",
@@ -1212,7 +1212,7 @@ export default {
       "back": "Torna all'accesso"
     },
     "providersLabel": "Accedi con un servizio",
-    "desktopProvidersNote": "L'accesso si apre nel browser. Quando hai finito, torna su LioraLang.",
+    "desktopProvidersNote": "L'accesso si apre nel browser. Quando hai finito, torna su Liora.",
     "hub": {
       "loading": "Caricamento dei tuoi mazzi nell'hub…",
       "emptyTitle": "Ancora niente di pubblicato.",
@@ -1272,9 +1272,9 @@ export default {
       "browser": "Nel browser",
       "yourName": "Il tuo nome",
       "wordsKnown": {
-        "one": "parola saputa",
-        "other": "parole sapute",
-        "many": "parole sapute"
+        "one": "scheda saputa",
+        "other": "schede sapute",
+        "many": "schede sapute"
       },
       "dayStreak": {
         "one": "giorno di fila",
@@ -1382,7 +1382,7 @@ export default {
       "missing_email": "Inserisci l'email.",
       "missing_password": "Inserisci una password.",
       "social_desktop_unavailable": "Per accedere con Google e GitHub serve una versione più recente dell'app. Per ora usa email e password.",
-      "social_port_busy": "Un altro accesso sta usando la connessione che serve a LioraLang. Chiudilo e riprova.",
+      "social_port_busy": "Un altro accesso sta usando la connessione che serve a Liora. Chiudilo e riprova.",
       "social_timeout": "L'accesso ha richiesto troppo tempo. Riprova.",
       "social_cancelled": "Accesso annullato.",
       "social_failed": "L'accesso non è stato completato. Riprova."
@@ -1406,7 +1406,7 @@ export default {
       "thisDevice": "Questo dispositivo",
       "forget": "Rimuovi",
       "forgetNamed": "Rimuovi {name}",
-      "app": "App LioraLang",
+      "app": "App Liora",
       "browser": "Browser",
       "activeNow": "Attivo ora",
       "active": "Attivo {time}",
@@ -1508,19 +1508,19 @@ export default {
     "repeatMissedCardsSooner": "Ripeti prima le carte sbagliate",
     "againBringsTheCardBack": "«Di nuovo» riporta la carta dopo un minuto, con una pausa per mettere alla prova la memoria.",
     "spacedRepetition": "Ripetizione dilazionata",
-    "howOftenWordsComeBack": "Quanto spesso tornano le parole. I valori predefiniti vanno bene per quasi tutti.",
+    "howOftenWordsComeBack": "Quanto spesso tornano le schede. I valori predefiniti vanno bene per la maggior parte delle persone.",
     "recommendedSchedule": "Programma consigliato",
     "useTheCurrentDefaultsFor": "Usa i valori predefiniti attuali per le risposte future. Progressi e scadenze salvati restano intatti.",
-    "newWordsADay": "Parole nuove al giorno",
-    "newWordsIntroducedPerDeck": "Parole nuove per mazzo ogni giorno. Imposta 0 per concentrarti sui ripassi.",
+    "newWordsADay": "Schede nuove al giorno",
+    "newWordsIntroducedPerDeck": "Schede nuove per mazzo al giorno. Imposta 0 per concentrarti sui ripassi.",
     "reviewsADay": "Ripassi al giorno",
     "distinctReviewCardsPerDeck": "Carte diverse da ripassare per mazzo ogni giorno. I passi di apprendimento continuano sempre.",
     "learningSteps": "Passi di apprendimento",
     "default10mAgainWaits10": "Predefinito: 10m. Di nuovo attende 10 minuti, Difficile 1 giorno, Bene 3 giorni, Facile 16 giorni. Aggiungi passaggi separati da virgole per esercitarti di più.",
     "desiredRetention": "Obiettivo di memoria",
-    "desiredRetentionHint": "La quota di parole che dovresti ancora ricordare quando tornano. Più alto significa più ripassi e meno parole dimenticate; il 90% è un buon equilibrio.",
+    "desiredRetentionHint": "La quota di risposte che vuoi ricordare al prossimo ripasso. Un valore più alto significa più ripassi; il 90% è un buon equilibrio.",
     "maximumInterval": "Pausa più lunga",
-    "maximumIntervalHint": "Nessuna parola aspetta più di così tra un ripasso e l'altro.",
+    "maximumIntervalHint": "La pausa massima tra i ripassi di una scheda.",
     "noLimit": "Nessun limite",
     "wordsIn": "Parole in",
     "translatedTo": "Tradotte in",
@@ -1549,7 +1549,7 @@ export default {
     "developerMode": "Modalità sviluppatore",
     "logLevel": "Livello di log",
     "importAndExportFiles": "Importa ed esporta file",
-    "whenAWordIsAlready": "Se una parola è già nel mazzo",
+    "whenAWordIsAlready": "Quando una scheda è già nel mazzo",
     "exportAs": "Esporta come",
     "includeExamples": "Includi esempi",
     "includeTags": "Includi tag",
@@ -1596,7 +1596,7 @@ export default {
       },
       "learning-core": {
         "title": "Studio",
-        "description": "Sessioni e quanto spesso tornano le parole."
+        "description": "Sessioni e intervalli di ripasso."
       },
       "deck-defaults": {
         "title": "Nuovi mazzi",
@@ -1667,7 +1667,7 @@ export default {
     "importFile": "Importa un file di mazzo",
     "importFileHint": "Un file .lioradeck o .json.",
     "chooseFile": "Scegli file",
-    "pasteHint": "Incolla le parole come testo JSON.",
+    "pasteHint": "Incolla un mazzo o delle schede come testo JSON.",
     "pasteJson": "Incolla JSON",
     "database": "Database",
     "location": "Posizione",
@@ -1823,9 +1823,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Accesso eseguito",
-      "doneText": "Puoi chiudere questa scheda e tornare su LioraLang.",
+      "doneText": "Puoi chiudere questa scheda e tornare su Liora.",
       "failedTitle": "Accesso non completato",
-      "failedText": "Torna su LioraLang e riprova."
+      "failedText": "Torna su Liora e riprova."
     },
     "menu": {
       "about": "Informazioni su {app}",
@@ -1858,20 +1858,20 @@ export default {
       "view": "Vista",
       "window": "Finestra",
       "help": "Aiuto",
-      "github": "LioraLang su GitHub"
+      "github": "Liora su GitHub"
     },
     "tray": {
-      "show": "Mostra LioraLang",
+      "show": "Mostra Liora",
       "quit": "Esci"
     },
     "dialogs": {
       "chooseDbFolder": "Scegli la cartella del database",
       "jsonFiles": "File JSON",
-      "deckPackages": "Mazzi LioraLang",
+      "deckPackages": "Mazzi Liora",
       "exportDeck": "Esporta mazzo",
       "importDeck": "Importa file di mazzo",
       "deckFiles": "File di mazzi",
-      "legacyPackages": "Mazzi LioraLang precedenti"
+      "legacyPackages": "Mazzi Liora precedenti"
     }
   },
   "quickAdd": {
@@ -1920,7 +1920,7 @@ export default {
       "other": "{count} carte rimosse"
     },
     "doneLabel": "Fatto",
-    "unsaved": "Alcune parole non sono ancora state aggiunte.",
+    "unsaved": "Alcune schede non sono ancora state aggiunte.",
     "keepEditing": "Continua",
     "discard": "Scartale",
     "errors": {

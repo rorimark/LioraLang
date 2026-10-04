@@ -1,7 +1,7 @@
 export const createMainState = ({
   initialPreferences,
-  stableWindowTitle = "LioraLang",
-  betaWindowTitle = "LioraLang (Beta)",
+  stableWindowTitle = "Liora",
+  betaWindowTitle = "Liora (Beta)",
 }) => {
   let mainWindow = null;
   let isQuitRequested = false;

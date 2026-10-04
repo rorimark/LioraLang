@@ -1,6 +1,6 @@
 {
   "name": "liora-lang",
-  "description": "LioraLang is a desktop app for learning languages with spaced repetition and flashcards.",
+  "description": "Liora is a flashcard app for learning and remembering languages, programming, mathematics, history and your own material.",
   "author": "Mark Storchovyi markstorchovyi@gmail.com",
   "homepage": "https://github.com/rorimark/LioraLang",
   "private": true,
@@ -140,8 +140,8 @@
         "ext": [
           "lioradeck"
         ],
-        "name": "LioraLang Deck Package",
-        "description": "LioraLang importable deck package",
+        "name": "Liora Deck Package",
+        "description": "Liora importable deck package",
         "role": "Editor"
       }
     ],

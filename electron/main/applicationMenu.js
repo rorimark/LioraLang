@@ -59,7 +59,7 @@ export const createApplicationMenuManager = ({
 
   const buildAppMenuSubmenu = (t) => {
     return [
-      { role: "about", label: t("desktop.menu.about", { app: app.name || "LioraLang" }) },
+      { role: "about", label: t("desktop.menu.about", { app: app.name || "Liora" }) },
       { type: "separator" },
       {
         label: t("nav.settings"),
@@ -68,11 +68,11 @@ export const createApplicationMenuManager = ({
       { type: "separator" },
       { role: "services", label: t("desktop.menu.services") },
       { type: "separator" },
-      { role: "hide", label: t("desktop.menu.hide", { app: app.name || "LioraLang" }) },
+      { role: "hide", label: t("desktop.menu.hide", { app: app.name || "Liora" }) },
       { role: "hideOthers", label: t("desktop.menu.hideOthers") },
       { role: "unhide", label: t("desktop.menu.showAll") },
       { type: "separator" },
-      { role: "quit", label: t("desktop.menu.quit", { app: app.name || "LioraLang" }) },
+      { role: "quit", label: t("desktop.menu.quit", { app: app.name || "Liora" }) },
     ];
   };
 
@@ -92,7 +92,7 @@ export const createApplicationMenuManager = ({
         {
           type: "separator",
         },
-        { role: "quit", label: t("desktop.menu.quit", { app: app.name || "LioraLang" }) },
+        { role: "quit", label: t("desktop.menu.quit", { app: app.name || "Liora" }) },
       );
     }
 
@@ -135,7 +135,7 @@ export const createApplicationMenuManager = ({
 
     if (process.platform === "darwin") {
       template.push({
-        label: app.name || "LioraLang",
+        label: app.name || "Liora",
         submenu: buildAppMenuSubmenu(t),
       });
     }

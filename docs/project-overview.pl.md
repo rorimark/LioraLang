@@ -2,9 +2,15 @@
 
 [English](project-overview.md) | [Русский](project-overview.ru.md) | **Polski**
 
-LioraLang pomaga zapamiętywać własny materiał za pomocą fiszek i powtórek rozłożonych w czasie. Podstawowy cykl to dodanie materiału, przypomnienie odpowiedzi, ocena i powrót w wyznaczonym terminie.
+Liora pomaga zapamiętywać własny materiał za pomocą fiszek i powtórek rozłożonych w czasie. Podstawowy cykl to dodanie materiału, przypomnienie odpowiedzi, ocena i powrót w wyznaczonym terminie.
 
 Aplikacja obsługuje słowa i wyrażenia, programowanie, reguły i zadania matematyczne, wydarzenia historyczne oraz związki przyczynowe. Użytkownik wybiera materiał lub sprawdza szkice zaproponowane przez AI.
+
+## Nazwa i zgodność
+
+Publiczna nazwa produktu to **Liora**. Aplikacja pomaga zapamiętywać materiał z różnych przedmiotów za pomocą fiszek. Języki są jednym z przedmiotów obok programowania, matematyki i historii; kolejne profile pozwolą dodać następne.
+
+Dla zgodności pozostają dotychczasowe nazwy techniczne: repozytorium GitHub i adres strony, pakiet `liora-lang`, identyfikator aplikacji desktopowej `com.lioralang.app` i nazwy instalatorów `LioraLang`. Przy zmianie publicznej nazwy aplikacja desktopowa zachowuje istniejący folder danych użytkownika. Pliki talii, dane w przeglądarce i identyfikatory synchronizacji się nie zmieniają.
 
 ## Możliwości wersji 0.9.1
 

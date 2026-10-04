@@ -1,15 +1,15 @@
 export default {
   "meta": {
-    "title": "LioraLang: flashcard gratis per imparare vocaboli con la ripetizione dilazionata",
-    "description": "Impara vocaboli con le flashcard: la ripetizione dilazionata (FSRS) ripassa ogni parola al momento giusto, l'IA compila le carte, nel browser, su computer e telefono. Gratis."
+    "title": "Liora: schede per lingue, programmazione, matematica e storia",
+    "description": "Ricorda ciò che studi con schede per materia, ripetizione dilazionata e bozze IA. Lingue, programmazione, matematica e storia su browser, computer e telefono."
   },
   "topbar": {
     "open": "Apri l'app web",
     "language": "Lingua"
   },
   "hero": {
-    "title": "L'app di flashcard che sa quando **dimenticherai.**",
-    "text": "Valuta ogni parola e LioraLang te la ripropone proprio prima che ti sfugga. Gratis, e le tue carte restano sul tuo dispositivo.",
+    "title": "Impara ciò che conta. **Ricordalo.**",
+    "text": "Lingue, codice, formule o storia. Crea schede, ricorda una risposta e lascia che i ripassi pianifichino quando tornare. Il materiale resta sul tuo dispositivo.",
     "start": "Inizia a imparare",
     "download": "Scarica per computer"
   },
@@ -22,32 +22,54 @@ export default {
   },
   "try": {
     "title": "Provalo subito.",
-    "text": "Sei parole, un vero ripasso, senza registrazione."
+    "text": "Scegli una materia e prova un vero ripasso. Senza account."
   },
   "demo": {
-    "deckName": "Viaggi e turismo",
+    "deckName": "La tua materia. Il tuo metodo.",
     "doneTitle": "Ottimo lavoro.",
-    "doneText": "Ogni parola ha ora il suo prossimo ripasso. Nell'app ciascuna torna proprio quel giorno.",
+    "doneText": "Ogni scheda ha il prossimo ripasso. Nell'app torna quando è previsto.",
     "answers": "Le tue risposte",
     "backIn": "torna tra {interval}",
     "again": "Ripassale ancora",
     "reveal": "Mostra la risposta",
     "hintGrade": "Quanto bene la sapevi? Il tempo indica quando torna.",
-    "hintThink": "Pensa alla traduzione, poi verifica.",
+    "hintThink": "Ricorda la risposta, poi controlla.",
     "keysGrade": "{keys} per valutare",
     "keysReveal": "{key} mostra la risposta",
-    "spaceKey": "Spazio"
+    "spaceKey": "Spazio",
+    "subject": "La tua materia. Il tuo metodo.",
+    "samples": {
+      "programming": {
+        "question1": "Cosa restituisce questo codice?",
+        "answer1": "Un nuovo array con valori raddoppiati: [2, 4, 6].",
+        "question2": "Cosa protegge const?",
+        "answer2": "La variabile non può essere riassegnata. Le proprietà di un oggetto possono cambiare."
+      },
+      "mathematics": {
+        "question1": "Risolvi $x^2 = 4$.",
+        "answer1": "Due soluzioni: $x = 2$ e $x = -2$.",
+        "question2": "Qual è l'area di un cerchio di raggio $r$?",
+        "answer2": "$A = \\pi r^2$."
+      },
+      "history": {
+        "question1": "Quando fu presa la Bastiglia?",
+        "answer1": "Il 14 luglio 1789.",
+        "question2": "Cosa cambiò la stampa di Gutenberg in Europa?",
+        "answer2": "Rese più facile riprodurre libri e diffondere conoscenze.",
+        "context": "Rivoluzione francese"
+      }
+    }
   },
   "ai": {
-    "title": "Scrivi una parola. Ottieni tutta la carta.",
-    "text": "Traduzione, esempio, livello e tag compaiono mentre scrivi. Tab prende tutto.",
+    "title": "Da un argomento al tuo mazzo.",
+    "text": "Scegli materia, contesto e lingua delle risposte. L'IA prepara bozze con codice, formule o spiegazioni. Controllale e modificale prima di salvarle. Servono account, internet e quota disponibile.",
     "try": "Prova l'assistente",
     "tag": "viaggi",
-    "take": "prendi tutto"
+    "take": "Compila"
   },
   "memory": {
-    "title": "Impara una volta. Ricorda per mesi.",
-    "text": "Rispondi «Bene» e una parola nuova torna tra {first}, poi tra {second}, poi tra {third}, e ogni pausa è più lunga della precedente. {reviews} la portano avanti per {span}, così le parole che sai non riempiono più la tua giornata.",
+    "title": "Ripassa al momento giusto.",
+    "text": "Con Good una nuova scheda torna dopo {first}, poi {second}, poi {third}. In questo esempio {reviews} coprono {span}. Il calendario segue le risposte, così il materiale noto non riempie la giornata.",
     "reviews": {
       "one": "{count} ripasso",
       "many": "{count} ripassi",
@@ -68,26 +90,26 @@ export default {
       "many": "{count} anni",
       "other": "{count} anni"
     },
-    "chartLabel": "Giorni tra i ripassi di una parola",
+    "chartLabel": "Giorni fra i ripassi di una scheda",
     "day": "giorno {day}"
   },
   "decks": {
-    "title": "Le tue parole. I tuoi mazzi.",
-    "text": "Crea un mazzo per qualsiasi coppia di lingue, aggiungi livelli, tag e frasi d'esempio e studia solo ciò che ti serve davvero. Importa ed esporta in JSON quando vuoi.",
+    "title": "Il tuo materiale. I tuoi mazzi.",
+    "text": "Parole ed esempi, domande e codice, problemi e formule, date e contesto. Ogni materia ha campi e schede propri. Esporta .lioradeck per condividere o conservare una copia.",
     "words": {
-      "one": "{count} parola",
-      "many": "{count} parole",
-      "other": "{count} parole"
+      "one": "{count} scheda",
+      "many": "{count} schede",
+      "other": "{count} schede"
     },
     "examples": {
       "travel": "Viaggi e turismo",
-      "falseFriends": "Falsi amici",
-      "business": "Business e startup"
+      "falseFriends": "JavaScript",
+      "business": "Matematica"
     }
   },
   "hub": {
     "title": "Qualcuno ha già fatto quel mazzo.",
-    "text": "LioraLangHub è pieno di mazzi pubblicati da altri studenti. Trovane uno, importalo con un clic e inizia a ripassare. Condividi i tuoi allo stesso modo.",
+    "text": "Trova mazzi di lingue di altri studenti e aggiungili con un clic. Programmazione, matematica e storia si condividono come file e si sincronizzano privatamente; l'Hub pubblico accetta oggi mazzi di lingue.",
     "browse": "Esplora l'hub",
     "import": "Importa",
     "inLibrary": "Nella tua libreria"
@@ -128,24 +150,28 @@ export default {
     "title": "Domande",
     "items": {
       "free": {
-        "q": "LioraLang è gratis?",
-        "a": "Sì, del tutto. Mazzi, ripassi, sincronizzazione e app desktop non costano nulla. Anche l'assistente IA è gratis con un account, fino a {count} suggerimenti al giorno."
+        "q": "Liora è gratis?",
+        "a": "Mazzi e ripassi locali sono gratuiti e senza account. Anche sincronizzazione e desktop sono gratuiti. L'IA permette oggi {count} richieste per account al giorno UTC, secondo la disponibilità del fornitore."
       },
       "why": {
-        "q": "Perché LioraLang?",
-        "a": "Scrivi una parola e Liora crea la carta per te. Tu scegli cosa conta per te; Liora pensa a traduzione, livello, esempi, tag e calendario dei ripassi."
+        "q": "Perché Liora?",
+        "a": "Materie diverse in un luogo, con campi e schede adatti. Scegli il materiale, controlli le bozze IA e lasci ai ripassi la pianificazione."
       },
       "srs": {
         "q": "Cos'è la ripetizione dilazionata?",
-        "a": "Vedi una parola poco prima di dimenticarla. Se la sai bene, torna molto più tardi. Se sbagli, torna presto."
+        "a": "Ricorda e valuta la risposta. Il materiale noto torna più tardi; quello dimenticato prima. Lo stesso calendario funziona per più materie."
       },
       "offline": {
         "q": "Funziona offline?",
-        "a": "Sì. Funziona senza internet e si sincronizza appena torni online."
+        "a": "Schede, modifica e ripassi locali funzionano offline. Apri prima l'app web online per memorizzarla. Sync, Hub e IA richiedono internet."
       },
       "languages": {
         "q": "Quali lingue posso imparare?",
         "a": "Due qualsiasi tra queste: {languages}."
+      },
+      "subjects": {
+        "q": "Cosa posso studiare?",
+        "a": "Lingue, programmazione, matematica e storia hanno campi e schede propri. Il catalogo può crescere; programmazione accetta qualsiasi tecnologia."
       }
     }
   },

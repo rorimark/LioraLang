@@ -65,6 +65,6 @@ describe("WordsTable", () => {
       />,
     );
 
-    expect(screen.getByText("No words found.")).toBeInTheDocument();
+    expect(screen.getByText("No cards found.")).toBeInTheDocument();
   });
 });

@@ -1,8 +1,8 @@
-# LioraLang
+# Liora
 
 **English** | [Русский](README.ru.md) | [Polski](README.pl.md)
 
-LioraLang helps you learn from your own flashcards. Create a deck, add what you want to remember, and review it when it is due. It runs in a browser and as a desktop app. Local study works without an account.
+Liora is a flashcard app for languages, programming, mathematics, history and your own study material. Create a deck, add what you want to remember, and review it when it is due. It runs in a browser and as a desktop app. Local study works without an account.
 
 [Open the web app](https://liora-lang.vercel.app/app/learn) · [Download the desktop app](https://github.com/rorimark/LioraLang/releases/latest) · [Documentation](docs/README.md)
 

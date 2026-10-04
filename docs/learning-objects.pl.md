@@ -2,7 +2,7 @@
 
 [English](learning-objects.md) | [Русский](learning-objects.ru.md) | **Polski**
 
-LioraLang obsługuje języki, programowanie, matematykę i historię. Katalog ma rosnąć bez warunków w każdym formularzu i tabeli dla każdego przedmiotu.
+Liora obsługuje języki, programowanie, matematykę i historię. Katalog ma rosnąć bez warunków w każdym formularzu i tabeli dla każdego przedmiotu.
 
 ## Wspólny wpis
 

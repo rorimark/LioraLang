@@ -150,7 +150,7 @@ export default {
     "signIn": "Sign in",
     "signInOrUp": "Sign in or create an account",
     "primary": "Main navigation",
-    "brandToLearn": "LioraLang, go to Learn"
+    "brandToLearn": "Liora, go to Learn"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Deck Details",
-      "subtitle": "Browse the words of a deck, filter and review them."
+      "subtitle": "Browse, filter and review the cards in a deck."
     },
     "deckEdit": {
       "title": "Deck Editor",
-      "subtitle": "Set the deck's languages, add words and keep it up to date."
+      "subtitle": "Choose a subject, set its context and add cards."
     },
     "progress": {
       "title": "Progress",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Set up your study sessions, the app and your data."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Learn words that stay."
+      "title": "Liora",
+      "subtitle": "Remember what you study."
     }
   },
   "titleBar": {
@@ -406,12 +406,12 @@ export default {
     "status": {
       "exportedEmpty": "Exported “{name}” as an empty deck",
       "exportedNoPath": {
-        "one": "Exported “{name}”: {count} word (file location unknown)",
-        "other": "Exported “{name}”: {count} words (file location unknown)"
+        "one": "Exported “{name}”: {count} card (file location unknown)",
+        "other": "Exported “{name}”: {count} cards (file location unknown)"
       },
       "exported": {
-        "one": "Exported “{name}”: {count} word",
-        "other": "Exported “{name}”: {count} words"
+        "one": "Exported “{name}”: {count} card",
+        "other": "Exported “{name}”: {count} cards"
       },
       "publishUpToDate": {
         "one": "“{name}” is already up to date on the hub (v{version}, {count} word)",
@@ -433,7 +433,7 @@ export default {
       "delete": "Could not delete the deck.",
       "notFound": "This deck no longer exists.",
       "load": "Could not load your decks.",
-      "loadWords": "Could not load the words of this deck."
+      "loadWords": "Could not load the cards of this deck."
     },
     "table": {
       "label": "Decks",
@@ -454,29 +454,29 @@ export default {
     "newDeck": "New deck",
     "newMenu": {
       "empty": "Empty deck",
-      "emptyHint": "Name it and add words yourself.",
+      "emptyHint": "Choose a subject and add your own cards.",
       "file": "From a file",
       "fileHint": ".lioradeck, .lioralang or .json",
       "json": "From JSON",
-      "jsonHint": "Paste a deck or a list of words.",
+      "jsonHint": "Paste a deck or a list of cards.",
       "ai": "Collect a deck with AI",
-      "aiHint": "Give a topic and a level, then look the words over"
+      "aiHint": "Choose a subject and topic, then review the drafts."
     },
     "row": {
       "learned": "Learned",
       "review": "Today",
       "done": "All reviewed",
-      "empty": "No words yet",
+      "empty": "No cards yet",
       "learn": "Learn",
       "learnNamed": "Learn {name}",
-      "learnedOf": "{known} of {words} words learned",
+      "learnedOf": "{known} of {words} cards learned",
       "due": {
         "one": "{count} to review",
         "other": "{count} to review"
       },
       "new": {
-        "one": "{count} new word",
-        "other": "{count} new words"
+        "one": "{count} new card",
+        "other": "{count} new cards"
       }
     }
   },
@@ -484,13 +484,13 @@ export default {
     "importedDeck": "Imported deck",
     "deckNameOptional": "Deck name (optional)",
     "json": {
-      "description": "Paste a deck package (.lioradeck or .lioralang) or a plain array of words, as JSON.",
+      "description": "Paste a deck or a list of cards. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Leave empty to use the name in the JSON",
       "label": "Deck JSON",
       "placeholder": "Paste deck JSON here"
     },
     "file": {
-      "description": "Opens .lioradeck, .lioralang and .json files. Check the details and the languages, then import.",
+      "description": "Choose a deck file and review its contents before importing. (.lioradeck, .lioralang, .json)",
       "confirm": "Import",
       "namePlaceholder": "Leave empty to use the file name",
       "detected": "Languages found in the file:",
@@ -501,8 +501,8 @@ export default {
       "optional": "Optional language",
       "selected": "Selected file: {name}",
       "wordsInFile": {
-        "one": "{count} word in the file",
-        "other": "{count} words in the file"
+        "one": "{count} card in the file",
+        "other": "{count} cards in the file"
       },
       "savedAs": "Saved as: {name}",
       "nameFromPackage": "the name in the file"
@@ -516,13 +516,13 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "Imported “{name}”: {count} word",
-        "other": "Imported “{name}”: {count} words"
+        "one": "Imported “{name}”: {count} card",
+        "other": "Imported “{name}”: {count} cards"
       },
       "importedWithSkipped": "Imported “{name}”: {added} added, {skipped} skipped",
       "nothingNew": {
-        "one": "Nothing new to import: {count} word skipped",
-        "other": "Nothing new to import: {count} words skipped"
+        "one": "Nothing new to import: {count} card skipped",
+        "other": "Nothing new to import: {count} cards skipped"
       }
     },
     "errors": {
@@ -534,7 +534,7 @@ export default {
       "optionalLanguage": "The optional language must differ from the source and target languages.",
       "import": "Could not import the deck.",
       "pasteFirst": "Paste the deck JSON first.",
-      "parse": "This is not a deck LioraLang can read. Check that the JSON is complete."
+      "parse": "This is not a deck Liora can read. Check that the JSON is complete."
     }
   },
   "deleteDeck": {
@@ -572,7 +572,7 @@ export default {
       "one": "{count} result",
       "other": "{count} results"
     },
-    "searchPlaceholder": "Search by word or translation",
+    "searchPlaceholder": "Search questions and answers",
     "search": "Search cards",
     "sortLabel": "Sort cards",
     "clear": "Clear filters",
@@ -583,9 +583,9 @@ export default {
     "showFilters": "Show filters"
   },
   "wordsTable": {
-    "label": "Words",
-    "caption": "Words that match the filters",
-    "empty": "No words found.",
+    "label": "Cards",
+    "caption": "Cards that match the filters",
+    "empty": "No cards found.",
     "tapHint": "Tap to expand"
   },
   "deck": {
@@ -595,21 +595,21 @@ export default {
     "exportShort": "Export",
     "addWords": "Add words",
     "wordsCount": {
-      "one": "{count} word",
-      "other": "{count} words"
+      "one": "{count} card",
+      "other": "{count} cards"
     },
-    "emptyDeck": "This deck has no words yet.",
-    "emptyFilter": "No words here.",
+    "emptyDeck": "This deck has no cards yet.",
+    "emptyFilter": "No cards here.",
     "study": {
       "title": "Your progress",
       "notStarted": "You have not studied this deck yet",
       "newWaiting": {
-        "one": "{count} new word to start with",
-        "other": "{count} new words to start with"
+        "one": "{count} new card to start with",
+        "other": "{count} new cards to start with"
       },
       "due": {
-        "one": "{count} word to review now",
-        "other": "{count} words to review now"
+        "one": "{count} card to review now",
+        "other": "{count} cards to review now"
       },
       "caughtUp": "Nothing to review right now",
       "nextReview": "Next review {when}",
@@ -621,7 +621,7 @@ export default {
       "recall": "{percent} remembered in the last 30 days"
     },
     "filter": {
-      "label": "Show words",
+      "label": "Show cards",
       "all": "All",
       "due": "To review",
       "known": "Remembered"
@@ -838,7 +838,7 @@ export default {
         "other": "in {count} days"
       },
       "title": "Today",
-      "noWords": "No words yet",
+      "noWords": "No cards yet",
       "pickDeck": "Pick a deck from the community to start learning.",
       "browse": "Browse decks",
       "due": {
@@ -852,7 +852,7 @@ export default {
       "allIn": "All in {name}.",
       "reviewNow": "Review now",
       "caughtUp": "All caught up",
-      "learnNew": "Learn new words"
+      "learnNew": "Learn new cards"
     },
     "streak": {
       "reviewsToday": {
@@ -914,12 +914,12 @@ export default {
       "text": "Your learning history could not be read. Try again in a moment."
     },
     "words": {
-      "eyebrow": "Your words",
+      "eyebrow": "Your cards",
       "youKnow": {
-        "one": "word you know",
-        "other": "words you know"
+        "one": "card you know",
+        "other": "cards you know"
       },
-      "empty": "Add a deck and the words you learn will be counted here.",
+      "empty": "Add a deck and the cards you learn will be counted here.",
       "outOf": {
         "one": "Out of {count} in your decks.",
         "other": "Out of {count} in your decks."
@@ -928,9 +928,9 @@ export default {
         "one": "{count} of them is in long-term memory.",
         "other": "{count} of them are in long-term memory."
       },
-      "longTermHint": "A word reaches long-term memory when its next review is three weeks away.",
-      "byStage": "Your words by stage: {summary}",
-      "note": "Known words are the recent and the long-term ones: answered right, and not due again today."
+      "longTermHint": "A card reaches long-term memory when its next review is three weeks away.",
+      "byStage": "Your cards by stage: {summary}",
+      "note": "Known cards are the recent and the long-term ones: answered right, and not due again today."
     },
     "forecast": {
       "title": "Coming up",
@@ -938,7 +938,7 @@ export default {
         "one": "{count} review in 2 weeks",
         "other": "{count} reviews in 2 weeks"
       },
-      "empty": "Nothing is scheduled yet. Words you study come back here, spaced further apart each time you remember them.",
+      "empty": "Nothing is scheduled yet. Cards you study come back here, spaced further apart each time you remember them.",
       "label": {
         "one": "Reviews due over the next {count} day. Use the arrow keys to read each day.",
         "other": "Reviews due over the next {count} days. Use the arrow keys to read each day."
@@ -975,7 +975,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. New.",
     "progressLabel": "{title}: progress",
-    "undatedNote": "Counted from your words as they are, so the day shown is when this device first saw it earned.",
+    "undatedNote": "Counted from your cards as they are, so the day shown is when this device first saw it earned.",
     "earnedOn": "Earned on {date}",
     "earnedBy": "Earned by {date}",
     "progress": {
@@ -983,18 +983,18 @@ export default {
       "other": "{progress} of {target} {unit}, {count} to go"
     },
     "known": {
-      "title": "Vocabulary",
+      "title": "Knowledge",
       "unit": {
-        "one": "word",
-        "other": "words"
+        "one": "card",
+        "other": "cards"
       },
       "goal": {
-        "one": "Know {count} word.",
-        "other": "Know {count} words."
+        "one": "Know {count} card.",
+        "other": "Know {count} cards."
       },
       "now": {
-        "one": "{count} word known now",
-        "other": "{count} words known now"
+        "one": "{count} card known now",
+        "other": "{count} cards known now"
       }
     },
     "streak": {
@@ -1015,16 +1015,16 @@ export default {
     "mature": {
       "title": "Long-term memory",
       "unit": {
-        "one": "word",
-        "other": "words"
+        "one": "card",
+        "other": "cards"
       },
       "goal": {
-        "one": "Have {count} word in long-term memory, with its next review three weeks away or more.",
-        "other": "Have {count} words in long-term memory, with their next review three weeks away or more."
+        "one": "Know {count} card. The next review is at least three weeks away.",
+        "other": "Know {count} cards. The next review is at least three weeks away."
       },
       "now": {
-        "one": "{count} word in long-term memory",
-        "other": "{count} words in long-term memory"
+        "one": "{count} card in long-term memory",
+        "other": "{count} cards in long-term memory"
       }
     },
     "days": {
@@ -1095,10 +1095,10 @@ export default {
         "one": "deck",
         "other": "decks"
       },
-      "goalFirst": "Know every word in a deck of {min} words or more.",
+      "goalFirst": "Know every card in a deck of at least {min} cards.",
       "goal": {
-        "one": "Know every word in {count} deck of {min} words or more.",
-        "other": "Know every word in {count} decks of {min} words or more."
+        "one": "Know every card in {count} deck of at least {min} cards.",
+        "other": "Know every card in {count} decks of at least {min} cards each."
       },
       "now": {
         "one": "{count} deck fully known",
@@ -1143,7 +1143,7 @@ export default {
       "back": "Back to sign in"
     },
     "providersLabel": "Sign in with a provider",
-    "desktopProvidersNote": "Sign-in opens in your browser. When it is done, come back to LioraLang.",
+    "desktopProvidersNote": "Sign-in opens in your browser. When it is done, come back to Liora.",
     "hub": {
       "loading": "Loading your Hub decks…",
       "emptyTitle": "Nothing published yet.",
@@ -1201,8 +1201,8 @@ export default {
       "browser": "In the browser",
       "yourName": "Your name",
       "wordsKnown": {
-        "one": "word known",
-        "other": "words known"
+        "one": "card known",
+        "other": "cards known"
       },
       "dayStreak": {
         "one": "day streak",
@@ -1306,7 +1306,7 @@ export default {
       "missing_email": "Enter your email.",
       "missing_password": "Enter a password.",
       "social_desktop_unavailable": "Google and GitHub sign-in need a newer version of the desktop app. Use email and password for now.",
-      "social_port_busy": "Another sign-in is using the connection LioraLang needs. Close it and try again.",
+      "social_port_busy": "Another sign-in is using the connection Liora needs. Close it and try again.",
       "social_timeout": "Sign-in took too long. Try again.",
       "social_cancelled": "Sign-in was cancelled.",
       "social_failed": "Sign-in did not finish. Try again."
@@ -1330,7 +1330,7 @@ export default {
       "thisDevice": "This device",
       "forget": "Remove",
       "forgetNamed": "Remove {name}",
-      "app": "LioraLang app",
+      "app": "Liora app",
       "browser": "Browser",
       "activeNow": "Active now",
       "active": "Active {time}",
@@ -1429,19 +1429,19 @@ export default {
     "repeatMissedCardsSooner": "Repeat missed cards sooner",
     "againBringsTheCardBack": "Again brings the card back after one minute, with a break to test recall.",
     "spacedRepetition": "Spaced repetition",
-    "howOftenWordsComeBack": "How often words come back. The defaults suit most people.",
+    "howOftenWordsComeBack": "How often cards return. The defaults suit most people.",
     "recommendedSchedule": "Recommended schedule",
     "useTheCurrentDefaultsFor": "Use the current defaults for future answers. Your saved progress and due dates stay intact.",
-    "newWordsADay": "New words a day",
-    "newWordsIntroducedPerDeck": "New words introduced per deck each day. Set 0 to focus on reviews.",
+    "newWordsADay": "New cards a day",
+    "newWordsIntroducedPerDeck": "New cards introduced per deck each day. Set 0 to focus on reviews.",
     "reviewsADay": "Reviews a day",
     "distinctReviewCardsPerDeck": "Distinct review cards per deck each day. Learning steps always continue.",
     "learningSteps": "Learning steps",
     "default10mAgainWaits10": "Default: 10m. Again waits 10 minutes, Hard 1 day, Good 3 days, Easy 16 days. Add steps separated by commas for more practice.",
     "desiredRetention": "Target recall",
-    "desiredRetentionHint": "The share of words you should still know when they come back. Higher means more reviews and fewer forgotten words; 90% is a good balance.",
+    "desiredRetentionHint": "The share of answers you should still remember when cards return. Higher means more reviews; 90% is a good balance.",
     "maximumInterval": "Longest gap",
-    "maximumIntervalHint": "No word waits longer than this between reviews.",
+    "maximumIntervalHint": "No card waits longer than this between reviews.",
     "noLimit": "No limit",
     "wordsIn": "Words in",
     "translatedTo": "Translated to",
@@ -1470,7 +1470,7 @@ export default {
     "developerMode": "Developer mode",
     "logLevel": "Log level",
     "importAndExportFiles": "Import and export files",
-    "whenAWordIsAlready": "When a word is already in the deck",
+    "whenAWordIsAlready": "When a card is already in the deck",
     "exportAs": "Export as",
     "includeExamples": "Include examples",
     "includeTags": "Include tags",
@@ -1516,7 +1516,7 @@ export default {
       },
       "learning-core": {
         "title": "Learning",
-        "description": "Sessions, and how often words come back."
+        "description": "Sessions and review intervals."
       },
       "deck-defaults": {
         "title": "New decks",
@@ -1587,7 +1587,7 @@ export default {
     "importFile": "Import a deck file",
     "importFileHint": "A .lioradeck or .json file.",
     "chooseFile": "Choose file",
-    "pasteHint": "Paste the words as JSON text.",
+    "pasteHint": "Paste a deck or cards as JSON text.",
     "pasteJson": "Paste JSON",
     "database": "Database",
     "location": "Location",
@@ -1740,9 +1740,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "You are signed in",
-      "doneText": "You can close this tab and go back to LioraLang.",
+      "doneText": "You can close this tab and go back to Liora.",
       "failedTitle": "Sign-in did not finish",
-      "failedText": "Go back to LioraLang and try again."
+      "failedText": "Go back to Liora and try again."
     },
     "menu": {
       "about": "About {app}",
@@ -1775,20 +1775,20 @@ export default {
       "view": "View",
       "window": "Window",
       "help": "Help",
-      "github": "LioraLang on GitHub"
+      "github": "Liora on GitHub"
     },
     "tray": {
-      "show": "Show LioraLang",
+      "show": "Show Liora",
       "quit": "Quit"
     },
     "dialogs": {
       "chooseDbFolder": "Choose database folder",
       "jsonFiles": "JSON files",
-      "deckPackages": "LioraLang decks",
+      "deckPackages": "Liora decks",
       "exportDeck": "Export deck",
       "importDeck": "Import deck file",
       "deckFiles": "Deck files",
-      "legacyPackages": "Older LioraLang decks"
+      "legacyPackages": "Older Liora decks"
     }
   },
   "quickAdd": {
@@ -1835,7 +1835,7 @@ export default {
       "other": "Removed {count} cards"
     },
     "doneLabel": "Done",
-    "unsaved": "Some words are not added yet.",
+    "unsaved": "Some cards are not added yet.",
     "keepEditing": "Keep editing",
     "discard": "Discard them",
     "errors": {

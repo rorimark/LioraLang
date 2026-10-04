@@ -80,6 +80,7 @@ import { createLogger } from "./main/logging.js";
 import { createAnalyticsManager } from "./main/analytics.js";
 import { createAppLifecycleManager } from "./main/appLifecycle.js";
 import { createMainState } from "./main/state.js";
+import { applyPublicBrand } from "./main/branding.js";
 import { createMainTranslator } from "./main/interfaceLanguage.js";
 import { createSecureStorageService } from "./services/secureStorage.service.js";
 import {
@@ -99,6 +100,8 @@ import { createWindowThemeManager } from "./main/windowTheme.js";
 import { createWindowBroadcast } from "./main/windowBroadcast.js";
 import { DEFAULT_APP_PREFERENCES } from "./shared/appPreferencesDefaults.js";
 import { isTrustedHubStorageUrl, toOrigin } from "./shared/hubRemoteImport.js";
+
+applyPublicBrand(app);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

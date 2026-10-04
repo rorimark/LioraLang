@@ -2,7 +2,7 @@
 
 **English** | [Русский](onboarding.ru.md) | [Polski](onboarding.pl.md)
 
-This guide covers LioraLang 0.9.1. The project uses Node.js, pnpm and Vitest. Bun is not the main build or test tool.
+This guide covers Liora 0.9.1. The project uses Node.js, pnpm and Vitest. Bun is not the main build or test tool.
 
 ## Requirements
 

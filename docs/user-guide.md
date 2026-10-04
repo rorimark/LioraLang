@@ -2,7 +2,7 @@
 
 **English** | [Русский](user-guide.ru.md) | [Polski](user-guide.pl.md)
 
-LioraLang stores material in decks and schedules each card for review. Local study needs no registration. An account enables sync, Hub publishing and AI.
+Liora stores material in decks and schedules each card for review. Local study needs no registration. An account enables sync, Hub publishing and AI.
 
 ## Create a deck
 

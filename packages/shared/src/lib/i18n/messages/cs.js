@@ -150,7 +150,7 @@ export default {
     "signIn": "Přihlásit se",
     "signInOrUp": "Přihlaste se nebo si vytvořte účet",
     "primary": "Hlavní navigace",
-    "brandToLearn": "LioraLang, přejít na Učit se"
+    "brandToLearn": "Liora, přejít na Učit se"
   },
   "pages": {
     "learn": {
@@ -171,11 +171,11 @@ export default {
     },
     "deckDetails": {
       "title": "Balíček",
-      "subtitle": "Slova balíčku s filtry a hledáním."
+      "subtitle": "Procházejte, filtrujte a opakujte kartičky balíčku."
     },
     "deckEdit": {
       "title": "Editor balíčku",
-      "subtitle": "Jazyky balíčku, nová slova a úpravy."
+      "subtitle": "Vyberte předmět, kontext a přidejte kartičky."
     },
     "progress": {
       "title": "Pokrok",
@@ -194,8 +194,8 @@ export default {
       "subtitle": "Studijní relace, aplikace a vaše data."
     },
     "default": {
-      "title": "LioraLang",
-      "subtitle": "Slova, která zůstanou."
+      "title": "Liora",
+      "subtitle": "Pamatujte si, co studujete."
     }
   },
   "titleBar": {
@@ -407,14 +407,14 @@ export default {
     "status": {
       "exportedEmpty": "„{name}“ exportován jako prázdný balíček",
       "exportedNoPath": {
-        "one": "„{name}“ exportován: {count} slovo (umístění souboru neznámé)",
-        "few": "„{name}“ exportován: {count} slova (umístění souboru neznámé)",
-        "other": "„{name}“ exportován: {count} slov (umístění souboru neznámé)"
+        "one": "„{name}“ exportován: {count} kartička (umístění souboru neznámé)",
+        "few": "„{name}“ exportován: {count} kartičky (umístění souboru neznámé)",
+        "other": "„{name}“ exportován: {count} kartiček (umístění souboru neznámé)"
       },
       "exported": {
-        "one": "„{name}“ exportován: {count} slovo",
-        "few": "„{name}“ exportován: {count} slova",
-        "other": "„{name}“ exportován: {count} slov"
+        "one": "„{name}“ exportován: {count} kartička",
+        "few": "„{name}“ exportován: {count} kartičky",
+        "other": "„{name}“ exportován: {count} kartiček"
       },
       "publishUpToDate": {
         "one": "„{name}“ je v hubu už aktuální (v{version}, {count} slovo)",
@@ -438,7 +438,7 @@ export default {
       "delete": "Balíček nešlo smazat.",
       "notFound": "Tento balíček už neexistuje.",
       "load": "Vaše balíčky nešlo načíst.",
-      "loadWords": "Slova tohoto balíčku nešlo načíst."
+      "loadWords": "Kartičky tohoto balíčku nešlo načíst."
     },
     "table": {
       "label": "Balíčky",
@@ -459,31 +459,31 @@ export default {
     "newDeck": "Nový balíček",
     "newMenu": {
       "empty": "Prázdný balíček",
-      "emptyHint": "Pojmenujte ho a přidejte slova sami.",
+      "emptyHint": "Vyberte předmět a přidejte vlastní kartičky.",
       "file": "Ze souboru",
       "fileHint": ".lioradeck, .lioralang nebo .json",
       "json": "Z JSON",
-      "jsonHint": "Vložte balíček nebo seznam slov.",
+      "jsonHint": "Vložte balíček nebo seznam kartiček.",
       "ai": "Sestavit balíček s AI",
-      "aiHint": "Zadejte téma a úroveň, pak slova projděte"
+      "aiHint": "Vyberte předmět a téma, pak ověřte návrhy."
     },
     "row": {
       "learned": "Naučeno",
       "review": "Dnes",
       "done": "Vše zopakováno",
-      "empty": "Zatím žádná slova",
+      "empty": "Zatím žádné kartičky",
       "learn": "Učit se",
       "learnNamed": "Učit se {name}",
-      "learnedOf": "Naučeno {known} z {words} slov",
+      "learnedOf": "Naučeno {known} z {words} kartiček",
       "due": {
         "one": "{count} k opakování",
         "few": "{count} k opakování",
         "other": "{count} k opakování"
       },
       "new": {
-        "one": "{count} nové slovo",
-        "few": "{count} nová slova",
-        "other": "{count} nových slov"
+        "one": "{count} nová kartička",
+        "few": "{count} nové kartičky",
+        "other": "{count} nových kartiček"
       }
     }
   },
@@ -491,13 +491,13 @@ export default {
     "importedDeck": "Importovaný balíček",
     "deckNameOptional": "Název balíčku (nepovinné)",
     "json": {
-      "description": "Vložte balíček (.lioradeck nebo .lioralang) nebo prostý seznam slov ve formátu JSON.",
+      "description": "Vložte balíček nebo seznam kartiček. (.lioradeck, .lioralang, .json)",
       "namePlaceholder": "Ponechte prázdné pro název z JSON",
       "label": "JSON balíčku",
       "placeholder": "Sem vložte JSON balíčku"
     },
     "file": {
-      "description": "Otevírá soubory .lioradeck, .lioralang a .json. Zkontrolujte podrobnosti a jazyky a pak importujte.",
+      "description": "Vyberte soubor balíčku a před importem zkontrolujte obsah. (.lioradeck, .lioralang, .json)",
       "confirm": "Importovat",
       "namePlaceholder": "Ponechte prázdné pro název souboru",
       "detected": "Jazyky v souboru:",
@@ -508,9 +508,9 @@ export default {
       "optional": "Další jazyk",
       "selected": "Vybraný soubor: {name}",
       "wordsInFile": {
-        "one": "{count} slovo v souboru",
-        "few": "{count} slova v souboru",
-        "other": "{count} slov v souboru"
+        "one": "{count} kartička v souboru",
+        "few": "{count} kartičky v souboru",
+        "other": "{count} kartiček v souboru"
       },
       "savedAs": "Uloží se jako: {name}",
       "nameFromPackage": "název ze souboru"
@@ -524,15 +524,15 @@ export default {
     },
     "status": {
       "imported": {
-        "one": "„{name}“ importován: {count} slovo",
-        "few": "„{name}“ importován: {count} slova",
-        "other": "„{name}“ importován: {count} slov"
+        "one": "„{name}“ importován: {count} kartička",
+        "few": "„{name}“ importován: {count} kartičky",
+        "other": "„{name}“ importován: {count} kartiček"
       },
       "importedWithSkipped": "„{name}“ importován: přidáno {added}, přeskočeno {skipped}",
       "nothingNew": {
-        "one": "Nic nového k importu: přeskočeno {count} slovo",
-        "few": "Nic nového k importu: přeskočena {count} slova",
-        "other": "Nic nového k importu: přeskočeno {count} slov"
+        "one": "Nic nového k importu: přeskočena {count} kartička",
+        "few": "Nic nového k importu: přeskočeny {count} kartičky",
+        "other": "Nic nového k importu: přeskočeno {count} kartiček"
       }
     },
     "errors": {
@@ -544,7 +544,7 @@ export default {
       "optionalLanguage": "Další jazyk se musí lišit od zdrojového i cílového.",
       "import": "Balíček nešlo importovat.",
       "pasteFirst": "Nejdřív vložte JSON balíčku.",
-      "parse": "LioraLang tento balíček neumí přečíst. Zkontrolujte, že je JSON úplný."
+      "parse": "Liora tento balíček neumí přečíst. Zkontrolujte, že je JSON úplný."
     }
   },
   "deleteDeck": {
@@ -583,7 +583,7 @@ export default {
       "few": "{count} výsledky",
       "other": "{count} výsledků"
     },
-    "searchPlaceholder": "Hledat slovo nebo překlad",
+    "searchPlaceholder": "Hledat otázky a odpovědi",
     "search": "Hledat kartičky",
     "sortLabel": "Řadit kartičky",
     "clear": "Vymazat filtry",
@@ -594,9 +594,9 @@ export default {
     "showFilters": "Zobrazit filtry"
   },
   "wordsTable": {
-    "label": "Slova",
-    "caption": "Slova odpovídající filtrům",
-    "empty": "Žádná slova nenalezena.",
+    "label": "Kartičky",
+    "caption": "Kartičky odpovídající filtrům",
+    "empty": "Žádné kartičky nenalezeny.",
     "tapHint": "Klepnutím rozbalíte"
   },
   "deck": {
@@ -606,27 +606,27 @@ export default {
     "exportShort": "Exportovat",
     "addWords": "Přidat slova",
     "wordsCount": {
-      "one": "{count} slovo",
-      "few": "{count} slova",
-      "many": "{count} slova",
-      "other": "{count} slov"
+      "one": "{count} kartička",
+      "few": "{count} kartičky",
+      "many": "{count} kartičky",
+      "other": "{count} kartiček"
     },
-    "emptyDeck": "Tento balíček zatím nemá žádná slova.",
-    "emptyFilter": "Tady nejsou žádná slova.",
+    "emptyDeck": "Tento balíček zatím nemá žádné kartičky.",
+    "emptyFilter": "Tady nejsou žádné kartičky.",
     "study": {
       "title": "Váš pokrok",
       "notStarted": "Tento balíček jste se ještě neučili",
       "newWaiting": {
-        "one": "Čeká {count} nové slovo",
-        "few": "Čekají {count} nová slova",
-        "many": "Čekají {count} nová slova",
-        "other": "Čeká {count} nových slov"
+        "one": "Čeká {count} nová kartička",
+        "few": "Čekají {count} nové kartičky",
+        "many": "Čekají {count} nové kartičky",
+        "other": "Čeká {count} nových kartiček"
       },
       "due": {
-        "one": "{count} slovo k opakování",
-        "few": "{count} slova k opakování",
-        "many": "{count} slova k opakování",
-        "other": "{count} slov k opakování"
+        "one": "{count} kartička k opakování",
+        "few": "{count} kartičky k opakování",
+        "many": "{count} kartičky k opakování",
+        "other": "{count} kartiček k opakování"
       },
       "caughtUp": "Teď není co opakovat",
       "nextReview": "Další opakování {when}",
@@ -640,7 +640,7 @@ export default {
       "recall": "{percent} zapamatováno za 30 dní"
     },
     "filter": {
-      "label": "Zobrazit slova",
+      "label": "Zobrazit kartičky",
       "all": "Vše",
       "due": "K opakování",
       "known": "Zapamatovaná"
@@ -871,7 +871,7 @@ export default {
         "other": "za {count} dní"
       },
       "title": "Dnes",
-      "noWords": "Zatím žádná slova",
+      "noWords": "Zatím žádné kartičky",
       "pickDeck": "Vyberte balíček komunity a začněte se učit.",
       "browse": "Procházet balíčky",
       "due": {
@@ -887,7 +887,7 @@ export default {
       "allIn": "Všechny v {name}.",
       "reviewNow": "Opakovat teď",
       "caughtUp": "Vše hotovo",
-      "learnNew": "Učit se nová slova"
+      "learnNew": "Učit se nové kartičky"
     },
     "streak": {
       "reviewsToday": {
@@ -956,13 +956,13 @@ export default {
       "text": "Historii učení nešlo přečíst. Zkuste to za chvíli znovu."
     },
     "words": {
-      "eyebrow": "Vaše slova",
+      "eyebrow": "Vaše kartičky",
       "youKnow": {
-        "one": "slovo umíte",
-        "few": "slova umíte",
-        "other": "slov umíte"
+        "one": "kartičku umíte",
+        "few": "kartičky umíte",
+        "other": "kartiček umíte"
       },
-      "empty": "Přidejte balíček a naučená slova se budou počítat tady.",
+      "empty": "Přidejte balíček a naučené kartičky se budou počítat tady.",
       "outOf": {
         "one": "Z {count} ve vašich balíčcích.",
         "few": "Z {count} ve vašich balíčcích.",
@@ -973,9 +973,9 @@ export default {
         "few": "{count} z nich jsou v dlouhodobé paměti.",
         "other": "{count} z nich je v dlouhodobé paměti."
       },
-      "longTermHint": "Slovo se dostane do dlouhodobé paměti, když je další opakování za tři týdny.",
-      "byStage": "Vaše slova podle fáze: {summary}",
-      "note": "Umíte čerstvá a dlouhodobá slova: odpověděná správně a dnes už ne na řadě."
+      "longTermHint": "Kartička přejde do dlouhodobé paměti, když je další opakování za tři týdny.",
+      "byStage": "Vaše kartičky podle fáze: {summary}",
+      "note": "Umíte čerstvé a dlouhodobé kartičky: zodpovězené správně a dnes už ne na řadě."
     },
     "forecast": {
       "title": "Brzy na řadě",
@@ -984,7 +984,7 @@ export default {
         "few": "{count} opakování za 2 týdny",
         "other": "{count} opakování za 2 týdny"
       },
-      "empty": "Zatím nic naplánováno. Procvičená slova se sem budou vracet, pokaždé v delších rozestupech, když si je pamatujete.",
+      "empty": "Zatím nic naplánováno. Procvičené kartičky se sem budou vracet, pokaždé v delších rozestupech, když si je pamatujete.",
       "label": {
         "one": "Opakování na příští {count} den. Šipkami projdete jednotlivé dny.",
         "few": "Opakování na příští {count} dny. Šipkami projdete jednotlivé dny.",
@@ -1025,7 +1025,7 @@ export default {
     "aria": "{title} {value}: {goal} {status}.",
     "ariaNew": "{title} {value}: {goal} {status}. Nová.",
     "progressLabel": "{title}: pokrok",
-    "undatedNote": "Počítá se podle vašich slov, jak jsou teď, takže datum je den, kdy ji toto zařízení poprvé vidělo získanou.",
+    "undatedNote": "Počítá se podle vašich kartiček, jak jsou teď, takže datum je den, kdy ji toto zařízení poprvé vidělo získanou.",
     "earnedOn": "Získáno {date}",
     "earnedBy": "Získáno do {date}",
     "progress": {
@@ -1034,21 +1034,21 @@ export default {
       "other": "{progress} z {target} {unit}, zbývá {count}"
     },
     "known": {
-      "title": "Slovní zásoba",
+      "title": "Znalosti",
       "unit": {
-        "one": "slovo",
-        "few": "slova",
-        "other": "slov"
+        "one": "kartička",
+        "few": "kartičky",
+        "other": "kartiček"
       },
       "goal": {
-        "one": "Umět {count} slovo.",
-        "few": "Umět {count} slova.",
-        "other": "Umět {count} slov."
+        "one": "Umět {count} kartičku.",
+        "few": "Umět {count} kartičky.",
+        "other": "Umět {count} kartiček."
       },
       "now": {
-        "one": "Teď umíte {count} slovo",
-        "few": "Teď umíte {count} slova",
-        "other": "Teď umíte {count} slov"
+        "one": "Teď umíte {count} kartičku",
+        "few": "Teď umíte {count} kartičky",
+        "other": "Teď umíte {count} kartiček"
       }
     },
     "streak": {
@@ -1072,19 +1072,19 @@ export default {
     "mature": {
       "title": "Dlouhodobá paměť",
       "unit": {
-        "one": "slovo",
-        "few": "slova",
-        "other": "slov"
+        "one": "kartička",
+        "few": "kartičky",
+        "other": "kartiček"
       },
       "goal": {
-        "one": "Mít {count} slovo v dlouhodobé paměti, s dalším opakováním za tři týdny a později.",
-        "few": "Mít {count} slova v dlouhodobé paměti, s dalším opakováním za tři týdny a později.",
-        "other": "Mít {count} slov v dlouhodobé paměti, s dalším opakováním za tři týdny a později."
+        "one": "Umět {count} kartičku. Další opakování je alespoň za tři týdny.",
+        "few": "Umět {count} kartičky. Další opakování je alespoň za tři týdny.",
+        "other": "Umět {count} kartiček. Další opakování je alespoň za tři týdny."
       },
       "now": {
-        "one": "{count} slovo v dlouhodobé paměti",
-        "few": "{count} slova v dlouhodobé paměti",
-        "other": "{count} slov v dlouhodobé paměti"
+        "one": "{count} kartička v dlouhodobé paměti",
+        "few": "{count} kartičky v dlouhodobé paměti",
+        "other": "{count} kartiček v dlouhodobé paměti"
       }
     },
     "days": {
@@ -1168,11 +1168,11 @@ export default {
         "few": "balíčky",
         "other": "balíčků"
       },
-      "goalFirst": "Umět každé slovo v balíčku o {min} a více slovech.",
+      "goalFirst": "Umět všechny kartičky balíčku s alespoň {min} kartičkami.",
       "goal": {
-        "one": "Umět každé slovo v {count} balíčku o {min} a více slovech.",
-        "few": "Umět každé slovo ve {count} balíčcích o {min} a více slovech.",
-        "other": "Umět každé slovo v {count} balíčcích o {min} a více slovech."
+        "one": "Ovládnout {count} balíček s alespoň {min} kartičkami.",
+        "few": "Ovládnout {count} balíčky s alespoň {min} kartičkami v každém.",
+        "other": "Ovládnout {count} balíčků s alespoň {min} kartičkami v každém."
       },
       "now": {
         "one": "{count} balíček zvládnutý celý",
@@ -1219,7 +1219,7 @@ export default {
       "back": "Zpět na přihlášení"
     },
     "providersLabel": "Přihlásit se přes službu",
-    "desktopProvidersNote": "Přihlášení se otevře v prohlížeči. Až skončíte, vraťte se do LioraLang.",
+    "desktopProvidersNote": "Přihlášení se otevře v prohlížeči. Až skončíte, vraťte se do Liora.",
     "hub": {
       "loading": "Načítání vašich balíčků v hubu…",
       "emptyTitle": "Zatím nic nezveřejněno.",
@@ -1279,9 +1279,9 @@ export default {
       "browser": "V prohlížeči",
       "yourName": "Vaše jméno",
       "wordsKnown": {
-        "one": "slovo umím",
-        "few": "slova umím",
-        "other": "slov umím"
+        "one": "kartička umím",
+        "few": "kartičky umím",
+        "other": "kartiček umím"
       },
       "dayStreak": {
         "one": "den v řadě",
@@ -1389,7 +1389,7 @@ export default {
       "missing_email": "Zadejte e-mail.",
       "missing_password": "Zadejte heslo.",
       "social_desktop_unavailable": "Přihlášení přes Google a GitHub vyžaduje novější verzi aplikace. Zatím použijte e-mail a heslo.",
-      "social_port_busy": "Připojení, které LioraLang potřebuje, používá jiné přihlášení. Zavřete ho a zkuste to znovu.",
+      "social_port_busy": "Připojení, které Liora potřebuje, používá jiné přihlášení. Zavřete ho a zkuste to znovu.",
       "social_timeout": "Přihlášení trvalo příliš dlouho. Zkuste to znovu.",
       "social_cancelled": "Přihlášení bylo zrušeno.",
       "social_failed": "Přihlášení se nedokončilo. Zkuste to znovu."
@@ -1413,7 +1413,7 @@ export default {
       "thisDevice": "Toto zařízení",
       "forget": "Odebrat",
       "forgetNamed": "Odebrat {name}",
-      "app": "Aplikace LioraLang",
+      "app": "Aplikace Liora",
       "browser": "Prohlížeč",
       "activeNow": "Právě aktivní",
       "active": "Aktivní {time}",
@@ -1515,19 +1515,19 @@ export default {
     "repeatMissedCardsSooner": "Opakovat chybné kartičky dřív",
     "againBringsTheCardBack": "„Znovu“ vrátí kartičku po minutě, s pauzou na prověření paměti.",
     "spacedRepetition": "Opakování v intervalech",
-    "howOftenWordsComeBack": "Jak často se slova vracejí. Výchozí hodnoty vyhovují většině lidí.",
+    "howOftenWordsComeBack": "Jak často se kartičky vracejí. Výchozí hodnoty vyhovují většině lidí.",
     "recommendedSchedule": "Doporučený rozvrh",
     "useTheCurrentDefaultsFor": "Pro další odpovědi použít aktuální výchozí hodnoty. Uložený pokrok a termíny zůstanou.",
-    "newWordsADay": "Nových slov denně",
-    "newWordsIntroducedPerDeck": "Nová slova na balíček každý den. 0 znamená jen opakování.",
+    "newWordsADay": "Nové kartičky denně",
+    "newWordsIntroducedPerDeck": "Nové kartičky na balíček každý den. 0 znamená jen opakování.",
     "reviewsADay": "Opakování denně",
     "distinctReviewCardsPerDeck": "Různé kartičky k opakování na balíček každý den. Kroky učení pokračují vždy.",
     "learningSteps": "Kroky učení",
     "default10mAgainWaits10": "Výchozí: 10m. Znovu čeká 10 minut, Těžké 1 den, Dobré 3 dny, Snadné 16 dní. Pro víc procvičování přidejte kroky oddělené čárkami.",
     "desiredRetention": "Cíl zapamatování",
-    "desiredRetentionHint": "Jakou část slov byste si měli ještě pamatovat, až se vrátí. Vyšší znamená víc opakování a méně zapomenutých slov; 90 % je dobrý kompromis.",
+    "desiredRetentionHint": "Podíl odpovědí, které si chcete pamatovat při příštím opakování. Vyšší hodnota znamená více opakování; 90 % je dobrý kompromis.",
     "maximumInterval": "Nejdelší přestávka",
-    "maximumIntervalHint": "Žádné slovo nečeká na opakování déle než tohle.",
+    "maximumIntervalHint": "Nejdelší přestávka mezi opakováními jedné kartičky.",
     "noLimit": "Bez omezení",
     "wordsIn": "Slova v jazyce",
     "translatedTo": "Přeložená do",
@@ -1556,7 +1556,7 @@ export default {
     "developerMode": "Vývojářský režim",
     "logLevel": "Úroveň protokolu",
     "importAndExportFiles": "Import a export souborů",
-    "whenAWordIsAlready": "Když už slovo v balíčku je",
+    "whenAWordIsAlready": "Když už je kartička v balíčku",
     "exportAs": "Exportovat jako",
     "includeExamples": "Zahrnout příklady",
     "includeTags": "Zahrnout štítky",
@@ -1604,7 +1604,7 @@ export default {
       },
       "learning-core": {
         "title": "Učení",
-        "description": "Relace a jak často se slova vracejí."
+        "description": "Sezení a intervaly opakování."
       },
       "deck-defaults": {
         "title": "Nové balíčky",
@@ -1675,7 +1675,7 @@ export default {
     "importFile": "Importovat soubor balíčku",
     "importFileHint": "Soubor .lioradeck nebo .json.",
     "chooseFile": "Vybrat soubor",
-    "pasteHint": "Vložte slova jako text JSON.",
+    "pasteHint": "Vložte balíček nebo kartičky jako text JSON.",
     "pasteJson": "Vložit JSON",
     "database": "Databáze",
     "location": "Umístění",
@@ -1831,9 +1831,9 @@ export default {
   "desktop": {
     "oauth": {
       "doneTitle": "Jste přihlášeni",
-      "doneText": "Tuto kartu můžete zavřít a vrátit se do LioraLang.",
+      "doneText": "Tuto kartu můžete zavřít a vrátit se do Liora.",
       "failedTitle": "Přihlášení se nedokončilo",
-      "failedText": "Vraťte se do LioraLang a zkuste to znovu."
+      "failedText": "Vraťte se do Liora a zkuste to znovu."
     },
     "menu": {
       "about": "O aplikaci {app}",
@@ -1866,20 +1866,20 @@ export default {
       "view": "Zobrazení",
       "window": "Okno",
       "help": "Nápověda",
-      "github": "LioraLang na GitHubu"
+      "github": "Liora na GitHubu"
     },
     "tray": {
-      "show": "Zobrazit LioraLang",
+      "show": "Zobrazit Liora",
       "quit": "Ukončit"
     },
     "dialogs": {
       "chooseDbFolder": "Vyberte složku pro databázi",
       "jsonFiles": "Soubory JSON",
-      "deckPackages": "Balíčky LioraLang",
+      "deckPackages": "Balíčky Liora",
       "exportDeck": "Exportovat balíček",
       "importDeck": "Importovat soubor balíčku",
       "deckFiles": "Soubory balíčků",
-      "legacyPackages": "Starší balíčky LioraLang"
+      "legacyPackages": "Starší balíčky Liora"
     }
   },
   "quickAdd": {
@@ -1928,7 +1928,7 @@ export default {
       "other": "Odebráno {count} karet"
     },
     "doneLabel": "Hotovo",
-    "unsaved": "Některá slova ještě nejsou přidaná.",
+    "unsaved": "Některé kartičky ještě nejsou přidané.",
     "keepEditing": "Pokračovat",
     "discard": "Zahodit je",
     "errors": {

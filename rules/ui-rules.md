@@ -1,4 +1,4 @@
-# LioraLang interface rules
+# Liora interface rules
 
 **English** | [Русский](ui-rules.ru.md) | [Polski](ui-rules.pl.md)
 
