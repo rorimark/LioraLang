@@ -13,7 +13,7 @@ describe("math in prose", () => {
   it("accepts multiline display notation", () => {
     expect(splitMathText("Before \\[a+b\n=c\\] after")[1]).toMatchObject({type:"math",value:"a+b\n=c",display:true});
   });
-  it.each(["Pay $5 and $10", "An unfinished $x", String.raw`literal \$x\$`, "`$variable$`", "```\n$x$\n```", "普通文本", "x² + y²"])('preserves plain prose and literal code: %s', source => {
+  it.each(["Pay $5 and $10", "$a+$b", "An unfinished $x", String.raw`literal \$x\$`, "`$variable$`", "```\n$x$\n```", "普通文本", "x² + y²"])('preserves plain prose and literal code: %s', source => {
     expect(splitMathText(source)).toEqual([{type:"text",value:source}]);
   });
   it("preserves invalid math verbatim for the renderer's fallback", () => {

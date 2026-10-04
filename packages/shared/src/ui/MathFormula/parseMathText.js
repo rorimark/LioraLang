@@ -24,7 +24,7 @@ export const splitMathText = value => {
     const source = text.slice(cursor + open.length, end);
     // Single-dollar inline notation must hug its content and stay on one line.
     // This leaves prices such as '$5 and $10' alone.
-    if (!source.trim() || (open === "$" && (source !== source.trim() || source.includes("\n") || /\d/.test(text[end + 1] || "")))) {
+    if (!source.trim() || (open === "$" && (source !== source.trim() || source.includes("\n") || /[A-Za-z0-9_]/.test(text[end + 1] || "")))) {
       cursor += open.length; continue;
     }
     if (cursor > plainStart) tokens.push({ type: "text", value: text.slice(plainStart, cursor) });
