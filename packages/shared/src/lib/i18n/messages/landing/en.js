@@ -6,21 +6,27 @@ export default {
     "description": "Remember what you study with subject-specific flashcards, spaced repetition and AI drafts. Learn languages, programming, mathematics and history on web, desktop or phone."
   },
   "topbar": {
-    "open": "Open app",
+    "open": "Open web app",
     "language": "Language"
   },
   "hero": {
-    "title": "Turn what you study **into flashcards.**",
-    "text": "Build cards for words, code, formulas or history. Liora schedules reviews from your answers.",
-    "start": "Create a deck",
-    "download": "Download app",
-    "eyebrow": "Flashcards and spaced repetition",
-    "note": "Your cards stay on your device. No account needed to start."
+    "title": "Learn what matters. **Remember it.**",
+    "text": "Languages, code, formulas or history. Create your cards, recall an answer and let spaced repetition plan when to come back. Your material stays on your device.",
+    "start": "Start learning",
+    "download": "Download for desktop"
+  },
+  "langs": {
+    "label": {
+      "one": "{count} language, any pair",
+      "other": "{count} languages, any pair"
+    }
   },
   "try": {
-    "title": "Try a card"
+    "title": "Try it right now.",
+    "text": "Choose a subject and try a real review. No account needed."
   },
   "demo": {
+    "deckName": "Your subject. Your way.",
     "doneTitle": "Nice work.",
     "doneText": "Each card now has a next review. In the app it returns when it is due.",
     "answers": "Your answers",
@@ -32,6 +38,7 @@ export default {
     "keysGrade": "{keys} grade",
     "keysReveal": "{key} shows the answer",
     "spaceKey": "Space",
+    "subject": "Your subject. Your way.",
     "samples": {
       "programming": {
         "question1": "What does this code return?",
@@ -55,14 +62,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Draft a deck with AI",
+    "title": "From a topic to your own deck.",
     "text": "Choose a subject, context and answer language. AI drafts cards with code, formulas or explanations. Review, edit and select them before saving. An account, internet and remaining daily allowance are required.",
     "try": "Try the assistant",
     "tag": "travel",
     "take": "Fill in"
   },
   "memory": {
-    "title": "A review schedule that adapts",
+    "title": "Review when it helps.",
     "text": "Answer Good and a new card comes back in {first}, then {second}, then {third}. {reviews} spread across {span} in this example. The schedule adapts to your answers, so remembered material stops crowding your day.",
     "reviews": {
       "one": "{count} review",
@@ -84,7 +91,7 @@ export default {
     "day": "day {day}"
   },
   "decks": {
-    "title": "Create, import and share decks",
+    "title": "Your material. Your decks.",
     "text": "Use words and examples, questions and code, problems and formulas, or dates and context. Each subject has its own fields and card design. Export a .lioradeck file to share or keep a copy.",
     "words": {
       "one": "{count} card",
@@ -97,14 +104,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Shared language decks",
+    "title": "Somebody already made that deck.",
     "text": "Find language decks shared by other learners and add them in a click. Programming, mathematics and history decks can be shared as files and synced privately; public Hub publishing currently supports language decks.",
     "browse": "Browse the hub",
     "import": "Import",
     "inLibrary": "In your library"
   },
   "anywhere": {
-    "title": "Your library on web and desktop",
+    "title": "One account, every device.",
     "text": "Study in the browser, on macOS or Windows, or on your phone. Sign in, and your decks, pictures and progress follow you from one to the next.",
     "web": {
       "title": "Web",
@@ -121,7 +128,7 @@ export default {
     "synced": "In sync"
   },
   "phone": {
-    "title": "Study from your home screen",
+    "title": "On your phone, it’s an app.",
     "text": "Add it to your home screen: its own icon, full screen, works offline.",
     "ios": {
       "title": "iPhone and iPad",
@@ -136,7 +143,7 @@ export default {
     "fullscreen": "Full screen"
   },
   "faq": {
-    "title": "About Liora",
+    "title": "Questions",
     "items": {
       "free": {
         "q": "Is Liora free?",
@@ -165,7 +172,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Create your first deck"
+    "title": "Your first review takes a minute."
   },
   "footer": {
     "madeBy": "Made by {name}",

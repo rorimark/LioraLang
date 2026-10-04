@@ -4,21 +4,28 @@ export default {
     "description": "Recuerda lo que estudias con tarjetas por materia, repaso espaciado y borradores de IA. Idiomas, programación, matemáticas e historia en navegador, ordenador y móvil."
   },
   "topbar": {
-    "open": "Abrir app",
+    "open": "Abrir la app web",
     "language": "Idioma"
   },
   "hero": {
-    "title": "Lo que estudias, **en tarjetas.**",
-    "text": "Palabras, código, fórmulas o historia. Liora programa repasos según tus respuestas.",
-    "start": "Crear un mazo",
-    "download": "Descargar app",
-    "eyebrow": "Tarjetas y repetición espaciada",
-    "note": "Tus tarjetas se quedan en tu dispositivo. Puedes empezar sin cuenta."
+    "title": "Aprende lo importante. **Recuérdalo.**",
+    "text": "Idiomas, código, fórmulas o historia. Crea tarjetas, recuerda una respuesta y deja que el repaso planifique cuándo volver. Tu material permanece en tu dispositivo.",
+    "start": "Empezar a aprender",
+    "download": "Versión de escritorio"
+  },
+  "langs": {
+    "label": {
+      "one": "{count} idioma, cualquier par",
+      "many": "{count} idiomas, cualquier par",
+      "other": "{count} idiomas, cualquier par"
+    }
   },
   "try": {
-    "title": "Prueba una tarjeta"
+    "title": "Pruébalo ahora mismo.",
+    "text": "Elige una materia y prueba un repaso real. Sin cuenta."
   },
   "demo": {
+    "deckName": "Tu materia. Tu forma.",
     "doneTitle": "Buen trabajo.",
     "doneText": "Cada tarjeta tiene su próximo repaso. En la app volverá cuando corresponda.",
     "answers": "Tus respuestas",
@@ -30,6 +37,7 @@ export default {
     "keysGrade": "{keys} califica",
     "keysReveal": "{key} muestra la respuesta",
     "spaceKey": "Espacio",
+    "subject": "Tu materia. Tu forma.",
     "samples": {
       "programming": {
         "question1": "¿Qué devuelve este código?",
@@ -53,14 +61,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Crea borradores de mazos con IA",
+    "title": "De un tema a tu propio mazo.",
     "text": "Elige materia, contexto e idioma de respuesta. La IA prepara borradores con código, fórmulas o explicaciones. Revísalos y edítalos antes de guardar. Requiere cuenta, internet y cuota diaria disponible.",
     "try": "Probar el asistente",
     "tag": "viajes",
     "take": "Rellenar"
   },
   "memory": {
-    "title": "Repasos según tus respuestas",
+    "title": "Repasa en el momento adecuado.",
     "text": "Con Good, una tarjeta nueva vuelve en {first}, luego {second} y {third}. En este ejemplo, {reviews} se reparten en {span}. El plan se adapta a tus respuestas para que lo conocido no ocupe todo el día.",
     "reviews": {
       "one": "{count} repaso",
@@ -86,7 +94,7 @@ export default {
     "day": "día {day}"
   },
   "decks": {
-    "title": "Crea, importa y comparte mazos",
+    "title": "Tu material. Tus mazos.",
     "text": "Palabras y ejemplos, preguntas y código, problemas y fórmulas, fechas y contexto. Cada materia tiene campos y tarjetas propios. Exporta .lioradeck para compartir o conservar una copia.",
     "words": {
       "one": "{count} tarjeta",
@@ -100,14 +108,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Mazos de idiomas compartidos",
+    "title": "Alguien ya hizo ese mazo.",
     "text": "Encuentra mazos de idiomas de otros estudiantes y añádelos con un clic. Programación, matemáticas e historia se comparten como archivos y se sincronizan en privado; el Hub público admite actualmente mazos de idiomas.",
     "browse": "Explorar el hub",
     "import": "Importar",
     "inLibrary": "En tu biblioteca"
   },
   "anywhere": {
-    "title": "Tu biblioteca en la web y el escritorio",
+    "title": "Una cuenta, todos tus dispositivos.",
     "text": "Estudia en el navegador, en macOS o Windows, o en el móvil. Inicia sesión y tus mazos, imágenes y progreso te acompañan de uno a otro.",
     "web": {
       "title": "Web",
@@ -124,7 +132,7 @@ export default {
     "synced": "Sincronizado"
   },
   "phone": {
-    "title": "Estudia desde la pantalla de inicio",
+    "title": "En el móvil, es una app.",
     "text": "Añádela a la pantalla de inicio: icono propio, pantalla completa, funciona sin conexión.",
     "ios": {
       "title": "iPhone y iPad",
@@ -139,7 +147,7 @@ export default {
     "fullscreen": "Pantalla completa"
   },
   "faq": {
-    "title": "Sobre Liora",
+    "title": "Preguntas",
     "items": {
       "free": {
         "q": "¿Liora es gratis?",
@@ -168,7 +176,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Crea tu primer mazo"
+    "title": "Tu primer repaso lleva un minuto."
   },
   "footer": {
     "madeBy": "Hecho por {name}",

@@ -101,7 +101,6 @@ export const useLandingMockPanel = () => {
     footerLinks: FOOTER_LINKS,
     languageLinks: LANGUAGE_LINKS,
     openWebTo: ROUTE_PATHS.learn,
-    createDeckTo: ROUTE_PATHS.deckCreate,
     browseTo: ROUTE_PATHS.browse,
     desktopReleaseUrl: EXTERNAL_LINKS.githubReleases,
     phoneSystems: PHONE_SYSTEMS,

@@ -8,17 +8,24 @@ export default {
     "language": "Jazyk"
   },
   "hero": {
-    "title": "Váš učební materiál **na kartičkách.**",
-    "text": "Slova, kód, vzorce nebo historie. Liora plánuje opakování podle vašich odpovědí.",
-    "start": "Vytvořit balíček",
-    "download": "Stáhnout aplikaci",
-    "eyebrow": "Kartičky a opakování v rozestupech",
-    "note": "Kartičky zůstávají na vašem zařízení. Začněte bez účtu."
+    "title": "Učte se důležité. **Pamatujte si to.**",
+    "text": "Jazyky, kód, vzorce nebo historie. Tvořte kartičky, vybavte si odpověď a nechte opakování naplánovat návrat. Materiál zůstává ve vašem zařízení.",
+    "start": "Začít se učit",
+    "download": "Stáhnout pro počítač"
+  },
+  "langs": {
+    "label": {
+      "one": "{count} jazyk, libovolná dvojice",
+      "few": "{count} jazyky, libovolná dvojice",
+      "other": "{count} jazyků, libovolná dvojice"
+    }
   },
   "try": {
-    "title": "Vyzkoušejte kartičku"
+    "title": "Vyzkoušejte to hned.",
+    "text": "Vyberte předmět a zkuste skutečné opakování. Bez účtu."
   },
   "demo": {
+    "deckName": "Váš předmět. Váš způsob.",
     "doneTitle": "Výborně.",
     "doneText": "Každá kartička má další opakování. V aplikaci se vrátí v určený čas.",
     "answers": "Vaše odpovědi",
@@ -30,6 +37,7 @@ export default {
     "keysGrade": "{keys} hodnocení",
     "keysReveal": "{key} ukáže odpověď",
     "spaceKey": "Mezerník",
+    "subject": "Váš předmět. Váš způsob.",
     "samples": {
       "programming": {
         "question1": "Co vrátí tento kód?",
@@ -53,14 +61,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Připravte balíčky s AI",
+    "title": "Od tématu k vlastnímu balíčku.",
     "text": "Vyberte předmět, kontext a jazyk odpovědí. AI připraví návrhy s kódem, vzorci nebo vysvětlením. Před uložením je zkontrolujte a upravte. Potřebujete účet, internet a dostupný denní limit.",
     "try": "Vyzkoušet asistenta",
     "tag": "cestování",
     "take": "Doplnit"
   },
   "memory": {
-    "title": "Opakování podle vašich odpovědí",
+    "title": "Opakujte ve správný čas.",
     "text": "Po Good se nová kartička vrátí za {first}, potom {second}, potom {third}. V tomto příkladu se {reviews} rozloží na {span}. Plán se přizpůsobuje odpovědím, aby známé učivo nezaplnilo celý den.",
     "reviews": {
       "one": "{count} opakování",
@@ -86,7 +94,7 @@ export default {
     "day": "den {day}"
   },
   "decks": {
-    "title": "Vytvářejte, importujte a sdílejte balíčky",
+    "title": "Vaše učivo. Vaše balíčky.",
     "text": "Slova a příklady, otázky a kód, úlohy a vzorce, data a kontext. Každý předmět má vlastní pole a kartičky. Exportujte .lioradeck pro sdílení nebo kopii.",
     "words": {
       "one": "{count} kartička",
@@ -100,14 +108,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Sdílené jazykové balíčky",
+    "title": "Někdo už ten balíček udělal.",
     "text": "Najděte jazykové balíčky ostatních a přidejte je kliknutím. Programování, matematiku a historii lze sdílet jako soubory a soukromě synchronizovat; veřejný Hub dnes přijímá jazykové balíčky.",
     "browse": "Procházet hub",
     "import": "Přidat",
     "inLibrary": "Ve vaší knihovně"
   },
   "anywhere": {
-    "title": "Vaše sbírka na webu i počítači",
+    "title": "Jeden účet, všechna zařízení.",
     "text": "Učte se v prohlížeči, na macOS nebo Windows, nebo v telefonu. Přihlaste se a balíčky, obrázky i pokrok budete mít na každém z nich.",
     "web": {
       "title": "Web",
@@ -124,7 +132,7 @@ export default {
     "synced": "Synchronizováno"
   },
   "phone": {
-    "title": "Učte se z domovské obrazovky",
+    "title": "V telefonu je to aplikace.",
     "text": "Přidejte si ji na plochu: vlastní ikona, celá obrazovka, funguje offline.",
     "ios": {
       "title": "iPhone a iPad",
@@ -139,7 +147,7 @@ export default {
     "fullscreen": "Celá obrazovka"
   },
   "faq": {
-    "title": "O Liora",
+    "title": "Otázky",
     "items": {
       "free": {
         "q": "Je Liora zdarma?",
@@ -168,7 +176,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Vytvořte první balíček"
+    "title": "První opakování zabere minutu."
   },
   "footer": {
     "madeBy": "Vytvořil {name}",

@@ -1,9 +1,9 @@
 import { Fragment, memo, useCallback, useRef, useState } from "react";
 import { IoCheckmark, IoChevronDown, IoGlobeOutline, IoLogoAndroid, IoLogoApple } from "react-icons/io5";
 import { Link } from "react-router";
-import { AppIcon, Button, Select } from "@shared/ui";
+import { AppIcon, Select } from "@shared/ui";
 import { BRAND_WORDMARK } from "@shared/config/brand";
-import { getSubjectProfile } from "@shared/core/usecases/subjects";
+import { getSubjectProfile, SUBJECT_IDS } from "@shared/core/usecases/subjects";
 import { LANDING_DEMO_SUBJECTS } from "../model/landingDemoDeck";
 import { LANDING_NEW_CARD_PREVIEW } from "../model/landingRatingPreview";
 import { useI18n } from "@shared/lib/i18n";
@@ -17,6 +17,7 @@ import { buildFaqItems } from "../model/landingFaq";
 import {
   AiIllustration,
   DecksIllustration,
+  HeroIllustration,
   HubIllustration,
   PhoneIllustration,
   PlatformsIllustration,
@@ -268,7 +269,6 @@ export const LandingMockPanel = memo(() => {
     footerLinks,
     languageLinks,
     openWebTo,
-    createDeckTo,
     browseTo,
     desktopReleaseUrl,
     phoneSystems,
@@ -324,12 +324,12 @@ export const LandingMockPanel = memo(() => {
       </header>
 
       <section className="lp-hero" aria-labelledby="lp-title">
+        <HeroIllustration />
         <div className="lp-hero__copy">
-          <span className="lp-hero__eyebrow">{t("landing.hero.eyebrow")}</span>
           <h1 id="lp-title">{withAccent(t("landing.hero.title"))}</h1>
           <p>{t("landing.hero.text")}</p>
           <div className="lp-hero__actions">
-            <Link to={createDeckTo} className="lp-btn lp-btn--primary" {...prefetchProps}>
+            <Link to={openWebTo} className="lp-btn lp-btn--primary" {...prefetchProps}>
               {t("landing.hero.start")}
             </Link>
             <a
@@ -341,26 +341,43 @@ export const LandingMockPanel = memo(() => {
               {t("landing.hero.download")}
             </a>
           </div>
-          <p className="lp-hero__note">{t("landing.hero.note")}</p>
-        </div>
-        <div className="lp-hero__demo" role="region" aria-labelledby="lp-demo-title">
-          <h2 id="lp-demo-title">{t("landing.try.title")}</h2>
-          <div className="lp-demo-subjects" role="group" aria-label={t("subjects.label")}>
-            {LANDING_DEMO_SUBJECTS.map((subject) => (
-              <Button
-                key={subject}
-                variant="ghost"
-                className="lp-demo-subject"
-                aria-pressed={demoSubject === subject}
-                onClick={() => setDemoSubject(subject)}
-              >
-                {t(getSubjectProfile(subject).nameKey)}
-              </Button>
-            ))}
-          </div>
-          <DemoSession key={`${demoLocale}:${demoSubject}`} subject={demoSubject} />
         </div>
       </section>
+
+      <div className="lp-langs">
+        <div className="lp-langs__inner">
+          <span className="lp-langs__label">
+            {t("landing.demo.subject")}
+          </span>
+          <ul>
+            {SUBJECT_IDS.map((subject, index) => (
+              <li key={subject} className={`lp-tone-${["blue", "green", "amber", "red"][index % 4]}`}>
+                {t(getSubjectProfile(subject).nameKey)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <section className="lp-try" aria-labelledby="lp-try-title">
+        <h2 id="lp-try-title">{t("landing.try.title")}</h2>
+        <p>{t("landing.try.text")}</p>
+        <div className="lp-demo-picker">
+          <Select
+            label={t("subjects.label")}
+            aria-label={t("subjects.label")}
+            value={demoSubject}
+            onChange={(event) => setDemoSubject(event.target.value)}
+            searchable={false}
+          >
+            {LANDING_DEMO_SUBJECTS.map((subject) => (
+              <option key={subject} value={subject}>{t(getSubjectProfile(subject).nameKey)}</option>
+            ))}
+          </Select>
+        </div>
+        <DemoSession key={`${demoLocale}:${demoSubject}`} subject={demoSubject} />
+      </section>
+
 
       <FeatureRow id="lp-ai" title={t("landing.ai.title")} art={<AiIllustration />}>
         <p>{t("landing.ai.text")}</p>
@@ -453,7 +470,7 @@ export const LandingMockPanel = memo(() => {
           <small>{formatInterval(LANDING_NEW_CARD_PREVIEW.good)}</small>
         </span>
         <h2 id="lp-cta-title">{t("landing.cta.title")}</h2>
-        <Link to={createDeckTo} className="lp-btn lp-btn--inverse" {...prefetchProps}>
+        <Link to={openWebTo} className="lp-btn lp-btn--inverse" {...prefetchProps}>
           {t("landing.hero.start")}
         </Link>
       </section>

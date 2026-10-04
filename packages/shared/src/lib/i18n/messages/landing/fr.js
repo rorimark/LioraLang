@@ -4,21 +4,28 @@ export default {
     "description": "Retenez vos cours avec des fiches par matière, la répétition espacée et des brouillons IA. Langues, programmation, maths et histoire sur navigateur, ordinateur et téléphone."
   },
   "topbar": {
-    "open": "Ouvrir l’app",
+    "open": "Ouvrir l'app web",
     "language": "Langue"
   },
   "hero": {
-    "title": "Ce que vous étudiez, **sur des fiches.**",
-    "text": "Mots, code, formules ou histoire. Liora planifie les révisions selon vos réponses.",
-    "start": "Créer un paquet",
-    "download": "Télécharger l’app",
-    "eyebrow": "Fiches et répétition espacée",
-    "note": "Vos fiches restent sur votre appareil. Commencez sans compte."
+    "title": "Apprenez l'essentiel. **Retenez-le.**",
+    "text": "Langues, code, formules ou histoire. Créez vos fiches, rappelez-vous une réponse et laissez les révisions prévoir votre retour. Vos contenus restent sur votre appareil.",
+    "start": "Commencer",
+    "download": "Version ordinateur"
+  },
+  "langs": {
+    "label": {
+      "one": "{count} langue, toutes les paires",
+      "many": "{count} langues, toutes les paires",
+      "other": "{count} langues, toutes les paires"
+    }
   },
   "try": {
-    "title": "Essayez une fiche"
+    "title": "Essayez tout de suite.",
+    "text": "Choisissez une matière et essayez une vraie révision. Sans compte."
   },
   "demo": {
+    "deckName": "Votre matière. Votre méthode.",
     "doneTitle": "Bien joué.",
     "doneText": "Chaque fiche a sa prochaine révision. Dans l'app, elle revient à cette date.",
     "answers": "Vos réponses",
@@ -30,6 +37,7 @@ export default {
     "keysGrade": "{keys} pour noter",
     "keysReveal": "{key} affiche la réponse",
     "spaceKey": "Espace",
+    "subject": "Votre matière. Votre méthode.",
     "samples": {
       "programming": {
         "question1": "Que renvoie ce code ?",
@@ -53,14 +61,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Préparez des paquets avec l’IA",
+    "title": "D'un sujet à votre propre paquet.",
     "text": "Choisissez matière, contexte et langue des réponses. L'IA prépare des fiches avec code, formules ou explications. Vérifiez et modifiez avant d'enregistrer. Compte, internet et quota disponible requis.",
     "try": "Essayer l'assistant",
     "tag": "voyage",
     "take": "Remplir"
   },
   "memory": {
-    "title": "Des révisions adaptées à vos réponses",
+    "title": "Révisez au bon moment.",
     "text": "Avec Good, une nouvelle fiche revient après {first}, puis {second}, puis {third}. Dans cet exemple, {reviews} couvrent {span}. Le calendrier suit vos réponses pour que le contenu connu n'occupe pas toute la journée.",
     "reviews": {
       "one": "{count} révision",
@@ -86,7 +94,7 @@ export default {
     "day": "jour {day}"
   },
   "decks": {
-    "title": "Créez, importez et partagez des paquets",
+    "title": "Vos contenus. Vos paquets.",
     "text": "Mots et exemples, questions et code, problèmes et formules, dates et contexte. Chaque matière a ses champs et ses fiches. Exportez .lioradeck pour partager ou garder une copie.",
     "words": {
       "one": "{count} fiche",
@@ -100,14 +108,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Des paquets de langues partagés",
+    "title": "Quelqu'un a déjà fait ce paquet.",
     "text": "Trouvez des paquets de langues d'autres apprenants et ajoutez-les en un clic. Programmation, maths et histoire se partagent par fichiers et se synchronisent en privé ; le Hub public accepte actuellement les langues.",
     "browse": "Parcourir le hub",
     "import": "Importer",
     "inLibrary": "Dans votre bibliothèque"
   },
   "anywhere": {
-    "title": "Votre bibliothèque sur le web et le bureau",
+    "title": "Un compte, tous vos appareils.",
     "text": "Révisez dans le navigateur, sur macOS ou Windows, ou sur votre téléphone. Connectez-vous, et vos paquets, images et progrès vous suivent de l'un à l'autre.",
     "web": {
       "title": "Web",
@@ -124,7 +132,7 @@ export default {
     "synced": "Synchronisé"
   },
   "phone": {
-    "title": "Étudiez depuis l’écran d’accueil",
+    "title": "Sur votre téléphone, c'est une app.",
     "text": "Ajoutez-la à l'écran d'accueil : sa propre icône, plein écran, fonctionne hors ligne.",
     "ios": {
       "title": "iPhone et iPad",
@@ -139,7 +147,7 @@ export default {
     "fullscreen": "Plein écran"
   },
   "faq": {
-    "title": "À propos de Liora",
+    "title": "Questions",
     "items": {
       "free": {
         "q": "Liora est-il gratuit ?",
@@ -168,7 +176,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Créez votre premier paquet"
+    "title": "Votre première révision prend une minute."
   },
   "footer": {
     "madeBy": "Créé par {name}",

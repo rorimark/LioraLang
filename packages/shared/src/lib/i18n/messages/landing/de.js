@@ -4,21 +4,27 @@ export default {
     "description": "Lerne mit passenden Karteikarten, verteilten Wiederholungen und KI-Entwürfen. Sprachen, Programmierung, Mathematik und Geschichte im Browser, am Computer und am Handy."
   },
   "topbar": {
-    "open": "App öffnen",
+    "open": "Web-App öffnen",
     "language": "Sprache"
   },
   "hero": {
-    "title": "Dein Lernstoff **auf Karteikarten.**",
-    "text": "Wörter, Code, Formeln oder Geschichte. Liora plant Wiederholungen passend zu deinen Antworten.",
-    "start": "Deck erstellen",
-    "download": "App herunterladen",
-    "eyebrow": "Karteikarten und verteilte Wiederholungen",
-    "note": "Deine Karten bleiben auf deinem Gerät. Starte ohne Konto."
+    "title": "Lerne, was zählt. **Behalte es.**",
+    "text": "Sprachen, Code, Formeln oder Geschichte. Erstelle Karten, erinnere dich an die Antwort und lass Wiederholungen den nächsten Termin planen. Dein Material bleibt auf deinem Gerät.",
+    "start": "Jetzt lernen",
+    "download": "Desktop-Version"
+  },
+  "langs": {
+    "label": {
+      "one": "{count} Sprache, jedes Paar",
+      "other": "{count} Sprachen, jedes Paar"
+    }
   },
   "try": {
-    "title": "Probiere eine Karte"
+    "title": "Probier es gleich aus.",
+    "text": "Wähle ein Fach und probiere eine echte Wiederholung. Ohne Konto."
   },
   "demo": {
+    "deckName": "Dein Fach. Dein Weg.",
     "doneTitle": "Gut gemacht.",
     "doneText": "Jede Karte hat jetzt einen nächsten Termin. In der App kommt sie dann wieder.",
     "answers": "Deine Antworten",
@@ -30,6 +36,7 @@ export default {
     "keysGrade": "{keys} bewerten",
     "keysReveal": "{key} zeigt die Antwort",
     "spaceKey": "Leertaste",
+    "subject": "Dein Fach. Dein Weg.",
     "samples": {
       "programming": {
         "question1": "Was gibt dieser Code zurück?",
@@ -53,14 +60,14 @@ export default {
     }
   },
   "ai": {
-    "title": "Decks mit KI entwerfen",
+    "title": "Vom Thema zum eigenen Stapel.",
     "text": "Wähle Fach, Kontext und Antwortsprache. Die KI erstellt Entwürfe mit Code, Formeln oder Erklärungen. Prüfe und bearbeite sie vor dem Speichern. Konto, Internet und freies Tageskontingent sind erforderlich.",
     "try": "Assistenten ausprobieren",
     "tag": "Reisen",
     "take": "Ausfüllen"
   },
   "memory": {
-    "title": "Wiederholungen passend zu deinen Antworten",
+    "title": "Wiederhole zur richtigen Zeit.",
     "text": "Mit Good kommt eine neue Karte nach {first}, dann {second}, dann {third} zurück. In diesem Beispiel verteilen sich {reviews} über {span}. Der Plan passt sich deinen Antworten an, damit bekanntes Material deinen Tag nicht füllt.",
     "reviews": {
       "one": "{count} Wiederholung",
@@ -82,7 +89,7 @@ export default {
     "day": "Tag {day}"
   },
   "decks": {
-    "title": "Decks erstellen, importieren und teilen",
+    "title": "Dein Material. Deine Stapel.",
     "text": "Wörter und Beispiele, Fragen und Code, Aufgaben und Formeln, Daten und Kontext. Jedes Fach hat eigene Felder und Karten. Exportiere .lioradeck zum Teilen oder als Kopie.",
     "words": {
       "one": "{count} Karte",
@@ -95,14 +102,14 @@ export default {
     }
   },
   "hub": {
-    "title": "Geteilte Sprachdecks",
+    "title": "Jemand hat diesen Stapel schon gemacht.",
     "text": "Finde Sprachstapel anderer Lernender und füge sie mit einem Klick hinzu. Programmierung, Mathematik und Geschichte lassen sich als Dateien teilen und privat synchronisieren; der öffentliche Hub unterstützt derzeit Sprachstapel.",
     "browse": "Hub durchsuchen",
     "import": "Importieren",
     "inLibrary": "In deiner Bibliothek"
   },
   "anywhere": {
-    "title": "Deine Bibliothek im Web und auf dem Desktop",
+    "title": "Ein Konto, jedes Gerät.",
     "text": "Lerne im Browser, auf macOS oder Windows oder auf dem Handy. Melde dich an, und deine Stapel, Bilder und dein Fortschritt sind auf jedem Gerät dabei.",
     "web": {
       "title": "Web",
@@ -119,7 +126,7 @@ export default {
     "synced": "Synchronisiert"
   },
   "phone": {
-    "title": "Lerne direkt vom Startbildschirm",
+    "title": "Auf dem Handy ist es eine App.",
     "text": "Leg es auf den Home-Bildschirm: eigenes Symbol, Vollbild, funktioniert offline.",
     "ios": {
       "title": "iPhone und iPad",
@@ -134,7 +141,7 @@ export default {
     "fullscreen": "Vollbild"
   },
   "faq": {
-    "title": "Über Liora",
+    "title": "Fragen",
     "items": {
       "free": {
         "q": "Ist Liora kostenlos?",
@@ -163,7 +170,7 @@ export default {
     }
   },
   "cta": {
-    "title": "Erstelle dein erstes Deck"
+    "title": "Deine erste Wiederholung dauert eine Minute."
   },
   "footer": {
     "madeBy": "Gemacht von {name}",
