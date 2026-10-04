@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "Dotaz SQL",
+      "answer": "Výsledek nebo vysvětlení"
+    },
+    "stylesheet": {
+      "code": "Pravidla CSS",
+      "answer": "Vizuální efekt nebo vysvětlení"
+    },
+    "server": {
+      "code": "Ukázka PHP",
+      "answer": "Výstup nebo vysvětlení"
+    },
+    "javascript": {
+      "code": "Kód JavaScript",
+      "answer": "Výstup nebo vysvětlení"
+    },
+    "rust": {
+      "code": "Kód Rust",
+      "answer": "Výstup nebo vysvětlení"
+    },
+    "java": {
+      "code": "Kód Java",
+      "answer": "Výstup nebo vysvětlení"
+    },
+    "cpp": {
+      "code": "Kód C++",
+      "answer": "Výstup nebo vysvětlení"
+    },
+    "c": {
+      "code": "Kód C",
+      "answer": "Výstup nebo vysvětlení"
+    },
+    "csharp": {
+      "code": "Kód C#",
+      "answer": "Výstup nebo vysvětlení"
+    }
+  },
   "knowledge": {
   "invalidFormula": "Zkontrolujte zápis vzorce. Je zobrazen původní text.",
   "fields": {

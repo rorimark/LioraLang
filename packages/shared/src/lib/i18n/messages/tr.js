@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "SQL sorgusu",
+      "answer": "Sonuç veya açıklama"
+    },
+    "stylesheet": {
+      "code": "CSS kuralları",
+      "answer": "Görsel etki veya açıklama"
+    },
+    "server": {
+      "code": "PHP kodu",
+      "answer": "Çıktı veya açıklama"
+    },
+    "javascript": {
+      "code": "JavaScript kodu",
+      "answer": "Çıktı veya açıklama"
+    },
+    "rust": {
+      "code": "Rust kodu",
+      "answer": "Çıktı veya açıklama"
+    },
+    "java": {
+      "code": "Java kodu",
+      "answer": "Çıktı veya açıklama"
+    },
+    "cpp": {
+      "code": "C++ kodu",
+      "answer": "Çıktı veya açıklama"
+    },
+    "c": {
+      "code": "C kodu",
+      "answer": "Çıktı veya açıklama"
+    },
+    "csharp": {
+      "code": "C# kodu",
+      "answer": "Çıktı veya açıklama"
+    }
+  },
   "knowledge": {
   "invalidFormula": "Formülün yazımını kontrol edin. Orijinal metin gösteriliyor.",
   "fields": {

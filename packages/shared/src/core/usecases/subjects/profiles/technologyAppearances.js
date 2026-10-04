@@ -1,0 +1,26 @@
+const appearance = (skin, aliases, mark, instruction) => ({ aliases, overrides: {
+  presentation: { skin, codeMark: mark, codeLabelKey: `technologyCards.${skin}.code` },
+  entryText: { target: { labelKey: `technologyCards.${skin}.answer` } },
+  entryFields: { code: { labelKey: `technologyCards.${skin}.code` } },
+  assistant: { instruction },
+} });
+export const TECHNOLOGY_APPEARANCES = [
+  appearance("query", ["sql", "postgresql", "postgres", "mysql", "sqlite", "t-sql"], "SQL",
+    "SQL flashcards. Respect the deck dialect. The code is a query or DDL/DML statement. State relevant input tables in notes when needed and explain the result. Never invent row data or omit assumptions. Put a query to reason about on the front and a query that solves the question on the back. Never execute SQL."),
+  appearance("stylesheet", ["css", "css3"], "CSS",
+    "CSS flashcards. Explain the visual effect, cascade, specificity or layout behavior accurately. Give compact selectors and declarations. State needed markup or container assumptions in notes. Keep solution CSS on the back; code to analyze on the front. Never execute or render supplied code."),
+  appearance("server", ["php"], "PHP",
+    "PHP flashcards. Respect the deck PHP version. Explain output, types and control flow, preserving case-sensitive identifiers. Prefer concise modern PHP examples; state version-sensitive behavior. Code that solves the question belongs on the back; code whose output is asked about on the front. Never run code."),
+  appearance("javascript", ["js", "javascript", "ecmascript"], "JS",
+    "JavaScript flashcards. Respect the declared runtime and version. Explain scope, values, types and asynchronous ordering precisely. Identify browser versus Node.js assumptions in notes. Code to analyze belongs on the front; solutions on the back. Never run code."),
+  appearance("rust", ["rust", "rs"], "Rs",
+    "Rust flashcards. Explain ownership, borrowing, lifetimes and types accurately. Distinguish compiler errors from runtime output. Note edition or crate assumptions when needed. Code to analyze belongs on the front; solutions on the back. Never run code."),
+  appearance("java", ["java"], "J",
+    "Java flashcards. Respect the declared Java version. Explain types, object behavior, exceptions and output precisely. Distinguish compile errors from runtime behavior. Show required context concisely. Code to analyze belongs on the front; solutions on the back. Never run code."),
+  appearance("cpp", ["c++", "cpp", "cxx", "c++17", "c++20", "c++23", "c++26"], "++",
+    "C++ flashcards. Respect the declared standard. Explain types, object lifetime, ownership and templates. Never give deterministic output for undefined behavior; explicitly identify it. Include needed header or context in notes. Code to analyze belongs on the front; solutions on the back. Never run code."),
+  appearance("c", ["c", "c99", "c11", "c17", "c23"], "C",
+    "C flashcards. Respect the declared standard. Explain pointers, arrays, memory lifetime and control flow accurately. Clearly identify undefined or implementation-defined behavior rather than inventing output. Code to analyze belongs on the front; solutions on the back. Never run code."),
+  appearance("csharp", ["c#", "csharp", "c sharp"], "C#",
+    "C# flashcards. Respect the declared C# and .NET versions. Explain types, LINQ, async behavior and output precisely; note framework assumptions. Code to analyze belongs on the front; solutions on the back. Never run code."),
+];

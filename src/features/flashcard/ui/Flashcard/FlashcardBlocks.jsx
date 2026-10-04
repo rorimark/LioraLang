@@ -54,7 +54,10 @@ const CodeBlock = ({ block }) => {
       role="group"
       aria-label={t("flashcard.code")}
     >
-      {block.labelKey ? <span className="flashcard__block-label">{t(block.labelKey)}</span> : null}
+      {block.labelKey ? <span className="flashcard__code-header">
+        {block.mark ? <span className="flashcard__code-mark" aria-hidden="true">{block.mark}</span> : null}
+        <span className="flashcard__block-label">{t(block.labelKey)}</span>
+      </span> : null}
       <code translate="no">
         {lines.map((line, index) => (
           <span className="flashcard__code-line" key={index}>

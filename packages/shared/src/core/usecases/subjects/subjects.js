@@ -15,6 +15,7 @@
 // did before subjects existed.
 
 import { subjectRegistry } from "./registry.js";
+import { resolveSubjectProfile } from "./appearances.js";
 import { SUBJECTS } from "./constants.js";
 export { SUBJECTS, DIFFICULTIES } from "./constants.js";
 export { createSubjectRegistry, subjectRegistry } from "./registry.js";
@@ -25,7 +26,7 @@ export const storedSubject = (value) => {
   const subject = normalizeSubject(value);
   return subject === SUBJECTS.language ? "" : subject;
 };
-export const getSubjectProfile = (subject) => subjectRegistry.get(normalizeSubject(subject));
+export const getSubjectProfile = (subject, deckFields) => resolveSubjectProfile(subjectRegistry.get(normalizeSubject(subject)), deckFields);
 
 export const getStudyPresentations = (deck = {}, words = []) => {
   const profile = getSubjectProfile(deck.subject);
@@ -157,7 +158,7 @@ const buildBlock = (spec, context) => {
   }
 
   return ["code", "formula", "callout"].includes(spec.block)
-    ? { type: spec.block, emphasis: spec.emphasis, ...(spec.labelKey ? { labelKey: spec.labelKey } : {}), text }
+    ? { type: spec.block, emphasis: spec.emphasis, ...(spec.labelKey ? { labelKey: spec.labelKey } : {}), ...(spec.mark ? { mark: spec.mark } : {}), text }
     : { type: "text", role: spec.role, text, ...(leads ? { emphasis: "lead" } : {}) };
 };
 
@@ -166,7 +167,7 @@ const buildBlock = (spec, context) => {
 // card is drawn the way language cards always have been.
 export const buildCardPresentation = ({ entry = {}, deck = {} } = {}) => {
   const subject = normalizeSubject(deck?.subject);
-  const profile = getSubjectProfile(subject);
+  const profile = getSubjectProfile(subject, deck?.subjectFields);
 
   if (!profile.presentation) {
     return null;
@@ -178,11 +179,13 @@ export const buildCardPresentation = ({ entry = {}, deck = {} } = {}) => {
     entryFields: normalizeEntrySubjectFields(subject, entry?.subjectFields),
     deckFields: normalizeDeckSubjectFields(subject, deck?.subjectFields),
   };
-  const build = (specs) => specs.map((spec) => buildBlock(spec, context)).filter(Boolean);
+  const build = (specs) => specs.map((spec) => buildBlock(spec.block === "code" && profile.presentation.codeLabelKey
+    ? { ...spec, labelKey: profile.presentation.codeLabelKey, mark: profile.presentation.codeMark } : spec, context)).filter(Boolean);
 
   return {
     subject,
     layout: profile.presentation.layout,
+    ...(profile.presentation.skin ? { skin: profile.presentation.skin } : {}),
     labels: { front: profile.sideLabels?.source || "", back: profile.sideLabels?.target || "" },
     front: build(profile.presentation.front),
     back: build(profile.presentation.back),

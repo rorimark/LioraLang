@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "SQL query",
+      "answer": "Result or explanation"
+    },
+    "stylesheet": {
+      "code": "CSS rules",
+      "answer": "Visual effect or explanation"
+    },
+    "server": {
+      "code": "PHP snippet",
+      "answer": "Output or explanation"
+    },
+    "javascript": {
+      "code": "JavaScript code",
+      "answer": "Output or explanation"
+    },
+    "rust": {
+      "code": "Rust code",
+      "answer": "Output or explanation"
+    },
+    "java": {
+      "code": "Java code",
+      "answer": "Output or explanation"
+    },
+    "cpp": {
+      "code": "C++ code",
+      "answer": "Output or explanation"
+    },
+    "c": {
+      "code": "C code",
+      "answer": "Output or explanation"
+    },
+    "csharp": {
+      "code": "C# code",
+      "answer": "Output or explanation"
+    }
+  },
   "knowledge": {
   "invalidFormula": "Check the formula syntax. The original text is shown.",
   "fields": {

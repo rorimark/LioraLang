@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "Consulta SQL",
+      "answer": "Resultado ou explicação"
+    },
+    "stylesheet": {
+      "code": "Regras CSS",
+      "answer": "Efeito visual ou explicação"
+    },
+    "server": {
+      "code": "Código PHP",
+      "answer": "Saída ou explicação"
+    },
+    "javascript": {
+      "code": "Código JavaScript",
+      "answer": "Saída ou explicação"
+    },
+    "rust": {
+      "code": "Código Rust",
+      "answer": "Saída ou explicação"
+    },
+    "java": {
+      "code": "Código Java",
+      "answer": "Saída ou explicação"
+    },
+    "cpp": {
+      "code": "Código C++",
+      "answer": "Saída ou explicação"
+    },
+    "c": {
+      "code": "Código C",
+      "answer": "Saída ou explicação"
+    },
+    "csharp": {
+      "code": "Código C#",
+      "answer": "Saída ou explicação"
+    }
+  },
   "knowledge": {
   "invalidFormula": "Verifique a fórmula. O texto original é exibido.",
   "fields": {

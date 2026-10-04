@@ -112,7 +112,7 @@ export const useDeckEditorPanel = () => {
   // What the deck is about: its profile says which fields and settings
   // the forms show.
   const subject = storedSubject(deckForm.subject);
-  const subjectProfile = getSubjectProfile(subject);
+  const subjectProfile = getSubjectProfile(subject, deckForm.subjectFields);
   const pictureSide = subjectProfile.usesLanguages ? normalizePictureSide(deckForm.pictureSide) : "";
   const hasTertiary = subjectProfile.usesLanguages && Boolean(deckForm.tertiaryLanguage.trim());
   // What a suggestion needs to know about the deck: its languages and the

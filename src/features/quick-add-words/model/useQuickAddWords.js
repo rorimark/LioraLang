@@ -220,7 +220,7 @@ export const useQuickAddWords = ({
   // and whether the assistant and pasted lists are on offer. A deck made
   // here follows the same profile as one made in the editor.
   const subject = selectedDeck?.subject || (isNewDeck ? newDeck.subject : "");
-  const subjectProfile = getSubjectProfile(subject);
+  const subjectProfile = getSubjectProfile(subject, selectedDeck?.subjectFields || newDeck.subjectFields);
   const usesWordLevels = subjectProfile.usesLanguages && (selectedDeck ? selectedDeck.usesWordLevels !== false : true);
   const pictureSide = languages.pictureSide;
   const activeTab = subjectProfile.usesLanguages ? tab : "single";

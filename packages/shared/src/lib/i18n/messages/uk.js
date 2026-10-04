@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "SQL-запит",
+      "answer": "Результат або пояснення"
+    },
+    "stylesheet": {
+      "code": "Правила CSS",
+      "answer": "Візуальний ефект або пояснення"
+    },
+    "server": {
+      "code": "Фрагмент PHP",
+      "answer": "Вивід або пояснення"
+    },
+    "javascript": {
+      "code": "Код JavaScript",
+      "answer": "Вивід або пояснення"
+    },
+    "rust": {
+      "code": "Код Rust",
+      "answer": "Вивід або пояснення"
+    },
+    "java": {
+      "code": "Код Java",
+      "answer": "Вивід або пояснення"
+    },
+    "cpp": {
+      "code": "Код C++",
+      "answer": "Вивід або пояснення"
+    },
+    "c": {
+      "code": "Код C",
+      "answer": "Вивід або пояснення"
+    },
+    "csharp": {
+      "code": "Код C#",
+      "answer": "Вивід або пояснення"
+    }
+  },
   "knowledge": {
   "invalidFormula": "Перевірте запис формули. Показано вихідний текст.",
   "fields": {

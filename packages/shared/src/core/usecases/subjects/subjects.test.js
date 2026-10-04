@@ -57,7 +57,7 @@ describe("subjects", () => {
     expect(presentation.front).toEqual([
       { type: "meta", items: [{ kind: "technology", value: "JavaScript" }, { kind: "difficulty", value: "medium", labelKey: "subjects.difficulty.medium", step: 2, steps: 3 }] },
       { type: "text", role: "prompt", text: "What does this return?" },
-      { type: "code", emphasis: "primary", text: "users.map(user => user.name)" },
+      { type: "code", emphasis: "primary", labelKey: "technologyCards.javascript.code", mark: "JS", text: "users.map(user => user.name)" },
     ]);
     expect(presentation.back.map((block) => block.type)).toEqual(["text", "list"]);
   });
@@ -109,5 +109,26 @@ describe("knowledge subjects", () => {
     expect(card.front.some(block => block.text?.includes("monarchy"))).toBe(false);
     expect(card.back.some(block => block.text === "1789")).toBe(true);
     expect(card.front.some(block => block.text?.includes("crisis"))).toBe(true);
+  });
+});
+
+
+describe("technology appearances", () => {
+  it.each([[" SQL ", "query"], ["PostgreSQL 17", "query"], ["CSS", "stylesheet"], ["PHP 8.3", "server"], ["JS", "javascript"], ["Rust", "rust"], ["Java 21", "java"], ["C++20", "cpp"], ["C", "c"], ["C#", "csharp"]])("selects %s from the existing field", (technology, skin) => {
+    const fields = { technology };
+    const profile = getSubjectProfile("programming", fields);
+    expect(profile.presentation.skin).toBe(skin);
+    expect(getSubjectProfile("programming", fields)).toBe(profile);
+    const presentation = buildCardPresentation({ deck: { subject: "programming", subjectFields: fields }, entry: { source: "Question", target: "Answer", subjectFields: { code: "example", codeSide: "back" } } });
+    expect(presentation.skin).toBe(skin);
+    expect(presentation.front.some(block => block.type === "code")).toBe(false);
+    expect(presentation.back.find(block => block.type === "code").labelKey).toBe(`technologyCards.${skin}.code`);
+  });
+  it("keeps unfamiliar technologies and other subjects on their own profile", () => {
+    const base = getSubjectProfile("programming");
+    expect(getSubjectProfile("programming", { technology: "CSS framework I invented" })).toBe(base);
+    expect(getSubjectProfile("programming", { technology: "Python" })).toBe(base);
+    expect(getSubjectProfile("history", { technology: "SQL" }).presentation.layout).toBe("history");
+    expect(normalizeDeckSubjectFields("programming", { technology: "PHP 8.3" })).toEqual({ technology: "PHP 8.3" });
   });
 });

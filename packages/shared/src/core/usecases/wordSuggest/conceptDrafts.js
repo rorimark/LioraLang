@@ -1,10 +1,11 @@
+import { resolveSubjectProfile } from "../subjects/appearances.js";
 import { subjectRegistry, normalizeProfileFields } from "../subjects/subjects.js";
 
 const object = (value) => value && typeof value === "object" && !Array.isArray(value);
 const text = (value, max = 500) => typeof value === "string" && value.trim().length <= max ? value.trim() : "";
 const strings = (value, max, length) => Array.isArray(value) ? value.map((item) => text(item, length)).filter(Boolean).slice(0, max) : [];
-const conceptProfile = (subject, registry) => {
-  const profile = registry.get(subject);
+const conceptProfile = (subject, registry, fields) => {
+  const profile = resolveSubjectProfile(registry.get(subject), fields);
   return profile?.assistant?.entry === "concept" ? profile : null;
 };
 
@@ -12,7 +13,7 @@ const conceptProfile = (subject, registry) => {
 // instructions supplied by the client are trusted by the server.
 export const validateConceptRequest = (value, registry = subjectRegistry) => {
   if (!object(value) || value.task !== "concept") return null;
-  const profile = conceptProfile(value.subject, registry);
+  const profile = conceptProfile(value.subject, registry, value.deckFields);
   if (!profile) return null;
   if ([value.source, value.target].some((item) => typeof item === "string" && item.trim().length > 500)) return null;
   if (Object.entries(profile.entryFields).some(([key, spec]) => typeof value.subjectFields?.[key] === "string" && spec.maxLength && value.subjectFields[key].length > spec.maxLength)) return null;
@@ -31,7 +32,7 @@ export const validateConceptRequest = (value, registry = subjectRegistry) => {
 };
 
 export const buildConceptRequest = ({ deck = {}, draft = {}, writeIn }, registry = subjectRegistry) => {
-  const profile = conceptProfile(deck.subject, registry);
+  const profile = conceptProfile(deck.subject, registry, deck.subjectFields);
   if (profile?.assistant.languageField && !normalizeProfileFields(profile.deckFields, deck.subjectFields)[profile.assistant.languageField]) return null;
   return validateConceptRequest({
     task: "concept", subject: deck.subject, source: draft.source, target: draft.target,
@@ -85,7 +86,7 @@ export const conceptCardPatch = (draft, card, subject, registry = subjectRegistr
 // Output schemas and descriptions derive from exactly the same field specs
 // used to draw forms and persist entries.
 export const buildConceptPrompt = (request, registry = subjectRegistry) => {
-  const profile = conceptProfile(request.subject, registry);
+  const profile = conceptProfile(request.subject, registry, request.deckFields);
   if (!profile) throw new Error("Unsupported concept subject");
   const properties = Object.fromEntries(Object.entries(profile.entryFields).map(([key, spec]) => [key, {
     type: "STRING", ...(spec.type === "choice" ? { enum: [...spec.values] } : {}),

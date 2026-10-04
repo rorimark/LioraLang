@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "SQL-запрос",
+      "answer": "Результат или объяснение"
+    },
+    "stylesheet": {
+      "code": "Правила CSS",
+      "answer": "Визуальный эффект или объяснение"
+    },
+    "server": {
+      "code": "Фрагмент PHP",
+      "answer": "Вывод или объяснение"
+    },
+    "javascript": {
+      "code": "Код JavaScript",
+      "answer": "Вывод или объяснение"
+    },
+    "rust": {
+      "code": "Код Rust",
+      "answer": "Вывод или объяснение"
+    },
+    "java": {
+      "code": "Код Java",
+      "answer": "Вывод или объяснение"
+    },
+    "cpp": {
+      "code": "Код C++",
+      "answer": "Вывод или объяснение"
+    },
+    "c": {
+      "code": "Код C",
+      "answer": "Вывод или объяснение"
+    },
+    "csharp": {
+      "code": "Код C#",
+      "answer": "Вывод или объяснение"
+    }
+  },
   "knowledge": {
   "invalidFormula": "Проверьте запись формулы. Показан исходный текст.",
   "fields": {

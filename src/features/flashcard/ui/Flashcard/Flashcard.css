@@ -739,3 +739,64 @@
 .flashcard--layout-history .flashcard__sequence-item { position: relative; }
 .flashcard--layout-history .flashcard__sequence-item::before { content: ""; position: absolute; left: 0.7em; top: 1.7em; height: calc(100% + 0.5em); width: 1px; background: color-mix(in srgb, currentColor 30%, transparent); }
 .flashcard--layout-history .flashcard__sequence-item:last-child::before { display: none; }
+
+/* Calm editor workspaces: the paper stays neutral; technology belongs in
+   the file tab and the contained code pane, not a full-card pattern. */
+.flashcard--skin-query { --editor-accent: #0f766e; }
+.flashcard--skin-stylesheet { --editor-accent: #2875bd; }
+.flashcard--skin-server { --editor-accent: #6866a8; }
+.flashcard--skin-javascript { --editor-accent: #a77d12; }
+.flashcard--skin-rust { --editor-accent: #b36240; }
+.flashcard--skin-java { --editor-accent: #bf5541; }
+.flashcard--skin-cpp { --editor-accent: #286c9a; }
+.flashcard--skin-c { --editor-accent: #597080; }
+.flashcard--skin-csharp { --editor-accent: #7c52a3; }
+.flashcard--layout-code[class*="flashcard--skin-"] { --flashcard-code-accent: var(--editor-accent); }
+.flashcard--index.flashcard--layout-code[class*="flashcard--skin-"] .flashcard__face--front { background: var(--flashcard-front-bg); }
+.flashcard--layout-code[class*="flashcard--skin-"] .flashcard__meta-item--technology {
+  background: color-mix(in srgb, var(--editor-accent) 7%, var(--flashcard-front-bg));
+  border-top: 3px solid var(--editor-accent);
+  font-size: 0.9em;
+}
+.flashcard--layout-code[class*="flashcard--skin-"] .flashcard__code--primary {
+  margin-inline: 0;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 12px;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+.flashcard__code-header { display: flex; align-items: center; gap: 0.65em; padding: 0.7em 1em; border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+.flashcard__code-header .flashcard__block-label { font-size: 0.75em; letter-spacing: 0; font-weight: 700; margin: 0; opacity: 0.85; }
+.flashcard__code-mark { display: inline-grid; place-items: center; flex: none; min-width: 2em; height: 1.65em; padding-inline: 0.35em; border-radius: 4px; background: color-mix(in srgb, var(--editor-accent) 13%, transparent); color: var(--editor-accent); font: 800 0.65em var(--flashcard-font-code); }
+:root[theme="dark"] .flashcard__code-mark { color: color-mix(in srgb, var(--editor-accent) 70%, white); }
+.flashcard--layout-code[class*="flashcard--skin-"] .flashcard__code--primary .flashcard__code-gutter { color: var(--color-text-subtle); }
+.flashcard--layout-code[class*="flashcard--skin-"] .flashcard__code--secondary .flashcard__code-mark { background: color-mix(in srgb, white 15%, transparent); color: inherit; }
+/* SQL: a query tab, a divided gutter and gentle row guides. */
+.flashcard--skin-query .flashcard__code--primary .flashcard__code-gutter { border-right: 1px solid var(--color-border); padding-right: 0.75em; }
+.flashcard--skin-query .flashcard__code--primary .flashcard__code-line + .flashcard__code-line { border-top: 1px solid color-mix(in srgb, var(--color-border) 28%, transparent); }
+/* CSS: an inspector rail with declarations free of a number gutter. */
+.flashcard--layout-code.flashcard--skin-stylesheet .flashcard__code--primary { border-left: 3px solid var(--editor-accent); }
+.flashcard--skin-stylesheet .flashcard__code-line { grid-template-columns: minmax(0, 1fr); }
+.flashcard--skin-stylesheet .flashcard__code-gutter { display: none; }
+/* PHP: a file ribbon and a compact, squared source pane. */
+.flashcard--layout-code.flashcard--skin-server .flashcard__code--primary { border-radius: 6px; }
+.flashcard--skin-server .flashcard__code-header { border-top: 2px solid color-mix(in srgb, var(--editor-accent) 55%, transparent); }
+/* JavaScript: a small console badge and a narrow prompt gutter. */
+.flashcard--skin-javascript .flashcard__code-mark { border-radius: 2px; background: #f0cf63; color: #3a310e; }
+.flashcard--skin-javascript .flashcard__code-header { border-bottom-style: dashed; }
+/* Rust: a compiler sheet with an outlined mark and a warm rule. */
+.flashcard--skin-rust .flashcard__code-mark { background: transparent; border: 1px solid currentColor; border-radius: 3px; }
+.flashcard--skin-rust .flashcard__code-header { box-shadow: inset 3px 0 var(--editor-accent); }
+/* Java: a class header with indentation guides. */
+.flashcard--skin-java .flashcard__code-mark { border-radius: 50%; min-width: 1.65em; }
+.flashcard--skin-java .flashcard__code--primary code { background: repeating-linear-gradient(90deg, transparent, transparent 3ch, color-mix(in srgb, var(--color-border) 22%, transparent) 3ch, color-mix(in srgb, var(--color-border) 22%, transparent) calc(3ch + 1px)); }
+/* C++: a header/source double rule and an angular mark. */
+.flashcard--skin-cpp .flashcard__code-header { border-bottom: 3px double color-mix(in srgb, currentColor 18%, transparent); }
+.flashcard--skin-cpp .flashcard__code-mark { border-radius: 2px 7px 2px 7px; }
+/* C: a plain source sheet, square corners and a quiet file marker. */
+.flashcard--layout-code.flashcard--skin-c .flashcard__code--primary { border-radius: 3px; box-shadow: none; }
+.flashcard--skin-c .flashcard__code-mark { border-radius: 0; background: transparent; border-bottom: 2px solid currentColor; }
+/* C#: an IDE tab with a pill marker and violet inset rule. */
+.flashcard--skin-csharp .flashcard__code-mark { border-radius: 999px; }
+.flashcard--skin-csharp .flashcard__code-header { box-shadow: inset 0 2px color-mix(in srgb, var(--editor-accent) 55%, transparent); }

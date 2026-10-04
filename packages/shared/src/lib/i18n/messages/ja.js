@@ -1,4 +1,42 @@
 export default {
+  "technologyCards": {
+    "query": {
+      "code": "SQLクエリ",
+      "answer": "結果または説明"
+    },
+    "stylesheet": {
+      "code": "CSSルール",
+      "answer": "見た目の効果または説明"
+    },
+    "server": {
+      "code": "PHPコード",
+      "answer": "出力または説明"
+    },
+    "javascript": {
+      "code": "JavaScript コード",
+      "answer": "出力または説明"
+    },
+    "rust": {
+      "code": "Rust コード",
+      "answer": "出力または説明"
+    },
+    "java": {
+      "code": "Java コード",
+      "answer": "出力または説明"
+    },
+    "cpp": {
+      "code": "C++ コード",
+      "answer": "出力または説明"
+    },
+    "c": {
+      "code": "C コード",
+      "answer": "出力または説明"
+    },
+    "csharp": {
+      "code": "C# コード",
+      "answer": "出力または説明"
+    }
+  },
   "knowledge": {
   "invalidFormula": "数式の記法を確認してください。元のテキストを表示しています。",
   "fields": {

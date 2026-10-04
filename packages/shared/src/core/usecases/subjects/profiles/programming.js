@@ -1,4 +1,5 @@
 import { SUBJECTS, DIRECTIONS, DIFFICULTIES } from "../constants.js";
+import { TECHNOLOGY_APPEARANCES } from "./technologyAppearances.js";
 import { CONTENT_LANGUAGE_FIELD } from "./commonFields.js";
 
 // Programming: a term or a question, often about a piece of code, and a
@@ -8,6 +9,7 @@ import { CONTENT_LANGUAGE_FIELD } from "./commonFields.js";
 export const PROGRAMMING_PROFILE = Object.freeze({
   id: SUBJECTS.programming,
   nameKey: "subjects.names.programming",
+  appearanceField: "technology", appearances: TECHNOLOGY_APPEARANCES,
   usesLanguages: false,
   // The Hub keeps languages in columns; until it knows subjects, these
   // decks stay in the library.

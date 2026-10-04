@@ -47,7 +47,8 @@
     "preview": "pnpm preview:web",
     "preview:web": "pnpm build:web && vite preview --host --port 4175 --strictPort",
     "check:subject-assistant": "node scripts/acceptance/subject-assistant.mjs",
-    "check:offline-knowledge": "node scripts/acceptance/knowledge-offline.mjs"
+    "check:offline-knowledge": "node scripts/acceptance/knowledge-offline.mjs",
+    "check:technology-appearances": "node scripts/acceptance/technology-appearances.mjs"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.3.0",
