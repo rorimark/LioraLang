@@ -8,7 +8,7 @@ export const MATHEMATICS_PROFILE = createKnowledgeProfile({
       labelKey: "subjects.fields.codeSide", valueKey: "subjects.codeSide", aiHint: "back for an answer or rule to recall; front only for a supplied equation to solve." },
     steps: { ...knowledgeField("steps", "multiline", "details"), aiHint: "Optional worked solution, one numbered step per line. Never put it on the front." },
   },
-  instruction: "Mathematics flashcards. One rule or problem per card. Check the calculation. formula is LaTeX without dollar fences, steps explain the derivation. The answer and solution belong on the back. Do not claim an unproved result or invent mathematical facts.",
+  instruction: "Mathematics flashcards. One rule or problem per card. Check the calculation. formula is LaTeX without dollar fences, steps explain the derivation. In source, target, steps and notes, wrap inline LaTeX in $...$ and display equations in $$...$$. Keep ordinary prose outside math delimiters. The answer and solution belong on the back. Do not claim an unproved result or invent mathematical facts.",
   presentation: { layout: "mathematics", front: [contextBlock("area"),
     { block: "text", role: "prompt", from: "entry.source" },
     { block: "formula", emphasis: "primary", from: "entry.formula", when: { from: "entry.formulaSide", value: "front" } },

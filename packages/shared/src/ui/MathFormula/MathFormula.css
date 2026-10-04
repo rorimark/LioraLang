@@ -3,3 +3,9 @@
 .math-formula__source { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
 .math-formula .katex { color: inherit; font-size: 1.15em; }
 .math-formula__error { font-family: inherit; font-size: 0.75rem; font-weight: 600; color: var(--color-text-subtle); }
+
+.math-formula--inline { display: inline; vertical-align: baseline; }
+.math-formula--inline .math-formula__rendered { display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: middle; padding: 0; }
+.math-formula--inline .katex { font-size: 1.08em; }
+.math-formula .katex-display { margin: 0.35em 0; }
+.math-formula .katex-display > .katex { text-align: start; }

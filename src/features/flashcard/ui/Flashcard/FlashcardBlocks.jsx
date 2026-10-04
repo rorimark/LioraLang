@@ -1,4 +1,4 @@
-import { MathFormula } from "@shared/ui";
+import { MathFormula, MathText } from "@shared/ui";
 import { useI18n } from "@shared/lib/i18n";
 
 // A card drawn from blocks (see buildCardPresentation): each block type is
@@ -37,7 +37,7 @@ const TextBlock = ({ block }) => (
       block.emphasis ? `flashcard__block-text--${block.emphasis}` : "",
     ].filter(Boolean).join(" ")}
   >
-    {block.text}
+    <MathText>{block.text}</MathText>
   </strong>
 );
 
@@ -54,6 +54,7 @@ const CodeBlock = ({ block }) => {
       role="group"
       aria-label={t("flashcard.code")}
     >
+      {block.labelKey ? <span className="flashcard__block-label">{t(block.labelKey)}</span> : null}
       <code translate="no">
         {lines.map((line, index) => (
           <span className="flashcard__code-line" key={index}>
@@ -70,7 +71,7 @@ const ListBlock = ({ block }) => (
   <span className={`flashcard__list flashcard__list--${block.role}`}>
     {block.items.map((item, index) => (
       <span key={`${index}-${item}`} className="flashcard__list-item">
-        {item}
+        <MathText>{item}</MathText>
       </span>
     ))}
   </span>
@@ -81,7 +82,7 @@ const CalloutBlock = ({ block }) => {
   const { t } = useI18n();
   return <span className={`flashcard__callout flashcard__callout--${block.emphasis}`}>
     {block.labelKey ? <span className="flashcard__block-label">{t(block.labelKey)}</span> : null}
-    <strong>{block.text}</strong>
+    <strong><MathText>{block.text}</MathText></strong>
   </span>;
 };
 const SequenceBlock = ({ block }) => {
@@ -89,7 +90,7 @@ const SequenceBlock = ({ block }) => {
   return <span className={`flashcard__sequence flashcard__sequence--${block.role}`}>
     {block.labelKey ? <span className="flashcard__block-label">{t(block.labelKey)}</span> : null}
     <span role="list">{block.items.map((item, index) => <span className="flashcard__sequence-item" role="listitem" key={index}>
-      <span className="flashcard__sequence-number" aria-hidden="true">{index + 1}</span><span>{item}</span>
+      <span className="flashcard__sequence-number" aria-hidden="true">{index + 1}</span><span><MathText>{item}</MathText></span>
     </span>)}</span>
   </span>;
 };

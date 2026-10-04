@@ -1,3 +1,4 @@
+import { MathText } from "@shared/ui";
 import { memo } from "react";
 import { WordImage } from "@entities/word";
 import { useI18n } from "@shared/lib/i18n";
@@ -41,6 +42,7 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
       "flashcard",
       variant ? `flashcard--${variant}` : "",
       presentation ? `flashcard--layout-${presentation.layout}` : "",
+      presentation?.skin ? `flashcard--skin-${presentation.skin}` : "",
       isFlipped ? "flashcard--flipped" : "",
     ]
       .filter(Boolean)
@@ -90,12 +92,12 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
                 </span>
               ) : (
                 <strong className={`flashcard__text${resolveTextLengthClass(frontText)}`}>
-                  {frontText || "-"}
+                  <MathText>{frontText || "-"}</MathText>
                 </strong>
               )}
             </span>
             <span className="flashcard__foot">
-              <span className="flashcard__note">{frontNote}</span>
+              <span className="flashcard__note"><MathText>{frontNote}</MathText></span>
               <span className="flashcard__hint">{t("flashcard.reveal")}</span>
             </span>
           </span>
@@ -130,14 +132,14 @@ export const Flashcard = memo(({ card = EMPTY_CARD, variant = "" }) => {
                 </span>
               ) : (
                 <strong className={`flashcard__text${resolveTextLengthClass(backText)}`}>
-                  {backText || "-"}
+                  <MathText>{backText || "-"}</MathText>
                 </strong>
               )}
               {backDetails.length > 0 && (
                 <span className="flashcard__details" aria-label={t("flashcard.examples")}>
                   {backDetails.map((detail, index) => (
                     <span key={`${detail}-${index}`} className="flashcard__detail-line">
-                      {detail}
+                      <MathText>{detail}</MathText>
                     </span>
                   ))}
                 </span>

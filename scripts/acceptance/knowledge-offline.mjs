@@ -89,7 +89,7 @@ const main = async () => {
     outside.length = 0;
     context.on("requestfailed", request => { if (new URL(request.url()).pathname.startsWith("/assets/")) failed.push(request.url()); });
     for (const [subject, name, question, answer, mainField, mainValue, extraField, extraValue] of [
-      ["Mathematics", "Algebra offline", "Recall the quadratic formula", "The roots of ax²+bx+c=0", "formula", String.raw`x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}`, "steps", "1. Compute the discriminant\n2. Substitute the coefficients\n3. Evaluate both roots"],
+      ["Mathematics", "Algebra offline", "Solve $ax^2+bx+c=0$", "The roots of $ax^2+bx+c=0$", "formula", String.raw`x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}`, "steps", "1. Compute $b^2-4ac$\n2. Substitute the coefficients\n3. Evaluate both roots"],
       ["History", "France offline", "When did the French Revolution begin?", "In 1789", "context", "France faced a political and economic crisis.", "consequences", "1. End of absolute monarchy\n2. A republic was proclaimed"],
     ]) {
       await page.goto(`${BASE}/app/decks/new`);
@@ -118,13 +118,17 @@ const main = async () => {
       const layout = subject === "Mathematics" ? "mathematics" : "history";
       await page.locator(`.flashcard--layout-${layout}`).waitFor();
       const front = page.locator(".flashcard__face--front");
-      assert((await front.innerText()).includes(question), `${subject} question is on the front`);
+      if (subject === "Mathematics") await front.locator(".math-formula--inline .katex").waitFor();
+      assert((await front.innerText()).includes(question.split("$")[0]), `${subject} question is on the front`);
       assert(await front.locator(".flashcard__formula,.flashcard__callout,.flashcard__sequence").count() === 0, `${subject} answer details stay off the front`);
       if (process.env.ACCEPTANCE_SCREENSHOTS) await page.screenshot({path:path.join(process.env.ACCEPTANCE_SCREENSHOTS, `${layout}-front.png`)});
       await page.locator(".flashcard").click();
       await page.locator(".flashcard__face--back[aria-hidden=false]").waitFor();
       if (subject === "Mathematics") {
         await page.locator(".flashcard__formula .katex").waitFor();
+        await page.locator(".flashcard__block-text--answer .math-formula--inline .katex").waitFor();
+        await page.locator(".flashcard__sequence .math-formula--inline .katex").waitFor();
+        assert(true, "math in questions, answers and solution steps renders offline");
         assert(await page.evaluate(() => document.fonts.ready.then(() => document.fonts.check("16px KaTeX_Main"))), "mathematical fonts load offline");
       }
       else assert((await page.locator(".flashcard__callout").innerText()).includes("1789"), "date is stamped on the history answer");

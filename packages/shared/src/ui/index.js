@@ -26,4 +26,5 @@ export {
 export { useIsSettingsSearching } from "./Settings/settingsSearchContext";
 export { Select } from "./Select/Select";
 
+export { MathText } from "./MathFormula/MathText";
 export { MathFormula } from "./MathFormula/MathFormula";
